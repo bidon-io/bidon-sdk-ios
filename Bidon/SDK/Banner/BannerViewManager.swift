@@ -31,21 +31,19 @@ final internal class BannerViewManager: NSObject {
     private lazy var viewabilityTracker = Viewability.Tracker()
     
     weak var container: UIView?
-        
-    var isImpressionTracked: Bool {
-        guard
-            let container = container,
-            let view = container.subviews.compactMap({ $0 as? AdViewContainer }).first,
-            let impression = view.impression
-        else { return false }
-        
-        return !impression.isTrackingAllowed(.show)
+    
+    var impression: Impression? {
+        container?
+            .subviews
+            .compactMap { $0 as? AdViewContainer }
+            .first?
+            .impression
     }
     
     weak var delegate: BannerViewManagerDelegate?
     
     var extras: [String: AnyHashable] = [:]
-
+    
     func present(
         bid: AdViewBid,
         view: AdViewContainer,

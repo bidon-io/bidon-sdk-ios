@@ -98,11 +98,9 @@ public final class BannerView: UIView, AdView {
         eCPM: Price
     ) {
         guard
-            let bid = adManager.bid,
-            !viewManager.isImpressionTracked
+            let impression = associatedImpression(ad: ad),
+            impression.isTrackingAllowed(.show)
         else { return }
-        
-        let impression = AdViewImpression(bid: bid, format: format)
         
         let request = LossRequest { (builder: AdViewLossRequestBuilder) in
             builder.withEnvironmentRepository(sdk.environmentRepository)
@@ -117,7 +115,18 @@ public final class BannerView: UIView, AdView {
             Logger.debug("Sent loss with result: \(result)")
         }
         
+        adManager.prepareForReuse()
         viewManager.hide()
+    }
+
+    private func associatedImpression(ad: Ad) -> Impression? {
+        if let bid = adManager.bid, bid.ad.id == ad.id {
+            return AdViewImpression(bid: bid, format: format)
+        } else if let impression = viewManager.impression, impression.ad.id == ad.id {
+            return impression
+        } else {
+            return nil
+        }
     }
     
     private final func presentIfNeeded() {
