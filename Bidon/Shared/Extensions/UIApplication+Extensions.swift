@@ -20,6 +20,10 @@ public extension UIApplication {
         }
         
         public var window: UIWindow? {
+            return windows.first { $0.isKeyWindow }
+        }
+        
+        public var windows: [UIWindow] {
             if #available(iOS 13.0, *) {
                 return application
                     .connectedScenes
@@ -27,9 +31,8 @@ public extension UIApplication {
                     .compactMap { $0 as? UIWindowScene }
                     .map { $0.windows }
                     .reduce([], +)
-                    .first { $0.isKeyWindow }
             } else {
-                return application.keyWindow
+                return application.windows
             }
         }
         

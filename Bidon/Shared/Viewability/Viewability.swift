@@ -20,7 +20,8 @@ struct Viewability {
             isIntersectsParentWindow(),
             isIntersectsSuperview(),
             isExistsInTopViewControllerHierarchy(),
-            !isHiddenByAnotherView()
+            !isHiddenByAnotherView(),
+            !isHiddenByAnotherWindow()
         ].contains(false)
     }
 }
@@ -101,6 +102,24 @@ private extension Viewability {
             let visiblePercent = (originalArea - hiddenArea) / originalArea
             return visiblePercent < minVisiblePercentage
         }
+    }
+    
+    func isHiddenByAnotherWindow() -> Bool {
+        guard let window = UIApplication.shared.bd.window else { return true }
+        
+        let frameToKeyWindow = view.convert(view.frame, to: window)
+        let originalArea = frameToKeyWindow.width * frameToKeyWindow.height
+        let windows = UIApplication.shared.bd.windows
+        
+        return windows
+            .filter { $0.isOpaque && $0.windowLevel > window.windowLevel }
+            .contains { subwindow in
+                let subwindowFrame = subwindow.convert(subwindow.bounds, to: subwindow)
+                let hiddenRect = frameToKeyWindow.intersection(subwindowFrame)
+                let hiddenArea = hiddenRect.width * hiddenRect.height
+                let visiblePercent = (originalArea - hiddenArea) / originalArea
+                return visiblePercent < minVisiblePercentage
+            }
     }
     
     func allViewsHigherOnScreen(of view: UIView) -> [UIView] {
