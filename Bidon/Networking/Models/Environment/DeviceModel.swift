@@ -12,6 +12,7 @@ struct DeviceModel: Device, Codable {
     var userAgent: String
     var make: String
     var model: String
+    var type: DeviceType
     var os: String
     var osVersion: String
     var hardwareVersion: String
@@ -30,6 +31,7 @@ struct DeviceModel: Device, Codable {
         self.make = device.make
         self.model = device.model
         self.os = device.os
+        self.type = device.type
         self.osVersion = device.osVersion
         self.hardwareVersion = device.hardwareVersion
         self.pixelHeight = device.pixelHeight
@@ -47,6 +49,7 @@ struct DeviceModel: Device, Codable {
         case userAgent = "ua"
         case make = "make"
         case model = "model"
+        case type = "type"
         case os = "os"
         case osVersion = "osv"
         case hardwareVersion = "hwv"

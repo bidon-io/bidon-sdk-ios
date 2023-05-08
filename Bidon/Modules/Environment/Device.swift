@@ -25,10 +25,22 @@ enum ConnectionType: String, Codable {
 }
 
 
+enum DeviceType: String, Codable {
+    case phone
+    case tablet
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue.uppercased())
+    }
+}
+
+
 protocol Device {
     var userAgent: String { get }
     var make: String { get }
     var model: String { get }
+    var type: DeviceType { get }
     var os: String { get }
     var osVersion: String { get }
     var hardwareVersion: String { get }

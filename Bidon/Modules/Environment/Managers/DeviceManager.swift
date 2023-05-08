@@ -22,6 +22,9 @@ final class DeviceManager: Device, EnvironmentManager {
     @MainThreadComputable(UIDevice.current.model)
     var model: String
     
+    @MainThreadComputable(DeviceType.current)
+    var type: DeviceType
+    
     @MainThreadComputable(UIDevice.current.systemName)
     var os: String
     
@@ -98,6 +101,16 @@ private extension DeviceManager {
         default: return 163
         }
     }()
+}
+
+
+fileprivate extension DeviceType {
+    static var current: DeviceType {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad: return .tablet
+        default: return .phone
+        }
+    }
 }
 
 
