@@ -44,6 +44,7 @@ public protocol DemandProvider: AnyObject {
     associatedtype DemandAdType: DemandAd
     
     var delegate: DemandProviderDelegate? { get set }
+    
     var revenueDelegate: DemandProviderRevenueDelegate? { get set }
     
     func notify(ad: DemandAdType, event: AuctionEvent)

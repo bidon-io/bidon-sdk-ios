@@ -14,24 +14,21 @@ struct AdViewImpression: Impression {
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
 
-    var auctionId: String
-    var auctionConfigurationId: Int
-    var roundId: String
-    var lineItem: LineItem?
-    var adType: AdType
-    var ad: DemandAd
-    var format: BannerFormat
+    var auctionId: String { bid.auctionId }
+    var auctionConfigurationId: Int { bid.auctionConfigurationId }
+    var roundId: String { bid.roundId }
+    var lineItem: LineItem? { bid.lineItem }
+    var adType: AdType { bid.adType }
+    var ad: DemandAd { bid.ad }
     
-    init<T: Bid>(
-        bid: T,
+    var format: BannerFormat
+    var bid: AdViewBid
+    
+    init(
+        bid: AdViewBid,
         format: BannerFormat
     ) {
-        self.auctionId = bid.auctionId
-        self.auctionConfigurationId = bid.auctionConfigurationId
-        self.roundId = bid.roundId
-        self.lineItem = bid.lineItem
-        self.adType = bid.adType
-        self.ad = bid.ad
         self.format = format
+        self.bid = bid
     }
 }

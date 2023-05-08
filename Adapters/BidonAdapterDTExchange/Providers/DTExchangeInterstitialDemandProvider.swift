@@ -92,10 +92,7 @@ extension DTExchangeInterstitialDemandProvider: IAUnitDelegate {
         delegate?.providerWillPresent(self)
     }
     
-    func iaAdWillLogImpression(_ unitController: IAUnitController?) {
-        guard let adSpot = adSpot, adSpot.activeUnitController === unitController else { return }
-        revenueDelegate?.provider(self, didLogImpression: adSpot)
-    }
+    func iaAdWillLogImpression(_ unitController: IAUnitController?) {}
     
     func iaAdDidReceiveClick(_ unitController: IAUnitController?) {
         delegate?.providerDidClick(self)

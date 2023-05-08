@@ -17,8 +17,20 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     
     private(set) var adSpot: IAAdSpot?
     
+    private weak var impressionObserver: DTEXchangeImpressionObserver?
+    
     open func unitController() -> Controller {
         fatalError("DTExchange base demand provider can't provide unit controller")
+    }
+    
+    init(observer: DTExchangeDefaultImpressionObserver) {
+        self.impressionObserver = observer
+        super.init()
+    }
+    
+    deinit {
+        guard let spotId = adSpot?.id else { return }
+        impressionObserver?.removeObservation(spotId: spotId)
     }
 }
 
@@ -54,6 +66,18 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         self.adSpot = adSpot
+        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue in
+            guard
+                let self = self,
+                let adSpot = self.adSpot
+            else { return }
+            
+            self.revenueDelegate?.provider(
+                self,
+                didPayRevenue: adRevenue,
+                ad: adSpot
+            )
+        }
     }
     
     func notify(ad: IAAdSpot, event: AuctionEvent) {}

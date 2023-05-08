@@ -49,6 +49,27 @@ public final class BannerView: UIView, AdView {
         )
     }
     
+    private lazy var adRevenueObserver: AdRevenueObserver = {
+        let observer = BaseAdRevenueObserver()
+        
+        observer.ads = { [weak self] in
+            guard let self = self else { return [] }
+            
+            let ads: [Ad] = [self.adManager.bid, self.viewManager.bid]
+                .compactMap { $0 }
+                .map { AdContainer(bid: $0) }
+            
+            return ads
+        }
+        
+        observer.onRegisterAdRevenue = { [weak self] ad, revenue in
+            guard let self = self else { return }
+            self.delegate?.adObject?(self, didPay: revenue, ad: ad)
+        }
+        
+        return observer
+    }()
+    
     private lazy var viewManager: BannerViewManager = {
         let manager = BannerViewManager()
         manager.container = self
@@ -57,7 +78,10 @@ public final class BannerView: UIView, AdView {
     }()
     
     private lazy var adManager: BannerAdManager = {
-        let manager = BannerAdManager()
+        let manager = BannerAdManager(
+            placement: .default,
+            adRevenueObserver: adRevenueObserver
+        )
         manager.delegate = self
         return manager
     }()
@@ -118,7 +142,7 @@ public final class BannerView: UIView, AdView {
         adManager.prepareForReuse()
         viewManager.hide()
     }
-
+    
     private func associatedImpression(ad: Ad) -> Impression? {
         if let bid = adManager.bid, bid.ad.id == ad.id {
             return AdViewImpression(bid: bid, format: format)
@@ -159,10 +183,6 @@ extension BannerView: BannerAdManagerDelegate {
     func adManager(_ adManager: BannerAdManager, didLoad ad: Ad) {
         delegate?.adObject(self, didLoadAd: ad)
         presentIfNeeded()
-    }
-    
-    func adManager(_ adManager: BannerAdManager, didPayRevenue revenue: AdRevenue, ad: Ad) {
-        delegate?.adObject?(self, didPay: revenue, ad: ad)
     }
 }
 

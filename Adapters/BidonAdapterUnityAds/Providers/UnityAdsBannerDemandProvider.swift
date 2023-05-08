@@ -11,7 +11,6 @@ import UnityAds
 import UIKit
 
 
-#warning("Ad Revenue for Unity Ads banners")
 final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
     weak var delegate: DemandProviderDelegate?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
@@ -21,7 +20,7 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
     
     private var banner: UADSBannerView?
     private var response: DemandProviderResponse?
-    
+        
     init(context: AdViewContext) {
         self.size = context.size
         super.init()
@@ -48,6 +47,10 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
 extension UnityAdsBannerDemandProvider: AdViewDemandProvider {
     func container(for ad: UADSBannerView) -> AdViewContainer? {
         return ad
+    }
+    
+    func didTrackImpression(for ad: UADSBannerView) {
+        revenueDelegate?.provider(self, didLogImpression: ad)
     }
 }
 

@@ -53,12 +53,19 @@ public protocol AdViewDemandProvider: DemandProvider {
     var adViewDelegate: DemandProviderAdViewDelegate? { get set }
     
     func container(for ad: DemandAdType) -> AdViewContainer?
+    
+    func didTrackImpression(for ad: DemandAdType)
 }
 
 
 internal extension AdViewDemandProvider {
     func container(opaque ad: DemandAd) -> AdViewContainer? {
         return (ad as? DemandAdType).flatMap { container(for: $0) }
+    }
+    
+    func didTrackImpression(opaque ad: DemandAd) {
+        guard let ad = ad as? DemandAdType else { return }
+        didTrackImpression(for: ad)
     }
 }
 

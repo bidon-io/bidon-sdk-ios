@@ -76,6 +76,8 @@ extension AppLovinAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: ALAd) -> AdViewContainer? {
         return adView
     }
+    
+    func didTrackImpression(for ad: ALAd) {}
 }
 
 

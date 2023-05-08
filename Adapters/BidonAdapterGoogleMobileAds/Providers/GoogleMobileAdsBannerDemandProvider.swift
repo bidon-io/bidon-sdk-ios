@@ -46,6 +46,8 @@ extension GoogleMobileAdsBannerDemandProvider: AdViewDemandProvider {
     func container(for ad: GADBannerView) -> AdViewContainer? {
         return ad
     }
+    
+    func didTrackImpression(for ad: GADBannerView) {}
 }
 
 

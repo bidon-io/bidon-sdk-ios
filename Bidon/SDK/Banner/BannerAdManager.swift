@@ -12,7 +12,6 @@ import UIKit
 protocol BannerAdManagerDelegate: AnyObject {
     func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError)
     func adManager(_ adManager: BannerAdManager, didLoad ad: Ad)
-    func adManager(_ adManager: BannerAdManager, didPayRevenue revenue: AdRevenue, ad: Ad)
 }
 
 
@@ -36,22 +35,11 @@ final class BannerAdManager: NSObject {
     
     private var state: State = .idle
     
+    let adRevenueObserver: AdRevenueObserver
+    
     let placement: String
     
     weak var delegate: BannerAdManagerDelegate?
-    
-    private lazy var adRevenueObserver: AdRevenueObserver = {
-        let observer = BaseAdRevenueObserver()
-        observer.ads = { [weak self] in
-            guard let self = self else { return [] }
-            return self.state.ads
-        }
-        observer.onRegisterAdRevenue = { [weak self] ad, revenue in
-            guard let self = self else { return }
-            self.delegate?.adManager(self, didPayRevenue: revenue, ad: ad)
-        }
-        return observer
-    }()
     
     var bid: AdViewBid? {
         switch state {
@@ -62,8 +50,13 @@ final class BannerAdManager: NSObject {
     
     var extras: [String: AnyHashable] = [:]
     
-    init(placement: String = "") {
+    init(
+        placement: String,
+        adRevenueObserver: AdRevenueObserver
+    ) {
+        
         self.placement = placement
+        self.adRevenueObserver = adRevenueObserver
         super.init()
     }
     
@@ -187,14 +180,6 @@ private extension BannerAdManager.State {
         switch self {
         case .idle: return true
         default: return false
-        }
-    }
-    
-    var ads: [Ad] {
-        switch self {
-        case .ready(let bid):
-            return [AdContainer(bid: bid)]
-        default: return []
         }
     }
 }

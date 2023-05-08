@@ -45,6 +45,8 @@ extension DTExchangeBannerDemandProvider: AdViewDemandProvider {
         
         return controller.adView
     }
+    
+    func didTrackImpression(for ad: IAAdSpot) {}
 }
 
 
@@ -58,11 +60,6 @@ extension DTExchangeBannerDemandProvider: IAUnitDelegate {
     
     func iaUnitControllerWillPresentFullscreen(_ unitController: IAUnitController?) {
         delegate?.providerWillPresent(self)
-    }
-    
-    func iaAdWillLogImpression(_ unitController: IAUnitController?) {
-        guard let adSpot = adSpot, adSpot.activeUnitController === unitController else { return } 
-        revenueDelegate?.provider(self, didLogImpression: adSpot)
     }
     
     func iaAdDidReceiveClick(_ unitController: IAUnitController?) {

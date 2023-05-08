@@ -31,6 +31,8 @@ extension BidMachineAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: BidMachineAdDemand<BidMachineBanner>) -> AdViewContainer? {
         return ad.ad
     }
+    
+    func didTrackImpression(for ad: BidMachineAdDemand<BidMachineBanner>) {}
 }
 
 

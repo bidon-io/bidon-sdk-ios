@@ -21,16 +21,18 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
     public let adapterVersion: String = "1"
     public let sdkVersion: String = IASDKCore.sharedInstance().version()
     
+    private lazy var impressionObserver = DTExchangeDefaultImpressionObserver()
+    
     public func interstitial() throws -> any InterstitialDemandProvider {
-        return DTExchangeInterstitialDemandProvider()
+        return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
     
     public func rewardedAd() throws -> any RewardedAdDemandProvider {
-        return DTExchangeInterstitialDemandProvider()
+        return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
     
     public func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider {
-        return DTExchangeBannerDemandProvider()
+        return DTExchangeBannerDemandProvider(observer: impressionObserver)
     }
 }
 
@@ -53,10 +55,12 @@ extension DTExchangeDemandSourceAdapter: InitializableAdapter {
         }
         
         guard let parameters = parameters else { return }
-                 
+          
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
-            completionBlock: { isSuccess, error in
+            completionBlock: { [weak self] isSuccess, error in
+                defer { IASDKCore.sharedInstance().globalAdDelegate = self?.impressionObserver }
+                
                 if isSuccess {
                     completion(.success(()))
                 } else if let error = error {

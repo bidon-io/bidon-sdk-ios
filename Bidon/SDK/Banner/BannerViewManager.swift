@@ -32,12 +32,20 @@ final internal class BannerViewManager: NSObject {
     
     weak var container: UIView?
     
-    var impression: Impression? {
+    private var _impression: AdViewImpression? {
         container?
             .subviews
             .compactMap { $0 as? AdViewContainer }
             .first?
             .impression
+    }
+    
+    var impression: Impression? {
+        _impression
+    }
+    
+    var bid: AdViewBid? {
+        return _impression?.bid
     }
     
     weak var delegate: BannerViewManagerDelegate?
@@ -100,6 +108,8 @@ final internal class BannerViewManager: NSObject {
             self?.viewabilityTracker.startTracking(view: view) { [weak self] in
                 self?.viewabilityTracker.finishTracking()
                 self?.trackImpression(adView: view)
+                
+                bid.provider.didTrackImpression(opaque: bid.ad)
             }
         }
         
@@ -147,7 +157,7 @@ final internal class BannerViewManager: NSObject {
         guard var impression = adView.impression else { return }
         
         sendImpressionIfNeeded(&impression, path: .show)
-        
+                
         let ad = AdContainer(impression: impression)
         delegate?.viewManager(self, didRecordImpression: ad)
         

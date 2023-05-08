@@ -38,6 +38,7 @@
 		42706A4A29B5EB88008321B7 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42706A4929B5EB88008321B7 /* Bidon.framework */; };
 		4273346C29ACB3380042AE52 /* AppLovinRewardWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4273346B29ACB3380042AE52 /* AppLovinRewardWrapper.swift */; };
 		4273347529ACE7DF0042AE52 /* BidonAdapterDTExchange.h in Headers */ = {isa = PBXBuildFile; fileRef = 4273347429ACE7DF0042AE52 /* BidonAdapterDTExchange.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		427734612A08FEEB00B0A07C /* DTExchangeImpressionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427734602A08FEEB00B0A07C /* DTExchangeImpressionObserver.swift */; };
 		429EE2B8286C7293009439C6 /* BidMachineDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429EE2B7286C7293009439C6 /* BidMachineDemandSourceAdapter.swift */; };
 		42B35C5629AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B35C5529AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift */; };
 		42B35C5929AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B35C5829AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift */; };
@@ -95,6 +96,7 @@
 		4273346B29ACB3380042AE52 /* AppLovinRewardWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLovinRewardWrapper.swift; sourceTree = "<group>"; };
 		4273347229ACE7DF0042AE52 /* BidonAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4273347429ACE7DF0042AE52 /* BidonAdapterDTExchange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterDTExchange.h; sourceTree = "<group>"; };
+		427734602A08FEEB00B0A07C /* DTExchangeImpressionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeImpressionObserver.swift; sourceTree = "<group>"; };
 		429EE2B7286C7293009439C6 /* BidMachineDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		42B35C5529AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityAdsDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		42B35C5829AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityAdsInterstitialDemandProvider.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				4267C9E929ACFEBA00B5988E /* Providers */,
 				4267C9EA29ACFEC600B5988E /* Wrappers */,
 				4267C9E729ACEB4500B5988E /* DTExchangeDemandSourceAdapter.swift */,
+				427734602A08FEEB00B0A07C /* DTExchangeImpressionObserver.swift */,
 				4273347429ACE7DF0042AE52 /* BidonAdapterDTExchange.h */,
 			);
 			path = BidonAdapterDTExchange;
@@ -815,6 +818,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4267CA2829AE0C3500B5988E /* DTExchangeBannerDemandProvider.swift in Sources */,
+				427734612A08FEEB00B0A07C /* DTExchangeImpressionObserver.swift in Sources */,
 				4267C9F029AD10F300B5988E /* DTExchangeInterstitialDemandProvider.swift in Sources */,
 				4267C9EC29ACFEF500B5988E /* DTExchangeBaseDemandProvider.swift in Sources */,
 				4267C9E829ACEB4500B5988E /* DTExchangeDemandSourceAdapter.swift in Sources */,
