@@ -91,6 +91,7 @@ extension BidMachineBaseDemandProvider: ProgrammaticDemandProvider {
             
             configuration.populate { builder in
                 builder.appendPriceFloor(pricefloor, UUID().uuidString)
+                builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             
             BidMachineSdk.shared.ad(AdObject.self, configuration) { ad, error in
