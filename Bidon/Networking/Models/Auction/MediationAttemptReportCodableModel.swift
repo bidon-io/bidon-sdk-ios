@@ -13,7 +13,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var networkId: String
         var adUnitId: String?
         var status: DemandReportStatus
-        var eCPM: Price
+        var eCPM: Price?
         var bidStartTimestamp: UInt?
         var bidFinishTimestamp: UInt?
         var fillStartTimestamp: UInt?

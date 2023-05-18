@@ -36,5 +36,3 @@ final class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         return true
     }
 }
-
-

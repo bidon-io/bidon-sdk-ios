@@ -41,7 +41,7 @@ struct AuctionResultReportModel: AuctionResultReport {
 struct DemandReportModel: DemandReport {
     var networkId: String
     var adUnitId: String? = nil
-    var eCPM: Price
+    var eCPM: Price?
     var status: DemandReportStatus = .unknown
     var bidStartTimestamp: UInt? = Date.timestamp(.wall, units: .milliseconds).uint
     var bidFinishTimestamp: UInt?

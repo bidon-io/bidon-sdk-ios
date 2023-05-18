@@ -14,7 +14,7 @@ fileprivate struct DemandObservation {
     var adUnitId: String?
     var adId: String? = nil
     var status: DemandReportStatus = .unknown
-    var eCPM: Price = .unknown
+    var eCPM: Price? = nil
     var isRoundWinner: Bool = false
     var isAuctionWinner: Bool = false
     var bidRequestTimestamp: TimeInterval?

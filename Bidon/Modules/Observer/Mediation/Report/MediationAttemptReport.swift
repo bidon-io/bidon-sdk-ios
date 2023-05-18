@@ -12,7 +12,7 @@ protocol DemandReport {
     var networkId: String { get }
     var adUnitId: String? { get }
     var status: DemandReportStatus { get }
-    var eCPM: Price { get }
+    var eCPM: Price? { get }
     var bidStartTimestamp: UInt? { get }
     var bidFinishTimestamp: UInt? { get }
     var fillStartTimestamp: UInt? { get }
