@@ -70,6 +70,9 @@
 		426DD7B828A68EC400A1ADF5 /* AdViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD7B728A68EC400A1ADF5 /* AdViewDelegate.swift */; };
 		427B1C1629A4CE34007D4E93 /* AdRevenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1C1529A4CE34007D4E93 /* AdRevenue.swift */; };
 		427DB5C129BF2A8500057D08 /* UnknownAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427DB5C029BF2A8500057D08 /* UnknownAdapter.swift */; };
+		428C45BE2A264E47009E90EF /* Regulations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45BD2A264E47009E90EF /* Regulations.swift */; };
+		428C45C02A264F68009E90EF /* RegulationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45BF2A264F68009E90EF /* RegulationsModel.swift */; };
+		428C45C22A264FED009E90EF /* RegulationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45C12A264FED009E90EF /* RegulationsManager.swift */; };
 		428CCBF428A11190003123EF /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF328A11190003123EF /* EnvironmentManager.swift */; };
 		428CCBF728A12C8D003123EF /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF628A12C8D003123EF /* Date+Extensions.swift */; };
 		428CCBF928A13AD8003123EF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF828A13AD8003123EF /* NetworkManager.swift */; };
@@ -210,6 +213,9 @@
 		426DD7B728A68EC400A1ADF5 /* AdViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewDelegate.swift; sourceTree = "<group>"; };
 		427B1C1529A4CE34007D4E93 /* AdRevenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdRevenue.swift; sourceTree = "<group>"; };
 		427DB5C029BF2A8500057D08 /* UnknownAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownAdapter.swift; sourceTree = "<group>"; };
+		428C45BD2A264E47009E90EF /* Regulations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regulations.swift; sourceTree = "<group>"; };
+		428C45BF2A264F68009E90EF /* RegulationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulationsModel.swift; sourceTree = "<group>"; };
+		428C45C12A264FED009E90EF /* RegulationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulationsManager.swift; sourceTree = "<group>"; };
 		428CCBF328A11190003123EF /* EnvironmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
 		428CCBF628A12C8D003123EF /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		428CCBF828A13AD8003123EF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -427,11 +433,12 @@
 				42D047E9289D60160096A8C6 /* Managers */,
 				42D047EC289D670E0096A8C6 /* Environment.swift */,
 				42D047EE289D6A380096A8C6 /* EnvironmentRepository.swift */,
-				42D047DD289D5A0D0096A8C6 /* Device.swift */,
-				42D047DF289D5E5C0096A8C6 /* Session.swift */,
 				42D047E1289D5EEE0096A8C6 /* App.swift */,
-				42D047E3289D5F3E0096A8C6 /* User.swift */,
+				42D047DD289D5A0D0096A8C6 /* Device.swift */,
 				42D047E6289D5F9A0096A8C6 /* Geo.swift */,
+				428C45BD2A264E47009E90EF /* Regulations.swift */,
+				42D047DF289D5E5C0096A8C6 /* Session.swift */,
+				42D047E3289D5F3E0096A8C6 /* User.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -498,6 +505,7 @@
 				4243093528A2BCAC002360B0 /* AppModel.swift */,
 				4243093728A2BCBE002360B0 /* UserModel.swift */,
 				4243093928A2BCCC002360B0 /* GeoModel.swift */,
+				428C45BF2A264F68009E90EF /* RegulationsModel.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -773,11 +781,12 @@
 			isa = PBXGroup;
 			children = (
 				428CCBF328A11190003123EF /* EnvironmentManager.swift */,
+				420067A628BD0FBB003B734D /* AppManager.swift */,
 				42D047EA289D60260096A8C6 /* DeviceManager.swift */,
 				42D047F0289D73F80096A8C6 /* GeoManager.swift */,
-				420067A628BD0FBB003B734D /* AppManager.swift */,
-				42BE438A28C0AE93000528E3 /* UserManager.swift */,
+				428C45C12A264FED009E90EF /* RegulationsManager.swift */,
 				42BE438C28C0B0E3000528E3 /* SessionManager.swift */,
+				42BE438A28C0AE93000528E3 /* UserManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -980,6 +989,7 @@
 				423FBA9D29F0488400B20A5D /* ProgrammaticDemandProvider.swift in Sources */,
 				428FFC7A28BF96360090B126 /* ImpressionModel.swift in Sources */,
 				4299A424289BCDBC0062C580 /* Interstitial.swift in Sources */,
+				428C45C02A264F68009E90EF /* RegulationsModel.swift in Sources */,
 				42D047E4289D5F3E0096A8C6 /* User.swift in Sources */,
 				429F4D8428CF56C900765BD7 /* DemandReportStatus.swift in Sources */,
 				426DD7AC28A5511500A1ADF5 /* RewardedConcurrentAuctionControllerBuilder.swift in Sources */,
@@ -1035,6 +1045,7 @@
 				42BA82072878547C001F1744 /* BannerView.swift in Sources */,
 				4257D71A29DDBF970066DE1B /* LossRequestBuilder.swift in Sources */,
 				42C46C9329F280360057D7CE /* AuctionBidComparator.swift in Sources */,
+				428C45BE2A264E47009E90EF /* Regulations.swift in Sources */,
 				42BE438B28C0AE93000528E3 /* UserManager.swift in Sources */,
 				4299A427289BCF3F0062C580 /* HTTPTask.swift in Sources */,
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
@@ -1049,6 +1060,7 @@
 				421D48EC2888582B007DE2E4 /* OSLogDestination.swift in Sources */,
 				42D047E7289D5F9A0096A8C6 /* Geo.swift in Sources */,
 				428CCBF928A13AD8003123EF /* NetworkManager.swift in Sources */,
+				428C45C22A264FED009E90EF /* RegulationsManager.swift in Sources */,
 				426DD7A328A5004200A1ADF5 /* Sdk.swift in Sources */,
 				428CCBF428A11190003123EF /* EnvironmentManager.swift in Sources */,
 				42EDA0A828C5EBF900BF74DE /* AuctionRequestBuilder.swift in Sources */,

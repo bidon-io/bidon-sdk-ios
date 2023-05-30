@@ -22,12 +22,8 @@ enum TrackingAuthorizationStatus: String, Codable {
 
 
 protocol User {
-    associatedtype Consent: Codable
-
     var idfa: String { get }
     var trackingAuthorizationStatus: TrackingAuthorizationStatus { get }
     var idfv: String { get }
     var idg: String { get }
-    var coppa: Bool { get }
-    var consent: Consent { get }
 }

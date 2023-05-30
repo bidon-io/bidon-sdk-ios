@@ -16,23 +16,23 @@ struct ConfigurationRequest: Request {
     var body: RequestBody?
     
     struct RequestBody: Encodable, Tokenized {
-        var device: DeviceModel?
-        var session: SessionModel?
-        var app: AppModel?
-        var user: UserModel?
-        var geo: GeoModel?
-        var ext: String?
         var test: Bool
         var token: String?
+        var ext: String?
         var segmentId: String?
         var adapters: AdaptersInfo
+        var app: AppModel?
+        var regs: RegulationsModel?
+        var session: SessionModel?
+        var user: UserModel?
+        var device: DeviceModel?
     }
     
     struct ResponseBody: Decodable, Tokenized {
         var adaptersInitializationParameters: AdaptersInitialisationParameters
         var token: String?
         var segmentId: String?
-
+        
         enum CodingKeys: String, CodingKey {
             case adaptersInitializationParameters = "init"
             case token = "token"
@@ -45,14 +45,14 @@ struct ConfigurationRequest: Request {
         build(builder)
         
         self.body = RequestBody(
-            device: builder.device,
-            session: builder.session,
-            app: builder.app,
-            user: builder.user,
-            geo: builder.geo,
-            ext: builder.encodedExt,
             test: builder.testMode,
-            adapters: builder.adapters
+            ext: builder.encodedExt,
+            adapters: builder.adapters,
+            app: builder.app,
+            regs: builder.regulations,
+            session: builder.session,
+            user: builder.user,
+            device: builder.device
         )
     }
 }

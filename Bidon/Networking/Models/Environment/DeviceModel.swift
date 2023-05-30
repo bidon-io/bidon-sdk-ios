@@ -25,8 +25,12 @@ struct DeviceModel: Device, Codable {
     var carrier: String
     var mccncc: String
     var conectionType: ConnectionType
+    var geo: GeoModel?
     
-    init(_ device: Device) {
+    init(
+        _ device: Device,
+        geo: GeoModel?
+    ) {
         self.userAgent = device.userAgent
         self.make = device.make
         self.model = device.model
@@ -43,6 +47,7 @@ struct DeviceModel: Device, Codable {
         self.carrier = device.carrier
         self.mccncc = device.mccncc
         self.conectionType = device.conectionType
+        self.geo = geo
     }
     
     enum CodingKeys: String, CodingKey {
@@ -62,5 +67,6 @@ struct DeviceModel: Device, Codable {
         case carrier = "carrier"
         case mccncc = "mccmnc"
         case conectionType = "connection_type"
+        case geo = "geo"
     }
 }

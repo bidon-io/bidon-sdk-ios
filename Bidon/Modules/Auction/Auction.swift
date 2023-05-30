@@ -12,6 +12,7 @@ protocol AuctionRound {
     var id: String { get }
     var timeout: TimeInterval { get }
     var demands: [String] { get }
+    var bidding: [String] { get }
 }
 
 

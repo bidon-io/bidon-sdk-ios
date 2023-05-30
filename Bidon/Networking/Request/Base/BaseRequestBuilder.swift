@@ -15,11 +15,19 @@ class BaseRequestBuilder {
     private var ext: [String: Any]?
     private var environmentRepository: EnvironmentRepository!
     
-    var device: DeviceModel? {
-        let manager = environmentRepository.environment(DeviceManager.self)
-        return manager.map { DeviceModel($0) }
+    private var geo: GeoModel? {
+        guard
+            let manager = environmentRepository.environment(GeoManager.self),
+            manager.isAvailable
+        else { return nil }
+
+        return GeoModel(manager)
     }
     
+    var device: DeviceModel? {
+        let manager = environmentRepository.environment(DeviceManager.self)
+        return manager.map { DeviceModel($0, geo: geo) }
+    }
     
     var session: SessionModel? {
         let manager = environmentRepository.environment(SessionManager.self)
@@ -31,18 +39,14 @@ class BaseRequestBuilder {
         return manager.map { AppModel($0) }
     }
     
-    var geo: GeoModel? {
-        guard
-            let manager = environmentRepository.environment(GeoManager.self),
-            manager.isAvailable
-        else { return nil }
-        
-        return GeoModel(manager)
-    }
-    
     var user: UserModel? {
         let manager = environmentRepository.environment(UserManager.self)
         return manager.map { UserModel($0) }
+    }
+    
+    var regulations: RegulationsModel? {
+        let manager = environmentRepository.environment(RegulationsManager.self)
+        return manager.map { RegulationsModel($0) }
     }
     
     var encodedExt: String? {

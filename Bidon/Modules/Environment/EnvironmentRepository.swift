@@ -12,11 +12,12 @@ internal typealias EnvironmentRepository = Repository<EnvironmentRepositoryKey, 
 
 
 enum EnvironmentRepositoryKey: String {
-    case device
-    case session
     case app
-    case user
     case geo
+    case regulations
+    case session
+    case user
+    case device
 }
 
 
@@ -36,9 +37,13 @@ extension EnvironmentRepository {
         self.init("com.bidon.adapters-repository.queue")
     }
     
-    func configure(_ parameters: Parameters, completion: @escaping () -> ()) {
+    func configure(
+        _ parameters: Parameters,
+        completion: @escaping () -> ()
+    ) {
         self[.device] = DeviceManager()
         self[.session] = SessionManager()
+        self[.regulations] = RegulationsManager()
         self[.app] = AppManager(
             key: parameters.appKey,
             framework: parameters.framework.framework,
@@ -57,7 +62,7 @@ extension EnvironmentRepository {
         
         geo.prepare(completion: completion)
     }
-
+    
     
     func environment<T: EnvironmentManager>(_ type: T.Type) -> T? {
         guard let key = EnvironmentRepositoryKey(type) else { return nil }
@@ -75,6 +80,7 @@ extension EnvironmentRepositoryKey {
         case is AppManager.Type: self = .app
         case is UserManager.Type: self = .user
         case is GeoManager.Type: self = .geo
+        case is RegulationsManager.Type: self = .regulations
         default: return nil
         }
     }

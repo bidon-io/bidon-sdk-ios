@@ -12,8 +12,6 @@ import AppTrackingTransparency
 
 
 final class UserManager: User, EnvironmentManager {
-    struct Consent: Codable {}
-    
     var idfa: String {
         ASIdentifierManager.shared().advertisingIdentifier.uuidString
     }
@@ -39,11 +37,6 @@ final class UserManager: User, EnvironmentManager {
             return idg
         }
     }
-    
-    @UserDefault(Constants.UserDefaultsKey.coppa, defaultValue: false)
-    var coppa: Bool
-    
-    var consent: Consent = .init()
 }
 
 

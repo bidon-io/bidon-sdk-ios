@@ -20,7 +20,7 @@ struct StatisticRequest: Request {
         var session: SessionModel?
         var app: AppModel?
         var user: UserModel?
-        var geo: GeoModel?
+        var regs: RegulationsModel?
         var ext: String?
         var test: Bool
         var token: String?
@@ -44,7 +44,7 @@ struct StatisticRequest: Request {
             session: builder.session,
             app: builder.app,
             user: builder.user,
-            geo: builder.geo,
+            regs: builder.regulations,
             ext: builder.encodedExt,
             test: builder.testMode,
             stats: builder.stats

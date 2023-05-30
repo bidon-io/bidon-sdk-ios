@@ -12,5 +12,6 @@ struct AuctionRoundModel: Decodable, AuctionRound {
     var id: String
     var timeout: TimeInterval
     var demands: [String]
+    var bidding: [String]
 }
 
