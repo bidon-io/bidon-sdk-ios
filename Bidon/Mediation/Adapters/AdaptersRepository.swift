@@ -36,7 +36,7 @@ extension AdaptersRepository {
     }
     
     func configure() {
-        Constants.Adapters.clasess.forEach { className in
+        Constants.Adapters.classes.forEach { className in
             if let cls = NSClassFromString(className) as? Adapter.Type {
                 let adapter = cls.init()
                 Logger.debug("Register \(adapter.name) adapter. Version \(BidonSdk.sdkVersion).\(adapter.adapterVersion). SDK Version: \(adapter.sdkVersion)")

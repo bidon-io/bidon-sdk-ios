@@ -140,7 +140,7 @@ public final class BidonSdk: NSObject {
                             let name = adapter.name
                             adapter.initialize(from: parameters.value) { result in
                                 Logger.info("\(name) adapter initilized with result: \(result)")
-                                group.leave()
+                                DispatchQueue.global().async(execute: group.leave)
                             }
                         }
                     }

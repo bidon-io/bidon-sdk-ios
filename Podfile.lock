@@ -143,20 +143,20 @@ PODS:
     - FBAEMKit (= 15.1.0)
     - FBSDKCoreKit_Basics (= 15.1.0)
   - FBSDKCoreKit_Basics (15.1.0)
-  - Firebase/Analytics (10.9.0):
+  - Firebase/Analytics (10.10.0):
     - Firebase/Core
-  - Firebase/Core (10.9.0):
+  - Firebase/Core (10.10.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 10.9.0)
-  - Firebase/CoreOnly (10.9.0):
-    - FirebaseCore (= 10.9.0)
-  - Firebase/RemoteConfig (10.9.0):
+    - FirebaseAnalytics (~> 10.10.0)
+  - Firebase/CoreOnly (10.10.0):
+    - FirebaseCore (= 10.10.0)
+  - Firebase/RemoteConfig (10.10.0):
     - Firebase/CoreOnly
-    - FirebaseRemoteConfig (~> 10.9.0)
-  - FirebaseABTesting (10.9.0):
+    - FirebaseRemoteConfig (~> 10.10.0)
+  - FirebaseABTesting (10.10.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseAnalytics (10.9.0):
-    - FirebaseAnalytics/AdIdSupport (= 10.9.0)
+  - FirebaseAnalytics (10.10.0):
+    - FirebaseAnalytics/AdIdSupport (= 10.10.0)
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
@@ -164,27 +164,27 @@ PODS:
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (10.9.0):
+  - FirebaseAnalytics/AdIdSupport (10.10.0):
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
-    - GoogleAppMeasurement (= 10.9.0)
+    - GoogleAppMeasurement (= 10.10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCore (10.9.0):
+  - FirebaseCore (10.10.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreInternal (10.9.0):
+  - FirebaseCoreInternal (10.10.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseInstallations (10.9.0):
+  - FirebaseInstallations (10.10.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - FirebaseRemoteConfig (10.9.0):
+  - FirebaseRemoteConfig (10.10.0):
     - FirebaseABTesting (~> 10.0)
     - FirebaseCore (~> 10.0)
     - FirebaseInstallations (~> 10.0)
@@ -194,21 +194,21 @@ PODS:
   - Google-Mobile-Ads-SDK (10.2.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
-  - GoogleAppMeasurement (10.9.0):
-    - GoogleAppMeasurement/AdIdSupport (= 10.9.0)
+  - GoogleAppMeasurement (10.10.0):
+    - GoogleAppMeasurement/AdIdSupport (= 10.10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (10.9.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.9.0)
+  - GoogleAppMeasurement/AdIdSupport (10.10.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 10.10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
     - "GoogleUtilities/NSData+zlib (~> 7.11)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (10.9.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (10.10.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.11)
     - GoogleUtilities/MethodSwizzler (~> 7.11)
     - GoogleUtilities/Network (~> 7.11)
@@ -295,7 +295,7 @@ PODS:
   - OCMock (3.9.1)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.2.0)
-  - Protobuf (3.23.0)
+  - Protobuf (3.23.2)
   - smaato-ios-sdk (22.0.2):
     - smaato-ios-sdk/Full (= 22.0.2)
   - smaato-ios-sdk/Banner (22.0.2):
@@ -412,13 +412,13 @@ PODS:
     - YandexMobileAds/Static (= 5.2.1)
   - YandexMobileAds/Static (5.2.1):
     - YandexMobileMetrica (< 5.0.0, >= 4.0.0)
-  - YandexMobileMetrica (4.5.0):
-    - YandexMobileMetrica/Static (= 4.5.0)
-  - YandexMobileMetrica/Static (4.5.0):
-    - YandexMobileMetrica/Static/Core (= 4.5.0)
-    - YandexMobileMetrica/Static/Crashes (= 4.5.0)
-  - YandexMobileMetrica/Static/Core (4.5.0)
-  - YandexMobileMetrica/Static/Crashes (4.5.0):
+  - YandexMobileMetrica (4.5.2):
+    - YandexMobileMetrica/Static (= 4.5.2)
+  - YandexMobileMetrica/Static (4.5.2):
+    - YandexMobileMetrica/Static/Core (= 4.5.2)
+    - YandexMobileMetrica/Static/Crashes (= 4.5.2)
+  - YandexMobileMetrica/Static/Core (4.5.2)
+  - YandexMobileMetrica/Static/Crashes (4.5.2):
     - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
@@ -497,8 +497,6 @@ SPEC REPOS:
     - OMSDK_Appodeal
     - StackAnalytics
     - StackConsentManager
-    - StackIAB
-    - StackModules
     - StackProtobuf
   trunk:
     - AdColony
@@ -589,16 +587,16 @@ SPEC CHECKSUMS:
   FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
   FBSDKCoreKit: 7542746fc63a2a38dd6a865eeb54268341f37b83
   FBSDKCoreKit_Basics: 92d6b26c0bed30ab09bbdd96dccaa26e6c9978d1
-  Firebase: bd152f0f3d278c4060c5c71359db08ebcfd5a3e2
-  FirebaseABTesting: 005b70969e2817e2a1e631e8dba29134a04c0622
-  FirebaseAnalytics: 5ea0db4893825e7b0149d575352cd838236313dc
-  FirebaseCore: b68d3616526ec02e4d155166bbafb8eca64af557
-  FirebaseCoreInternal: d2b4acb827908e72eca47a9fd896767c3053921e
-  FirebaseInstallations: c58489c9caacdbf27d1da60891a87318e20218e0
-  FirebaseRemoteConfig: 5ea5834e8c518f377bf1af2d97ebd611914ebf2d
+  Firebase: facd334e557a979bd03a0b58d90fd56b52b8aba0
+  FirebaseABTesting: b2a87808d90f02766fcffb3957d3e397e7accc15
+  FirebaseAnalytics: 7bc7de519111dae802f5bc0c9c083918f8b8870d
+  FirebaseCore: d027ff503d37edb78db98429b11f580a24a7df2a
+  FirebaseCoreInternal: 971029061d326000d65bfdc21f5502c75c8b0893
+  FirebaseInstallations: 52153982b057d3afcb4e1fbb3eb0b6d00611e681
+  FirebaseRemoteConfig: 8ef82c9d0bc45525a3d152d958f08742523ca5a9
   Fyber_Marketplace_SDK: 3ae82ee5e638148569296d254a5211f26c4d6180
   Google-Mobile-Ads-SDK: 4cf7100c99e7cfdd97dd9193cc26a13411aa6891
-  GoogleAppMeasurement: 373bcbead1bb6a85be7a64d5d8f96284b762ea9c
+  GoogleAppMeasurement: bbbfd4bcb2b40ae9b772c3b0823a58c1e3d618f9
   GoogleUserMessagingPlatform: 5f8b30daf181805317b6b985bb51c1ff3beca054
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
   IronSourceSDK: 03ab6e62ac10589e5bea97cf0a379989f6965f36
@@ -609,18 +607,18 @@ SPEC CHECKSUMS:
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  Protobuf: 43e3764cdf3609fdd00417649561565703437fdc
+  Protobuf: 5df4e9d2abd535fb675c68d171f6bc87983d27a6
   smaato-ios-sdk: 4533e9c8c24ecefd0445a78ea89afba35412e1d1
   StackAnalytics: 8c15ce5c440628da6bcc37f56f1e8a159f7147bf
   StackConsentManager: af49179a45ec64c167784f380ccc047d5bc6d6df
-  StackIAB: 0861aacae7d81acb3838e9affc8705ed7bcc7c84
-  StackModules: f61783b6313fe20ed9f12d8c7f69dcd3c0e72797
+  StackIAB: 17ee4cbe12d1aa6eb79f9a79b85375250bdd50fb
+  StackModules: 9c5f24f9112662fe218b93085318054c6861a44d
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   TapjoySDK: 7edeac6d20f9d941fab1352c81ecd3e885c36167
   UnityAds: fab621d1066e414af9ce884f1252cdd53894263e
   VungleSDK-iOS: 27725029a42dfb9e39c67956637233fde1ee1797
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
-  YandexMobileMetrica: 7dafc7d224077d4443ab3a587b82b24e9b6cc9c7
+  YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
 PODFILE CHECKSUM: 5e4044d42a4f050e9e75b52fc6cf8d0acd0739b6
 

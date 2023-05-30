@@ -21,7 +21,7 @@ struct Constants {
     }
     
     struct Adapters {
-        static var clasess: [String] = [
+        static var classes: [String] = [
             "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
             "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",
