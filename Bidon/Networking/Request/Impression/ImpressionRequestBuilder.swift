@@ -26,7 +26,7 @@ final class InterstitialImpressionRequestBuilder: BaseRequestBuilder, Impression
     var imp: ImpressionModel {
         ImpressionModel(
             _imp,
-            interstitial: AdObjectModel.InterstitialModel()
+            interstitial: InterstitialModel()
         )
     }
     
@@ -55,7 +55,7 @@ final class RewardedImpressionRequestBuilder: BaseRequestBuilder, ImpressionRequ
     var imp: ImpressionModel {
         ImpressionModel(
             _imp,
-            rewarded: AdObjectModel.RewardedModel()
+            rewarded: RewardedModel()
         )
     }
     
@@ -84,7 +84,7 @@ final class AdViewImpressionRequestBuilder: BaseRequestBuilder, ImpressionReques
     var imp: ImpressionModel {
         ImpressionModel(
             _imp,
-            banner: AdObjectModel.BannerModel(
+            banner: BannerModel(
                 format: _format
             )
         )

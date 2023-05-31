@@ -33,13 +33,7 @@ final class AuctionOperationRequestProgrammaticDemand<DemandProviderType: Demand
             return nil
         }
     }
-    
-    private var pricefloor: Price {
-        deps(AuctionOperationStartRound<BidType>.self)
-            .first?
-            .pricefloor ?? .unknown
-    }
-    
+
     init(
         round: AuctionRound,
         observer: AnyMediationObserver,
@@ -161,9 +155,6 @@ final class AuctionOperationRequestProgrammaticDemand<DemandProviderType: Demand
         }
     }
 }
-
-
-extension AuctionOperationRequestProgrammaticDemand: AuctionOperation {}
 
 
 extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDemand {

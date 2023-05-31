@@ -12,7 +12,7 @@ import BidMachine
 import Bidon
 
 
-final class BidMachineAdViewDemandProvider: BidMachineBaseDemandProvider<BidMachineBanner> {
+final class BidMachineProgrammaticAdViewDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineBanner> {
     private let format: BannerFormat
     
     weak var adViewDelegate: DemandProviderAdViewDelegate?
@@ -27,7 +27,7 @@ final class BidMachineAdViewDemandProvider: BidMachineBaseDemandProvider<BidMach
 }
 
 
-extension BidMachineAdViewDemandProvider: AdViewDemandProvider {
+extension BidMachineProgrammaticAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: BidMachineAdDemand<BidMachineBanner>) -> AdViewContainer? {
         return ad.ad
     }

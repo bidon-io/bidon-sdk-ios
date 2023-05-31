@@ -57,6 +57,5 @@ final class ProgrammaticDemandProviderWrapper<W>: DemandProviderWrapper<W>, Prog
     func fill(ad: DemandAd, response: @escaping DemandProviderResponse) {
         _fill(ad, response)
     }
-
 }
 

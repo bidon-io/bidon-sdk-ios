@@ -7,17 +7,55 @@
 
 import Foundation
 
+// MARK: Interstitial
+public typealias AnyDirectInterstitialDemandProvider = any InterstitialDemandProvider & DirectDemandProvider
+public typealias AnyProgrammaticInterstitialDemandProvider = any InterstitialDemandProvider & ProgrammaticDemandProvider
+public typealias AnyBiddingInterstitialDemandProvider = any InterstitialDemandProvider & BiddingDemandProvider
 
-public protocol InterstitialDemandSourceAdapter: Adapter {
-    func interstitial() throws -> any InterstitialDemandProvider
+
+public protocol DirectInterstitialDemandSourceAdapter: Adapter {
+    func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider
 }
 
-
-public protocol RewardedAdDemandSourceAdapter: Adapter {
-    func rewardedAd() throws -> any RewardedAdDemandProvider
+public protocol ProgrammaticInterstitialDemandSourceAdapter: Adapter {
+    func programmaticInterstitialDemandProvider() throws -> AnyProgrammaticInterstitialDemandProvider
 }
 
+public protocol BiddingInterstitialDemandSourceAdapter: Adapter {
+    func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider
+}
 
-public protocol AdViewDemandSourceAdapter: Adapter {
-    func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider
+// MARK: Rewarded Ad
+public typealias AnyDirectRewardedAdDemandProvider = any RewardedAdDemandProvider & DirectDemandProvider
+public typealias AnyProgrammaticRewardedAdDemandProvider = any RewardedAdDemandProvider & ProgrammaticDemandProvider
+public typealias AnyBiddingRewardedAdDemandProvider = any RewardedAdDemandProvider & BiddingDemandProvider
+
+
+public protocol DirectRewardedAdDemandSourceAdapter: Adapter {
+    func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider
+}
+
+public protocol ProgrammaticRewardedAdDemandSourceAdapter: Adapter {
+    func programmaticRewardedAdDemandProvider() throws -> AnyProgrammaticRewardedAdDemandProvider
+}
+
+public protocol BiddingRewardedAdDemandSourceAdapter: Adapter {
+    func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider
+}
+
+// MARK: Ad View
+public typealias AnyDirectAdViewDemandProvider = any AdViewDemandProvider & DirectDemandProvider
+public typealias AnyProgrammaticAdViewDemandProvider = any AdViewDemandProvider & ProgrammaticDemandProvider
+public typealias AnyBiddingAdViewDemandProvider = any AdViewDemandProvider & BiddingDemandProvider
+
+public protocol DirectAdViewDemandSourceAdapter: Adapter {
+    func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider
+}
+
+public protocol ProgrammaticAdViewDemandSourceAdapter: Adapter {
+    func programmaticAdViewDemandProvider(context: AdViewContext) throws -> AnyProgrammaticAdViewDemandProvider
+}
+
+public protocol BiddingAdViewDemandSourceAdapter: Adapter {
+    func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider
 }

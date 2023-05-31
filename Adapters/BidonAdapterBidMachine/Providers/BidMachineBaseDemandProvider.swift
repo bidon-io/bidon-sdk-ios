@@ -12,7 +12,7 @@ import BidMachineApiCore
 import Bidon
 
 
-class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, BidMachineAdDelegate {
+class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, DemandProvider, BidMachineAdDelegate {
     typealias AdType = BidMachineAdDemand<AdObject>
     
     weak var delegate: DemandProviderDelegate?
@@ -22,7 +22,7 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, Bi
         fatalError("Base demand provider doesn't provide placement format")
     }
     
-    private var response: DemandProviderResponse?
+    internal var response: DemandProviderResponse?
     
     func didLoadAd(_ ad: BidMachineAdProtocol) {
         defer { response = nil }
@@ -81,40 +81,6 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, Bi
     func willPresentScreen(_ ad: BidMachineAdProtocol) {}
     func didDismissScreen(_ ad: BidMachineAdProtocol) {}
     func didTrackInteraction(_ ad: BidMachineAdProtocol) {}
-}
-
-
-extension BidMachineBaseDemandProvider: ProgrammaticDemandProvider {
-    func bid(_ pricefloor: Price, response: @escaping DemandProviderResponse) {
-        do {
-            let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
-            
-            configuration.populate { builder in
-                builder.appendPriceFloor(pricefloor, UUID().uuidString)
-                builder.withCustomParameters(["mediation_mode": "bidon"])
-            }
-            
-            BidMachineSdk.shared.ad(AdObject.self, configuration) { ad, error in
-                guard let ad = ad, error == nil else {
-                    response(.failure(.noBid))
-                    return
-                }
-                
-                let wrapper = AdType(ad)
-                response(.success(wrapper))
-            }
-        } catch {
-            response(.failure(.unscpecifiedException))
-        }
-    }
-    
-    func fill(ad: AdType, response: @escaping DemandProviderResponse) {
-        self.response = response
-        
-        ad.ad.controller = UIApplication.shared.bd.topViewcontroller
-        ad.ad.delegate = self
-        ad.ad.loadAd()
-    }
     
     func notify(ad: AdType, event: AuctionEvent) {
         switch event {
@@ -129,3 +95,5 @@ extension BidMachineBaseDemandProvider: ProgrammaticDemandProvider {
         }
     }
 }
+
+

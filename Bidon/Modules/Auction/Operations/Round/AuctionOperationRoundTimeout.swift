@@ -8,10 +8,6 @@
 import Foundation
 
 
-protocol AuctionOperationRequestDemand: Operation {
-    func timeoutReached() 
-}
-
 
 final class AuctionOperationRoundTimeout: AsynchronousOperation {
     private var timer: Timer?
@@ -59,7 +55,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
             self?.observer.log(.roundTimerFired)
             self?.operations
                 .allObjects
-                .compactMap { $0 as? AuctionOperationRequestDemand }
+                .compactMap { $0 as? any AuctionOperationRequestDemand }
                 .forEach { $0.timeoutReached() }
             
             self?.finish()

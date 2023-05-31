@@ -14,6 +14,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     private typealias Manager = BaseFullscreenAdManager<
         AnyRewardedAdDemandProvider,
         RewardedAuctionRequestBuilder,
+        RewardedBidRequestBuilder,
         RewardedConcurrentAuctionControllerBuilder,
         RewardedImpressionController,
         RewardedImpressionRequestBuilder,

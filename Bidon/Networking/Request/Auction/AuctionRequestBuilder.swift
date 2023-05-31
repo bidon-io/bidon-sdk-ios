@@ -8,8 +8,11 @@
 import Foundation
 
 
+typealias AuctionRequestAdObject = AuctionRequest.RequestBody.AdObjectModel
+
+
 protocol AuctionRequestBuilder: BaseRequestBuilder {
-    var adObject: AdObjectModel { get }
+    var adObject: AuctionRequestAdObject { get }
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
     var pricefloor: Price { get }
@@ -30,13 +33,16 @@ protocol AuctionRequestBuilder: BaseRequestBuilder {
 final class InterstitialAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuilder {
     private(set) var placement: String!
     private(set) var auctionId: String!
-    private(set) var pricefloor: Price = .zero
+    private(set) var pricefloor: Price = .unknown
 
     var adType: AdType { .interstitial }
     
     var adapters: AdaptersInfo {
-        let interstitials: [InterstitialDemandSourceAdapter] = adaptersRepository.all()
-        return AdaptersInfo(adapters: interstitials)
+        let programmatic: [ProgrammaticInterstitialDemandSourceAdapter] = adaptersRepository.all()
+        let direct: [DirectInterstitialDemandSourceAdapter] = adaptersRepository.all()
+        let bidding: [BiddingInterstitialDemandSourceAdapter] = adaptersRepository.all()
+        let adapters: [Adapter] = programmatic + direct + bidding
+        return AdaptersInfo(adapters: adapters)
     }
     
     @discardableResult
@@ -57,12 +63,12 @@ final class InterstitialAuctionRequestBuilder: BaseRequestBuilder, AuctionReques
         return self
     }
     
-    var adObject: AdObjectModel {
-        AdObjectModel(
+    var adObject: AuctionRequestAdObject {
+        AuctionRequestAdObject(
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            interstitial: AdObjectModel.InterstitialModel()
+            interstitial: InterstitialModel()
         )
     }
 }
@@ -71,13 +77,17 @@ final class InterstitialAuctionRequestBuilder: BaseRequestBuilder, AuctionReques
 final class RewardedAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuilder {
     private(set) var placement: String!
     private(set) var auctionId: String!
-    private(set) var pricefloor: Price = .zero
+    private(set) var pricefloor: Price = .unknown
 
     var adType: AdType { .rewarded }
     
     var adapters: AdaptersInfo {
-        let interstitials: [RewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        return AdaptersInfo(adapters: interstitials)
+        let programmatic: [ProgrammaticRewardedAdDemandSourceAdapter] = adaptersRepository.all()
+        let direct: [DirectRewardedAdDemandSourceAdapter] = adaptersRepository.all()
+        let bidding: [BiddingRewardedAdDemandSourceAdapter] = adaptersRepository.all()
+        let adapters: [Adapter] = programmatic + direct + bidding
+        
+        return AdaptersInfo(adapters: adapters)
     }
     
     @discardableResult
@@ -98,12 +108,12 @@ final class RewardedAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBui
         return self
     }
     
-    var adObject: AdObjectModel {
-        AdObjectModel(
+    var adObject: AuctionRequestAdObject {
+        AuctionRequestAdObject(
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            rewarded: AdObjectModel.RewardedModel()
+            rewarded: RewardedModel()
         )
     }
 }
@@ -113,13 +123,17 @@ final class AdViewAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuild
     private(set) var placement: String!
     private(set) var auctionId: String!
     private(set) var format: BannerFormat!
-    private(set) var pricefloor: Price = .zero
+    private(set) var pricefloor: Price = .unknown
 
     var adType: AdType { .banner}
     
     var adapters: AdaptersInfo {
-        let banners: [AdViewDemandSourceAdapter] = adaptersRepository.all()
-        return AdaptersInfo(adapters: banners)
+        let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
+        let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
+        let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
+        let adapters: [Adapter] = programmatic + direct + bidding
+        
+        return AdaptersInfo(adapters: adapters)
     }
     
     @discardableResult
@@ -146,12 +160,12 @@ final class AdViewAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuild
         return self
     }
     
-    var adObject: AdObjectModel {
-        AdObjectModel(
+    var adObject: AuctionRequestAdObject {
+        AuctionRequestAdObject(
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            banner: AdObjectModel.BannerModel(
+            banner: BannerModel(
                 format: format
             )
         )

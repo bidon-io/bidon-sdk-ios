@@ -20,12 +20,6 @@ final class AuctionOperationRequestDirectDemand<DemandProviderType: DemandProvid
     
     private(set) var bid: BidType?
     
-    private var pricefloor: Price {
-        deps(AuctionOperationStartRound<BidType>.self)
-            .first?
-            .pricefloor ?? .unknown
-    }
-    
     init(
         round: AuctionRound,
         observer: AnyMediationObserver,
@@ -107,9 +101,6 @@ final class AuctionOperationRequestDirectDemand<DemandProviderType: DemandProvid
         }
     }
 }
-
-
-extension AuctionOperationRequestDirectDemand: AuctionOperation {}
 
 
 extension AuctionOperationRequestDirectDemand: AuctionOperationRequestDemand {

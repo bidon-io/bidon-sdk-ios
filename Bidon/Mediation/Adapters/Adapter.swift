@@ -29,3 +29,5 @@ public protocol InitializableAdapter: Adapter {
         completion: @escaping (Result<Void, SdkError>) -> Void
     )
 }
+
+

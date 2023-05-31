@@ -10,7 +10,9 @@ import IASDKCore
 import Bidon
 
 
-internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & RewardedAdDemandSourceAdapter & AdViewDemandSourceAdapter
+internal typealias DemandSourceAdapter = DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class DTExchangeDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -23,15 +25,15 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
     
     private lazy var impressionObserver = DTExchangeDefaultImpressionObserver()
     
-    public func interstitial() throws -> any InterstitialDemandProvider {
+    public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
     
-    public func rewardedAd() throws -> any RewardedAdDemandProvider {
+    public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
         return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
     
-    public func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider {
+    public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
         return DTExchangeBannerDemandProvider(observer: impressionObserver)
     }
 }

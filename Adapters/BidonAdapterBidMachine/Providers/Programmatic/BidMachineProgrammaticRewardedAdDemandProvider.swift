@@ -12,7 +12,7 @@ import BidMachineApiCore
 import Bidon
 
 
-final class BidMachineRewardedAdDemandProvider: BidMachineBaseDemandProvider<BidMachineRewarded> {
+final class BidMachineProgrammaticRewardedAdDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineRewarded> {
     fileprivate typealias EmptyReward = RewardWrapper<NSNull>
     
     weak var rewardDelegate: DemandProviderRewardDelegate?
@@ -26,7 +26,7 @@ final class BidMachineRewardedAdDemandProvider: BidMachineBaseDemandProvider<Bid
 }
 
 
-extension BidMachineRewardedAdDemandProvider: RewardedAdDemandProvider {
+extension BidMachineProgrammaticRewardedAdDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: BidMachineAdDemand<BidMachineRewarded>,
         from viewController: UIViewController
@@ -46,7 +46,7 @@ extension BidMachineRewardedAdDemandProvider: RewardedAdDemandProvider {
 }
 
 
-private extension BidMachineRewardedAdDemandProvider.EmptyReward {
+private extension BidMachineProgrammaticRewardedAdDemandProvider.EmptyReward {
     convenience init() {
         self.init(
             label: "",

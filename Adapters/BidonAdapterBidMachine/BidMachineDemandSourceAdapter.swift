@@ -10,7 +10,10 @@ import BidMachine
 import Bidon
 
 
-internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & RewardedAdDemandSourceAdapter & AdViewDemandSourceAdapter
+internal typealias DemandSourceAdapter = ProgrammaticInterstitialDemandSourceAdapter &
+ProgrammaticRewardedAdDemandSourceAdapter &
+ProgrammaticAdViewDemandSourceAdapter &
+BiddingInterstitialDemandSourceAdapter
 
 
 @objc public final class BidMachineDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -24,16 +27,20 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
     public let adapterVersion: String = "1"
     public let sdkVersion: String = BidMachineSdk.sdkVersion
     
-    public func interstitial() throws -> any InterstitialDemandProvider {
-        return BidMachineInterstitialDemandProvider()
+    public func programmaticInterstitialDemandProvider() throws -> AnyProgrammaticInterstitialDemandProvider {
+        return BidMachineInterstitialProgrammaticDemandProvider()
+    }
+
+    public func programmaticRewardedAdDemandProvider() throws -> AnyProgrammaticRewardedAdDemandProvider {
+        return BidMachineProgrammaticRewardedAdDemandProvider()
     }
     
-    public func rewardedAd() throws -> any RewardedAdDemandProvider {
-        BidMachineRewardedAdDemandProvider()
+    public func programmaticAdViewDemandProvider(context: AdViewContext) throws -> AnyProgrammaticAdViewDemandProvider {
+        return BidMachineProgrammaticAdViewDemandProvider(context: context)
     }
     
-    public func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider {
-        BidMachineAdViewDemandProvider(context: context)
+    public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
+        return BidMachineInterstitialBiddingDemandProvider()
     }
 }
 

@@ -18,7 +18,7 @@ protocol BannerAdManagerDelegate: AnyObject {
 final class BannerAdManager: NSObject {
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AnyAdViewDemandProvider>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AnyAdViewDemandProvider, BannerBidRequestBuilder>
     
     fileprivate enum State {
         case idle

@@ -11,6 +11,7 @@ import Foundation
 indirect enum Route {
     case config
     case auction
+    case bid
     case stats
     case show
     case click
@@ -56,6 +57,7 @@ extension Route {
         case .auction: return base.appendingPathComponent("auction")
         case .config: return base.appendingPathComponent("config")
         case .stats: return base.appendingPathComponent("stats")
+        case .bid: return base.appendingPathComponent("bidding")
         case .show: return base.appendingPathComponent("show")
         case .click: return base.appendingPathComponent("click")
         case .loss: return base.appendingPathComponent("loss")

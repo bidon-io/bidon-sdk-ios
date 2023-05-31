@@ -18,13 +18,22 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
     }
     
     override func adapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
-        let adapters: [AdViewDemandSourceAdapter] = adaptersRepository.all()
-        return adapters.compactMap { adapter in
+        return directDemandWrappedAdapters() +
+        biddingDemandWrappedAdapters() +
+        programmaticDemandWrappedAdapters()
+    }
+    
+    private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
+        let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
+        
+        return direct.compactMap { adapter in
             do {
-                let provider = try adapter.adView(context).wrapped()
+                let provider = try adapter.directAdViewDemandProvider(context: context)
+                let wrappedProvider: AnyAdViewDemandProvider = try DirectDemandProviderWrapper(provider)
+                
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
-                    provider: provider
+                    provider: wrappedProvider
                 )
             } catch {
                 Logger.warning("Unable to create ad view demand provider for \(adapter), error: \(error)")
@@ -32,15 +41,40 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
             }
         }
     }
-}
-
-
-extension AdViewDemandProvider {
-    func wrapped() throws -> AnyAdViewDemandProvider {
-        switch self {
-        case _ as any DirectDemandProvider:         return try DirectDemandProviderWrapper(self)
-        case _ as any ProgrammaticDemandProvider:   return try ProgrammaticDemandProviderWrapper(self)
-        default:                                    return try DemandProviderWrapper(self)
+    
+    private func programmaticDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
+        let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
+        return programmatic.compactMap { adapter in
+            do {
+                let provider = try adapter.programmaticAdViewDemandProvider(context: context)
+                let wrappedProvider: AnyAdViewDemandProvider = try ProgrammaticDemandProviderWrapper(provider)
+                
+                return AnyDemandSourceAdapter(
+                    adapter: adapter,
+                    provider: wrappedProvider
+                )
+            } catch {
+                Logger.warning("Unable to ad view demand provider for \(adapter), error: \(error)")
+                return nil
+            }
+        }
+    }
+    
+    private func biddingDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
+        let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
+        return bidding.compactMap { adapter in
+            do {
+                let provider = try adapter.biddingAdViewDemandProvider(context: context)
+                let wrappedProvider: AnyAdViewDemandProvider = try BiddingDemandProviderWrapper(provider)
+                
+                return AnyDemandSourceAdapter(
+                    adapter: adapter,
+                    provider: wrappedProvider
+                )
+            } catch {
+                Logger.warning("Unable to create interstitial demand provider for \(adapter), error: \(error)")
+                return nil
+            }
         }
     }
 }

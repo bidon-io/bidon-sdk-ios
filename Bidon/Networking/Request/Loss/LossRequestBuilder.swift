@@ -37,7 +37,7 @@ final class InterstitialLossRequestBuilder: BaseRequestBuilder, LossRequestBuild
     func withImpression(_ impression: Impression) -> Self {
         self._imp = ImpressionModel(
             impression,
-            interstitial: AdObjectModel.InterstitialModel()
+            interstitial: InterstitialModel()
         )
         return self
     }
@@ -70,7 +70,7 @@ final class RewardedLossRequestBuilder: BaseRequestBuilder, LossRequestBuilder {
     func withImpression(_ impression: Impression) -> Self {
         self._imp = ImpressionModel(
             impression,
-            rewarded: AdObjectModel.RewardedModel()
+            rewarded: RewardedModel()
         )
         return self
     }
@@ -93,7 +93,7 @@ final class AdViewLossRequestBuilder: BaseRequestBuilder, LossRequestBuilder {
     var imp: ImpressionModel {
         ImpressionModel(
             _imp,
-            banner: AdObjectModel.BannerModel(
+            banner: BannerModel(
                 format: _format
             )
         )

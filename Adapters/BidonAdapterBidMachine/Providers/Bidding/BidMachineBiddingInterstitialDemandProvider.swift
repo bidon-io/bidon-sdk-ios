@@ -1,8 +1,8 @@
 //
-//  BidMachineInterstitialDemandProvider.swift
+//  BidMachineBiddingInterstitialDemandProvider.swift
 //  BidonAdapterBidMachine
 //
-//  Created by Bidon Team on 10.02.2023.
+//  Created by Stas Kochkin on 31.05.2023.
 //
 
 import Foundation
@@ -12,12 +12,12 @@ import BidMachineApiCore
 import Bidon
 
 
-final class BidMachineInterstitialDemandProvider: BidMachineBaseDemandProvider<BidMachineInterstitial> {
+final class BidMachineInterstitialBiddingDemandProvider: BidMachineBiddingDemandProvider<BidMachineInterstitial> {
     override var placementFormat: BidMachineApiCore.PlacementFormat { .interstitial }
 }
 
 
-extension BidMachineInterstitialDemandProvider: InterstitialDemandProvider {
+extension BidMachineInterstitialBiddingDemandProvider: InterstitialDemandProvider {
     func show(ad: BidMachineAdDemand<BidMachineInterstitial>, from viewController: UIViewController) {
         guard ad.ad.canShow else {
             delegate?.provider(

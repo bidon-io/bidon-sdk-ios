@@ -11,7 +11,9 @@ import AdSupport
 import Bidon
 
 
-internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & RewardedAdDemandSourceAdapter & AdViewDemandSourceAdapter
+internal typealias DemandSourceAdapter = DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class AppLovinDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -27,7 +29,7 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
     
     private var sdk: ALSdk?
     
-    public func interstitial() throws -> any InterstitialDemandProvider {
+    public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         guard let sdk = self.sdk else {
             throw SdkError("AppLovin SDK is not initialized yet")
         }
@@ -35,7 +37,7 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
         return AppLovinInterstitialDemandProvider(sdk: sdk)
     }
     
-    public func rewardedAd() throws -> any RewardedAdDemandProvider {
+    public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
         guard let sdk = self.sdk else {
             throw SdkError("AppLovin SDK is not initialized yet")
         }
@@ -43,7 +45,7 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
         return AppLovinRewardedDemandProvider(sdk: sdk)
     }
     
-    public func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider {
+    public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
         guard let sdk = self.sdk else {
             throw SdkError("AppLovin SDK is not initialized yet")
         }

@@ -14,6 +14,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     private typealias Manager = BaseFullscreenAdManager<
         AnyInterstitialDemandProvider,
         InterstitialAuctionRequestBuilder,
+        InterstitialBidRequestBuilder,
         InterstitialConcurrentAuctionControllerBuilder,
         InterstitialImpressionController,
         InterstitialImpressionRequestBuilder,

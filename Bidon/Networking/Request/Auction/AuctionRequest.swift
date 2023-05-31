@@ -16,6 +16,16 @@ struct AuctionRequest: Request {
     var body: RequestBody?
     
     struct RequestBody: Encodable, Tokenized {
+        struct AdObjectModel: Encodable {
+            var orientation: InterfaceOrientation = .current
+            var placementId: String
+            var auctionId: String
+            var pricefloor: Price
+            var banner: BannerModel?
+            var interstitial: InterstitialModel?
+            var rewarded: RewardedModel?
+        }
+        
         var device: DeviceModel?
         var session: SessionModel?
         var app: AppModel?

@@ -8,7 +8,8 @@
 import Foundation
 
 
-final class ConcurrentAuctionController<DemandProviderType: DemandProvider>: AuctionController {
+final class ConcurrentAuctionController<DemandProviderType, BidRequestBuilderType>: AuctionController
+where DemandProviderType: DemandProvider, BidRequestBuilderType: BidRequestBuilder{
     typealias BidType = BidModel<DemandProviderType>
     
     private let rounds: [AuctionRound]
@@ -106,7 +107,7 @@ final class ConcurrentAuctionController<DemandProviderType: DemandProvider>: Auc
                     
             // Create request operation for every demand sources
             round.demands.forEach { identifier in
-                let requestDemandOperation = requestDemandNode(
+                let requestDemandOperation = requestDemandOperation(
                     round: round,
                     demand: identifier
                 )
@@ -119,6 +120,12 @@ final class ConcurrentAuctionController<DemandProviderType: DemandProvider>: Auc
                 try? auction.addEdge(from: startRoundOperation, to: requestDemandOperation)
                 try? auction.addEdge(from: requestDemandOperation, to: finishRoundOperation)
             }
+            
+            // Add bidding operation
+            let biddingOperation = biddingOperation(round: round)
+            try? auction.add(node: biddingOperation)
+            try? auction.addEdge(from: startRoundOperation, to: biddingOperation)
+            try? auction.addEdge(from: biddingOperation, to: finishRoundOperation)
             
             shared.append(finishRoundOperation)
             
@@ -133,7 +140,7 @@ final class ConcurrentAuctionController<DemandProviderType: DemandProvider>: Auc
         queue.addOperations(auction.operations(), waitUntilFinished: false)
     }
     
-    private func requestDemandNode(
+    private func requestDemandOperation(
         round: AuctionRound,
         demand identifier: String
     ) -> AuctionOperation {
@@ -173,5 +180,18 @@ final class ConcurrentAuctionController<DemandProviderType: DemandProvider>: Auc
                 )
             )
         }
+    }
+    
+    private func biddingOperation(round: AuctionRound) -> AuctionOperation {
+        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = round.bidding.compactMap { id in
+            self.adapters.first { $0.identifier == id && $0.provider is any BiddingDemandProvider }
+        }
+        
+        let operation = AuctionOperationRequestBiddingDemand<BidRequestBuilderType, DemandProviderType>(
+            observer: mediationObserver,
+            adapters: adapters
+        )
+        
+        return operation
     }
 }

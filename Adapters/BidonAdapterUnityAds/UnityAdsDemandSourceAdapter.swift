@@ -10,7 +10,9 @@ import UnityAds
 import Bidon
 
 
-internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & RewardedAdDemandSourceAdapter & AdViewDemandSourceAdapter
+internal typealias DemandSourceAdapter = DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class UnityAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -26,15 +28,15 @@ internal typealias DemandSourceAdapter = InterstitialDemandSourceAdapter & Rewar
     
     private var completion: ((Result<Void, SdkError>) -> Void)?
     
-    public func interstitial() throws -> any InterstitialDemandProvider {
+    public func directInterstitialDemandProvider () throws -> AnyDirectInterstitialDemandProvider {
         return UnityAdsInterstitialDemandProvider()
     }
     
-    public func rewardedAd() throws -> any RewardedAdDemandProvider {
+    public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
         return UnityAdsInterstitialDemandProvider()
     }
     
-    public func adView(_ context: AdViewContext) throws -> any AdViewDemandProvider {
+    public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
         return UnityAdsBannerDemandProvider(context: context)
     }
 }

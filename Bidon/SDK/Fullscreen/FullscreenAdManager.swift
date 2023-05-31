@@ -30,6 +30,7 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 final class BaseFullscreenAdManager<
     DemandProviderType,
     AuctionRequestBuilderType,
+    BidRequestBuilderType,
     AuctionControllerBuilderType,
     ImpressionControllerType,
     ImpressionRequestBuilderType,
@@ -37,13 +38,14 @@ final class BaseFullscreenAdManager<
 >: NSObject, FullscreenAdManager where
 AuctionRequestBuilderType: AuctionRequestBuilder,
 AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<DemandProviderType>,
+BidRequestBuilderType: BidRequestBuilder,
 ImpressionControllerType: FullscreenImpressionController,
 ImpressionControllerType.BidType == BidModel<DemandProviderType>,
 ImpressionRequestBuilderType: ImpressionRequestBuilder,
 LossRequestBuilderType: LossRequestBuilder {
     
     fileprivate typealias BidType = BidModel<DemandProviderType>
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<DemandProviderType>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<DemandProviderType, BidRequestBuilderType>
     
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     

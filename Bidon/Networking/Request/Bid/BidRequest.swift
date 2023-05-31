@@ -1,0 +1,120 @@
+//
+//  BidRequest.swift
+//  Bidon
+//
+//  Created by Stas Kochkin on 30.05.2023.
+//
+
+import Foundation
+
+
+struct BidRequest: Request {
+    var route: Route
+    var method: HTTPTask.HTTPMethod = .post
+    var headers: [HTTPTask.HTTPHeader: String] = .default()
+    var timeout: TimeInterval = 10
+    var body: RequestBody?
+    
+    struct RequestBody: Encodable, Tokenized {
+        struct BidonExtrasModel: Encodable {
+            var encoders: BiddingContextEncoders
+            
+            init(encoders: BiddingContextEncoders) {
+                self.encoders = encoders
+            }
+            
+            func encode(to encoder: Encoder) throws {
+                var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
+                
+                try encoders.forEach { id, encoder in
+                    if let key = AdapterIdCodingKey(stringValue: id) {
+                        let superEncoder = container.superEncoder(forKey: key)
+                        try encoder.encodeBiddingContext(to: superEncoder)
+                    }
+                }
+            }
+        }
+        
+        struct ExtrasModel: Encodable {
+            var bidon: BidonExtrasModel
+        }
+        
+        struct ImpModel: Encodable {
+            var bidfloor: Price
+            var id: String = UUID().uuidString
+            var auctionId: String
+            var auctionConfigurationId: Int
+            var orientation: InterfaceOrientation = .current
+            var banner: BannerModel?
+            var ext: ExtrasModel
+        }
+        
+        var id: String
+        var device: DeviceModel?
+        var session: SessionModel?
+        var app: AppModel?
+        var user: UserModel?
+        var regs: RegulationsModel?
+        var ext: String?
+        var test: Bool
+        var token: String?
+        var segmentId: String?
+        var imp: ImpModel
+    }
+    
+    struct ResponseBody: Decodable, Tokenized {
+        enum Status: Int, Decodable {
+            case ok = 0
+        }
+        
+        struct Bid: Decodable {
+            var id: String
+            var impressionId: String
+        }
+        
+        struct SeatBid: Decodable {
+            var demandId: String
+            var bids: [Bid]
+            
+            enum CodingKeys: String, CodingKey {
+                case demandId = "seat"
+                case bids = "bid"
+            }
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case seatBids = "seatbid"
+            case bidId = "bidid"
+            case status = "nbr"
+        }
+        
+        var token: String?
+        var segmentId: String?
+        var id: String
+        var seatBids: [SeatBid]?
+        var bidId: String?
+        var status: Status
+    }
+    
+    init<T: BidRequestBuilder>(_ build: (T) -> ()) {
+        let builder = T()
+        build(builder)
+        
+        self.route = .complex(.adType(builder.adType), .bid)
+        
+        self.body = RequestBody(
+            id: UUID().uuidString,
+            device: builder.device,
+            session: builder.session,
+            app: builder.app,
+            user: builder.user,
+            regs: builder.regulations,
+            ext: builder.encodedExt,
+            test: builder.testMode,
+            imp: builder.imp
+        )
+    }
+}
+
+

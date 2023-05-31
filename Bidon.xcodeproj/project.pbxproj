@@ -15,7 +15,7 @@
 		421D48EC2888582B007DE2E4 /* OSLogDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421D48EB2888582B007DE2E4 /* OSLogDestination.swift */; };
 		422077F129B2079800A2AD26 /* AuctionResultReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422077F029B2079800A2AD26 /* AuctionResultReportStatus.swift */; };
 		4221018D2859E29A006596DA /* Bidon.h in Headers */ = {isa = PBXBuildFile; fileRef = 422101812859E29A006596DA /* Bidon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		422101982859E2C3006596DA /* BidOnSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422101972859E2C3006596DA /* BidOnSdk.swift */; };
+		422101982859E2C3006596DA /* BidonSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422101972859E2C3006596DA /* BidonSdk.swift */; };
 		4221019A2859E35C006596DA /* Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422101992859E35C006596DA /* Adapter.swift */; };
 		4221019C2859E3D0006596DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4221019B2859E3D0006596DA /* Constants.swift */; };
 		42244DA628C8E1E800E9C416 /* MediationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42244DA528C8E1E800E9C416 /* MediationEvent.swift */; };
@@ -52,7 +52,6 @@
 		42677B3F28A16EC4006F321D /* AdaptersInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42677B3E28A16EC4006F321D /* AdaptersInfoModel.swift */; };
 		426DD78B28A3E88100A1ADF5 /* AuctionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD78A28A3E88100A1ADF5 /* AuctionRequest.swift */; };
 		426DD78D28A3EDD900A1ADF5 /* LineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD78C28A3EDD900A1ADF5 /* LineItem.swift */; };
-		426DD78F28A3EED400A1ADF5 /* AdObjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD78E28A3EED400A1ADF5 /* AdObjectModel.swift */; };
 		426DD79128A3EF5C00A1ADF5 /* AuctionRoundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */; };
 		426DD79328A3EF7E00A1ADF5 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD79228A3EF7E00A1ADF5 /* LineItemModel.swift */; };
 		426DD79828A4008F00A1ADF5 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD79728A4008F00A1ADF5 /* GCD.swift */; };
@@ -73,6 +72,15 @@
 		428C45BE2A264E47009E90EF /* Regulations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45BD2A264E47009E90EF /* Regulations.swift */; };
 		428C45C02A264F68009E90EF /* RegulationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45BF2A264F68009E90EF /* RegulationsModel.swift */; };
 		428C45C22A264FED009E90EF /* RegulationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45C12A264FED009E90EF /* RegulationsManager.swift */; };
+		428C45C52A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45C42A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift */; };
+		428C45C82A2658F4009E90EF /* BidRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45C72A2658F4009E90EF /* BidRequest.swift */; };
+		428C45CA2A274CD2009E90EF /* BiddingDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45C92A274CD2009E90EF /* BiddingDemandProvider.swift */; };
+		428C45CE2A276E86009E90EF /* BidRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45CD2A276E86009E90EF /* BidRequestBuilder.swift */; };
+		428C45D12A2772C0009E90EF /* InterfaceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45D02A2772C0009E90EF /* InterfaceOrientation.swift */; };
+		428C45D32A2774B0009E90EF /* BannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45D22A2774B0009E90EF /* BannerModel.swift */; };
+		428C45D52A2774C4009E90EF /* InterstitialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45D42A2774C3009E90EF /* InterstitialModel.swift */; };
+		428C45D72A2774D3009E90EF /* RewardedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45D62A2774D3009E90EF /* RewardedModel.swift */; };
+		428C45DB2A278538009E90EF /* AuctionOperationRequestDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45DA2A278538009E90EF /* AuctionOperationRequestDemand.swift */; };
 		428CCBF428A11190003123EF /* EnvironmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF328A11190003123EF /* EnvironmentManager.swift */; };
 		428CCBF728A12C8D003123EF /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF628A12C8D003123EF /* Date+Extensions.swift */; };
 		428CCBF928A13AD8003123EF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428CCBF828A13AD8003123EF /* NetworkManager.swift */; };
@@ -158,7 +166,7 @@
 		422077F029B2079800A2AD26 /* AuctionResultReportStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionResultReportStatus.swift; sourceTree = "<group>"; };
 		4221017E2859E29A006596DA /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		422101812859E29A006596DA /* Bidon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bidon.h; sourceTree = "<group>"; };
-		422101972859E2C3006596DA /* BidOnSdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidOnSdk.swift; sourceTree = "<group>"; };
+		422101972859E2C3006596DA /* BidonSdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonSdk.swift; sourceTree = "<group>"; };
 		422101992859E35C006596DA /* Adapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adapter.swift; sourceTree = "<group>"; };
 		4221019B2859E3D0006596DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		42244DA528C8E1E800E9C416 /* MediationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationEvent.swift; sourceTree = "<group>"; };
@@ -195,7 +203,6 @@
 		42677B3E28A16EC4006F321D /* AdaptersInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersInfoModel.swift; sourceTree = "<group>"; };
 		426DD78A28A3E88100A1ADF5 /* AuctionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRequest.swift; sourceTree = "<group>"; };
 		426DD78C28A3EDD900A1ADF5 /* LineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItem.swift; sourceTree = "<group>"; };
-		426DD78E28A3EED400A1ADF5 /* AdObjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdObjectModel.swift; sourceTree = "<group>"; };
 		426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRoundModel.swift; sourceTree = "<group>"; };
 		426DD79228A3EF7E00A1ADF5 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
 		426DD79728A4008F00A1ADF5 /* GCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
@@ -216,6 +223,15 @@
 		428C45BD2A264E47009E90EF /* Regulations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regulations.swift; sourceTree = "<group>"; };
 		428C45BF2A264F68009E90EF /* RegulationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulationsModel.swift; sourceTree = "<group>"; };
 		428C45C12A264FED009E90EF /* RegulationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegulationsManager.swift; sourceTree = "<group>"; };
+		428C45C42A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRequestBiddingDemand.swift; sourceTree = "<group>"; };
+		428C45C72A2658F4009E90EF /* BidRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidRequest.swift; sourceTree = "<group>"; };
+		428C45C92A274CD2009E90EF /* BiddingDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiddingDemandProvider.swift; sourceTree = "<group>"; };
+		428C45CD2A276E86009E90EF /* BidRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidRequestBuilder.swift; sourceTree = "<group>"; };
+		428C45D02A2772C0009E90EF /* InterfaceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceOrientation.swift; sourceTree = "<group>"; };
+		428C45D22A2774B0009E90EF /* BannerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerModel.swift; sourceTree = "<group>"; };
+		428C45D42A2774C3009E90EF /* InterstitialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialModel.swift; sourceTree = "<group>"; };
+		428C45D62A2774D3009E90EF /* RewardedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedModel.swift; sourceTree = "<group>"; };
+		428C45DA2A278538009E90EF /* AuctionOperationRequestDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRequestDemand.swift; sourceTree = "<group>"; };
 		428CCBF328A11190003123EF /* EnvironmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentManager.swift; sourceTree = "<group>"; };
 		428CCBF628A12C8D003123EF /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		428CCBF828A13AD8003123EF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -354,7 +370,7 @@
 				426DD7B428A68BF700A1ADF5 /* Delegates */,
 				426DD7A228A5004200A1ADF5 /* Sdk.swift */,
 				428DDD1529DC2B7300147ABA /* ExtrasProvider.swift */,
-				422101972859E2C3006596DA /* BidOnSdk.swift */,
+				422101972859E2C3006596DA /* BidonSdk.swift */,
 			);
 			path = SDK;
 			sourceTree = "<group>";
@@ -362,12 +378,9 @@
 		42389E1328745CCC006024BA /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				428C45CB2A274CEC009E90EF /* AdTypes */,
+				428C45CC2A274D0F009E90EF /* MediationType */,
 				429EE2C8286CA2B0009439C6 /* DemandProvider.swift */,
-				423FBA9C29F0488400B20A5D /* ProgrammaticDemandProvider.swift */,
-				423FBA9E29F048BB00B20A5D /* DirectDemandProvider.swift */,
-				42389E1128745C6A006024BA /* InterstitialDemandProvider.swift */,
-				42BA81D6287702B6001F1744 /* RewardedAdDemandProvider.swift */,
-				42BA81F8287732F5001F1744 /* AdViewDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -392,6 +405,7 @@
 				42C4F46529E6E49200B12E15 /* Framework.swift */,
 				423FBA9A29F047D200B20A5D /* MediationError.swift */,
 				423FBAA029F0491E00B20A5D /* BannerFormat.swift */,
+				428C45D02A2772C0009E90EF /* InterfaceOrientation.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -420,6 +434,7 @@
 				4272C97928C5EB72002D3E0E /* Base */,
 				4272C97B28C5EBB2002D3E0E /* Configuration */,
 				4272C97A28C5EB8B002D3E0E /* Auction */,
+				428C45C62A2658DE009E90EF /* Bid */,
 				42EDA0A928C5EC2C00BF74DE /* Statistic */,
 				426DD79928A4F46000A1ADF5 /* Impression */,
 				4257D71629DDBF6E0066DE1B /* Loss */,
@@ -488,9 +503,11 @@
 		426DD79528A3FED200A1ADF5 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				428C45D22A2774B0009E90EF /* BannerModel.swift */,
+				428C45D42A2774C3009E90EF /* InterstitialModel.swift */,
+				428C45D62A2774D3009E90EF /* RewardedModel.swift */,
 				426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */,
 				426DD79228A3EF7E00A1ADF5 /* LineItemModel.swift */,
-				426DD78E28A3EED400A1ADF5 /* AdObjectModel.swift */,
 				428FFC7128BF84060090B126 /* MediationAttemptReportCodableModel.swift */,
 				428FFC7928BF96360090B126 /* ImpressionModel.swift */,
 			);
@@ -586,6 +603,56 @@
 				428CCBF828A13AD8003123EF /* NetworkManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		428C45C62A2658DE009E90EF /* Bid */ = {
+			isa = PBXGroup;
+			children = (
+				428C45C72A2658F4009E90EF /* BidRequest.swift */,
+				428C45CD2A276E86009E90EF /* BidRequestBuilder.swift */,
+			);
+			path = Bid;
+			sourceTree = "<group>";
+		};
+		428C45CB2A274CEC009E90EF /* AdTypes */ = {
+			isa = PBXGroup;
+			children = (
+				42389E1128745C6A006024BA /* InterstitialDemandProvider.swift */,
+				42BA81D6287702B6001F1744 /* RewardedAdDemandProvider.swift */,
+				42BA81F8287732F5001F1744 /* AdViewDemandProvider.swift */,
+			);
+			path = AdTypes;
+			sourceTree = "<group>";
+		};
+		428C45CC2A274D0F009E90EF /* MediationType */ = {
+			isa = PBXGroup;
+			children = (
+				423FBA9C29F0488400B20A5D /* ProgrammaticDemandProvider.swift */,
+				423FBA9E29F048BB00B20A5D /* DirectDemandProvider.swift */,
+				428C45C92A274CD2009E90EF /* BiddingDemandProvider.swift */,
+			);
+			path = MediationType;
+			sourceTree = "<group>";
+		};
+		428C45D82A278505009E90EF /* Round */ = {
+			isa = PBXGroup;
+			children = (
+				42A0155B29F2C79300547B37 /* AuctionOperationStartRound.swift */,
+				42A0156B29F6AFDB00547B37 /* AuctionOperationRoundTimeout.swift */,
+				42A0155F29F2E23000547B37 /* AuctionOperationFinishRound.swift */,
+			);
+			path = Round;
+			sourceTree = "<group>";
+		};
+		428C45D92A278518009E90EF /* Demand */ = {
+			isa = PBXGroup;
+			children = (
+				428C45DA2A278538009E90EF /* AuctionOperationRequestDemand.swift */,
+				42A0155D29F2C84900547B37 /* AuctionOperationRequestDirectDemand.swift */,
+				42A0156529F4706D00547B37 /* AuctionOperationRequestProgrammaticDemand.swift */,
+				428C45C42A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift */,
+			);
+			path = Demand;
 			sourceTree = "<group>";
 		};
 		428CCBF528A12C30003123EF /* Extensions */ = {
@@ -729,12 +796,9 @@
 		42A0155629F2BFA100547B37 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				428C45D82A278505009E90EF /* Round */,
+				428C45D92A278518009E90EF /* Demand */,
 				42A0155729F2BFBF00547B37 /* AuctionOperationStart.swift */,
-				42A0155B29F2C79300547B37 /* AuctionOperationStartRound.swift */,
-				42A0156B29F6AFDB00547B37 /* AuctionOperationRoundTimeout.swift */,
-				42A0155D29F2C84900547B37 /* AuctionOperationRequestDirectDemand.swift */,
-				42A0156529F4706D00547B37 /* AuctionOperationRequestProgrammaticDemand.swift */,
-				42A0155F29F2E23000547B37 /* AuctionOperationFinishRound.swift */,
 				42A0155929F2C0E000547B37 /* AuctionOperationFinish.swift */,
 				42A0156929F674FA00547B37 /* AuctionOperationLogEvent.swift */,
 			);
@@ -934,8 +998,9 @@
 				42A0155A29F2C0E000547B37 /* AuctionOperationFinish.swift in Sources */,
 				42A0156629F4706D00547B37 /* AuctionOperationRequestProgrammaticDemand.swift in Sources */,
 				42A0155E29F2C84900547B37 /* AuctionOperationRequestDirectDemand.swift in Sources */,
+				428C45D32A2774B0009E90EF /* BannerModel.swift in Sources */,
 				42DDB70C29D3298400DBA4C5 /* AdViewImpression.swift in Sources */,
-				422101982859E2C3006596DA /* BidOnSdk.swift in Sources */,
+				422101982859E2C3006596DA /* BidonSdk.swift in Sources */,
 				4243093828A2BCBE002360B0 /* UserModel.swift in Sources */,
 				4221019A2859E35C006596DA /* Adapter.swift in Sources */,
 				42969A8D29A90AF300878C9E /* StrictAuctionLineItemElector.swift in Sources */,
@@ -953,6 +1018,7 @@
 				42389DEE2872F52A006024BA /* BidSet.swift in Sources */,
 				42D3E72F28BE059F00936B3E /* Impression.swift in Sources */,
 				421D48E8288844DA007DE2E4 /* LogDestination.swift in Sources */,
+				428C45C52A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift in Sources */,
 				4243092A28A28F46002360B0 /* Request.swift in Sources */,
 				428FFC6C28BF7BCD0090B126 /* BaseMediationObserver.swift in Sources */,
 				42C4F46229E6E44C00B12E15 /* AdType.swift in Sources */,
@@ -961,6 +1027,7 @@
 				423FBA9F29F048BB00B20A5D /* DirectDemandProvider.swift in Sources */,
 				425E9C6228B7B19800F4E4C7 /* FullscreenAdManager.swift in Sources */,
 				42D047E2289D5EEE0096A8C6 /* App.swift in Sources */,
+				428C45CE2A276E86009E90EF /* BidRequestBuilder.swift in Sources */,
 				426DD7B128A681A300A1ADF5 /* AdObjectDelegate.swift in Sources */,
 				42D047EF289D6A380096A8C6 /* EnvironmentRepository.swift in Sources */,
 				422077F129B2079800A2AD26 /* AuctionResultReportStatus.swift in Sources */,
@@ -1005,11 +1072,13 @@
 				42389DF02872F57D006024BA /* Ad.swift in Sources */,
 				42DDB70A29D3295D00DBA4C5 /* FullscreenImpression.swift in Sources */,
 				42389E172874665A006024BA /* UIApplication+Extensions.swift in Sources */,
+				428C45C82A2658F4009E90EF /* BidRequest.swift in Sources */,
 				4243093A28A2BCCC002360B0 /* GeoModel.swift in Sources */,
 				428FFC7628BF95AC0090B126 /* ImpressionRequest.swift in Sources */,
 				423FBAA129F0491E00B20A5D /* BannerFormat.swift in Sources */,
 				42BE438D28C0B0E3000528E3 /* SessionManager.swift in Sources */,
 				424F181328ABCF470082AEF3 /* InterstitialImpressionController.swift in Sources */,
+				428C45D72A2774D3009E90EF /* RewardedModel.swift in Sources */,
 				4243093228A2BBFF002360B0 /* DeviceModel.swift in Sources */,
 				4243093E28A3AD07002360B0 /* AdaptersInitialisationParameters.swift in Sources */,
 				42677B3F28A16EC4006F321D /* AdaptersInfoModel.swift in Sources */,
@@ -1018,6 +1087,7 @@
 				426DD79128A3EF5C00A1ADF5 /* AuctionRoundModel.swift in Sources */,
 				426DD79D28A4F4AC00A1ADF5 /* ConfigurationRequestBuilder.swift in Sources */,
 				428CCBF728A12C8D003123EF /* Date+Extensions.swift in Sources */,
+				428C45CA2A274CD2009E90EF /* BiddingDemandProvider.swift in Sources */,
 				429EE2C2286CA23F009439C6 /* Repository.swift in Sources */,
 				4243093C28A3AC18002360B0 /* AdapterIdCodingKey.swift in Sources */,
 				429EE2C7286CA283009439C6 /* DemandSourceAdapter.swift in Sources */,
@@ -1030,6 +1100,7 @@
 				428FFC6E28BF7D2B0090B126 /* MediationAttemptReport.swift in Sources */,
 				426DD78D28A3EDD900A1ADF5 /* LineItem.swift in Sources */,
 				429EE2CF286D9B8D009439C6 /* Auction.swift in Sources */,
+				428C45D52A2774C4009E90EF /* InterstitialModel.swift in Sources */,
 				42C46C9029F27FF90057D7CE /* AuctionLineItemElector.swift in Sources */,
 				426DD79828A4008F00A1ADF5 /* GCD.swift in Sources */,
 				428FFC7C28BFACC20090B126 /* Atomic.swift in Sources */,
@@ -1050,9 +1121,11 @@
 				4299A427289BCF3F0062C580 /* HTTPTask.swift in Sources */,
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
 				426DD7B328A68BF400A1ADF5 /* FullscreenAdDelegate.swift in Sources */,
+				428C45D12A2772C0009E90EF /* InterfaceOrientation.swift in Sources */,
 				42389DEC2872F497006024BA /* AdaptersRepository.swift in Sources */,
 				42BA81D7287702B6001F1744 /* RewardedAdDemandProvider.swift in Sources */,
 				42D047EB289D60260096A8C6 /* DeviceManager.swift in Sources */,
+				428C45DB2A278538009E90EF /* AuctionOperationRequestDemand.swift in Sources */,
 				426DD7A828A550CF00A1ADF5 /* InterstitialConcurrentAuctionControllerBuilder.swift in Sources */,
 				428FFC6928BF7A820090B126 /* StatisticRequest.swift in Sources */,
 				4243093628A2BCAC002360B0 /* AppModel.swift in Sources */,
@@ -1068,7 +1141,6 @@
 				4224AA6D28B7D1F600E8D886 /* RewardedAd.swift in Sources */,
 				42A0156A29F674FA00547B37 /* AuctionOperationLogEvent.swift in Sources */,
 				42C4F46629E6E49200B12E15 /* Framework.swift in Sources */,
-				426DD78F28A3EED400A1ADF5 /* AdObjectModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
