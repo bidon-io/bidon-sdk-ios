@@ -135,6 +135,7 @@
 		42C4F46629E6E49200B12E15 /* Framework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F46529E6E49200B12E15 /* Framework.swift */; };
 		42C4F46829E6E4AC00B12E15 /* ErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F46729E6E4AC00B12E15 /* ErrorCode.swift */; };
 		42C59BA028C64F4400544EDF /* MediationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C59B9F28C64F4400544EDF /* MediationObserver.swift */; };
+		42CA43402A28B4F80079AFEA /* BidonBiddingExtrasModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CA433F2A28B4F80079AFEA /* BidonBiddingExtrasModel.swift */; };
 		42CCB99128CB365400DBAE97 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CCB99028CB365400DBAE97 /* UIDevice+Extensions.swift */; };
 		42D047DE289D5A0D0096A8C6 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D047DD289D5A0D0096A8C6 /* Device.swift */; };
 		42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D047DF289D5E5C0096A8C6 /* Session.swift */; };
@@ -287,6 +288,7 @@
 		42C4F46529E6E49200B12E15 /* Framework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Framework.swift; sourceTree = "<group>"; };
 		42C4F46729E6E4AC00B12E15 /* ErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCode.swift; sourceTree = "<group>"; };
 		42C59B9F28C64F4400544EDF /* MediationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationObserver.swift; sourceTree = "<group>"; };
+		42CA433F2A28B4F80079AFEA /* BidonBiddingExtrasModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonBiddingExtrasModel.swift; sourceTree = "<group>"; };
 		42CCB99028CB365400DBAE97 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
 		42D047DD289D5A0D0096A8C6 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		42D047DF289D5E5C0096A8C6 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */,
 				426DD79228A3EF7E00A1ADF5 /* LineItemModel.swift */,
 				428FFC7128BF84060090B126 /* MediationAttemptReportCodableModel.swift */,
+				42CA433F2A28B4F80079AFEA /* BidonBiddingExtrasModel.swift */,
 				428FFC7928BF96360090B126 /* ImpressionModel.swift */,
 			);
 			path = Auction;
@@ -1019,6 +1022,7 @@
 				42D3E72F28BE059F00936B3E /* Impression.swift in Sources */,
 				421D48E8288844DA007DE2E4 /* LogDestination.swift in Sources */,
 				428C45C52A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift in Sources */,
+				42CA43402A28B4F80079AFEA /* BidonBiddingExtrasModel.swift in Sources */,
 				4243092A28A28F46002360B0 /* Request.swift in Sources */,
 				428FFC6C28BF7BCD0090B126 /* BaseMediationObserver.swift in Sources */,
 				42C4F46229E6E44C00B12E15 /* AdType.swift in Sources */,

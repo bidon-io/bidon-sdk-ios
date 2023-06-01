@@ -15,30 +15,11 @@ struct BidRequest: Request {
     var timeout: TimeInterval = 10
     var body: RequestBody?
     
+    struct ExtrasModel: Codable {
+        var bidon: BidonBiddingExtrasModel
+    }
+    
     struct RequestBody: Encodable, Tokenized {
-        struct BidonExtrasModel: Encodable {
-            var encoders: BiddingContextEncoders
-            
-            init(encoders: BiddingContextEncoders) {
-                self.encoders = encoders
-            }
-            
-            func encode(to encoder: Encoder) throws {
-                var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
-                
-                try encoders.forEach { id, encoder in
-                    if let key = AdapterIdCodingKey(stringValue: id) {
-                        let superEncoder = container.superEncoder(forKey: key)
-                        try encoder.encodeBiddingContext(to: superEncoder)
-                    }
-                }
-            }
-        }
-        
-        struct ExtrasModel: Encodable {
-            var bidon: BidonExtrasModel
-        }
-        
         struct ImpModel: Encodable {
             var bidfloor: Price
             var id: String = UUID().uuidString
@@ -68,8 +49,23 @@ struct BidRequest: Request {
         }
         
         struct Bid: Decodable {
+            enum CodingKeys: String, CodingKey {
+                case id
+                case impressionId = "impid"
+                case winNoticeUrl = "nurl"
+                case billingNoticeUrl = "burl"
+                case lossNoticeUrl = "lurl"
+                case price
+                case ext
+            }
+            
             var id: String
             var impressionId: String
+            var winNoticeUrl: String?
+            var billingNoticeUrl: String?
+            var lossNoticeUrl: String?
+            var price: Price
+            var ext: BidonBiddingExtrasModel
         }
         
         struct SeatBid: Decodable {

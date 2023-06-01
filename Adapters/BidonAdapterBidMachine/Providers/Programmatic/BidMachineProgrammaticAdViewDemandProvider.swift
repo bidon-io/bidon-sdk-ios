@@ -35,19 +35,3 @@ extension BidMachineProgrammaticAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: BidMachineAdDemand<BidMachineBanner>) {}
 }
 
-
-extension BidMachineBanner: AdViewContainer {
-    public var isAdaptive: Bool { false }
-}
-
-
-extension BidMachineApiCore.PlacementFormat {
-    init(format: BannerFormat) {
-        switch format {
-        case .banner: self = .banner320x50
-        case .leaderboard: self = .banner728x90
-        case .adaptive: self = .banner
-        case .mrec: self = .banner300x250
-        }
-    }
-}

@@ -189,7 +189,8 @@ where DemandProviderType: DemandProvider, BidRequestBuilderType: BidRequestBuild
         
         let operation = AuctionOperationRequestBiddingDemand<BidRequestBuilderType, DemandProviderType>(
             observer: mediationObserver,
-            adapters: adapters
+            adapters: adapters,
+            round: round
         )
         
         return operation

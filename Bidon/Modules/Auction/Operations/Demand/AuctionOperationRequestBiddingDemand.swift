@@ -21,15 +21,21 @@ where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvid
     
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
+    let round: AuctionRound
     
     private var encoders: BiddingContextEncoders = [:]
     
+    private(set) var bid: BidType?
+    
     init(
         observer: AnyMediationObserver,
-        adapters: [AdapterType]
+        adapters: [AdapterType],
+        round: AuctionRound
     ) {
         self.observer = observer
         self.adapters = adapters
+        self.round = round
+        
         super.init()
     }
     
@@ -75,8 +81,65 @@ where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvid
             builder.withAuctionConfigurationId(observer.auctionConfigurationId)
         }
         
-        networkManager.perform(request: request) { result in
+        networkManager.perform(request: request) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.proceedBidResponse(response)
+            case .failure(let error):
+                Logger.warning("Bid request failed with error \(error)")
+                self?.finish()
+            }
+        }
+    }
+    
+    func proceedBidResponse(_ response: BidRequest.ResponseBody) {
+        guard isExecuting else { return }
+        
+        guard let seatBid = response.seatBids?.first else {
+            Logger.warning("No seat bid found")
+            finish()
+            return
+        }
+        
+        guard
+            let adapter = adapters.first(where: { $0.identifier == seatBid.demandId }),
+            let provider = adapter.provider as? any BiddingDemandProvider
+        else {
+            Logger.warning("No adapter for seat bid demand id \(seatBid.demandId) found")
+            finish()
+            return
+        }
+        
+        guard let bid = seatBid.bids.first else {
+            Logger.warning("No bids found")
+            finish()
+            return
+        }
+        
+        guard let decoder = bid.ext.decoders[adapter.identifier] else {
+            Logger.warning("No bidding payload data found")
+            finish()
+            return
+        }
+        
+        provider.prepareBid(with: decoder) { [weak self] result in
+            guard let self = self, self.isExecuting else { return }
             
+            defer { self.finish() }
+            
+            switch result {
+            case .failure(let error):
+                Logger.warning("Provider did fail to load with error: \(error)")
+            case .success(let ad):
+                self.bid = BidType(
+                    auctionId: self.observer.auctionId,
+                    auctionConfigurationId: self.observer.auctionConfigurationId,
+                    roundId: self.round.id,
+                    adType: self.observer.adType,
+                    ad: ad,
+                    provider: adapter.provider
+                )
+            }
         }
     }
 }

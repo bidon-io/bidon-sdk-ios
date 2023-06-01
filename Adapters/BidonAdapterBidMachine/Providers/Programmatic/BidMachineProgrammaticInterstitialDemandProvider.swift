@@ -12,12 +12,12 @@ import BidMachineApiCore
 import Bidon
 
 
-final class BidMachineInterstitialProgrammaticDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineInterstitial> {
+final class BidMachineProgrammaticInterstitialDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineInterstitial> {
     override var placementFormat: BidMachineApiCore.PlacementFormat { .interstitial }
 }
 
 
-extension BidMachineInterstitialProgrammaticDemandProvider: InterstitialDemandProvider {
+extension BidMachineProgrammaticInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: BidMachineAdDemand<BidMachineInterstitial>, from viewController: UIViewController) {
         guard ad.ad.canShow else {
             delegate?.provider(

@@ -11,6 +11,8 @@ import Foundation
 protocol AuctionOperationRequestDemand: AuctionOperation {
     associatedtype BidType: Bid where BidType.Provider: DemandProvider
     
+    var bid: BidType? { get }
+    
     func timeoutReached()
 }
 

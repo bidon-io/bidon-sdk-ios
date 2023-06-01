@@ -13,7 +13,9 @@ import Bidon
 internal typealias DemandSourceAdapter = ProgrammaticInterstitialDemandSourceAdapter &
 ProgrammaticRewardedAdDemandSourceAdapter &
 ProgrammaticAdViewDemandSourceAdapter &
-BiddingInterstitialDemandSourceAdapter
+BiddingInterstitialDemandSourceAdapter &
+BiddingRewardedAdDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter
 
 
 @objc public final class BidMachineDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -28,7 +30,7 @@ BiddingInterstitialDemandSourceAdapter
     public let sdkVersion: String = BidMachineSdk.sdkVersion
     
     public func programmaticInterstitialDemandProvider() throws -> AnyProgrammaticInterstitialDemandProvider {
-        return BidMachineInterstitialProgrammaticDemandProvider()
+        return BidMachineProgrammaticInterstitialDemandProvider()
     }
 
     public func programmaticRewardedAdDemandProvider() throws -> AnyProgrammaticRewardedAdDemandProvider {
@@ -40,7 +42,15 @@ BiddingInterstitialDemandSourceAdapter
     }
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return BidMachineInterstitialBiddingDemandProvider()
+        return BidMachineBiddingInterstitialDemandProvider()
+    }
+    
+    public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
+        return BidMachineBiddingRewardedAdDemandProvider()
+    }
+    
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return BidMachineBiddingAdViewDemandProvider(context: context)
     }
 }
 

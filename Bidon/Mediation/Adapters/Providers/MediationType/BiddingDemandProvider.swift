@@ -18,21 +18,32 @@ public typealias BiddingContextResponse = (Result<BiddingContextEncoder, Mediati
 
 public protocol BiddingDemandProvider: DemandProvider {
     func fetchBiddingContext(response: @escaping BiddingContextResponse)
+    
+    func prepareBid(with decoder: Decoder, response: @escaping DemandProviderResponse)
 }
 
 
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, BiddingDemandProvider {
     private let _fetchBiddingContext: (@escaping BiddingContextResponse) -> ()
+    private let _prepareBid: (Decoder, @escaping DemandProviderResponse) -> ()
     
     override init(_ wrapped: W) throws {
         guard let _wrapped = wrapped as? (any BiddingDemandProvider) else { throw SdkError.internalInconsistency }
         
         _fetchBiddingContext = { _wrapped.fetchBiddingContext(response: $0) }
+        _prepareBid = { _wrapped.prepareBid(with: $0, response: $1) }
         
         try super.init(wrapped)
     }
     
     func fetchBiddingContext(response: @escaping BiddingContextResponse) {
         _fetchBiddingContext(response)
+    }
+    
+    func prepareBid(
+        with decoder: Decoder,
+        response: @escaping DemandProviderResponse
+    ) {
+        _prepareBid(decoder, response)
     }
 }

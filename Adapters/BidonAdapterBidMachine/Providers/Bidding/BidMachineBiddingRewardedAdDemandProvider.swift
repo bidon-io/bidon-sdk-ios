@@ -1,8 +1,8 @@
 //
-//  BidMachineRewardedAdDemandProvider.swift
+//  BidMachineBiddingRewardedAdDemandProvider.swift
 //  BidonAdapterBidMachine
 //
-//  Created by Bidon Team on 10.02.2023.
+//  Created by Stas Kochkin on 01.06.2023.
 //
 
 import Foundation
@@ -12,7 +12,7 @@ import BidMachineApiCore
 import Bidon
 
 
-final class BidMachineProgrammaticRewardedAdDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineRewarded> {
+final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {    
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
     override var placementFormat: BidMachineApiCore.PlacementFormat { .rewarded }
@@ -25,7 +25,7 @@ final class BidMachineProgrammaticRewardedAdDemandProvider: BidMachineProgrammat
 }
 
 
-extension BidMachineProgrammaticRewardedAdDemandProvider: RewardedAdDemandProvider {
+extension BidMachineBiddingRewardedAdDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: BidMachineAdDemand<BidMachineRewarded>,
         from viewController: UIViewController
