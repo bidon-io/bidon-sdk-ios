@@ -25,8 +25,9 @@ struct BidRequest: Request {
             var id: String = UUID().uuidString
             var auctionId: String
             var auctionConfigurationId: Int
+            var roundId: String
             var orientation: InterfaceOrientation = .current
-            var banner: BannerModel?
+            var banner: AdViewAucionContextModel?
             var ext: ExtrasModel
         }
         
@@ -40,7 +41,7 @@ struct BidRequest: Request {
         var test: Bool
         var token: String?
         var segmentId: String?
-        var imp: ImpModel
+        var imp: [ImpModel]
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -108,7 +109,7 @@ struct BidRequest: Request {
             regs: builder.regulations,
             ext: builder.encodedExt,
             test: builder.testMode,
-            imp: builder.imp
+            imp: [builder.imp]
         )
     }
 }

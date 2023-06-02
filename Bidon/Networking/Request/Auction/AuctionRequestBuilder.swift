@@ -12,6 +12,8 @@ typealias AuctionRequestAdObject = AuctionRequest.RequestBody.AdObjectModel
 
 
 protocol AuctionRequestBuilder: BaseRequestBuilder {
+    associatedtype Context: AuctionContext
+    
     var adObject: AuctionRequestAdObject { get }
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
@@ -26,24 +28,24 @@ protocol AuctionRequestBuilder: BaseRequestBuilder {
     @discardableResult
     func withPricefloor(_ pricefloor: Price) -> Self
     
+    @discardableResult
+    func withContext(_ context: Context) -> Self
+    
     init()
 }
 
 
-final class InterstitialAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuilder {
+class BaseAuctionRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, AuctionRequestBuilder {
     private(set) var placement: String!
     private(set) var auctionId: String!
     private(set) var pricefloor: Price = .unknown
+    private(set) var context: Context!
 
-    var adType: AdType { .interstitial }
+    var adObject: AuctionRequestAdObject { fatalError("BaseAuctionRequestBuilder doesn't provide adObject") }
     
-    var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
-        return AdaptersInfo(adapters: adapters)
-    }
+    var adapters: AdaptersInfo { fatalError("BaseAuctionRequestBuilder doesn't provide adapters") }
+    
+    var adType: AdType { fatalError("BaseAuctionRequestBuilder doesn't provide adType") }
     
     @discardableResult
     func withPlacement(_ placement: String) -> Self {
@@ -56,118 +58,20 @@ final class InterstitialAuctionRequestBuilder: BaseRequestBuilder, AuctionReques
         self.auctionId = auctionId
         return self
     }
-    
+
     @discardableResult
     func withPricefloor(_ pricefloor: Price) -> Self {
         self.pricefloor = pricefloor
         return self
     }
     
-    var adObject: AuctionRequestAdObject {
-        AuctionRequestAdObject(
-            placementId: placement,
-            auctionId: auctionId,
-            pricefloor: pricefloor,
-            interstitial: InterstitialModel()
-        )
-    }
-}
-
-
-final class RewardedAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuilder {
-    private(set) var placement: String!
-    private(set) var auctionId: String!
-    private(set) var pricefloor: Price = .unknown
-
-    var adType: AdType { .rewarded }
-    
-    var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
-        
-        return AdaptersInfo(adapters: adapters)
-    }
-    
     @discardableResult
-    func withPlacement(_ placement: String) -> Self {
-        self.placement = placement
+    func withContext(_ context: Context) -> Self {
+        self.context = context
         return self
     }
     
-    @discardableResult
-    func withAuctionId(_ auctionId: String) -> Self {
-        self.auctionId = auctionId
-        return self
-    }
-    
-    @discardableResult
-    func withPricefloor(_ pricefloor: Price) -> Self {
-        self.pricefloor = pricefloor
-        return self
-    }
-    
-    var adObject: AuctionRequestAdObject {
-        AuctionRequestAdObject(
-            placementId: placement,
-            auctionId: auctionId,
-            pricefloor: pricefloor,
-            rewarded: RewardedModel()
-        )
-    }
-}
-
-
-final class AdViewAuctionRequestBuilder: BaseRequestBuilder, AuctionRequestBuilder {
-    private(set) var placement: String!
-    private(set) var auctionId: String!
-    private(set) var format: BannerFormat!
-    private(set) var pricefloor: Price = .unknown
-
-    var adType: AdType { .banner}
-    
-    var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
-        
-        return AdaptersInfo(adapters: adapters)
-    }
-    
-    @discardableResult
-    func withPlacement(_ placement: String) -> Self {
-        self.placement = placement
-        return self
-    }
-    
-    @discardableResult
-    func withAuctionId(_ auctionId: String) -> Self {
-        self.auctionId = auctionId
-        return self
-    }
-    
-    @discardableResult
-    func withFormat(_ format: BannerFormat) -> Self {
-        self.format = format
-        return self
-    }
-    
-    @discardableResult
-    func withPricefloor(_ pricefloor: Price) -> Self {
-        self.pricefloor = pricefloor
-        return self
-    }
-    
-    var adObject: AuctionRequestAdObject {
-        AuctionRequestAdObject(
-            placementId: placement,
-            auctionId: auctionId,
-            pricefloor: pricefloor,
-            banner: BannerModel(
-                format: format
-            )
-        )
+    required override init() {
+        super.init()
     }
 }

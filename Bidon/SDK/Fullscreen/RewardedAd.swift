@@ -12,13 +12,9 @@ import UIKit
 @objc(BDNRewardedAd)
 public final class RewardedAd: NSObject, RewardedAdObject {
     private typealias Manager = BaseFullscreenAdManager<
-        AnyRewardedAdDemandProvider,
-        RewardedAuctionRequestBuilder,
-        RewardedBidRequestBuilder,
+        RewardedAuctionContext,
         RewardedConcurrentAuctionControllerBuilder,
-        RewardedImpressionController,
-        RewardedImpressionRequestBuilder,
-        RewardedLossRequestBuilder
+        RewardedImpressionController
     >
     
     @objc public var delegate: RewardedAdDelegate?
@@ -33,7 +29,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     private var sdk: Sdk
     
     private lazy var manager = Manager(
-        adType: .rewarded,
+        context: RewardedAuctionContext(),
         placement: placement,
         delegate: self
     )

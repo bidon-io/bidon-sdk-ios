@@ -25,7 +25,7 @@ DirectAdViewDemandSourceAdapter
     public let sdkVersion: String = ALSdk.version()
     
     @Injected(\.context)
-    var context: AuctionContext
+    var context: SdkContext
     
     private var sdk: ALSdk?
     

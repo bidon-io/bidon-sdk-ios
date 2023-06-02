@@ -8,10 +8,11 @@
 import Foundation
 
 
-final class ConcurrentAuctionController<DemandProviderType, BidRequestBuilderType>: AuctionController
-where DemandProviderType: DemandProvider, BidRequestBuilderType: BidRequestBuilder{
+final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: AuctionController {
+    typealias DemandProviderType = AuctionContextType.DemandProviderType
     typealias BidType = BidModel<DemandProviderType>
     
+    private let context: AuctionContextType
     private let rounds: [AuctionRound]
     private let adapters: [AnyDemandSourceAdapter<DemandProviderType>]
     private let comparator: AuctionBidComparator
@@ -30,13 +31,14 @@ where DemandProviderType: DemandProvider, BidRequestBuilderType: BidRequestBuild
         return queue
     }()
     
-    init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<DemandProviderType> {
+    init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AuctionContextType> {
         let builder = T()
         build(builder)
         
         self.elector = builder.elector
         self.comparator = builder.comparator
         self.rounds = builder.rounds
+        self.context = builder.context
         self.adapters = builder.adapters()
         self.pricefloor = builder.pricefloor
         self.mediationObserver = builder.mediationObserver
@@ -187,7 +189,8 @@ where DemandProviderType: DemandProvider, BidRequestBuilderType: BidRequestBuild
             self.adapters.first { $0.identifier == id && $0.provider is any BiddingDemandProvider }
         }
         
-        let operation = AuctionOperationRequestBiddingDemand<BidRequestBuilderType, DemandProviderType>(
+        let operation = AuctionOperationRequestBiddingDemand<AuctionContextType>(
+            context: context,
             observer: mediationObserver,
             adapters: adapters,
             round: round

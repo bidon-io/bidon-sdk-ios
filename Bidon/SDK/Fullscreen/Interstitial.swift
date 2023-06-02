@@ -12,13 +12,9 @@ import UIKit
 @objc(BDNInterstitial)
 public final class Interstitial: NSObject, FullscreenAdObject {
     private typealias Manager = BaseFullscreenAdManager<
-        AnyInterstitialDemandProvider,
-        InterstitialAuctionRequestBuilder,
-        InterstitialBidRequestBuilder,
+        InterstitialAuctionContext,
         InterstitialConcurrentAuctionControllerBuilder,
-        InterstitialImpressionController,
-        InterstitialImpressionRequestBuilder,
-        InterstitialLossRequestBuilder
+        InterstitialImpressionController
     >
     
     @objc public var delegate: FullscreenAdDelegate?
@@ -33,7 +29,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     private var sdk: Sdk
     
     private lazy var manager = Manager(
-        adType: .interstitial,
+        context: InterstitialAuctionContext(),
         placement: placement,
         delegate: self
     )

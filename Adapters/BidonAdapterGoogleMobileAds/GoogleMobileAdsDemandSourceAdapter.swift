@@ -26,7 +26,7 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     public let sdkVersion: String = GADMobileAds.sharedInstance().sdkVersion
     
     @Injected(\.context)
-    var context: Bidon.AuctionContext
+    var context: Bidon.SdkContext
     
     public func initialize(
         from decoder: Decoder,

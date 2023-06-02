@@ -55,7 +55,7 @@ final internal class BannerViewManager: NSObject {
     func present(
         bid: AdViewBid,
         view: AdViewContainer,
-        context: AdViewContext
+        viewContext: AdViewContext
     ) {
         guard
             let container = container,
@@ -78,11 +78,13 @@ final internal class BannerViewManager: NSObject {
                 view.bottomAnchor.constraint(equalTo: container.bottomAnchor),
             ]
         } else {
+            let size = viewContext.format.preferredSize
+            
             constraints = [
                 view.centerXAnchor.constraint(equalTo: container.centerXAnchor),
                 view.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-                view.widthAnchor.constraint(equalToConstant: context.format.preferredSize.width),
-                view.heightAnchor.constraint(equalToConstant: context.format.preferredSize.height)
+                view.widthAnchor.constraint(equalToConstant: size.width),
+                view.heightAnchor.constraint(equalToConstant: size.height)
             ]
         }
         
@@ -115,7 +117,7 @@ final internal class BannerViewManager: NSObject {
         
         view.impression = AdViewImpression(
             bid: bid,
-            format: context.format
+            format: viewContext.format
         )
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(didReceiveTap))
@@ -142,7 +144,7 @@ final internal class BannerViewManager: NSObject {
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras, sdk.extras)
             builder.withImpression(impression)
-            builder.withFormat(impression.format)
+            builder.withContext(AdViewAucionContext(format: impression.format))
             builder.withPath(path)
         }
         

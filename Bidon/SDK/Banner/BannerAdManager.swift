@@ -18,7 +18,7 @@ protocol BannerAdManagerDelegate: AnyObject {
 final class BannerAdManager: NSObject {
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AnyAdViewDemandProvider, BannerBidRequestBuilder>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdViewAucionContext>
     
     fileprivate enum State {
         case idle
@@ -65,8 +65,8 @@ final class BannerAdManager: NSObject {
     }
     
     func loadAd(
-        context: AdViewContext,
-        pricefloor: Price
+        pricefloor: Price,
+        viewContext: AdViewContext
     ) {
         guard state.isIdle else {
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
@@ -74,24 +74,25 @@ final class BannerAdManager: NSObject {
         }
         
         fetchAuctionInfo(
-            context,
-            pricefloor: pricefloor
+            pricefloor: pricefloor,
+            viewContext: viewContext
         )
     }
     
     private func fetchAuctionInfo(
-        _ context: AdViewContext,
-        pricefloor: Price
+        pricefloor: Price,
+        viewContext: AdViewContext
     ) {
         state = .preparing
         
-        let request = AuctionRequest { (builder: AdViewAuctionRequestBuilder) in
+        let context = AdViewAucionContext(viewContext: viewContext)
+        
+        let request = context.auctionRequest { builder in
             builder.withPlacement(placement)
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withAuctionId(UUID().uuidString)
-            builder.withFormat(context.format)
             builder.withPricefloor(pricefloor)
             builder.withExt(extras, sdk.extras)
         }
@@ -105,7 +106,10 @@ final class BannerAdManager: NSObject {
             
             switch result {
             case .success(let response):
-                self.performAuction(response, context: context)
+                self.performAuction(
+                    auctionInfo: response,
+                    viewContext: viewContext
+                )
             case .failure(let error):
                 Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
                 self.state = .idle
@@ -115,8 +119,8 @@ final class BannerAdManager: NSObject {
     }
     
     private func performAuction(
-        _ auctionInfo: AuctionInfo,
-        context: AdViewContext
+        auctionInfo: AuctionInfo,
+        viewContext: AdViewContext
     ) {
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
@@ -126,6 +130,7 @@ final class BannerAdManager: NSObject {
             adType: .banner
         )
         
+        let context = AdViewAucionContext(viewContext: viewContext)
         let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
         
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
@@ -134,6 +139,7 @@ final class BannerAdManager: NSObject {
             builder.withElector(elector)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withContext(context)
+            builder.withViewContext(viewContext)
             builder.withMediationObserver(observer)
             builder.withAdRevenueObserver(self.adRevenueObserver)
         }

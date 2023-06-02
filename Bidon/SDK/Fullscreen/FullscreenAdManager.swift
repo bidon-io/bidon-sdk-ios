@@ -27,25 +27,14 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 }
 
 
-final class BaseFullscreenAdManager<
-    DemandProviderType,
-    AuctionRequestBuilderType,
-    BidRequestBuilderType,
-    AuctionControllerBuilderType,
-    ImpressionControllerType,
-    ImpressionRequestBuilderType,
-    LossRequestBuilderType
->: NSObject, FullscreenAdManager where
-AuctionRequestBuilderType: AuctionRequestBuilder,
-AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<DemandProviderType>,
-BidRequestBuilderType: BidRequestBuilder,
+final class BaseFullscreenAdManager <AuctionContextType, AuctionControllerBuilderType, ImpressionControllerType>: NSObject, FullscreenAdManager where
+AuctionContextType: AuctionContext,
+AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AuctionContextType>,
 ImpressionControllerType: FullscreenImpressionController,
-ImpressionControllerType.BidType == BidModel<DemandProviderType>,
-ImpressionRequestBuilderType: ImpressionRequestBuilder,
-LossRequestBuilderType: LossRequestBuilder {
+ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderType> {
     
-    fileprivate typealias BidType = BidModel<DemandProviderType>
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<DemandProviderType, BidRequestBuilderType>
+    fileprivate typealias BidType = BidModel<AuctionContextType.DemandProviderType>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AuctionContextType>
     
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     
@@ -68,7 +57,7 @@ LossRequestBuilderType: LossRequestBuilder {
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
     private let placement: String
-    private let adType: AdType
+    private let context: AuctionContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
         let observer = BaseAdRevenueObserver()
@@ -96,12 +85,12 @@ LossRequestBuilderType: LossRequestBuilder {
     lazy var extras: [String : AnyHashable] = [:]
     
     init(
-        adType: AdType,
+        context: AuctionContextType,
         placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
-        self.adType = adType
+        self.context = context
         self.placement = placement
         super.init()
     }
@@ -126,7 +115,7 @@ LossRequestBuilderType: LossRequestBuilder {
             
             let impression = ImpressionControllerType(bid: keeper.bid).impression
             
-            let request = LossRequest { (builder: LossRequestBuilderType) in
+            let request = context.lossRequest { builder in
                 builder.withEnvironmentRepository(sdk.environmentRepository)
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras, sdk.extras)
@@ -147,7 +136,7 @@ LossRequestBuilderType: LossRequestBuilder {
     private func fetchAuctionInfo(_ pricefloor: Price) {
         state = .preparing
         
-        let request = AuctionRequest { (builder: AuctionRequestBuilderType) in
+        let request = context.auctionRequest { builder in
             builder.withPlacement(placement)
             builder.withPricefloor(pricefloor)
             builder.withAdaptersRepository(sdk.adaptersRepository)
@@ -193,11 +182,11 @@ LossRequestBuilderType: LossRequestBuilder {
         let observer = BaseMediationObserver(
             auctionId: auctionInfo.auctionId,
             auctionConfigurationId: auctionInfo.auctionConfigurationId,
-            adType: adType
+            adType: context.adType
         )
         
         let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
-
+        
         let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withRounds(auctionInfo.rounds)
@@ -205,13 +194,14 @@ LossRequestBuilderType: LossRequestBuilder {
             builder.withMediationObserver(observer)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withAdRevenueObserver(self.adRevenueObserver)
+            builder.withContext(context)
         }
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
             self.sendAuctionStatistics(observer.report)
-
+            
             switch result {
             case .success(let bid):
                 let keeper = BidKeeper(bid: bid) { [weak self] expiredBid in
@@ -236,7 +226,7 @@ LossRequestBuilderType: LossRequestBuilder {
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras, sdk.extras)
-            builder.withAdType(adType)
+            builder.withAdType(context.adType)
             builder.withMediationReport(report)
         }
         
@@ -251,7 +241,7 @@ LossRequestBuilderType: LossRequestBuilder {
     ) {
         guard impression.isTrackingAllowed(path) else { return }
         
-        let request = ImpressionRequest { (builder: ImpressionRequestBuilderType) in
+        let request = context.impressionRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras, sdk.extras)

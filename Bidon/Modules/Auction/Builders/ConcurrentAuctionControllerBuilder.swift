@@ -8,15 +8,17 @@
 import Foundation
 
 
-class BaseConcurrentAuctionControllerBuilder<DemandProviderType>
-where DemandProviderType: DemandProvider {
+class BaseConcurrentAuctionControllerBuilder<AuctionContextType: AuctionContext> {
+    typealias DemandProviderType = AuctionContextType.DemandProviderType
+    
     private(set) var comparator: AuctionBidComparator = HigherECPMAuctionBidComparator()
     private(set) var pricefloor: Price = .unknown
     private(set) var adaptersRepository: AdaptersRepository!
     private(set) var mediationObserver: AnyMediationObserver!
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var elector: AuctionLineItemElector!
-    
+    private(set) var context: AuctionContextType!
+
     private(set) var rounds: [AuctionRound] = []
     
     required init() {}
@@ -72,6 +74,12 @@ where DemandProviderType: DemandProvider {
     @discardableResult
     public func withAdaptersRepository(_ repository: AdaptersRepository) -> Self {
         self.adaptersRepository = repository
+        return self
+    }
+    
+    @discardableResult
+    public func withContext(_ context: AuctionContextType) -> Self {
+        self.context = context
         return self
     }
 }

@@ -12,6 +12,8 @@ typealias BidRequestImp = BidRequest.RequestBody.ImpModel
 
 
 protocol BidRequestBuilder: BaseRequestBuilder {
+    associatedtype Context: AuctionContext
+    
     var imp: BidRequestImp { get }
     
     var adType: AdType { get }
@@ -26,28 +28,29 @@ protocol BidRequestBuilder: BaseRequestBuilder {
     func withAuctionId(_ auctionId: String) -> Self
     
     @discardableResult
+    func withRoundId(_ roundId: String) -> Self
+    
+    @discardableResult
     func withAuctionConfigurationId(_ auctionConfigurationId: Int) -> Self
+    
+    @discardableResult
+    func withImpContext(_ context: Context) -> Self
     
     init()
 }
 
 
-class InterstitialBidRequestBuilder: BaseRequestBuilder, BidRequestBuilder {
-    private var bidfloor: Price = .unknown
-    private var ext: BidRequest.ExtrasModel!
-    private var auctionId: String!
-    private var auctionConfigurationId: Int!
+class BaseBidRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, BidRequestBuilder {
+    private(set) var bidfloor: Price = .unknown
+    private(set) var ext: BidRequest.ExtrasModel!
+    private(set) var auctionId: String!
+    private(set) var auctionConfigurationId: Int!
+    private(set) var roundId: String!
+    private(set) var context: Context!
     
-    var adType: AdType { .interstitial }
+    var adType: AdType { fatalError("BaseBidRequestBuilder doesn't provide ad type") }
     
-    var imp: BidRequestImp {
-        BidRequestImp(
-            bidfloor: bidfloor,
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
-            ext: ext
-        )
-    }
+    var imp: BidRequestImp { fatalError("BaseBidRequestBuilder doesn't provide imp") }
     
     func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
         self.ext = BidRequest.ExtrasModel(
@@ -57,18 +60,33 @@ class InterstitialBidRequestBuilder: BaseRequestBuilder, BidRequestBuilder {
         return self
     }
     
+    @discardableResult
     func withBidfloor(_ bidfloor: Price) -> Self {
         self.bidfloor = bidfloor
         return self
     }
-    
+
+    @discardableResult
     func withAuctionId(_ auctionId: String) -> Self {
         self.auctionId = auctionId
         return self
     }
     
+    @discardableResult
     func withAuctionConfigurationId(_ auctionConfigurationId: Int) -> Self {
         self.auctionConfigurationId = auctionConfigurationId
+        return self
+    }
+    
+    @discardableResult
+    func withRoundId(_ roundId: String) -> Self {
+        self.roundId = roundId
+        return self
+    }
+    
+    @discardableResult
+    func withImpContext(_ context: Context) -> Self {
+        self.context = context
         return self
     }
     
@@ -76,58 +94,3 @@ class InterstitialBidRequestBuilder: BaseRequestBuilder, BidRequestBuilder {
         super.init()
     }
 }
-
-
-final class RewardedBidRequestBuilder: InterstitialBidRequestBuilder {
-    override var adType: AdType { .rewarded }
-}
-
-
-final class BannerBidRequestBuilder: BaseRequestBuilder, BidRequestBuilder {
-    private var bidfloor: Price = .unknown
-    private var ext: BidRequest.ExtrasModel!
-    private var format: BannerFormat!
-    private var auctionId: String!
-    private var auctionConfigurationId: Int!
-    
-    var adType: AdType { .banner }
-    
-    var imp: BidRequestImp {
-        BidRequestImp(
-            bidfloor: bidfloor,
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
-            banner: BannerModel(format: format),
-            ext: ext
-        )
-    }
-    
-    func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
-        self.ext = BidRequest.ExtrasModel(
-            bidon: BidonBiddingExtrasModel(encoders: encoders)
-        )
-        
-        return self
-    }
-    
-    func withBidfloor(_ bidfloor: Price) -> Self {
-        self.bidfloor = bidfloor
-        return self
-    }
-    
-    func withFormat(_ format: BannerFormat) -> Self {
-        self.format = format
-        return self
-    }
-    
-    func withAuctionId(_ auctionId: String) -> Self {
-        self.auctionId = auctionId
-        return self
-    }
-    
-    func withAuctionConfigurationId(_ auctionConfigurationId: Int) -> Self {
-        self.auctionConfigurationId = auctionConfigurationId
-        return self
-    }
-}
-

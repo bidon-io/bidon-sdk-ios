@@ -22,7 +22,7 @@ BiddingAdViewDemandSourceAdapter
     @objc static let identifier = "bidmachine"
     
     @Injected(\.context)
-    var context: Bidon.AuctionContext
+    var context: Bidon.SdkContext
     
     public let identifier: String = BidMachineDemandSourceAdapter.identifier
     public let name: String = "BidMachine"

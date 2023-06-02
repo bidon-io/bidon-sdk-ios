@@ -21,9 +21,9 @@ struct AuctionRequest: Request {
             var placementId: String
             var auctionId: String
             var pricefloor: Price
-            var banner: BannerModel?
-            var interstitial: InterstitialModel?
-            var rewarded: RewardedModel?
+            var banner: AdViewAucionContextModel?
+            var interstitial: InterstitialAuctionContextModel?
+            var rewarded: RewardedAuctionContextModel?
         }
         
         var device: DeviceModel?

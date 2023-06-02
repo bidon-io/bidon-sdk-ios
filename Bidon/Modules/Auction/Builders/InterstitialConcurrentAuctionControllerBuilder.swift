@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<AnyInterstitialDemandProvider> {
+final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<InterstitialAuctionContext> {
     override func adapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
         return directDemandWrappedAdapters() +
         biddingDemandWrappedAdapters() +

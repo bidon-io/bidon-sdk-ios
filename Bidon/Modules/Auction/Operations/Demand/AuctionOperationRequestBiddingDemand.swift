@@ -8,10 +8,9 @@
 import Foundation
 
 
-final class AuctionOperationRequestBiddingDemand<BidRequestBuilderType, DemandProviderType>: AsynchronousOperation
-where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvider {
-    typealias BidType = BidModel<DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<DemandProviderType>
+final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
+    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
     
     @Injected(\.networkManager)
     private var networkManager: NetworkManager
@@ -19,6 +18,7 @@ where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvid
     @Injected(\.sdk)
     private var sdk: Sdk
     
+    let context: AuctionContextType
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
     let round: AuctionRound
@@ -28,10 +28,12 @@ where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvid
     private(set) var bid: BidType?
     
     init(
+        context: AuctionContextType,
         observer: AnyMediationObserver,
         adapters: [AdapterType],
         round: AuctionRound
     ) {
+        self.context = context
         self.observer = observer
         self.adapters = adapters
         self.round = round
@@ -72,13 +74,14 @@ where BidRequestBuilderType: BidRequestBuilder, DemandProviderType: DemandProvid
             return
         }
         
-        let request = BidRequest { (builder: BidRequestBuilderType) in
+        let request = context.bidRequest { builder in
             builder.withBidfloor(pricefloor)
             builder.withBiddingContextEncoders(encoders)
             builder.withTestMode(sdk.isTestMode)
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withAuctionId(observer.auctionId)
             builder.withAuctionConfigurationId(observer.auctionConfigurationId)
+            builder.withRoundId(round.id)
         }
         
         networkManager.perform(request: request) { [weak self] result in

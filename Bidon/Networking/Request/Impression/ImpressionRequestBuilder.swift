@@ -9,6 +9,8 @@ import Foundation
 
 
 protocol ImpressionRequestBuilder: BaseRequestBuilder {
+    associatedtype Context: AuctionContext
+    
     var imp: ImpressionModel { get }
     var route: Route { get }
     
@@ -18,101 +20,43 @@ protocol ImpressionRequestBuilder: BaseRequestBuilder {
     @discardableResult
     func withPath(_ path: Route) -> Self
     
+    @discardableResult
+    func withContext(_ context: Context) -> Self
+    
     init()
 }
 
 
-final class InterstitialImpressionRequestBuilder: BaseRequestBuilder, ImpressionRequestBuilder {
-    var imp: ImpressionModel {
-        ImpressionModel(
-            _imp,
-            interstitial: InterstitialModel()
-        )
-    }
+class BaseImpressionRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, ImpressionRequestBuilder {
+    private(set) var context: Context!
+    private(set) var impression: Impression!
     
-    var route: Route {
-        _route
-    }
+    private var path: Route!
+
+    var route: Route { .complex(.adType(adType), path) }
     
-    private var _imp: Impression!
-    private var _route: Route!
+    var imp: ImpressionModel { fatalError("BaseImpressionRequestBuilder doesn't provide imp") }
+    var adType: AdType { fatalError("BaseImpressionRequestBuilder doesn't provide adType") }
     
     @discardableResult
     func withImpression(_ impression: Impression) -> Self {
-        self._imp = impression
+        self.impression = impression
         return self
     }
     
     @discardableResult
     func withPath(_ path: Route) -> Self {
-        self._route = .complex(.adType(.interstitial), path)
-        return self
-    }
-}
-
-
-final class RewardedImpressionRequestBuilder: BaseRequestBuilder, ImpressionRequestBuilder {
-    var imp: ImpressionModel {
-        ImpressionModel(
-            _imp,
-            rewarded: RewardedModel()
-        )
-    }
-    
-    var route: Route {
-        _route
-    }
-    
-    private var _imp: Impression!
-    private var _route: Route!
-    
-    @discardableResult
-    func withImpression(_ impression: Impression) -> Self {
-        self._imp = impression
+        self.path = path
         return self
     }
     
     @discardableResult
-    func withPath(_ path: Route) -> Self {
-        self._route = .complex(.adType(.rewarded), path)
-        return self
-    }
-}
-
-
-final class AdViewImpressionRequestBuilder: BaseRequestBuilder, ImpressionRequestBuilder {
-    var imp: ImpressionModel {
-        ImpressionModel(
-            _imp,
-            banner: BannerModel(
-                format: _format
-            )
-        )
-    }
-    
-    var route: Route {
-        _route
-    }
-    
-    private var _imp: Impression!
-    private var _route: Route!
-    private var _format: BannerFormat!
-    
-    @discardableResult
-    func withImpression(_ impression: Impression) -> Self {
-        self._imp = impression
+    func withContext(_ context: Context) -> Self {
+        self.context = context
         return self
     }
     
-    @discardableResult
-    func withFormat(_ format: BannerFormat) -> Self {
-        self._format = format
-        return self
-    }
-    
-    @discardableResult
-    func withPath(_ path: Route) -> Self {
-        self._route = .complex(.adType(.banner), path)
-        return self
+    required override init() {
+        super.init()
     }
 }

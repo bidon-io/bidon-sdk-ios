@@ -8,12 +8,12 @@
 import Foundation
 
 
-final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<AnyAdViewDemandProvider> {
-    private var context: AdViewContext!
+final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<AdViewAucionContext> {
+    private var viewContext: AdViewContext!
     
     @discardableResult
-    public func withContext(_ context: AdViewContext) -> Self {
-        self.context = context
+    public func withViewContext(_ viewContext: AdViewContext) -> Self {
+        self.viewContext = viewContext
         return self
     }
     
@@ -28,7 +28,7 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
         
         return direct.compactMap { adapter in
             do {
-                let provider = try adapter.directAdViewDemandProvider(context: context)
+                let provider = try adapter.directAdViewDemandProvider(context: viewContext)
                 let wrappedProvider: AnyAdViewDemandProvider = try DirectDemandProviderWrapper(provider)
                 
                 return AnyDemandSourceAdapter(
@@ -46,7 +46,7 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
         let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
         return programmatic.compactMap { adapter in
             do {
-                let provider = try adapter.programmaticAdViewDemandProvider(context: context)
+                let provider = try adapter.programmaticAdViewDemandProvider(context: viewContext)
                 let wrappedProvider: AnyAdViewDemandProvider = try ProgrammaticDemandProviderWrapper(provider)
                 
                 return AnyDemandSourceAdapter(
@@ -64,7 +64,7 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
         let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
         return bidding.compactMap { adapter in
             do {
-                let provider = try adapter.biddingAdViewDemandProvider(context: context)
+                let provider = try adapter.biddingAdViewDemandProvider(context: viewContext)
                 let wrappedProvider: AnyAdViewDemandProvider = try BiddingDemandProviderWrapper(provider)
                 
                 return AnyDemandSourceAdapter(

@@ -19,7 +19,7 @@ DirectAdViewDemandSourceAdapter
     @objc public static let identifier = "unityads"
     
     @Injected(\.context)
-    var context: Bidon.AuctionContext
+    var context: Bidon.SdkContext
     
     public let identifier: String = UnityAdsDemandSourceAdapter.identifier
     public let name: String = "Unity Ads"

@@ -41,7 +41,7 @@ public final class BannerView: UIView, AdView {
     @Injected(\.networkManager)
     private var networkManager: NetworkManager
     
-    private var context: AdViewContext {
+    private var viewContext: AdViewContext {
         return AdViewContext(
             format: format,
             size: format.preferredSize,
@@ -110,8 +110,8 @@ public final class BannerView: UIView, AdView {
         with pricefloor: Price = BidonSdk.defaultMinPrice
     ) {
         adManager.loadAd(
-            context: context,
-            pricefloor: pricefloor
+            pricefloor: pricefloor,
+            viewContext: viewContext
         )
     }
     
@@ -126,12 +126,13 @@ public final class BannerView: UIView, AdView {
             impression.isTrackingAllowed(.show)
         else { return }
         
-        let request = LossRequest { (builder: AdViewLossRequestBuilder) in
+        let context = AdViewAucionContext(viewContext: viewContext)
+        
+        let request = context.lossRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras, sdk.extras)
             builder.withImpression(impression)
-            builder.withFormat(format)
             builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
         }
         
@@ -168,7 +169,7 @@ public final class BannerView: UIView, AdView {
             self.viewManager.present(
                 bid: bid,
                 view: adView,
-                context: self.context
+                viewContext: self.viewContext
             )
         }
     }
