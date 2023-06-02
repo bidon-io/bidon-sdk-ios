@@ -146,7 +146,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         round: AuctionRound,
         demand identifier: String
     ) -> AuctionOperation {
-        guard let adapter = adapters.first(where: { $0.identifier == identifier }) else {
+        guard let adapter = adapters.first(where: { $0.identifier == identifier && !$0.isBiddingAdapter }) else {
             return AuctionOperationLogEvent(
                 observer: mediationObserver,
                 event: .unknownAdapter(
@@ -156,13 +156,13 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             )
         }
         
-        if adapter.provider is (any ProgrammaticDemandProvider) {
+        if adapter.provider is any ProgrammaticDemandProvider {
             return AuctionOperationRequestProgrammaticDemand(
                 round: round,
                 observer: mediationObserver,
                 adapter: adapter
             )
-        } else if adapter.provider is (any DirectDemandProvider) {
+        } else if adapter.provider is any DirectDemandProvider {
             return AuctionOperationRequestDirectDemand(
                 round: round,
                 observer: mediationObserver,
@@ -186,7 +186,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
     
     private func biddingOperation(round: AuctionRound) -> AuctionOperation {
         let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = round.bidding.compactMap { id in
-            self.adapters.first { $0.identifier == id && $0.provider is any BiddingDemandProvider }
+            self.adapters.first { $0.identifier == id && $0.isBiddingAdapter }
         }
         
         let operation = AuctionOperationRequestBiddingDemand<AuctionContextType>(

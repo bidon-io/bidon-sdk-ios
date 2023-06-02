@@ -34,7 +34,7 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
         lhs: AnyDemandSourceAdapter<DemandProviderType>,
         rhs: AnyDemandSourceAdapter<DemandProviderType>
     ) -> Bool {
-        return lhs.identifier == rhs.identifier
+        return lhs.identifier == rhs.identifier && lhs.provider.self === rhs.provider.self
     }
     
     func hash(into hasher: inout Hasher) {
@@ -46,6 +46,13 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
 extension AnyDemandSourceAdapter: CustomStringConvertible {
     var description: String {
         return "\(name) ('\(identifier)')"
+    }
+}
+
+
+extension AnyDemandSourceAdapter {
+    var isBiddingAdapter: Bool {
+        return provider is any BiddingDemandProvider
     }
 }
 
