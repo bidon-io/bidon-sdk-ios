@@ -8,13 +8,13 @@
 import Foundation
 
 
-final class AuctionOperationRequestDirectDemand<DemandProviderType: DemandProvider>: AsynchronousOperation {
-    typealias BidType = BidModel<DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<DemandProviderType>
+final class AuctionOperationRequestDirectDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
+    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
     
     let round: AuctionRound
     let observer: AnyMediationObserver
-    let adapter: AnyDemandSourceAdapter<DemandProviderType>
+    let adapter: AdapterType
     
     let lineItem: (AdapterType, Price) -> LineItem?
     
@@ -23,7 +23,7 @@ final class AuctionOperationRequestDirectDemand<DemandProviderType: DemandProvid
     init(
         round: AuctionRound,
         observer: AnyMediationObserver,
-        adapter: AnyDemandSourceAdapter<DemandProviderType>,
+        adapter: AdapterType,
         lineItem: @escaping (AdapterType, Price) -> LineItem?
     ) {
         self.round = round

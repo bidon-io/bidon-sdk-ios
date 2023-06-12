@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AuctionOperationRequestProgrammaticDemand<DemandProviderType: DemandProvider>: AsynchronousOperation {
+final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
     private enum BidState {
         case unknown
         case bidding
@@ -16,12 +16,12 @@ final class AuctionOperationRequestProgrammaticDemand<DemandProviderType: Demand
         case ready(BidType)
     }
     
-    typealias BidType = BidModel<DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<DemandProviderType>
+    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
     
     let round: AuctionRound
     let observer: AnyMediationObserver
-    let adapter: AnyDemandSourceAdapter<DemandProviderType>
+    let adapter: AdapterType
     
     @Atomic private var bidState: BidState = .unknown
     
@@ -37,7 +37,7 @@ final class AuctionOperationRequestProgrammaticDemand<DemandProviderType: Demand
     init(
         round: AuctionRound,
         observer: AnyMediationObserver,
-        adapter: AnyDemandSourceAdapter<DemandProviderType>
+        adapter: AdapterType
     ) {
         self.round = round
         self.observer = observer

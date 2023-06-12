@@ -18,7 +18,7 @@ final class AdViewBidRequestBuilder: BaseBidRequestBuilder<AdViewAucionContext> 
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
             banner: AdViewAucionContextModel(context),
-            ext: ext
+            demands: demands
         )
     }
 }

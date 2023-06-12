@@ -82,6 +82,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             builder.withAuctionId(observer.auctionId)
             builder.withAuctionConfigurationId(observer.auctionConfigurationId)
             builder.withRoundId(round.id)
+            builder.withAdapters(adapters)
         }
         
         networkManager.perform(request: request) { [weak self] result in
@@ -98,34 +99,16 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     func proceedBidResponse(_ response: BidRequest.ResponseBody) {
         guard isExecuting else { return }
         
-        guard let seatBid = response.seatBids?.first else {
-            Logger.warning("No seat bid found")
-            finish()
-            return
-        }
-        
         guard
-            let adapter = adapters.first(where: { $0.identifier == seatBid.demandId }),
+            let adapter = adapters.first(where: { $0.identifier == response.bid.demandId }),
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
-            Logger.warning("No adapter for seat bid demand id \(seatBid.demandId) found")
+            Logger.warning("No adapter for seat bid demand id \(response.bid.demandId) found")
             finish()
             return
         }
         
-        guard let bid = seatBid.bids.first else {
-            Logger.warning("No bids found")
-            finish()
-            return
-        }
-        
-        guard let decoder = bid.ext.decoders[adapter.identifier] else {
-            Logger.warning("No bidding payload data found")
-            finish()
-            return
-        }
-        
-        provider.prepareBid(with: decoder) { [weak self] result in
+        provider.prepareBid(with: response.bid.payload) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
             
             defer { self.finish() }

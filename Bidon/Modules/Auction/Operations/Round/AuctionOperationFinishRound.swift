@@ -8,8 +8,8 @@
 import Foundation
 
 
-final class AuctionOperationFinishRound<BidType: Bid>: Operation
-where BidType.Provider: DemandProvider {
+final class AuctionOperationFinishRound<AuctionContextType: AuctionContext, BidType: Bid>: Operation
+where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType == BidType.Provider {
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
     let comparator: AuctionBidComparator
@@ -39,9 +39,11 @@ where BidType.Provider: DemandProvider {
         timeout?.invalidate()
         
         bids = (
-            deps(AuctionOperationRequestDirectDemand<BidType.Provider>.self)
+            deps(AuctionOperationRequestDirectDemand<AuctionContextType>.self)
                 .compactMap { $0.bid as? BidType } +
-            deps(AuctionOperationRequestProgrammaticDemand<BidType.Provider>.self)
+            deps(AuctionOperationRequestProgrammaticDemand<AuctionContextType>.self)
+                .compactMap { $0.bid as? BidType } +
+            deps(AuctionOperationRequestBiddingDemand<AuctionContextType>.self)
                 .compactMap { $0.bid as? BidType }
         )
         .sorted { comparator.compare($0, $1) }

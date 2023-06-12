@@ -18,6 +18,8 @@ protocol BidRequestBuilder: BaseRequestBuilder {
     
     var adType: AdType { get }
     
+    var adapters: AdaptersInfo { get }
+
     @discardableResult
     func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self
     
@@ -36,27 +38,31 @@ protocol BidRequestBuilder: BaseRequestBuilder {
     @discardableResult
     func withImpContext(_ context: Context) -> Self
     
+    @discardableResult
+    func withAdapters(_ adapters: [Adapter]) -> Self
+    
     init()
 }
 
 
 class BaseBidRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, BidRequestBuilder {
     private(set) var bidfloor: Price = .unknown
-    private(set) var ext: BidRequest.ExtrasModel!
+    private(set) var demands: BidonBiddingExtrasModel!
     private(set) var auctionId: String!
     private(set) var auctionConfigurationId: Int!
     private(set) var roundId: String!
     private(set) var context: Context!
     
+    private var adaptersInfo: AdaptersInfo!
+    
     var adType: AdType { fatalError("BaseBidRequestBuilder doesn't provide ad type") }
     
     var imp: BidRequestImp { fatalError("BaseBidRequestBuilder doesn't provide imp") }
     
+    var adapters: AdaptersInfo { adaptersInfo }
+    
     func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
-        self.ext = BidRequest.ExtrasModel(
-            bidon: BidonBiddingExtrasModel(encoders: encoders)
-        )
-        
+        self.demands = BidonBiddingExtrasModel(encoders: encoders)
         return self
     }
     
@@ -87,6 +93,12 @@ class BaseBidRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, BidReq
     @discardableResult
     func withImpContext(_ context: Context) -> Self {
         self.context = context
+        return self
+    }
+    
+    @discardableResult
+    func withAdapters(_ adapters: [Adapter]) -> Self {
+        self.adaptersInfo = AdaptersInfo(adapters: adapters)
         return self
     }
     

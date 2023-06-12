@@ -30,11 +30,6 @@ fileprivate struct BidMachineBiddingContextEncoder: BiddingContextEncoder {
 }
 
 
-fileprivate struct BidMachineBiddingExtras: Decodable {
-    var payload: String
-}
-
-
 class BidMachineBiddingDemandProvider<AdObject: BidMachineAdProtocol>: BidMachineBaseDemandProvider<AdObject>, BiddingDemandProvider {
     
     func fetchBiddingContext(response: @escaping BiddingContextResponse) {
@@ -48,15 +43,14 @@ class BidMachineBiddingDemandProvider<AdObject: BidMachineAdProtocol>: BidMachin
     }
     
     func prepareBid(
-        with decoder: Decoder,
+        with payload: String,
         response: @escaping DemandProviderResponse
     ) {
         do {
-            let extras = try BidMachineBiddingExtras(from: decoder)
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
             
             configuration.populate { builder in
-                builder.withPayload(extras.payload)
+                builder.withPayload(payload)
                 builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             

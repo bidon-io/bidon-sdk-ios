@@ -17,7 +17,8 @@ final class RewardedBidRequestBuilder: BaseBidRequestBuilder<RewardedAuctionCont
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
-            ext: ext
+            rewarded: RewardedAuctionContextModel(context),
+            demands: demands
         )
     }
 }

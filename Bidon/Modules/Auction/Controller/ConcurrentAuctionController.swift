@@ -60,7 +60,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         try? auction.add(node: startAuctionOperation)
         
         // Finish auction
-        let finishAuctionOperation = AuctionOperationFinish(
+        let finishAuctionOperation = AuctionOperationFinish<AuctionContextType, BidType>(
             observer: mediationObserver,
             comparator: comparator,
             completion: completion
@@ -76,7 +76,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         var shared: [AuctionOperation] = [startAuctionOperation]
         rounds.forEach { round in
             // Instantiate round start operation and add it to DAG
-            let startRoundOperation = AuctionOperationStartRound<BidType>(
+            let startRoundOperation = AuctionOperationStartRound<AuctionContextType, BidType>(
                 observer: mediationObserver,
                 round: round,
                 comparator: comparator
@@ -92,7 +92,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             try? auction.addEdge(from: startRoundOperation, to: timeoutOperation)
             
             // Instantiate round finisj opearation and add it to DAG
-            let finishRoundOperation = AuctionOperationFinishRound<BidType>(
+            let finishRoundOperation = AuctionOperationFinishRound<AuctionContextType, BidType>(
                 observer: mediationObserver,
                 adRevenueObserver: adRevenueObserver,
                 comparator: comparator,
@@ -157,13 +157,13 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         }
         
         if adapter.provider is any ProgrammaticDemandProvider {
-            return AuctionOperationRequestProgrammaticDemand(
+            return AuctionOperationRequestProgrammaticDemand<AuctionContextType>(
                 round: round,
                 observer: mediationObserver,
                 adapter: adapter
             )
         } else if adapter.provider is any DirectDemandProvider {
-            return AuctionOperationRequestDirectDemand(
+            return AuctionOperationRequestDirectDemand<AuctionContextType>(
                 round: round,
                 observer: mediationObserver,
                 adapter: adapter

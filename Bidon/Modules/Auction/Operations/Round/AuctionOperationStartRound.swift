@@ -8,14 +8,14 @@
 import Foundation
 
 
-final class AuctionOperationStartRound<BidType: Bid>: Operation
-where BidType.Provider: DemandProvider {
+final class AuctionOperationStartRound<AuctionContextType: AuctionContext, BidType: Bid>: Operation
+where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType == BidType.Provider {
     var pricefloor: Price {
         let initial = deps(AuctionOperationStart.self)
             .first?
             .pricefloor ?? .unknown
         
-        let latest = deps(AuctionOperationFinishRound<BidType>.self)
+        let latest = deps(AuctionOperationFinishRound<AuctionContextType, BidType>.self)
             .reduce([]) { $0 + $1.bids }
             .sorted { comparator.compare($0, $1) }
             .first?

@@ -18,7 +18,8 @@ final class InterstitialBidRequestBuilder: BaseBidRequestBuilder<InterstitialAuc
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
-            ext: ext
+            interstitial: InterstitialAuctionContextModel(context),
+            demands: demands
         )
     }
 }

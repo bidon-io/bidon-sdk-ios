@@ -9,8 +9,9 @@ import Foundation
 
 
 protocol AuctionOperationRequestDemand: AuctionOperation {
-    associatedtype BidType: Bid where BidType.Provider: DemandProvider
-    
+    associatedtype AuctionContextType: AuctionContext where AuctionContextType.DemandProviderType: DemandProvider
+    associatedtype BidType: Bid where BidType.Provider == AuctionContextType.DemandProviderType
+
     var bid: BidType? { get }
     
     func timeoutReached()
@@ -19,7 +20,7 @@ protocol AuctionOperationRequestDemand: AuctionOperation {
 
 extension AuctionOperationRequestDemand {
     var pricefloor: Price {
-        deps(AuctionOperationStartRound<BidType>.self)
+        deps(AuctionOperationStartRound<AuctionContextType, BidType>.self)
             .first?
             .pricefloor ?? .unknown
     }

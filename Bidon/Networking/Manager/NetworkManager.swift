@@ -73,22 +73,26 @@ fileprivate final class PersistentNetworkManager: NetworkManager {
             headers: request.headers
         ) { result in
             // TODO: Cache logic
-            DispatchQueue.main.async { [unowned self] in
-                switch result {
-                case .success(let raw):
-                    let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    do {
-                        let response = try decoder.decode(T.ResponseBody.self, from: raw)
-                        
+            switch result {
+            case .success(let raw):
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                do {
+                    let response = try decoder.decode(T.ResponseBody.self, from: raw)
+                    
+                    DispatchQueue.main.async { [unowned self] in
                         self.token = response.token
                         self.segmentId = response.segmentId ?? ""
                         
                         completion(.success(response))
-                    } catch {
+                    }
+                } catch {
+                    DispatchQueue.main.async {
                         completion(.failure(.decoding(error)))
                     }
-                case .failure(let error):
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
                     completion(.failure(error))
                 }
             }
