@@ -79,6 +79,7 @@ final class AuctionOperationRequestDirectDemand<AuctionContextType: AuctionConte
                 self.finish()
             case .success(let ad):
                 let bid = BidType(
+                    id: UUID().uuidString,
                     auctionId: self.observer.auctionId,
                     auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,

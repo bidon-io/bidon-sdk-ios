@@ -61,7 +61,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
     private func bid(programmatic provider: any ProgrammaticDemandProvider) {
         let event = MediationEvent.bidRequest(
             round: round,
-            adapter: adapter
+            adapter: adapter,
+            isBidding: false
         )
         
         observer.log(event)
@@ -75,7 +76,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 let event = MediationEvent.bidError(
                     round: self.round,
                     adapter: self.adapter,
-                    error: error
+                    error: error,
+                    isBidding: false
                 )
                 
                 self.observer.log(event)
@@ -84,6 +86,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 self.finish()
             case .success(let ad):
                 let bid = BidType(
+                    id: UUID().uuidString,
                     auctionId: self.observer.auctionId,
                     auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
@@ -95,7 +98,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 let event = MediationEvent.bidResponse(
                     round: self.round,
                     adapter: self.adapter,
-                    bid: bid
+                    bid: bid,
+                    isBidding: false
                 )
                 
                 self.observer.log(event)
@@ -112,7 +116,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
         let event = MediationEvent.fillRequest(
             round: round,
             adapter: adapter,
-            bid: bid
+            bid: bid,
+            isBidding: false
         )
         observer.log(event)
         
@@ -124,7 +129,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 let event = MediationEvent.fillError(
                     round: self.round,
                     adapter: self.adapter,
-                    error: error
+                    error: error,
+                    isBidding: false
                 )
                 
                 self.observer.log(event)
@@ -132,7 +138,8 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 
                 self.finish()
             case .success(let ad):
-                let bid = BidType(
+                let result = BidType(
+                    id: bid.id,
                     auctionId: self.observer.auctionId,
                     auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
@@ -144,11 +151,12 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                 let event = MediationEvent.fillResponse(
                     round: self.round,
                     adapter: self.adapter,
-                    bid: bid
+                    bid: bid,
+                    isBidding: false
                 )
                 
                 self.observer.log(event)
-                self.bidState = .ready(bid)
+                self.bidState = .ready(result)
                 
                 self.finish()
             }
@@ -168,19 +176,22 @@ extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDema
             event = .bidError(
                 round: round,
                 adapter: adapter,
-                error: .bidTimeoutReached
+                error: .bidTimeoutReached,
+                isBidding: false
             )
         case .filling:
             event = .fillError(
                 round: round,
                 adapter: adapter,
-                error: .fillTimeoutReached
+                error: .fillTimeoutReached,
+                isBidding: false
             )
         default:
             event = .bidError(
                 round: round,
                 adapter: adapter,
-                error: .unscpecifiedException
+                error: .unscpecifiedException,
+                isBidding: false
             )
         }
         

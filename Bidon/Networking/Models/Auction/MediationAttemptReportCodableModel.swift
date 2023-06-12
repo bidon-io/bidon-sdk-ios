@@ -48,6 +48,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var winnerECPM: Price?
         var winnerNetworkId: String?
         var demands: [DemandReportModel]
+        var bidding: [DemandReportModel]
         
         enum CodingKeys: String, CodingKey {
             case roundId = "id"
@@ -55,6 +56,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case winnerECPM = "winner_ecpm"
             case winnerNetworkId = "winner_id"
             case demands
+            case bidding
         }
         
         init<T: RoundReport>(_ report: T) {
@@ -63,11 +65,14 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             self.winnerECPM = report.winnerECPM
             self.winnerNetworkId = report.winnerNetworkId
             self.demands = report.demands.map(DemandReportModel.init)
+            self.bidding = report.bidding.map(DemandReportModel.init)
         }
     }
     
     struct AuctionResultReportCodableModel: AuctionResultReport, Codable {
         var status: AuctionResultReportStatus
+        var startTimestamp: UInt
+        var finishTimestamp: UInt
         var winnerNetworkId: String?
         var winnerECPM: Price?
         var winnerAdUnitId: String?
@@ -77,6 +82,8 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case winnerNetworkId = "winner_id"
             case winnerECPM = "ecpm"
             case winnerAdUnitId = "ad_unit_id"
+            case startTimestamp = "auction_start_ts"
+            case finishTimestamp = "auction_finish_ts"
         }
         
         init<T: AuctionResultReport>(_ report: T) {
@@ -84,6 +91,8 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             self.winnerNetworkId = report.winnerNetworkId
             self.winnerECPM = report.winnerECPM
             self.winnerAdUnitId = report.winnerAdUnitId
+            self.startTimestamp = report.startTimestamp
+            self.finishTimestamp = report.finishTimestamp
         }
     }
     

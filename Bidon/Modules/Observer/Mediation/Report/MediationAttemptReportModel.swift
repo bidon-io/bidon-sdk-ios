@@ -27,11 +27,14 @@ struct RoundReportModel: RoundReport {
     var winnerECPM: Price?
     var winnerNetworkId: String?
     var demands: [DemandReportType]
+    var bidding: [DemandReportType]
 }
 
 
 struct AuctionResultReportModel: AuctionResultReport {
     var status: AuctionResultReportStatus
+    var startTimestamp: UInt 
+    var finishTimestamp: UInt
     var winnerNetworkId: String?
     var winnerECPM: Price?
     var winnerAdUnitId: String?

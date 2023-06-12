@@ -46,37 +46,43 @@ enum MediationEvent {
     
     case bidRequest(
         round: AuctionRound,
-        adapter: Adapter
+        adapter: Adapter,
+        isBidding: Bool
     )
     
     case bidResponse(
         round: AuctionRound,
         adapter: Adapter,
-        bid: any Bid
+        bid: any Bid,
+        isBidding: Bool
     )
     
     case bidError(
         round: AuctionRound,
         adapter: Adapter,
-        error: MediationError
+        error: MediationError,
+        isBidding: Bool
     )
     
     case fillRequest(
         round: AuctionRound,
         adapter: Adapter,
-        bid: any Bid
+        bid: any Bid,
+        isBidding: Bool
     )
     
     case fillResponse(
         round: AuctionRound,
         adapter: Adapter,
-        bid: any Bid
+        bid: any Bid,
+        isBidding: Bool
     )
     
     case fillError(
         round: AuctionRound,
         adapter: Adapter,
-        error: MediationError
+        error: MediationError,
+        isBidding: Bool
     )
     
     case roundFinish(
@@ -113,18 +119,18 @@ extension MediationEvent: CustomStringConvertible {
             return "\(adapter) did load \(bid) in round: '\(round.id)'"
         case .loadError(let round, let adapter, let error):
             return "\(adapter) did fail to load \(error) in round: '\(round.id)'"
-        case .bidRequest(let round, let adapter):
-            return "\(adapter) will request bid in round: '\(round.id)'"
-        case .bidResponse(let round, let adapter, let ad):
-            return "\(adapter) did receive bid: \(ad) in round: '\(round.id)'"
-        case .bidError(let round, let adapter, let error):
-            return "\(adapter) did receive bid error: \(error) in round: '\(round.id)'"
-        case .fillRequest(let round, let adapter, let bid):
-            return "\(adapter) will fill \(bid) in round: '\(round.id)'"
-        case .fillResponse(let round, let adapter, let bid):
-            return "\(adapter) did fill \(bid) in round: '\(round.id)'"
-        case .fillError(let round, let adapter, let error):
-            return "\(adapter) did fail to fill \(error) in round: '\(round.id)'"
+        case .bidRequest(let round, let adapter, let isBidding):
+            return "\(adapter) will request bid in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
+        case .bidResponse(let round, let adapter, let ad, let isBidding):
+            return "\(adapter) did receive bid: \(ad) in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
+        case .bidError(let round, let adapter, let error, let isBidding):
+            return "\(adapter) did receive bid error: \(error) in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
+        case .fillRequest(let round, let adapter, let bid, let isBidding):
+            return "\(adapter) will fill \(bid) in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
+        case .fillResponse(let round, let adapter, let bid, let isBidding):
+            return "\(adapter) did fill \(bid) in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
+        case .fillError(let round, let adapter, let error, let isBidding):
+            return "\(adapter) did fail to fill \(error) in round: '\(round.id)' (\(isBidding ? "Bidding" : "Programmatic"))"
         case .roundFinish(let round, let winner):
             return "\(round) finished " +
             (winner.map { "with winner: \($0)" } ?? "without winner")

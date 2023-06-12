@@ -28,11 +28,14 @@ protocol RoundReport {
     var winnerECPM: Price? { get }
     var winnerNetworkId: String? { get }
     var demands: [DemandReportType] { get }
+    var bidding: [DemandReportType] { get }
 }
 
 
 protocol AuctionResultReport {
     var status: AuctionResultReportStatus { get }
+    var startTimestamp: UInt { get }
+    var finishTimestamp: UInt { get }
     var winnerNetworkId: String? { get }
     var winnerECPM: Price? { get }
     var winnerAdUnitId: String? { get }

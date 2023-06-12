@@ -11,6 +11,7 @@ import Foundation
 protocol Bid: ECPMProvider, Hashable {
     associatedtype Provider
     
+    var id: String { get }
     var auctionId: String { get }
     var auctionConfigurationId: Int { get }
     var roundId: String { get }
@@ -22,6 +23,7 @@ protocol Bid: ECPMProvider, Hashable {
 
 
 struct BidModel<DemandProviderType>: Bid {
+    var id: String
     var auctionId: String
     var auctionConfigurationId: Int
     var roundId: String
@@ -60,6 +62,7 @@ typealias AnyRewardedAdBid = BidModel<AnyRewardedAdDemandProvider>
 extension AnyAdViewBid {
     func unwrapped() -> AdViewBid {
         return AdViewBid(
+            id: id,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
@@ -75,6 +78,7 @@ extension AnyAdViewBid {
 extension AnyInterstitialBid {
     func unwrapped() -> InterstitialBid {
         return InterstitialBid(
+            id: id,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
@@ -90,6 +94,7 @@ extension AnyInterstitialBid {
 extension AnyRewardedAdBid {
     func unwrapped() -> RewardedAdBid {
         return RewardedAdBid(
+            id: id,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
