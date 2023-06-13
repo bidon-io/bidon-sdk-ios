@@ -259,6 +259,8 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
     func timeoutReached() {
         guard isExecuting else { return }
+        
+        #warning("Handle timeout correctly")
         finish()
     }
 }

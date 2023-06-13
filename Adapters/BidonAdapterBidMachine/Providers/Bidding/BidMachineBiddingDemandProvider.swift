@@ -31,7 +31,6 @@ fileprivate struct BidMachineBiddingContextEncoder: BiddingContextEncoder {
 
 
 class BidMachineBiddingDemandProvider<AdObject: BidMachineAdProtocol>: BidMachineBaseDemandProvider<AdObject>, BiddingDemandProvider {
-    
     func fetchBiddingContext(response: @escaping BiddingContextResponse) {
         guard let token = BidMachineSdk.shared.token else {
             response(.failure(.unscpecifiedException))
@@ -54,14 +53,17 @@ class BidMachineBiddingDemandProvider<AdObject: BidMachineAdProtocol>: BidMachin
                 builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             
-            BidMachineSdk.shared.ad(AdObject.self, configuration) { ad, error in
+            BidMachineSdk.shared.ad(AdObject.self, configuration) { [weak self] ad, error in
                 guard let ad = ad, error == nil else {
                     response(.failure(.noBid))
                     return
                 }
+                                
+                self?.response = response
                 
-                let wrapper = AdType(ad)
-                response(.success(wrapper))
+                ad.controller = UIApplication.shared.bd.topViewcontroller
+                ad.delegate = self
+                ad.loadAd()
             }
         } catch {
             response(.failure(.incorrectAdUnitId))
