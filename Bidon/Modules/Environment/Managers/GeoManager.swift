@@ -89,7 +89,12 @@ extension GeoManager: CLLocationManagerDelegate {
         updateTimestamp = Date.timestamp(.monotonic, units: .seconds)
         
         let ceo = CLGeocoder()
-        ceo.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+        let locale = Locale(identifier: "en")
+        
+        ceo.reverseGeocodeLocation(
+            location,
+            preferredLocale: locale
+        ) { [weak self] placemarks, error in
             defer {
                 self?.completion?()
                 self?.completion = nil

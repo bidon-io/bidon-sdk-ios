@@ -12,7 +12,7 @@ enum ConnectionType: String, Codable {
     case unknown
     case ethernet
     case wifi
-    case cellularUnknown
+    case cellular
     case cellular2G
     case cellular3G
     case cellular4G

@@ -156,7 +156,7 @@ struct Reachability {
             case CTRadioAccessTechnologyNRNSA, CTRadioAccessTechnologyNR:
                 return .cellular5G
             default:
-                return .cellularUnknown
+                return .cellular
             }
         } else {
             switch technology {
@@ -167,7 +167,7 @@ struct Reachability {
             case CTRadioAccessTechnologyLTE:
                 return .cellular4G
             default:
-                return .cellularUnknown
+                return .cellular
             }
         }
     }
