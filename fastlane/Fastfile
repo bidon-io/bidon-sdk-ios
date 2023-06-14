@@ -101,9 +101,12 @@ platform :ios do
       )
 
       aws_s3(
-        region: "us-west-1",
-        acl: "public-read",
-        path: "Bidon/#{target}/#{ver}",
+        access_key: ENV["S3_ACCESS_KEY"],  
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"], 
+        bucket: ENV['S3_BUCKET'],
+        region: ENV['S3_REGION'],
+        acl: "bucket-owner-full-control",
+        path: "#{target}/#{ver}",
         files: [ "#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip" ]
       ) if upload
 
@@ -112,6 +115,8 @@ platform :ios do
         version: ver,
         sdk_version: version,
         podfile: $root_dir + '/Podfile',
+        s3_region: ENV['S3_REGION'],
+        s3_bucket: ENV['S3_BUCKET'],
         path: $podspecs_dir,
         vendored_frameworks: [ "#{target}-#{ver}/#{target}.xcframework" ],
         is_adapter: is_adapter

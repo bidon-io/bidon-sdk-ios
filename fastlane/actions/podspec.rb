@@ -16,20 +16,19 @@ module Fastlane
       def self.run(params)
         podfile = Pod::Podfile.from_file(params[:podfile])
 
+        s3_region = params[:s3_region]
+        s3_bucket = params[:s3_bucket]
+         
         dependencies =  podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep| 
           Dependency.new(
             name: dep.name.split("/").first,
-            version: dep.to_s.scan(/\((.*)\)/m).flatten[0]&.gsub("-APD", "")
+            version: dep.to_s.scan(/\((.*)\)/m).flatten[0]
           )
         end
 
-        # Removes Stack dependencies from adapters (inherited from Appodeal)
+        # Removes Stack dependencies from adapters 
         # And BidMachine bidding adapters
         if params[:is_adapter] 
-          unless params[:name].include?("Stack") 
-            dependencies = dependencies.select { |d| !d.name.include?("Stack") && !d.name.start_with?("BDM") }
-          end
-
           dependencies.append(Dependency.new(
             name: "Bidon",
             version: params[:sdk_version]
@@ -41,11 +40,11 @@ module Fastlane
           spec.version = params[:version]
           spec.summary = params[:name] == "Bidon" ? "Bidon iOS Framework" : "Bidon adapter for #{params[:name]}"
           spec.description = "Makes the top mobile mediation SDKs more transparent"
-          spec.homepage = "https://appodeal.com"
+          spec.homepage = "https://bidon.org"
           spec.license = { :type => "Copyright", :text => "Copyright #{Time.new.year}. Bidon Inc." }
           spec.author = { "Bidon Inc." => "https://http://bidon.org" }
           spec.platform = :ios, "12.0"
-          spec.source = { :http => "https://s3-us-west-1.amazonaws.com/appodeal-ios/Bidon/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
+          spec.source = { :http => "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
           spec.swift_versions = "4.0", "4.2", "5.0"
         
           spec.vendored_frameworks = params[:vendored_frameworks]
@@ -150,6 +149,20 @@ module Fastlane
             end
           ),
           FastlaneCore::ConfigItem.new(
+            key: :s3_region,
+            description: "AWS S3 region where file is located",
+            verify_block: proc do |value|
+              UI.user_error!("No AWS S3 region given, pass using `s3_region: us-east-1`") unless (value and not value.empty?)
+            end
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :s3_bucket,
+            description: "AWS S3 bucket where file is located",
+            verify_block: proc do |value|
+              UI.user_error!("No AWS S3 bucket given, pass using `s3_bucket: my-bucket`") unless (value and not value.empty?)
+            end
+          ),
+          FastlaneCore::ConfigItem.new(
             key: :name,
             description: "Name of Podspec",
             verify_block: proc do |value|
@@ -179,7 +192,7 @@ module Fastlane
       end
 
       def self.authors
-        ["Appodeal"]
+        ["Bidon Team"]
       end
 
       def self.is_supported?(platform)

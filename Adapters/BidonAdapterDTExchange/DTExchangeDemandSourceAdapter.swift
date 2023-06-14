@@ -20,7 +20,7 @@ DirectAdViewDemandSourceAdapter
     
     public let identifier: String = DTExchangeDemandSourceAdapter.identifier
     public let name: String = "DT Exchange"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = IASDKCore.sharedInstance().version()
     
     private lazy var impressionObserver = DTExchangeDefaultImpressionObserver()

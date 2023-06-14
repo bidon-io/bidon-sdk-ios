@@ -32,9 +32,6 @@ xcuserdata
 *.hmap
 *.ipa
 
-## Proto models
-Appodeal/APDProtoAPI/appodeal-sdk-api
-
 # CocoaPods
 Pods/
 

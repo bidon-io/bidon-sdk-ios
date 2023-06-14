@@ -30,11 +30,10 @@ extension MediationError {
         }
         
         switch code {
-        case .noFillError: self = .noFill
-        case .webViewError: self = .networkError
+        case .codeNoFillError: self = .noFill
+        case .codeWebViewError: self = .networkError
         default: self = .unscpecifiedException
         }
-        
     }
 }
 
