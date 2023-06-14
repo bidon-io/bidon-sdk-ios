@@ -9,6 +9,14 @@ import Foundation
 
 
 final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
+    private enum BidState {
+        case unknown
+        case prepare([AdapterType])
+        case bidding([AdapterType])
+        case filling(AdapterType)
+        case ready(BidType)
+    }
+    
     typealias BidType = BidModel<AuctionContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
     
@@ -18,6 +26,8 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     @Injected(\.sdk)
     private var sdk: Sdk
     
+    @Atomic private var bidState: BidState = .unknown
+    
     let context: AuctionContextType
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
@@ -25,14 +35,11 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     
     private var encoders: BiddingContextEncoders = [:]
     
-    private(set) var bid: BidType?
-    
-    private var bidders: [AdapterType] {
-        return encoders
-            .keys
-            .compactMap { id in
-                adapters.first { $0.identifier == id }
-            }
+    var bid: BidType? {
+        switch bidState {
+        case .ready(let bid): return bid
+        default: return nil
+        }
     }
     
     init(
@@ -54,21 +61,26 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         
         let group = DispatchGroup()
         
-        adapters.forEach { adapter in
-            if let provider = adapter.provider as? any BiddingDemandProvider {
-                group.enter()
-                provider.fetchBiddingContext { [weak self] result in
-                    defer { group.leave() }
-                    
-                    switch result {
-                    case .success(let encoder):
-                        self?.encoders[adapter.identifier] = encoder
-                    case .failure(let error):
-                        Logger.warning("\(adapter) failed to fetch bidding context with error \(error)")
-                    }
+        let bidders: [AdapterType] = adapters.compactMap { adapter in
+            guard let provider = adapter.provider as? any BiddingDemandProvider else { return nil }
+            
+            group.enter()
+            provider.fetchBiddingContext { [weak self] result in
+                defer { group.leave() }
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let encoder):
+                    self.encoders[adapter.identifier] = encoder
+                case .failure:
+                    self.logNoBidEvent(bidders: [adapter], reason: .unscpecifiedException)
                 }
             }
+            
+            return adapter
         }
+        
+        bidState = .prepare(bidders)
         
         group.notify(queue: .main) { [weak self] in
             self?.performBidRequest()
@@ -77,13 +89,21 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     
     func performBidRequest() {
         guard isExecuting else { return }
+        
         guard !encoders.isEmpty else {
+            bidState = .unknown
             finish()
             return
         }
         
+        let bidders: [AdapterType] = encoders.keys.compactMap { key in
+            adapters.first { $0.identifier == key }
+        }
+        
+        bidState = .bidding(bidders)
+        
         // Observe bid request start
-        observeBidRequests(bidders: bidders)
+        logBidRequestSentEvent(bidders: bidders)
         
         // Make bid request
         let request = context.bidRequest { builder in
@@ -98,36 +118,38 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         }
         
         networkManager.perform(request: request) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let response):
-                self?.proceedBidResponse(response)
-            case .failure(let error):
-                guard let self = self else { return }
-                Logger.warning("Bid request failed with error \(error)")
-                self.observeNoBids(bidders: self.bidders)
+                self.proceedBidResponse(response, bidders: bidders)
+            case .failure:
+                self.bidState = .unknown
+                self.logNoBidEvent(bidders: bidders)
                 self.finish()
             }
         }
     }
     
-    func proceedBidResponse(_ response: BidRequest.ResponseBody) {
+    func proceedBidResponse(_ response: BidRequest.ResponseBody, bidders: [AdapterType]) {
         guard isExecuting else { return }
         
         guard
-            let adapter = adapters.first(where: { $0.identifier == response.bid.demandId }),
+            let adapter = bidders.first(where: { $0.identifier == response.bid.demandId }),
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
-            Logger.warning("No adapter for seat bid demand id \(response.bid.demandId) found")
-            observeNoBids(bidders: bidders)
+            bidState = .unknown
+            logNoBidEvent(bidders: bidders)
             finish()
             return
         }
         
+        bidState = .filling(adapter)
         let bidId = UUID().uuidString
         
-        observeNoBids(bidders: bidders.filter { $0.identifier != adapter.identifier })
-        observeBid(bidId: bidId, bidder: adapter, response: response)
-        observeFillRequest(bidId: bidId, bidder: adapter, response: response)
+        logNoBidEvent(bidders: bidders.filter { $0.identifier != adapter.identifier })
+        logBidEvent(bidId: bidId, bidder: adapter, response: response)
+        logFillEvent(bidId: bidId, bidder: adapter, response: response)
         
         provider.prepareBid(with: response.bid.payload) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
@@ -135,9 +157,9 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             defer { self.finish() }
             
             switch result {
-            case .failure(let error):
-                Logger.warning("Provider did fail to load with error: \(error)")
-                self.observeNoFill(bidder: adapter)
+            case .failure:
+                self.bidState = .unknown
+                self.logNoFillEvent(bidder: adapter)
             case .success(let ad):
                 let bid = BidType(
                     id: bidId,
@@ -149,15 +171,14 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
                     provider: adapter.provider
                 )
                 
-                self.bid = bid
-                
-                self.observeFill(bidder: adapter, bid: bid)
+                self.bidState = .ready(bid)
+                self.logFillEvent(bidder: adapter, bid: bid)
             }
         }
     }
     
-    // MARK: Observing
-    private func observeBidRequests(bidders: [AdapterType]) {
+    // MARK: Logging
+    private func logBidRequestSentEvent(bidders: [AdapterType]) {
         bidders.forEach { adapter in
             let event = MediationEvent.bidRequest(
                 round: round,
@@ -169,19 +190,22 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         }
     }
     
-    private func observeNoBids(bidders: [AdapterType]) {
+    private func logNoBidEvent(
+        bidders: [AdapterType],
+        reason: MediationError = .noBid
+    ) {
         bidders.forEach { adapter in
             let event = MediationEvent.bidError(
                 round: round,
                 adapter: adapter,
-                error: .noBid,
+                error: reason,
                 isBidding: true
             )
             observer.log(event)
         }
     }
     
-    private func observeBid(
+    private func logBidEvent(
         bidId: String,
         bidder: AdapterType,
         response: BidRequest.ResponseBody
@@ -205,7 +229,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         observer.log(event)
     }
     
-    private func observeFillRequest(
+    private func logFillEvent(
         bidId: String,
         bidder: AdapterType,
         response: BidRequest.ResponseBody
@@ -230,18 +254,21 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         observer.log(event)
     }
     
-    private func observeNoFill(bidder: AdapterType) {
+    private func logNoFillEvent(
+        bidder: AdapterType,
+        reason: MediationError = .noFill
+    ) {
         let event = MediationEvent.fillError(
             round: round,
             adapter: bidder,
-            error: .noFill,
+            error: reason,
             isBidding: true
         )
         
         observer.log(event)
     }
     
-    private func observeFill(
+    private func logFillEvent(
         bidder: AdapterType,
         bid: any Bid
     ) {
@@ -259,9 +286,22 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
     func timeoutReached() {
         guard isExecuting else { return }
-        
-        #warning("Handle timeout correctly")
-        finish()
+        defer { finish() }
+
+        switch bidState {
+        case .prepare(let bidders), .bidding(let bidders):
+            logNoBidEvent(
+                bidders: bidders,
+                reason: .bidTimeoutReached
+            )
+        case .filling(let bidder):
+            logNoFillEvent(
+                bidder: bidder,
+                reason: .fillTimeoutReached
+            )
+        default:
+            break
+        }
     }
 }
 
