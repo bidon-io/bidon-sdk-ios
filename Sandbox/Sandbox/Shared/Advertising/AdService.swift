@@ -33,15 +33,36 @@ enum LogLevel: String, CaseIterable {
 }
 
 
+enum Gender: String, CaseIterable {
+    case male
+    case female
+    case other
+}
+
+
+protocol AdServiceParameters: AnyObject {
+    var logLevel: LogLevel { get set }
+    var isTestMode: Bool { get set }
+    var userAge: Int? { get set }
+    var gameLevel: Int? { get set }
+    var userGender: Gender? { get set }
+    var isPaidApp: Bool { get set }
+    var inAppAmount: Double { get set }
+    var extras: [String: AnyHashable] { get set }
+    var customAttributes: [String: AnyHashable] { get set }
+}
+
+
 protocol AdService: AnyObject {
     var mediation: Mediation { get }
     var verstion: String { get }
-    var logLevel: LogLevel { get set }
-    var isTestMode: Bool { get set }
+    var segmentId: String? { get }
+    var parameters: AdServiceParameters { get }
     
     func initialize() async
     
     func adEventPublisher(adType: AdType) -> AnyPublisher<AdEventModel, Never>
+    
     func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never>
     
     func load(pricefloor: Double, adType: AdType) async throws
@@ -65,19 +86,5 @@ extension AdService {
 extension AdResponder {
     var adService: AdService {
         AdServiceProvider.shared.service
-    }
-}
-
-
-extension Bidon.Logger.Level {
-    init(_ level: LogLevel) {
-        switch level {
-        case .verbose: self = .verbose
-        case .debug: self = .debug
-        case .info: self = .info
-        case .warning: self = .warning
-        case .error: self = .error
-        case .off: self = .off
-        }
     }
 }

@@ -94,7 +94,7 @@ final class BannerAdManager: NSObject {
             builder.withTestMode(sdk.isTestMode)
             builder.withAuctionId(UUID().uuidString)
             builder.withPricefloor(pricefloor)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
         }
         
         Logger.verbose("Banner ad manager performs request: \(request)")
@@ -106,6 +106,7 @@ final class BannerAdManager: NSObject {
             
             switch result {
             case .success(let response):
+                self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(
                     auctionInfo: response,
                     viewContext: viewContext
@@ -169,7 +170,7 @@ final class BannerAdManager: NSObject {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
             builder.withAdType(.banner)
             builder.withMediationReport(report)
         }

@@ -27,7 +27,10 @@ struct InitializationView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     List {
-                        Section(header: Text("Mediation")) {
+                        Section(
+                            header: Text("Mediation"),
+                            footer: Text("Change of mediation will reset configuration")
+                        ) {
                             SelectMediationView(mediation: $vm.mediation)
                         }
                         
@@ -45,8 +48,10 @@ struct InitializationView: View {
                         }
                         
                         Section(header: Text("Settings")) {
-                            LogLevelView(logLevel: $vm.logLevel)
                             Toggle("Test Mode", isOn: $vm.isTestMode)
+                            NavigationLink(destination: AdServiceParametersView(vm.adService.parameters)) {
+                                Text("Advanced")
+                            }
                         }
                         
                         Section(

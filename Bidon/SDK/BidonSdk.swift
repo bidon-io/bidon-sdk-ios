@@ -13,7 +13,7 @@ import UIKit
 public final class BidonSdk: NSObject {
     internal lazy var adaptersRepository = AdaptersRepository()
     internal lazy var environmentRepository = EnvironmentRepository()
-    
+
     public private(set) var isTestMode: Bool = false
 
     @Injected(\.networkManager)
@@ -21,21 +21,20 @@ public final class BidonSdk: NSObject {
     
     @objc public static let sdkVersion = Constants.sdkVersion
     
-    @objc public static let defaultPlacement = Constants.defaultPlacement
+    @objc public static var isInitialized: Bool {
+        shared.isInitialized
+    }
     
-    @objc public static let defaultMinPrice: Price = .unknown
+    @objc public static var extras: [String: AnyHashable] {
+        shared.environmentRepository.environment(ExtrasManager.self).extras
+    }
     
-    @objc public static var isInitialized: Bool { shared.isInitialized }
-    
-    @objc public static var extras: [String: AnyHashable] { shared.extras }
+    @objc public static var segment: Segment {
+        shared.environmentRepository.environment(SegmentManager.self)
+    }
     
     private var isInitialized: Bool = false
-    
-    private(set) public
-    lazy var extras: [String : AnyHashable] = [:]
-    
-    private lazy var framework = EnvironmentRepository.Parameters.FrameworkInfo()
-    
+        
     static let shared: BidonSdk = BidonSdk()
     
     private override init() {
@@ -83,7 +82,10 @@ public final class BidonSdk: NSObject {
         _ value: AnyHashable?,
         for key: String
     ) {
-        shared.extras[key] = value
+        shared
+            .environmentRepository
+            .environment(ExtrasManager.self)
+            .extras[key] = value
     }
     
     @objc
@@ -91,15 +93,20 @@ public final class BidonSdk: NSObject {
         _ framework: Framework,
         version: String
     ) {
-        shared.framework.framework = framework
-        shared.framework.frameworkVersion = version
+        shared
+            .environmentRepository
+            .environment(AppManager.self)
+            .updateFramework(framework, version: version)
     }
     
     @objc
     public static func setPluginVersion(
         _ pluginVersion: String
     ) {
-        shared.framework.pluginVersion = pluginVersion
+        shared
+            .environmentRepository
+            .environment(AppManager.self)
+            .updatePluginVersion(pluginVersion)
     }
     
     @objc
@@ -112,27 +119,24 @@ public final class BidonSdk: NSObject {
             completion: completion
         )
     }
-    
+        
     private func initialize(
         appKey: String,
         completion: (() -> ())?
     ) {
-        let parameters = EnvironmentRepository.Parameters(
-            appKey: appKey,
-            framework: framework
-        )
+        let parameters = EnvironmentRepository.Parameters(appKey: appKey)
         
         environmentRepository.configure(parameters) { [unowned self] in
             let request = ConfigurationRequest { builder in
                 builder.withAdaptersRepository(self.adaptersRepository)
                 builder.withEnvironmentRepository(self.environmentRepository)
                 builder.withTestMode(self.isTestMode)
-                builder.withExt(self.extras)
             }
             
-            self.networkManager.perform(request: request) { result in
+            self.networkManager.perform(request: request) { [unowned self] result in
                 switch result {
                 case .success(let response):
+                    self.updateSegmentIfNeeded(response.segment)
                     let group = DispatchGroup()
                     response.adaptersInitializationParameters.adapters.forEach { [unowned self] parameters in
                         if let adapter: InitializableAdapter = self.adaptersRepository[parameters.key] {
@@ -156,5 +160,10 @@ public final class BidonSdk: NSObject {
                 }
             }
         }
+    }
+    
+    func updateSegmentIfNeeded(_ segment: SegmentResponse?) {
+        guard let segment = segment else { return }
+        environmentRepository.environment(SegmentManager.self).id = segment.id
     }
 }

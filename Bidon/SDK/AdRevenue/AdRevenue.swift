@@ -11,6 +11,7 @@ import Foundation
 // MARK: Price
 public typealias Price = Double
 
+
 public extension Price {
     static let unknown: Price = 0.0
     

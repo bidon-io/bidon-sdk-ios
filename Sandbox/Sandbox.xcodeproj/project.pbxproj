@@ -18,6 +18,10 @@
 		4224AA8328B8F92B00E8D886 /* AdEventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224AA8228B8F92B00E8D886 /* AdEventModel.swift */; };
 		4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224AA8428B900AF00E8D886 /* AdEventView.swift */; };
 		4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4249D5F829AFB00400BAA338 /* BidonAdapterUnityAds.framework */; };
+		42697DAC2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */; };
+		42697DAF2A3B2A1900D6B1EB /* Bidon+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */; };
+		42697DB12A3B2AFF00D6B1EB /* RawAdServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DB02A3B2AFF00D6B1EB /* RawAdServiceParameters.swift */; };
+		42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */; };
 		426A5C7029AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6D29AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework */; };
 		426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6E29AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework */; };
 		426A5C7829AF7C5A0065AAD5 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6F29AF7C5A0065AAD5 /* Bidon.framework */; };
@@ -80,6 +84,10 @@
 		4243092728A27C46002360B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4249D5F829AFB00400BAA338 /* BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		425E9C4E28B76B9A00F4E4C7 /* BidOnAdapterAppLovin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterAppLovin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealAdServiceParameters.swift; sourceTree = "<group>"; };
+		42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bidon+Extensions.swift"; sourceTree = "<group>"; };
+		42697DB02A3B2AFF00D6B1EB /* RawAdServiceParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawAdServiceParameters.swift; sourceTree = "<group>"; };
+		42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdServiceParametersView.swift; sourceTree = "<group>"; };
 		426A5C6D29AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterAppLovin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C6E29AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C6F29AF7C5A0065AAD5 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +181,7 @@
 				429F4D8628CF6A9C00765BD7 /* Views */,
 				429F4D8528CF6A7F00765BD7 /* Events */,
 				42BE438E28C0E79D000528E3 /* Permissions */,
+				42697DAA2A3B07DD00D6B1EB /* Advanced */,
 				4276A233299549DA00EE3991 /* Constants.swift */,
 			);
 			path = Shared;
@@ -197,9 +206,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		42697DAA2A3B07DD00D6B1EB /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
+		42697DAD2A3B2A0500D6B1EB /* Extesnions */ = {
+			isa = PBXGroup;
+			children = (
+				427B1BD4299A866F007D4E93 /* Appodeal+Extenstions.swift */,
+				42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */,
+			);
+			path = Extesnions;
+			sourceTree = "<group>";
+		};
 		427B1BD0299A7E5A007D4E93 /* Advertising */ = {
 			isa = PBXGroup;
 			children = (
+				42697DAD2A3B2A0500D6B1EB /* Extesnions */,
 				427B1C0B29A37799007D4E93 /* Base */,
 				427B1BD3299A8656007D4E93 /* Appodeal */,
 				427B1BE2299E3D85007D4E93 /* Raw */,
@@ -215,10 +241,10 @@
 			isa = PBXGroup;
 			children = (
 				427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */,
+				42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */,
 				427B1BDA299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift */,
 				427B1BDC299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift */,
 				427B1BDE299D1237007D4E93 /* AppodealRewardedAdWrapper.swift */,
-				427B1BD4299A866F007D4E93 /* Appodeal+Extenstions.swift */,
 				427B1C1029A392ED007D4E93 /* AppodealBannerView.swift */,
 			);
 			path = Appodeal;
@@ -228,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				427B1BE3299E3DA7007D4E93 /* RawAdService.swift */,
+				42697DB02A3B2AFF00D6B1EB /* RawAdServiceParameters.swift */,
 				427B1BE5299E403F007D4E93 /* RawInterstitialAdWrapper.swift */,
 				427B1BE7299E40D5007D4E93 /* RawRewardedAdWrapper.swift */,
 				42A4C86B28F6E02500A7FE40 /* RawBannerView.swift */,
@@ -307,6 +334,7 @@
 				429F4D8728CF6AA700765BD7 /* Wave.swift */,
 				42166C3129DEB5F100095691 /* AdContextMenu.swift */,
 				42C4F45D29E6B37300B12E15 /* ActivityPlaceholder.swift */,
+				42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -488,6 +516,8 @@
 			files = (
 				42C4F45E29E6B37300B12E15 /* ActivityPlaceholder.swift in Sources */,
 				427B1BDD299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift in Sources */,
+				42697DAC2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift in Sources */,
+				42697DB12A3B2AFF00D6B1EB /* RawAdServiceParameters.swift in Sources */,
 				427B1BE6299E403F007D4E93 /* RawInterstitialAdWrapper.swift in Sources */,
 				427B1BE1299D2F70007D4E93 /* AdWrapper.swift in Sources */,
 				427B1BD2299A7E6E007D4E93 /* AdServiceProvider.swift in Sources */,
@@ -515,6 +545,7 @@
 				42166C3229DEB5F100095691 /* AdContextMenu.swift in Sources */,
 				42A4C86C28F6E02500A7FE40 /* RawBannerView.swift in Sources */,
 				427B1BDB299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift in Sources */,
+				42697DAF2A3B2A1900D6B1EB /* Bidon+Extensions.swift in Sources */,
 				42C59B9E28C61F1100544EDF /* HostView.swift in Sources */,
 				4224AA8328B8F92B00E8D886 /* AdEventModel.swift in Sources */,
 				42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */,
@@ -528,6 +559,7 @@
 				429F4D8828CF6AA700765BD7 /* Wave.swift in Sources */,
 				427B1C0F29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift in Sources */,
 				42BE439228C0E7CB000528E3 /* LocationPermission.swift in Sources */,
+				42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */,
 				427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */,
 				4276A234299549DA00EE3991 /* Constants.swift in Sources */,
 			);

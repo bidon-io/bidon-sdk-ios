@@ -28,18 +28,10 @@ final class AppodealAdService: NSObject, AdService {
     
     var verstion: String { APDSdkVersionString() }
     
-    var logLevel: LogLevel = .debug {
-        didSet {
-            Appodeal.setLogLevel(APDLogLevel(logLevel))
-            BidonSdk.logLevel = Bidon.Logger.Level(logLevel)
-        }
-    }
+    var parameters: AdServiceParameters = AppodealAdServiceParameters()
     
-    var isTestMode: Bool = false {
-        didSet {
-            Appodeal.setTestingEnabled(isTestMode)
-            BidonSdk.isTestMode = isTestMode
-        }
+    var segmentId: String? {
+        Appodeal.segmentId().stringValue
     }
     
     override init() {

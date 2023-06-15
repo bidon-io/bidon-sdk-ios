@@ -21,22 +21,21 @@ struct LossRequest: Request {
     }
     
     struct RequestBody: Encodable, Tokenized {
-        var device: DeviceModel?
-        var session: SessionModel?
-        var app: AppModel?
-        var user: UserModel?
-        var regs: RegulationsModel?
+        var device: DeviceModel
+        var session: SessionModel
+        var app: AppModel
+        var user: UserModel
+        var regs: RegulationsModel
+        var segment: SegmentModel
         var ext: String?
         var test: Bool
         var token: String?
-        var segmentId: String?
         var bid: ImpressionModel
         var externalWinner: ExternalWinner
     }
     
     struct ResponseBody: Decodable, Tokenized {
         var token: String?
-        var segmentId: String?
         var success: Bool
     }
     
@@ -52,6 +51,7 @@ struct LossRequest: Request {
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
+            segment: builder.segment,
             ext: builder.encodedExt,
             test: builder.testMode,
             bid: builder.imp,

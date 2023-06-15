@@ -36,13 +36,14 @@ public extension InjectedValues {
 
 public protocol SdkContext {
     var isTestMode: Bool { get }
-    var extras: [String: AnyHashable] { get }
 }
 
 
 internal protocol Sdk: SdkContext {
     var adaptersRepository: AdaptersRepository { get }
     var environmentRepository: EnvironmentRepository { get }
+    
+    func updateSegmentIfNeeded(_ segment: SegmentResponse?)
 }
 
 

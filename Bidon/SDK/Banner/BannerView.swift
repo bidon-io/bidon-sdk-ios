@@ -89,7 +89,7 @@ public final class BannerView: UIView, AdView {
     @objc
     public init(
         frame: CGRect,
-        placement: String = BidonSdk.defaultPlacement
+        placement: String = "default"
     ) {
         self.placement = placement
         super.init(frame: frame)
@@ -107,7 +107,7 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = BidonSdk.defaultMinPrice
+        with pricefloor: Price = .zero
     ) {
         adManager.loadAd(
             pricefloor: pricefloor,
@@ -131,7 +131,7 @@ public final class BannerView: UIView, AdView {
         let request = context.lossRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
             builder.withImpression(impression)
             builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
         }

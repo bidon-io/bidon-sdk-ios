@@ -118,7 +118,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
             let request = context.lossRequest { builder in
                 builder.withEnvironmentRepository(sdk.environmentRepository)
                 builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras, sdk.extras)
+                builder.withExt(extras)
                 builder.withImpression(impression)
                 builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
             }
@@ -143,7 +143,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withAuctionId(UUID().uuidString)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
         }
         
         Logger.verbose("Fullscreen ad manager performs request: \(request)")
@@ -155,6 +155,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
             
             switch result {
             case .success(let response):
+                self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response)
             case .failure(let error):
                 self.state = .idle
@@ -225,7 +226,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
             builder.withAdType(context.adType)
             builder.withMediationReport(report)
         }
@@ -244,7 +245,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
         let request = context.impressionRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras, sdk.extras)
+            builder.withExt(extras)
             builder.withImpression(impression)
             builder.withPath(path)
         }

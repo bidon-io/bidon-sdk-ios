@@ -11,7 +11,7 @@ import UIKit
 import AppTrackingTransparency
 
 
-final class UserManager: User, EnvironmentManager {
+final class UserManager: User, Environment {
     var idfa: String {
         ASIdentifierManager.shared().advertisingIdentifier.uuidString
     }

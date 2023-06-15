@@ -9,7 +9,7 @@ import Foundation
 
 
 #warning("Regulations")
-final class RegulationsManager: Regulations, EnvironmentManager {
+final class RegulationsManager: Regulations, Environment {
     @UserDefault(Constants.UserDefaultsKey.coppa, defaultValue: false)
     var coppa: Bool
     

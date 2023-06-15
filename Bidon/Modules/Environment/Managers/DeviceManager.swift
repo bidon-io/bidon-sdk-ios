@@ -13,7 +13,7 @@ import SystemConfiguration
 import Network
 
 
-final class DeviceManager: Device, EnvironmentManager {
+final class DeviceManager: Device, Environment {
     @MainThreadComputable(DeviceManager.userAgent)
     var userAgent: String
     

@@ -35,7 +35,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     )
     
     @objc public init(
-        placement: String = BidonSdk.defaultPlacement
+        placement: String = "default"
     ) {
         self.placement = placement
         super.init()
@@ -49,7 +49,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = BidonSdk.defaultMinPrice
+        with pricefloor: Price = .zero
     ) {
         manager.loadAd(pricefloor: pricefloor)
     }

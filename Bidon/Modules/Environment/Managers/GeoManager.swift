@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 
-final class GeoManager: NSObject, Geo, EnvironmentManager {
+final class GeoManager: NSObject, Geo, Environment {
     @Atomic
     var lat: Double = .zero
     
@@ -38,7 +38,7 @@ final class GeoManager: NSObject, Geo, EnvironmentManager {
         return UInt(Date.timestamp(.monotonic, units: .seconds) - updateTimestamp)
     }
     
-    var completion: EnvironmentManagerCompletion?
+    var completion: (() -> ())?
     
     private lazy var locationManager: CLLocationManager = DispatchQueue.bd.blocking { [unowned self] in
         let manager = CLLocationManager()
@@ -60,7 +60,7 @@ final class GeoManager: NSObject, Geo, EnvironmentManager {
 
 
 extension GeoManager {
-    func prepare(completion: @escaping EnvironmentManagerCompletion) {
+    func prepare(completion: @escaping () -> ()) {
         self.completion = completion
         locationManager.startUpdatingLocation()
     }

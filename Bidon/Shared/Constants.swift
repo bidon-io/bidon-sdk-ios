@@ -34,5 +34,6 @@ struct Constants {
         static var token = "BidonToken"
         static var idg = "BidonIdg"
         static var coppa = "BidonCoppa"
+        static var segmentId = "BidonSegmentId"
     }
 }

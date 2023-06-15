@@ -36,3 +36,14 @@ extension APDActivityType {
         }
     }
 }
+
+
+extension AppodealUserGender {
+    init(_ gender: Gender) {
+        switch gender {
+        case .male: self = .male
+        case .female: self = .female
+        case .other: self = .other
+        }
+    }
+}

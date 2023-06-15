@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-final class SessionManager: Session, EnvironmentManager {
+final class SessionManager: Session, Environment {
     let launchTimestamp: UInt = UInt(Date.timestamp(.wall))
     let launchTimestampMonotonic: UInt = UInt(Date.timestamp(.monotonic))
     

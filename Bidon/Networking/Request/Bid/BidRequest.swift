@@ -29,15 +29,15 @@ struct BidRequest: Request {
             var demands: BidonBiddingExtrasModel
         }
         
-        var device: DeviceModel?
-        var session: SessionModel?
-        var app: AppModel?
-        var user: UserModel?
-        var regs: RegulationsModel?
+        var device: DeviceModel
+        var session: SessionModel
+        var app: AppModel
+        var user: UserModel
+        var regs: RegulationsModel
+        var segment: SegmentModel
         var ext: String?
         var test: Bool
         var token: String?
-        var segmentId: String?
         var adapters: AdaptersInfo
         var imp: ImpModel
     }
@@ -66,7 +66,6 @@ struct BidRequest: Request {
         }
         
         var token: String?
-        var segmentId: String?
         var bid: BidModel
     }
     
@@ -82,6 +81,7 @@ struct BidRequest: Request {
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
+            segment: builder.segment,
             ext: builder.encodedExt,
             test: builder.testMode,
             adapters: builder.adapters,

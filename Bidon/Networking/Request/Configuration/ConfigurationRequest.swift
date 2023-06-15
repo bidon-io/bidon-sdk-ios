@@ -19,24 +19,24 @@ struct ConfigurationRequest: Request {
         var test: Bool
         var token: String?
         var ext: String?
-        var segmentId: String?
         var adapters: AdaptersInfo
-        var app: AppModel?
-        var regs: RegulationsModel?
-        var session: SessionModel?
-        var user: UserModel?
-        var device: DeviceModel?
+        var app: AppModel
+        var regs: RegulationsModel
+        var session: SessionModel
+        var user: UserModel
+        var device: DeviceModel
+        var segment: SegmentModel
     }
     
     struct ResponseBody: Decodable, Tokenized {
         var adaptersInitializationParameters: AdaptersInitialisationParameters
         var token: String?
-        var segmentId: String?
+        var segment: SegmentResponseModel?
         
         enum CodingKeys: String, CodingKey {
             case adaptersInitializationParameters = "init"
             case token = "token"
-            case segmentId = "segment_id"
+            case segment
         }
     }
     
@@ -52,7 +52,8 @@ struct ConfigurationRequest: Request {
             regs: builder.regulations,
             session: builder.session,
             user: builder.user,
-            device: builder.device
+            device: builder.device,
+            segment: builder.segment
         )
     }
 }

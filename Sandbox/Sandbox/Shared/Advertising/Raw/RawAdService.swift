@@ -23,17 +23,9 @@ final class RawAdService: NSObject, AdService {
     
     var verstion: String { "-" }
     
-    var logLevel: LogLevel = .debug {
-        didSet {
-            BidonSdk.logLevel = Bidon.Logger.Level(logLevel)
-        }
-    }
+    var segmentId: String?
     
-    var isTestMode: Bool = false {
-        didSet {
-            BidonSdk.isTestMode = isTestMode
-        }
-    }
+    var parameters: AdServiceParameters = RawAdServiceParameters()
     
     private lazy var interstitial = RawInterstitialAdWrapper()
     private lazy var rewardedAd = RawRewardedAdWrapper()

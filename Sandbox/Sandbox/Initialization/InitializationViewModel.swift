@@ -40,11 +40,11 @@ final class InitializationViewModel: ObservableObject, AdResponder {
     @Published var initializationState: InitializationState = .idle
     
     @Published var logLevel: LogLevel = .debug {
-        didSet { adService.logLevel = logLevel }
+        didSet { adService.parameters.logLevel = logLevel }
     }
     
     @Published var isTestMode: Bool = false {
-        didSet { adService.isTestMode = isTestMode }
+        didSet { adService.parameters.isTestMode = isTestMode }
     }
     
     @Published var host = HostView.Model(
@@ -54,7 +54,7 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         didSet { adService.bidOnURL = host.baseURL }
     }
     
-    @Published var mediation: Mediation = .appodeal {
+    @Published var mediation: Mediation = .none {
         didSet {
             switch mediation {
             case .none:

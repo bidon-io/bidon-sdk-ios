@@ -18,7 +18,7 @@ final class AdServiceProvider: ObservableObject {
 
     static let shared = AdServiceProvider()
     
-    var service: AdService = AppodealAdService()
+    var service: AdService = RawAdService()
     
     func application(
         _ application: UIApplication,

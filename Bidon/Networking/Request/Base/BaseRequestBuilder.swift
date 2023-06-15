@@ -16,43 +16,57 @@ class BaseRequestBuilder {
     private var environmentRepository: EnvironmentRepository!
     
     private var geo: GeoModel? {
-        guard
-            let manager = environmentRepository.environment(GeoManager.self),
-            manager.isAvailable
-        else { return nil }
-
+        let manager = environmentRepository.environment(GeoManager.self)
+        guard manager.isAvailable else { return nil }
+        
         return GeoModel(manager)
     }
     
-    var device: DeviceModel? {
+    var device: DeviceModel {
         let manager = environmentRepository.environment(DeviceManager.self)
-        return manager.map { DeviceModel($0, geo: geo) }
+        return DeviceModel(manager, geo: geo)
     }
     
-    var session: SessionModel? {
+    var session: SessionModel {
         let manager = environmentRepository.environment(SessionManager.self)
-        return manager.map { SessionModel($0) }
+        return SessionModel(manager)
     }
     
-    var app: AppModel? {
+    var app: AppModel {
         let manager = environmentRepository.environment(AppManager.self)
-        return manager.map { AppModel($0) }
+        return AppModel(manager)
     }
     
-    var user: UserModel? {
+    var user: UserModel {
         let manager = environmentRepository.environment(UserManager.self)
-        return manager.map { UserModel($0) }
+        return UserModel(manager)
     }
     
-    var regulations: RegulationsModel? {
+    var regulations: RegulationsModel {
         let manager = environmentRepository.environment(RegulationsManager.self)
-        return manager.map { RegulationsModel($0) }
+        return RegulationsModel(manager)
+    }
+    
+    var segment: SegmentModel {
+        let manager = environmentRepository.environment(SegmentManager.self)
+        return SegmentModel(manager)
     }
     
     var encodedExt: String? {
-        ext
-            .flatMap { try? JSONSerialization.data(withJSONObject: $0, options: []) }
-            .flatMap { String(data: $0, encoding: .utf8) }
+        let sdkExtras: [String: Any] = environmentRepository
+            .environment(ExtrasManager.self)
+            .extras
+        
+        let extras: [String: Any] = ext.map { ext in
+            ext.merging(sdkExtras) { current, _ in
+                return current
+            }
+        } ?? sdkExtras
+        
+        return (
+            try? JSONSerialization.data(withJSONObject: extras, options: [])
+        )
+        .flatMap { String(data: $0, encoding: .utf8) }
     }
     
     @discardableResult

@@ -26,15 +26,15 @@ struct AuctionRequest: Request {
             var rewarded: RewardedAuctionContextModel?
         }
         
-        var device: DeviceModel?
-        var session: SessionModel?
-        var app: AppModel?
-        var user: UserModel?
-        var regs: RegulationsModel?
+        var device: DeviceModel
+        var session: SessionModel
+        var app: AppModel
+        var user: UserModel
+        var regs: RegulationsModel
+        var segment: SegmentModel
         var ext: String?
         var test: Bool
         var token: String?
-        var segmentId: String?
         var adObject: AdObjectModel
         var adapters: AdaptersInfo
     }
@@ -44,8 +44,8 @@ struct AuctionRequest: Request {
         var lineItems: [LineItemModel]
         var pricefloor: Price
         var token: String?
-        var segmentId: String?
         var auctionId: String
+        var segment: SegmentResponseModel?
         var auctionConfigurationId: Int
     }
     
@@ -61,6 +61,7 @@ struct AuctionRequest: Request {
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
+            segment: builder.segment,
             ext: builder.encodedExt,
             test: builder.testMode,
             adObject: builder.adObject,
