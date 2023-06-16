@@ -27,7 +27,7 @@ struct RoundReportModel: RoundReport {
     var winnerECPM: Price?
     var winnerNetworkId: String?
     var demands: [DemandReportType]
-    var bidding: [DemandReportType]
+    var bidding: DemandReportType?
 }
 
 
@@ -42,7 +42,7 @@ struct AuctionResultReportModel: AuctionResultReport {
 
 
 struct DemandReportModel: DemandReport {
-    var networkId: String
+    var networkId: String?
     var adUnitId: String? = nil
     var eCPM: Price?
     var status: DemandReportStatus = .unknown

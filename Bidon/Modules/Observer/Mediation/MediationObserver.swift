@@ -16,7 +16,7 @@ protocol MediationObserver: AnyObject {
     var adType: AdType { get }
     var report: MediationAttemptReportType { get }
     
-    func log(_ event: MediationEvent)
+    func log<EventType: MediationEvent>(_ event: EventType)
 }
 
 

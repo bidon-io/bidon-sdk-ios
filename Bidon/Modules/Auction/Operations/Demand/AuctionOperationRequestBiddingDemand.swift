@@ -72,8 +72,8 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
                 switch result {
                 case .success(let encoder):
                     self.encoders[adapter.identifier] = encoder
-                case .failure:
-                    self.logNoBidEvent(bidders: [adapter], reason: .unscpecifiedException)
+                default:
+                    break
                 }
             }
             
@@ -103,7 +103,12 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         bidState = .bidding(bidders)
         
         // Observe bid request start
-        logBidRequestSentEvent(bidders: bidders)
+        observer.log(
+            BiddingDemandProviderRequestBidMediationEvent(
+                round: round,
+                adapters: bidders
+            )
+        )
         
         // Make bid request
         let request = context.bidRequest { builder in
@@ -125,7 +130,13 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
                 self.proceedBidResponse(response, bidders: bidders)
             case .failure:
                 self.bidState = .unknown
-                self.logNoBidEvent(bidders: bidders)
+                self.observer.log(
+                    BiddingDemandProviderBidErrorMediationEvent(
+                        round: self.round,
+                        adapters: bidders,
+                        error: .noBid
+                    )
+                )
                 self.finish()
             }
         }
@@ -139,17 +150,26 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
             bidState = .unknown
-            logNoBidEvent(bidders: bidders)
+            observer.log(
+                BiddingDemandProviderBidErrorMediationEvent(
+                    round: self.round,
+                    adapters: bidders,
+                    error: .unknownAdapter
+                )
+            )
             finish()
             return
         }
         
         bidState = .filling(adapter)
-        let bidId = UUID().uuidString
         
-        logNoBidEvent(bidders: bidders.filter { $0.identifier != adapter.identifier })
-        logBidEvent(bidId: bidId, bidder: adapter, response: response)
-        logFillEvent(bidId: bidId, bidder: adapter, response: response)
+        observer.log(
+            BiddingDemandProviderFillRequestMediationEvent(
+                round: self.round,
+                adapter: adapter,
+                bid: response.bid
+            )
+        )
         
         provider.prepareBid(with: response.bid.payload) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
@@ -157,12 +177,18 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             defer { self.finish() }
             
             switch result {
-            case .failure:
+            case .failure(let error):
                 self.bidState = .unknown
-                self.logNoFillEvent(bidder: adapter)
+                self.observer.log(
+                    BiddingDemandProviderFillErrorMediationEvent(
+                        round: self.round,
+                        adapter: adapter,
+                        error:error
+                    )
+                )
             case .success(let ad):
                 let bid = BidType(
-                    id: bidId,
+                    id: UUID().uuidString,
                     auctionId: self.observer.auctionId,
                     auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
@@ -172,113 +198,15 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
                 )
                 
                 self.bidState = .ready(bid)
-                self.logFillEvent(bidder: adapter, bid: bid)
+                self.observer.log(
+                    BiddingDemandProviderDidFillMediationEvent(
+                        round: self.round,
+                        adapter: adapter,
+                        bid: bid
+                    )
+                )
             }
         }
-    }
-    
-    // MARK: Logging
-    private func logBidRequestSentEvent(bidders: [AdapterType]) {
-        bidders.forEach { adapter in
-            let event = MediationEvent.bidRequest(
-                round: round,
-                adapter: adapter,
-                isBidding: true
-            )
-            
-            observer.log(event)
-        }
-    }
-    
-    private func logNoBidEvent(
-        bidders: [AdapterType],
-        reason: MediationError = .noBid
-    ) {
-        bidders.forEach { adapter in
-            let event = MediationEvent.bidError(
-                round: round,
-                adapter: adapter,
-                error: reason,
-                isBidding: true
-            )
-            observer.log(event)
-        }
-    }
-    
-    private func logBidEvent(
-        bidId: String,
-        bidder: AdapterType,
-        response: BidRequest.ResponseBody
-    ) {
-        let bid = BidType(
-            id: bidId,
-            auctionId: observer.auctionId,
-            auctionConfigurationId: observer.auctionConfigurationId,
-            roundId: round.id,
-            adType: observer.adType,
-            ad: BidResponseAd(bid: response.bid),
-            provider: bidder.provider
-        )
-        
-        let event = MediationEvent.bidResponse(
-            round: round,
-            adapter: bidder,
-            bid: bid,
-            isBidding: true
-        )
-        observer.log(event)
-    }
-    
-    private func logFillEvent(
-        bidId: String,
-        bidder: AdapterType,
-        response: BidRequest.ResponseBody
-    ) {
-        let bid = BidType(
-            id: bidId,
-            auctionId: observer.auctionId,
-            auctionConfigurationId: observer.auctionConfigurationId,
-            roundId: round.id,
-            adType: observer.adType,
-            ad: BidResponseAd(bid: response.bid),
-            provider: bidder.provider
-        )
-        
-        let event = MediationEvent.fillRequest(
-            round: round,
-            adapter: bidder,
-            bid: bid,
-            isBidding: true
-        )
-        
-        observer.log(event)
-    }
-    
-    private func logNoFillEvent(
-        bidder: AdapterType,
-        reason: MediationError = .noFill
-    ) {
-        let event = MediationEvent.fillError(
-            round: round,
-            adapter: bidder,
-            error: reason,
-            isBidding: true
-        )
-        
-        observer.log(event)
-    }
-    
-    private func logFillEvent(
-        bidder: AdapterType,
-        bid: any Bid
-    ) {
-        let event = MediationEvent.fillResponse(
-            round: round,
-            adapter: bidder,
-            bid: bid,
-            isBidding: true
-        )
-        observer.log(event)
     }
 }
 
@@ -287,17 +215,23 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
     func timeoutReached() {
         guard isExecuting else { return }
         defer { finish() }
-
+        
         switch bidState {
         case .prepare(let bidders), .bidding(let bidders):
-            logNoBidEvent(
-                bidders: bidders,
-                reason: .bidTimeoutReached
+            observer.log(
+                BiddingDemandProviderBidErrorMediationEvent(
+                    round: round,
+                    adapters: bidders,
+                    error: .bidTimeoutReached
+                )
             )
         case .filling(let bidder):
-            logNoFillEvent(
-                bidder: bidder,
-                reason: .fillTimeoutReached
+            observer.log(
+                BiddingDemandProviderFillErrorMediationEvent(
+                    round: round,
+                    adapter: bidder,
+                    error: .fillTimeoutReached
+                )
             )
         default:
             break

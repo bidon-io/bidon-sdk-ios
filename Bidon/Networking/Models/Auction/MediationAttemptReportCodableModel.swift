@@ -10,7 +10,7 @@ import Foundation
 
 struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     struct DemandReportModel: DemandReport, Codable {
-        var networkId: String
+        var networkId: String?
         var adUnitId: String?
         var status: DemandReportStatus
         var eCPM: Price?
@@ -48,7 +48,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var winnerECPM: Price?
         var winnerNetworkId: String?
         var demands: [DemandReportModel]
-        var bidding: [DemandReportModel]
+        var bidding: DemandReportModel?
         
         enum CodingKeys: String, CodingKey {
             case roundId = "id"

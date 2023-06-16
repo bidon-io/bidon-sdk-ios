@@ -35,7 +35,9 @@ where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType ==
         
         let winner = bids.first
         
-        observer.log(.auctionFinish(winner: winner))
+        observer.log(
+            AuctionFinishMediationEvent(bid: winner)
+        )
         
         let result = result(for: bids, winner: winner)
         let completion = self.completion

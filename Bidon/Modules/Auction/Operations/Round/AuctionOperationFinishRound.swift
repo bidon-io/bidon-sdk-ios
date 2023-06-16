@@ -50,12 +50,12 @@ where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType ==
         
         bids.forEach(adRevenueObserver.observe)
         
-        let event = MediationEvent.roundFinish(
-            round: round,
-            winner: bids.first
+        observer.log(
+            RoundFinishMediationEvent(
+                round: round,
+                bid: bids.first
+            )
         )
-        
-        observer.log(event)
     }
 }
 

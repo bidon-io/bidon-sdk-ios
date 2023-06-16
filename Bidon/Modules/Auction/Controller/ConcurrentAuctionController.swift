@@ -86,8 +86,9 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             // Instantiate timeout operation
             let timeoutOperation = AuctionOperationRoundTimeout(
                 observer: mediationObserver,
-                interval: round.timeout
+                round: round
             )
+            
             try? auction.add(node: timeoutOperation)
             try? auction.addEdge(from: startRoundOperation, to: timeoutOperation)
             
@@ -149,9 +150,9 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         guard let adapter = adapters.first(where: { $0.identifier == identifier && !$0.isBiddingAdapter }) else {
             return AuctionOperationLogEvent(
                 observer: mediationObserver,
-                event: .unknownAdapter(
+                event: DemandProviderNotFoundMediationEvent(
                     round: round,
-                    adapter: UnknownAdapter(identifier: identifier)
+                    adapter: identifier
                 )
             )
         }
@@ -176,9 +177,9 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         } else {
             return AuctionOperationLogEvent(
                 observer: mediationObserver,
-                event: .unknownAdapter(
+                event: DemandProviderNotFoundMediationEvent(
                     round: round,
-                    adapter: UnknownAdapter(identifier: identifier)
+                    adapter: identifier
                 )
             )
         }
