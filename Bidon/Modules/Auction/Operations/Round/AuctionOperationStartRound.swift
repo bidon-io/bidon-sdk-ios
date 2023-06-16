@@ -43,12 +43,12 @@ where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType ==
     override func main() {
         super.main()
         
-        let event = MediationEvent.roundStart(
-            round: round,
-            pricefloor: pricefloor
+        observer.log(
+            RoundStartMediationEvent(
+                round: round,
+                pricefloor: pricefloor
+            )
         )
-        
-        observer.log(event)
     }
 }
 

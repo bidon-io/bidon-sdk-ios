@@ -14,9 +14,6 @@ struct UserModel: User, Codable {
     var idg: String
     var idfa: String
     
-    #warning("COPPA")
-    var coppa: Bool = false
-    
     init(_ user: User) {
         self.idfa = user.idfa
         self.idfv = user.idfv

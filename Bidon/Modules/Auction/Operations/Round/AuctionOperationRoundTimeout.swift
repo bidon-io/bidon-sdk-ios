@@ -14,22 +14,29 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
     
     let interval: TimeInterval
     let observer: AnyMediationObserver
-
+    let round: AuctionRound
+    
     private var operations = NSHashTable<Operation>.weakObjects()
     
     init(
         observer: AnyMediationObserver,
-        interval: TimeInterval
+        round: AuctionRound
     ) {
         self.observer = observer
-
-        self.interval = Date.MeasurementUnits.milliseconds.convert(interval, to: .seconds)
+        self.round = round
+        self.interval = Date.MeasurementUnits.milliseconds.convert(
+            round.timeout,
+            to: .seconds
+        )
         
         super.init()
     }
     
     func invalidate() {
-        observer.log(.invalidateRoundTimer)
+        observer.log(
+            RoundInvalidateTimeoutMediationEvent(round: round)
+        )
+        
         timer?.invalidate()
         finish()
     }
@@ -46,19 +53,29 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
             return
         }
         
-        observer.log(.scheduleRoundTimer(interval: interval))
+        observer.log(
+            RoundScheduleTimeoutMediationEvent(
+                round: round,
+                interval: interval
+            )
+        )
         
         let timer = Timer(
             timeInterval: interval,
             repeats: false
         ) { [weak self] _ in
-            self?.observer.log(.roundTimerFired)
-            self?.operations
+            guard let self = self, self.isExecuting else { return }
+            
+            self.observer.log(
+                RoundTimeoutReachedMediationEvent(round: self.round)
+            )
+            
+            self.operations
                 .allObjects
                 .compactMap { $0 as? any AuctionOperationRequestDemand }
                 .forEach { $0.timeoutReached() }
             
-            self?.finish()
+            self.finish()
         }
         
         RunLoop.main.add(timer, forMode: .default)

@@ -59,13 +59,13 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
     }
     
     private func bid(programmatic provider: any ProgrammaticDemandProvider) {
-        let event = MediationEvent.bidRequest(
-            round: round,
-            adapter: adapter,
-            isBidding: false
+        observer.log(
+            ProgrammaticDemandProviderRequestBidMediationEvent(
+                round: round,
+                adapter: adapter
+            )
         )
         
-        observer.log(event)
         bidState = .bidding
         
         provider.bid(pricefloor) { [weak self, unowned provider] result in
@@ -73,16 +73,15 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
             
             switch result {
             case .failure(let error):
-                let event = MediationEvent.bidError(
-                    round: self.round,
-                    adapter: self.adapter,
-                    error: error,
-                    isBidding: false
+                self.observer.log(
+                    ProgrammaticDemandProviderBidErrorMediationEvent(
+                        round: self.round,
+                        adapter: self.adapter,
+                        error: error
+                    )
                 )
                 
-                self.observer.log(event)
                 self.bidState = .unknown
-                
                 self.finish()
             case .success(let ad):
                 let bid = BidType(
@@ -95,14 +94,13 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                     provider: self.adapter.provider
                 )
                 
-                let event = MediationEvent.bidResponse(
-                    round: self.round,
-                    adapter: self.adapter,
-                    bid: bid,
-                    isBidding: false
+                self.observer.log(
+                    ProgrammaticDemandProviderDidReceiveBidMediationEvent(
+                        round: self.round,
+                        adapter: self.adapter,
+                        bid: bid
+                    )
                 )
-                
-                self.observer.log(event)
                 self.bidState = .filling(bid)
                 
                 DispatchQueue.main.async { [unowned self] in
@@ -113,51 +111,39 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
     }
     
     private func fill(programmatic provider: any ProgrammaticDemandProvider, bid: BidType) {
-        let event = MediationEvent.fillRequest(
-            round: round,
-            adapter: adapter,
-            bid: bid,
-            isBidding: false
+        observer.log(
+            ProgrammaticDemandProviderRequestFillMediationEvent(
+                round: round,
+                adapter: adapter,
+                bid: bid
+            )
         )
-        observer.log(event)
         
         provider.fill(opaque: bid.ad) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
             
             switch result {
             case .failure(let error):
-                let event = MediationEvent.fillError(
-                    round: self.round,
-                    adapter: self.adapter,
-                    error: error,
-                    isBidding: false
+                self.observer.log(
+                    ProgrammaticDemandProviderDidFailToFillBidMediationEvent(
+                        round: self.round,
+                        adapter: self.adapter,
+                        error: error
+                    )
                 )
                 
-                self.observer.log(event)
                 self.bidState = .unknown
-                
                 self.finish()
-            case .success(let ad):
-                let result = BidType(
-                    id: bid.id,
-                    auctionId: self.observer.auctionId,
-                    auctionConfigurationId: self.observer.auctionConfigurationId,
-                    roundId: self.round.id,
-                    adType: self.observer.adType,
-                    ad: ad,
-                    provider: self.adapter.provider
+            case .success:
+                self.observer.log(
+                    ProgrammaticDemandProviderDidFillBidMediationEvent(
+                        round: self.round,
+                        adapter: self.adapter,
+                        bid: bid
+                    )
                 )
                 
-                let event = MediationEvent.fillResponse(
-                    round: self.round,
-                    adapter: self.adapter,
-                    bid: bid,
-                    isBidding: false
-                )
-                
-                self.observer.log(event)
-                self.bidState = .ready(result)
-                
+                self.bidState = .ready(bid)
                 self.finish()
             }
         }
@@ -168,34 +154,33 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
 extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDemand {
     func timeoutReached() {
         guard isExecuting else { return }
-
-        let event: MediationEvent
+        defer { finish() }
         
         switch bidState {
         case .bidding:
-            event = .bidError(
-                round: round,
-                adapter: adapter,
-                error: .bidTimeoutReached,
-                isBidding: false
+            observer.log(
+                ProgrammaticDemandProviderBidErrorMediationEvent(
+                    round: round,
+                    adapter: adapter,
+                    error: MediationError.bidTimeoutReached
+                )
             )
         case .filling:
-            event = .fillError(
-                round: round,
-                adapter: adapter,
-                error: .fillTimeoutReached,
-                isBidding: false
+            observer.log(
+                ProgrammaticDemandProviderDidFailToFillBidMediationEvent(
+                    round: round,
+                    adapter: adapter,
+                    error: MediationError.bidTimeoutReached
+                )
             )
         default:
-            event = .bidError(
-                round: round,
-                adapter: adapter,
-                error: .unscpecifiedException,
-                isBidding: false
+            observer.log(
+                ProgrammaticDemandProviderBidErrorMediationEvent(
+                    round: round,
+                    adapter: adapter,
+                    error: MediationError.unscpecifiedException
+                )
             )
         }
-        
-        observer.log(event)
-        finish()
     }
 }

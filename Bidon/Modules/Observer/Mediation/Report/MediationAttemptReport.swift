@@ -9,7 +9,7 @@ import Foundation
 
 
 protocol DemandReport {
-    var networkId: String { get }
+    var networkId: String? { get }
     var adUnitId: String? { get }
     var status: DemandReportStatus { get }
     var eCPM: Price? { get }
@@ -28,7 +28,7 @@ protocol RoundReport {
     var winnerECPM: Price? { get }
     var winnerNetworkId: String? { get }
     var demands: [DemandReportType] { get }
-    var bidding: [DemandReportType] { get }
+    var bidding: DemandReportType? { get }
 }
 
 

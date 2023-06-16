@@ -24,7 +24,7 @@ final class AuctionOperationStart: Operation {
     
     override func main() {
         super.main()
-        observer.log(.auctionStart)
+        observer.log(AuctionStartMediationEvent())
     }
 }
 

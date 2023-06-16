@@ -9,8 +9,8 @@ import Foundation
 
 
 fileprivate struct DemandObservation {
-    var networkId: String
     var roundId: String
+    var networkId: String?
     var adUnitId: String?
     var bidId: String? = nil
     var status: DemandReportStatus = .unknown
@@ -49,7 +49,7 @@ final class BaseMediationObserver: MediationObserver {
                 winnerECPM: winner?.eCPM,
                 winnerNetworkId: winner?.networkId,
                 demands: demands.filter { !$0.isBidding }.map { DemandReportModel($0) },
-                bidding: demands.filter { $0.isBidding }.map { DemandReportModel($0) }
+                bidding: demands.first { $0.isBidding }.map { DemandReportModel($0) }
             )
         }
         
@@ -93,145 +93,270 @@ final class BaseMediationObserver: MediationObserver {
         self.auctionConfigurationId = configurationId
     }
     
-    func log(_ event: MediationEvent) {
+    func log<EventType>(_ event: EventType) where EventType : MediationEvent {
         Logger.debug("[\(adType)] [Auction: \(auctionId)] " + event.description)
         
         switch event {
-        case .auctionStart:
-            startTimestamp = Date.timestamp(.wall, units: .milliseconds)
-        case .roundStart(let round, let pricefloor):
-            $rounds.mutate {
-                $0.append(
-                    RoundObservation(
-                        roundId: round.id,
-                        pricefloor: pricefloor
-                    )
-                )
-            }
-        case .lineItemNotFound(let round, let adapter):
-            $demands.mutate {
-                $0.append(
-                    DemandObservation(
-                        networkId: adapter.identifier,
-                        roundId: round.id,
-                        status: .error(.noAppropriateAdUnitId),
-                        isBidding: false
-                    )
-                )
-            }
-        case .unknownAdapter(let round, let adapter):
-            $demands.mutate {
-                $0.append(
-                    DemandObservation(
-                        networkId: adapter.identifier,
-                        roundId: round.id,
-                        status: .error(.unknownAdapter),
-                        isBidding: false
-                    )
-                )
-            }
-        case .bidRequest(let round, let adapter, let isBidding):
-            $demands.mutate {
-                $0.append(
-                    DemandObservation(
-                        networkId: adapter.identifier,
-                        roundId: round.id,
-                        isBidding: isBidding,
-                        bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-                    )
-                )
-            }
-        case .bidError(let round, let adapter, let error, let isBidding):
-            $demands.update(
-                round: round,
-                adapter: adapter,
-                isBidding: isBidding
-            ) { obsevation in
-                obsevation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-                obsevation.status = DemandReportStatus(error)
-            }
-        case .bidResponse(let round, let adapter, let bid, let isBidding):
-            $demands.update(
-                round: round,
-                adapter: adapter,
-                isBidding: isBidding
-            ) { obsevation in
-                obsevation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-                obsevation.bidId = bid.id
-                obsevation.eCPM = bid.eCPM
-            }
-        case .loadRequest(let round, let adapter, let lineItem):
-            $demands.mutate {
-                $0.append(
-                    DemandObservation(
-                        networkId: adapter.identifier,
-                        roundId: round.id,
-                        adUnitId: lineItem.adUnitId,
-                        eCPM: lineItem.pricefloor,
-                        isBidding: false,
-                        fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-                    )
-                )
-            }
-        case .loadResponse(let round, let adapter, let bid):
-            $demands.update(
-                round: round,
-                adapter: adapter
-            ) { obsevation in
-                obsevation.bidId = bid.id
-                obsevation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            }
-        case .fillRequest(let round, let adapter, _, let isBidding):
-            $demands.update(
-                round: round,
-                adapter: adapter,
-                isBidding: isBidding
-            ) { obsevation in
-                obsevation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            }
-        case .fillError(let round, let adapter, let error, let isBidding):
-            $demands.update(
-                round: round,
-                adapter: adapter,
-                isBidding: isBidding
-            ) { obsevation in
-                obsevation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-                obsevation.status = DemandReportStatus(error)
-            }
-        case .loadError(let round, let adapter, let error):
-            $demands.update(
-                round: round,
-                adapter: adapter
-            ) { obsevation in
-                obsevation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-                obsevation.status = DemandReportStatus(error)
-            }
-        case .fillResponse(let round, let adapter, _, let isBidding):
-            $demands.update(
-                round: round,
-                adapter: adapter,
-                isBidding: isBidding
-            ) { obsevation in
-                obsevation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            }
-        case .roundFinish(_, let winner):
-            $demands.update(bid: winner) { observation in
-                observation.isRoundWinner = true
-            }
-        case .auctionFinish(let winner):
-            finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            $demands.update(
-                condition: { $0.status.isUnknown }
-            ) { observation in
-                if observation.bidId == winner?.id {
-                    observation.status = .win
-                    observation.isAuctionWinner = true
-                } else {
-                    observation.status = .lose
-                }
-            }
+        // Auction level
+        case let _event as AuctionStartMediationEvent:
+            recordAuctionStartMediationEvent(_event)
+        case let _event as AuctionFinishMediationEvent:
+            recordAuctionFinishMediationEvent(_event)
+        // Round level
+        case let _event as RoundStartMediationEvent:
+            recordRoundStartMediationEvent(_event)
+        case let _event as RoundFinishMediationEvent:
+            recordRoundFinishMediationEvent(_event)
+        // Abstract demand level
+        case let _event as DemandProviderNotFoundMediationEvent:
+            recordDemandProviderNotFoundMediationEvent(_event)
+        // Direct demand level
+        case let _event as DirectDemandProviderLineItemNotFoundMediationEvent:
+            recordDirectDemandProviderLineItemNotFoundMediationEvent(_event)
+        case let _event as DirectDemandProividerLoadRequestMediationEvent:
+            recordDirectDemandProividerLoadRequestMediationEvent(_event)
+        case let _event as DirectDemandProividerDidFailToLoadMediationEvent:
+            recordDirectDemandProividerDidFailToLoadMediationEvent(_event)
+        // Programmatic demand level
+        case let _event as ProgrammaticDemandProviderRequestBidMediationEvent:
+            recordProgrammaticDemandProviderRequestBidMediationEvent(_event)
+        case let _event as ProgrammaticDemandProviderBidErrorMediationEvent:
+            recordProgrammaticDemandProviderBidErrorMediationEvent(_event)
+        case let _event as ProgrammaticDemandProviderDidReceiveBidMediationEvent:
+            recordProgrammaticDemandProviderDidReceiveBidMediationEvent(_event)
+        case let _event as ProgrammaticDemandProviderRequestFillMediationEvent:
+            recordProgrammaticDemandProviderRequestFillMediationEvent(_event)
+        case let _event as ProgrammaticDemandProviderDidFailToFillBidMediationEvent:
+            recordProgrammaticDemandProviderDidFailToFillBidMediationEvent(_event)
+        case let _event as ProgrammaticDemandProviderDidFillBidMediationEvent:
+            recordProgrammaticDemandProviderDidFillBidMediationEvent(_event)
+        // Bidding demand level
+        case let _event as BiddingDemandProviderRequestBidMediationEvent:
+            recordBiddingDemandProviderRequestBidMediationEvent(_event)
+        case let _event as BiddingDemandProviderBidErrorMediationEvent:
+            recordBiddingDemandProviderBidErrorMediationEvent(_event)
+        case let _event as BiddingDemandProviderFillRequestMediationEvent:
+            recordBiddingDemandProviderFillRequestMediationEvent(_event)
+        case let _event as BiddingDemandProviderFillErrorMediationEvent:
+            recordBiddingDemandProviderFillErrorMediationEvent(_event)
+        case let _event as BiddingDemandProviderDidFillMediationEvent:
+            recordBiddingDemandProviderDidFillMediationEvent(_event)
         default:
             break
+        }
+    }
+}
+
+private extension BaseMediationObserver {
+    // MARK: Auction Events
+    func recordAuctionStartMediationEvent(_ event: AuctionStartMediationEvent) {
+        startTimestamp = Date.timestamp(.wall, units: .milliseconds)
+    }
+    
+    func recordAuctionFinishMediationEvent(_ event: AuctionFinishMediationEvent) {
+        finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        $demands.update(
+            condition: { $0.status.isUnknown }
+        ) { observation in
+            if observation.bidId == event.bid?.id {
+                observation.status = .win
+                observation.isAuctionWinner = true
+            } else {
+                observation.status = .lose
+            }
+        }
+    }
+    
+    // MARK: Round Events
+    func recordRoundStartMediationEvent(_ event: RoundStartMediationEvent) {
+        $rounds.mutate {
+            $0.append(
+                RoundObservation(
+                    roundId: event.round.id,
+                    pricefloor: event.pricefloor
+                )
+            )
+        }
+    }
+    
+    private func recordRoundFinishMediationEvent(_ event: RoundFinishMediationEvent) {
+        $demands.update(bid: event.bid) { observation in
+            observation.isRoundWinner = true
+        }
+    }
+    
+    // MARK: Abstract Demand Provider Events
+    func recordDemandProviderNotFoundMediationEvent(_ event: DemandProviderNotFoundMediationEvent) {
+        $demands.mutate {
+            $0.append(
+                DemandObservation(
+                    roundId: event.round.id,
+                    networkId: event.adapter.identifier,
+                    status: .error(.unknownAdapter),
+                    isBidding: false
+                )
+            )
+        }
+    }
+    
+    // MARK: Direct Demand Provider Events
+    func recordDirectDemandProviderLineItemNotFoundMediationEvent(_ event: DirectDemandProviderLineItemNotFoundMediationEvent) {
+        $demands.mutate {
+            $0.append(
+                DemandObservation(
+                    roundId: event.round.id,
+                    networkId: event.adapter.identifier,
+                    status: .error(.noAppropriateAdUnitId),
+                    isBidding: false
+                )
+            )
+        }
+    }
+    
+    func recordDirectDemandProividerLoadRequestMediationEvent(_ event: DirectDemandProividerLoadRequestMediationEvent) {
+        $demands.mutate {
+            $0.append(
+                DemandObservation(
+                    roundId: event.round.id,
+                    networkId: event.adapter.identifier,
+                    adUnitId: event.lineItem.adUnitId,
+                    eCPM: event.lineItem.pricefloor,
+                    isBidding: false,
+                    fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                )
+            )
+        }
+    }
+    
+    func recordDirectDemandProividerDidFailToLoadMediationEvent(_ event: DirectDemandProividerDidFailToLoadMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter
+        ) { observation in
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.status = DemandReportStatus(event.error)
+        }
+    }
+    
+    // MARK: Programmatic Demand Provider Events
+    func recordProgrammaticDemandProviderRequestBidMediationEvent(_ event: ProgrammaticDemandProviderRequestBidMediationEvent) {
+        $demands.mutate {
+            $0.append(
+                DemandObservation(
+                    roundId: event.round.id,
+                    networkId: event.adapter.identifier,
+                    isBidding: false,
+                    bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                )
+            )
+        }
+    }
+    
+    func recordProgrammaticDemandProviderBidErrorMediationEvent(_ event: ProgrammaticDemandProviderBidErrorMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter,
+            isBidding: false
+        ) { observation in
+            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.status = DemandReportStatus(event.error)
+        }
+    }
+    
+    private func recordProgrammaticDemandProviderDidReceiveBidMediationEvent(_ event: ProgrammaticDemandProviderDidReceiveBidMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter,
+            isBidding: false
+        ) { observation in
+            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.bidId = event.bid.id
+            observation.eCPM = event.bid.eCPM
+        }
+    }
+    
+    func recordProgrammaticDemandProviderRequestFillMediationEvent(_ event: ProgrammaticDemandProviderRequestFillMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter,
+            isBidding: false
+        ) { observation in
+            observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        }
+    }
+    
+    func recordProgrammaticDemandProviderDidFailToFillBidMediationEvent(_ event: ProgrammaticDemandProviderDidFailToFillBidMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter,
+            isBidding: false
+        ) { observation in
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.status = DemandReportStatus(event.error)
+        }
+    }
+    
+    func recordProgrammaticDemandProviderDidFillBidMediationEvent(_ event: ProgrammaticDemandProviderDidFillBidMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter,
+            isBidding: false
+        ) { observation in
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        }
+    }
+    
+    // MARK: Bidding Demand Provider Events
+    func recordBiddingDemandProviderRequestBidMediationEvent(_ event: BiddingDemandProviderRequestBidMediationEvent) {
+        $demands.mutate {
+            $0.append(
+                DemandObservation(
+                    roundId: event.round.id,
+                    isBidding: true,
+                    bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                )
+            )
+        }
+    }
+
+    func recordBiddingDemandProviderBidErrorMediationEvent(_ event: BiddingDemandProviderBidErrorMediationEvent) {
+        $demands.update(
+            round: event.round,
+            isBidding: true
+        ) { observation in
+            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.status = DemandReportStatus(event.error)
+        }
+    }
+
+    func recordBiddingDemandProviderFillRequestMediationEvent(_ event: BiddingDemandProviderFillRequestMediationEvent) {
+        $demands.update(
+            round: event.round,
+            isBidding: true
+        ) { observation in
+            observation.networkId = event.adapter.identifier
+            observation.eCPM = event.bid.price
+            observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        }
+    }
+
+    func recordBiddingDemandProviderFillErrorMediationEvent(_ event: BiddingDemandProviderFillErrorMediationEvent) {
+        $demands.update(
+            round: event.round,
+            isBidding: true
+        ) { observation in
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+            observation.status = DemandReportStatus(event.error)
+        }
+    }
+
+    func recordBiddingDemandProviderDidFillMediationEvent(_ event: BiddingDemandProviderDidFillMediationEvent) {
+        $demands.update(
+            round: event.round,
+            isBidding: true
+        ) { observation in
+            observation.eCPM = event.bid.eCPM
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
     }
 }
@@ -268,12 +393,12 @@ private extension Atomic where Value == [DemandObservation] {
     
     func update(
         round: AuctionRound,
-        adapter: Adapter,
+        adapter: Adapter? = nil,
         isBidding: Bool = false,
         mutation: (inout DemandObservation) -> ()
     ) {
         update(
-            condition: { $0.roundId == round.id && $0.networkId == adapter.identifier && ($0.isBidding == isBidding) },
+            condition: { $0.roundId == round.id && $0.networkId == adapter?.identifier && ($0.isBidding == isBidding) },
             mutation: mutation
         )
     }
