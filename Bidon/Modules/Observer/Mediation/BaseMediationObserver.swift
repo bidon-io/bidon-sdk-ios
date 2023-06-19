@@ -329,7 +329,7 @@ private extension BaseMediationObserver {
             )
         }
     }
-
+    
     func recordBiddingDemandProviderBidErrorMediationEvent(_ event: BiddingDemandProviderBidErrorMediationEvent) {
         $demands.update(
             round: event.round,
@@ -347,6 +347,7 @@ private extension BaseMediationObserver {
         ) { observation in
             observation.networkId = event.adapter.identifier
             observation.eCPM = event.bid.price
+            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
             observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
     }
