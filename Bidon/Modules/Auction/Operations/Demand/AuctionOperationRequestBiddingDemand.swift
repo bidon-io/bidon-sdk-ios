@@ -238,18 +238,3 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
         }
     }
 }
-
-
-fileprivate class BidResponseAd: DemandAd {
-    let dsp: String?
-    let id: String
-    let networkName: String
-    var eCPM: Price
-    
-    init(bid: BidRequest.ResponseBody.BidModel) {
-        self.id = bid.id
-        self.networkName = bid.demandId
-        self.eCPM = bid.price
-        self.dsp = nil
-    }
-}
