@@ -10,11 +10,12 @@ import Foundation
 
 final class AppManager: App, EnvironmentManager {
     let bundle: String = Bundle.main.bundleIdentifier ?? ""
-    let version: String = (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? ""
+    let version: String = Bundle.main.shortVersion
     let key: String
     let framework: String
     let frameworkVersion: String?
     let pluginVersion: String?
+    let skadn: [String] = Bundle.main.skAdNetworkItems
     
     init(
         key: String,
