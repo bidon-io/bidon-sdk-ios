@@ -44,6 +44,10 @@ protocol AdServiceParameters: AnyObject {
     var logLevel: LogLevel { get set }
     var isTestMode: Bool { get set }
     var userAge: Int? { get set }
+    var coppaApplies: Bool? { get set }
+    var gdprApplies: Bool? { get set }
+    var gdprConsentString: String? { get set }
+    var usPrivacyString: String? { get set }
     var gameLevel: Int? { get set }
     var userGender: Gender? { get set }
     var isPaidApp: Bool { get set }

@@ -32,3 +32,25 @@ extension Bidon.Gender {
         }
     }
 }
+
+
+extension Bidon.COPPAAppliesStatus {
+    init(_ flag: Bool?) {
+        guard let flag = flag else {
+            self = .unknown
+            return
+        }
+        self = flag ? .yes : .no
+    }
+}
+
+
+extension Bidon.GDPRConsentStatus {
+    init(_ flag: Bool?) {
+        guard let flag = flag else {
+            self = .unknown
+            return
+        }
+        self = flag ? .given : .denied
+    }
+}

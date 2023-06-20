@@ -57,7 +57,12 @@ extension DTExchangeDemandSourceAdapter: InitializableAdapter {
         }
         
         guard let parameters = parameters else { return }
-          
+
+        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(BidonSdk.regulations.gdrpConsent)
+        IASDKCore.sharedInstance().gdprConsentString = BidonSdk.regulations.gdprConsentString
+        IASDKCore.sharedInstance().ccpaString = BidonSdk.regulations.usPrivacyString
+        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(BidonSdk.regulations.coppaApplies)
+        
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in
@@ -73,5 +78,27 @@ extension DTExchangeDemandSourceAdapter: InitializableAdapter {
             },
             completionQueue: nil
         )
+    }
+}
+
+
+extension IAGDPRConsentType {
+    init(_ status: Bidon.GDPRConsentStatus) {
+        switch status {
+        case .unknown: self = .unknown
+        case .denied: self = .denied
+        case .given: self = .given
+        }
+    }
+}
+
+
+extension IACoppaAppliesType {
+    init(_ status: Bidon.COPPAAppliesStatus) {
+        switch status {
+        case .unknown: self = .unknown
+        case .yes: self = .given
+        case .no: self = .denied
+        }
     }
 }

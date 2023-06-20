@@ -83,10 +83,10 @@ extension GeoManager: CLLocationManagerDelegate {
             return
         }
         
-        lat = location.coordinate.latitude
-        lon = location.coordinate.longitude
-        accuracy = UInt(sqrt(pow(location.verticalAccuracy, 2) * pow(location.horizontalAccuracy, 2)))
-        updateTimestamp = Date.timestamp(.monotonic, units: .seconds)
+        $lat.mutate { $0 = location.coordinate.latitude }
+        $lon.mutate { $0 = location.coordinate.longitude }
+        $accuracy.mutate { $0 = UInt(sqrt(pow(location.verticalAccuracy, 2) * pow(location.horizontalAccuracy, 2))) }
+        $updateTimestamp.mutate { $0 = Date.timestamp(.monotonic, units: .seconds) }
         
         let ceo = CLGeocoder()
         let locale = Locale(identifier: "en")
@@ -102,9 +102,9 @@ extension GeoManager: CLLocationManagerDelegate {
             
             guard let placemark = placemarks?.first else { return }
             
-            self?.country = placemark.country
-            self?.city = placemark.locality
-            self?.zip = placemark.postalCode
+            self?.$country.mutate { $0 = placemark.country }
+            self?.$city.mutate { $0 = placemark.locality }
+            self?.$zip.mutate { $0 = placemark.postalCode }
         }
     }
 }

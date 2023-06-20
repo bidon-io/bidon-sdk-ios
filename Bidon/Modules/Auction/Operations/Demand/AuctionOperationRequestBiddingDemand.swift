@@ -80,7 +80,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             return adapter
         }
         
-        bidState = .prepare(bidders)
+        $bidState.mutate { $0 = .prepare(bidders) }
         
         group.notify(queue: .main) { [weak self] in
             self?.performBidRequest()
@@ -91,7 +91,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         guard isExecuting else { return }
         
         guard !encoders.isEmpty else {
-            bidState = .unknown
+            $bidState.mutate { $0 = .unknown }
             finish()
             return
         }
@@ -100,7 +100,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             adapters.first { $0.identifier == key }
         }
         
-        bidState = .bidding(bidders)
+        $bidState.mutate { $0 = .bidding(bidders) }
         
         // Observe bid request start
         observer.log(
@@ -129,7 +129,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             case .success(let response):
                 self.proceedBidResponse(response, bidders: bidders)
             case .failure:
-                self.bidState = .unknown
+                self.$bidState.mutate { $0 = .unknown }
                 self.observer.log(
                     BiddingDemandProviderBidErrorMediationEvent(
                         round: self.round,
@@ -149,7 +149,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             let adapter = bidders.first(where: { $0.identifier == response.bid.demandId }),
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
-            bidState = .unknown
+            $bidState.mutate { $0 = .unknown }
             observer.log(
                 BiddingDemandProviderBidErrorMediationEvent(
                     round: self.round,
@@ -161,7 +161,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             return
         }
         
-        bidState = .filling(adapter)
+        $bidState.mutate { $0 = .filling(adapter) }
         
         observer.log(
             BiddingDemandProviderFillRequestMediationEvent(
@@ -178,7 +178,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             
             switch result {
             case .failure(let error):
-                self.bidState = .unknown
+                self.$bidState.mutate { $0 = .unknown }
                 self.observer.log(
                     BiddingDemandProviderFillErrorMediationEvent(
                         round: self.round,
@@ -197,7 +197,7 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
                     provider: adapter.provider
                 )
                 
-                self.bidState = .ready(bid)
+                self.$bidState.mutate { $0 = .ready(bid) }
                 self.observer.log(
                     BiddingDemandProviderDidFillMediationEvent(
                         round: self.round,
@@ -236,20 +236,5 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
         default:
             break
         }
-    }
-}
-
-
-fileprivate class BidResponseAd: DemandAd {
-    let dsp: String?
-    let id: String
-    let networkName: String
-    var eCPM: Price
-    
-    init(bid: BidRequest.ResponseBody.BidModel) {
-        self.id = bid.id
-        self.networkName = bid.demandId
-        self.eCPM = bid.price
-        self.dsp = nil
     }
 }

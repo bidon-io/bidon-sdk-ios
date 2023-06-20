@@ -47,3 +47,14 @@ extension AppodealUserGender {
         }
     }
 }
+
+
+extension APDGDPRUserConsent {
+    init(_ flag: Bool?) {
+        guard let flag = flag else {
+            self = .unknown
+            return
+        }
+        self = flag ? .personalized : .nonPersonalized
+    }
+}

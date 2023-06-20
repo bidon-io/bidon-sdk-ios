@@ -15,4 +15,5 @@ protocol App {
     var framework: String { get }
     var frameworkVersion: String? { get }
     var pluginVersion: String? { get }
+    var skadn: [String] { get }
 }

@@ -23,6 +23,25 @@ struct AdServiceParametersView: View {
                     LogLevelView(logLevel: $vm.logLevel)
                 }
                 
+                Section(header: Text("Regulations")) {
+                    Toggle("GDPR", isOn: $vm.gdprApplies)
+                    Toggle("COPPA", isOn: $vm.coppaApplies)
+                }
+                
+                Section(header: Text("GDPR Consent String")) {
+                    TextField("IAB Formatted String", text: $vm.gdprConsentString)
+                        .keyboardType(.asciiCapable)
+                        .autocorrectionDisabled()
+                        .textCase(.uppercase)
+                }
+                
+                Section(header: Text("US Privacy String")) {
+                    TextField("IAB Formatted String", text: $vm.usPrivacyString)
+                        .keyboardType(.asciiCapable)
+                        .autocorrectionDisabled()
+                        .textCase(.uppercase)
+                }
+                
                 Section(header: Text("User gender")) {
                     GenderPickerRow(gender: $vm.gender)
                 }
@@ -304,6 +323,22 @@ final class AdServiceParametersViewModel: ObservableObject {
         didSet { parameters.customAttributes = customAttributes }
     }
     
+    @Published var coppaApplies: Bool {
+        didSet { parameters.coppaApplies = coppaApplies }
+    }
+    
+    @Published var gdprApplies: Bool {
+        didSet { parameters.gdprApplies = coppaApplies }
+    }
+    
+    @Published var gdprConsentString: String {
+        didSet { parameters.gdprConsentString = gdprConsentString }
+    }
+    
+    @Published var usPrivacyString: String {
+        didSet { parameters.usPrivacyString = usPrivacyString }
+    }
+    
     init(_ parameters: AdServiceParameters) {
         self.parameters = parameters
         self.logLevel = parameters.logLevel
@@ -314,5 +349,9 @@ final class AdServiceParametersViewModel: ObservableObject {
         self.totalAmount = parameters.inAppAmount
         self.extras = parameters.extras
         self.customAttributes = parameters.customAttributes
+        self.coppaApplies = parameters.coppaApplies ?? false
+        self.gdprApplies = parameters.gdprApplies ?? false
+        self.gdprConsentString = parameters.gdprConsentString ?? ""
+        self.usPrivacyString = parameters.usPrivacyString ?? ""
     }
 }

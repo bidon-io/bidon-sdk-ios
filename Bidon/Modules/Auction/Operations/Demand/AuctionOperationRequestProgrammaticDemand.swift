@@ -66,7 +66,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
             )
         )
         
-        bidState = .bidding
+        $bidState.mutate { $0 = .bidding }
         
         provider.bid(pricefloor) { [weak self, unowned provider] result in
             guard let self = self, self.isExecuting else { return }
@@ -81,7 +81,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                     )
                 )
                 
-                self.bidState = .unknown
+                self.$bidState.mutate { $0 = .unknown }
                 self.finish()
             case .success(let ad):
                 let bid = BidType(
@@ -101,7 +101,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                         bid: bid
                     )
                 )
-                self.bidState = .filling(bid)
+                self.$bidState.mutate { $0 = .filling(bid) }
                 
                 DispatchQueue.main.async { [unowned self] in
                     self.fill(programmatic: provider, bid: bid)
@@ -132,7 +132,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                     )
                 )
                 
-                self.bidState = .unknown
+                self.$bidState.mutate { $0 = .unknown }
                 self.finish()
             case .success:
                 self.observer.log(
@@ -143,7 +143,7 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
                     )
                 )
                 
-                self.bidState = .ready(bid)
+                self.$bidState.mutate { $0 = .ready(bid) }
                 self.finish()
             }
         }

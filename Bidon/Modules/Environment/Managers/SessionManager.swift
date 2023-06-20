@@ -159,7 +159,7 @@ final class SessionManager: Session, Environment {
     
     @objc private
     func didEnterBackground(_ notification: Notification) {
-        didEnterBackgroundTimestamp = Date.timestamp(.monotonic, units: .seconds)
+        $didEnterBackgroundTimestamp.mutate { $0 = Date.timestamp(.monotonic, units: .seconds) }
     }
     
     @objc private
@@ -169,8 +169,8 @@ final class SessionManager: Session, Environment {
             !didEnterBackgroundTimestamp.isZero, Date.timestamp(.monotonic, units: .seconds) - didEnterBackgroundTimestamp > 30
         else { return }
         
-        sessionStartTimestamp = UInt(Date.timestamp(.wall))
-        sessionStartTimestampMonotonic = UInt(Date.timestamp(.monotonic))
-        id = UUID().uuidString
+        $sessionStartTimestamp.mutate { $0 = UInt(Date.timestamp(.wall)) }
+        $sessionStartTimestampMonotonic.mutate { $0 = UInt(Date.timestamp(.monotonic)) }
+        $id.mutate { $0 = UUID().uuidString }
     }
 }

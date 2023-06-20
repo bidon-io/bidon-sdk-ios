@@ -7,6 +7,7 @@
 
 import Foundation
 import Appodeal
+import StackConsentManager
 import Bidon
 
 
@@ -37,6 +38,7 @@ final class AppodealDefaultAdInitializationWrapper: NSObject, AppodealAdInitiali
     }
     
     private func initializeAppodealMediation() {
+        STKConsentManager.shared().storage = .userDefaults
         // We need to cache advertisement manually
         // to properly control ad lifecycle
         Appodeal.setAutocache(false, types: adTypes)

@@ -79,6 +79,13 @@ extension BidMachineDemandSourceAdapter: InitializableAdapter {
         
         guard let parameters = parameters else { return }
         
+        BidMachineSdk.shared.regulationInfo.populate { builder in
+            builder.withCOPPA(BidonSdk.regulations.coppaApplies == .yes)
+            builder.withGDPRConsent(BidonSdk.regulations.gdrpConsent == .given)
+            _ = BidonSdk.regulations.usPrivacyString.map(builder.withUSPrivacyString)
+            _ = BidonSdk.regulations.gdprConsentString.map(builder.withGDPRConsentString)
+        }
+        
         BidMachineSdk.shared.populate { builder in
             builder.withLoggingMode(Logger.level == .verbose)
             builder.withTestMode(context.isTestMode)

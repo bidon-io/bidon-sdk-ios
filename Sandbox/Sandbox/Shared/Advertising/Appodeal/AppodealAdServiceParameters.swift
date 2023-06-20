@@ -61,6 +61,34 @@ final class AppodealAdServiceParameters: AdServiceParameters {
         }
     }
     
+    var coppaApplies: Bool? {
+        didSet {
+            BidonSdk.regulations.coppaApplies = Bidon.COPPAAppliesStatus(coppaApplies)
+            if let flag = coppaApplies {
+                Appodeal.setChildDirectedTreatment(flag)
+            }
+        }
+    }
+    
+    var gdprApplies: Bool? {
+        didSet {
+            BidonSdk.regulations.gdrpConsent = Bidon.GDPRConsentStatus(gdprApplies)
+            Appodeal.updateUserConsentGDPR(APDGDPRUserConsent(gdprApplies))
+        }
+    }
+    
+    var usPrivacyString: String? {
+        didSet {
+            BidonSdk.regulations.usPrivacyString = usPrivacyString
+        }
+    }
+    
+    var gdprConsentString: String? {
+        didSet {
+            BidonSdk.regulations.gdprConsentString = gdprConsentString
+        }
+    }
+    
     var inAppAmount: Double = .zero {
         didSet {
             Appodeal.track(

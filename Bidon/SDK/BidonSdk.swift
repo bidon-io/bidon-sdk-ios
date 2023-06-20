@@ -33,6 +33,10 @@ public final class BidonSdk: NSObject {
         shared.environmentRepository.environment(SegmentManager.self)
     }
     
+    @objc public static var regulations: Regulations {
+        shared.environmentRepository.environment(RegulationsManager.self)
+    }
+    
     private var isInitialized: Bool = false
         
     static let shared: BidonSdk = BidonSdk()

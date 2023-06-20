@@ -117,6 +117,8 @@ final class BaseMediationObserver: MediationObserver {
             recordDirectDemandProividerLoadRequestMediationEvent(_event)
         case let _event as DirectDemandProividerDidFailToLoadMediationEvent:
             recordDirectDemandProividerDidFailToLoadMediationEvent(_event)
+        case let _event as DirectDemandProividerDidLoadMediationEvent:
+            recordDirectDemandProividerDidLoadMediationEvent(_event)
         // Programmatic demand level
         case let _event as ProgrammaticDemandProviderRequestBidMediationEvent:
             recordProgrammaticDemandProviderRequestBidMediationEvent(_event)
@@ -150,11 +152,11 @@ final class BaseMediationObserver: MediationObserver {
 private extension BaseMediationObserver {
     // MARK: Auction Events
     func recordAuctionStartMediationEvent(_ event: AuctionStartMediationEvent) {
-        startTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        $startTimestamp.mutate { $0 = Date.timestamp(.wall, units: .milliseconds) }
     }
     
     func recordAuctionFinishMediationEvent(_ event: AuctionFinishMediationEvent) {
-        finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        $finishTimestamp.mutate { $0 = Date.timestamp(.wall, units: .milliseconds) }
         $demands.update(
             condition: { $0.status.isUnknown }
         ) { observation in
@@ -238,6 +240,15 @@ private extension BaseMediationObserver {
         }
     }
     
+    func recordDirectDemandProividerDidLoadMediationEvent(_ event: DirectDemandProividerDidLoadMediationEvent) {
+        $demands.update(
+            round: event.round,
+            adapter: event.adapter
+        ) { observation in
+            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        }
+    }
+    
     // MARK: Programmatic Demand Provider Events
     func recordProgrammaticDemandProviderRequestBidMediationEvent(_ event: ProgrammaticDemandProviderRequestBidMediationEvent) {
         $demands.mutate {
@@ -318,7 +329,7 @@ private extension BaseMediationObserver {
             )
         }
     }
-
+    
     func recordBiddingDemandProviderBidErrorMediationEvent(_ event: BiddingDemandProviderBidErrorMediationEvent) {
         $demands.update(
             round: event.round,
@@ -336,6 +347,7 @@ private extension BaseMediationObserver {
         ) { observation in
             observation.networkId = event.adapter.identifier
             observation.eCPM = event.bid.price
+            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
             observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
     }
@@ -355,6 +367,7 @@ private extension BaseMediationObserver {
             round: event.round,
             isBidding: true
         ) { observation in
+            observation.bidId = event.bid.id
             observation.eCPM = event.bid.eCPM
             observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
@@ -398,7 +411,13 @@ private extension Atomic where Value == [DemandObservation] {
         mutation: (inout DemandObservation) -> ()
     ) {
         update(
-            condition: { $0.roundId == round.id && $0.networkId == adapter?.identifier && ($0.isBidding == isBidding) },
+            condition: {
+                // Same round and network (demand) id same
+                // or is bidding demand. Bidding demand should
+                // be only one per a round
+                ($0.roundId == round.id) &&
+                ($0.networkId == adapter?.identifier || ($0.isBidding == isBidding))
+            },
             mutation: mutation
         )
     }

@@ -46,6 +46,31 @@ final class RawAdServiceParameters: AdServiceParameters {
         }
     }
     
+    
+    var coppaApplies: Bool? {
+        didSet {
+            BidonSdk.regulations.coppaApplies = Bidon.COPPAAppliesStatus(coppaApplies)
+        }
+    }
+    
+    var gdprApplies: Bool? {
+        didSet {
+            BidonSdk.regulations.gdrpConsent = Bidon.GDPRConsentStatus(gdprApplies)
+        }
+    }
+    
+    var usPrivacyString: String? {
+        didSet {
+            BidonSdk.regulations.usPrivacyString = usPrivacyString
+        }
+    }
+    
+    var gdprConsentString: String? {
+        didSet {
+            BidonSdk.regulations.gdprConsentString = gdprConsentString
+        }
+    }
+    
     var inAppAmount: Double = .zero {
         didSet {
             BidonSdk.segment.inAppAmount = inAppAmount

@@ -131,6 +131,7 @@
 		42A0156A29F674FA00547B37 /* AuctionOperationLogEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A0156929F674FA00547B37 /* AuctionOperationLogEvent.swift */; };
 		42A0156C29F6AFDB00547B37 /* AuctionOperationRoundTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A0156B29F6AFDB00547B37 /* AuctionOperationRoundTimeout.swift */; };
 		42AAEA0528CB80E10093DB23 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AAEA0428CB80E10093DB23 /* String+Extensions.swift */; };
+		42B4531F2A41A54200D808D1 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B4531E2A41A54200D808D1 /* Bundle+Extensions.swift */; };
 		42BA81AA28758A90001F1744 /* AuctionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BA81A928758A90001F1744 /* AuctionController.swift */; };
 		42BA81AC28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BA81AB28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift */; };
 		42BA81D7287702B6001F1744 /* RewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BA81D6287702B6001F1744 /* RewardedAdDemandProvider.swift */; };
@@ -297,6 +298,7 @@
 		42A0156B29F6AFDB00547B37 /* AuctionOperationRoundTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRoundTimeout.swift; sourceTree = "<group>"; };
 		42A4C86928F6DF3400A7FE40 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		42AAEA0428CB80E10093DB23 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		42B4531E2A41A54200D808D1 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		42BA81A928758A90001F1744 /* AuctionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionController.swift; sourceTree = "<group>"; };
 		42BA81AB28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentAuctionControllerBuilder.swift; sourceTree = "<group>"; };
 		42BA81D6287702B6001F1744 /* RewardedAdDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdDemandProvider.swift; sourceTree = "<group>"; };
@@ -393,7 +395,6 @@
 			children = (
 				42FE946F29D4315300DF7920 /* Ad */,
 				4298902329D58F2700C5FB7B /* AdRevenue */,
-				42697D9A2A3A0EE100D6B1EB /* Segment */,
 				424F180C28ABC0780082AEF3 /* Fullscreen */,
 				42BA820528785464001F1744 /* Banner */,
 				426DD7B428A68BF700A1ADF5 /* Delegates */,
@@ -480,9 +481,10 @@
 				42D047E1289D5EEE0096A8C6 /* App.swift */,
 				42D047DD289D5A0D0096A8C6 /* Device.swift */,
 				42D047E6289D5F9A0096A8C6 /* Geo.swift */,
-				428C45BD2A264E47009E90EF /* Regulations.swift */,
 				42D047DF289D5E5C0096A8C6 /* Session.swift */,
 				42D047E3289D5F3E0096A8C6 /* User.swift */,
+				428C45BD2A264E47009E90EF /* Regulations.swift */,
+				42697D9B2A3A0EF100D6B1EB /* Segment.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -520,14 +522,6 @@
 				420EFD902A29F08300328FD4 /* AdViewLossRequestBuilder.swift */,
 			);
 			path = Loss;
-			sourceTree = "<group>";
-		};
-		42697D9A2A3A0EE100D6B1EB /* Segment */ = {
-			isa = PBXGroup;
-			children = (
-				42697D9B2A3A0EF100D6B1EB /* Segment.swift */,
-			);
-			path = Segment;
 			sourceTree = "<group>";
 		};
 		426DD79428A3FEBA00A1ADF5 /* Adapters */ = {
@@ -708,6 +702,7 @@
 			isa = PBXGroup;
 			children = (
 				42389E162874665A006024BA /* UIApplication+Extensions.swift */,
+				42B4531E2A41A54200D808D1 /* Bundle+Extensions.swift */,
 				42CCB99028CB365400DBAE97 /* UIDevice+Extensions.swift */,
 				428CCBF628A12C8D003123EF /* Date+Extensions.swift */,
 				42AAEA0428CB80E10093DB23 /* String+Extensions.swift */,
@@ -1108,6 +1103,7 @@
 				420EFD8F2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift in Sources */,
 				428FFC7A28BF96360090B126 /* ImpressionModel.swift in Sources */,
 				4299A424289BCDBC0062C580 /* Interstitial.swift in Sources */,
+				42B4531F2A41A54200D808D1 /* Bundle+Extensions.swift in Sources */,
 				428C45C02A264F68009E90EF /* RegulationsModel.swift in Sources */,
 				42D047E4289D5F3E0096A8C6 /* User.swift in Sources */,
 				429F4D8428CF56C900765BD7 /* DemandReportStatus.swift in Sources */,

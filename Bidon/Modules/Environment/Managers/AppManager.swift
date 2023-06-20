@@ -8,10 +8,10 @@
 import Foundation
 
 
-
 final class AppManager: App, Environment {
     let bundle: String = Bundle.main.bundleIdentifier ?? ""
-    let version: String = (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? ""
+    let version: String = Bundle.main.shortVersion
+    let skadn: [String] = Bundle.main.skAdNetworkItems
     
     private(set) var key: String = ""
     private(set) var framework: String = Framework.native.description

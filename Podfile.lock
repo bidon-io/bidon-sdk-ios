@@ -101,13 +101,13 @@ PODS:
     - BidMachineProtoCore (~> 0.3.0)
   - BidMachineProtoCore (0.3.0):
     - BidMachineApiCore (~> 0.3.0)
-  - FBAEMKit (16.1.0):
-    - FBSDKCoreKit_Basics (= 16.1.0)
+  - FBAEMKit (16.1.1):
+    - FBSDKCoreKit_Basics (= 16.1.1)
   - FBAudienceNetwork (6.12.0)
-  - FBSDKCoreKit (16.1.0):
-    - FBAEMKit (= 16.1.0)
-    - FBSDKCoreKit_Basics (= 16.1.0)
-  - FBSDKCoreKit_Basics (16.1.0)
+  - FBSDKCoreKit (16.1.1):
+    - FBAEMKit (= 16.1.1)
+    - FBSDKCoreKit_Basics (= 16.1.1)
+  - FBSDKCoreKit_Basics (16.1.1)
   - Firebase/Analytics (10.11.0):
     - Firebase/Core
   - Firebase/Core (10.11.0):
@@ -279,12 +279,12 @@ PODS:
     - StackModules (~> 1.5.0)
   - StackIAB/StackXML (2.1.0):
     - StackModules (~> 1.5.0)
-  - StackModules (1.5.0):
-    - StackModules/StackProductPresentation (= 1.5.0)
-  - StackModules/StackFoundation (1.5.0)
-  - StackModules/StackProductPresentation (1.5.0):
+  - StackModules (1.5.1):
+    - StackModules/StackProductPresentation (= 1.5.1)
+  - StackModules/StackFoundation (1.5.1)
+  - StackModules/StackProductPresentation (1.5.1):
     - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.5.0):
+  - StackModules/StackUIKit (1.5.1):
     - StackModules/StackFoundation
   - StackProtobuf (0.8.5):
     - Protobuf (~> 3.13)
@@ -427,10 +427,10 @@ SPEC CHECKSUMS:
   BidMachineDisplayCore: af8a5b1db7a03b25424c56cbb65690ef1b05a489
   BidMachineNetworkCore: 824c419158e40603eb30b2bbb906b504342521eb
   BidMachineProtoCore: 2a6c78b2a61c0a4cfd1e9cdf99d7cbd595613494
-  FBAEMKit: c7efe06720a8b15b1d25b68921ba46dee20996e0
+  FBAEMKit: 78e6d131977b5a34a9f35baba9d397e611cf4268
   FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
-  FBSDKCoreKit: ca77d40d46786157b7b31ad3516f5ad9c2315339
-  FBSDKCoreKit_Basics: d39c3361379def7297bf76738cdd4fd2e0eb1a68
+  FBSDKCoreKit: 1b76d643eb5d4ce25909c58a412fe5ba400672e1
+  FBSDKCoreKit_Basics: 27185fcaf23c152fa3788eab1e35b75f70906e4b
   Firebase: 31d9575c124839fb5abc0db6d39511cc1dab1b85
   FirebaseABTesting: 3f6b711718feb87346dc05f8c964601bc8fb2cf6
   FirebaseAnalytics: 6c6bf99e8854475bf1fa342028841be8ecd236da
@@ -454,7 +454,7 @@ SPEC CHECKSUMS:
   StackAnalytics: 42307f033e611586dab85081731e1b639327e738
   StackConsentManager: f189d346d21d3701f8b93964ad1c52159c2f1a82
   StackIAB: 1800cc28d03953a8112aa2d6ebea4b7959e918d8
-  StackModules: ef3a2bb194dbeefcbd728ff12242151a35109cd5
+  StackModules: 39fe17895c72c44db1bdbd0abe74e45b9626002a
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   UnityAds: 7c095394cf4815bb607db6b98de86b06b068cb51
   VungleAds: f3bc7f1109c56e455777999661faedbb7c01483f
