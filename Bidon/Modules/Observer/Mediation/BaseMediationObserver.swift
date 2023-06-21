@@ -412,11 +412,13 @@ private extension Atomic where Value == [DemandObservation] {
     ) {
         update(
             condition: {
+                let isSameRound = $0.roundId == round.id
+                let isSameDemand = $0.networkId == adapter?.identifier && !$0.isBidding && !isBidding
+                let isBidding = $0.isBidding && isBidding
                 // Same round and network (demand) id same
                 // or is bidding demand. Bidding demand should
                 // be only one per a round
-                ($0.roundId == round.id) &&
-                ($0.networkId == adapter?.identifier || ($0.isBidding == isBidding))
+                return isSameRound && (isSameDemand || isBidding)
             },
             mutation: mutation
         )
