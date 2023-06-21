@@ -27,30 +27,53 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     
     @Injected(\.context)
     var context: Bidon.SdkContext
+   
+    private var request: GADRequest {
+        let request = GADRequest()
+        
+        if context.regulations.gdrpConsent == .denied {
+            let extras = GADExtras()
+            extras.additionalParameters = ["npa": "1"]
+            request.register(extras)
+        }
+        
+        if let usPrivacy = context.regulations.usPrivacyString {
+            let extras = GADExtras()
+            extras.additionalParameters = ["IABUSPrivacy_String": usPrivacy]
+            request.register(extras)
+        }
+        
+        return request
+    }
     
     public func initialize(
         from decoder: Decoder,
         completion: @escaping (Result<Void, SdkError>) -> Void
     ) {
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = context.isTestMode ?
-        [GADSimulatorID] :
-        nil
-        
+        configure(GADMobileAds.sharedInstance().requestConfiguration)
         GADMobileAds.sharedInstance().start { _ in
             completion(.success(()))
         }
     }
     
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
-        return GoogleMobileAdsInterstitialDemandProvider()
+        return GoogleMobileAdsInterstitialDemandProvider(request)
     }
     
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
-        return GoogleMobileAdsRewardedAdDemandProvider()
+        return GoogleMobileAdsRewardedAdDemandProvider(request)
     }
     
     public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
-        return GoogleMobileAdsBannerDemandProvider(context: context)
+        return GoogleMobileAdsBannerDemandProvider(
+            request: request,
+            context: context
+        )
+    }
+    
+    private func configure(_ request: GADRequestConfiguration) {
+        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
+        request.tag(forChildDirectedTreatment: context.regulations.coppaApplies == .yes)
     }
 }
 

@@ -80,10 +80,10 @@ extension BidMachineDemandSourceAdapter: InitializableAdapter {
         guard let parameters = parameters else { return }
         
         BidMachineSdk.shared.regulationInfo.populate { builder in
-            builder.withCOPPA(BidonSdk.regulations.coppaApplies == .yes)
-            builder.withGDPRConsent(BidonSdk.regulations.gdrpConsent == .given)
-            _ = BidonSdk.regulations.usPrivacyString.map(builder.withUSPrivacyString)
-            _ = BidonSdk.regulations.gdprConsentString.map(builder.withGDPRConsentString)
+            builder.withCOPPA(context.regulations.coppaApplies == .yes)
+            builder.withGDPRConsent(context.regulations.gdrpConsent == .given)
+            _ = context.regulations.usPrivacyString.map(builder.withUSPrivacyString)
+            _ = context.regulations.gdprConsentString.map(builder.withGDPRConsentString)
         }
         
         BidMachineSdk.shared.populate { builder in

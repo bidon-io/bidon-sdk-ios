@@ -15,7 +15,13 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
+    private let request: GADRequest
     private var response: DemandProviderResponse?
+    
+    init(_ request: GADRequest) {
+        self.request = request
+        super.init()
+    }
     
     open func loadAd(_ request: GADRequest, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
@@ -48,8 +54,6 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
 extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
     func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
         self.response = response
-        
-        let request = GADRequest()
         loadAd(request, adUnitId: adUnitId)
     }
     

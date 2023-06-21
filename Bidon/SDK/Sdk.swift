@@ -36,6 +36,9 @@ public extension InjectedValues {
 
 public protocol SdkContext {
     var isTestMode: Bool { get }
+    var extras: [String: AnyHashable] { get }
+    var regulations: Regulations { get }
+    var segment: Segment { get }
 }
 
 
@@ -47,4 +50,17 @@ internal protocol Sdk: SdkContext {
 }
 
 
-extension BidonSdk: Sdk {}
+extension BidonSdk: Sdk {
+    @objc
+    public var extras: [String: AnyHashable] {
+        environmentRepository.environment(ExtrasManager.self).extras
+    }
+    
+    public var segment: Segment {
+        environmentRepository.environment(SegmentManager.self)
+    }
+    
+    public var regulations: Regulations {
+        environmentRepository.environment(RegulationsManager.self)
+    }
+}

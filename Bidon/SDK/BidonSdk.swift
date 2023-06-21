@@ -25,16 +25,12 @@ public final class BidonSdk: NSObject {
         shared.isInitialized
     }
     
-    @objc public static var extras: [String: AnyHashable] {
-        shared.environmentRepository.environment(ExtrasManager.self).extras
-    }
-    
     @objc public static var segment: Segment {
-        shared.environmentRepository.environment(SegmentManager.self)
+        shared.segment
     }
     
     @objc public static var regulations: Regulations {
-        shared.environmentRepository.environment(RegulationsManager.self)
+        shared.regulations
     }
     
     private var isInitialized: Bool = false

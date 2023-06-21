@@ -18,6 +18,9 @@ DirectAdViewDemandSourceAdapter
 @objc public final class DTExchangeDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "dtexchange"
     
+    @Injected(\.context)
+    var context: Bidon.SdkContext
+    
     public let identifier: String = DTExchangeDemandSourceAdapter.identifier
     public let name: String = "DT Exchange"
     public let adapterVersion: String = "0"
@@ -58,10 +61,10 @@ extension DTExchangeDemandSourceAdapter: InitializableAdapter {
         
         guard let parameters = parameters else { return }
 
-        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(BidonSdk.regulations.gdrpConsent)
-        IASDKCore.sharedInstance().gdprConsentString = BidonSdk.regulations.gdprConsentString
-        IASDKCore.sharedInstance().ccpaString = BidonSdk.regulations.usPrivacyString
-        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(BidonSdk.regulations.coppaApplies)
+        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)
+        IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
+        IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
+        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
         
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
