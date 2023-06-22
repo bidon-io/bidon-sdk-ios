@@ -32,8 +32,7 @@
 }
 
 - (void)createBanner {
-    self.banner = [[BDNBannerView alloc] initWithFrame:CGRectZero
-                                             placement:BDNSdk.defaultPlacement];
+    self.banner = [[BDNBannerView alloc] initWithFrame:CGRectZero placement:@"default"];
     self.banner.format = BDNBannerFormatBanner;
     self.banner.delegate = self;
     self.banner.translatesAutoresizingMaskIntoConstraints = NO;

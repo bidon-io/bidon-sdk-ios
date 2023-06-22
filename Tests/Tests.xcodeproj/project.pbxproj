@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42540AAC2A446FE000C7F7B6 /* AuctionContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAB2A446FE000C7F7B6 /* AuctionContextMock.swift */; };
+		42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */; };
+		42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */; };
+		42540AB32A44767400C7F7B6 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */; };
+		42540AB72A4477EB00C7F7B6 /* BidRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */; };
+		42540AB92A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */; };
+		42540ABB2A447C5100C7F7B6 /* LossRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540ABA2A447C5100C7F7B6 /* LossRequestBuilderMock.swift */; };
+		42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */; };
+		42540ABF2A448BAF00C7F7B6 /* AuctionLineItemElectorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540ABE2A448BAF00C7F7B6 /* AuctionLineItemElectorMock.swift */; };
+		42540AC12A448C2F00C7F7B6 /* MediationObserverMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AC02A448C2F00C7F7B6 /* MediationObserverMock.swift */; };
+		42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AC42A44926800C7F7B6 /* AdapterMock.swift */; };
+		4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425672292A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift */; };
 		42BF0F9D2993EA3100088648 /* BDNSdkTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0F9C2993EA3100088648 /* BDNSdkTestCase.m */; };
 		42BF0F9F2993F4A400088648 /* BDNBannerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */; };
 		42BF0FA12993F4CD00088648 /* BDNInterstitialTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */; };
@@ -15,10 +27,25 @@
 		42EC989128914469003BE6CF /* BidOnAdapterGoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC989028914469003BE6CF /* BidOnAdapterGoogleMobileAds.framework */; };
 		42EC989328914469003BE6CF /* BidOn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42EC989228914469003BE6CF /* BidOn.framework */; };
 		45ED0C68C33A074815BB07ED /* Pods_Tests_ObjectiveC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */; };
+		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-ObjectiveC.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42540AAB2A446FE000C7F7B6 /* AuctionContextMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionContextMock.swift; sourceTree = "<group>"; };
+		42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandProviderMock.swift; sourceTree = "<group>"; };
+		42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandAdMock.swift; sourceTree = "<group>"; };
+		42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRequestBuilderMock.swift; sourceTree = "<group>"; };
+		42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidRequestBuilderMock.swift; sourceTree = "<group>"; };
+		42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpressionRequestBuilderMock.swift; sourceTree = "<group>"; };
+		42540ABA2A447C5100C7F7B6 /* LossRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LossRequestBuilderMock.swift; sourceTree = "<group>"; };
+		42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRoundMock.swift; sourceTree = "<group>"; };
+		42540ABE2A448BAF00C7F7B6 /* AuctionLineItemElectorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionLineItemElectorMock.swift; sourceTree = "<group>"; };
+		42540AC02A448C2F00C7F7B6 /* MediationObserverMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediationObserverMock.swift; sourceTree = "<group>"; };
+		42540AC42A44926800C7F7B6 /* AdapterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdapterMock.swift; sourceTree = "<group>"; };
+		425672272A444EB6007AEE23 /* Tests-Swift.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-Swift.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		425672292A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentAuctionControllerTestCase.swift; sourceTree = "<group>"; };
 		42BF0F9C2993EA3100088648 /* BDNSdkTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNSdkTestCase.m; sourceTree = "<group>"; };
 		42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNBannerTestCase.m; sourceTree = "<group>"; };
 		42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNInterstitialTestCase.m; sourceTree = "<group>"; };
@@ -26,6 +53,8 @@
 		42EC988E28914469003BE6CF /* BidOnAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC989028914469003BE6CF /* BidOnAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC989228914469003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.debug.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.debug.xcconfig"; sourceTree = "<group>"; };
+		A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.release.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.release.xcconfig"; sourceTree = "<group>"; };
 		AD68D69E88BAECD14AC5F688 /* Pods-Tests-ObjectiveC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.debug.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.debug.xcconfig"; sourceTree = "<group>"; };
 		E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_ObjectiveC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.release.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.release.xcconfig"; sourceTree = "<group>"; };
@@ -43,6 +72,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		425672242A444EB6007AEE23 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -50,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				422101F6285A004C006596DA /* Tests-ObjectiveC */,
+				425672282A444EB6007AEE23 /* Tests-Swift */,
 				422101F5285A004C006596DA /* Products */,
 				422101FC285A006C006596DA /* Frameworks */,
 				9E879BD8DED23500B1141F35 /* Pods */,
@@ -60,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */,
+				425672272A444EB6007AEE23 /* Tests-Swift.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,8 +121,44 @@
 				42EC989028914469003BE6CF /* BidOnAdapterGoogleMobileAds.framework */,
 				42EC989228914469003BE6CF /* BidOn.framework */,
 				E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */,
+				1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		42540AB12A44766000C7F7B6 /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */,
+				42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */,
+				42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */,
+				42540ABA2A447C5100C7F7B6 /* LossRequestBuilderMock.swift */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
+		425672282A444EB6007AEE23 /* Tests-Swift */ = {
+			isa = PBXGroup;
+			children = (
+				4256722E2A446E6A007AEE23 /* Mocks */,
+				425672292A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift */,
+			);
+			path = "Tests-Swift";
+			sourceTree = "<group>";
+		};
+		4256722E2A446E6A007AEE23 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				42540AB12A44766000C7F7B6 /* Builders */,
+				42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */,
+				42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */,
+				42540AC42A44926800C7F7B6 /* AdapterMock.swift */,
+				42540AAB2A446FE000C7F7B6 /* AuctionContextMock.swift */,
+				42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */,
+				42540ABE2A448BAF00C7F7B6 /* AuctionLineItemElectorMock.swift */,
+				42540AC02A448C2F00C7F7B6 /* MediationObserverMock.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		9E879BD8DED23500B1141F35 /* Pods */ = {
@@ -91,6 +166,8 @@
 			children = (
 				AD68D69E88BAECD14AC5F688 /* Pods-Tests-ObjectiveC.debug.xcconfig */,
 				F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */,
+				55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */,
+				A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -119,6 +196,24 @@
 			productReference = 422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		425672262A444EB6007AEE23 /* Tests-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4256722D2A444EB6007AEE23 /* Build configuration list for PBXNativeTarget "Tests-Swift" */;
+			buildPhases = (
+				CAC5059F0708489F601BBD7D /* [CP] Check Pods Manifest.lock */,
+				425672232A444EB6007AEE23 /* Sources */,
+				425672242A444EB6007AEE23 /* Frameworks */,
+				425672252A444EB6007AEE23 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Tests-Swift";
+			productName = "Tests-Swift";
+			productReference = 425672272A444EB6007AEE23 /* Tests-Swift.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -126,10 +221,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					422101F3285A004C006596DA = {
 						CreatedOnToolsVersion = 13.3.1;
+					};
+					425672262A444EB6007AEE23 = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
@@ -147,12 +246,20 @@
 			projectRoot = "";
 			targets = (
 				422101F3285A004C006596DA /* Tests-ObjectiveC */,
+				425672262A444EB6007AEE23 /* Tests-Swift */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		422101F2285A004C006596DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		425672252A444EB6007AEE23 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -218,6 +325,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CAC5059F0708489F601BBD7D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tests-Swift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -229,6 +358,25 @@
 				42BF0FA32993FBAF00088648 /* BDNRewardedAdTestCase.m in Sources */,
 				42BF0FA12993F4CD00088648 /* BDNInterstitialTestCase.m in Sources */,
 				42BF0F9D2993EA3100088648 /* BDNSdkTestCase.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		425672232A444EB6007AEE23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42540AB92A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift in Sources */,
+				42540AB72A4477EB00C7F7B6 /* BidRequestBuilderMock.swift in Sources */,
+				42540ABB2A447C5100C7F7B6 /* LossRequestBuilderMock.swift in Sources */,
+				42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */,
+				42540AC12A448C2F00C7F7B6 /* MediationObserverMock.swift in Sources */,
+				42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */,
+				42540AB32A44767400C7F7B6 /* AuctionRequestBuilderMock.swift in Sources */,
+				42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */,
+				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
+				42540AAC2A446FE000C7F7B6 /* AuctionContextMock.swift in Sources */,
+				42540ABF2A448BAF00C7F7B6 /* AuctionLineItemElectorMock.swift in Sources */,
+				42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +525,140 @@
 			};
 			name = Release;
 		};
+		4256722B2A444EB6007AEE23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appodeal.com.Tests-Swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4256722C2A444EB6007AEE23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.appodeal.com.Tests-Swift";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -394,6 +676,15 @@
 			buildConfigurations = (
 				422101F9285A004C006596DA /* Debug */,
 				422101FA285A004C006596DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4256722D2A444EB6007AEE23 /* Build configuration list for PBXNativeTarget "Tests-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4256722B2A444EB6007AEE23 /* Debug */,
+				4256722C2A444EB6007AEE23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -72,13 +72,32 @@ extension AppLovinDemandSourceAdapter: InitializableAdapter {
             completion(.failure(SdkError(error)))
         }
         
-        let settings = ALSdkSettings()
         
         guard let parameters = parameters else { return }
+    
+        let currentDeviceUUID = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let settings = ALSdkSettings()
+        settings.testDeviceAdvertisingIdentifiers = context.isTestMode ? [currentDeviceUUID] : []
         
-        settings.testDeviceAdvertisingIdentifiers = context.isTestMode ?
-        [ASIdentifierManager.shared().advertisingIdentifier.uuidString] :
-        []
+        // COPPA
+        switch context.regulations.coppaApplies {
+        case .yes:
+            ALPrivacySettings.setIsAgeRestrictedUser(true)
+        case .no:
+            ALPrivacySettings.setIsAgeRestrictedUser(false)
+        default:
+            break
+        }
+        
+        // GDPR
+        switch context.regulations.gdrpConsent {
+        case .given:
+            ALPrivacySettings.setHasUserConsent(true)
+        case .denied:
+            ALPrivacySettings.setHasUserConsent(false)
+        default:
+            break
+        }
         
         guard let sdk = ALSdk.shared(
             withKey: parameters.appKey,

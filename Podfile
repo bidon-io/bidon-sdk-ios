@@ -97,6 +97,10 @@ target 'Tests-ObjectiveC' do
   unity_ads
 end
 
+target 'Tests-Swift' do
+  project 'Tests/Tests.xcodeproj'
+end
+
 
 # Demo
 
