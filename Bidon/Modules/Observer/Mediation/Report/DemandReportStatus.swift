@@ -21,7 +21,7 @@ enum DemandReportStatus: Codable {
         }
     }
     
-    private var stringValue: String {
+    internal var stringValue: String {
         switch self {
         case .unknown:          return "UNKNOWN"
         case .win:              return "WIN"

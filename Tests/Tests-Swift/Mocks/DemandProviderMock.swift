@@ -9,7 +9,8 @@ import Foundation
 
 @testable import Bidon
 
-final class DemandProviderMock: ProgrammaticDemandProvider, BiddingDemandProvider, DirectDemandProvider {
+
+class DemandProviderMock: DemandProvider {
     typealias DemandAdType = DemandAdMock
     
     var invokedDelegateSetter = false
@@ -55,13 +56,29 @@ final class DemandProviderMock: ProgrammaticDemandProvider, BiddingDemandProvide
             return stubbedRevenueDelegate
         }
     }
+    
+    var invokedNotify = false
+    var invokedNotifyCount = 0
+    var invokedNotifyParameters: (ad: DemandAdType, event: AuctionEvent)?
+    var invokedNotifyParametersList = [(ad: DemandAdType, event: AuctionEvent)]()
+    var stubbedNotify: ((DemandAdType, AuctionEvent) -> ())?
 
+    func notify(ad: DemandAdType, event: AuctionEvent) {
+        invokedNotify = true
+        invokedNotifyCount += 1
+        invokedNotifyParameters = (ad, event)
+        invokedNotifyParametersList.append((ad, event))
+        stubbedNotify?(ad, event)
+    }
+}
+
+
+final class ProgrammaticDemandProviderMock: DemandProviderMock, ProgrammaticDemandProvider {
     var invokedBid = false
     var invokedBidCount = 0
     var invokedBidParameters: (pricefloor: Price, response: DemandProviderResponse)?
     var invokedBidParametersList = [(pricefloor: Price, response: DemandProviderResponse)]()
-    var stubbedBid: ((Price, @escaping DemandProviderResponse) -> ())?
-    
+
     func bid(
         _ pricefloor: Price,
         response: @escaping DemandProviderResponse
@@ -70,15 +87,13 @@ final class DemandProviderMock: ProgrammaticDemandProvider, BiddingDemandProvide
         invokedBidCount += 1
         invokedBidParameters = (pricefloor, response)
         invokedBidParametersList.append((pricefloor, response))
-        stubbedBid?(pricefloor, response)
     }
 
     var invokedFill = false
     var invokedFillCount = 0
     var invokedFillParameters: (ad: DemandAdType, response: DemandProviderResponse)?
     var invokedFillParametersList = [(ad: DemandAdType, response: DemandProviderResponse)]()
-    var stubbedFill: ((DemandAdType, @escaping DemandProviderResponse) -> ())?
-    
+
     func fill(
         ad: DemandAdType,
         response: @escaping DemandProviderResponse
@@ -87,39 +102,17 @@ final class DemandProviderMock: ProgrammaticDemandProvider, BiddingDemandProvide
         invokedFillCount += 1
         invokedFillParameters = (ad, response)
         invokedFillParametersList.append((ad, response))
-        stubbedFill?(ad, response)
     }
+}
 
-    var invokedFetchBiddingContext = false
-    var invokedFetchBiddingContextCount = 0
-    var stubbedFetchBiddingContext: ((@escaping BiddingContextResponse) -> ())?
-    
-    func fetchBiddingContext(response: @escaping BiddingContextResponse) {
-        invokedFetchBiddingContext = true
-        invokedFetchBiddingContextCount += 1
-        stubbedFetchBiddingContext?(response)
-    }
 
-    var invokedPrepareBid = false
-    var invokedPrepareBidCount = 0
-    var invokedPrepareBidParameters: (payload: String, response: DemandProviderResponse)?
-    var invokedPrepareBidParametersList = [(payload: String, response: DemandProviderResponse)]()
-    var stubbedPrepareBid: ((String, @escaping DemandProviderResponse) -> ())?
-
-    func prepareBid(with payload: String, response: @escaping DemandProviderResponse) {
-        invokedPrepareBid = true
-        invokedPrepareBidCount += 1
-        invokedPrepareBidParameters = (payload, response)
-        invokedPrepareBidParametersList.append((payload, response))
-        stubbedPrepareBid?(payload, response)
-    }
-
+final class DirectDemandProviderMock: DemandProviderMock, DirectDemandProvider {
     var invokedLoad = false
     var invokedLoadCount = 0
     var invokedLoadParameters: (adUnitId: String, response: DemandProviderResponse)?
     var invokedLoadParametersList = [(adUnitId: String, response: DemandProviderResponse)]()
     var stubbedLoad: ((String, @escaping DemandProviderResponse) -> ())?
-
+    
     func load(
         _ adUnitId: String,
         response: @escaping DemandProviderResponse
@@ -130,17 +123,31 @@ final class DemandProviderMock: ProgrammaticDemandProvider, BiddingDemandProvide
         invokedLoadParametersList.append((adUnitId, response))
         stubbedLoad?(adUnitId, response)
     }
+}
 
-    var invokedNotify = false
-    var invokedNotifyCount = 0
-    var invokedNotifyParameters: (ad: DemandAdType, event: AuctionEvent)?
-    var invokedNotifyParametersList = [(ad: DemandAdType, event: AuctionEvent)]()
 
-    func notify(ad: DemandAdType, event: AuctionEvent) {
-        invokedNotify = true
-        invokedNotifyCount += 1
-        invokedNotifyParameters = (ad, event)
-        invokedNotifyParametersList.append((ad, event))
+final class BiddingDemandProviderMock: DemandProviderMock, BiddingDemandProvider {
+    var invokedFetchBiddingContext = false
+    var invokedFetchBiddingContextCount = 0
+    var stubbedFetchBiddingContextResponseResult: (Result<BiddingContextEncoder, MediationError>, Void)?
+
+    func fetchBiddingContext(response: @escaping BiddingContextResponse) {
+        invokedFetchBiddingContext = true
+        invokedFetchBiddingContextCount += 1
+        if let result = stubbedFetchBiddingContextResponseResult {
+            response(result.0)
+        }
+    }
+
+    var invokedPrepareBid = false
+    var invokedPrepareBidCount = 0
+    var invokedPrepareBidParameters: (payload: String, response: DemandProviderResponse)?
+    var invokedPrepareBidParametersList = [(payload: String, response: DemandProviderResponse)]()
+
+    func prepareBid(with payload: String, response: @escaping DemandProviderResponse) {
+        invokedPrepareBid = true
+        invokedPrepareBidCount += 1
+        invokedPrepareBidParameters = (payload, response)
+        invokedPrepareBidParametersList.append((payload, response))
     }
 }
- 

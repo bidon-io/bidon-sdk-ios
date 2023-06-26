@@ -245,6 +245,7 @@ private extension BaseMediationObserver {
             round: event.round,
             adapter: event.adapter
         ) { observation in
+            observation.bidId = event.bid.id
             observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
     }

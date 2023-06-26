@@ -102,12 +102,12 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             )
             
             try? auction.add(node: finishRoundOperation)
-
+            
             // Add edges between finishes of previous rounds to current round start
             shared.forEach { operation in
                 try? auction.addEdge(from: operation, to: startRoundOperation)
             }
-                    
+            
             // Create request operation for every demand sources
             round.demands.forEach { identifier in
                 let requestDemandOperation = requestDemandOperation(
@@ -147,7 +147,8 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         round: AuctionRound,
         demand identifier: String
     ) -> AuctionOperation {
-        guard let adapter = adapters.first(where: { $0.identifier == identifier && !$0.isBiddingAdapter }) else {
+        
+        guard let adapter = adapters.first(where: { $0.identifier == identifier }) else {
             return AuctionOperationLogEvent(
                 observer: mediationObserver,
                 event: DemandProviderNotFoundMediationEvent(
@@ -157,14 +158,10 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             )
         }
         
-        if adapter.provider is any ProgrammaticDemandProvider {
-            return AuctionOperationRequestProgrammaticDemand<AuctionContextType>(
-                round: round,
-                observer: mediationObserver,
-                adapter: adapter
-            )
-        } else if adapter.provider is any DirectDemandProvider {
-            return AuctionOperationRequestDirectDemand<AuctionContextType>(
+        let operation: AuctionOperation
+        
+        if adapter.mode.contains(.classic) {
+            operation = AuctionOperationRequestDirectDemand<AuctionContextType>(
                 round: round,
                 observer: mediationObserver,
                 adapter: adapter
@@ -174,8 +171,14 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
                     pricefloor: pricefloor
                 )
             }
+        } else if adapter.mode.contains(.programmatic) {
+            operation = AuctionOperationRequestProgrammaticDemand<AuctionContextType>(
+                round: round,
+                observer: mediationObserver,
+                adapter: adapter
+            )
         } else {
-            return AuctionOperationLogEvent(
+            operation = AuctionOperationLogEvent(
                 observer: mediationObserver,
                 event: DemandProviderNotFoundMediationEvent(
                     round: round,
@@ -183,11 +186,13 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
                 )
             )
         }
+        
+        return operation
     }
     
     private func biddingOperation(round: AuctionRound) -> AuctionOperation {
         let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = round.bidding.compactMap { id in
-            self.adapters.first { $0.identifier == id && $0.isBiddingAdapter }
+            self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
         }
         
         let operation = AuctionOperationRequestBiddingDemand<AuctionContextType>(

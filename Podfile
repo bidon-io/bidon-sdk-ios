@@ -14,7 +14,17 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.1.0.0'
+  pod 'BidMachine', '~> 2.2.0'
+  pod 'BidMachineAdColonyAdapter', '~> 2.2.0.0'
+  pod 'BidMachineMintegralAdapter', '~> 2.2.0.0'
+  pod 'BidMachineAmazonAdapter', '~> 2.2.0.0'
+  pod 'BidMachineCriteoAdapter', '~> 2.2.0.0'
+  pod 'BidMachineMetaAudienceAdapter', '~> 2.2.0.0'
+  pod 'BidMachineMyTargetAdapter', '~> 2.2.0.0'
+  pod 'BidMachineSmaatoAdapter', '~> 2.2.0.0'
+  pod 'BidMachineTapjoyAdapter', '~> 2.2.0.0'
+  pod 'BidMachineVungleAdapter', '~> 2.2.0.0'
+  pod 'BidMachinePangleAdapter', '~> 2.2.0.0'
 end
 
 def admob
@@ -39,22 +49,22 @@ def ocmock
 end
 
 def appodeal_mediation
-  pod 'APDAdColonyAdapter', '3.1.3.0-beta.1'
-  pod 'APDAdjustAdapter', '3.1.3.0-beta.1'
-  pod 'APDAppLovinAdapter', '3.1.3.1-beta.1'
-  pod 'APDAppsFlyerAdapter', '3.1.3.1-beta.1'
-  pod 'APDBidMachineAdapter', '3.1.3.1-beta.1' # Required
-  pod 'APDFirebaseAdapter', '3.1.3.1-beta.1'
-  pod 'APDGoogleAdMobAdapter', '3.1.3.1-beta.1'
-  pod 'APDIABAdapter', '3.1.3.0-beta.1' # Required
-  pod 'APDIronSourceAdapter', '3.1.3.0-beta.1'
-  pod 'APDFacebookAdapter', '3.1.3.1-beta.1'
-  pod 'APDMetaAudienceNetworkAdapter', '3.1.3.1-beta.1'
-  pod 'APDMyTargetAdapter', '3.1.3.1-beta.1'
-  pod 'APDStackAnalyticsAdapter', '3.1.3.0-beta.1' # Required
-  pod 'APDUnityAdapter', '3.1.3.1-beta.1'
-  pod 'APDVungleAdapter', '3.1.3.1-beta.1'
-  pod 'APDYandexAdapter', '3.1.3.0-beta.1'
+  pod 'APDAdColonyAdapter', '3.1.3.0-beta.2'
+  pod 'APDAdjustAdapter', '3.1.3.0-beta.2'
+  pod 'APDAppLovinAdapter', '3.1.3.0-beta.2'
+  pod 'APDAppsFlyerAdapter', '3.1.3.0-beta.2'
+  pod 'APDBidMachineAdapter', '3.1.3.0-beta.2' # Required
+  pod 'APDFirebaseAdapter', '3.1.3.0-beta.2'
+  pod 'APDGoogleAdMobAdapter', '3.1.3.0-beta.2'
+  pod 'APDIABAdapter', '3.1.3.0-beta.2' # Required
+  pod 'APDIronSourceAdapter', '3.1.3.0-beta.2'
+  pod 'APDFacebookAdapter', '3.1.3.0-beta.2'
+  pod 'APDMetaAudienceNetworkAdapter', '3.1.3.0-beta.2'
+  pod 'APDMyTargetAdapter', '3.1.3.0-beta.2'
+  pod 'APDStackAnalyticsAdapter', '3.1.3.0-beta.2' # Required
+  pod 'APDUnityAdapter', '3.1.3.0-beta.2'
+  pod 'APDVungleAdapter', '3.1.3.0-beta.2'
+  pod 'APDYandexAdapter', '3.1.3.0-beta.2'
 end
 
 # Targets
