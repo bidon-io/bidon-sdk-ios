@@ -8,13 +8,11 @@
 import Foundation
 
 
-final class RewardedLossRequestBuilder: BaseLossRequestBuilder<RewardedAuctionContext> {
-    override var adType: AdType { .rewarded }
-    
+final class RewardedNotificationRequestBuilder: BaseNotificationRequestBuilder<RewardedAdTypeContext> {    
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,
-            rewarded: RewardedAuctionContextModel(context)
+            rewarded: RewardedAdTypeContextModel(context)
         )
     }
 }

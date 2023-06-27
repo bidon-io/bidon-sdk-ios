@@ -9,8 +9,8 @@ import Foundation
 
 
 protocol AuctionOperationRequestDemand: AuctionOperation {
-    associatedtype AuctionContextType: AuctionContext where AuctionContextType.DemandProviderType: DemandProvider
-    associatedtype BidType: Bid where BidType.Provider == AuctionContextType.DemandProviderType
+    associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
+    associatedtype BidType: Bid where BidType.Provider == AdTypeContextType.DemandProviderType
 
     var bid: BidType? { get }
     
@@ -20,7 +20,7 @@ protocol AuctionOperationRequestDemand: AuctionOperation {
 
 extension AuctionOperationRequestDemand {
     var pricefloor: Price {
-        deps(AuctionOperationStartRound<AuctionContextType, BidType>.self)
+        deps(AuctionOperationStartRound<AdTypeContextType, BidType>.self)
             .first?
             .pricefloor ?? .unknown
     }

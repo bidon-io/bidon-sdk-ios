@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<RewardedAuctionContext> {
+final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<RewardedAdTypeContext> {
     override func adapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
         return directDemandWrappedAdapters() +
         biddingDemandWrappedAdapters() +

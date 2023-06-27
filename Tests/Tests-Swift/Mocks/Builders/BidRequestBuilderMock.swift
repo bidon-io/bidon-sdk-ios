@@ -10,7 +10,7 @@ import Foundation
 @testable import Bidon
 
 final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
-    typealias Context = AuctionContextMock
+    typealias Context = AdTypeContextMock
     
     var invokedAdaptersRepositoryGetter = false
     var invokedAdaptersRepositoryGetterCount = 0

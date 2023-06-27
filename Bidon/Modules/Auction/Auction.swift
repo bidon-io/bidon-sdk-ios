@@ -16,17 +16,39 @@ protocol AuctionRound {
 }
 
 
-protocol AuctionOperation: Operation {}
+protocol AuctionOperation: Operation {
+    var metadata: AuctionMetadata { get }
+}
 
 
-typealias Auction = DirectedAcyclicGraph<Operation>
+struct AuctionMetadata {
+    var id: String
+    var configuration: Int
+    var isExternalNotificationsEnabled: Bool
+}
 
 
-extension Auction {
+struct Auction {
+    private(set) var graph = DirectedAcyclicGraph<Operation>()
+    
     func operations() -> [Operation] {
-        return root.reduce([]) {
+        return graph.root.reduce([]) {
             $0 + traverse(operation: $1, previous: [])
         }
+    }
+    
+    mutating func addNode(_ operation: AuctionOperation) {
+        try? graph.add(node: operation)
+    }
+    
+    mutating func addEdge(
+        parent parentOperation: AuctionOperation,
+        child childOperation: AuctionOperation
+    ) {
+        try? graph.addEdge(
+            from: parentOperation,
+            to: childOperation
+        )
     }
     
     private func traverse(
@@ -39,7 +61,7 @@ extension Auction {
             previous.append(operation)
         }
         
-        let seeds = seeds(of: operation)
+        let seeds = graph.seeds(of: operation)
         seeds.forEach { $0.addDependency(operation) }
         
         return seeds.reduce(previous) {

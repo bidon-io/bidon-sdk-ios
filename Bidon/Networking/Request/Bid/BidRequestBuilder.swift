@@ -12,7 +12,7 @@ typealias BidRequestImp = BidRequest.RequestBody.ImpModel
 
 
 protocol BidRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AuctionContext
+    associatedtype Context: AdTypeContext
     
     var imp: BidRequestImp { get }
     
@@ -45,7 +45,7 @@ protocol BidRequestBuilder: BaseRequestBuilder {
 }
 
 
-class BaseBidRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, BidRequestBuilder {
+class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequestBuilder {
     private(set) var bidfloor: Price = .unknown
     private(set) var demands: BidonBiddingExtrasModel!
     private(set) var auctionId: String!
@@ -55,11 +55,11 @@ class BaseBidRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, BidReq
     
     private var adaptersInfo: AdaptersInfo!
     
-    var adType: AdType { fatalError("BaseBidRequestBuilder doesn't provide ad type") }
+    final var adType: AdType { context.adType }
     
+    final var adapters: AdaptersInfo { adaptersInfo }
+
     var imp: BidRequestImp { fatalError("BaseBidRequestBuilder doesn't provide imp") }
-    
-    var adapters: AdaptersInfo { adaptersInfo }
     
     func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
         self.demands = BidonBiddingExtrasModel(encoders: encoders)

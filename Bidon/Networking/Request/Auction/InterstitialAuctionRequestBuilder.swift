@@ -8,9 +8,7 @@
 import Foundation
 
 
-final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<InterstitialAuctionContext> {
-    override var adType: AdType { .interstitial }
-    
+final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<InterstitialAdTypeContext> {
     override var adapters: AdaptersInfo {
         let programmatic: [ProgrammaticInterstitialDemandSourceAdapter] = adaptersRepository.all()
         let direct: [DirectInterstitialDemandSourceAdapter] = adaptersRepository.all()
@@ -24,7 +22,7 @@ final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<Interst
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            interstitial: InterstitialAuctionContextModel(context)
+            interstitial: InterstitialAdTypeContextModel(context)
         )
     }
 }

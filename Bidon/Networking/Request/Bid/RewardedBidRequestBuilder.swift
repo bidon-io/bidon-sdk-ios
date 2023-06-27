@@ -8,16 +8,14 @@
 import Foundation
 
 
-final class RewardedBidRequestBuilder: BaseBidRequestBuilder<RewardedAuctionContext> {
-    override var adType: AdType { .rewarded }
-    
+final class RewardedBidRequestBuilder: BaseBidRequestBuilder<RewardedAdTypeContext> {    
     override var imp: BidRequestImp {
         BidRequestImp(
             bidfloor: bidfloor,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
-            rewarded: RewardedAuctionContextModel(context),
+            rewarded: RewardedAdTypeContextModel(context),
             demands: demands
         )
     }

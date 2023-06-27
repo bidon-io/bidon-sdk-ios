@@ -9,7 +9,7 @@ import Foundation
 
 
 protocol ImpressionRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AuctionContext
+    associatedtype Context: AdTypeContext
     
     var imp: ImpressionModel { get }
     var route: Route { get }
@@ -27,7 +27,7 @@ protocol ImpressionRequestBuilder: BaseRequestBuilder {
 }
 
 
-class BaseImpressionRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, ImpressionRequestBuilder {
+class BaseImpressionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, ImpressionRequestBuilder {
     private(set) var context: Context!
     private(set) var impression: Impression!
     

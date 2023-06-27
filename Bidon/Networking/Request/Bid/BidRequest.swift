@@ -23,9 +23,9 @@ struct BidRequest: Request {
             var auctionConfigurationId: Int
             var roundId: String
             var orientation: InterfaceOrientation = .current
-            var banner: AdViewAucionContextModel?
-            var interstitial: InterstitialAuctionContextModel?
-            var rewarded: RewardedAuctionContextModel?
+            var banner: BannerAdTypeContextModel?
+            var interstitial: InterstitialAdTypeContextModel?
+            var rewarded: RewardedAdTypeContextModel?
             var demands: BidonBiddingExtrasModel
         }
         

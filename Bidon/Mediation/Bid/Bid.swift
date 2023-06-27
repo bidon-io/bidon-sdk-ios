@@ -12,38 +12,36 @@ protocol Bid: ECPMProvider, Hashable {
     associatedtype Provider
     
     var id: String { get }
-    var auctionId: String { get }
-    var auctionConfigurationId: Int { get }
     var roundId: String { get }
     var adType: AdType { get }
     var lineItem: LineItem? { get }
     var ad: DemandAd { get }
     var provider: Provider { get }
+    var metadata: AuctionMetadata { get }
 }
 
 
 struct BidModel<DemandProviderType>: Bid {
     var id: String
-    var auctionId: String
-    var auctionConfigurationId: Int
     var roundId: String
     var adType: AdType
     var lineItem: LineItem?
     var ad: DemandAd
     var provider: DemandProviderType
+    var metadata: AuctionMetadata
     
     static func == (
         lhs: BidModel<DemandProviderType>,
         rhs: BidModel<DemandProviderType>
     ) -> Bool {
         return lhs.ad.id == rhs.ad.id &&
-        lhs.auctionId == rhs.auctionId &&
+        lhs.metadata.id == rhs.metadata.id &&
         lhs.roundId == rhs.roundId
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(ad.id)
-        hasher.combine(auctionId)
+        hasher.combine(metadata.id)
         hasher.combine(roundId)
     }
 }
@@ -63,13 +61,12 @@ extension AnyAdViewBid {
     func unwrapped() -> AdViewBid {
         return AdViewBid(
             id: id,
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
             adType: adType,
             lineItem: lineItem,
             ad: ad,
-            provider: provider.wrapped
+            provider: provider.wrapped,
+            metadata: metadata
         )
     }
 }
@@ -79,13 +76,12 @@ extension AnyInterstitialBid {
     func unwrapped() -> InterstitialBid {
         return InterstitialBid(
             id: id,
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
             adType: adType,
             lineItem: lineItem,
             ad: ad,
-            provider: provider.wrapped
+            provider: provider.wrapped,
+            metadata: metadata
         )
     }
 }
@@ -95,13 +91,12 @@ extension AnyRewardedAdBid {
     func unwrapped() -> RewardedAdBid {
         return RewardedAdBid(
             id: id,
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
             adType: adType,
             lineItem: lineItem,
             ad: ad,
-            provider: provider.wrapped
+            provider: provider.wrapped,
+            metadata: metadata
         )
     }
 }

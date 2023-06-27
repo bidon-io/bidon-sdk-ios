@@ -8,28 +8,32 @@
 import Foundation
 
 
-final class AuctionOperationFinishRound<AuctionContextType: AuctionContext, BidType: Bid>: Operation
-where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType == BidType.Provider {
+final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation
+where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
     let comparator: AuctionBidComparator
     let round: AuctionRound
+    let metadata: AuctionMetadata
     
     private weak var timeout: AuctionOperationRoundTimeout?
     private(set) var bids: [BidType] = []
     
     init(
-        observer: AnyMediationObserver,
-        adRevenueObserver: AdRevenueObserver,
+        round: AuctionRound,
         comparator: AuctionBidComparator,
         timeout: AuctionOperationRoundTimeout,
-        round: AuctionRound
+        observer: AnyMediationObserver,
+        adRevenueObserver: AdRevenueObserver,
+        metadata: AuctionMetadata
     ) {
         self.observer = observer
         self.adRevenueObserver = adRevenueObserver
         self.comparator = comparator
         self.timeout = timeout
         self.round = round
+        self.metadata = metadata
+        
         super.init()
     }
     
@@ -39,11 +43,11 @@ where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType ==
         timeout?.invalidate()
         
         bids = (
-            deps(AuctionOperationRequestDirectDemand<AuctionContextType>.self)
+            deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
                 .compactMap { $0.bid as? BidType } +
-            deps(AuctionOperationRequestProgrammaticDemand<AuctionContextType>.self)
+            deps(AuctionOperationRequestProgrammaticDemand<AdTypeContextType>.self)
                 .compactMap { $0.bid as? BidType } +
-            deps(AuctionOperationRequestBiddingDemand<AuctionContextType>.self)
+            deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
                 .compactMap { $0.bid as? BidType }
         )
         .sorted { comparator.compare($0, $1) }

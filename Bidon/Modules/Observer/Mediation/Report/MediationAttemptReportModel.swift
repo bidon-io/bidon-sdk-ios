@@ -12,8 +12,6 @@ struct MediationAttemptReportModel: MediationAttemptReport {
     typealias RoundReportType = RoundReportModel
     typealias AuctionResultReportType = AuctionResultReportModel
     
-    var auctionId: String
-    var auctionConfigurationId: Int
     var rounds: [RoundReportType]
     var result: AuctionResultReportModel
 }

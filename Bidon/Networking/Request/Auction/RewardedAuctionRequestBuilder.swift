@@ -8,9 +8,7 @@
 import Foundation
 
 
-final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAuctionContext> {
-    override var adType: AdType { .rewarded }
-    
+final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdTypeContext> {    
     override var adapters: AdaptersInfo {
         let programmatic: [ProgrammaticRewardedAdDemandSourceAdapter] = adaptersRepository.all()
         let direct: [DirectRewardedAdDemandSourceAdapter] = adaptersRepository.all()
@@ -25,7 +23,7 @@ final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAuc
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            rewarded: RewardedAuctionContextModel(context)
+            rewarded: RewardedAdTypeContextModel(context)
         )
     }
 }

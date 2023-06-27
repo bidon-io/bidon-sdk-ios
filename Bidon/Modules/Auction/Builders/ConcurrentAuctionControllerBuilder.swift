@@ -8,8 +8,8 @@
 import Foundation
 
 
-class BaseConcurrentAuctionControllerBuilder<AuctionContextType: AuctionContext> {
-    typealias DemandProviderType = AuctionContextType.DemandProviderType
+class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
+    typealias DemandProviderType = AdTypeContextType.DemandProviderType
     
     private(set) var comparator: AuctionBidComparator = HigherECPMAuctionBidComparator()
     private(set) var pricefloor: Price = .unknown
@@ -17,7 +17,8 @@ class BaseConcurrentAuctionControllerBuilder<AuctionContextType: AuctionContext>
     private(set) var mediationObserver: AnyMediationObserver!
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var elector: AuctionLineItemElector!
-    private(set) var context: AuctionContextType!
+    private(set) var context: AdTypeContextType!
+    private(set) var metadata: AuctionMetadata!
 
     private(set) var rounds: [AuctionRound] = []
     
@@ -78,8 +79,14 @@ class BaseConcurrentAuctionControllerBuilder<AuctionContextType: AuctionContext>
     }
     
     @discardableResult
-    public func withContext(_ context: AuctionContextType) -> Self {
+    public func withContext(_ context: AdTypeContextType) -> Self {
         self.context = context
+        return self
+    }
+    
+    @discardableResult
+    public func withMetadata(_ metadata: AuctionMetadata) -> Self {
+        self.metadata = metadata
         return self
     }
 }

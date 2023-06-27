@@ -12,7 +12,7 @@ typealias AuctionRequestAdObject = AuctionRequest.RequestBody.AdObjectModel
 
 
 protocol AuctionRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AuctionContext
+    associatedtype Context: AdTypeContext
     
     var adObject: AuctionRequestAdObject { get }
     var adapters: AdaptersInfo { get }
@@ -35,7 +35,7 @@ protocol AuctionRequestBuilder: BaseRequestBuilder {
 }
 
 
-class BaseAuctionRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, AuctionRequestBuilder {
+class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, AuctionRequestBuilder {
     private(set) var placement: String!
     private(set) var auctionId: String!
     private(set) var pricefloor: Price = .unknown
@@ -45,7 +45,7 @@ class BaseAuctionRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, Au
     
     var adapters: AdaptersInfo { fatalError("BaseAuctionRequestBuilder doesn't provide adapters") }
     
-    var adType: AdType { fatalError("BaseAuctionRequestBuilder doesn't provide adType") }
+    var adType: AdType { context.adType }
     
     @discardableResult
     func withPlacement(_ placement: String) -> Self {

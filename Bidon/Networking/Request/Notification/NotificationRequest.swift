@@ -1,5 +1,5 @@
 //
-//  LossRequest.swift
+//  NotificationRequest.swift
 //  Bidon
 //
 //  Created by Stas Kochkin on 05.04.2023.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct LossRequest: Request {
+struct NotificationRequest: Request {
     var route: Route
     var method: HTTPTask.HTTPMethod = .post
     var headers: [HTTPTask.HTTPHeader: String] = .default()
@@ -31,7 +31,7 @@ struct LossRequest: Request {
         var test: Bool
         var token: String?
         var bid: ImpressionModel
-        var externalWinner: ExternalWinner
+        var externalWinner: ExternalWinner?
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -39,7 +39,7 @@ struct LossRequest: Request {
         var success: Bool
     }
     
-    init<T: LossRequestBuilder>(_ build: (T) -> ()) {
+    init<T: NotificationRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
     

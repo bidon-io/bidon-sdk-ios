@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
+final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
     private enum BidState {
         case unknown
         case prepare([AdapterType])
@@ -17,8 +17,8 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
         case ready(BidType)
     }
     
-    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
+    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
     @Injected(\.networkManager)
     private var networkManager: NetworkManager
@@ -28,10 +28,11 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     
     @Atomic private var bidState: BidState = .unknown
     
-    let context: AuctionContextType
+    let context: AdTypeContextType
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
     let round: AuctionRound
+    let metadata: AuctionMetadata
     
     private var encoders: BiddingContextEncoders = [:]
     
@@ -43,11 +44,13 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
     }
     
     init(
-        context: AuctionContextType,
-        observer: AnyMediationObserver,
+        round: AuctionRound,
         adapters: [AdapterType],
-        round: AuctionRound
+        observer: AnyMediationObserver,
+        context: AdTypeContextType,
+        metadata: AuctionMetadata
     ) {
+        self.metadata = metadata
         self.context = context
         self.observer = observer
         self.adapters = adapters
@@ -116,8 +119,8 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             builder.withBiddingContextEncoders(encoders)
             builder.withTestMode(sdk.isTestMode)
             builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withAuctionId(observer.auctionId)
-            builder.withAuctionConfigurationId(observer.auctionConfigurationId)
+            builder.withAuctionId(metadata.id)
+            builder.withAuctionConfigurationId(metadata.configuration)
             builder.withRoundId(round.id)
             builder.withAdapters(adapters)
         }
@@ -189,12 +192,11 @@ final class AuctionOperationRequestBiddingDemand<AuctionContextType: AuctionCont
             case .success(let ad):
                 let bid = BidType(
                     id: UUID().uuidString,
-                    auctionId: self.observer.auctionId,
-                    auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
-                    adType: self.observer.adType,
+                    adType: self.context.adType,
                     ad: ad,
-                    provider: adapter.provider
+                    provider: adapter.provider,
+                    metadata: self.metadata
                 )
                 
                 self.$bidState.mutate { $0 = .ready(bid) }

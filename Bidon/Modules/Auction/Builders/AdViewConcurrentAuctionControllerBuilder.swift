@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<AdViewAucionContext> {
+final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<BannerAdTypeContext> {
     private var viewContext: AdViewContext!
     
     @discardableResult

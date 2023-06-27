@@ -8,15 +8,16 @@
 import Foundation
 
 
-final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: AuctionController {
-    typealias DemandProviderType = AuctionContextType.DemandProviderType
+final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: AuctionController {
+    typealias DemandProviderType = AdTypeContextType.DemandProviderType
     typealias BidType = BidModel<DemandProviderType>
     
-    private let context: AuctionContextType
+    private let context: AdTypeContextType
     private let rounds: [AuctionRound]
     private let adapters: [AnyDemandSourceAdapter<DemandProviderType>]
     private let comparator: AuctionBidComparator
     private let pricefloor: Price
+    private let metadata: AuctionMetadata
     
     private let mediationObserver: AnyMediationObserver
     private let adRevenueObserver: AdRevenueObserver
@@ -31,7 +32,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         return queue
     }()
     
-    init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AuctionContextType> {
+    init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AdTypeContextType> {
         let builder = T()
         build(builder)
         
@@ -43,6 +44,7 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         self.pricefloor = builder.pricefloor
         self.mediationObserver = builder.mediationObserver
         self.adRevenueObserver = builder.adRevenueObserver
+        self.metadata = builder.metadata
     }
     
     func load(
@@ -55,20 +57,25 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         // Instantiate auction with start operation
         let startAuctionOperation = AuctionOperationStart(
             pricefloor: pricefloor,
-            observer: mediationObserver
+            observer: mediationObserver,
+            metadata: metadata
         )
-        try? auction.add(node: startAuctionOperation)
+        auction.addNode(startAuctionOperation)
         
         // Finish auction
-        let finishAuctionOperation = AuctionOperationFinish<AuctionContextType, BidType>(
-            observer: mediationObserver,
+        let finishAuctionOperation = AuctionOperationFinish<AdTypeContextType, BidType>(
             comparator: comparator,
+            observer: mediationObserver,
+            metadata: metadata,
             completion: completion
         )
         
         // Finish auction is child of the lates round finish
-        try? auction.add(node: finishAuctionOperation)
-        try? auction.addEdge(from: startAuctionOperation, to: finishAuctionOperation)
+        auction.addNode(finishAuctionOperation)
+        auction.addEdge(
+            parent: startAuctionOperation,
+            child: finishAuctionOperation
+        )
         
         // Use array of operation for backracking. Any start of new round should be children of
         // every previous round finish and auction start
@@ -76,36 +83,45 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         var shared: [AuctionOperation] = [startAuctionOperation]
         rounds.forEach { round in
             // Instantiate round start operation and add it to DAG
-            let startRoundOperation = AuctionOperationStartRound<AuctionContextType, BidType>(
-                observer: mediationObserver,
+            let startRoundOperation = AuctionOperationStartRound<AdTypeContextType, BidType>(
                 round: round,
-                comparator: comparator
+                comparator: comparator,
+                observer: mediationObserver,
+                metadata: metadata
             )
-            try? auction.add(node: startRoundOperation)
+            auction.addNode(startRoundOperation)
             
             // Instantiate timeout operation
             let timeoutOperation = AuctionOperationRoundTimeout(
+                round: round,
                 observer: mediationObserver,
-                round: round
+                metadata: metadata
             )
             
-            try? auction.add(node: timeoutOperation)
-            try? auction.addEdge(from: startRoundOperation, to: timeoutOperation)
+            auction.addNode(timeoutOperation)
+            auction.addEdge(
+                parent: startRoundOperation,
+                child: timeoutOperation
+            )
             
             // Instantiate round finisj opearation and add it to DAG
-            let finishRoundOperation = AuctionOperationFinishRound<AuctionContextType, BidType>(
-                observer: mediationObserver,
-                adRevenueObserver: adRevenueObserver,
+            let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType>(
+                round: round,
                 comparator: comparator,
                 timeout: timeoutOperation,
-                round: round
+                observer: mediationObserver,
+                adRevenueObserver: adRevenueObserver,
+                metadata: metadata
             )
             
-            try? auction.add(node: finishRoundOperation)
+            auction.addNode(finishRoundOperation)
             
             // Add edges between finishes of previous rounds to current round start
             shared.forEach { operation in
-                try? auction.addEdge(from: operation, to: startRoundOperation)
+                auction.addEdge(
+                    parent: operation,
+                    child: startRoundOperation
+                )
             }
             
             // Create request operation for every demand sources
@@ -119,27 +135,42 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
                 
                 // Every request demand operation should be childern of round start
                 // and parent of round finish
-                try? auction.add(node: requestDemandOperation)
-                try? auction.addEdge(from: startRoundOperation, to: requestDemandOperation)
-                try? auction.addEdge(from: requestDemandOperation, to: finishRoundOperation)
+                auction.addNode(requestDemandOperation)
+                auction.addEdge(
+                    parent: startRoundOperation,
+                    child: requestDemandOperation
+                )
+                auction.addEdge(
+                    parent: requestDemandOperation,
+                    child: finishRoundOperation
+                )
             }
             
             // Add bidding operation
             let biddingOperation = biddingOperation(round: round)
-            try? auction.add(node: biddingOperation)
-            try? auction.addEdge(from: startRoundOperation, to: biddingOperation)
-            try? auction.addEdge(from: biddingOperation, to: finishRoundOperation)
+            auction.addNode(biddingOperation)
+            auction.addEdge(
+                parent: startRoundOperation,
+                child: biddingOperation
+            )
+            auction.addEdge(
+                parent: biddingOperation,
+                child: finishRoundOperation
+            )
             
             shared.append(finishRoundOperation)
             
-            try? auction.addEdge(from: finishRoundOperation, to: finishAuctionOperation)
+            auction.addEdge(
+                parent: finishRoundOperation,
+                child: finishAuctionOperation
+            )
         }
         
         // TODO: Human readable auction description
         // Logger.debug("\(mediationObserver.adType.stringValue.capitalized) will proceed auction: \(auction)")
         
         // We can proceed all demand source operations per round at once
-        queue.maxConcurrentOperationCount = auction.width
+        queue.maxConcurrentOperationCount = auction.graph.width
         queue.addOperations(auction.operations(), waitUntilFinished: false)
     }
     
@@ -147,24 +178,28 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
         round: AuctionRound,
         demand identifier: String
     ) -> AuctionOperation {
-        
         guard let adapter = adapters.first(where: { $0.identifier == identifier }) else {
+            let event = DemandProviderNotFoundMediationEvent(
+                round: round,
+                adapter: identifier
+            )
+            
             return AuctionOperationLogEvent(
+                event: event,
                 observer: mediationObserver,
-                event: DemandProviderNotFoundMediationEvent(
-                    round: round,
-                    adapter: identifier
-                )
+                metadata: metadata
             )
         }
         
         let operation: AuctionOperation
         
         if adapter.mode.contains(.classic) {
-            operation = AuctionOperationRequestDirectDemand<AuctionContextType>(
+            operation = AuctionOperationRequestDirectDemand<AdTypeContextType>(
                 round: round,
+                adapter: adapter,
                 observer: mediationObserver,
-                adapter: adapter
+                context: context,
+                metadata: metadata
             ) { [weak self] _adapter, pricefloor in
                 return self?.elector.popLineItem(
                     for: _adapter.identifier,
@@ -172,18 +207,23 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
                 )
             }
         } else if adapter.mode.contains(.programmatic) {
-            operation = AuctionOperationRequestProgrammaticDemand<AuctionContextType>(
+            operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
                 round: round,
+                adapter: adapter,
                 observer: mediationObserver,
-                adapter: adapter
+                context: context,
+                metadata: metadata
             )
         } else {
+            let event = DemandProviderNotFoundMediationEvent(
+                round: round,
+                adapter: identifier
+            )
+            
             operation = AuctionOperationLogEvent(
+                event: event,
                 observer: mediationObserver,
-                event: DemandProviderNotFoundMediationEvent(
-                    round: round,
-                    adapter: identifier
-                )
+                metadata: metadata
             )
         }
         
@@ -195,11 +235,12 @@ final class ConcurrentAuctionController<AuctionContextType: AuctionContext>: Auc
             self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
         }
         
-        let operation = AuctionOperationRequestBiddingDemand<AuctionContextType>(
-            context: context,
-            observer: mediationObserver,
+        let operation = AuctionOperationRequestBiddingDemand<AdTypeContextType>(
+            round: round,
             adapters: adapters,
-            round: round
+            observer: mediationObserver,
+            context: context,
+            metadata: metadata
         )
         
         return operation

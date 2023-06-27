@@ -46,8 +46,6 @@ protocol MediationAttemptReport {
     associatedtype RoundReportType: RoundReport
     associatedtype AuctionResultReportType: AuctionResultReport
     
-    var auctionId: String { get }
-    var auctionConfigurationId: Int { get }
     var rounds: [RoundReportType] { get }
     var result: AuctionResultReportType { get }
 }

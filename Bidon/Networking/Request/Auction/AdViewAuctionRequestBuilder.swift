@@ -8,9 +8,7 @@
 import Foundation
 
 
-final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<AdViewAucionContext> {
-    override var adType: AdType { .banner}
-    
+final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeContext> {    
     override var adapters: AdaptersInfo {
         let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
         let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
@@ -25,7 +23,7 @@ final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<AdViewAucionC
             placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
-            banner: AdViewAucionContextModel(context)
+            banner: BannerAdTypeContextModel(context)
         )
     }
 }

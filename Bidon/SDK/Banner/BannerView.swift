@@ -115,20 +115,49 @@ public final class BannerView: UIView, AdView {
         )
     }
     
-    @objc(notifyLossAd:winner:eCPM:)
-    public func notify(
-        loss ad: Ad,
-        winner demandId: String,
+    @objc(notifyWin)
+    public func notifyWin() {
+        guard
+            let impression = currentImpression(),
+            impression.isTrackingAllowed(.win),
+            impression.metadata.isExternalNotificationsEnabled
+        else { return }
+        
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        let request = context.notificationRequest { builder in
+            builder.withRoute(.win)
+            builder.withEnvironmentRepository(sdk.environmentRepository)
+            builder.withTestMode(sdk.isTestMode)
+            builder.withExt(extras)
+            builder.withImpression(impression)
+        }
+        
+        networkManager.perform(request: request) { result in
+            Logger.debug("Sent win with result: \(result)")
+        }
+    }
+    
+    @objc(notifyLossWithExternalDemandId:eCPM:)
+    public func notifyLoss(
+        external demandId: String,
         eCPM: Price
     ) {
         guard
-            let impression = associatedImpression(ad: ad),
-            impression.isTrackingAllowed(.show)
+            let impression = currentImpression(),
+            impression.isTrackingAllowed(.loss)
         else { return }
         
-        let context = AdViewAucionContext(viewContext: viewContext)
+        defer {
+            adManager.prepareForReuse()
+            viewManager.hide()
+        }
         
-        let request = context.lossRequest { builder in
+        guard impression.metadata.isExternalNotificationsEnabled
+        else { return }
+    
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        let request = context.notificationRequest { builder in
+            builder.withRoute(.loss)
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
@@ -139,15 +168,12 @@ public final class BannerView: UIView, AdView {
         networkManager.perform(request: request) { result in
             Logger.debug("Sent loss with result: \(result)")
         }
-        
-        adManager.prepareForReuse()
-        viewManager.hide()
     }
-    
-    private func associatedImpression(ad: Ad) -> Impression? {
-        if let bid = adManager.bid, bid.ad.id == ad.id {
+
+    private func currentImpression() -> Impression? {
+        if let bid = adManager.bid {
             return AdViewImpression(bid: bid, format: format)
-        } else if let impression = viewManager.impression, impression.ad.id == ad.id {
+        } else if let impression = viewManager.impression {
             return impression
         } else {
             return nil

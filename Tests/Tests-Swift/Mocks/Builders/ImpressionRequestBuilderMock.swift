@@ -11,7 +11,7 @@ import Foundation
 
 
 final class ImpressionRequestBuilderMock: BaseRequestBuilder, ImpressionRequestBuilder {
-    typealias Context = AuctionContextMock
+    typealias Context = AdTypeContextMock
     
     var invokedAdaptersRepositoryGetter = false
     var invokedAdaptersRepositoryGetterCount = 0

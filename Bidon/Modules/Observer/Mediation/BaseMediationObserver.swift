@@ -32,9 +32,8 @@ fileprivate struct RoundObservation {
 
 
 final class BaseMediationObserver: MediationObserver {
-    let auctionId: String
-    let auctionConfigurationId: Int
     let adType: AdType
+    let auctionId: String
     
     var report: MediationAttemptReportModel {
         let rounds: [RoundReportModel] = rounds.map { round in
@@ -64,8 +63,6 @@ final class BaseMediationObserver: MediationObserver {
         )
         
         return MediationAttemptReportModel(
-            auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
             rounds: rounds,
             result: result
         )
@@ -83,14 +80,9 @@ final class BaseMediationObserver: MediationObserver {
     @Atomic
     private var finishTimestamp: TimeInterval = 0
     
-    init(
-        auctionId id: String,
-        auctionConfigurationId configurationId: Int,
-        adType: AdType
-    ) {
+    init(auctionId: String, adType: AdType) {
         self.adType = adType
-        self.auctionId = id
-        self.auctionConfigurationId = configurationId
+        self.auctionId = auctionId
     }
     
     func log<EventType>(_ event: EventType) where EventType : MediationEvent {

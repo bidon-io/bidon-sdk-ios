@@ -11,10 +11,12 @@ import Foundation
 public protocol AdObject: ExtrasProvider {
     var isReady: Bool { get }
     
-    @objc(notifyLossAd:winner:eCPM:)
-    func notify(
-        loss ad: Ad,
-        winner demandId: String,
+    @objc(notifyWin)
+    func notifyWin()
+    
+    @objc(notifyLossWithExternalDemandId:eCPM:)
+    func notifyLoss(
+        external demandId: String,
         eCPM: Price
     )
 }

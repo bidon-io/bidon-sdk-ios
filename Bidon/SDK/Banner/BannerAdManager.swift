@@ -18,7 +18,7 @@ protocol BannerAdManagerDelegate: AnyObject {
 final class BannerAdManager: NSObject {
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdViewAucionContext>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<BannerAdTypeContext>
     
     fileprivate enum State {
         case idle
@@ -85,7 +85,7 @@ final class BannerAdManager: NSObject {
     ) {
         state = .preparing
         
-        let context = AdViewAucionContext(viewContext: viewContext)
+        let context = BannerAdTypeContext(viewContext: viewContext)
         
         let request = context.auctionRequest { builder in
             builder.withPlacement(placement)
@@ -125,13 +125,18 @@ final class BannerAdManager: NSObject {
     ) {
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
+        let metadata = AuctionMetadata(
+            id: auctionInfo.auctionId,
+            configuration: auctionInfo.auctionConfigurationId,
+            isExternalNotificationsEnabled: auctionInfo.externalWinNotifications
+        )
+        
         let observer = BaseMediationObserver(
             auctionId: auctionInfo.auctionId,
-            auctionConfigurationId: auctionInfo.auctionConfigurationId,
             adType: .banner
         )
         
-        let context = AdViewAucionContext(viewContext: viewContext)
+        let context = BannerAdTypeContext(viewContext: viewContext)
         let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
         
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
@@ -143,12 +148,16 @@ final class BannerAdManager: NSObject {
             builder.withViewContext(viewContext)
             builder.withMediationObserver(observer)
             builder.withAdRevenueObserver(self.adRevenueObserver)
+            builder.withMetadata(metadata)
         }
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
-            self.sendMediationAttemptReport(observer.report)
+            self.sendMediationAttemptReport(
+                observer.report,
+                metadata: metadata
+            )
 
             switch result {
             case .success(let bid):
@@ -166,13 +175,16 @@ final class BannerAdManager: NSObject {
         state = .auction(controller: auction)
     }
     
-    private func sendMediationAttemptReport<T: MediationAttemptReport>(_ report: T) {
+    private func sendMediationAttemptReport<T: MediationAttemptReport>(
+        _ report: T,
+        metadata: AuctionMetadata
+    ) {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAdType(.banner)
-            builder.withMediationReport(report)
+            builder.withMediationReport(report, metadata: metadata)
         }
         
         networkManager.perform(request: request) { result in

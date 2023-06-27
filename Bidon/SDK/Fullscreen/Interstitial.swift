@@ -12,7 +12,7 @@ import UIKit
 @objc(BDNInterstitial)
 public final class Interstitial: NSObject, FullscreenAdObject {
     private typealias Manager = BaseFullscreenAdManager<
-        InterstitialAuctionContext,
+        InterstitialAdTypeContext,
         InterstitialConcurrentAuctionControllerBuilder,
         InterstitialImpressionController
     >
@@ -29,7 +29,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     private var sdk: Sdk
     
     private lazy var manager = Manager(
-        context: InterstitialAuctionContext(),
+        context: InterstitialAdTypeContext(),
         placement: placement,
         delegate: self
     )
@@ -58,14 +58,17 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         manager.show(from: rootViewController)
     }
     
-    @objc(notifyLossAd:winner:eCPM:)
-    public func notify(
-        loss ad: Ad,
-        winner demandId: String,
+    @objc(notifyWin)
+    public func notifyWin() {
+        manager.notifyWin()
+    }
+    
+    @objc(notifyLossWithExternalDemandId:eCPM:)
+    public func notifyLoss(
+        external demandId: String,
         eCPM: Price
     ) {
-        manager.notify(
-            loss: ad,
+        manager.notifyLoss(
             winner: demandId,
             eCPM: eCPM
         )

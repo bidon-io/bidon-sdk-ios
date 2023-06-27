@@ -21,9 +21,9 @@ struct AuctionRequest: Request {
             var placementId: String
             var auctionId: String
             var pricefloor: Price
-            var banner: AdViewAucionContextModel?
-            var interstitial: InterstitialAuctionContextModel?
-            var rewarded: RewardedAuctionContextModel?
+            var banner: BannerAdTypeContextModel?
+            var interstitial: InterstitialAdTypeContextModel?
+            var rewarded: RewardedAdTypeContextModel?
         }
         
         var device: DeviceModel
@@ -47,6 +47,7 @@ struct AuctionRequest: Request {
         var auctionId: String
         var segment: SegmentResponseModel?
         var auctionConfigurationId: Int
+        var externalWinNotifications: Bool
     }
     
     init<T: AuctionRequestBuilder>(_ build: (T) -> ()) {

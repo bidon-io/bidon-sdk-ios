@@ -8,16 +8,14 @@
 import Foundation
 
 
-final class AdViewBidRequestBuilder: BaseBidRequestBuilder<AdViewAucionContext> {
-    override var adType: AdType { .banner }
-    
+final class AdViewBidRequestBuilder: BaseBidRequestBuilder<BannerAdTypeContext> {    
     override var imp: BidRequestImp {
         BidRequestImp(
             bidfloor: bidfloor,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
-            banner: AdViewAucionContextModel(context),
+            banner: BannerAdTypeContextModel(context),
             demands: demands
         )
     }

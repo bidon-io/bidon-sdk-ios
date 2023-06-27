@@ -78,9 +78,6 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.winnerNetworkId, "test")
         XCTAssertEqual(report.result.winnerAdUnitId, "some ad unit")
 
-        XCTAssertEqual(report.auctionId, auctionId)
-        XCTAssertEqual(report.auctionConfigurationId, auctionConfigurationId)
-        XCTAssertEqual(report.auctionId, auctionId)
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)
@@ -141,9 +138,6 @@ extension ConcurrentAuctionControllerTestCase {
         let report = mediationObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
-        XCTAssertEqual(report.auctionId, auctionId)
-        XCTAssertEqual(report.auctionConfigurationId, auctionConfigurationId)
-        XCTAssertEqual(report.auctionId, auctionId)
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)
@@ -208,9 +202,6 @@ extension ConcurrentAuctionControllerTestCase {
         let report = mediationObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
-        XCTAssertEqual(report.auctionId, auctionId)
-        XCTAssertEqual(report.auctionConfigurationId, auctionConfigurationId)
-        XCTAssertEqual(report.auctionId, auctionId)
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)
@@ -275,9 +266,6 @@ extension ConcurrentAuctionControllerTestCase {
         let report = mediationObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
-        XCTAssertEqual(report.auctionId, auctionId)
-        XCTAssertEqual(report.auctionConfigurationId, auctionConfigurationId)
-        XCTAssertEqual(report.auctionId, auctionId)
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)

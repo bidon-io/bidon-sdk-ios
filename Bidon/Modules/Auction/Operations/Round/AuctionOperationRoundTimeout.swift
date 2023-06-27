@@ -13,17 +13,20 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
     private var timer: Timer?
     
     let interval: TimeInterval
+    let metadata: AuctionMetadata
     let observer: AnyMediationObserver
     let round: AuctionRound
     
     private var operations = NSHashTable<Operation>.weakObjects()
     
     init(
+        round: AuctionRound,
         observer: AnyMediationObserver,
-        round: AuctionRound
+        metadata: AuctionMetadata
     ) {
         self.observer = observer
         self.round = round
+        self.metadata = metadata
         self.interval = Date.MeasurementUnits.milliseconds.convert(
             round.timeout,
             to: .seconds
@@ -82,3 +85,6 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
         self.timer = timer
     }
 }
+
+
+extension AuctionOperationRoundTimeout: AuctionOperation {}

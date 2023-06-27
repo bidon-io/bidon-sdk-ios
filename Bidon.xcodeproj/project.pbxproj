@@ -14,13 +14,13 @@
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
 		420EFD802A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */; };
 		420EFD822A29E44700328FD4 /* AdViewAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD812A29E44700328FD4 /* AdViewAuctionRequestBuilder.swift */; };
-		420EFD852A29E83300328FD4 /* AuctionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD842A29E83300328FD4 /* AuctionContext.swift */; };
+		420EFD852A29E83300328FD4 /* AdTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD842A29E83300328FD4 /* AdTypeContext.swift */; };
 		420EFD872A29E9D500328FD4 /* InterstitialImpressionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD862A29E9D500328FD4 /* InterstitialImpressionRequestBuilder.swift */; };
 		420EFD892A29EB6600328FD4 /* RewardedImpressionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD882A29EB6600328FD4 /* RewardedImpressionRequestBuilder.swift */; };
 		420EFD8B2A29EC0A00328FD4 /* AdViewImpressionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD8A2A29EC0A00328FD4 /* AdViewImpressionRequestBuilder.swift */; };
-		420EFD8D2A29F05C00328FD4 /* InterstitialLossRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD8C2A29F05C00328FD4 /* InterstitialLossRequestBuilder.swift */; };
-		420EFD8F2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD8E2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift */; };
-		420EFD912A29F08300328FD4 /* AdViewLossRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD902A29F08300328FD4 /* AdViewLossRequestBuilder.swift */; };
+		420EFD8D2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD8C2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift */; };
+		420EFD8F2A29F06F00328FD4 /* RewardedNotificationRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD8E2A29F06F00328FD4 /* RewardedNotificationRequestBuilder.swift */; };
+		420EFD912A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD902A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift */; };
 		4219DB5828B90D5E001F38E5 /* BannerAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4219DB5728B90D5E001F38E5 /* BannerAdManager.swift */; };
 		421D48E62888423B007DE2E4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421D48E52888423B007DE2E4 /* Logger.swift */; };
 		421D48E8288844DA007DE2E4 /* LogDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421D48E7288844DA007DE2E4 /* LogDestination.swift */; };
@@ -59,8 +59,8 @@
 		4243093E28A3AD07002360B0 /* AdaptersInitialisationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4243093D28A3AD07002360B0 /* AdaptersInitialisationParameters.swift */; };
 		424D296428BE630500F6F2D6 /* MainThreadComputable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D296328BE630500F6F2D6 /* MainThreadComputable.swift */; };
 		424F181328ABCF470082AEF3 /* InterstitialImpressionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424F181228ABCF470082AEF3 /* InterstitialImpressionController.swift */; };
-		4257D71829DDBF830066DE1B /* LossRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4257D71729DDBF830066DE1B /* LossRequest.swift */; };
-		4257D71A29DDBF970066DE1B /* LossRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4257D71929DDBF970066DE1B /* LossRequestBuilder.swift */; };
+		4257D71829DDBF830066DE1B /* NotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4257D71729DDBF830066DE1B /* NotificationRequest.swift */; };
+		4257D71A29DDBF970066DE1B /* NotificationRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4257D71929DDBF970066DE1B /* NotificationRequestBuilder.swift */; };
 		425E9C6228B7B19800F4E4C7 /* FullscreenAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425E9C6128B7B19800F4E4C7 /* FullscreenAdManager.swift */; };
 		42677B3F28A16EC4006F321D /* AdaptersInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42677B3E28A16EC4006F321D /* AdaptersInfoModel.swift */; };
 		42697D9C2A3A0EF100D6B1EB /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697D9B2A3A0EF100D6B1EB /* Segment.swift */; };
@@ -179,13 +179,13 @@
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAuctionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD812A29E44700328FD4 /* AdViewAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewAuctionRequestBuilder.swift; sourceTree = "<group>"; };
-		420EFD842A29E83300328FD4 /* AuctionContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionContext.swift; sourceTree = "<group>"; };
+		420EFD842A29E83300328FD4 /* AdTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTypeContext.swift; sourceTree = "<group>"; };
 		420EFD862A29E9D500328FD4 /* InterstitialImpressionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialImpressionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD882A29EB6600328FD4 /* RewardedImpressionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedImpressionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD8A2A29EC0A00328FD4 /* AdViewImpressionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewImpressionRequestBuilder.swift; sourceTree = "<group>"; };
-		420EFD8C2A29F05C00328FD4 /* InterstitialLossRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialLossRequestBuilder.swift; sourceTree = "<group>"; };
-		420EFD8E2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedLossRequestBuilder.swift; sourceTree = "<group>"; };
-		420EFD902A29F08300328FD4 /* AdViewLossRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewLossRequestBuilder.swift; sourceTree = "<group>"; };
+		420EFD8C2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialNotificationRequestBuilder.swift; sourceTree = "<group>"; };
+		420EFD8E2A29F06F00328FD4 /* RewardedNotificationRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedNotificationRequestBuilder.swift; sourceTree = "<group>"; };
+		420EFD902A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewNotificationRequestBuilder.swift; sourceTree = "<group>"; };
 		4219DB5728B90D5E001F38E5 /* BannerAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdManager.swift; sourceTree = "<group>"; };
 		421D48E52888423B007DE2E4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		421D48E7288844DA007DE2E4 /* LogDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDestination.swift; sourceTree = "<group>"; };
@@ -225,8 +225,8 @@
 		4243093D28A3AD07002360B0 /* AdaptersInitialisationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersInitialisationParameters.swift; sourceTree = "<group>"; };
 		424D296328BE630500F6F2D6 /* MainThreadComputable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThreadComputable.swift; sourceTree = "<group>"; };
 		424F181228ABCF470082AEF3 /* InterstitialImpressionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialImpressionController.swift; sourceTree = "<group>"; };
-		4257D71729DDBF830066DE1B /* LossRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LossRequest.swift; sourceTree = "<group>"; };
-		4257D71929DDBF970066DE1B /* LossRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LossRequestBuilder.swift; sourceTree = "<group>"; };
+		4257D71729DDBF830066DE1B /* NotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequest.swift; sourceTree = "<group>"; };
+		4257D71929DDBF970066DE1B /* NotificationRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestBuilder.swift; sourceTree = "<group>"; };
 		425E9C6128B7B19800F4E4C7 /* FullscreenAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenAdManager.swift; sourceTree = "<group>"; };
 		42677B3E28A16EC4006F321D /* AdaptersInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersInfoModel.swift; sourceTree = "<group>"; };
 		42697D9B2A3A0EF100D6B1EB /* Segment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
@@ -467,7 +467,7 @@
 				428C45C62A2658DE009E90EF /* Bid */,
 				42EDA0A928C5EC2C00BF74DE /* Statistic */,
 				426DD79928A4F46000A1ADF5 /* Impression */,
-				4257D71629DDBF6E0066DE1B /* Loss */,
+				4257D71629DDBF6E0066DE1B /* Notification */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -512,16 +512,16 @@
 			path = Fullscreen;
 			sourceTree = "<group>";
 		};
-		4257D71629DDBF6E0066DE1B /* Loss */ = {
+		4257D71629DDBF6E0066DE1B /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				4257D71729DDBF830066DE1B /* LossRequest.swift */,
-				4257D71929DDBF970066DE1B /* LossRequestBuilder.swift */,
-				420EFD8C2A29F05C00328FD4 /* InterstitialLossRequestBuilder.swift */,
-				420EFD8E2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift */,
-				420EFD902A29F08300328FD4 /* AdViewLossRequestBuilder.swift */,
+				4257D71729DDBF830066DE1B /* NotificationRequest.swift */,
+				4257D71929DDBF970066DE1B /* NotificationRequestBuilder.swift */,
+				420EFD8C2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift */,
+				420EFD8E2A29F06F00328FD4 /* RewardedNotificationRequestBuilder.swift */,
+				420EFD902A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift */,
 			);
-			path = Loss;
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		426DD79428A3FEBA00A1ADF5 /* Adapters */ = {
@@ -537,7 +537,7 @@
 		426DD79528A3FED200A1ADF5 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
-				420EFD842A29E83300328FD4 /* AuctionContext.swift */,
+				420EFD842A29E83300328FD4 /* AdTypeContext.swift */,
 				426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */,
 				426DD79228A3EF7E00A1ADF5 /* LineItemModel.swift */,
 				428FFC7128BF84060090B126 /* MediationAttemptReportCodableModel.swift */,
@@ -1079,7 +1079,7 @@
 				422077F129B2079800A2AD26 /* AuctionResultReportStatus.swift in Sources */,
 				42D047F1289D73F80096A8C6 /* GeoManager.swift in Sources */,
 				42C4F46429E6E47200B12E15 /* SdkError.swift in Sources */,
-				4257D71829DDBF830066DE1B /* LossRequest.swift in Sources */,
+				4257D71829DDBF830066DE1B /* NotificationRequest.swift in Sources */,
 				428FFC7028BF83AF0090B126 /* StatisticRequestBuilder.swift in Sources */,
 				42AAEA0528CB80E10093DB23 /* String+Extensions.swift in Sources */,
 				42C4F46829E6E4AC00B12E15 /* ErrorCode.swift in Sources */,
@@ -1100,7 +1100,7 @@
 				424D296428BE630500F6F2D6 /* MainThreadComputable.swift in Sources */,
 				429EE2C9286CA2B0009439C6 /* DemandProvider.swift in Sources */,
 				423FBA9D29F0488400B20A5D /* ProgrammaticDemandProvider.swift in Sources */,
-				420EFD8F2A29F06F00328FD4 /* RewardedLossRequestBuilder.swift in Sources */,
+				420EFD8F2A29F06F00328FD4 /* RewardedNotificationRequestBuilder.swift in Sources */,
 				428FFC7A28BF96360090B126 /* ImpressionModel.swift in Sources */,
 				4299A424289BCDBC0062C580 /* Interstitial.swift in Sources */,
 				42B4531F2A41A54200D808D1 /* Bundle+Extensions.swift in Sources */,
@@ -1153,7 +1153,7 @@
 				426DD78D28A3EDD900A1ADF5 /* LineItem.swift in Sources */,
 				429EE2CF286D9B8D009439C6 /* Auction.swift in Sources */,
 				42C46C9029F27FF90057D7CE /* AuctionLineItemElector.swift in Sources */,
-				420EFD852A29E83300328FD4 /* AuctionContext.swift in Sources */,
+				420EFD852A29E83300328FD4 /* AdTypeContext.swift in Sources */,
 				42697DB52A3B4E0600D6B1EB /* SegmentModel.swift in Sources */,
 				426DD79828A4008F00A1ADF5 /* GCD.swift in Sources */,
 				420EFD7C2A29E3C100328FD4 /* AdViewBidRequestBuilder.swift in Sources */,
@@ -1170,11 +1170,11 @@
 				429EE2D1286DD0E2009439C6 /* ConcurrentAuctionController.swift in Sources */,
 				42BA82072878547C001F1744 /* BannerView.swift in Sources */,
 				420EFD872A29E9D500328FD4 /* InterstitialImpressionRequestBuilder.swift in Sources */,
-				4257D71A29DDBF970066DE1B /* LossRequestBuilder.swift in Sources */,
+				4257D71A29DDBF970066DE1B /* NotificationRequestBuilder.swift in Sources */,
 				42C46C9329F280360057D7CE /* AuctionBidComparator.swift in Sources */,
 				428C45BE2A264E47009E90EF /* Regulations.swift in Sources */,
 				42BE438B28C0AE93000528E3 /* UserManager.swift in Sources */,
-				420EFD8D2A29F05C00328FD4 /* InterstitialLossRequestBuilder.swift in Sources */,
+				420EFD8D2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift in Sources */,
 				4299A427289BCF3F0062C580 /* HTTPTask.swift in Sources */,
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
 				426DD7B328A68BF400A1ADF5 /* FullscreenAdDelegate.swift in Sources */,
@@ -1189,7 +1189,7 @@
 				428FFC6928BF7A820090B126 /* StatisticRequest.swift in Sources */,
 				4243093628A2BCAC002360B0 /* AppModel.swift in Sources */,
 				4224AA7128B7E2F400E8D886 /* RewardedImpressionController.swift in Sources */,
-				420EFD912A29F08300328FD4 /* AdViewLossRequestBuilder.swift in Sources */,
+				420EFD912A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift in Sources */,
 				421D48EC2888582B007DE2E4 /* OSLogDestination.swift in Sources */,
 				42D047E7289D5F9A0096A8C6 /* Geo.swift in Sources */,
 				428CCBF928A13AD8003123EF /* NetworkManager.swift in Sources */,

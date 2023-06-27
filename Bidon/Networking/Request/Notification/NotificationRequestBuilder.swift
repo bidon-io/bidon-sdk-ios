@@ -1,5 +1,5 @@
 //
-//  LossRequestBuilder.swift
+//  NotificationRequestBuilder.swift
 //  Bidon
 //
 //  Created by Stas Kochkin on 05.04.2023.
@@ -8,15 +8,18 @@
 import Foundation
 
 
-protocol LossRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AuctionContext
+protocol NotificationRequestBuilder: BaseRequestBuilder {
+    associatedtype Context: AdTypeContext
     
     var imp: ImpressionModel { get }
-    var externalWinner: LossRequest.ExternalWinner { get }
+    var externalWinner: NotificationRequest.ExternalWinner? { get }
     var route: Route { get }
     
     @discardableResult
     func withImpression(_ impression: Impression) -> Self
+    
+    @discardableResult
+    func withRoute(_ route: Route) -> Self
     
     @discardableResult
     func withExternalWinner(demandId: String, eCPM: Price) -> Self
@@ -28,14 +31,15 @@ protocol LossRequestBuilder: BaseRequestBuilder {
 }
 
 
-class BaseLossRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, LossRequestBuilder {
+class BaseNotificationRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, NotificationRequestBuilder {
     private(set) var impression: Impression!
     private(set) var context: Context!
 
-    private var _externalWinner: LossRequest.ExternalWinner!
-
-    var route: Route { .complex(.adType(adType), .loss) }
-    var externalWinner: LossRequest.ExternalWinner { _externalWinner }
+    private var _externalWinner: NotificationRequest.ExternalWinner?
+    private var _route: Route!
+    
+    var route: Route { .complex(.adType(adType), _route) }
+    var externalWinner: NotificationRequest.ExternalWinner? { _externalWinner }
 
     var imp: ImpressionModel { fatalError("BaseLossRequestBuilder doesn't provide ad imp") }
     var adType: AdType { fatalError("BaseLossRequestBuilder doesn't provide ad type") }
@@ -47,8 +51,14 @@ class BaseLossRequestBuilder<Context: AuctionContext>: BaseRequestBuilder, LossR
     }
     
     @discardableResult
+    func withRoute(_ route: Route) -> Self {
+        self._route = route
+        return self
+    }
+    
+    @discardableResult
     func withExternalWinner(demandId: String, eCPM: Price) -> Self {
-        self._externalWinner = LossRequest.ExternalWinner(
+        self._externalWinner = NotificationRequest.ExternalWinner(
             ecpm: eCPM,
             demandId: demandId
         )

@@ -17,6 +17,7 @@ indirect enum Route {
     case click
     case reward
     case loss
+    case win
     case adType(AdType)
     case complex(Route, Route)
 }
@@ -60,6 +61,7 @@ extension Route {
         case .show: return base.appendingPathComponent("show")
         case .click: return base.appendingPathComponent("click")
         case .loss: return base.appendingPathComponent("loss")
+        case .win: return base.appendingPathExtension("win")
         case .reward: return base.appendingPathComponent("reward")
         case .adType(let adType): return base.appendingPathComponent(adType.stringValue)
         case .complex(let right, let left): return right.url(left.url(base))

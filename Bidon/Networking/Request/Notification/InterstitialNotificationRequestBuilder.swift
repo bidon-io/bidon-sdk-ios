@@ -8,13 +8,11 @@
 import Foundation
 
 
-final class InterstitialLossRequestBuilder: BaseLossRequestBuilder<InterstitialAuctionContext> {
-    override var adType: AdType { .interstitial }
-    
+final class InterstitialNotificationRequestBuilder: BaseNotificationRequestBuilder<InterstitialAdTypeContext> {    
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,
-            interstitial: InterstitialAuctionContextModel(context)
+            interstitial: InterstitialAdTypeContextModel(context)
         )
     }
 }

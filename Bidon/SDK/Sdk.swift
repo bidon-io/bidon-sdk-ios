@@ -13,7 +13,7 @@ fileprivate struct SdkInjectionKey: InjectionKey {
 }
 
 
-fileprivate struct AuctionContextInjectionKey: InjectionKey {
+fileprivate struct AdTypeInjectionKey: InjectionKey {
     static var currentValue: SdkContext = BidonSdk.shared
 }
 
@@ -28,8 +28,8 @@ internal extension InjectedValues {
 
 public extension InjectedValues {
     var context: SdkContext {
-        get { Self[AuctionContextInjectionKey.self] }
-        set { Self[AuctionContextInjectionKey.self] = newValue }
+        get { Self[AdTypeInjectionKey.self] }
+        set { Self[AdTypeInjectionKey.self] = newValue }
     }
 }
 

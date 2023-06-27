@@ -8,17 +8,20 @@
 import Foundation
 
 
-final class AuctionOperationFinish<AuctionContextType: AuctionContext, BidType: Bid>: Operation
-where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType == BidType.Provider {
+final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation
+where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
     let observer: AnyMediationObserver
     let completion: (Result<BidType, SdkError>) -> ()
     let comparator: AuctionBidComparator
+    let metadata: AuctionMetadata
     
     init(
-        observer: AnyMediationObserver,
         comparator: AuctionBidComparator,
+        observer: AnyMediationObserver,
+        metadata: AuctionMetadata,
         completion: @escaping (Result<BidType, SdkError>) -> ()
     ) {
+        self.metadata = metadata
         self.observer = observer
         self.comparator = comparator
         self.completion = completion
@@ -29,7 +32,7 @@ where BidType.Provider: DemandProvider, AuctionContextType.DemandProviderType ==
     override func main() {
         super.main()
         
-        let bids = deps(AuctionOperationFinishRound<AuctionContextType, BidType>.self)
+        let bids = deps(AuctionOperationFinishRound<AdTypeContextType, BidType>.self)
             .reduce([]) { $0 + $1.bids }
             .sorted { comparator.compare($0, $1) }
         

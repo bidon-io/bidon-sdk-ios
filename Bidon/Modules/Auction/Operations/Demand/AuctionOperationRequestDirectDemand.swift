@@ -8,28 +8,33 @@
 import Foundation
 
 
-final class AuctionOperationRequestDirectDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
-    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
+final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
+    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
     let round: AuctionRound
     let observer: AnyMediationObserver
     let adapter: AdapterType
-    
+    let metadata: AuctionMetadata
     let lineItem: (AdapterType, Price) -> LineItem?
+    let context: AdTypeContextType
     
     private(set) var bid: BidType?
     
     init(
         round: AuctionRound,
-        observer: AnyMediationObserver,
         adapter: AdapterType,
+        observer: AnyMediationObserver,
+        context: AdTypeContextType,
+        metadata: AuctionMetadata,
         lineItem: @escaping (AdapterType, Price) -> LineItem?
     ) {
+        self.context = context
         self.round = round
         self.observer = observer
         self.adapter = adapter
         self.lineItem = lineItem
+        self.metadata = metadata
         
         super.init()
     }
@@ -82,13 +87,12 @@ final class AuctionOperationRequestDirectDemand<AuctionContextType: AuctionConte
             case .success(let ad):
                 let bid = BidType(
                     id: UUID().uuidString,
-                    auctionId: self.observer.auctionId,
-                    auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
-                    adType: self.observer.adType,
+                    adType: self.context.adType,
                     lineItem: lineItem,
                     ad: ad,
-                    provider: self.adapter.provider
+                    provider: self.adapter.provider,
+                    metadata: self.metadata
                 )
               
                 self.observer.log(

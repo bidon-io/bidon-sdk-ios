@@ -10,8 +10,8 @@ import Foundation
 @testable import Bidon
 
 
-final class LossRequestBuilderMock: BaseRequestBuilder, LossRequestBuilder {
-    typealias Context = AuctionContextMock
+final class NotificationRequestBuilderMock: BaseRequestBuilder, NotificationRequestBuilder {
+    typealias Context = AdTypeContextMock
     
     var invokedAdaptersRepositoryGetter = false
     var invokedAdaptersRepositoryGetterCount = 0
@@ -115,9 +115,9 @@ final class LossRequestBuilderMock: BaseRequestBuilder, LossRequestBuilder {
 
     var invokedExternalWinnerGetter = false
     var invokedExternalWinnerGetterCount = 0
-    var stubbedExternalWinner: LossRequest.ExternalWinner!
+    var stubbedExternalWinner: NotificationRequest.ExternalWinner!
 
-    var externalWinner: LossRequest.ExternalWinner {
+    var externalWinner: NotificationRequest.ExternalWinner? {
         invokedExternalWinnerGetter = true
         invokedExternalWinnerGetterCount += 1
         return stubbedExternalWinner
@@ -195,6 +195,19 @@ final class LossRequestBuilderMock: BaseRequestBuilder, LossRequestBuilder {
         invokedWithImpressionCount += 1
         invokedWithImpressionParameters = (impression, ())
         invokedWithImpressionParametersList.append((impression, ()))
+        return self
+    }
+
+    var invokedWithRoute = false
+    var invokedWithRouteCount = 0
+    var invokedWithRouteParameters: (route: Route, Void)?
+    var invokedWithRouteParametersList = [(route: Route, Void)]()
+
+    func withRoute(_ route: Route) -> Self {
+        invokedWithRoute = true
+        invokedWithRouteCount += 1
+        invokedWithRouteParameters = (route, ())
+        invokedWithRouteParametersList.append((route, ()))
         return self
     }
 

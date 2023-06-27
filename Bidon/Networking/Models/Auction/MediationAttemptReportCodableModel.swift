@@ -101,9 +101,12 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     var rounds: [RoundReportCodableModel]
     var result: AuctionResultReportCodableModel
     
-    init<T: MediationAttemptReport>(_ report: T) {
-        self.auctionId = report.auctionId
-        self.auctionConfigurationId = report.auctionConfigurationId
+    init<T: MediationAttemptReport>(
+        _ report: T,
+        metadata: AuctionMetadata
+    ) {
+        self.auctionId = metadata.id
+        self.auctionConfigurationId = metadata.configuration
         self.rounds = report.rounds.map(RoundReportCodableModel.init)
         self.result = AuctionResultReportCodableModel(report.result)
     }

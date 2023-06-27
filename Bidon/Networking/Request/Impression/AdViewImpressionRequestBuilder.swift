@@ -8,13 +8,11 @@
 import Foundation
 
 
-final class AdViewImpressionRequestBuilder: BaseImpressionRequestBuilder<AdViewAucionContext> {
-    override var adType: AdType { .banner }
-    
+final class AdViewImpressionRequestBuilder: BaseImpressionRequestBuilder<BannerAdTypeContext> {    
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,
-            banner: AdViewAucionContextModel(context)
+            banner: BannerAdTypeContextModel(context)
         )
     }
 }

@@ -13,13 +13,13 @@ struct AdViewImpression: Impression {
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
+    var externalNotificationTrackedAt: TimeInterval = .nan
 
-    var auctionId: String { bid.auctionId }
-    var auctionConfigurationId: Int { bid.auctionConfigurationId }
     var roundId: String { bid.roundId }
     var lineItem: LineItem? { bid.lineItem }
     var adType: AdType { bid.adType }
     var ad: DemandAd { bid.ad }
+    var metadata: AuctionMetadata { bid.metadata }
     
     var format: BannerFormat
     var bid: AdViewBid

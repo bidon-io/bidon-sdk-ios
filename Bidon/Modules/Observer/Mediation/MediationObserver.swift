@@ -11,9 +11,6 @@ import Foundation
 protocol MediationObserver: AnyObject {
     associatedtype MediationAttemptReportType: MediationAttemptReport
     
-    var auctionId: String { get }
-    var auctionConfigurationId: Int { get }
-    var adType: AdType { get }
     var report: MediationAttemptReportType { get }
     
     func log<EventType: MediationEvent>(_ event: EventType)

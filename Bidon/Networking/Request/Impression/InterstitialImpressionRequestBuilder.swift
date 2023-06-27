@@ -9,13 +9,11 @@ import Foundation
 
 
 
-final class InterstitialImpressionRequestBuilder: BaseImpressionRequestBuilder<InterstitialAuctionContext> {
-    override var adType: AdType { .interstitial }
-    
+final class InterstitialImpressionRequestBuilder: BaseImpressionRequestBuilder<InterstitialAdTypeContext> {    
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,
-            interstitial: InterstitialAuctionContextModel(context)
+            interstitial: InterstitialAdTypeContextModel(context)
         )
     }
 }

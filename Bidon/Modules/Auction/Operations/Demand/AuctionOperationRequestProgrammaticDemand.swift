@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: AuctionContext>: AsynchronousOperation {
+final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
     private enum BidState {
         case unknown
         case bidding
@@ -16,12 +16,14 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
         case ready(BidType)
     }
     
-    typealias BidType = BidModel<AuctionContextType.DemandProviderType>
-    typealias AdapterType = AnyDemandSourceAdapter<AuctionContextType.DemandProviderType>
+    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
+    typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
     let round: AuctionRound
     let observer: AnyMediationObserver
     let adapter: AdapterType
+    let metadata: AuctionMetadata
+    let context: AdTypeContextType
     
     @Atomic private var bidState: BidState = .unknown
     
@@ -36,12 +38,16 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
 
     init(
         round: AuctionRound,
+        adapter: AdapterType,
         observer: AnyMediationObserver,
-        adapter: AdapterType
+        context: AdTypeContextType,
+        metadata: AuctionMetadata
     ) {
         self.round = round
         self.observer = observer
         self.adapter = adapter
+        self.metadata = metadata
+        self.context = context
         
         super.init()
     }
@@ -86,12 +92,11 @@ final class AuctionOperationRequestProgrammaticDemand<AuctionContextType: Auctio
             case .success(let ad):
                 let bid = BidType(
                     id: UUID().uuidString,
-                    auctionId: self.observer.auctionId,
-                    auctionConfigurationId: self.observer.auctionConfigurationId,
                     roundId: self.round.id,
-                    adType: self.observer.adType,
+                    adType: self.context.adType,
                     ad: ad,
-                    provider: self.adapter.provider
+                    provider: self.adapter.provider,
+                    metadata: self.metadata
                 )
                 
                 self.observer.log(

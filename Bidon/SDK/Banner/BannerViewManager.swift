@@ -144,7 +144,7 @@ final internal class BannerViewManager: NSObject {
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withImpression(impression)
-            builder.withContext(AdViewAucionContext(format: impression.format))
+            builder.withContext(BannerAdTypeContext(format: impression.format))
             builder.withPath(path)
         }
         

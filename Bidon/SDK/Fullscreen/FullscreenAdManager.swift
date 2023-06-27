@@ -27,14 +27,14 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 }
 
 
-final class BaseFullscreenAdManager <AuctionContextType, AuctionControllerBuilderType, ImpressionControllerType>: NSObject, FullscreenAdManager where
-AuctionContextType: AuctionContext,
-AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AuctionContextType>,
+final class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType>: NSObject, FullscreenAdManager where
+AdTypeContextType: AdTypeContext,
+AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AdTypeContextType>,
 ImpressionControllerType: FullscreenImpressionController,
-ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderType> {
+ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType> {
     
-    fileprivate typealias BidType = BidModel<AuctionContextType.DemandProviderType>
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AuctionContextType>
+    fileprivate typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
+    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
     
     private typealias AuctionInfo = AuctionRequest.ResponseBody
     
@@ -57,7 +57,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
     private let placement: String
-    private let context: AuctionContextType
+    private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
         let observer = BaseAdRevenueObserver()
@@ -85,7 +85,7 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
     lazy var extras: [String : AnyHashable] = [:]
     
     init(
-        context: AuctionContextType,
+        context: AdTypeContextType,
         placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
@@ -104,30 +104,59 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
         fetchAuctionInfo(pricefloor)
     }
     
-    func notify(
-        loss ad: Ad,
+    func notifyWin() {
+        switch state {
+        case .ready(let keeper):
+            let impression = ImpressionControllerType(bid: keeper.bid).impression
+            
+            guard
+                impression.isTrackingAllowed(.win),
+                impression.metadata.isExternalNotificationsEnabled
+            else { return }
+                  
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.win)
+                builder.withEnvironmentRepository(sdk.environmentRepository)
+                builder.withTestMode(sdk.isTestMode)
+                builder.withExt(extras)
+                builder.withImpression(impression)
+            }
+
+            networkManager.perform(request: request) { result in
+                Logger.debug("Sent win with result: \(result)")
+            }
+        default:
+            break
+        }
+    }
+    
+    func notifyLoss(
         winner demandId: String,
         eCPM: Price
     ) {
         switch state {
         case .ready(let keeper):
-            guard keeper.bid.ad.id == ad.id else { return }
-            
             let impression = ImpressionControllerType(bid: keeper.bid).impression
+
+            defer { state = .idle }
             
-            let request = context.lossRequest { builder in
+            guard
+                impression.isTrackingAllowed(.loss),
+                impression.metadata.isExternalNotificationsEnabled
+            else { return }
+                  
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.loss)
                 builder.withEnvironmentRepository(sdk.environmentRepository)
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
                 builder.withImpression(impression)
                 builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
             }
-            
+
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent loss with result: \(result)")
             }
-            
-            state = .idle
         default:
             break
         }
@@ -180,9 +209,14 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
     private func performAuction(_ auctionInfo: AuctionInfo) {
         Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
         
+        let metadata = AuctionMetadata(
+            id: auctionInfo.auctionId,
+            configuration: auctionInfo.auctionConfigurationId,
+            isExternalNotificationsEnabled: auctionInfo.externalWinNotifications
+        )
+        
         let observer = BaseMediationObserver(
             auctionId: auctionInfo.auctionId,
-            auctionConfigurationId: auctionInfo.auctionConfigurationId,
             adType: context.adType
         )
         
@@ -196,12 +230,16 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withAdRevenueObserver(self.adRevenueObserver)
             builder.withContext(context)
+            builder.withMetadata(metadata)
         }
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
-            self.sendAuctionStatistics(observer.report)
+            self.sendAuctionStatistics(
+                observer.report,
+                metadata: metadata
+            )
             
             switch result {
             case .success(let bid):
@@ -222,13 +260,16 @@ ImpressionControllerType.BidType == BidModel<AuctionContextType.DemandProviderTy
         state = .auction(controller: auction)
     }
     
-    private func sendAuctionStatistics<T: MediationAttemptReport>(_ report: T) {
+    private func sendAuctionStatistics<T: MediationAttemptReport>(
+        _ report: T,
+        metadata: AuctionMetadata
+    ) {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAdType(context.adType)
-            builder.withMediationReport(report)
+            builder.withMediationReport(report, metadata: metadata)
         }
         
         networkManager.perform(request: request) { result in

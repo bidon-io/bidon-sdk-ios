@@ -52,7 +52,7 @@ final class AdContainer: NSObject, Ad {
             dsp: bid.ad.dsp,
             adUnitId: bid.lineItem?.adUnitId,
             roundId: bid.roundId,
-            auctionId: bid.auctionId,
+            auctionId: bid.metadata.id,
             currencyCode: bid.ad.currency ?? .default
         )
     }
@@ -66,7 +66,7 @@ final class AdContainer: NSObject, Ad {
             dsp: impression.ad.dsp,
             adUnitId: impression.lineItem?.adUnitId,
             roundId: impression.roundId,
-            auctionId: impression.auctionId,
+            auctionId: impression.metadata.id,
             currencyCode: impression.ad.currency ?? .default
         )
     }

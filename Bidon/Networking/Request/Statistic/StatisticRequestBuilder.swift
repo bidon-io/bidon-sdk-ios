@@ -14,8 +14,14 @@ final class StatisticRequestBuilder: BaseRequestBuilder {
     var adType: AdType!
     
     @discardableResult
-    func withMediationReport<T: MediationAttemptReport>(_ report: T) -> Self {
-        self.stats = MediationAttemptReportCodableModel(report)
+    func withMediationReport<T: MediationAttemptReport>(
+        _ report: T,
+        metadata: AuctionMetadata
+    ) -> Self {
+        self.stats = MediationAttemptReportCodableModel(
+            report,
+            metadata: metadata
+        )
         return self
     }
     

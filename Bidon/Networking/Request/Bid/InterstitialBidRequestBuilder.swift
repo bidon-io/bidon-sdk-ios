@@ -9,16 +9,14 @@ import Foundation
 
 
 
-final class InterstitialBidRequestBuilder: BaseBidRequestBuilder<InterstitialAuctionContext> {
-    override var adType: AdType { .interstitial }
-    
+final class InterstitialBidRequestBuilder: BaseBidRequestBuilder<InterstitialAdTypeContext> {    
     override var imp: BidRequestImp {
         BidRequestImp(
             bidfloor: bidfloor,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
             roundId: roundId,
-            interstitial: InterstitialAuctionContextModel(context),
+            interstitial: InterstitialAdTypeContextModel(context),
             demands: demands
         )
     }
