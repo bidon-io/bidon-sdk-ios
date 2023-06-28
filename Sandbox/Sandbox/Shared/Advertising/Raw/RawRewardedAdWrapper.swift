@@ -13,7 +13,7 @@ import SwiftUI
 
 
 final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
-    private var bidOnRewardedAd: Bidon.RewardedAd?
+    private var bidonRewardedAd: Bidon.RewardedAd?
     
     override var adType: AdType { .rewardedAd } 
     
@@ -21,7 +21,7 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
         let rewardedAd = Bidon.RewardedAd()
         rewardedAd.delegate = self
         rewardedAd.loadAd(with: pricefloor)
-        self.bidOnRewardedAd = rewardedAd
+        self.bidonRewardedAd = rewardedAd
     }
     
     override func _show() {
@@ -32,17 +32,20 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
             return
         }
         
-        if let rewardedAd = bidOnRewardedAd, rewardedAd.isReady {
+        if let rewardedAd = bidonRewardedAd, rewardedAd.isReady {
             rewardedAd.showAd(from: controller)
         } else {
             resumeShowingContinuation(throwing: RawAdServiceError.invalidPresentationState)
         }
     }
     
+    override func notify(win ad: Ad) {
+        bidonRewardedAd?.notifyWin()
+    }
+    
     override func notify(loss ad: Ad) {
-        bidOnRewardedAd?.notify(
-            loss: ad,
-            winner: "some_unknown_ad_network",
+        bidonRewardedAd?.notifyLoss(
+            external: "some_unknown_ad_network",
             eCPM: ad.eCPM + 0.01
         )
     }

@@ -36,7 +36,7 @@ class BaseImpressionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, 
     var route: Route { .complex(.adType(adType), path) }
     
     var imp: ImpressionModel { fatalError("BaseImpressionRequestBuilder doesn't provide imp") }
-    var adType: AdType { fatalError("BaseImpressionRequestBuilder doesn't provide adType") }
+    var adType: AdType { context.adType }
     
     @discardableResult
     func withImpression(_ impression: Impression) -> Self {

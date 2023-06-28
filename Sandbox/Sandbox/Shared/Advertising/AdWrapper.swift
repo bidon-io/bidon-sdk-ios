@@ -22,6 +22,7 @@ protocol AdWrapper {
 protocol FullscreenAdWrapper: AdWrapper {
     func show() async throws
     func load(pricefloor: Double) async throws
+    func notify(win ad: Ad)
     func notify(loss ad: Ad)
 }
 

@@ -40,6 +40,10 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         update(.idle)
     }
     
+    func notify(win ad: Ad) {
+        adService.notify(win: ad, adType: adType)
+    }
+    
     @MainActor
     func load() async {
         update(.loading)

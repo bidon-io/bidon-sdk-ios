@@ -42,7 +42,7 @@ class BaseNotificationRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder
     var externalWinner: NotificationRequest.ExternalWinner? { _externalWinner }
 
     var imp: ImpressionModel { fatalError("BaseLossRequestBuilder doesn't provide ad imp") }
-    var adType: AdType { fatalError("BaseLossRequestBuilder doesn't provide ad type") }
+    var adType: AdType { context.adType }
     
     @discardableResult
     func withImpression(_ impression: Impression) -> Self {

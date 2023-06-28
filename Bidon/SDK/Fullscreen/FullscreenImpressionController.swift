@@ -16,6 +16,8 @@ protocol FullscreenImpressionControllerDelegate: AnyObject {
     
     func didClick(_ impression: inout Impression)
     
+    func didExpire(_ impression: inout Impression)
+
     func didFailToPresent(_ impression: inout Impression?, error: SdkError)
     
     func didReceiveReward(_ reward: Reward, impression: inout Impression)
@@ -25,7 +27,7 @@ protocol FullscreenImpressionControllerDelegate: AnyObject {
 protocol FullscreenImpressionController: AnyObject {
     associatedtype BidType: Bid
     
-    var impression: Impression { get }
+    var impression: Impression { get set }
     
     init(bid: BidType)
     

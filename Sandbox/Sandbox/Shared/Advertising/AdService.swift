@@ -74,6 +74,8 @@ protocol AdService: AnyObject {
     func show(adType: AdType) async throws
     
     func notify(loss ad: Ad, adType: AdType)
+    
+    func notify(win ad: Ad, adType: AdType)
 }
 
 
@@ -81,7 +83,7 @@ protocol AdResponder {}
 
 
 extension AdService {
-    var bidOnURL: String {
+    var bidonURL: String {
         get { BidonSdk.baseURL }
         set { BidonSdk.baseURL = newValue }
     }

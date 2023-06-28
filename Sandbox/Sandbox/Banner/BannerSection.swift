@@ -37,7 +37,11 @@ struct BannerAdSection: View {
                         }
                     }
                 }
-                .adContextMenu(vm.ad, onLoss: vm.notify(loss:))
+                .adContextMenu(
+                    vm.ad,
+                    onWin: vm.notify(win:),
+                    onLoss: vm.notify(loss:)
+                )
                 .disabled(!vm.isPresented || vm.isLoading)
                 
                 Button(action: {

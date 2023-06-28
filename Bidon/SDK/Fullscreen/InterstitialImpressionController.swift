@@ -17,7 +17,7 @@ final class InterstitialImpressionController: NSObject, FullscreenImpressionCont
     
     private let provider: any InterstitialDemandProvider
     
-    private(set) var impression: Impression
+    var impression: Impression
     
     required init(bid: AnyInterstitialBid) {
         let bid = bid.unwrapped()
@@ -53,7 +53,7 @@ extension InterstitialImpressionController: DemandProviderDelegate {
         _ provider: any DemandProvider,
         didExpireAd ad: DemandAd
     ) {
-        
+        delegate?.didExpire(&impression)
     }
     
     func provider(

@@ -88,12 +88,29 @@ final class RawAdService: NSObject, AdService {
         }
     }
     
-    func notify(loss ad: Ad, adType: AdType) {
+    func notify(
+        loss ad: Ad,
+        adType: AdType
+    ) {
         switch adType {
         case .interstitial:
             interstitial.notify(loss: ad)
         case .rewardedAd:
             rewardedAd.notify(loss: ad)
+        default:
+            break
+        }
+    }
+    
+    func notify(
+        win ad: Ad,
+        adType: AdType
+    ) {
+        switch adType {
+        case .interstitial:
+            interstitial.notify(win: ad)
+        case .rewardedAd:
+            rewardedAd.notify(win: ad)
         default:
             break
         }

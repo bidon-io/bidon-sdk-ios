@@ -42,7 +42,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         case idle
         case preparing
         case auction(controller: AuctionControllerType)
-        case ready(keeper: BidKeeper<BidType>)
+        case ready(controller: ImpressionControllerType)
         case impression(controller: ImpressionControllerType)
     }
     
@@ -106,12 +106,10 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
     
     func notifyWin() {
         switch state {
-        case .ready(let keeper):
-            let impression = ImpressionControllerType(bid: keeper.bid).impression
-            
+        case .ready(let controller):
             guard
-                impression.isTrackingAllowed(.win),
-                impression.metadata.isExternalNotificationsEnabled
+                controller.impression.isTrackingAllowed(.win),
+                controller.impression.metadata.isExternalNotificationsEnabled
             else { return }
                   
             let request = context.notificationRequest { builder in
@@ -119,12 +117,14 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 builder.withEnvironmentRepository(sdk.environmentRepository)
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
-                builder.withImpression(impression)
+                builder.withImpression(controller.impression)
             }
 
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent win with result: \(result)")
             }
+            
+            controller.impression.markTrackedIfNeeded(.win)
         default:
             break
         }
@@ -135,14 +135,17 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         eCPM: Price
     ) {
         switch state {
-        case .ready(let keeper):
-            let impression = ImpressionControllerType(bid: keeper.bid).impression
-
+        case .preparing:
+            state = .idle
+            delegate?.adManager(self, didFailToLoad: .cancelled)
+        case .auction(let controller):
+            controller.cancel()
+        case .ready(let controller):
             defer { state = .idle }
             
             guard
-                impression.isTrackingAllowed(.loss),
-                impression.metadata.isExternalNotificationsEnabled
+                controller.impression.isTrackingAllowed(.loss),
+                controller.impression.metadata.isExternalNotificationsEnabled
             else { return }
                   
             let request = context.notificationRequest { builder in
@@ -150,13 +153,15 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 builder.withEnvironmentRepository(sdk.environmentRepository)
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
-                builder.withImpression(impression)
+                builder.withImpression(controller.impression)
                 builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
             }
 
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent loss with result: \(result)")
             }
+            
+            controller.impression.markTrackedIfNeeded(.loss)
         default:
             break
         }
@@ -182,23 +187,23 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         ) { [weak self] result in
             guard let self = self else { return }
             
-            switch result {
-            case .success(let response):
+            switch (self.state, result) {
+            case (.preparing, .success(let response)):
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response)
-            case .failure(let error):
+            case (.preparing, .failure(let error)):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
                 self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+            default:
+                break
             }
         }
     }
     
     func show(from rootViewController: UIViewController) {
         switch state {
-        case .ready(let keeper):
-            let controller = ImpressionControllerType(bid: keeper.bid)
-            controller.delegate = self
+        case .ready(let controller):
             state = .impression(controller: controller)
             controller.show(from: rootViewController)
         default:
@@ -243,11 +248,9 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             
             switch result {
             case .success(let bid):
-                let keeper = BidKeeper(bid: bid) { [weak self] expiredBid in
-                    self?.expire(bid: expiredBid)
-                }
-                
-                self.state = .ready(keeper: keeper)
+                let controller = ImpressionControllerType(bid: bid)
+                controller.delegate = self
+                self.state = .ready(controller: controller)
                 let ad = AdContainer(bid: bid)
                 
                 self.delegate?.adManager(self, didLoad: ad)
@@ -297,16 +300,16 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         
         impression.markTrackedIfNeeded(path)
     }
-    
-    private func expire(bid: BidType) {
-        state = .idle
-        let container = AdContainer(bid: bid)
-        delegate?.adManager(self, didExpire: container)
-    }
 }
 
 
 extension BaseFullscreenAdManager: FullscreenImpressionControllerDelegate {
+    func didExpire(_ impression: inout Impression) {
+        state = .idle
+        let container = AdContainer(impression: impression)
+        delegate?.adManager(self, didExpire: container)
+    }
+    
     func didFailToPresent(_ impression: inout Impression?, error: SdkError) {
         state = .idle
         
@@ -354,9 +357,7 @@ private extension BaseFullscreenAdManager.State {
     
     var ads: [Ad] {
         switch self {
-        case .ready(let keeper):
-            return [AdContainer(bid: keeper.bid)]
-        case .impression(let controller):
+        case .ready(let controller), .impression(let controller):
             return [AdContainer(impression: controller.impression)]
         default: return []
         }

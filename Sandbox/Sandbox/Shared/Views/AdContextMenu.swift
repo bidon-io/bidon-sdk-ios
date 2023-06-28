@@ -12,6 +12,7 @@ import Bidon
 
 struct AdContextMenuModifier: ViewModifier {
     var ad: Bidon.Ad?
+    var onWin: (Bidon.Ad) -> ()
     var onLoss: (Bidon.Ad) -> ()
     
     func body(content: Content) -> some View {
@@ -42,6 +43,10 @@ struct AdContextMenuModifier: ViewModifier {
     
     @ViewBuilder
     var menuItems: some View {
+        Button(action: { ad.map { onWin($0) }}) {
+            Label("Notify Win", systemImage: "paperplane.fill")
+        }
+        
         Button(action: { ad.map { onLoss($0) }}) {
             Label("Notify Loss", systemImage: "paperplane")
         }
@@ -52,11 +57,13 @@ struct AdContextMenuModifier: ViewModifier {
 extension View {
     func adContextMenu(
         _ ad: Bidon.Ad?,
+        onWin: @escaping (Bidon.Ad) -> (),
         onLoss: @escaping (Bidon.Ad) -> ()
     ) -> some View {
         return modifier(
             AdContextMenuModifier(
                 ad: ad,
+                onWin: onWin,
                 onLoss: onLoss
             )
         )

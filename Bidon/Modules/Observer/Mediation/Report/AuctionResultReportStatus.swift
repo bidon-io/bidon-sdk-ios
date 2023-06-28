@@ -9,13 +9,17 @@ import Foundation
 
 
 enum AuctionResultReportStatus: Codable {
+    case unknown
     case success
     case fail
+    case cancelled
     
     private var stringValue: String {
         switch self {
+        case .unknown:          return "UNKNOWN"
         case .success:          return "SUCCESS"
         case .fail:             return "FAIL"
+        case .cancelled:        return "AUCTION_CANCELLED"
         }
     }
     
@@ -23,8 +27,10 @@ enum AuctionResultReportStatus: Codable {
         let container = try decoder.singleValueContainer()
         let value = try container.decode(String.self)
         switch value {
-        case "SUCCESS": self = .success
-        case "FAIL": self = .fail
+        case "UNKNOWN":             self = .unknown
+        case "SUCCESS":             self = .success
+        case "FAIL":                self = .fail
+        case "AUCTION_CANCELLED":   self = .cancelled
         default:
             let ctx = DecodingError.Context(
                 codingPath: [],

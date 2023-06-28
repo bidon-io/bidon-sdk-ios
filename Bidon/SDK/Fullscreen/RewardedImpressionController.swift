@@ -13,7 +13,8 @@ final class RewardedImpressionController: NSObject, FullscreenImpressionControll
     weak var delegate: FullscreenImpressionControllerDelegate?
     
     private let provider: any RewardedAdDemandProvider
-    private(set) var impression: Impression
+    
+    var impression: Impression
     
     required init(bid: AnyRewardedAdBid) {
         let bid = bid.unwrapped()
@@ -50,7 +51,7 @@ extension RewardedImpressionController: DemandProviderDelegate {
         _ provider: any DemandProvider,
         didExpireAd ad: DemandAd
     ) {
-        
+        delegate?.didExpire(&impression)
     }
     
     func provider(

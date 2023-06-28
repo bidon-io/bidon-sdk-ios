@@ -158,13 +158,13 @@ PODS:
   - CriteoPublisherSdk (4.9.0):
     - CriteoPublisherSdk/Sdk (= 4.9.0)
   - CriteoPublisherSdk/Sdk (4.9.0)
-  - FBAEMKit (16.1.1):
-    - FBSDKCoreKit_Basics (= 16.1.1)
+  - FBAEMKit (16.1.2):
+    - FBSDKCoreKit_Basics (= 16.1.2)
   - FBAudienceNetwork (6.12.0)
-  - FBSDKCoreKit (16.1.1):
-    - FBAEMKit (= 16.1.1)
-    - FBSDKCoreKit_Basics (= 16.1.1)
-  - FBSDKCoreKit_Basics (16.1.1)
+  - FBSDKCoreKit (16.1.2):
+    - FBAEMKit (= 16.1.2)
+    - FBSDKCoreKit_Basics (= 16.1.2)
+  - FBSDKCoreKit_Basics (16.1.2)
   - Firebase/Analytics (10.11.0):
     - Firebase/Core
   - Firebase/Core (10.11.0):
@@ -597,10 +597,10 @@ SPEC CHECKSUMS:
   BidMachineVungleAdapter: f75d495713df8c446f09522cac8e5ec92bb4f5be
   BURelyFoundation_Global: a36d52a06d1798c0309fbeaa1a95692050e2e75f
   CriteoPublisherSdk: 1cfd1c5275aa4418b26e917cb9858901e02ed686
-  FBAEMKit: 78e6d131977b5a34a9f35baba9d397e611cf4268
+  FBAEMKit: 1d6160f527eef3e5cc18c28e6afc7f1168d86332
   FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
-  FBSDKCoreKit: 1b76d643eb5d4ce25909c58a412fe5ba400672e1
-  FBSDKCoreKit_Basics: 27185fcaf23c152fa3788eab1e35b75f70906e4b
+  FBSDKCoreKit: 05ec20fc0fd61dc4e14cc6905360ca976ff4c9e1
+  FBSDKCoreKit_Basics: c95336ffe7299dac5224e8e6154154f52917f20d
   Firebase: 31d9575c124839fb5abc0db6d39511cc1dab1b85
   FirebaseABTesting: 3f6b711718feb87346dc05f8c964601bc8fb2cf6
   FirebaseAnalytics: 6c6bf99e8854475bf1fa342028841be8ecd236da

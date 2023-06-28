@@ -50,6 +50,19 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         }
     }
     
+    override func cancel() {
+        super.cancel()
+        
+        observer.log(CancelAuctionMediationEvent())
+        
+        let result = Result<BidType, SdkError>.failure(.cancelled)
+        let completion = self.completion
+        
+        DispatchQueue.main.async {
+            completion(result)
+        }
+    }
+    
     private func result(
         for bids: [BidType],
         winner: BidType?

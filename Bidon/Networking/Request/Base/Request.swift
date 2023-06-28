@@ -52,19 +52,28 @@ protocol Request {
 
 
 extension Route {
+    private var pathComponent: String {
+        switch self {
+        case .auction:  return "auction"
+        case .config:   return "config"
+        case .stats:    return "stats"
+        case .bid:      return "bidding"
+        case .show:     return "show"
+        case .click:    return "click"
+        case .loss:     return "loss"
+        case .win:      return "win"
+        case .reward:   return "reward"
+        case .adType(let adType): return adType.stringValue
+        default: return ""
+        }
+    }
+    
     func url(_ base: URL) -> URL {
         switch self {
-        case .auction: return base.appendingPathComponent("auction")
-        case .config: return base.appendingPathComponent("config")
-        case .stats: return base.appendingPathComponent("stats")
-        case .bid: return base.appendingPathComponent("bidding")
-        case .show: return base.appendingPathComponent("show")
-        case .click: return base.appendingPathComponent("click")
-        case .loss: return base.appendingPathComponent("loss")
-        case .win: return base.appendingPathExtension("win")
-        case .reward: return base.appendingPathComponent("reward")
-        case .adType(let adType): return base.appendingPathComponent(adType.stringValue)
-        case .complex(let right, let left): return right.url(left.url(base))
+        case .complex(let right, let left):
+            return right.url(left.url(base))
+        default:
+            return base.appendingPathComponent(pathComponent)
         }
     }
 }

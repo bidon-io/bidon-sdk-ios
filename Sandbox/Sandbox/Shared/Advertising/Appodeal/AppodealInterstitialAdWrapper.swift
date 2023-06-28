@@ -13,7 +13,7 @@ import SwiftUI
 
 
 final class AppodealInterstitialAdWrapper: BaseFullscreenAdWrapper {
-    private var bidOnInterstitial: Bidon.Interstitial?
+    private var bidonInterstitial: Bidon.Interstitial?
     
     override var adType: AdType { .interstitial } 
     
@@ -34,18 +34,21 @@ final class AppodealInterstitialAdWrapper: BaseFullscreenAdWrapper {
             return
         }
         
-        if let interstitial = bidOnInterstitial, interstitial.isReady {
+        if let interstitial = bidonInterstitial, interstitial.isReady {
             interstitial.showAd(from: controller)
         } else {
             Appodeal.showAd(.interstitial, rootViewController: controller)
         }
     }
     
+    override func notify(win ad: Ad) {
+        bidonInterstitial?.notifyWin()
+    }
+    
     override func notify(loss ad: Ad) {
-        bidOnInterstitial?.notify(
-            loss: ad,
-            winner: "some_appodeal_ad_network",
-            eCPM: ad.eCPM + 0.01
+        bidonInterstitial?.notifyLoss(
+            external: "some_appodeal_ad_network",
+            eCPM: ad.eCPM + 0.1
         )
     }
     
@@ -58,7 +61,7 @@ final class AppodealInterstitialAdWrapper: BaseFullscreenAdWrapper {
         let interstitial = Bidon.Interstitial()
         interstitial.delegate = self
         interstitial.loadAd(with: pricefloor)
-        self.bidOnInterstitial = interstitial
+        self.bidonInterstitial = interstitial
     }
 }
 

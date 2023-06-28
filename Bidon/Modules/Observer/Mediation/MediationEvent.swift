@@ -240,5 +240,10 @@ struct BiddingDemandProviderDidFillMediationEvent: MediationEvent {
     }
 }
 
+struct CancelAuctionMediationEvent: MediationEvent {
+    var description: String {
+        return "did cancel auction"
+    }
+}
 
 

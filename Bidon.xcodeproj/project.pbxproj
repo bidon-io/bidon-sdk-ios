@@ -144,7 +144,6 @@
 		42C46C9029F27FF90057D7CE /* AuctionLineItemElector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C46C8F29F27FF90057D7CE /* AuctionLineItemElector.swift */; };
 		42C46C9329F280360057D7CE /* AuctionBidComparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C46C9229F280360057D7CE /* AuctionBidComparator.swift */; };
 		42C46C9729F2ABC50057D7CE /* DirectedAcyclicGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C46C9629F2ABC50057D7CE /* DirectedAcyclicGraph.swift */; };
-		42C4F46029E6CEEE00B12E15 /* BidKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F45F29E6CEEE00B12E15 /* BidKeeper.swift */; };
 		42C4F46229E6E44C00B12E15 /* AdType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F46129E6E44C00B12E15 /* AdType.swift */; };
 		42C4F46429E6E47200B12E15 /* SdkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F46329E6E47200B12E15 /* SdkError.swift */; };
 		42C4F46629E6E49200B12E15 /* Framework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F46529E6E49200B12E15 /* Framework.swift */; };
@@ -311,7 +310,6 @@
 		42C46C8F29F27FF90057D7CE /* AuctionLineItemElector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionLineItemElector.swift; sourceTree = "<group>"; };
 		42C46C9229F280360057D7CE /* AuctionBidComparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionBidComparator.swift; sourceTree = "<group>"; };
 		42C46C9629F2ABC50057D7CE /* DirectedAcyclicGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectedAcyclicGraph.swift; sourceTree = "<group>"; };
-		42C4F45F29E6CEEE00B12E15 /* BidKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidKeeper.swift; sourceTree = "<group>"; };
 		42C4F46129E6E44C00B12E15 /* AdType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdType.swift; sourceTree = "<group>"; };
 		42C4F46329E6E47200B12E15 /* SdkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkError.swift; sourceTree = "<group>"; };
 		42C4F46529E6E49200B12E15 /* Framework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Framework.swift; sourceTree = "<group>"; };
@@ -913,7 +911,6 @@
 			isa = PBXGroup;
 			children = (
 				42389DED2872F52A006024BA /* BidSet.swift */,
-				42C4F45F29E6CEEE00B12E15 /* BidKeeper.swift */,
 				42FE946D29D42D9000DF7920 /* Bid.swift */,
 			);
 			path = Bid;
@@ -1095,7 +1092,6 @@
 				42CCB99128CB365400DBAE97 /* UIDevice+Extensions.swift in Sources */,
 				427DB5C129BF2A8500057D08 /* UnknownAdapter.swift in Sources */,
 				429E645F29F928EC00149EEA /* Viewability.swift in Sources */,
-				42C4F46029E6CEEE00B12E15 /* BidKeeper.swift in Sources */,
 				421D48EA28884D1F007DE2E4 /* LogFormatter.swift in Sources */,
 				424D296428BE630500F6F2D6 /* MainThreadComputable.swift in Sources */,
 				429EE2C9286CA2B0009439C6 /* DemandProvider.swift in Sources */,

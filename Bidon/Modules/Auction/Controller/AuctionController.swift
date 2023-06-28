@@ -15,4 +15,6 @@ protocol AuctionController {
     typealias Completion = (Result<BidType, SdkError>) -> ()
         
     func load(completion: @escaping Completion)
+    
+    func cancel()
 }

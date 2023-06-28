@@ -13,7 +13,7 @@ import SwiftUI
 
 
 final class AppodealRewardedAdWrapper: BaseFullscreenAdWrapper {
-    private var bidOnRewardedAd: Bidon.RewardedAd?
+    private var bidonRewardedAd: Bidon.RewardedAd?
     
     override var adType: AdType { .rewardedAd }
     
@@ -34,17 +34,20 @@ final class AppodealRewardedAdWrapper: BaseFullscreenAdWrapper {
             return
         }
         
-        if let rewardedAd = bidOnRewardedAd, rewardedAd.isReady {
+        if let rewardedAd = bidonRewardedAd, rewardedAd.isReady {
             rewardedAd.showAd(from: controller)
         } else {
             Appodeal.showAd(.rewardedVideo, rootViewController: controller)
         }
     }
     
+    override func notify(win ad: Ad) {
+        bidonRewardedAd?.notifyWin()
+    }
+    
     override func notify(loss ad: Ad) {
-        bidOnRewardedAd?.notify(
-            loss: ad,
-            winner: "some_appodeal_ad_network",
+        bidonRewardedAd?.notifyLoss(
+            external: "some_unknown_ad_network",
             eCPM: ad.eCPM + 0.01
         )
     }
@@ -58,7 +61,7 @@ final class AppodealRewardedAdWrapper: BaseFullscreenAdWrapper {
         let rewardedAd = Bidon.RewardedAd()
         rewardedAd.delegate = self
         rewardedAd.loadAd(with: pricefloor)
-        self.bidOnRewardedAd = rewardedAd
+        self.bidonRewardedAd = rewardedAd
     }
 }
 

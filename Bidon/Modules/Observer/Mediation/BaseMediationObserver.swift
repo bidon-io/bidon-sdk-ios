@@ -53,8 +53,13 @@ final class BaseMediationObserver: MediationObserver {
         }
         
         let winner = demands.first { $0.isAuctionWinner }
+        let status = AuctionResultReportStatus(
+            hasWinner: winner != nil,
+            isCancelled: isCancelled
+        )
+        
         let result = AuctionResultReportModel(
-            status: winner != nil ? .success : .fail,
+            status: status,
             startTimestamp: startTimestamp.uint,
             finishTimestamp: finishTimestamp.uint,
             winnerNetworkId: winner?.networkId,
@@ -79,6 +84,9 @@ final class BaseMediationObserver: MediationObserver {
     
     @Atomic
     private var finishTimestamp: TimeInterval = 0
+    
+    @Atomic
+    private var isCancelled: Bool = false
     
     init(auctionId: String, adType: AdType) {
         self.adType = adType
@@ -135,6 +143,8 @@ final class BaseMediationObserver: MediationObserver {
             recordBiddingDemandProviderFillErrorMediationEvent(_event)
         case let _event as BiddingDemandProviderDidFillMediationEvent:
             recordBiddingDemandProviderDidFillMediationEvent(_event)
+        case let _event as CancelAuctionMediationEvent:
+            recordCancelAuctionMediationEvent(_event)
         default:
             break
         }
@@ -365,6 +375,15 @@ private extension BaseMediationObserver {
             observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
         }
     }
+    
+    func recordCancelAuctionMediationEvent(_ event: CancelAuctionMediationEvent) {
+        $isCancelled.mutate { $0 = true }
+        $demands.update(
+            condition: { $0.status.isUnknown }
+        ) { observation in
+            observation.status = .error(.auctionCancelled)
+        }
+    }
 }
 
 
@@ -426,5 +445,16 @@ private extension Atomic where Value == [DemandObservation] {
             condition: { $0.bidId == bid.id },
             mutation: mutation
         )
+    }
+}
+
+
+private extension AuctionResultReportStatus {
+    init(hasWinner: Bool, isCancelled: Bool) {
+        switch (hasWinner, isCancelled) {
+        case (true, false):     self = .success
+        case (false, false):    self = .fail
+        case (_, true):         self = .cancelled
+        }
     }
 }

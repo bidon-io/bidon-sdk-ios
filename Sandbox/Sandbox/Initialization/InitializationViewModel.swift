@@ -51,7 +51,7 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         name: "Production",
         baseURL: Constants.Bidon.baseURL
     ) {
-        didSet { adService.bidOnURL = host.baseURL }
+        didSet { adService.bidonURL = host.baseURL }
     }
     
     @Published var mediation: Mediation = .none {

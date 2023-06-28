@@ -38,6 +38,10 @@ class BaseFullscreenAdWrapper: BaseAdWrapper, FullscreenAdWrapper {
         fatalError("Not implemented")
     }
     
+    open func notify(win ad: Ad) {
+        fatalError("Not implemented")
+    }
+    
     open func _load() {
         fatalError("Not implemented")
     }

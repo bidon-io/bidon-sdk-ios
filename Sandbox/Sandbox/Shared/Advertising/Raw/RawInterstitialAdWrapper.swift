@@ -13,7 +13,7 @@ import SwiftUI
 
 
 final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
-    private var bidOnInterstitial: Bidon.Interstitial?
+    private var bidonInterstitial: Bidon.Interstitial?
     
     override var adType: AdType { .interstitial }
     
@@ -21,7 +21,7 @@ final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
         let interstitial = Bidon.Interstitial()
         interstitial.delegate = self
         interstitial.loadAd(with: pricefloor)
-        self.bidOnInterstitial = interstitial
+        self.bidonInterstitial = interstitial
     }
     
     override func _show() {
@@ -32,17 +32,20 @@ final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
             return
         }
         
-        if let interstitial = bidOnInterstitial, interstitial.isReady {
+        if let interstitial = bidonInterstitial, interstitial.isReady {
             interstitial.showAd(from: controller)
         } else {
             resumeShowingContinuation(throwing: RawAdServiceError.invalidPresentationState)
         }
     }
     
+    override func notify(win ad: Ad) {
+        bidonInterstitial?.notifyWin()
+    }
+    
     override func notify(loss ad: Ad) {
-        bidOnInterstitial?.notify(
-            loss: ad,
-            winner: "some_unknown_ad_network",
+        bidonInterstitial?.notifyLoss(
+            external: "some_unknown_ad_network",
             eCPM: ad.eCPM + 0.01
         )
     }

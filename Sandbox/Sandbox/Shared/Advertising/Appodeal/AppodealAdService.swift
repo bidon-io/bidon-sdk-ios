@@ -97,7 +97,24 @@ final class AppodealAdService: NSObject, AdService {
         }
     }
     
-    func notify(loss ad: Ad, adType: AdType) {
+    func notify(
+        win ad: Ad,
+        adType: AdType
+    ) {
+        switch adType {
+        case .interstitial:
+            interstitial.notify(win: ad)
+        case .rewardedAd:
+            rewardedAd.notify(win: ad)
+        default:
+            break
+        }
+    }
+    
+    func notify(
+        loss ad: Ad,
+        adType: AdType
+    ) {
         switch adType {
         case .interstitial:
             interstitial.notify(loss: ad)

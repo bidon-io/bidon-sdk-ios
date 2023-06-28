@@ -118,7 +118,7 @@ public final class BannerView: UIView, AdView {
     @objc(notifyWin)
     public func notifyWin() {
         guard
-            let impression = currentImpression(),
+            var impression = currentImpression(),
             impression.isTrackingAllowed(.win),
             impression.metadata.isExternalNotificationsEnabled
         else { return }
@@ -135,6 +135,8 @@ public final class BannerView: UIView, AdView {
         networkManager.perform(request: request) { result in
             Logger.debug("Sent win with result: \(result)")
         }
+        
+        impression.markTrackedIfNeeded(.win)
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -143,7 +145,7 @@ public final class BannerView: UIView, AdView {
         eCPM: Price
     ) {
         guard
-            let impression = currentImpression(),
+            var impression = currentImpression(),
             impression.isTrackingAllowed(.loss)
         else { return }
         
@@ -168,6 +170,8 @@ public final class BannerView: UIView, AdView {
         networkManager.perform(request: request) { result in
             Logger.debug("Sent loss with result: \(result)")
         }
+        
+        impression.markTrackedIfNeeded(.loss)
     }
 
     private func currentImpression() -> Impression? {

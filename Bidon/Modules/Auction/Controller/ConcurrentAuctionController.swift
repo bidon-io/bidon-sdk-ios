@@ -22,7 +22,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let mediationObserver: AnyMediationObserver
     private let adRevenueObserver: AdRevenueObserver
     
-    private var completion: Completion?
     private var elector: AuctionLineItemElector
     
     private lazy var queue: OperationQueue = {
@@ -174,11 +173,18 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         queue.addOperations(auction.operations(), waitUntilFinished: false)
     }
     
+    func cancel() {
+        queue.cancelAllOperations()
+    }
+    
     private func requestDemandOperation(
         round: AuctionRound,
         demand identifier: String
     ) -> AuctionOperation {
-        guard let adapter = adapters.first(where: { $0.identifier == identifier }) else {
+        guard let adapter = adapters.first(where: {
+            $0.identifier == identifier &&
+            !$0.mode.intersection([.classic, .programmatic]).isEmpty
+        }) else {
             let event = DemandProviderNotFoundMediationEvent(
                 round: round,
                 adapter: identifier
@@ -206,23 +212,12 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                     pricefloor: pricefloor
                 )
             }
-        } else if adapter.mode.contains(.programmatic) {
+        } else {
             operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
                 round: round,
                 adapter: adapter,
                 observer: mediationObserver,
                 context: context,
-                metadata: metadata
-            )
-        } else {
-            let event = DemandProviderNotFoundMediationEvent(
-                round: round,
-                adapter: identifier
-            )
-            
-            operation = AuctionOperationLogEvent(
-                event: event,
-                observer: mediationObserver,
                 metadata: metadata
             )
         }
