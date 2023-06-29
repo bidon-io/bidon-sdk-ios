@@ -10,6 +10,9 @@ import XCTest
 @testable import Bidon
 
 
+typealias TestAuctionResult = Result<BidModel<DemandProviderMock>, SdkError>
+
+
 final class TestConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<AdTypeContextMock> {
     override func adapters() -> [AnyDemandSourceAdapter<DemandProviderMock>] {
         let adapters: [AdapterMock] = adaptersRepository.all()
@@ -24,16 +27,12 @@ final class TestConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControl
 
 
 final class ConcurrentAuctionControllerTestCase: XCTestCase {
-    typealias AuctionResult = Result<BidModel<DemandProviderMock>, SdkError>
-    
+    var contextMock: AdTypeContextMock!
+
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
     var mediationObserver: BaseMediationObserver!
-    
     var metadata: AuctionMetadata!
     var adType: AdType!
-    
-    var contextMock: AdTypeContextMock!
-    var lineItemElectorMock: AuctionLineItemElectorMock!
     var pricefloor: Price!
     var adaptersRepository: AdaptersRepository!
     var adRevenueObserver: AdRevenueObserver!
@@ -49,9 +48,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         contextMock = AdTypeContextMock()
         contextMock.stubbedAdType = adType
-        
-        lineItemElectorMock = AuctionLineItemElectorMock()
-        
+                
         adaptersRepository = AdaptersRepository()
         adRevenueObserver = BaseAdRevenueObserver()
         mediationObserver = BaseMediationObserver(
@@ -60,11 +57,18 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         )
     }
     
-    final func controller(with rounds: [AuctionRoundMock]) -> ConcurrentAuctionController<AdTypeContextMock> {
+    final func controller(
+        rounds: [AuctionRoundMock],
+        lineItems: [LineItem]
+    ) -> ConcurrentAuctionController<AdTypeContextMock> {
+        let elector = StrictAuctionLineItemElector(
+            lineItems: lineItems
+        )
+        
         return ConcurrentAuctionController { (builder: TestConcurrentAuctionControllerBuilder) in
             builder.withRounds(rounds)
             builder.withContext(contextMock)
-            builder.withElector(lineItemElectorMock)
+            builder.withElector(elector)
             builder.withMediationObserver(mediationObserver)
             builder.withPricefloor(pricefloor)
             builder.withAdaptersRepository(adaptersRepository)
@@ -77,7 +81,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         let expectation = XCTestExpectation(description: "Wait for auciton complete")
         let timeout: TimeInterval = 1
         
-        var result: AuctionResult!
+        var result: TestAuctionResult!
         
         let rounds = [
             AuctionRoundMock(
@@ -88,7 +92,12 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             )
         ]
         
-        controller = controller(with: rounds)
+        let lineItems: [LineItem] = []
+        
+        controller = controller(
+            rounds: rounds,
+            lineItems: lineItems
+        )
         
         controller.load {
             result = $0
@@ -97,13 +106,8 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         wait(for: [expectation], timeout: timeout)
         
-        switch result {
-        case .success, .none:
-            XCTAssertTrue(false, "Auction result is expected to be failed")
-        case .failure:
-            XCTAssertTrue(true)
-        }
-        
+        XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
+    
         let report = mediationObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
@@ -112,5 +116,26 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         XCTAssertEqual(report.rounds[0].demands.count, 1)
         XCTAssertEqual(report.rounds[0].demands[0].networkId, "")
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "UNKNOWN_ADAPTER")
+    }
+}
+
+
+extension TestAuctionResult {
+    var isSuccess: Bool {
+        switch self {
+        case .success: return true
+        case .failure: return false
+        }
+    }
+}
+
+
+extension RoundReport {
+    var sortedDemands: [DemandReportType] {
+        return demands.sorted { first, second in
+            let firstId = first.networkId ?? ""
+            let secondId = second.networkId ?? ""
+            return firstId < secondId
+        }
     }
 }

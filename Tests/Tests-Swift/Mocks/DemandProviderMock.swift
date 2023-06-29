@@ -6,10 +6,24 @@
 //
 
 import Foundation
+import XCTest
 
 @testable import Bidon
 
 
+protocol DemandProviderMockBuilder {
+    @discardableResult
+    func withDemandId(_ identifier: String) -> Self
+}
+
+
+protocol DemandProviderMockBuildable: DemandProviderMock {
+    associatedtype Builder: DemandProviderMockBuilder
+    
+    init(build: (Builder) -> ())
+}
+
+                                            
 class DemandProviderMock: DemandProvider {
     typealias DemandAdType = DemandAdMock
     
@@ -149,5 +163,62 @@ final class BiddingDemandProviderMock: DemandProviderMock, BiddingDemandProvider
         invokedPrepareBidCount += 1
         invokedPrepareBidParameters = (payload, response)
         invokedPrepareBidParametersList.append((payload, response))
+    }
+}
+
+
+extension DirectDemandProviderMock: DemandProviderMockBuildable {
+    final class Builder: DemandProviderMockBuilder {
+        var demandId: String!
+        var expectedLineItem: LineItem?
+        var result: Result<DemandAd, MediationError>?
+        
+        @discardableResult
+        func withDemandId(_ identifier: String) -> Self {
+            self.demandId = demandId
+            return self
+        }
+        
+        @discardableResult
+        func withExpectedLineItem(_ expectedLineItem: LineItem) -> Self {
+            self.expectedLineItem = expectedLineItem
+            return self
+        }
+        
+        @discardableResult
+        func withStubbedLoadSuccess(
+            id: String = UUID().uuidString,
+            eCPM: Double
+        ) -> Self {
+            let ad = DemandAdMock()
+            ad.stubbedId = id
+            ad.stubbedNetworkName = self.demandId
+            ad.stubbedECPM = eCPM
+            
+            self.result = .success(ad)
+            return self
+        }
+            
+        @discardableResult
+        func withStubbedLoadFailure(error: MediationError) -> Self {
+            self.result = .failure(error)
+            return self
+        }
+    }
+    
+    convenience init(build: (Builder) -> ()) {
+        let builder = Builder()
+        build(builder)
+        
+        self.init()
+        self.stubbedLoad = { adUnitId, response in
+            if let lineItem = builder.expectedLineItem {
+                XCTAssertEqual(adUnitId, lineItem.adUnitId, "Recieved ad unit doesn't match expected value!")
+            }
+            
+            if let result = builder.result {
+                response(result)
+            }
+        }
     }
 }
