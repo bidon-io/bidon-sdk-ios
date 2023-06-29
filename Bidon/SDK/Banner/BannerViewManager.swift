@@ -32,28 +32,21 @@ final internal class BannerViewManager: NSObject {
     
     weak var container: UIView?
     
-    private var _impression: AdViewImpression? {
+    private var adViewContainer: AdViewContainer? {
         container?
             .subviews
             .compactMap { $0 as? AdViewContainer }
-            .first?
-            .impression
+            .first
     }
     
-    var impression: Impression? {
-        _impression
-    }
-    
-    var bid: AdViewBid? {
-        return _impression?.bid
-    }
+    var impression: AdViewImpression? { adViewContainer?.impression }
     
     weak var delegate: BannerViewManagerDelegate?
     
     var extras: [String: AnyHashable] = [:]
     
     func present(
-        bid: AdViewBid,
+        impression: AdViewImpression,
         view: AdViewContainer,
         viewContext: AdViewContext
     ) {
@@ -62,7 +55,7 @@ final internal class BannerViewManager: NSObject {
             !container.subviews.contains(view)
         else { return }
         
-        bid.provider.adViewDelegate = self
+        impression.bid.provider.adViewDelegate = self
         
         view.translatesAutoresizingMaskIntoConstraints = false
         view.alpha = 0
@@ -111,18 +104,69 @@ final internal class BannerViewManager: NSObject {
                 self?.viewabilityTracker.finishTracking()
                 self?.trackImpression(adView: view)
                 
-                bid.provider.didTrackImpression(opaque: bid.ad)
+                impression.bid.provider.didTrackImpression(opaque: impression.bid.ad)
             }
         }
         
-        view.impression = AdViewImpression(
-            bid: bid,
-            format: viewContext.format
-        )
+        view.impression = impression
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(didReceiveTap))
         recognizer.delegate = self
         view.addGestureRecognizer(recognizer)
+    }
+    
+    func notifyWin(viewContext: AdViewContext) {
+        guard
+            let impression = impression,
+            impression.isTrackingAllowed(.win),
+            impression.metadata.isExternalNotificationsEnabled
+        else { return }
+        
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        
+        let request = context.notificationRequest { builder in
+            builder.withRoute(.win)
+            builder.withEnvironmentRepository(sdk.environmentRepository)
+            builder.withTestMode(sdk.isTestMode)
+            builder.withExt(extras)
+            builder.withImpression(impression)
+        }
+        
+        networkManager.perform(request: request) { result in
+            Logger.debug("Sent win with result: \(result)")
+        }
+        
+        var _impression = impression
+        _impression.markTrackedIfNeeded(.win)
+        adViewContainer?.impression = _impression
+    }
+    
+    func notifyLoss(
+        winner demandId: String,
+        eCPM: Price,
+        viewContext: AdViewContext
+    ) {
+        guard
+            let impression = impression,
+            impression.isTrackingAllowed(.loss),
+            impression.metadata.isExternalNotificationsEnabled
+        else { return }
+        
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        let request = context.notificationRequest { builder in
+            builder.withRoute(.loss)
+            builder.withEnvironmentRepository(sdk.environmentRepository)
+            builder.withTestMode(sdk.isTestMode)
+            builder.withExt(extras)
+            builder.withImpression(impression)
+            builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+        }
+        
+        networkManager.perform(request: request) { result in
+            Logger.debug("Sent loss with result: \(result)")
+        }
+        
+        hide()
     }
     
     func hide() {
@@ -159,7 +203,7 @@ final internal class BannerViewManager: NSObject {
         guard var impression = adView.impression else { return }
         
         sendImpressionIfNeeded(&impression, path: .show)
-                
+        
         let ad = AdContainer(impression: impression)
         delegate?.viewManager(self, didRecordImpression: ad)
         

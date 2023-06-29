@@ -25,7 +25,7 @@ public final class BannerView: UIView, AdView {
     
     @objc public var delegate: AdViewDelegate?
     
-    @objc public var isReady: Bool { return adManager.bid != nil }
+    @objc public var isReady: Bool { adManager.impression != nil }
     
     @objc private(set) public
     lazy var extras: [String : AnyHashable] = [:] {
@@ -55,9 +55,9 @@ public final class BannerView: UIView, AdView {
         observer.ads = { [weak self] in
             guard let self = self else { return [] }
             
-            let ads: [Ad] = [self.adManager.bid, self.viewManager.bid]
+            let ads: [Ad] = [self.adManager.impression, self.viewManager.impression]
                 .compactMap { $0 }
-                .map { AdContainer(bid: $0) }
+                .map { AdContainer(impression: $0) }
             
             return ads
         }
@@ -117,26 +117,8 @@ public final class BannerView: UIView, AdView {
     
     @objc(notifyWin)
     public func notifyWin() {
-        guard
-            var impression = currentImpression(),
-            impression.isTrackingAllowed(.win),
-            impression.metadata.isExternalNotificationsEnabled
-        else { return }
-        
-        let context = BannerAdTypeContext(viewContext: viewContext)
-        let request = context.notificationRequest { builder in
-            builder.withRoute(.win)
-            builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras)
-            builder.withImpression(impression)
-        }
-        
-        networkManager.perform(request: request) { result in
-            Logger.debug("Sent win with result: \(result)")
-        }
-        
-        impression.markTrackedIfNeeded(.win)
+        adManager.notifyWin(viewContext: viewContext)
+        viewManager.notifyWin(viewContext: viewContext)
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -144,50 +126,23 @@ public final class BannerView: UIView, AdView {
         external demandId: String,
         eCPM: Price
     ) {
-        guard
-            var impression = currentImpression(),
-            impression.isTrackingAllowed(.loss)
-        else { return }
+        adManager.notifyLoss(
+            winner: demandId,
+            eCPM: eCPM,
+            viewContext: viewContext
+        )
         
-        defer {
-            adManager.prepareForReuse()
-            viewManager.hide()
-        }
-        
-        guard impression.metadata.isExternalNotificationsEnabled
-        else { return }
-    
-        let context = BannerAdTypeContext(viewContext: viewContext)
-        let request = context.notificationRequest { builder in
-            builder.withRoute(.loss)
-            builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withTestMode(sdk.isTestMode)
-            builder.withExt(extras)
-            builder.withImpression(impression)
-            builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
-        }
-        
-        networkManager.perform(request: request) { result in
-            Logger.debug("Sent loss with result: \(result)")
-        }
-        
-        impression.markTrackedIfNeeded(.loss)
+        viewManager.notifyLoss(
+            winner: demandId,
+            eCPM: eCPM,
+            viewContext: viewContext
+        )
     }
 
-    private func currentImpression() -> Impression? {
-        if let bid = adManager.bid {
-            return AdViewImpression(bid: bid, format: format)
-        } else if let impression = viewManager.impression {
-            return impression
-        } else {
-            return nil
-        }
-    }
-    
     private final func presentIfNeeded() {
         guard
-            let bid = adManager.bid,
-            let adView = bid.provider.container(opaque: bid.ad)
+            let impression = adManager.impression,
+            let adView = impression.bid.provider.container(opaque: impression.bid.ad)
         else { return }
         
         Logger.verbose("Banner \(self) will refresh ad view")
@@ -197,7 +152,7 @@ public final class BannerView: UIView, AdView {
             
             self.adManager.prepareForReuse()
             self.viewManager.present(
-                bid: bid,
+                impression: impression,
                 view: adView,
                 viewContext: self.viewContext
             )

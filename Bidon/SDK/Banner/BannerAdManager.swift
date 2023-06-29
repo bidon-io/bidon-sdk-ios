@@ -24,7 +24,7 @@ final class BannerAdManager: NSObject {
         case idle
         case preparing
         case auction(controller: AuctionControllerType)
-        case ready(bid: AdViewBid)
+        case ready(impression: AdViewImpression)
     }
     
     @Injected(\.networkManager)
@@ -41,9 +41,9 @@ final class BannerAdManager: NSObject {
     
     weak var delegate: BannerAdManagerDelegate?
     
-    var bid: AdViewBid? {
+    var impression: AdViewImpression? {
         switch state {
-        case .ready(let bid): return bid
+        case .ready(let imp): return imp
         default: return nil
         }
     }
@@ -77,6 +77,72 @@ final class BannerAdManager: NSObject {
             pricefloor: pricefloor,
             viewContext: viewContext
         )
+    }
+    
+    func notifyWin(viewContext: AdViewContext) {
+        switch state {
+        case .ready(var impression):
+            guard
+                impression.isTrackingAllowed(.win),
+                impression.metadata.isExternalNotificationsEnabled
+            else { return }
+                  
+            let context = BannerAdTypeContext(viewContext: viewContext)
+
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.win)
+                builder.withEnvironmentRepository(sdk.environmentRepository)
+                builder.withTestMode(sdk.isTestMode)
+                builder.withExt(extras)
+                builder.withImpression(impression)
+            }
+
+            networkManager.perform(request: request) { result in
+                Logger.debug("Sent win with result: \(result)")
+            }
+            
+            impression.markTrackedIfNeeded(.win)
+            state = .ready(impression: impression)
+        default:
+            break
+        }
+    }
+    
+    func notifyLoss(
+        winner demandId: String,
+        eCPM: Price,
+        viewContext: AdViewContext
+    ) {
+        switch state {
+        case .preparing:
+            state = .idle
+            delegate?.adManager(self, didFailToLoad: .cancelled)
+        case .auction(let controller):
+            controller.cancel()
+        case .ready(let impression):
+            defer { state = .idle }
+            
+            guard
+                impression.isTrackingAllowed(.loss),
+                impression.metadata.isExternalNotificationsEnabled
+            else { return }
+                 
+            let context = BannerAdTypeContext(viewContext: viewContext)
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.loss)
+                builder.withEnvironmentRepository(sdk.environmentRepository)
+                builder.withTestMode(sdk.isTestMode)
+                builder.withExt(extras)
+                builder.withImpression(impression)
+                builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+            }
+
+            networkManager.perform(request: request) { result in
+                Logger.debug("Sent loss with result: \(result)")
+            }
+        default:
+            break
+        }
     }
     
     private func fetchAuctionInfo(
@@ -161,8 +227,11 @@ final class BannerAdManager: NSObject {
 
             switch result {
             case .success(let bid):
-                let unwrapped = bid.unwrapped()
-                self.state = .ready(bid: unwrapped)
+                let impression = AdViewImpression(
+                    bid: bid.unwrapped(),
+                    format: context.format
+                )
+                self.state = .ready(impression: impression)
                 
                 let ad = AdContainer(bid: bid)
                 self.delegate?.adManager(self, didLoad: ad)
