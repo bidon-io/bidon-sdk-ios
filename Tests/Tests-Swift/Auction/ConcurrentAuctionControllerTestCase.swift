@@ -28,7 +28,7 @@ final class TestConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControl
 
 final class ConcurrentAuctionControllerTestCase: XCTestCase {
     var contextMock: AdTypeContextMock!
-
+    
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
     var mediationObserver: BaseMediationObserver!
     var metadata: AuctionMetadata!
@@ -55,6 +55,16 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             auctionId: metadata.id,
             adType: .interstitial
         )
+    }
+    
+    override func tearDown() {
+        controller = nil
+        pricefloor = nil
+        metadata = nil
+        contextMock = nil
+        adaptersRepository = nil
+        adRevenueObserver = nil
+        mediationObserver = nil
     }
     
     final func controller(

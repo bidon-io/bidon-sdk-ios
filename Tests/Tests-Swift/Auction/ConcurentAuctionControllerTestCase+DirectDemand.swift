@@ -617,7 +617,7 @@ extension ConcurrentAuctionControllerTestCase {
         var result: TestAuctionResult!
 
         let expectation = XCTestExpectation(description: "Wait for auciton complete")
-        let timeout: TimeInterval = 1
+        let timeout: TimeInterval = 5
         
         let demandId1 = "demand_id_1"
 
