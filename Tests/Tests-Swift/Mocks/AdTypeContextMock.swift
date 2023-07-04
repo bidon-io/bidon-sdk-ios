@@ -26,6 +26,46 @@ final class AdTypeContextMock: AdTypeContext {
         invokedAdTypeGetterCount += 1
         return stubbedAdType
     }
+
+    var invokedAuctionRequest = false
+    var invokedAuctionRequestCount = 0
+    var stubbedAuctionRequest: (((AuctionRequestBuilderType) -> ()) -> AuctionRequest)!
+
+    func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
+        invokedAuctionRequest = true
+        invokedAuctionRequestCount += 1
+        return stubbedAuctionRequest(build)
+    }
+
+    var invokedBidRequest = false
+    var invokedBidRequestCount = 0
+    var stubbedBidRequest: (((BidRequestBuilderType) -> ()) -> BidRequest)!
+
+    func bidRequest(build: (BidRequestBuilderType) -> ()) -> BidRequest {
+        invokedBidRequest = true
+        invokedBidRequestCount += 1
+        return stubbedBidRequest(build)
+    }
+
+    var invokedImpressionRequest = false
+    var invokedImpressionRequestCount = 0
+    var stubbedImpressionRequest: (((ImpressionRequestBuilderType) -> ()) -> ImpressionRequest)!
+
+    func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
+        invokedImpressionRequest = true
+        invokedImpressionRequestCount += 1
+        return stubbedImpressionRequest(build)
+    }
+
+    var invokedNotificationRequest = false
+    var invokedNotificationRequestCount = 0
+    var stubbedNotificationRequest: (((NotificationRequestBuilderType) -> ()) -> NotificationRequest)!
+
+    func notificationRequest(build: (NotificationRequestBuilderType) -> ()) -> NotificationRequest {
+        invokedNotificationRequest = true
+        invokedNotificationRequestCount += 1
+        return stubbedNotificationRequest(build)
+    }
 }
 
 

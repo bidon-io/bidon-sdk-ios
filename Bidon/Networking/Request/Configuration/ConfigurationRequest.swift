@@ -9,6 +9,7 @@ import Foundation
 
 
 struct ConfigurationRequest: Request {
+    var id: String = UUID().uuidString
     var route: Route = .config
     var method: HTTPTask.HTTPMethod = .post
     var headers: [HTTPTask.HTTPHeader: String] = .default()
@@ -39,7 +40,10 @@ struct ConfigurationRequest: Request {
             case segment
         }
     }
-    
+}
+
+
+extension ConfigurationRequest {
     init(_ build: (ConfigurationRequestBuilder) -> ()) {
         let builder = ConfigurationRequestBuilder()
         build(builder)
@@ -55,5 +59,12 @@ struct ConfigurationRequest: Request {
             device: builder.device,
             segment: builder.segment
         )
+    }
+}
+
+
+extension ConfigurationRequest: Equatable {
+    static func == (lhs: ConfigurationRequest, rhs: ConfigurationRequest) -> Bool {
+        return lhs.id == rhs.id
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol ImpressionRequestBuilder: BaseRequestBuilder {
+protocol ImpressionRequestBuilder: AdTypeContextRequestBuilder {
     associatedtype Context: AdTypeContext
     
     var imp: ImpressionModel { get }
@@ -19,9 +19,6 @@ protocol ImpressionRequestBuilder: BaseRequestBuilder {
     
     @discardableResult
     func withPath(_ path: Route) -> Self
-    
-    @discardableResult
-    func withContext(_ context: Context) -> Self
     
     init()
 }
@@ -51,7 +48,7 @@ class BaseImpressionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, 
     }
     
     @discardableResult
-    func withContext(_ context: Context) -> Self {
+    func withAdTypeContext(_ context: Context) -> Self {
         self.context = context
         return self
     }

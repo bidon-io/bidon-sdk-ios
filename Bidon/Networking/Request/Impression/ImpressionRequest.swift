@@ -32,11 +32,14 @@ struct ImpressionRequest: Request {
         var token: String?
         var success: Bool
     }
-    
+}
+
+
+extension ImpressionRequest {
     init<T: ImpressionRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
-    
+        
         self.route = builder.route
         
         self.body = RequestBody(
@@ -50,5 +53,13 @@ struct ImpressionRequest: Request {
             test: builder.testMode,
             bid: builder.imp
         )
+    }
+}
+
+
+extension ImpressionRequest: Equatable {
+    static func == (lhs: ImpressionRequest, rhs: ImpressionRequest) -> Bool {
+        return lhs.body?.bid.impressionId == rhs.body?.bid.impressionId &&
+        lhs.route.stringValue == rhs.route.stringValue
     }
 }

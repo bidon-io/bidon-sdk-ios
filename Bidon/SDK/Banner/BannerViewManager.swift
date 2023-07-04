@@ -183,12 +183,13 @@ final internal class BannerViewManager: NSObject {
     ) {
         guard impression.isTrackingAllowed(path) else { return }
         
-        let request = ImpressionRequest { (builder: AdViewImpressionRequestBuilder) in
+        let ctx = BannerAdTypeContext(format: impression.format)
+        
+        let request = ctx.impressionRequest { (builder: AdViewImpressionRequestBuilder) in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withImpression(impression)
-            builder.withContext(BannerAdTypeContext(format: impression.format))
             builder.withPath(path)
         }
         

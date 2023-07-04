@@ -8,9 +8,7 @@
 import Foundation
 
 
-protocol NotificationRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AdTypeContext
-    
+protocol NotificationRequestBuilder: AdTypeContextRequestBuilder {
     var imp: ImpressionModel { get }
     var externalWinner: NotificationRequest.ExternalWinner? { get }
     var route: Route { get }
@@ -23,10 +21,7 @@ protocol NotificationRequestBuilder: BaseRequestBuilder {
     
     @discardableResult
     func withExternalWinner(demandId: String, eCPM: Price) -> Self
-    
-    @discardableResult
-    func withContext(_ context: Context) -> Self
-    
+        
     init()
 }
 
@@ -66,7 +61,7 @@ class BaseNotificationRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder
     }
     
     @discardableResult
-    func withContext(_ context: Context) -> Self {
+    func withAdTypeContext(_ context: Context) -> Self {
         self.context = context
         return self
     }

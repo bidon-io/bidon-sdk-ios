@@ -204,7 +204,7 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "NO_BID")
     }
     
-    func testAuctionFailureWithProgrammaticDemandAndNoFillAnd() {
+    func testAuctionFailureWithProgrammaticDemandAndNoFillAndNoBid() {
         var result: TestAuctionResult!
         
         let pricefloor = self.pricefloor!

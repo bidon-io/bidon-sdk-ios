@@ -11,9 +11,7 @@ import Foundation
 typealias AuctionRequestAdObject = AuctionRequest.RequestBody.AdObjectModel
 
 
-protocol AuctionRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AdTypeContext
-    
+protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     var adObject: AuctionRequestAdObject { get }
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
@@ -27,9 +25,6 @@ protocol AuctionRequestBuilder: BaseRequestBuilder {
     
     @discardableResult
     func withPricefloor(_ pricefloor: Price) -> Self
-    
-    @discardableResult
-    func withContext(_ context: Context) -> Self
     
     init()
 }
@@ -66,7 +61,7 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     }
     
     @discardableResult
-    func withContext(_ context: Context) -> Self {
+    func withAdTypeContext(_ context: Context) -> Self {
         self.context = context
         return self
     }

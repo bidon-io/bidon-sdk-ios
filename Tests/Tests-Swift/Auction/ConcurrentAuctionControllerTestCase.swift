@@ -28,6 +28,7 @@ final class TestConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControl
 
 final class ConcurrentAuctionControllerTestCase: XCTestCase {
     var contextMock: AdTypeContextMock!
+    var networkManagerMock: NetworkManagerMockProxy!
     
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
     var mediationObserver: BaseMediationObserver!
@@ -48,7 +49,10 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         contextMock = AdTypeContextMock()
         contextMock.stubbedAdType = adType
-                
+           
+        networkManagerMock = NetworkManagerMockProxy()
+        NetworkManagerInjectionKey.currentValue = networkManagerMock
+        
         adaptersRepository = AdaptersRepository()
         adRevenueObserver = BaseAdRevenueObserver()
         mediationObserver = BaseMediationObserver(
@@ -65,6 +69,8 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         adaptersRepository = nil
         adRevenueObserver = nil
         mediationObserver = nil
+        
+        NetworkManagerInjectionKey.currentValue = PersistentNetworkManager.shared
     }
     
     final func controller(
@@ -87,6 +93,36 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         }
     }
     
+    final func stubBidRequest(
+        _ request: BidRequest,
+        assert: ((BidRequestBuilderMock) -> ())? = nil
+    ) {
+        contextMock.stubbedBidRequest = { build in
+            let builder = BidRequestBuilderMock()
+            builder.stubbedAdType = self.contextMock.stubbedAdType
+            build(builder)
+            if let assert = assert {
+                assert(builder)
+            }
+            
+            return request
+        }
+    }
+    
+    final func stubBidResponseSuccess(
+        request: BidRequest,
+        response: BidRequest.ResponseBody
+    ) {
+        networkManagerMock.stub(request, result: .success(response))
+    }
+    
+    final func stubBidResponseFailure(
+        request: BidRequest,
+        error: HTTPTask.HTTPError
+    ) {
+        networkManagerMock.stub(request, result: .failure(error))
+    }
+
     func testAuctionFailureWithEmptyDemand() {
         let expectation = XCTestExpectation(description: "Wait for auciton complete")
         let timeout: TimeInterval = 1

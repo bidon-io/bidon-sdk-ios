@@ -68,7 +68,10 @@ struct BidRequest: Request {
         var token: String?
         var bid: BidModel
     }
-    
+}
+
+
+extension BidRequest {
     init<T: BidRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
@@ -91,3 +94,8 @@ struct BidRequest: Request {
 }
 
 
+extension BidRequest: Equatable {
+    static func == (lhs: BidRequest, rhs: BidRequest) -> Bool {
+        return lhs.body?.imp.id == rhs.body?.imp.id
+    }
+}

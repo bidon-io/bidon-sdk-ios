@@ -9,6 +9,7 @@ import Foundation
 
 @testable import Bidon
 
+
 final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
     typealias Context = AdTypeContextMock
     
@@ -249,16 +250,16 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         return self
     }
 
-    var invokedWithImpContext = false
-    var invokedWithImpContextCount = 0
-    var invokedWithImpContextParameters: (context: Context, Void)?
-    var invokedWithImpContextParametersList = [(context: Context, Void)]()
+    var invokedWithAdTypeContext = false
+    var invokedWithAdTypeContextCount = 0
+    var invokedWithAdTypeContextParameters: (context: Context, Void)?
+    var invokedWithAdTypeContextParametersList = [(context: Context, Void)]()
 
-    func withImpContext(_ context: Context) -> Self {
-        invokedWithImpContext = true
-        invokedWithImpContextCount += 1
-        invokedWithImpContextParameters = (context, ())
-        invokedWithImpContextParametersList.append((context, ()))
+    func withAdTypeContext(_ context: Context) -> Self {
+        invokedWithAdTypeContext = true
+        invokedWithAdTypeContextCount += 1
+        invokedWithAdTypeContextParameters = (context, ())
+        invokedWithAdTypeContextParametersList.append((context, ()))
         return self
     }
 
@@ -273,5 +274,14 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         invokedWithAdaptersParameters = (adapters, ())
         invokedWithAdaptersParametersList.append((adapters, ()))
         return self
+    }
+    
+    func biddingContext<T: Encodable>(for demandId: String) -> T? {
+        let encoder = invokedWithBiddingContextEncodersParameters?.encoders[demandId] as? BiddingContextEncoderMock<T>
+        return encoder?.content
+    }
+    
+    var demandsCount: Int {
+        invokedWithBiddingContextEncodersParameters?.encoders.count ?? 0
     }
 }

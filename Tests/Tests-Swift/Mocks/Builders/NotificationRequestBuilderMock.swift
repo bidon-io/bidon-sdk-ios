@@ -224,16 +224,16 @@ final class NotificationRequestBuilderMock: BaseRequestBuilder, NotificationRequ
         return self
     }
 
-    var invokedWithContext = false
-    var invokedWithContextCount = 0
-    var invokedWithContextParameters: (context: Context, Void)?
-    var invokedWithContextParametersList = [(context: Context, Void)]()
+    var invokedWithAdTypeContext = false
+    var invokedWithAdTypeContextCount = 0
+    var invokedWithAdTypeContextParameters: (context: Context, Void)?
+    var invokedWithAdTypeContextParametersList = [(context: Context, Void)]()
 
-    func withContext(_ context: Context) -> Self {
-        invokedWithContext = true
-        invokedWithContextCount += 1
-        invokedWithContextParameters = (context, ())
-        invokedWithContextParametersList.append((context, ()))
+    func withAdTypeContext(_ context: Context) -> Self {
+        invokedWithAdTypeContext = true
+        invokedWithAdTypeContextCount += 1
+        invokedWithAdTypeContextParameters = (context, ())
+        invokedWithAdTypeContextParametersList.append((context, ()))
         return self
     }
 }

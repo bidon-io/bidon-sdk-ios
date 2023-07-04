@@ -11,9 +11,7 @@ import Foundation
 typealias BidRequestImp = BidRequest.RequestBody.ImpModel
 
 
-protocol BidRequestBuilder: BaseRequestBuilder {
-    associatedtype Context: AdTypeContext
-    
+protocol BidRequestBuilder: AdTypeContextRequestBuilder {
     var imp: BidRequestImp { get }
     
     var adType: AdType { get }
@@ -34,9 +32,6 @@ protocol BidRequestBuilder: BaseRequestBuilder {
     
     @discardableResult
     func withAuctionConfigurationId(_ auctionConfigurationId: Int) -> Self
-    
-    @discardableResult
-    func withImpContext(_ context: Context) -> Self
     
     @discardableResult
     func withAdapters(_ adapters: [Adapter]) -> Self
@@ -91,7 +86,7 @@ class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequ
     }
     
     @discardableResult
-    func withImpContext(_ context: Context) -> Self {
+    func withAdTypeContext(_ context: Context) -> Self {
         self.context = context
         return self
     }

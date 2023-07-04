@@ -49,7 +49,10 @@ struct AuctionRequest: Request {
         var auctionConfigurationId: Int
         var externalWinNotifications: Bool
     }
-    
+}
+
+
+extension AuctionRequest {
     init<T: AuctionRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
@@ -69,4 +72,11 @@ struct AuctionRequest: Request {
             adapters: builder.adapters
         )
     }
+}
+
+
+extension AuctionRequest: Equatable {
+    static func == (lhs: AuctionRequest, rhs: AuctionRequest) -> Bool {
+        return lhs.body?.adObject.auctionId == rhs.body?.adObject.auctionId
+    }    
 }

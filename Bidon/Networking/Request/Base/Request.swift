@@ -39,7 +39,7 @@ protocol Tokenized {
 }
 
 
-protocol Request {
+protocol Request: Equatable {
     associatedtype RequestBody: Encodable & Tokenized
     associatedtype ResponseBody: Decodable & Tokenized
     
@@ -52,6 +52,15 @@ protocol Request {
 
 
 extension Route {
+    var stringValue: String {
+        switch self {
+        case .complex(let left, let right):
+            return left.stringValue + "/" + right.stringValue
+        default:
+            return pathComponent
+        }
+    }
+    
     private var pathComponent: String {
         switch self {
         case .auction:  return "auction"

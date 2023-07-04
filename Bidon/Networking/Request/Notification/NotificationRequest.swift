@@ -38,11 +38,14 @@ struct NotificationRequest: Request {
         var token: String?
         var success: Bool
     }
-    
+}
+
+
+extension NotificationRequest {
     init<T: NotificationRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
-    
+        
         self.route = builder.route
         
         self.body = RequestBody(
@@ -57,5 +60,13 @@ struct NotificationRequest: Request {
             bid: builder.imp,
             externalWinner: builder.externalWinner
         )
+    }
+}
+
+
+extension NotificationRequest: Equatable {
+    static func == (lhs: NotificationRequest, rhs: NotificationRequest) -> Bool {
+        return lhs.body?.bid.impressionId == rhs.body?.bid.impressionId &&
+        lhs.route.stringValue == rhs.route.stringValue
     }
 }

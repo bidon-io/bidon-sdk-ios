@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42218E422A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */; };
 		42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */; };
 		42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */; };
 		42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */; };
-		42540AB32A44767400C7F7B6 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */; };
 		42540AB72A4477EB00C7F7B6 /* BidRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */; };
 		42540AB92A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */; };
 		42540ABB2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540ABA2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift */; };
@@ -29,6 +29,12 @@
 		42BF0F9F2993F4A400088648 /* BDNBannerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */; };
 		42BF0FA12993F4CD00088648 /* BDNInterstitialTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */; };
 		42BF0FA32993FBAF00088648 /* BDNRewardedAdTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0FA22993FBAF00088648 /* BDNRewardedAdTestCase.m */; };
+		42F265132A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265122A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift */; };
+		42F265162A52DE950081EC55 /* ProgrammaticDemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265152A52DE950081EC55 /* ProgrammaticDemandProviderMock.swift */; };
+		42F265182A52DEC20081EC55 /* DirectDemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265172A52DEC20081EC55 /* DirectDemandProviderMock.swift */; };
+		42F2651A2A52DEF70081EC55 /* BiddingDemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */; };
+		42F2651C2A531F290081EC55 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */; };
+		42F2651E2A5320110081EC55 /* NetworkManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */; };
 		45ED0C68C33A074815BB07ED /* Pods_Tests_ObjectiveC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */; };
 		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
 /* End PBXBuildFile section */
@@ -36,10 +42,10 @@
 /* Begin PBXFileReference section */
 		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-ObjectiveC.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+MixedDemand.swift"; sourceTree = "<group>"; };
 		42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTypeContextMock.swift; sourceTree = "<group>"; };
 		42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandProviderMock.swift; sourceTree = "<group>"; };
 		42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandAdMock.swift; sourceTree = "<group>"; };
-		42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRequestBuilderMock.swift; sourceTree = "<group>"; };
 		42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidRequestBuilderMock.swift; sourceTree = "<group>"; };
 		42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpressionRequestBuilderMock.swift; sourceTree = "<group>"; };
 		42540ABA2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestBuilderMock.swift; sourceTree = "<group>"; };
@@ -67,6 +73,12 @@
 		42EC988E28914469003BE6CF /* BidOnAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC989028914469003BE6CF /* BidOnAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC989228914469003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F265122A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+BiddingDemand.swift"; sourceTree = "<group>"; };
+		42F265152A52DE950081EC55 /* ProgrammaticDemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammaticDemandProviderMock.swift; sourceTree = "<group>"; };
+		42F265172A52DEC20081EC55 /* DirectDemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectDemandProviderMock.swift; sourceTree = "<group>"; };
+		42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiddingDemandProviderMock.swift; sourceTree = "<group>"; };
+		42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRequestBuilderMock.swift; sourceTree = "<group>"; };
+		42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerMock.swift; sourceTree = "<group>"; };
 		55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.debug.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.debug.xcconfig"; sourceTree = "<group>"; };
 		A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.release.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.release.xcconfig"; sourceTree = "<group>"; };
 		AD68D69E88BAECD14AC5F688 /* Pods-Tests-ObjectiveC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.debug.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.debug.xcconfig"; sourceTree = "<group>"; };
@@ -157,7 +169,7 @@
 		42540AB12A44766000C7F7B6 /* Builders */ = {
 			isa = PBXGroup;
 			children = (
-				42540AB22A44767400C7F7B6 /* AuctionRequestBuilderMock.swift */,
+				42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */,
 				42540AB62A4477EB00C7F7B6 /* BidRequestBuilderMock.swift */,
 				42540AB82A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift */,
 				42540ABA2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift */,
@@ -178,9 +190,9 @@
 			isa = PBXGroup;
 			children = (
 				42540AB12A44766000C7F7B6 /* Builders */,
-				42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */,
-				42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */,
+				42F265142A52DE720081EC55 /* Demand */,
 				42540AC42A44926800C7F7B6 /* AdapterMock.swift */,
+				42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */,
 				42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */,
 				42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */,
 			);
@@ -193,8 +205,22 @@
 				425672292A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift */,
 				42ABAF932A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift */,
 				427DC46B2A4F29CD00AFC4CC /* ConcurrentAuctionControllerTestCase+ProgrammaticDemand.swift */,
+				42F265122A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift */,
+				42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */,
 			);
 			path = Auction;
+			sourceTree = "<group>";
+		};
+		42F265142A52DE720081EC55 /* Demand */ = {
+			isa = PBXGroup;
+			children = (
+				42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */,
+				42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */,
+				42F265172A52DEC20081EC55 /* DirectDemandProviderMock.swift */,
+				42F265152A52DE950081EC55 /* ProgrammaticDemandProviderMock.swift */,
+				42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */,
+			);
+			path = Demand;
 			sourceTree = "<group>";
 		};
 		9E879BD8DED23500B1141F35 /* Pods */ = {
@@ -405,9 +431,15 @@
 				42540AB72A4477EB00C7F7B6 /* BidRequestBuilderMock.swift in Sources */,
 				42540ABB2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift in Sources */,
 				42ABAF942A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift in Sources */,
+				42F265182A52DEC20081EC55 /* DirectDemandProviderMock.swift in Sources */,
+				42218E422A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift in Sources */,
+				42F2651E2A5320110081EC55 /* NetworkManagerMock.swift in Sources */,
+				42F265132A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift in Sources */,
+				42F265162A52DE950081EC55 /* ProgrammaticDemandProviderMock.swift in Sources */,
+				42F2651C2A531F290081EC55 /* AuctionRequestBuilderMock.swift in Sources */,
 				42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */,
 				42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */,
-				42540AB32A44767400C7F7B6 /* AuctionRequestBuilderMock.swift in Sources */,
+				42F2651A2A52DEF70081EC55 /* BiddingDemandProviderMock.swift in Sources */,
 				42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */,
 				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
 				42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */,

@@ -32,7 +32,10 @@ struct StatisticRequest: Request {
         var token: String?
         var success: Bool
     }
-    
+}
+
+
+extension StatisticRequest {
     init(_ build: (StatisticRequestBuilder) -> ()) {
         let builder = StatisticRequestBuilder()
         build(builder)
@@ -49,5 +52,12 @@ struct StatisticRequest: Request {
             test: builder.testMode,
             stats: builder.stats
         )
+    }
+}
+
+
+extension StatisticRequest: Equatable {
+    static func == (lhs: StatisticRequest, rhs: StatisticRequest) -> Bool {
+        return lhs.body?.stats.auctionId == rhs.body?.stats.auctionId
     }
 }

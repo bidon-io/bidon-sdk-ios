@@ -20,7 +20,7 @@ protocol NetworkManager {
 }
 
 
-fileprivate struct NetworkManagerInjectionKey: InjectionKey {
+struct NetworkManagerInjectionKey: InjectionKey {
     static var currentValue: NetworkManager = PersistentNetworkManager.shared
 }
 
@@ -33,7 +33,7 @@ extension InjectedValues {
 }
 
 
-fileprivate final class PersistentNetworkManager: NetworkManager {
+final class PersistentNetworkManager: NetworkManager {
     static let shared = PersistentNetworkManager()
     
     @UserDefaultOptional(Constants.UserDefaultsKey.token)
