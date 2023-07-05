@@ -378,6 +378,7 @@ private extension BaseMediationObserver {
     
     func recordCancelAuctionMediationEvent(_ event: CancelAuctionMediationEvent) {
         $isCancelled.mutate { $0 = true }
+        $finishTimestamp.mutate { $0 = Date.timestamp(.wall, units: .milliseconds) }
         $demands.update(
             condition: { $0.status.isUnknown }
         ) { observation in
