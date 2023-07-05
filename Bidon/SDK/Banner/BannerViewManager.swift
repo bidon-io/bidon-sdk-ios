@@ -116,11 +116,17 @@ final internal class BannerViewManager: NSObject {
     }
     
     func notifyWin(viewContext: AdViewContext) {
-        guard
-            let impression = impression,
-            impression.isTrackingAllowed(.win),
-            impression.metadata.isExternalNotificationsEnabled
-        else { return }
+        // win notification just sends
+        // a corresponding request
+        // we need to mark impression as notified
+        // regardless of whether a request was sent
+        guard let impression = impression, impression.isTrackingAllowed(.win) else { return }
+        defer {
+            var _impression = impression
+            _impression.markTrackedIfNeeded(.win)
+            adViewContainer?.impression = _impression
+        }
+        guard impression.metadata.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
@@ -135,10 +141,6 @@ final internal class BannerViewManager: NSObject {
         networkManager.perform(request: request) { result in
             Logger.debug("Sent win with result: \(result)")
         }
-        
-        var _impression = impression
-        _impression.markTrackedIfNeeded(.win)
-        adViewContainer?.impression = _impression
     }
     
     func notifyLoss(
@@ -146,11 +148,14 @@ final internal class BannerViewManager: NSObject {
         eCPM: Price,
         viewContext: AdViewContext
     ) {
-        guard
-            let impression = impression,
-            impression.isTrackingAllowed(.loss),
-            impression.metadata.isExternalNotificationsEnabled
-        else { return }
+        // Invalidate a bid (hide a current ad view bid)
+        // only in case the SDK doesn't
+        // received win/loss yet,
+        // isExternalNotificationsEnabled applies only
+        // for request logic
+        guard let impression = impression, impression.isTrackingAllowed(.loss) else { return }
+        defer { hide() }
+        guard impression.metadata.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         let request = context.notificationRequest { builder in
@@ -165,8 +170,6 @@ final internal class BannerViewManager: NSObject {
         networkManager.perform(request: request) { result in
             Logger.debug("Sent loss with result: \(result)")
         }
-        
-        hide()
     }
     
     func hide() {

@@ -39,6 +39,10 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
+    override var isReady: Bool {
+        return bidonRewardedAd?.isReady == true
+    }
+    
     override func notify(win ad: Ad) {
         bidonRewardedAd?.notifyWin()
     }

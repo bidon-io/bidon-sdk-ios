@@ -37,6 +37,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
     
     func notify(loss ad: Ad) {
         adService.notify(loss: ad, adType: adType)
+        guard !adService.canShow(adType: adType) else { return }
         update(.idle)
     }
     

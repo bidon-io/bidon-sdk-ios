@@ -39,6 +39,10 @@ final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
+    override var isReady: Bool {
+        return bidonInterstitial?.isReady == true
+    }
+    
     override func notify(win ad: Ad) {
         bidonInterstitial?.notifyWin()
     }

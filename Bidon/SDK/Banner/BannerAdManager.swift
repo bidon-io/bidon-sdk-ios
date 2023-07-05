@@ -82,10 +82,16 @@ final class BannerAdManager: NSObject {
     func notifyWin(viewContext: AdViewContext) {
         switch state {
         case .ready(var impression):
-            guard
-                impression.isTrackingAllowed(.win),
-                impression.metadata.isExternalNotificationsEnabled
-            else { return }
+            // win notification just sends
+            // a corresponding request
+            // we need to mark impression as notified
+            // regardless of whether a request was sent
+            guard impression.isTrackingAllowed(.win) else { return }
+            defer {
+                impression.markTrackedIfNeeded(.win)
+                state = .ready(impression: impression)
+            }
+            guard impression.metadata.isExternalNotificationsEnabled else { return }
                   
             let context = BannerAdTypeContext(viewContext: viewContext)
 
@@ -100,9 +106,6 @@ final class BannerAdManager: NSObject {
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent win with result: \(result)")
             }
-            
-            impression.markTrackedIfNeeded(.win)
-            state = .ready(impression: impression)
         default:
             break
         }
@@ -120,12 +123,13 @@ final class BannerAdManager: NSObject {
         case .auction(let controller):
             controller.cancel()
         case .ready(let impression):
+            // Invalidate a bid only in case the SDK doesn't
+            // received win/loss yet,
+            // isExternalNotificationsEnabled applies only
+            // for request logic
+            guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
-            
-            guard
-                impression.isTrackingAllowed(.loss),
-                impression.metadata.isExternalNotificationsEnabled
-            else { return }
+            guard impression.metadata.isExternalNotificationsEnabled else { return }
                  
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in

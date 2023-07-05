@@ -107,10 +107,13 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
     func notifyWin() {
         switch state {
         case .ready(let controller):
-            guard
-                controller.impression.isTrackingAllowed(.win),
-                controller.impression.metadata.isExternalNotificationsEnabled
-            else { return }
+            // win notification just sends
+            // a corresponding request
+            // we need to mark impression as notified
+            // regardless of whether a request was sent
+            guard controller.impression.isTrackingAllowed(.win) else { return }
+            defer { controller.impression.markTrackedIfNeeded(.win) }
+            guard controller.impression.metadata.isExternalNotificationsEnabled else { return }
                   
             let request = context.notificationRequest { builder in
                 builder.withRoute(.win)
@@ -124,7 +127,6 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 Logger.debug("Sent win with result: \(result)")
             }
             
-            controller.impression.markTrackedIfNeeded(.win)
         default:
             break
         }
@@ -141,13 +143,17 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         case .auction(let controller):
             controller.cancel()
         case .ready(let controller):
-            defer { state = .idle }
+            // Invalidate a bid only in case the SDK doesn't
+            // received win/loss yet,
+            // isExternalNotificationsEnabled applies only
+            // for request logic
+            guard controller.impression.isTrackingAllowed(.loss) else { return }
+            defer {
+                controller.impression.markTrackedIfNeeded(.loss)
+                state = .idle
+            }
+            guard controller.impression.metadata.isExternalNotificationsEnabled else { return }
             
-            guard
-                controller.impression.isTrackingAllowed(.loss),
-                controller.impression.metadata.isExternalNotificationsEnabled
-            else { return }
-                  
             let request = context.notificationRequest { builder in
                 builder.withRoute(.loss)
                 builder.withEnvironmentRepository(sdk.environmentRepository)
@@ -160,8 +166,6 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent loss with result: \(result)")
             }
-            
-            controller.impression.markTrackedIfNeeded(.loss)
         default:
             break
         }

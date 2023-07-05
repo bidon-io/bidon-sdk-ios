@@ -20,6 +20,8 @@ protocol AdWrapper {
 
 
 protocol FullscreenAdWrapper: AdWrapper {
+    var isReady: Bool { get }
+    
     func show() async throws
     func load(pricefloor: Double) async throws
     func notify(win ad: Ad)

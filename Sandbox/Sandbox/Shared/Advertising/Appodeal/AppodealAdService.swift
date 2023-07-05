@@ -86,6 +86,17 @@ final class AppodealAdService: NSObject, AdService {
         }
     }
     
+    func canShow(adType: AdType) -> Bool {
+        switch adType {
+        case .interstitial:
+            return interstitial.isReady
+        case .rewardedAd:
+            return rewardedAd.isReady
+        default:
+            return false
+        }
+    }
+    
     func show(adType: AdType) async throws {
         switch adType {
         case .interstitial:

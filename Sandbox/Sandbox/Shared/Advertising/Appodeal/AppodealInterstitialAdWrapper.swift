@@ -41,6 +41,10 @@ final class AppodealInterstitialAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
+    override var isReady: Bool {
+        return Appodeal.isReadyForShow(with: .interstitial) || bidonInterstitial?.isReady == true
+    }
+    
     override func notify(win ad: Ad) {
         bidonInterstitial?.notifyWin()
     }

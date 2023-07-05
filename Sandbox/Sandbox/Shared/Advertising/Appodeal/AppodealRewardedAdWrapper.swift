@@ -41,6 +41,10 @@ final class AppodealRewardedAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
+    override var isReady: Bool {
+        return Appodeal.isReadyForShow(with: .rewardedVideo) || bidonRewardedAd?.isReady == true
+    }
+    
     override func notify(win ad: Ad) {
         bidonRewardedAd?.notifyWin()
     }
