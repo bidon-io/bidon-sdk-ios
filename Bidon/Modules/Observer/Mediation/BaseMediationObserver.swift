@@ -413,7 +413,8 @@ private extension Atomic where Value == [DemandObservation] {
     ) {
         mutate { value in
             value = value.map { element in
-                guard condition(element) else { return element }
+                // Mutate only not cancelled observations
+                guard condition(element), !element.status.isCancelled else { return element }
                 var element = element
                 mutation(&element)
                 return element
