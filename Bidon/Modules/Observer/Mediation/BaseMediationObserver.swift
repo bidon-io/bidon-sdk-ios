@@ -382,6 +382,10 @@ private extension BaseMediationObserver {
         $demands.update(
             condition: { $0.status.isUnknown }
         ) { observation in
+            observation.bidRequestTimestamp = nil
+            observation.bidResponeTimestamp = nil
+            observation.fillRequestTimestamp = nil
+            observation.fillResponseTimestamp = nil
             observation.status = .error(.auctionCancelled)
         }
     }
