@@ -26,7 +26,8 @@ struct Constants {
             "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",
             "BidonAdapterDTExchange.DTExchangeDemandSourceAdapter",
-            "BidonAdapterUnityAds.UnityAdsDemandSourceAdapter"
+            "BidonAdapterUnityAds.UnityAdsDemandSourceAdapter",
+            "BidonAdapterMintegral.MintegralDemandSourceAdapter"
         ]
     }
     

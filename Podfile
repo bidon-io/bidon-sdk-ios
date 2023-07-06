@@ -44,6 +44,10 @@ def unity_ads
   pod 'UnityAds'
 end
 
+def mintegral
+  pod 'MintegralAdSDK'
+end
+
 def ocmock
   pod 'OCMock', '~> 3.9.1'
 end
@@ -94,6 +98,11 @@ target 'BidonAdapterUnityAds' do
   unity_ads
 end
 
+target 'BidonAdapterMintegral' do
+  project 'Adapters/Adapters.xcodeproj'
+  mintegral
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -105,6 +114,7 @@ target 'Tests-ObjectiveC' do
   applovin
   dtexchange
   unity_ads
+  mintegral
 end
 
 target 'Tests-Swift' do
@@ -123,6 +133,7 @@ target 'Sandbox' do
   applovin
   dtexchange
   unity_ads
+  mintegral
   appodeal_mediation
 end
 

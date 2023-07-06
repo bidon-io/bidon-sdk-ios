@@ -212,7 +212,7 @@ PODS:
     - FirebaseInstallations (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - Fyber_Marketplace_SDK (8.2.2)
+  - Fyber_Marketplace_SDK (8.2.3)
   - Google-Mobile-Ads-SDK (10.5.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
@@ -376,54 +376,54 @@ PODS:
     - StackAnalytics/Base
     - StackAnalytics/Crashes
     - StackModules (~> 1.5.0)
-  - StackConsentManager (1.2.4)
-  - StackIAB (2.2.1):
-    - StackIAB/StackIABAssets (= 2.2.1)
-    - StackIAB/StackMRAIDKit (= 2.2.1)
-    - StackIAB/StackNASTKit (= 2.2.1)
-    - StackIAB/StackOpenMeasure (= 2.2.1)
-    - StackIAB/StackRichMedia (= 2.2.1)
-    - StackIAB/StackVASTAssets (= 2.2.1)
-    - StackIAB/StackVASTKit (= 2.2.1)
-    - StackIAB/StackVideoPlayer (= 2.2.1)
-    - StackIAB/StackXML (= 2.2.1)
+  - StackConsentManager (1.2.5)
+  - StackIAB (2.2.2):
+    - StackIAB/StackIABAssets (= 2.2.2)
+    - StackIAB/StackMRAIDKit (= 2.2.2)
+    - StackIAB/StackNASTKit (= 2.2.2)
+    - StackIAB/StackOpenMeasure (= 2.2.2)
+    - StackIAB/StackRichMedia (= 2.2.2)
+    - StackIAB/StackVASTAssets (= 2.2.2)
+    - StackIAB/StackVASTKit (= 2.2.2)
+    - StackIAB/StackVideoPlayer (= 2.2.2)
+    - StackIAB/StackXML (= 2.2.2)
     - StackModules (~> 1.5.0)
-  - StackIAB/StackIABAssets (2.2.1):
+  - StackIAB/StackIABAssets (2.2.2):
     - StackModules (~> 1.5.0)
-  - StackIAB/StackMRAIDKit (2.2.1):
+  - StackIAB/StackMRAIDKit (2.2.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackOpenMeasure
     - StackModules (~> 1.5.0)
-  - StackIAB/StackNASTKit (2.2.1):
+  - StackIAB/StackNASTKit (2.2.2):
     - StackIAB/StackVASTKit
     - StackModules (~> 1.5.0)
-  - StackIAB/StackOpenMeasure (2.2.1):
+  - StackIAB/StackOpenMeasure (2.2.2):
     - OMSDK_Appodeal (~> 1.4.2.0)
     - StackModules (~> 1.5.0)
-  - StackIAB/StackRichMedia (2.2.1):
+  - StackIAB/StackRichMedia (2.2.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
     - StackModules (~> 1.5.0)
-  - StackIAB/StackVASTAssets (2.2.1):
+  - StackIAB/StackVASTAssets (2.2.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackXML
     - StackModules (~> 1.5.0)
-  - StackIAB/StackVASTKit (2.2.1):
+  - StackIAB/StackVASTKit (2.2.2):
     - StackIAB/StackMRAIDKit
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
     - StackModules (~> 1.5.0)
-  - StackIAB/StackVideoPlayer (2.2.1):
+  - StackIAB/StackVideoPlayer (2.2.2):
     - StackModules (~> 1.5.0)
-  - StackIAB/StackXML (2.2.1):
+  - StackIAB/StackXML (2.2.2):
     - StackModules (~> 1.5.0)
-  - StackModules (1.5.1):
-    - StackModules/StackProductPresentation (= 1.5.1)
-  - StackModules/StackFoundation (1.5.1)
-  - StackModules/StackProductPresentation (1.5.1):
+  - StackModules (1.5.2):
+    - StackModules/StackProductPresentation (= 1.5.2)
+  - StackModules/StackFoundation (1.5.2)
+  - StackModules/StackProductPresentation (1.5.2):
     - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.5.1):
+  - StackModules/StackUIKit (1.5.2):
     - StackModules/StackFoundation
   - StackProtobuf (0.8.5):
     - Protobuf (~> 3.13)
@@ -476,6 +476,7 @@ DEPENDENCIES:
   - BidMachineVungleAdapter (~> 2.2.0.0)
   - Fyber_Marketplace_SDK
   - Google-Mobile-Ads-SDK
+  - MintegralAdSDK
   - OCMock (~> 3.9.1)
   - UnityAds
 
@@ -608,7 +609,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: 9e46c82a14a3b3a25be4e1e151ce6d21536b89c0
   FirebaseInstallations: 2a2c6859354cbec0a228a863d4daf6de7c74ced4
   FirebaseRemoteConfig: 5f907cd5cf6f64d026c8bfd196a1086cbe1e95e2
-  Fyber_Marketplace_SDK: 3ae82ee5e638148569296d254a5211f26c4d6180
+  Fyber_Marketplace_SDK: 8d2523a4644b0cc3dae03102f46f796490df0463
   Google-Mobile-Ads-SDK: d4846d2d9bfe840ad7444078b5f9f565032bd4c2
   GoogleAppMeasurement: d3dabccdb336fc0ae44b633c8abaa26559893cd9
   GoogleUserMessagingPlatform: 5f8b30daf181805317b6b985bb51c1ff3beca054
@@ -624,9 +625,9 @@ SPEC CHECKSUMS:
   Protobuf: d9c3d7e5a3574aa6a5d521f2d9f733c76d294be8
   smaato-ios-sdk: 4533e9c8c24ecefd0445a78ea89afba35412e1d1
   StackAnalytics: 42307f033e611586dab85081731e1b639327e738
-  StackConsentManager: f189d346d21d3701f8b93964ad1c52159c2f1a82
-  StackIAB: c26346462ffec548f8bb031a61f7e3ddce587ae1
-  StackModules: 39fe17895c72c44db1bdbd0abe74e45b9626002a
+  StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
+  StackIAB: 980dc7abff4c2a1f579718917b35af946a900049
+  StackModules: a41effb9e3bab6f5a9edcbe829ba4b5b16019f51
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   TapjoySDK: 7edeac6d20f9d941fab1352c81ecd3e885c36167
   UnityAds: 7c095394cf4815bb607db6b98de86b06b068cb51
@@ -634,6 +635,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: a53df4c2c6231de7d25a5d6d9b0af2b6baca1432
+PODFILE CHECKSUM: 1b45fa24e353fd9267ca2099dae568ebc12b2260
 
 COCOAPODS: 1.11.3

@@ -10,6 +10,7 @@
 		169F7C8E91CEF4CADB6E417E /* Pods_Sandbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64A1E0483C51188FF09EB928 /* Pods_Sandbox.framework */; };
 		4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200679C28BCA8A3003B734D /* BannerSection.swift */; };
 		420067A528BCEF06003B734D /* BannerSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A428BCEF06003B734D /* BannerSectionViewModel.swift */; };
+		4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4215B8B02A5597FB00675ACC /* BidonAdapterMintegral.framework */; };
 		42166C3229DEB5F100095691 /* AdContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42166C3129DEB5F100095691 /* AdContextMenu.swift */; };
 		4219DB5628B90479001F38E5 /* AdEventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4219DB5528B90479001F38E5 /* AdEventsList.swift */; };
 		4224AA7428B8BD0500E8D886 /* InterstitialSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224AA7328B8BD0500E8D886 /* InterstitialSection.swift */; };
@@ -71,6 +72,7 @@
 		2F533D98A3EB5DDDC412B52F /* Pods-Sandbox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.release.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.release.xcconfig"; sourceTree = "<group>"; };
 		4200679C28BCA8A3003B734D /* BannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSection.swift; sourceTree = "<group>"; };
 		420067A428BCEF06003B734D /* BannerSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSectionViewModel.swift; sourceTree = "<group>"; };
+		4215B8B02A5597FB00675ACC /* BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42166C3129DEB5F100095691 /* AdContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdContextMenu.swift; sourceTree = "<group>"; };
 		4219DB5528B90479001F38E5 /* AdEventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdEventsList.swift; sourceTree = "<group>"; };
 		4224AA7328B8BD0500E8D886 /* InterstitialSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialSection.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */,
 				426A5C7829AF7C5A0065AAD5 /* Bidon.framework in Frameworks */,
 				426A5C7C29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework in Frameworks */,
+				4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */,
 				426A5C7029AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework in Frameworks */,
 				4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */,
 				169F7C8E91CEF4CADB6E417E /* Pods_Sandbox.framework in Frameworks */,
@@ -190,6 +193,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4215B8B02A5597FB00675ACC /* BidonAdapterMintegral.framework */,
 				4249D5F829AFB00400BAA338 /* BidonAdapterUnityAds.framework */,
 				426A5C7F29AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework */,
 				426A5C7B29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework */,
