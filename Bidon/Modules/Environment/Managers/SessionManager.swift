@@ -42,7 +42,7 @@ final class SessionManager: Session, Environment {
     }
     
     var diskSpaceFreeBytes: UInt {
-        return (fileSystemAttributes?[.systemSize] as? UInt) ?? .zero
+        return (fileSystemAttributes?[.systemFreeSize] as? UInt) ?? .zero
     }
     
     var RAMTotalBytes: UInt {
