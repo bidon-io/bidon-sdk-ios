@@ -129,9 +129,8 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                     round: round,
                     demand: identifier
                 )
-                
+                // Apply timeout restrictions to demand request
                 timeoutOperation.add(requestDemandOperation)
-                
                 // Every request demand operation should be childern of round start
                 // and parent of round finish
                 auction.addNode(requestDemandOperation)
@@ -147,6 +146,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             
             // Add bidding operation
             let biddingOperation = biddingOperation(round: round)
+            // Apply timeout restrictions to bidding
+            timeoutOperation.add(biddingOperation)
+            
             auction.addNode(biddingOperation)
             auction.addEdge(
                 parent: startRoundOperation,
