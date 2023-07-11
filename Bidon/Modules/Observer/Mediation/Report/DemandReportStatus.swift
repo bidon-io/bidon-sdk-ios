@@ -21,6 +21,20 @@ enum DemandReportStatus: Codable {
         }
     }
     
+    var isCancelled: Bool {
+        switch self {
+        case .error(let error):
+            switch error {
+            case .auctionCancelled:
+                return true
+            default:
+                return false
+            }
+        default:
+            return false
+        }
+    }
+    
     internal var stringValue: String {
         switch self {
         case .unknown:          return "UNKNOWN"

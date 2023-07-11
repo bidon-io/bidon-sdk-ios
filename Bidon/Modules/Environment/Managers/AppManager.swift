@@ -36,7 +36,7 @@ final class AppManager: App, Environment {
 extension Framework: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .native: return "native"
+        case .native: return "ios_native"
         case .unity: return "unity"
         case .flutter: return "flutter"
         case .reactNative: return "react-native"

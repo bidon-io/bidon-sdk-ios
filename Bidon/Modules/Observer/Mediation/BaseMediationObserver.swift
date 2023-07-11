@@ -382,6 +382,10 @@ private extension BaseMediationObserver {
         $demands.update(
             condition: { $0.status.isUnknown }
         ) { observation in
+            observation.bidRequestTimestamp = nil
+            observation.bidResponeTimestamp = nil
+            observation.fillRequestTimestamp = nil
+            observation.fillResponseTimestamp = nil
             observation.status = .error(.auctionCancelled)
         }
     }
@@ -409,7 +413,8 @@ private extension Atomic where Value == [DemandObservation] {
     ) {
         mutate { value in
             value = value.map { element in
-                guard condition(element) else { return element }
+                // Mutate only not cancelled observations
+                guard condition(element), !element.status.isCancelled else { return element }
                 var element = element
                 mutation(&element)
                 return element
