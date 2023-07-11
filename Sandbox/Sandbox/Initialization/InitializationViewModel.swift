@@ -100,7 +100,7 @@ fileprivate extension Array where Element == Bidon.Adapter {
             BidMachineDemandSourceAdapter(),
             GoogleMobileAdsDemandSourceAdapter(),
             DTExchangeDemandSourceAdapter(),
-            UnityAdsDemandSourceAdapter()
+            UnityAdsDemandSourceAdapter(),
             MintegralDemandSourceAdapter()
         ]
     }

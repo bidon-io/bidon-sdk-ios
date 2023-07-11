@@ -35,6 +35,8 @@
 		4267C9EE29AD0A6300B5988E /* DTExchangeDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267C9ED29AD0A6300B5988E /* DTExchangeDemandAd.swift */; };
 		4267C9F029AD10F300B5988E /* DTExchangeInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267C9EF29AD10F300B5988E /* DTExchangeInterstitialDemandProvider.swift */; };
 		4267CA2829AE0C3500B5988E /* DTExchangeBannerDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267CA2729AE0C3500B5988E /* DTExchangeBannerDemandProvider.swift */; };
+		426827222A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426827212A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift */; };
+		426827242A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426827232A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift */; };
 		426A5C6629AF7C290065AAD5 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6529AF7C290065AAD5 /* Bidon.framework */; };
 		426A5C6829AF7C320065AAD5 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6729AF7C320065AAD5 /* Bidon.framework */; };
 		426A5C6A29AF7C390065AAD5 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6929AF7C390065AAD5 /* Bidon.framework */; };
@@ -106,6 +108,8 @@
 		4267C9ED29AD0A6300B5988E /* DTExchangeDemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeDemandAd.swift; sourceTree = "<group>"; };
 		4267C9EF29AD10F300B5988E /* DTExchangeInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		4267CA2729AE0C3500B5988E /* DTExchangeBannerDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeBannerDemandProvider.swift; sourceTree = "<group>"; };
+		426827212A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		426827232A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		426A5C6529AF7C290065AAD5 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C6729AF7C320065AAD5 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C6929AF7C390065AAD5 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +238,8 @@
 			children = (
 				4215B8B92A55A4B900675ACC /* MintegralBiddingBaseDemandProvider.swift */,
 				4215B8B72A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift */,
+				426827212A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift */,
+				426827232A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -939,7 +945,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426827242A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift in Sources */,
 				4215B8B52A55986800675ACC /* MintegralDemandSourceAdapter.swift in Sources */,
+				426827222A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift in Sources */,
 				4215B8BA2A55A4B900675ACC /* MintegralBiddingBaseDemandProvider.swift in Sources */,
 				4215B8B82A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift in Sources */,
 			);

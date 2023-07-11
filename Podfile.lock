@@ -317,7 +317,7 @@ PODS:
   - OCMock (3.9.1)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.2.0)
-  - Protobuf (3.23.3)
+  - Protobuf (3.23.4)
   - smaato-ios-sdk (22.0.2):
     - smaato-ios-sdk/Full (= 22.0.2)
   - smaato-ios-sdk/Banner (22.0.2):
@@ -622,7 +622,7 @@ SPEC CHECKSUMS:
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  Protobuf: d9c3d7e5a3574aa6a5d521f2d9f733c76d294be8
+  Protobuf: c6bc59bbab3d38a71c67f62d7cb7ca8f8ea4eca1
   smaato-ios-sdk: 4533e9c8c24ecefd0445a78ea89afba35412e1d1
   StackAnalytics: 42307f033e611586dab85081731e1b639327e738
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
