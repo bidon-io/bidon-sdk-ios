@@ -14,6 +14,7 @@ import BidonAdapterGoogleMobileAds
 import BidonAdapterDTExchange
 import BidonAdapterUnityAds
 import BidonAdapterMintegral
+import BidonAdapterMobileFuse
 import SwiftUI
 
 
@@ -101,7 +102,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             GoogleMobileAdsDemandSourceAdapter(),
             DTExchangeDemandSourceAdapter(),
             UnityAdsDemandSourceAdapter(),
-            MintegralDemandSourceAdapter()
-        ]
+            MintegralDemandSourceAdapter(),
+            MobileFuseDemandSourceAdapter(),
+        ].sorted { $0.identifier < $1.identifier }
     }
 }

@@ -48,6 +48,10 @@ def mintegral
   pod 'MintegralAdSDK'
 end
 
+def mobilefuse
+  pod 'MobileFuseSDK'
+end
+
 def ocmock
   pod 'OCMock', '~> 3.9.1'
 end
@@ -103,6 +107,11 @@ target 'BidonAdapterMintegral' do
   mintegral
 end
 
+target 'BidonAdapterMobileFuse' do
+  project 'Adapters/Adapters.xcodeproj'
+  mobilefuse
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -115,6 +124,7 @@ target 'Tests-ObjectiveC' do
   dtexchange
   unity_ads
   mintegral
+  mobilefuse
 end
 
 target 'Tests-Swift' do
@@ -134,6 +144,7 @@ target 'Sandbox' do
   dtexchange
   unity_ads
   mintegral
+  mobilefuse
   appodeal_mediation
 end
 
