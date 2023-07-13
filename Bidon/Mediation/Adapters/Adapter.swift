@@ -17,17 +17,7 @@ public protocol Adapter {
     init()
 }
 
-
-public protocol ParametersEncodableAdapter: Adapter {
-    func encodeAdapterParameters(to encoder: Encoder) throws
-}
-
-
-public protocol InitializableAdapter: Adapter {
-    func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
-    )
-}
-
-
+// TODO: Decide to restore or remove it
+//public protocol ParametersEncodableAdapter: Adapter {
+//    func encodeAdapterParameters(to encoder: Encoder) throws
+//}

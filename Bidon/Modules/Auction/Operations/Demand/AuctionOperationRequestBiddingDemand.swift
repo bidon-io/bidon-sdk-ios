@@ -68,7 +68,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             guard let provider = adapter.provider as? any BiddingDemandProvider else { return nil }
             
             group.enter()
-            provider.fetchBiddingContext { [weak self] result in
+            provider.fetchBiddingContextEncoder { [weak self] result in
                 defer { group.leave() }
                 guard let self = self else { return }
                 

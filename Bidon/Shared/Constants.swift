@@ -28,7 +28,8 @@ struct Constants {
             "BidonAdapterDTExchange.DTExchangeDemandSourceAdapter",
             "BidonAdapterUnityAds.UnityAdsDemandSourceAdapter",
             "BidonAdapterMintegral.MintegralDemandSourceAdapter",
-            "BidonAdapterMobileFuse.MobileFuseDemandSourceAdapter"
+            "BidonAdapterMobileFuse.MobileFuseDemandSourceAdapter",
+            "BidonAdapterVungle.VungleDemandSourceAdapter",
         ]
     }
     

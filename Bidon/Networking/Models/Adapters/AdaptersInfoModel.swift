@@ -25,9 +25,9 @@ struct AdaptersInfo: Encodable {
             try container.encode(adapter.adapterVersion, forKey: .version)
             try container.encode(adapter.sdkVersion, forKey: .sdkVersion)
             
-            if let encodable = adapter as? ParametersEncodableAdapter {
-                try encodable.encodeAdapterParameters(to: encoder)
-            }
+//            if let encodable = adapter as? ParametersEncodableAdapter {
+//                try encodable.encodeAdapterParameters(to: encoder)
+//            }
         }
     }
     

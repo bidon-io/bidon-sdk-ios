@@ -10,33 +10,23 @@ import MTGSDKBidding
 import Bidon
 
 
-
-fileprivate struct MintegralBiddingContextEncoder: BiddingContextEncoder {
-    let buyerUID: String
-    
-    init(buyerUID: String) {
-        self.buyerUID = buyerUID
+class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, ParameterizedBiddingDemandProvider {
+    struct BiddingContext: Codable {
+        var buyerUID: String
+        
+        enum CodingKeys: String, CodingKey {
+            case buyerUID = "buyer_uid"
+        }
     }
     
-    enum CodingKeys: String, CodingKey {
-        case buyerUID = "buyer_uid"
-    }
-    
-    func encodeBiddingContext(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(buyerUID, forKey: .buyerUID)
-    }
-}
-
-class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
-    final func fetchBiddingContext(response: @escaping Bidon.BiddingContextResponse) {
-        let encoder = MintegralBiddingContextEncoder(
+    final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
+        let context = BiddingContext(
             buyerUID: MTGBiddingSDK.buyerUID()
         )
-        response(.success(encoder))
+        response(.success(context))
     }
     
     func prepareBid(

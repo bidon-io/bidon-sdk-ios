@@ -42,29 +42,24 @@ DirectAdViewDemandSourceAdapter
 }
 
 
-extension DTExchangeDemandSourceAdapter: InitializableAdapter {
-    private struct Parameters: Codable {
+extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
         public var appId: String
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
-        var parameters: Parameters?
-            
-        do {
-            parameters = try Parameters(from: decoder)
-        } catch {
-            completion(.failure(SdkError(error)))
-        }
-        
-        guard let parameters = parameters else { return }
-
         IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
         IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
+        
+        guard !IASDKCore.sharedInstance().isInitialised else {
+            completion(.internalInconsistency)
+            return
+        }
         
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
@@ -72,11 +67,11 @@ extension DTExchangeDemandSourceAdapter: InitializableAdapter {
                 defer { IASDKCore.sharedInstance().globalAdDelegate = self?.impressionObserver }
                 
                 if isSuccess {
-                    completion(.success(()))
+                    completion(nil)
                 } else if let error = error {
-                    completion(.failure(.generic(error: error)))
+                    completion(.generic(error: error))
                 } else {
-                    completion(.failure(.unknown))
+                    completion(.unknown)
                 }
             },
             completionQueue: nil

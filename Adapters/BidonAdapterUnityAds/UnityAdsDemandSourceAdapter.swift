@@ -26,7 +26,7 @@ DirectAdViewDemandSourceAdapter
     public let adapterVersion: String = "0"
     public let sdkVersion: String = UnityAds.getVersion()
     
-    private var completion: ((Result<Void, SdkError>) -> Void)?
+    private var completion: ((SdkError?) -> Void)?
     
     public func directInterstitialDemandProvider () throws -> AnyDirectInterstitialDemandProvider {
         return UnityAdsInterstitialDemandProvider()
@@ -42,29 +42,19 @@ DirectAdViewDemandSourceAdapter
 }
 
 
-extension UnityAdsDemandSourceAdapter: InitializableAdapter {
-    private struct Parameters: Codable {
+extension UnityAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
         public var gameId: String
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
         guard !UnityAds.isInitialized() else {
-            completion(.success(()))
+            completion(nil)
             return
         }
-        
-        var parameters: Parameters?
-        
-        do {
-            parameters = try Parameters(from: decoder)
-        } catch {
-            completion(.failure(SdkError(error)))
-        }
-        
-        guard let parameters = parameters else { return }
         
         self.completion = completion
         
@@ -79,12 +69,12 @@ extension UnityAdsDemandSourceAdapter: InitializableAdapter {
 
 extension UnityAdsDemandSourceAdapter: UnityAdsInitializationDelegate {
     public func initializationComplete() {
-        completion?(.success(()))
+        completion?(nil)
         completion = nil
     }
     
     public func initializationFailed(_ error: UnityAdsInitializationError, withMessage message: String) {
-        completion?(.failure(.message(message)))
+        completion?(.message(message))
         completion = nil
     }
 }

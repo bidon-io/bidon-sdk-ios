@@ -55,26 +55,15 @@ DirectAdViewDemandSourceAdapter
 }
 
 
-extension AppLovinDemandSourceAdapter: InitializableAdapter {
-    private struct Parameters: Codable {
+extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
         public var appKey: String
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
-        var parameters: Parameters?
-        
-        do {
-            parameters = try Parameters(from: decoder)
-        } catch {
-            completion(.failure(SdkError(error)))
-        }
-        
-        
-        guard let parameters = parameters else { return }
-    
         let currentDeviceUUID = ASIdentifierManager.shared().advertisingIdentifier.uuidString
         let settings = ALSdkSettings()
         settings.testDeviceAdvertisingIdentifiers = context.isTestMode ? [currentDeviceUUID] : []
@@ -103,12 +92,18 @@ extension AppLovinDemandSourceAdapter: InitializableAdapter {
             withKey: parameters.appKey,
             settings: settings
         ) else {
-            completion(.failure(.message("Unable create sdk with app key: \(parameters.appKey)")))
+            let error = SdkError.message("Unable create sdk with app key: \(parameters.appKey)")
+            completion(error)
+            return
+        }
+        
+        guard !sdk.isInitialized else {
+            completion(.internalInconsistency)
             return
         }
         
         sdk.initializeSdk { configuration in
-            completion(.success(()))
+            completion(nil)
         }
         
         self.sdk = sdk

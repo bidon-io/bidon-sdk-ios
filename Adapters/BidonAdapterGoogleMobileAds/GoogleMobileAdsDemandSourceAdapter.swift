@@ -10,7 +10,7 @@ import GoogleMobileAds
 import Bidon
 
 
-internal typealias DemandSourceAdapter = InitializableAdapter &
+internal typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
 DirectAdViewDemandSourceAdapter
@@ -46,16 +46,6 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
         return request
     }
     
-    public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
-    ) {
-        configure(GADMobileAds.sharedInstance().requestConfiguration)
-        GADMobileAds.sharedInstance().start { _ in
-            completion(.success(()))
-        }
-    }
-    
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         return GoogleMobileAdsInterstitialDemandProvider(request)
     }
@@ -77,3 +67,15 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     }
 }
 
+
+extension GoogleMobileAdsDemandSourceAdapter: InitializableAdapter {
+    public func initialize(
+        from decoder: Decoder,
+        completion: @escaping (Result<Void, SdkError>) -> Void
+    ) {
+        configure(GADMobileAds.sharedInstance().requestConfiguration)
+        GADMobileAds.sharedInstance().start { _ in
+            completion(.success(()))
+        }
+    }
+}

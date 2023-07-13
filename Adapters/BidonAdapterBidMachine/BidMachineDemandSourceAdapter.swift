@@ -55,29 +55,19 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension BidMachineDemandSourceAdapter: InitializableAdapter {
-    private struct Parameters: Codable {
+extension BidMachineDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
         var sellerId: String
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
         guard !BidMachineSdk.shared.isInitialized else {
-            completion(.failure(SdkError.internalInconsistency))
+            completion(.internalInconsistency)
             return
         }
-        
-        var parameters: Parameters?
-        
-        do {
-            parameters = try Parameters(from: decoder)
-        } catch {
-            completion(.failure(SdkError(error)))
-        }
-        
-        guard let parameters = parameters else { return }
         
         BidMachineSdk.shared.regulationInfo.populate { builder in
             builder.withCOPPA(context.regulations.coppaApplies == .yes)
@@ -92,7 +82,7 @@ extension BidMachineDemandSourceAdapter: InitializableAdapter {
         }
         
         BidMachineSdk.shared.initializeSdk(parameters.sellerId)
-        completion(.success(()))
+        completion(nil)
     }
 }
 

@@ -52,6 +52,10 @@ def mobilefuse
   pod 'MobileFuseSDK'
 end
 
+def vungle
+  pod 'VungleAds'
+end
+
 def ocmock
   pod 'OCMock', '~> 3.9.1'
 end
@@ -112,6 +116,11 @@ target 'BidonAdapterMobileFuse' do
   mobilefuse
 end
 
+target 'BidonAdapterVungle' do
+  project 'Adapters/Adapters.xcodeproj'
+  vungle
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -125,6 +134,7 @@ target 'Tests-ObjectiveC' do
   unity_ads
   mintegral
   mobilefuse
+  vungle
 end
 
 target 'Tests-Swift' do
@@ -145,6 +155,7 @@ target 'Sandbox' do
   unity_ads
   mintegral
   mobilefuse
+  vungle
   appodeal_mediation
 end
 
@@ -152,12 +163,12 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
 
     installer.pods_project.build_configurations.each do |config|
       config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
 end

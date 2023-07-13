@@ -38,28 +38,19 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension MintegralDemandSourceAdapter: InitializableAdapter {
-    private struct Parameters: Codable {
+extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
         var appId, apiKey: String
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, Bidon.SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
-        var parameters: Parameters?
-        
-        do {
-            parameters = try Parameters(from: decoder)
-        } catch {
-            completion(.failure(SdkError(error)))
-        }
-        
-        guard let parameters = parameters else { return }
-        
         MTGSDK.sharedInstance().setAppID(
             parameters.appId,
             apiKey: parameters.apiKey
         )
+        completion(nil)
     }
 }

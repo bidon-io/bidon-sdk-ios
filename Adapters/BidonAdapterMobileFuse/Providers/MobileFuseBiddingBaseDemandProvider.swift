@@ -19,25 +19,11 @@ extension MFAd: DemandAd {
 }
 
 
-fileprivate struct MobileFuseBiddingContextEncoder: BiddingContextEncoder {
-    let token: String
-    
-    init(token: String) {
-        self.token = token
+class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, ParameterizedBiddingDemandProvider, IMFAdCallbackReceiver {
+    struct BiddingContext: Codable {
+        var token: String
     }
     
-    enum CodingKeys: String, CodingKey {
-        case token = "token"
-    }
-    
-    func encodeBiddingContext(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(token, forKey: .token)
-    }
-}
-
-
-class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, BiddingDemandProvider, IMFAdCallbackReceiver {
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
@@ -46,7 +32,9 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
     @Injected(\.context)
     var context: SdkContext
     
-    final func fetchBiddingContext(response: @escaping BiddingContextResponse) {
+    final func fetchBiddingContext(
+        response: @escaping (Result<BiddingContext, MediationError>) -> ()
+    ) {
         let request = MFBiddingTokenRequest()
         request.isTestMode = context.isTestMode
         
@@ -64,8 +52,8 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
         }
         
         if let token = MFBiddingTokenProvider.getTokenWith(request) {
-            let encoder = MobileFuseBiddingContextEncoder(token: token)
-            response(.success(encoder))
+            let context = BiddingContext(token: token)
+            response(.success(context))
         } else {
             response(.failure(.adapterNotInitialized))
         }
@@ -79,7 +67,6 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
         ad: DemandAdType,
         event: Bidon.AuctionEvent
     ) {}
-    
     
     final func onAdLoaded(_ ad: MFAd!) {
         guard let ad = ad as? DemandAdType else { return }

@@ -28,9 +28,9 @@ final class BiddingContextEncoderMock<Content: Encodable>: BiddingContextEncoder
 final class BiddingDemandProviderMock: DemandProviderMock, BiddingDemandProvider {
     var invokedFetchBiddingContext = false
     var invokedFetchBiddingContextCount = 0
-    var stubbedFetchBiddingContext: ((BiddingContextResponse) -> ())?
+    var stubbedFetchBiddingContext: ((BiddingContextEncoderResponse) -> ())?
 
-    func fetchBiddingContext(response: @escaping BiddingContextResponse) {
+    func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse) {
         invokedFetchBiddingContext = true
         invokedFetchBiddingContextCount += 1
         stubbedFetchBiddingContext?(response)
