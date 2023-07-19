@@ -477,6 +477,7 @@ DEPENDENCIES:
   - BidMachineTapjoyAdapter (~> 2.2.0.0)
   - BidMachineVungleAdapter (~> 2.2.0.0)
   - BigoADS
+  - FBAudienceNetwork
   - Fyber_Marketplace_SDK
   - Google-Mobile-Ads-SDK
   - MintegralAdSDK
@@ -644,6 +645,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 0b0646bbc7c060bb8d7b3d703f935ab76cae5671
+PODFILE CHECKSUM: 2a9403a87ead324e004abaecd9027739e679f864
 
 COCOAPODS: 1.11.3

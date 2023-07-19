@@ -20,6 +20,8 @@ final class BigoAdsBiddingInterstitialDemandProvider: BigoAdsBiddingBaseDemandPr
         response: @escaping DemandProviderResponse
     ) {
 #warning("Slot ID")
+        self.response = response
+        
         let request = BigoInterstitialAdRequest(slotId: "some slot id")
         request.setServerBidPayload(payload)
         

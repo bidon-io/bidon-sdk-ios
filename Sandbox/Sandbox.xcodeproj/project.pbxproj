@@ -11,6 +11,7 @@
 		4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200679C28BCA8A3003B734D /* BannerSection.swift */; };
 		420067A528BCEF06003B734D /* BannerSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A428BCEF06003B734D /* BannerSectionViewModel.swift */; };
 		420F03492A67DBAF00A4664F /* BidonAdapterBigoAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03482A67DBAF00A4664F /* BidonAdapterBigoAds.framework */; };
+		420F03682A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03672A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework */; };
 		4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4215B8B02A5597FB00675ACC /* BidonAdapterMintegral.framework */; };
 		42166C3229DEB5F100095691 /* AdContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42166C3129DEB5F100095691 /* AdContextMenu.swift */; };
 		4219DB5628B90479001F38E5 /* AdEventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4219DB5528B90479001F38E5 /* AdEventsList.swift */; };
@@ -77,6 +78,7 @@
 		4200679C28BCA8A3003B734D /* BannerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSection.swift; sourceTree = "<group>"; };
 		420067A428BCEF06003B734D /* BannerSectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSectionViewModel.swift; sourceTree = "<group>"; };
 		420F03482A67DBAF00A4664F /* BidonAdapterBigoAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterBigoAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		420F03672A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4215B8B02A5597FB00675ACC /* BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42166C3129DEB5F100095691 /* AdContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdContextMenu.swift; sourceTree = "<group>"; };
 		4219DB5528B90479001F38E5 /* AdEventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdEventsList.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */,
+				420F03682A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
 				426A5C7829AF7C5A0065AAD5 /* Bidon.framework in Frameworks */,
 				426A5C7C29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework in Frameworks */,
 				426827322A5D857B0084A48D /* BidonAdapterMobileFuse.framework in Frameworks */,
@@ -205,6 +208,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				420F03672A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework */,
 				420F03482A67DBAF00A4664F /* BidonAdapterBigoAds.framework */,
 				4265B53E2A5FF001007AD808 /* BidonAdapterVungle.framework */,
 				42E3D9FF2A5D968500546D3A /* BidonAdapterMobileFuse.framework */,

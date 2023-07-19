@@ -21,6 +21,8 @@ final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvid
         with payload: String,
         response: @escaping DemandProviderResponse
     ) {
+        self.response = response
+
 #warning("Slot ID")
         let request = BigoRewardVideoAdRequest(slotId: "some slot id")
         request.setServerBidPayload(payload)

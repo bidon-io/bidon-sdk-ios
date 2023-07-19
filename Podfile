@@ -44,6 +44,10 @@ def dtexchange
   pod 'Fyber_Marketplace_SDK'
 end
 
+def meta
+  pod 'FBAudienceNetwork'
+end
+
 def unity_ads
   pod 'UnityAds'
 end
@@ -115,6 +119,11 @@ target 'BidonAdapterUnityAds' do
   unity_ads
 end
 
+target 'BidonAdapterMetaAudienceNetwork' do
+  project 'Adapters/Adapters.xcodeproj'
+  meta
+end
+
 target 'BidonAdapterMintegral' do
   project 'Adapters/Adapters.xcodeproj'
   mintegral
@@ -145,6 +154,7 @@ target 'Tests-ObjectiveC' do
   mobilefuse
   vungle
   bigo_ads
+  meta
 end
 
 target 'Tests-Swift' do
@@ -167,6 +177,7 @@ target 'Sandbox' do
   mobilefuse
   vungle
   bigo_ads
+  meta
   appodeal_mediation
 end
 

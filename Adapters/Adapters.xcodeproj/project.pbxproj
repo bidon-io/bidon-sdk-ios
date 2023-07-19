@@ -19,6 +19,13 @@
 		420F03522A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03512A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift */; };
 		420F03542A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03532A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift */; };
 		420F03562A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03552A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift */; };
+		420F035F2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		420F03642A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */; };
+		420F03662A6819B000A4664F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03652A6819B000A4664F /* Bidon.framework */; };
+		420F036D2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F036C2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift */; };
+		420F036F2A68250600A4664F /* MetaAudienceNetworkBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F036E2A68250600A4664F /* MetaAudienceNetworkBiddingInterstitialDemandProvider.swift */; };
+		420F03712A682AB000A4664F /* MetaAudienceNetworkBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03702A682AB000A4664F /* MetaAudienceNetworkBiddingRewardedDemandProvider.swift */; };
+		420F03732A682BA500A4664F /* MetaAudienceNetworkBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03722A682BA500A4664F /* MetaAudienceNetworkBiddingAdViewDemandProvider.swift */; };
 		4215B8AC2A55973B00675ACC /* BidonAdapterMintegral.h in Headers */ = {isa = PBXBuildFile; fileRef = 4215B8AB2A55973B00675ACC /* BidonAdapterMintegral.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4215B8B52A55986800675ACC /* MintegralDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215B8B42A55986800675ACC /* MintegralDemandSourceAdapter.swift */; };
 		4215B8B82A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215B8B72A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift */; };
@@ -89,6 +96,7 @@
 		42F71CFC29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */; };
 		42F71D002996B0B5002FC80D /* BidMachineProgrammaticAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFF2996B0B5002FC80D /* BidMachineProgrammaticAdViewDemandProvider.swift */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
+		64633AAE6A85C150106AA924 /* Pods_BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
@@ -102,6 +110,8 @@
 		0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterAppLovin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F381ABE68D4BA30350C5EF1 /* Pods-BidonAdapterVungle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterVungle.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle.debug.xcconfig"; sourceTree = "<group>"; };
 		14E5F79C2563F5A3EDC00439 /* Pods-BidOnAdapterDTExchange.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterDTExchange.release.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterDTExchange/Pods-BidOnAdapterDTExchange.release.xcconfig"; sourceTree = "<group>"; };
+		205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35E0FEB9E11186036169857A /* Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig"; sourceTree = "<group>"; };
 		382F75BCF2BA9F1A2F526441 /* Pods-BidonAdapterGoogleMobileAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleMobileAds.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds.release.xcconfig"; sourceTree = "<group>"; };
 		4200679E28BCB069003B734D /* AppLovinRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLovinRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		420067A228BCBCDE003B734D /* AppLovinAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLovinAdViewDemandProvider.swift; sourceTree = "<group>"; };
@@ -113,6 +123,14 @@
 		420F03512A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		420F03532A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		420F03552A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterMetaAudienceNetwork.h; sourceTree = "<group>"; };
+		420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkDemandSourceAdapter.swift; sourceTree = "<group>"; };
+		420F03652A6819B000A4664F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		420F036C2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
+		420F036E2A68250600A4664F /* MetaAudienceNetworkBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		420F03702A682AB000A4664F /* MetaAudienceNetworkBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		420F03722A682BA500A4664F /* MetaAudienceNetworkBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		4215B8A92A55973B00675ACC /* BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4215B8AB2A55973B00675ACC /* BidonAdapterMintegral.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterMintegral.h; sourceTree = "<group>"; };
 		4215B8B42A55986800675ACC /* MintegralDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralDemandSourceAdapter.swift; sourceTree = "<group>"; };
@@ -228,6 +246,7 @@
 		E57E24259C5C572D55CEFA11 /* Pods-BidonAdapterBidMachine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterBidMachine.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine.release.xcconfig"; sourceTree = "<group>"; };
 		E88E0FA2261012B4241FBF88 /* Pods-BidonAdapterBigoAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterBigoAds.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds.release.xcconfig"; sourceTree = "<group>"; };
 		EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC9780BE17A31A1B99EDE82C /* Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig"; sourceTree = "<group>"; };
 		F3E503CEEDFAB45182620120 /* Pods-BidonAdapterDTExchange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterDTExchange.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -238,6 +257,15 @@
 			files = (
 				420F03472A67DBA000A4664F /* Bidon.framework in Frameworks */,
 				019AC4B0C67BD8C07DDFD18A /* Pods_BidonAdapterBigoAds.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		420F03592A6818AF00A4664F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				420F03662A6819B000A4664F /* Bidon.framework in Frameworks */,
+				64633AAE6A85C150106AA924 /* Pods_BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +365,27 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
+		420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				420F036B2A68235E00A4664F /* Providers */,
+				420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */,
+				420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */,
+			);
+			path = BidonAdapterMetaAudienceNetwork;
+			sourceTree = "<group>";
+		};
+		420F036B2A68235E00A4664F /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				420F036C2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift */,
+				420F036E2A68250600A4664F /* MetaAudienceNetworkBiddingInterstitialDemandProvider.swift */,
+				420F03702A682AB000A4664F /* MetaAudienceNetworkBiddingRewardedDemandProvider.swift */,
+				420F03722A682BA500A4664F /* MetaAudienceNetworkBiddingAdViewDemandProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
 		4215B8AA2A55973B00675ACC /* BidonAdapterMintegral */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +419,7 @@
 				4268272B2A5D84B20084A48D /* BidonAdapterMobileFuse */,
 				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
 				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
+				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
 				42210211285A32ED006596DA /* Products */,
 				8462A3B50D72D26B685AAD18 /* Pods */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
@@ -388,6 +438,7 @@
 				4268272A2A5D84B20084A48D /* BidonAdapterMobileFuse.framework */,
 				4265B5372A5FEFD9007AD808 /* BidonAdapterVungle.framework */,
 				420F033D2A67DB4300A4664F /* BidonAdapterBigoAds.framework */,
+				420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -613,6 +664,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				420F03652A6819B000A4664F /* Bidon.framework */,
 				420F03462A67DBA000A4664F /* Bidon.framework */,
 				4265B5422A5FF00F007AD808 /* Bidon.framework */,
 				42E3D9F42A5D86BB00546D3A /* Bidon.framework */,
@@ -641,6 +693,7 @@
 				81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */,
 				A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */,
 				DA1035036CA613590D65BEAF /* Pods_BidonAdapterBigoAds.framework */,
+				205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -674,6 +727,8 @@
 				C74658EE41140449A422925D /* Pods-BidonAdapterVungle.release.xcconfig */,
 				9A144A749B3052174F9B4C46 /* Pods-BidonAdapterBigoAds.debug.xcconfig */,
 				E88E0FA2261012B4241FBF88 /* Pods-BidonAdapterBigoAds.release.xcconfig */,
+				35E0FEB9E11186036169857A /* Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig */,
+				EC9780BE17A31A1B99EDE82C /* Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -687,6 +742,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				420F03402A67DB4300A4664F /* BidonAdapterBigoAds.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		420F03572A6818AF00A4664F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				420F035F2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,6 +838,25 @@
 			name = BidonAdapterBigoAds;
 			productName = BidonAdapterBigoAds;
 			productReference = 420F033D2A67DB4300A4664F /* BidonAdapterBigoAds.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		420F035B2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 420F03622A6818B000A4664F /* Build configuration list for PBXNativeTarget "BidonAdapterMetaAudienceNetwork" */;
+			buildPhases = (
+				AC5013A9D64FC22777E3EB08 /* [CP] Check Pods Manifest.lock */,
+				420F03572A6818AF00A4664F /* Headers */,
+				420F03582A6818AF00A4664F /* Sources */,
+				420F03592A6818AF00A4664F /* Frameworks */,
+				420F035A2A6818AF00A4664F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BidonAdapterMetaAudienceNetwork;
+			productName = BidonAdapterMetaAudienceNetwork;
+			productReference = 420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		4215B8A82A55973B00675ACC /* BidonAdapterMintegral */ = {
@@ -944,6 +1026,10 @@
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1420;
 					};
+					420F035B2A6818AF00A4664F = {
+						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1420;
+					};
 					4215B8A82A55973B00675ACC = {
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1420;
@@ -1000,12 +1086,20 @@
 				426827292A5D84B20084A48D /* BidonAdapterMobileFuse */,
 				4265B5362A5FEFD9007AD808 /* BidonAdapterVungle */,
 				420F033C2A67DB4300A4664F /* BidonAdapterBigoAds */,
+				420F035B2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		420F033B2A67DB4300A4664F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		420F035A2A6818AF00A4664F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1254,6 +1348,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		AC5013A9D64FC22777E3EB08 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterMetaAudienceNetwork-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C6C8E64B9C7F6C21BF2C4703 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1332,6 +1448,18 @@
 				420F03562A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift in Sources */,
 				420F03452A67DB9000A4664F /* BigoAdsDemandSourceAdapter.swift in Sources */,
 				420F03522A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		420F03582A6818AF00A4664F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				420F036D2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift in Sources */,
+				420F03642A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift in Sources */,
+				420F03732A682BA500A4664F /* MetaAudienceNetworkBiddingAdViewDemandProvider.swift in Sources */,
+				420F036F2A68250600A4664F /* MetaAudienceNetworkBiddingInterstitialDemandProvider.swift in Sources */,
+				420F03712A682AB000A4664F /* MetaAudienceNetworkBiddingRewardedDemandProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1599,6 +1727,170 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.bigoads;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		420F03602A6818B000A4664F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35E0FEB9E11186036169857A /* Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.BidonAdapterMetaAudienceNetwork;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		420F03612A6818B000A4664F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC9780BE17A31A1B99EDE82C /* Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.BidonAdapterMetaAudienceNetwork;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -2987,6 +3279,15 @@
 			buildConfigurations = (
 				420F03412A67DB4300A4664F /* Debug */,
 				420F03422A67DB4300A4664F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		420F03622A6818B000A4664F /* Build configuration list for PBXNativeTarget "BidonAdapterMetaAudienceNetwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				420F03602A6818B000A4664F /* Debug */,
+				420F03612A6818B000A4664F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

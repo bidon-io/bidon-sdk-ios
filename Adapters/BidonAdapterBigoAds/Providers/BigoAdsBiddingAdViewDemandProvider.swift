@@ -28,6 +28,8 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
         with payload: String,
         response: @escaping DemandProviderResponse
     ) {
+        self.response = response
+
 #warning("Slot ID")
         let size = BigoAdSize.banner()
         let request = BigoBannerAdRequest(
