@@ -102,7 +102,7 @@ extension GeoManager: CLLocationManagerDelegate {
             
             guard let placemark = placemarks?.first else { return }
             
-            self?.$country.mutate { $0 = placemark.country }
+            self?.$country.mutate { $0 = placemark.isoCountryCode }
             self?.$city.mutate { $0 = placemark.locality }
             self?.$zip.mutate { $0 = placemark.postalCode }
         }
