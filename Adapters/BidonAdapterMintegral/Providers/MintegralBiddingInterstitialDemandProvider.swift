@@ -2,7 +2,7 @@
 //  MintegralBiddingInterstitialDemandProvider.swift
 //  BidonAdapterMintegral
 //
-//  Created by Stas Kochkin on 05.07.2023.
+//  Created by Bidon Team on 05.07.2023.
 //
 
 import Foundation

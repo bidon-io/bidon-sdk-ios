@@ -2,7 +2,7 @@
 //  SegmentModel.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 15.06.2023.
+//  Created by Bidon Team on 15.06.2023.
 //
 
 import Foundation

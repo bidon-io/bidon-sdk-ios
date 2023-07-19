@@ -2,7 +2,7 @@
 //  ContextMenu.swift
 //  Sandbox
 //
-//  Created by Stas Kochkin on 06.04.2023.
+//  Created by Bidon Team on 06.04.2023.
 //
 
 import Foundation

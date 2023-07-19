@@ -2,7 +2,7 @@
 //  MobileFuseBiddingAdViewDemandProvider.swift
 //  BidonAdapterMobileFuse
 //
-//  Created by Stas Kochkin on 11.07.2023.
+//  Created by Bidon Team on 11.07.2023.
 //
 
 import Foundation

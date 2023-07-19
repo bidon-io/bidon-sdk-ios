@@ -2,7 +2,7 @@
 //  ECPMProvider.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 29.03.2023.
+//  Created by Bidon Team on 29.03.2023.
 //
 
 import Foundation

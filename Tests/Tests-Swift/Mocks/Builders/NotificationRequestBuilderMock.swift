@@ -2,7 +2,7 @@
 //  LossRequestBuilderMock.swift
 //  Tests-Swift
 //
-//  Created by Stas Kochkin on 22.06.2023.
+//  Created by Bidon Team on 22.06.2023.
 //
 
 import Foundation

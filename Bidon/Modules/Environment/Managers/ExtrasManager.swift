@@ -2,7 +2,7 @@
 //  ExtrasData.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 14.06.2023.
+//  Created by Bidon Team on 14.06.2023.
 //
 
 import Foundation

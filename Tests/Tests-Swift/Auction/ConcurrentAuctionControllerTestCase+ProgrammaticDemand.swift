@@ -2,7 +2,7 @@
 //  ConcurrentAuctionControllerTestCase+ProgrammaticDemand.swift
 //  Tests-Swift
 //
-//  Created by Stas Kochkin on 30.06.2023.
+//  Created by Bidon Team on 30.06.2023.
 //
 
 import Foundation

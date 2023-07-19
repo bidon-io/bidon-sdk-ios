@@ -2,7 +2,7 @@
 //  ProgrammaticDemandProviderMock.swift
 //  Tests-Swift
 //
-//  Created by Stas Kochkin on 03.07.2023.
+//  Created by Bidon Team on 03.07.2023.
 //
 
 import Foundation

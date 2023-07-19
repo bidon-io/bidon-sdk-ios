@@ -2,7 +2,7 @@
 //  ConcurentAuctionControllerTestCase+DirectDemand.swift
 //  Tests-Swift
 //
-//  Created by Stas Kochkin on 26.06.2023.
+//  Created by Bidon Team on 26.06.2023.
 //
 
 import Foundation

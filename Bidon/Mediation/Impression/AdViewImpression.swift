@@ -2,7 +2,7 @@
 //  AdViewImpression.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 28.03.2023.
+//  Created by Bidon Team on 28.03.2023.
 //
 
 import Foundation

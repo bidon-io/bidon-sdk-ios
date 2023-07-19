@@ -2,7 +2,7 @@
 //  AcyclicGraph.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 21.04.2023.
+//  Created by Bidon Team on 21.04.2023.
 //
 
 import Foundation

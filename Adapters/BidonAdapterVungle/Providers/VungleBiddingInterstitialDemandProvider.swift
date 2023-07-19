@@ -2,7 +2,7 @@
 //  VungleBiddingInterstitialDemandProvider.swift
 //  BidonAdapterVungle
 //
-//  Created by Stas Kochkin on 13.07.2023.
+//  Created by Bidon Team on 13.07.2023.
 //
 
 import Foundation

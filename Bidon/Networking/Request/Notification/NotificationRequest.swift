@@ -2,7 +2,7 @@
 //  NotificationRequest.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 05.04.2023.
+//  Created by Bidon Team on 05.04.2023.
 //
 
 import Foundation

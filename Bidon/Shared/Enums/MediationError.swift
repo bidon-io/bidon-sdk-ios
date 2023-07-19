@@ -2,7 +2,7 @@
 //  MediationError.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 19.04.2023.
+//  Created by Bidon Team on 19.04.2023.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  ConcurrentAuctionControllerTestCase+MixedDemand.swift
 //  Tests-Swift
 //
-//  Created by Stas Kochkin on 04.07.2023.
+//  Created by Bidon Team on 04.07.2023.
 //
 
 import Foundation

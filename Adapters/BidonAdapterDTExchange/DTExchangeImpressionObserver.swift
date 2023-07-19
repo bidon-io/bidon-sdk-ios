@@ -2,7 +2,7 @@
 //  DTExchangeImpressionObserver.swift
 //  BidonAdapterDTExchange
 //
-//  Created by Stas Kochkin on 08.05.2023.
+//  Created by Bidon Team on 08.05.2023.
 //
 
 import Foundation
