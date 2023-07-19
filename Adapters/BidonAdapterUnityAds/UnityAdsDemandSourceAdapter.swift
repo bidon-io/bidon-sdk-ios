@@ -47,15 +47,14 @@ extension UnityAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
         public var gameId: String
     }
     
+    public var isInitialized: Bool {
+        return UnityAds.isInitialized()
+    }
+    
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        guard !UnityAds.isInitialized() else {
-            completion(nil)
-            return
-        }
-        
         self.completion = completion
         
         UnityAds.initialize(

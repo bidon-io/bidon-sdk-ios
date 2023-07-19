@@ -15,9 +15,10 @@ BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
 BiddingAdViewDemandSourceAdapter
 
+
 @objc public final class MobileFuseDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "mobilefuse"
-
+    
     public let identifier: String = MobileFuseDemandSourceAdapter.identifier
     public let name: String = "MobileFuse"
     public var adapterVersion: String = "0"
@@ -38,6 +39,10 @@ BiddingAdViewDemandSourceAdapter
 
 
 extension MobileFuseDemandSourceAdapter: InitializableAdapter {
+    public var isInitialized: Bool {
+        return MobileFuse.isReady()
+    }
+    
     public func initialize(
         from decoder: Decoder,
         completion: @escaping (Result<Void, SdkError>) -> Void

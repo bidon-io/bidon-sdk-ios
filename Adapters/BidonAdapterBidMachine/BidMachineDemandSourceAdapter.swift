@@ -60,15 +60,14 @@ extension BidMachineDemandSourceAdapter: ParameterizedInitializableAdapter {
         var sellerId: String
     }
     
+    public var isInitialized: Bool {
+        return BidMachineSdk.shared.isInitialized
+    }
+    
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
-    ) {
-        guard !BidMachineSdk.shared.isInitialized else {
-            completion(.internalInconsistency)
-            return
-        }
-        
+    ) {        
         BidMachineSdk.shared.regulationInfo.populate { builder in
             builder.withCOPPA(context.regulations.coppaApplies == .yes)
             builder.withGDPRConsent(context.regulations.gdrpConsent == .given)

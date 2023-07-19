@@ -139,7 +139,10 @@ public final class BidonSdk: NSObject {
                     self.updateSegmentIfNeeded(response.segment)
                     let group = DispatchGroup()
                     response.adaptersInitializationParameters.adapters.forEach { [unowned self] parameters in
-                        if let adapter: InitializableAdapter = self.adaptersRepository[parameters.key] {
+                        if
+                            let adapter: InitializableAdapter = self.adaptersRepository[parameters.key],
+                            !adapter.isInitialized
+                        {
                             group.enter()
                             let name = adapter.name
                             adapter.initialize(from: parameters.value) { result in

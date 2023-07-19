@@ -47,6 +47,10 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         public var appId: String
     }
     
+    public var isInitialized: Bool {
+        return IASDKCore.sharedInstance().isInitialised
+    }
+    
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
@@ -55,11 +59,6 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
         IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
-        
-        guard !IASDKCore.sharedInstance().isInitialised else {
-            completion(.internalInconsistency)
-            return
-        }
         
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,

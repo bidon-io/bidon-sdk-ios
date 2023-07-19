@@ -15,6 +15,7 @@ BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
 BiddingAdViewDemandSourceAdapter
 
+
 @objc public final class VungleDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "vungle"
 
@@ -42,15 +43,14 @@ extension VungleDemandSourceAdapter: ParameterizedInitializableAdapter {
         var appId: String
     }
     
+    public var isInitialized: Bool {
+        return VungleAds.isInitialized()
+    }
+    
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        guard !VungleAds.isInitialized() else {
-            completion(.internalInconsistency)
-            return
-        }
-        
         VungleAds.initWithAppId(parameters.appId) { error in
             completion(error.map(SdkError.generic))
         }

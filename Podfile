@@ -36,6 +36,10 @@ def appsflyer
   pod 'AppsFlyer-AdRevenue', '~> 6.9.0'
 end
 
+def bigo_ads
+  pod 'BigoADS'
+end
+
 def dtexchange
   pod 'Fyber_Marketplace_SDK'
 end
@@ -96,6 +100,11 @@ target 'BidonAdapterAppLovin' do
   applovin
 end
 
+target 'BidonAdapterBigoAds' do
+  project 'Adapters/Adapters.xcodeproj'
+  bigo_ads
+end
+
 target 'BidonAdapterDTExchange' do
   project 'Adapters/Adapters.xcodeproj'
   dtexchange
@@ -135,6 +144,7 @@ target 'Tests-ObjectiveC' do
   mintegral
   mobilefuse
   vungle
+  bigo_ads
 end
 
 target 'Tests-Swift' do
@@ -156,6 +166,7 @@ target 'Sandbox' do
   mintegral
   mobilefuse
   vungle
+  bigo_ads
   appodeal_mediation
 end
 

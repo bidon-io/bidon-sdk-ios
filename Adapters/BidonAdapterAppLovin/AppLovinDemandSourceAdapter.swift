@@ -60,6 +60,10 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
         public var appKey: String
     }
     
+    public var isInitialized: Bool {
+        return sdk?.isInitialized == true
+    }
+    
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
@@ -94,11 +98,6 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
         ) else {
             let error = SdkError.message("Unable create sdk with app key: \(parameters.appKey)")
             completion(error)
-            return
-        }
-        
-        guard !sdk.isInitialized else {
-            completion(.internalInconsistency)
             return
         }
         

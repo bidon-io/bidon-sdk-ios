@@ -9,6 +9,8 @@ import Foundation
 
 
 public protocol InitializableAdapter: Adapter {
+    var isInitialized: Bool { get }
+    
     func initialize(
         from decoder: Decoder,
         completion: @escaping (Result<Void, SdkError>) -> Void

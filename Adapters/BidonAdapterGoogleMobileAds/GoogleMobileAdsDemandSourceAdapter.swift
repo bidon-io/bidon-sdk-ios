@@ -28,6 +28,8 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     @Injected(\.context)
     var context: Bidon.SdkContext
    
+    private(set) public var isInitialized: Bool = false
+    
     private var request: GADRequest {
         let request = GADRequest()
         
@@ -73,6 +75,8 @@ extension GoogleMobileAdsDemandSourceAdapter: InitializableAdapter {
         from decoder: Decoder,
         completion: @escaping (Result<Void, SdkError>) -> Void
     ) {
+        defer { isInitialized = true }
+        
         configure(GADMobileAds.sharedInstance().requestConfiguration)
         GADMobileAds.sharedInstance().start { _ in
             completion(.success(()))

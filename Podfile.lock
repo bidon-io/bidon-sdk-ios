@@ -1,8 +1,8 @@
 PODS:
   - AdColony (4.9.0)
-  - Adjust (4.33.4):
-    - Adjust/Core (= 4.33.4)
-  - Adjust/Core (4.33.4)
+  - Adjust (4.33.5):
+    - Adjust/Core (= 4.33.5)
+  - Adjust/Core (4.33.5)
   - AdjustPurchase (1.0.1)
   - Ads-Global/BUAdSDK_Compatible (5.2.1.0):
     - Ads-Global/BURelyAdSDK
@@ -129,6 +129,7 @@ PODS:
   - BidMachineVungleAdapter (2.2.0.0):
     - BidMachine (~> 2.2.0.0)
     - VungleAds (= 7.0.0)
+  - BigoADS (2.3.5)
   - BURelyFoundation_Global/AFNetworking (0.1.1.0)
   - BURelyFoundation_Global/Foundation (0.1.1.0):
     - BURelyFoundation_Global/NETWork
@@ -475,6 +476,7 @@ DEPENDENCIES:
   - BidMachineSmaatoAdapter (~> 2.2.0.0)
   - BidMachineTapjoyAdapter (~> 2.2.0.0)
   - BidMachineVungleAdapter (~> 2.2.0.0)
+  - BigoADS
   - Fyber_Marketplace_SDK
   - Google-Mobile-Ads-SDK
   - MintegralAdSDK
@@ -528,6 +530,7 @@ SPEC REPOS:
     - AppLovinSDK
     - AppsFlyer-AdRevenue
     - AppsFlyerFramework
+    - BigoADS
     - BURelyFoundation_Global
     - CriteoPublisherSdk
     - FBAEMKit
@@ -565,7 +568,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AdColony: 4f3738dc633d7aaa8ec60729df973076cc8e97ed
-  Adjust: 4690e07ea401ee56d4d3f4f5bdad86c94f51903f
+  Adjust: 946a1636981375db78f0673c7a58d190b07ebbb0
   AdjustPurchase: a6688375a589f10a455adb9217c7de55eba93d63
   Ads-Global: 4a4434e2041e974a4f4e2d6aeb0bc003f2f05925
   AmazonPublisherServicesSDK: d62e32fbb6d04b792093a6bf3d908093aaabbb8a
@@ -600,6 +603,7 @@ SPEC CHECKSUMS:
   BidMachineSmaatoAdapter: 995ce487227dafcd17b1b0a370b7a7b9292dac2d
   BidMachineTapjoyAdapter: 0b541b02a32cfdaa4fbe93b273e270b01497aea6
   BidMachineVungleAdapter: f75d495713df8c446f09522cac8e5ec92bb4f5be
+  BigoADS: a3e828c6636f94b986f67a9cf1493fdf1cf32db9
   BURelyFoundation_Global: a36d52a06d1798c0309fbeaa1a95692050e2e75f
   CriteoPublisherSdk: 1cfd1c5275aa4418b26e917cb9858901e02ed686
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
@@ -640,6 +644,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 37d5e5ab1085a87cbabd2f19f3d05423fe01771e
+PODFILE CHECKSUM: 0b0646bbc7c060bb8d7b3d703f935ab76cae5671
 
 COCOAPODS: 1.11.3

@@ -24,6 +24,8 @@ BiddingAdViewDemandSourceAdapter
     public let adapterVersion: String = "0"
     public let sdkVersion: String = MTGSDKVersion
     
+    private(set) public var isInitialized: Bool = false
+
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MintegralBiddingInterstitialDemandProvider()
     }
@@ -42,11 +44,12 @@ extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
         var appId, apiKey: String
     }
-    
+        
     public func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
     ) {
+        defer { isInitialized = true }
         MTGSDK.sharedInstance().setAppID(
             parameters.appId,
             apiKey: parameters.apiKey

@@ -30,6 +30,7 @@ struct Constants {
             "BidonAdapterMintegral.MintegralDemandSourceAdapter",
             "BidonAdapterMobileFuse.MobileFuseDemandSourceAdapter",
             "BidonAdapterVungle.VungleDemandSourceAdapter",
+            "BidonAdapterBigoAds.BigoAdsDemandSourceAdapter"
         ]
     }
     
