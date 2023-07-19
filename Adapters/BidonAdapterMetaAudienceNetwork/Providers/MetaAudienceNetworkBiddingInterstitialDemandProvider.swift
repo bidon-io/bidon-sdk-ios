@@ -2,7 +2,7 @@
 //  MetaAudienceNetworkBiddingInterstitialDemandProvider.swift
 //  BidonAdapterMetaAudienceNetwork
 //
-//  Created by Stas Kochkin on 19.07.2023.
+//  Created by Bidon Team on 19.07.2023.
 //
 
 import Foundation
