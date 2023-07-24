@@ -10,13 +10,13 @@ import Foundation
 
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, BiddingDemandProvider {
     private let _fetchBiddingContextEncoder: (@escaping BiddingContextEncoderResponse) -> ()
-    private let _prepareBid: (String, @escaping DemandProviderResponse) -> ()
+    private let _prepareBid: (Decoder, @escaping DemandProviderResponse) -> ()
     
     override init(_ wrapped: W) throws {
         guard let _wrapped = wrapped as? (any BiddingDemandProvider) else { throw SdkError.internalInconsistency }
         
         _fetchBiddingContextEncoder = { _wrapped.fetchBiddingContextEncoder(response: $0) }
-        _prepareBid = { _wrapped.prepareBid(with: $0, response: $1) }
+        _prepareBid = { _wrapped.prepareBid(from: $0, response: $1) }
         
         try super.init(wrapped)
     }
@@ -26,10 +26,10 @@ final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, BiddingDe
     }
     
     func prepareBid(
-        with payload: String,
+        from decoder: Decoder,
         response: @escaping DemandProviderResponse
     ) {
-        _prepareBid(payload, response)
+        _prepareBid(decoder, response)
     }
 }
 

@@ -22,22 +22,21 @@ extension MTGNewInterstitialBidAdManager: DemandAd {
 final class MintegralBiddingInterstitialDemandProvider: MintegralBiddingBaseDemandProvider<MTGNewInterstitialBidAdManager> {
     private var response: Bidon.DemandProviderResponse?
     
-    #warning("Placement and unit id are missing")
-    private lazy var interstitial: MTGNewInterstitialBidAdManager = {
-        let interstitial = MTGNewInterstitialBidAdManager(
-            placementId: "",
-            unitId: "",
-            delegate: self
-        )
-        return interstitial
-    }()
+    private var interstitial: MTGNewInterstitialBidAdManager!
     
     override func prepareBid(
-        with payload: String,
-        response: @escaping Bidon.DemandProviderResponse
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
     ) {
+        
         self.response = response
-        interstitial.loadAd(withBidToken: payload)
+        
+        interstitial = MTGNewInterstitialBidAdManager(
+            placementId: data.placementId,
+            unitId: data.unitId,
+            delegate: self
+        )
+        interstitial.loadAd(withBidToken: data.payload)
     }
 }
 

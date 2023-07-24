@@ -28,20 +28,21 @@ extension FBRewardedVideoAd: DemandAd {
 final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetworkBiddingBaseDemandProvider<FBRewardedVideoAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    private lazy var rewardedAd: FBRewardedVideoAd = {
-        let rewardedAd = FBRewardedVideoAd(placementID: "place")
-        rewardedAd.delegate = self
-        return rewardedAd
-    }()
+    private var rewardedAd: FBRewardedVideoAd!
     
     private var response: DemandProviderResponse?
     
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
+        let rewarded = FBRewardedVideoAd(placementID: data.placementId)
+        rewarded.delegate = self
+        
+        self.rewardedAd = rewarded
         self.response = response
-        rewardedAd.load(withBidPayload: payload)
+        
+        rewarded.load(withBidPayload: data.payload)
     }
 }
 

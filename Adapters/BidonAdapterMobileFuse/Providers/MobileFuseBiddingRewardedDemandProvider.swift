@@ -13,20 +13,18 @@ import MobileFuseSDK
 final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemandProvider<MFRewardedAd> {    
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    private lazy var rewarded: MFRewardedAd? = {
-#warning("Placement is missing")
-        let rewarded = MFRewardedAd(placementId: "placement")
-        rewarded?.register(self)
-        return rewarded
-    }()
+    private var rewarded: MFRewardedAd?
     
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
-        if let rewarded = rewarded {
+        if let rewarded = MFRewardedAd(placementId: data.placementId) {
+            self.rewarded = rewarded
             self.response = response
-            rewarded.load(withBiddingResponseToken: payload)
+            
+            rewarded.register(self)
+            rewarded.load(withBiddingResponseToken: data.payload)
         } else {
             response(.failure(.unscpecifiedException))
         }

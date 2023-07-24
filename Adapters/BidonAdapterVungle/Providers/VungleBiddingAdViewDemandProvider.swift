@@ -29,10 +29,9 @@ final class VungleBiddingAdViewDemandProvider: VungleBiddingBaseDemandProvider<V
         super.init()
     }
     
-    override func adObject() -> VungleBanner {
-#warning("Placement is missing")
+    override func adObject(placement: String) -> VungleBanner {
         let banner = VungleBanner(
-            placementId: "placement",
+            placementId: placement,
             size: adSize
         )
         banner.delegate = self

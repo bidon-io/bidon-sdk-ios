@@ -19,6 +19,10 @@ where AdObject: BidMachineAdProtocol {
         var token: String
     }
     
+    struct BiddingResponse: Codable {
+        var payload: String
+    }
+    
     func fetchBiddingContext(
         response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
     ) {
@@ -32,14 +36,14 @@ where AdObject: BidMachineAdProtocol {
     }
     
     func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
         do {
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
             
             configuration.populate { builder in
-                builder.withPayload(payload)
+                builder.withPayload(data.payload)
                 builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             

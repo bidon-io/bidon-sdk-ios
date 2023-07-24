@@ -19,5 +19,5 @@ public typealias BiddingContextEncoderResponse = (Result<BiddingContextEncoder, 
 public protocol BiddingDemandProvider: DemandProvider {
     func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse)
     
-    func prepareBid(with payload: String, response: @escaping DemandProviderResponse)
+    func prepareBid(from decoder: Decoder, response: @escaping DemandProviderResponse)
 }

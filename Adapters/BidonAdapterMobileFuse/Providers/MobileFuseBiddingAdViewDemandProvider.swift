@@ -15,19 +15,29 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
     
     private let adSize: MFBannerAdSize
     
-    private lazy var adView: MFBannerAd? = {
-#warning("Placement is missing")
-        let banner = MFBannerAd(
-            placementId: "placement",
-            with: adSize
-        )
-        banner?.register(self)
-        return banner
-    }()
+    private var adView: MFBannerAd?
     
     init(context: AdViewContext) {
         self.adSize = context.format.mobileFuse
         super.init()
+    }
+    
+    override func prepareBid(
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
+    ) {
+        if let banner = MFBannerAd(
+            placementId: data.placementId,
+            with: adSize
+        ) {
+            self.adView = banner
+            self.response = response
+            
+            banner.register(self)
+            banner.load(withBiddingResponseToken: data.payload)
+        } else {
+            response(.failure(.unscpecifiedException))
+        }
     }
     
     func onAdExpanded(_ ad: MFAd!) {

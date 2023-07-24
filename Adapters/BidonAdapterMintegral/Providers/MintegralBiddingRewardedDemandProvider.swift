@@ -33,14 +33,14 @@ final class MintegralBiddingRewardedDemandProvider: MintegralBiddingBaseDemandPr
     private var response: Bidon.DemandProviderResponse?
 
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
         MTGBidRewardAdManager.sharedInstance().loadVideo(
-            withBidToken: payload,
-            placementId: "",
-            unitId: "",
+            withBidToken: data.payload,
+            placementId: data.placementId,
+            unitId: data.unitId,
             delegate: self
         )
     }

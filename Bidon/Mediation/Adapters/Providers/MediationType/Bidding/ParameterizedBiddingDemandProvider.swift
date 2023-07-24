@@ -19,8 +19,16 @@ struct GenericBiddingContextEncoder<BiddingContext: Encodable>: BiddingContextEn
 
 public protocol ParameterizedBiddingDemandProvider: BiddingDemandProvider {
     associatedtype BiddingContext: Encodable
+    associatedtype BiddingResponse: Decodable
     
-    func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ())
+    func fetchBiddingContext(
+        response: @escaping (Result<BiddingContext, MediationError>) -> ()
+    )
+    
+    func prepareBid(
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
+    )
 }
 
 
@@ -35,5 +43,24 @@ extension ParameterizedBiddingDemandProvider {
                 response(.success(encoder))
             }
         }
+    }
+    
+    public func prepareBid(
+        from decoder: Decoder,
+        response: @escaping DemandProviderResponse
+    ) {
+        var data: BiddingResponse?
+        do {
+            data = try BiddingResponse(from: decoder)
+        } catch {
+            response(.failure(.incorrectAdUnitId))
+        }
+        
+        guard let data = data else { return }
+        
+        prepareBid(
+            data: data,
+            response: response
+        )
     }
 }

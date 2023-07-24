@@ -24,6 +24,11 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         var token: String
     }
     
+    struct BiddingResponse: Codable {
+        var placementId: String
+        var payload: String
+    }
+    
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
@@ -59,7 +64,10 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         }
     }
     
-    func prepareBid(with payload: String, response: @escaping DemandProviderResponse) {
+    func prepareBid(
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
+    ) {
         fatalError("MobileFuseBiddingBaseDemandProvider is unable to prepare bid")
     }
     

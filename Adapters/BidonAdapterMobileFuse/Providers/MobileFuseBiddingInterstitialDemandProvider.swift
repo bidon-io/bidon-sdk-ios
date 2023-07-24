@@ -11,21 +11,19 @@ import MobileFuseSDK
 
 
 
-final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDemandProvider<MFInterstitialAd> {    
-    private lazy var interstitial: MFInterstitialAd? = {
-#warning("Placement is missing")
-        let interstitial = MFInterstitialAd(placementId: "placement")
-        interstitial?.register(self)
-        return interstitial
-    }()
+final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDemandProvider<MFInterstitialAd> {
+    private var interstitial: MFInterstitialAd?
     
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
-        if let interstitial = interstitial {
+        if let interstitial = MFInterstitialAd(placementId: data.placementId) {
             self.response = response
-            interstitial.load(withBiddingResponseToken: payload)
+            self.interstitial = interstitial
+            
+            interstitial.register(self)
+            interstitial.load(withBiddingResponseToken: data.payload)
         } else {
             response(.failure(.unscpecifiedException))
         }

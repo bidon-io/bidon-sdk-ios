@@ -13,9 +13,8 @@ import VungleAdsSDK
 
 
 final class VungleBiddingInterstitialDemandProvider: VungleBiddingBaseDemandProvider<VungleInterstitial> {
-    override func adObject() -> VungleInterstitial {
-#warning("Placement is missing")
-        let interstitial = VungleInterstitial(placementId: "placement")
+    override func adObject(placement: String) -> VungleInterstitial {
+        let interstitial = VungleInterstitial(placementId: placement)
         interstitial.delegate = self
         return interstitial
     }

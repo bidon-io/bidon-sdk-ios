@@ -15,8 +15,14 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Para
         var buyerUID: String
         
         enum CodingKeys: String, CodingKey {
-            case buyerUID = "buyer_uid"
+            case buyerUID = "token"
         }
+    }
+    
+    struct BiddingResponse: Codable {
+        var payload: String
+        var unitId: String
+        var placementId: String
     }
     
     weak var delegate: Bidon.DemandProviderDelegate?
@@ -30,8 +36,8 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Para
     }
     
     func prepareBid(
-        with payload: String,
-        response: @escaping Bidon.DemandProviderResponse
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
     ) {
         fatalError("MintegralBiddingBaseDemandProvider is unable to prepare bid")
     }

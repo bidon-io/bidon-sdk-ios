@@ -145,13 +145,14 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         }
     }
     
-    func proceedBidResponse(_ response: BidRequest.ResponseBody, bidders: [AdapterType]) {
+    func proceedBidResponse(
+        _ response: BidRequest.ResponseBody,
+        bidders: [AdapterType],
+        previousBid: BidRequest.ResponseBody.BidModel? = nil
+    ) {
         guard isExecuting else { return }
         
-        guard
-            let adapter = bidders.first(where: { $0.identifier == response.bid.demandId }),
-            let provider = adapter.provider as? any BiddingDemandProvider
-        else {
+        guard let bid = response.bids.next(previous: previousBid) else {
             $bidState.mutate { $0 = .unknown }
             observer.log(
                 BiddingDemandProviderBidErrorMediationEvent(
@@ -164,20 +165,31 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             return
         }
         
+        guard
+            let demand = bid.demands.decoders.first,
+            let adapter = bidders.first(where: { $0.identifier == demand.key }),
+            let provider = adapter.provider as? any BiddingDemandProvider
+        else {
+            proceedBidResponse(
+                response,
+                bidders: bidders,
+                previousBid: bid
+            )
+            return
+        }
+        
         $bidState.mutate { $0 = .filling(adapter) }
         
         observer.log(
             BiddingDemandProviderFillRequestMediationEvent(
                 round: self.round,
                 adapter: adapter,
-                bid: response.bid
+                bid: bid
             )
         )
         
-        provider.prepareBid(with: response.bid.payload) { [weak self] result in
+        provider.prepareBid(from: demand.value) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
-            
-            defer { self.finish() }
             
             switch result {
             case .failure(let error):
@@ -188,6 +200,11 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                         adapter: adapter,
                         error:error
                     )
+                )
+                self.proceedBidResponse(
+                    response,
+                    bidders: bidders,
+                    previousBid: bid
                 )
             case .success(let ad):
                 let bid = BidType(
@@ -207,6 +224,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                         bid: bid
                     )
                 )
+                self.finish()
             }
         }
     }
@@ -238,5 +256,18 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
         default:
             break
         }
+    }
+}
+
+
+extension Array where Element == BidRequest.ResponseBody.BidModel {
+    func next(previous: Element?) -> Element? {
+        guard let previous = previous else { return first }
+        guard
+            let index = firstIndex(of: previous),
+            index < (count - 1)
+        else { return nil }
+        
+        return self[index + 1]
     }
 }

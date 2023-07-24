@@ -27,15 +27,20 @@ extension BigoAd: DemandAd {
 
 
 class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, ParameterizedBiddingDemandProvider, BigoAdInteractionDelegate {
+    struct BiddingContext: Codable {
+        var token: String
+    }
+    
+    struct BiddingResponse: Codable {
+        var payload: String
+        var slotId: String
+    }
+    
     weak var delegate: Bidon.DemandProviderDelegate?
     
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     typealias DemandAdType = Ad
-    
-    struct BiddingContext: Codable {
-        var token: String
-    }
     
     final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
         let token = BigoAdSdk.sharedInstance().getBidderToken()
@@ -44,8 +49,8 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, ParameterizedBiddi
     }
     
     func prepareBid(
-        with payload: String,
-        response: @escaping Bidon.DemandProviderResponse
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
     ) {
         fatalError("BigoAdsBiddingBaseDemandProvider is not able to create ad object")
     }

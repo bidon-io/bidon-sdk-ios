@@ -43,7 +43,7 @@ struct BidRequest: Request {
     }
     
     struct ResponseBody: Decodable, Tokenized {
-        struct BidModel: Decodable {
+        struct BidModel: Decodable, Equatable {
             enum CodingKeys: String, CodingKey {
                 case id
                 case impressionId = "impid"
@@ -51,8 +51,14 @@ struct BidRequest: Request {
                 case billingNoticeUrl = "burl"
                 case lossNoticeUrl = "lurl"
                 case price
-                case demandId
-                case payload
+                case demands
+            }
+            
+            static func == (
+                lhs: BidRequest.ResponseBody.BidModel,
+                rhs: BidRequest.ResponseBody.BidModel
+            ) -> Bool {
+                return lhs.id == rhs.id
             }
             
             var id: String
@@ -61,12 +67,11 @@ struct BidRequest: Request {
             var billingNoticeUrl: String?
             var lossNoticeUrl: String?
             var price: Price
-            var demandId: String
-            var payload: String
+            var demands: BidonBiddingExtrasModel
         }
         
         var token: String?
-        var bid: BidModel
+        var bids: [BidModel]
     }
 }
 

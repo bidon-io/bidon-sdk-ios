@@ -14,9 +14,8 @@ import VungleAdsSDK
 final class VungleBiddingRewardedDemandProvider: VungleBiddingBaseDemandProvider<VungleRewarded> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    override func adObject() -> VungleRewarded {
-#warning("Placement is missing")
-        let rewardedAd = VungleRewarded(placementId: "placement")
+    override func adObject(placement: String) -> VungleRewarded {
+        let rewardedAd = VungleRewarded(placementId: placement)
         rewardedAd.delegate = self
         return rewardedAd
     }

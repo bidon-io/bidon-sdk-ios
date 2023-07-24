@@ -26,20 +26,21 @@ extension FBInterstitialAd: DemandAd {
 
 
 final class MetaAudienceNetworkBiddingInterstitialDemandProvider: MetaAudienceNetworkBiddingBaseDemandProvider<FBInterstitialAd> {
-    private lazy var interstitial: FBInterstitialAd = {
-        let interstitial = FBInterstitialAd(placementID: "place")
-        interstitial.delegate = self
-        return interstitial
-    }()
+    private var interstitial: FBInterstitialAd!
     
     private var response: DemandProviderResponse?
     
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
+        let interstitial = FBInterstitialAd(placementID: data.placementId)
+        interstitial.delegate = self
+        
+        self.interstitial = interstitial
         self.response = response
-        interstitial.load(withBidPayload: payload)
+        
+        interstitial.load(withBidPayload: data.payload)
     }
 }
 

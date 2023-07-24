@@ -33,16 +33,7 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
     
     private var response: DemandProviderResponse?
     
-    private lazy var banner: FBAdView = {
-        let banner = FBAdView(
-            placementID: "place",
-            adSize: format.fbAdSize,
-            rootViewController: rootViewController
-        )
-        
-        banner.delegate = self
-        return banner
-    }()
+    private var banner: FBAdView?
     
     init(context: AdViewContext) {
         self.format = context.format
@@ -51,11 +42,20 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
     }
     
     override func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
+        let banner = FBAdView(
+            placementID: data.placementId,
+            adSize: format.fbAdSize,
+            rootViewController: rootViewController
+        )
+        banner.delegate = self
+            
+        self.banner = banner
         self.response = response
-        banner.loadAd(withBidPayload: payload)
+        
+        banner.loadAd(withBidPayload: data.payload)
     }
 }
 

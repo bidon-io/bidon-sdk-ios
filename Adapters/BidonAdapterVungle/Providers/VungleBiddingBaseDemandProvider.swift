@@ -22,6 +22,7 @@ final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
     }
 }
 
+
 class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, ParameterizedBiddingDemandProvider {
     typealias DemandAdType = VungleDemandAd<AdObject>
     
@@ -29,7 +30,12 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         var token: String
     }
     
-    lazy var demandAd = DemandAdType(adObject: adObject())
+    struct BiddingResponse: Codable {
+        var payload: String
+        var placementId: String
+    }
+    
+    private(set) var demandAd: VungleDemandAd<AdObject>!
     
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
@@ -38,7 +44,6 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     var context: SdkContext
     
     var response: DemandProviderResponse?
-    
     
     final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
         // Synchronize privacy data
@@ -67,11 +72,13 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     }
     
     final func prepareBid(
-        with payload: String,
+        data: BiddingResponse,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        demandAd.adObject.load(payload)
+        let adObject = adObject(placement: data.placementId)
+        adObject.load(data.payload)
+        demandAd = VungleDemandAd(adObject: adObject)
     }
     
     final func notify(
@@ -79,7 +86,7 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         event: Bidon.AuctionEvent
     ) {}
     
-    open func adObject() -> AdObject {
+    open func adObject(placement: String) -> AdObject {
         fatalError("VungleBiddingBaseDemandProvider is not able to create ad object")
     }
 }
