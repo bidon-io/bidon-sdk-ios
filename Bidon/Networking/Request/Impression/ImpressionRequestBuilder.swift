@@ -8,9 +8,7 @@
 import Foundation
 
 
-protocol ImpressionRequestBuilder: AdTypeContextRequestBuilder {
-    associatedtype Context: AdTypeContext
-    
+protocol ImpressionRequestBuilder: AdTypeContextRequestBuilder {    
     var imp: ImpressionModel { get }
     var route: Route { get }
     

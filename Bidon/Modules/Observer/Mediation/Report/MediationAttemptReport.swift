@@ -28,7 +28,7 @@ protocol RoundReport {
     var winnerECPM: Price? { get }
     var winnerNetworkId: String? { get }
     var demands: [DemandReportType] { get }
-    var bidding: DemandReportType? { get }
+    var biddings: [DemandReportType] { get }
 }
 
 

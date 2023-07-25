@@ -48,7 +48,7 @@ final class BaseMediationObserver: MediationObserver {
                 winnerECPM: winner?.eCPM,
                 winnerNetworkId: winner?.networkId,
                 demands: demands.filter { !$0.isBidding }.map { DemandReportModel($0) },
-                bidding: demands.first { $0.isBidding }.map { DemandReportModel($0) }
+                biddings: demands.filter { $0.isBidding }.map { DemandReportModel($0) }
             )
         }
         
