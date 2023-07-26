@@ -59,7 +59,7 @@ internal class AsynchronousOperation: Operation {
             let oldValue = state
             willChangeValue(forKey: state.keyPath)
             willChangeValue(forKey: newValue.keyPath)
-            $_state.mutate { $0 = newValue }
+            $_state.wrappedValue = newValue 
             didChangeValue(forKey: state.keyPath)
             didChangeValue(forKey: oldValue.keyPath)
         }

@@ -9,10 +9,10 @@ import Foundation
 
 
 struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
-    struct DemandReportModel: DemandReport, Codable {
-        var networkId: String?
+    struct DemandReportCodableModel: DemandReport, Codable {
+        var demandId: String
         var adUnitId: String?
-        var status: DemandReportStatus
+        var status: DemandMediationStatus
         var eCPM: Price?
         var bidStartTimestamp: UInt?
         var bidFinishTimestamp: UInt?
@@ -20,7 +20,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var fillFinishTimestamp: UInt?
         
         enum CodingKeys: String, CodingKey {
-            case networkId = "id"
+            case demandId = "id"
             case adUnitId = "ad_unit_id"
             case status
             case eCPM = "ecpm"
@@ -31,7 +31,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         }
     
         init<T: DemandReport>(_ report: T) {
-            self.networkId = report.networkId
+            self.demandId = report.demandId
             self.adUnitId = report.adUnitId
             self.status = report.status
             self.eCPM = report.eCPM
@@ -42,44 +42,82 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         }
     }
     
+    struct BidReportCodableModel: BidReport, Codable {
+        var demandId: String
+        var status: DemandMediationStatus
+        var eCPM: Price
+        var fillStartTimestamp: UInt?
+        var fillFinishTimestamp: UInt?
+        
+        enum CodingKeys: String, CodingKey {
+            case demandId = "id"
+            case status
+            case eCPM = "ecpm"
+            case fillStartTimestamp = "fill_start_ts"
+            case fillFinishTimestamp = "fill_finish_ts"
+        }
+        
+        init<T: BidReport>(_ report: T) {
+            self.demandId = report.demandId
+            self.status = report.status
+            self.eCPM = report.eCPM
+            self.fillStartTimestamp = report.fillStartTimestamp
+            self.fillFinishTimestamp = report.fillFinishTimestamp
+        }
+    }
+    
+    struct RoundBiddingReportCodableModel: RoundBiddingReport, Codable {
+        var bidStartTimestamp: UInt?
+        var bidFinishTimestamp: UInt?
+        var bids: [BidReportCodableModel]
+        
+        init<T: RoundBiddingReport>(_ report: T) {
+            self.bidStartTimestamp = report.bidStartTimestamp
+            self.bidFinishTimestamp = report.bidFinishTimestamp
+            self.bids = report.bids.map(BidReportCodableModel.init)
+        }
+    }
+    
     struct RoundReportCodableModel: RoundReport, Codable {
         var roundId: String
         var pricefloor: Price
         var winnerECPM: Price?
-        var winnerNetworkId: String?
-        var demands: [DemandReportModel]
-        var biddings: [DemandReportModel]
+        var winnerDemandId: String?
+        var demands: [DemandReportCodableModel]
+        var bidding: RoundBiddingReportCodableModel?
         
         enum CodingKeys: String, CodingKey {
             case roundId = "id"
             case pricefloor
             case winnerECPM = "winner_ecpm"
-            case winnerNetworkId = "winner_id"
+            case winnerDemandId = "winner_id"
             case demands
-            case biddings
+            case bidding
         }
         
         init<T: RoundReport>(_ report: T) {
             self.roundId = report.roundId
             self.pricefloor = report.pricefloor
             self.winnerECPM = report.winnerECPM
-            self.winnerNetworkId = report.winnerNetworkId
-            self.demands = report.demands.map(DemandReportModel.init)
-            self.biddings = report.biddings.map(DemandReportModel.init)
+            self.winnerDemandId = report.winnerDemandId
+            self.demands = report.demands.map(DemandReportCodableModel.init)
+            self.bidding = report.bidding.map(RoundBiddingReportCodableModel.init)
         }
     }
     
     struct AuctionResultReportCodableModel: AuctionResultReport, Codable {
-        var status: AuctionResultReportStatus
+        var status: AuctionResultStatus
         var startTimestamp: UInt
         var finishTimestamp: UInt
-        var winnerNetworkId: String?
+        var winnerRoundId: String?
+        var winnerDemandId: String?
         var winnerECPM: Price?
         var winnerAdUnitId: String?
         
         enum CodingKeys: String, CodingKey {
             case status
-            case winnerNetworkId = "winner_id"
+            case winnerRoundId = "round_id"
+            case winnerDemandId = "winner_id"
             case winnerECPM = "ecpm"
             case winnerAdUnitId = "ad_unit_id"
             case startTimestamp = "auction_start_ts"
@@ -88,7 +126,8 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         
         init<T: AuctionResultReport>(_ report: T) {
             self.status = report.status
-            self.winnerNetworkId = report.winnerNetworkId
+            self.winnerDemandId = report.winnerDemandId
+            self.winnerRoundId = report.winnerRoundId
             self.winnerECPM = report.winnerECPM
             self.winnerAdUnitId = report.winnerAdUnitId
             self.startTimestamp = report.startTimestamp

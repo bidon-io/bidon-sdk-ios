@@ -113,11 +113,9 @@ extension Bidon.BannerFormat {
         switch self {
         case .banner:
             return .standardBannerType320x50
-        case .leaderboard:
-            return .largeBannerType320x90
         case .mrec:
             return .mediumRectangularBanner300x250
-        case .adaptive:
+        case .adaptive, .leaderboard:
             return .smartBannerType
         }
     }

@@ -11,22 +11,22 @@ import Foundation
 final class RegulationsManager: ExtendedRegulations, Environment {
     var coppaApplies: COPPAAppliesStatus {
         get { _coppaApplies ?? .unknown }
-        set { $_coppaApplies.mutate { $0 = newValue }}
+        set { $_coppaApplies.wrappedValue = newValue }
     }
     
     var gdrpConsent: GDPRConsentStatus {
         get { _gdrpConsent ?? .unknown }
-        set { $_gdrpConsent.mutate { $0 = newValue }}
+        set { $_gdrpConsent.wrappedValue = newValue }
     }
     
     var gdprConsentString: String? {
         get { _gdprConsentString }
-        set { $_gdprConsentString.mutate { $0 = newValue }}
+        set { $_gdprConsentString.wrappedValue = newValue }
     }
     
     var usPrivacyString: String? {
         get { _usPrivacyString }
-        set { $_usPrivacyString.mutate { $0 = newValue }}
+        set { $_usPrivacyString.wrappedValue = newValue }
     }
     
     @Atomic
@@ -75,8 +75,8 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         let tcfV1 = dictionary.filter { $0.key.hasPrefix("IABConsent_") }
         let tcfV2 = dictionary.filter { $0.key.hasPrefix("IABTCF_") }
         
-        $tcfV1.mutate { $0 = tcfV1 }
-        $tcfV2.mutate { $0 = tcfV2 }
-        $usPrivacyStringIAB.mutate { $0 = dictionary["IABUSPrivacy_String"] as? String }
+        $tcfV1.wrappedValue = tcfV1
+        $tcfV2.wrappedValue = tcfV2
+        $usPrivacyStringIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
     }
 }

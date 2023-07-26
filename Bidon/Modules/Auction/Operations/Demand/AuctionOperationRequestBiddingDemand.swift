@@ -83,7 +83,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             return adapter
         }
         
-        $bidState.mutate { $0 = .prepare(bidders) }
+        $bidState.wrappedValue = .prepare(bidders)
         
         group.notify(queue: .main) { [weak self] in
             self?.performBidRequest()
@@ -94,7 +94,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         guard isExecuting else { return }
         
         guard !encoders.isEmpty else {
-            $bidState.mutate { $0 = .unknown }
+            $bidState.wrappedValue = .unknown
             finish()
             return
         }
@@ -103,7 +103,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             adapters.first { $0.identifier == key }
         }
         
-        $bidState.mutate { $0 = .bidding(bidders) }
+        $bidState.wrappedValue = .bidding(bidders)
         
         // Observe bid request start
         observer.log(
@@ -130,9 +130,16 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             
             switch result {
             case .success(let response):
+                self.observer.log(
+                    BiddingDemandProviderBidResponseMediationEvent(
+                        round: self.round,
+                        adapters: bidders,
+                        bids: response.bids
+                    )
+                )
                 self.proceedBidResponse(response, bidders: bidders)
             case .failure:
-                self.$bidState.mutate { $0 = .unknown }
+                self.$bidState.wrappedValue = .unknown
                 self.observer.log(
                     BiddingDemandProviderBidErrorMediationEvent(
                         round: self.round,
@@ -152,8 +159,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     ) {
         guard isExecuting else { return }
         
-        guard let bid = response.bids.next(previous: previousBid) else {
-            $bidState.mutate { $0 = .unknown }
+        guard let pendingServerBid = response.bids.next(previous: previousBid) else {
+            $bidState.wrappedValue = .unknown
             observer.log(
                 BiddingDemandProviderBidErrorMediationEvent(
                     round: self.round,
@@ -166,25 +173,25 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         }
         
         guard
-            let demand = bid.demands.decoders.first,
+            let demand = pendingServerBid.demands.decoders.first,
             let adapter = bidders.first(where: { $0.identifier == demand.key }),
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
             proceedBidResponse(
                 response,
                 bidders: bidders,
-                previousBid: bid
+                previousBid: pendingServerBid
             )
             return
         }
         
-        $bidState.mutate { $0 = .filling(adapter) }
+        $bidState.wrappedValue = .filling(adapter)
         
         observer.log(
             BiddingDemandProviderFillRequestMediationEvent(
                 round: self.round,
                 adapter: adapter,
-                bid: bid
+                bid: pendingServerBid
             )
         )
         
@@ -193,7 +200,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             
             switch result {
             case .failure(let error):
-                self.$bidState.mutate { $0 = .unknown }
+                self.$bidState.wrappedValue = .unknown
                 self.observer.log(
                     BiddingDemandProviderFillErrorMediationEvent(
                         round: self.round,
@@ -204,11 +211,11 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 self.proceedBidResponse(
                     response,
                     bidders: bidders,
-                    previousBid: bid
+                    previousBid: pendingServerBid
                 )
             case .success(let ad):
                 let bid = BidType(
-                    id: UUID().uuidString,
+                    id: pendingServerBid.id,
                     roundId: self.round.id,
                     adType: self.context.adType,
                     ad: ad,
@@ -216,7 +223,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                     metadata: self.metadata
                 )
                 
-                self.$bidState.mutate { $0 = .ready(bid) }
+                self.$bidState.wrappedValue = .ready(bid)
                 self.observer.log(
                     BiddingDemandProviderDidFillMediationEvent(
                         round: self.round,

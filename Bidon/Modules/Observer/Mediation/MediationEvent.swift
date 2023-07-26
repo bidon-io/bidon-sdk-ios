@@ -10,8 +10,8 @@ import Foundation
 
 typealias AnyBid = any Bid
 
-
 protocol MediationEvent: CustomStringConvertible {}
+
 
 // MARK: Auction
 struct AuctionStartMediationEvent: MediationEvent {
@@ -20,6 +20,7 @@ struct AuctionStartMediationEvent: MediationEvent {
     }
 }
 
+
 struct AuctionFinishMediationEvent: MediationEvent {
     var bid: AnyBid?
     
@@ -27,6 +28,7 @@ struct AuctionFinishMediationEvent: MediationEvent {
         return "did finish auction " + (bid.map { "with bid: \($0) " } ?? "without bid")
     }
 }
+
 
 // MARK: Round
 struct RoundStartMediationEvent: MediationEvent {
@@ -38,6 +40,7 @@ struct RoundStartMediationEvent: MediationEvent {
     }
 }
 
+
 struct RoundScheduleTimeoutMediationEvent: MediationEvent {
     var round: AuctionRound
     var interval: TimeInterval
@@ -47,6 +50,7 @@ struct RoundScheduleTimeoutMediationEvent: MediationEvent {
     }
 }
 
+
 struct RoundTimeoutReachedMediationEvent: MediationEvent {
     var round: AuctionRound
     
@@ -54,6 +58,7 @@ struct RoundTimeoutReachedMediationEvent: MediationEvent {
         return "did reach timeout in round \(round)"
     }
 }
+
 
 struct RoundInvalidateTimeoutMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -63,6 +68,7 @@ struct RoundInvalidateTimeoutMediationEvent: MediationEvent {
     }
 }
 
+
 struct RoundFinishMediationEvent: MediationEvent {
     var round: AuctionRound
     var bid: AnyBid?
@@ -71,6 +77,7 @@ struct RoundFinishMediationEvent: MediationEvent {
         return "did finish round \(round) " + (bid.map { "with bid: \($0) " } ?? "without bid")
     }
 }
+
 
 // MARK: Abstract Demand
 struct DemandProviderNotFoundMediationEvent: MediationEvent {
@@ -90,6 +97,7 @@ struct DemandProviderNotFoundMediationEvent: MediationEvent {
     }
 }
 
+
 // MARK: Direct Demand
 struct DirectDemandProviderLineItemNotFoundMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -99,6 +107,7 @@ struct DirectDemandProviderLineItemNotFoundMediationEvent: MediationEvent {
         return "no appropriate ad unit for \(adapter) was found in round '\(round)'"
     }
 }
+
 
 struct DirectDemandProividerLoadRequestMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -110,6 +119,7 @@ struct DirectDemandProividerLoadRequestMediationEvent: MediationEvent {
     }
 }
 
+
 struct DirectDemandProividerDidLoadMediationEvent: MediationEvent {
     var round: AuctionRound
     var adapter: Adapter
@@ -119,6 +129,7 @@ struct DirectDemandProividerDidLoadMediationEvent: MediationEvent {
         return "\(adapter) did load \(bid) in round \(round)"
     }
 }
+
 
 struct DirectDemandProividerDidFailToLoadMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -130,6 +141,7 @@ struct DirectDemandProividerDidFailToLoadMediationEvent: MediationEvent {
     }
 }
 
+
 // MARK: Programmatic Demand
 struct ProgrammaticDemandProviderRequestBidMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -139,6 +151,7 @@ struct ProgrammaticDemandProviderRequestBidMediationEvent: MediationEvent {
         return "\(adapter) will request bid in round \(round)"
     }
 }
+
 
 struct ProgrammaticDemandProviderDidReceiveBidMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -150,6 +163,7 @@ struct ProgrammaticDemandProviderDidReceiveBidMediationEvent: MediationEvent {
     }
 }
 
+
 struct ProgrammaticDemandProviderBidErrorMediationEvent: MediationEvent {
     var round: AuctionRound
     var adapter: Adapter
@@ -159,6 +173,7 @@ struct ProgrammaticDemandProviderBidErrorMediationEvent: MediationEvent {
         return "\(adapter) did fail to receive bid in round \(round) with error \(error)"
     }
 }
+
 
 struct ProgrammaticDemandProviderRequestFillMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -170,6 +185,7 @@ struct ProgrammaticDemandProviderRequestFillMediationEvent: MediationEvent {
     }
 }
 
+
 struct ProgrammaticDemandProviderDidFillBidMediationEvent: MediationEvent {
     var round: AuctionRound
     var adapter: Adapter
@@ -179,6 +195,7 @@ struct ProgrammaticDemandProviderDidFillBidMediationEvent: MediationEvent {
         return "\(adapter) did fill \(bid) in round \(round.id)"
     }
 }
+
 
 struct ProgrammaticDemandProviderDidFailToFillBidMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -190,6 +207,7 @@ struct ProgrammaticDemandProviderDidFailToFillBidMediationEvent: MediationEvent 
     }
 }
 
+
 // MARK: Bidding Demand
 struct BiddingDemandProviderRequestBidMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -199,6 +217,7 @@ struct BiddingDemandProviderRequestBidMediationEvent: MediationEvent {
         return "bidding \(adapters) will request bid in round \(round)"
     }
 }
+
 
 struct BiddingDemandProviderBidErrorMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -210,6 +229,18 @@ struct BiddingDemandProviderBidErrorMediationEvent: MediationEvent {
     }
 }
 
+
+struct BiddingDemandProviderBidResponseMediationEvent: MediationEvent {
+    var round: AuctionRound
+    var adapters: [Adapter]
+    var bids: [BidRequest.ResponseBody.BidModel]
+    
+    var description: String {
+        return "bidding \(adapters) did receive response round \(round) with bids \(bids)"
+    }
+}
+
+
 struct BiddingDemandProviderFillRequestMediationEvent: MediationEvent {
     var round: AuctionRound
     var adapter: Adapter
@@ -219,6 +250,7 @@ struct BiddingDemandProviderFillRequestMediationEvent: MediationEvent {
         return "bidding \(adapter) will fill \(round)"
     }
 }
+
 
 struct BiddingDemandProviderFillErrorMediationEvent: MediationEvent {
     var round: AuctionRound
@@ -230,6 +262,7 @@ struct BiddingDemandProviderFillErrorMediationEvent: MediationEvent {
     }
 }
 
+
 struct BiddingDemandProviderDidFillMediationEvent: MediationEvent {
     var round: AuctionRound
     var adapter: Adapter
@@ -239,6 +272,7 @@ struct BiddingDemandProviderDidFillMediationEvent: MediationEvent {
         return "bidding \(adapter) did fill bid \(bid) in round \(round)"
     }
 }
+
 
 struct CancelAuctionMediationEvent: MediationEvent {
     var description: String {

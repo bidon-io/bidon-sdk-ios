@@ -16,7 +16,7 @@ end
 def bidmachine 
   pod 'BidMachine', '~> 2.2.0'
   pod 'BidMachineAdColonyAdapter', '~> 2.2.0.0'
-  pod 'BidMachineMintegralAdapter', '~> 2.2.0.0'
+  # pod 'BidMachineMintegralAdapter', '~> 2.2.0.0'
   pod 'BidMachineAmazonAdapter', '~> 2.2.0.0'
   pod 'BidMachineCriteoAdapter', '~> 2.2.0.0'
   pod 'BidMachineMetaAudienceAdapter', '~> 2.2.0.0'

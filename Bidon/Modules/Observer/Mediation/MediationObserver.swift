@@ -8,13 +8,16 @@
 import Foundation
 
 
-protocol MediationObserver: AnyObject {
+protocol MediationReportProvider {
     associatedtype MediationAttemptReportType: MediationAttemptReport
     
     var report: MediationAttemptReportType { get }
-    
+}
+
+
+protocol MediationObserver: AnyObject {
     func log<EventType: MediationEvent>(_ event: EventType)
 }
 
 
-typealias AnyMediationObserver = (any MediationObserver)
+typealias AnyMediationObserver = any MediationObserver & MediationReportProvider

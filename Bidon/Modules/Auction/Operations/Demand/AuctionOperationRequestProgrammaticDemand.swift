@@ -72,7 +72,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
             )
         )
         
-        $bidState.mutate { $0 = .bidding }
+        $bidState.wrappedValue = .bidding
         
         provider.bid(pricefloor) { [weak self, unowned provider] result in
             guard let self = self, self.isExecuting else { return }
@@ -87,7 +87,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                     )
                 )
                 
-                self.$bidState.mutate { $0 = .unknown }
+                self.$bidState.wrappedValue = .unknown
                 self.finish()
             case .success(let ad):
                 let bid = BidType(
@@ -106,7 +106,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                         bid: bid
                     )
                 )
-                self.$bidState.mutate { $0 = .filling(bid) }
+                self.$bidState.wrappedValue = .filling(bid)
                 
                 DispatchQueue.main.async { [unowned self] in
                     self.fill(programmatic: provider, bid: bid)
@@ -137,7 +137,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                     )
                 )
                 
-                self.$bidState.mutate { $0 = .unknown }
+                self.$bidState.wrappedValue = .unknown
                 self.finish()
             case .success:
                 self.observer.log(
@@ -148,7 +148,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                     )
                 )
                 
-                self.$bidState.mutate { $0 = .ready(bid) }
+                self.$bidState.wrappedValue = .ready(bid)
                 self.finish()
             }
         }

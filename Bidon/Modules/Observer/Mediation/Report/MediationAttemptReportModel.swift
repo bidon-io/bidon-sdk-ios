@@ -8,44 +8,96 @@
 import Foundation
 
 
-struct MediationAttemptReportModel: MediationAttemptReport {
-    typealias RoundReportType = RoundReportModel
-    typealias AuctionResultReportType = AuctionResultReportModel
+struct DemandReportModel: DemandReport {
+    var demandId: String
+    var status: DemandMediationStatus = .unknown
+    var adUnitId: String? = nil
+    var eCPM: Price?
+    var bidStartTimestamp: UInt? = Date.timestamp(.wall, units: .milliseconds).uint
+    var bidFinishTimestamp: UInt?
+    var fillStartTimestamp: UInt?
+    var fillFinishTimestamp: UInt?
     
-    var rounds: [RoundReportType]
+    init(_ observation: BidObservation) {
+        self.demandId = observation.demandId
+        self.status = observation.status
+        self.adUnitId = observation.adUnitId
+        self.eCPM = observation.eCPM
+        self.bidStartTimestamp = observation.bidRequestTimestamp?.uint
+        self.bidFinishTimestamp = observation.bidResponeTimestamp?.uint
+        self.fillStartTimestamp = observation.fillRequestTimestamp?.uint
+        self.fillFinishTimestamp = observation.fillResponseTimestamp?.uint
+    }
+}
+
+
+struct BidReportModel: BidReport {
+    var demandId: String
+    var status: DemandMediationStatus = .lose
+    var eCPM: Price
+    var fillStartTimestamp: UInt?
+    var fillFinishTimestamp: UInt?
+    
+    init(_ observation: BidObservation) {
+        self.demandId = observation.demandId
+        self.status = observation.status
+        self.eCPM = observation.eCPM ?? .zero
+        self.fillStartTimestamp = observation.fillRequestTimestamp?.uint
+        self.fillFinishTimestamp = observation.fillResponseTimestamp?.uint
+    }
+}
+
+
+struct RoundBiddingReportModel: RoundBiddingReport {
+    var bidStartTimestamp: UInt?
+    var bidFinishTimestamp: UInt?
+    var bids: [BidReportModel]
+    
+    init?(_ observation: BiddingObservation) {
+        guard !observation.bidRequestTimestamp.isUnknown else { return nil }
+        
+        self.bidStartTimestamp = observation.bidRequestTimestamp.uint
+        self.bidFinishTimestamp = observation.bidResponeTimestamp.uint
+        self.bids = observation.observations.map(BidReportModel.init)
+    }
+}
+
+
+struct MediationAttemptReportModel: MediationAttemptReport {
+    var rounds: [RoundReportModel]
     var result: AuctionResultReportModel
 }
 
 
 struct RoundReportModel: RoundReport {
-    typealias DemandReportType = DemandReportModel
-    
     var roundId: String
     var pricefloor: Price
     var winnerECPM: Price?
-    var winnerNetworkId: String?
-    var demands: [DemandReportType]
-    var biddings: [DemandReportType]
+    var winnerDemandId: String?
+    var demands: [DemandReportModel]
+    var bidding: RoundBiddingReportModel?
+    
+    init(observation: RoundObservation) {
+        self.roundId = observation.id
+        self.pricefloor = observation.pricefloor
+        self.winnerECPM = observation.roundWinner?.eCPM
+        self.winnerDemandId = observation.roundWinner?.demandId
+        self.demands = observation.demand.observations.map(DemandReportModel.init)
+        self.bidding = RoundBiddingReportModel(observation.bidding)
+    }
 }
 
 
 struct AuctionResultReportModel: AuctionResultReport {
-    var status: AuctionResultReportStatus
-    var startTimestamp: UInt 
+    var status: AuctionResultStatus
+    var startTimestamp: UInt
     var finishTimestamp: UInt
-    var winnerNetworkId: String?
+    var winnerRoundId: String?
+    var winnerDemandId: String?
     var winnerECPM: Price?
     var winnerAdUnitId: String?
 }
 
 
-struct DemandReportModel: DemandReport {
-    var networkId: String?
-    var adUnitId: String? = nil
-    var eCPM: Price?
-    var status: DemandReportStatus = .unknown
-    var bidStartTimestamp: UInt? = Date.timestamp(.wall, units: .milliseconds).uint
-    var bidFinishTimestamp: UInt?
-    var fillStartTimestamp: UInt?
-    var fillFinishTimestamp: UInt?
-}
+
+

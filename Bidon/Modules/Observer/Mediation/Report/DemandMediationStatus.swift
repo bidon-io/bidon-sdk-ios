@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum DemandReportStatus: Codable {
+enum DemandMediationStatus: Codable {
     case unknown
     case win
     case lose

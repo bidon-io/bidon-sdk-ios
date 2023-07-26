@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum AuctionResultReportStatus: Codable {
+enum AuctionResultStatus: Codable {
     case unknown
     case success
     case fail

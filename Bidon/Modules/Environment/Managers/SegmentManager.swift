@@ -14,27 +14,27 @@ final class SegmentManager: Segment, Environment {
     
     var gender: Gender {
         get { _gender ?? .other }
-        set { $_gender.mutate { $0 = newValue }}
+        set { $_gender.wrappedValue = newValue }
     }
     
     var age: Int {
         get { _age ?? .unknown }
-        set { $_age.mutate { $0 = newValue }}
+        set { $_age.wrappedValue = newValue }
     }
     
     var level: Int {
         get { _level ?? .unknown }
-        set { $_level.mutate { $0 = newValue }}
+        set { $_level.wrappedValue = newValue }
     }
     
     var isPaid: Bool {
         get { _isPaid ?? false }
-        set { $_isPaid.mutate { $0 = newValue }}
+        set { $_isPaid.wrappedValue = newValue }
     }
     
     var inAppAmount: Double {
         get { _inAppAmount ?? .zero }
-        set { $_inAppAmount.mutate { $0 = newValue }}
+        set { $_inAppAmount.wrappedValue = newValue }
     }
 
     var customAttributes: [String : AnyHashable] {
@@ -65,7 +65,7 @@ final class SegmentManager: Segment, Environment {
     ) {
         var attributes = _customAttributes ?? [:]
         attributes[key] = customAttribute
-        $_customAttributes.mutate { $0 = attributes }
+        $_customAttributes.wrappedValue = attributes
     }
 }
 
