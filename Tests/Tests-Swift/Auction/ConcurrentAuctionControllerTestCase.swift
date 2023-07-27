@@ -179,8 +179,8 @@ extension TestAuctionResult {
 extension RoundReport {
     var sortedDemands: [DemandReportType] {
         return demands.sorted { first, second in
-            let firstId = first.demandId ?? ""
-            let secondId = second.demandId ?? ""
+            let firstId = first.demandId
+            let secondId = second.demandId 
             return firstId < secondId
         }
     }
