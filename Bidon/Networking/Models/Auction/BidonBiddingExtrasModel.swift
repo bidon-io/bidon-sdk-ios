@@ -21,6 +21,11 @@ struct BidonBiddingExtrasModel: Codable {
         self.decoders = [:]
     }
     
+    init(decoders: BiddingContextDecoders) {
+        self.decoders = decoders
+        self.encoders = [:]
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
         

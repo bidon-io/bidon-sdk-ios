@@ -276,9 +276,9 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         return self
     }
     
-    func biddingContext<T: Encodable>(for demandId: String) -> T? {
-        let encoder = invokedWithBiddingContextEncodersParameters?.encoders[demandId] as? BiddingContextEncoderMock<T>
-        return encoder?.content
+    func biddingToken(for demandId: String) -> String? {
+        let encoder = invokedWithBiddingContextEncodersParameters?.encoders[demandId] as? GenericBiddingContextEncoder<SomeToken>
+        return encoder?.context.token
     }
     
     var demandsCount: Int {

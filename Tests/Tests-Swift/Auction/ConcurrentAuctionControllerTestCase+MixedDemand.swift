@@ -45,7 +45,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         let adapterMock1 = AdapterMock(
             id: demandId1,
-            provider: BiddingDemandProviderMock.self
+            provider: SomeParameterizedBiddingDemandProviderMock.self
         ) { builder in
             builder.withBiddingContextSuccess(biddingToken1)
             builder.withExpectedPayload(biddingPayload1)
@@ -83,18 +83,24 @@ extension ConcurrentAuctionControllerTestCase {
         ]
         
         let request = BidRequest(route: .bid)
-        let response = BidRequest.ResponseBody(
-            bid: .init(
-                id: UUID().uuidString,
-                impressionId: UUID().uuidString,
-                price: eCPM1,
-                demandId: demandId1,
-                payload: biddingPayload1
-            )
-        )
+        let response = BidRequest.ResponseBody(raw: [
+            "bids": [
+                [
+                    "id": UUID().uuidString,
+                    "impid": UUID().uuidString,
+                    "price": eCPM1,
+                    "demands": [
+                        demandId1: [
+                            "payload": biddingPayload1
+                        ]
+                    ]
+                ]
+            ]
+        ]
+        )!
         
         stubBidRequest(request) { builder in
-            XCTAssertEqual(builder.biddingContext(for: demandId1), biddingToken1)
+            XCTAssertEqual(builder.biddingToken(for: demandId1), biddingToken1)
             XCTAssertEqual(builder.demandsCount, 1)
         }
         
@@ -124,22 +130,22 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM3)
-        XCTAssertEqual(report.result.winnerNetworkId, demandId2)
+        XCTAssertEqual(report.result.winnerDemandId, demandId2)
         XCTAssertEqual(report.result.winnerAdUnitId, lineItem2.adUnitId)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 2)
         
-        XCTAssertEqual(report.rounds[0].sortedDemands[0].networkId, demandId2)
+        XCTAssertEqual(report.rounds[0].sortedDemands[0].demandId, demandId2)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].eCPM, eCPM3)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].status.stringValue, "WIN")
 
-        XCTAssertEqual(report.rounds[0].sortedDemands[1].networkId, demandId3)
+        XCTAssertEqual(report.rounds[0].sortedDemands[1].demandId, demandId3)
         XCTAssertEqual(report.rounds[0].sortedDemands[1].eCPM, eCPM4)
         XCTAssertEqual(report.rounds[0].sortedDemands[1].status.stringValue, "LOSE")
         
-        XCTAssertEqual(report.rounds[0].bidding?.networkId, demandId1)
-        XCTAssertEqual(report.rounds[0].bidding?.status.stringValue, "LOSE")
+        XCTAssertEqual(report.rounds[0].bidding?.bids[0].demandId, demandId1)
+        XCTAssertEqual(report.rounds[0].bidding?.bids[0].status.stringValue, "LOSE")
     }
 }

@@ -11,26 +11,24 @@ import XCTest
 @testable import Bidon
 
 
-final class BiddingContextEncoderMock<Content: Encodable>: BiddingContextEncoder {
-    let content: Content
+struct SomeToken: Encodable, Equatable {
+    var token: String = UUID().uuidString
+}
 
-    func encodeBiddingContext(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(content)
-    }
-    
-    init(content: Content) {
-        self.content = content
-    }
+struct SomePayload: Decodable, Equatable {
+    var payload: String = UUID().uuidString
 }
 
 
-final class BiddingDemandProviderMock: DemandProviderMock, BiddingDemandProvider {
+final class ParameterizedBiddingDemandProviderMock<Token: Encodable, Payload: Decodable>: DemandProviderMock, ParameterizedBiddingDemandProvider {
+    typealias BiddingContext = Token
+    typealias BiddingResponse = Payload
+    
     var invokedFetchBiddingContext = false
     var invokedFetchBiddingContextCount = 0
-    var stubbedFetchBiddingContext: ((BiddingContextEncoderResponse) -> ())?
+    var stubbedFetchBiddingContext: (((Result<Token, MediationError>) -> ()) -> ())?
 
-    func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse) {
+    func fetchBiddingContext(response: @escaping (Result<Token, MediationError>) -> ()) {
         invokedFetchBiddingContext = true
         invokedFetchBiddingContextCount += 1
         stubbedFetchBiddingContext?(response)
@@ -38,26 +36,27 @@ final class BiddingDemandProviderMock: DemandProviderMock, BiddingDemandProvider
     
     var invokedPrepareBid = false
     var invokedPrepareBidCount = 0
-    var invokedPrepareBidParameters: (payload: String, response: DemandProviderResponse)?
-    var invokedPrepareBidParametersList = [(payload: String, response: DemandProviderResponse)]()
-    var stubbedPrepareBid: ((String, DemandProviderResponse) -> ())?
+    var stubbedPrepareBid: ((Payload, DemandProviderResponse) -> ())?
 
-    func prepareBid(with payload: String, response: @escaping DemandProviderResponse) {
+    func prepareBid(
+        data: Payload,
+        response: @escaping DemandProviderResponse
+    ) {
         invokedPrepareBid = true
         invokedPrepareBidCount += 1
-        invokedPrepareBidParameters = (payload, response)
-        invokedPrepareBidParametersList.append((payload, response))
-        stubbedPrepareBid?(payload, response)
+        stubbedPrepareBid?(data, response)
     }
 }
 
 
-extension BiddingDemandProviderMock: DemandProviderMockBuildable {
+typealias SomeParameterizedBiddingDemandProviderMock = ParameterizedBiddingDemandProviderMock<SomeToken, SomePayload>
+
+extension SomeParameterizedBiddingDemandProviderMock: DemandProviderMockBuildable {
     final class Builder: DemandProviderMockBuilder {
         var demandId: String!
-        var expectedPayload: String?
+        var expectedPayload: SomePayload?
         
-        var biddingContextResult: Result<BiddingContextEncoder, MediationError>?
+        var biddingContextResult: Result<SomeToken, MediationError>?
         var prepareBidResult: Result<DemandAd, MediationError>?
         
         @discardableResult
@@ -67,9 +66,9 @@ extension BiddingDemandProviderMock: DemandProviderMockBuildable {
         }
         
         @discardableResult
-        func withBiddingContextSuccess<Content: Encodable>(_ content: Content) -> Self {
-            let encoder = BiddingContextEncoderMock<Content>(content: content)
-            self.biddingContextResult = .success(encoder)
+        func withBiddingContextSuccess(_ content: String) -> Self {
+            let token = SomeToken(token: content)
+            self.biddingContextResult = .success(token)
             return self
         }
         
@@ -81,7 +80,7 @@ extension BiddingDemandProviderMock: DemandProviderMockBuildable {
         
         @discardableResult
         func withExpectedPayload(_ payload: String) -> Self {
-            self.expectedPayload = payload
+            self.expectedPayload = SomePayload(payload: payload)
             return self
         }
         
@@ -121,7 +120,7 @@ extension BiddingDemandProviderMock: DemandProviderMockBuildable {
         if let result = builder.prepareBidResult {
             stubbedPrepareBid = { payload, response in
                 if let expectedPayload = builder.expectedPayload {
-                    XCTAssertEqual(payload, expectedPayload, "Payloads do")
+                    XCTAssertEqual(payload, expectedPayload, "Payloads doesn't match")
                 }
                 
                 response(result)

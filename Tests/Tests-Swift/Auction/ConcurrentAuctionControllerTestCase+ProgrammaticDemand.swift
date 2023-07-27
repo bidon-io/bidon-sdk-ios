@@ -60,12 +60,12 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM1)
-        XCTAssertEqual(report.result.winnerNetworkId, demandId1)
+        XCTAssertEqual(report.result.winnerDemandId, demandId1)
 
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
-        XCTAssertEqual(report.rounds[0].demands[0].networkId, demandId1)
+        XCTAssertEqual(report.rounds[0].demands[0].demandId, demandId1)
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "WIN")
     }
     
@@ -136,16 +136,16 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM2)
-        XCTAssertEqual(report.result.winnerNetworkId, demandId2)
+        XCTAssertEqual(report.result.winnerDemandId, demandId2)
 
         XCTAssertEqual(report.rounds.count, 2)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
-        XCTAssertEqual(report.rounds[0].demands[0].networkId, demandId1)
+        XCTAssertEqual(report.rounds[0].demands[0].demandId, demandId1)
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "LOSE")
         XCTAssertEqual(report.rounds[1].roundId, rounds[1].id)
         XCTAssertEqual(report.rounds[1].demands.count, 1)
-        XCTAssertEqual(report.rounds[1].demands[0].networkId, demandId2)
+        XCTAssertEqual(report.rounds[1].demands[0].demandId, demandId2)
         XCTAssertEqual(report.rounds[1].demands[0].status.stringValue, "WIN")
     }
     
@@ -195,12 +195,12 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winnerECPM)
-        XCTAssertNil(report.result.winnerNetworkId)
+        XCTAssertNil(report.result.winnerDemandId)
 
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
-        XCTAssertEqual(report.rounds[0].demands[0].networkId, demandId1)
+        XCTAssertEqual(report.rounds[0].demands[0].demandId, demandId1)
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "NO_BID")
     }
     
@@ -269,16 +269,16 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winnerECPM)
-        XCTAssertNil(report.result.winnerNetworkId)
+        XCTAssertNil(report.result.winnerDemandId)
 
         XCTAssertEqual(report.rounds.count, 2)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
-        XCTAssertEqual(report.rounds[0].demands[0].networkId, demandId1)
+        XCTAssertEqual(report.rounds[0].demands[0].demandId, demandId1)
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "NO_FILL")
         XCTAssertEqual(report.rounds[1].roundId, rounds[1].id)
         XCTAssertEqual(report.rounds[1].demands.count, 1)
-        XCTAssertEqual(report.rounds[1].demands[0].networkId, demandId2)
+        XCTAssertEqual(report.rounds[1].demands[0].demandId, demandId2)
         XCTAssertEqual(report.rounds[1].demands[0].status.stringValue, "NO_BID")
     }
 }

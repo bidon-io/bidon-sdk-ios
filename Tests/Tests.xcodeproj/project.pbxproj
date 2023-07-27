@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		421992142A726C3F0045CD5B /* BidRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */; };
 		42218E422A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */; };
 		42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */; };
 		42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidRequest+Extensions.swift"; sourceTree = "<group>"; };
 		422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-ObjectiveC.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+MixedDemand.swift"; sourceTree = "<group>"; };
 		42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTypeContextMock.swift; sourceTree = "<group>"; };
@@ -112,6 +114,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		421992122A726C2B0045CD5B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		422101E6285A0007006596DA = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +190,7 @@
 		425672282A444EB6007AEE23 /* Tests-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				421992122A726C2B0045CD5B /* Extensions */,
 				42ABAF912A49ED7000B1DF65 /* Auction */,
 				4256722E2A446E6A007AEE23 /* Mocks */,
 			);
@@ -440,6 +451,7 @@
 				42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */,
 				42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */,
 				42F2651A2A52DEF70081EC55 /* BiddingDemandProviderMock.swift in Sources */,
+				421992142A726C3F0045CD5B /* BidRequest+Extensions.swift in Sources */,
 				42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */,
 				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
 				42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */,

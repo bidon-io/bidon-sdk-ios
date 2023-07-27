@@ -160,7 +160,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)
-        XCTAssertEqual(report.rounds[0].demands[0].networkId, "")
+        XCTAssertEqual(report.rounds[0].demands[0].demandId, "")
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "UNKNOWN_ADAPTER")
     }
 }
@@ -179,8 +179,8 @@ extension TestAuctionResult {
 extension RoundReport {
     var sortedDemands: [DemandReportType] {
         return demands.sorted { first, second in
-            let firstId = first.networkId ?? ""
-            let secondId = second.networkId ?? ""
+            let firstId = first.demandId ?? ""
+            let secondId = second.demandId ?? ""
             return firstId < secondId
         }
     }
