@@ -17,6 +17,7 @@ struct AdViewImpression: Impression {
 
     var roundId: String { bid.roundId }
     var lineItem: LineItem? { bid.lineItem }
+    var eCPM: Price { bid.eCPM }
     var adType: AdType { bid.adType }
     var ad: DemandAd { bid.ad }
     var metadata: AuctionMetadata { bid.metadata }

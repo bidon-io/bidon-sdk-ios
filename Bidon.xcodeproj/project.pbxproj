@@ -180,7 +180,6 @@
 		42F265232A532CBE0081EC55 /* RewardedAdTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265222A532CBE0081EC55 /* RewardedAdTypeContext.swift */; };
 		42F265252A532CDA0081EC55 /* BannerAdTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265242A532CDA0081EC55 /* BannerAdTypeContext.swift */; };
 		42FE946E29D42D9000DF7920 /* Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FE946D29D42D9000DF7920 /* Bid.swift */; };
-		42FE947229D459C700DF7920 /* ECPMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FE947129D459C700DF7920 /* ECPMProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -359,7 +358,6 @@
 		42F265222A532CBE0081EC55 /* RewardedAdTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdTypeContext.swift; sourceTree = "<group>"; };
 		42F265242A532CDA0081EC55 /* BannerAdTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdTypeContext.swift; sourceTree = "<group>"; };
 		42FE946D29D42D9000DF7920 /* Bid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bid.swift; sourceTree = "<group>"; };
-		42FE947129D459C700DF7920 /* ECPMProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECPMProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -520,7 +518,6 @@
 			children = (
 				426DD78C28A3EDD900A1ADF5 /* LineItem.swift */,
 				42DDB70729D2EF8C00DBA4C5 /* DemandAd.swift */,
-				42FE947129D459C700DF7920 /* ECPMProvider.swift */,
 			);
 			path = Ad;
 			sourceTree = "<group>";
@@ -1203,7 +1200,6 @@
 				42D047E4289D5F3E0096A8C6 /* User.swift in Sources */,
 				429F4D8428CF56C900765BD7 /* DemandMediationStatus.swift in Sources */,
 				426DD7AC28A5511500A1ADF5 /* RewardedConcurrentAuctionControllerBuilder.swift in Sources */,
-				42FE947229D459C700DF7920 /* ECPMProvider.swift in Sources */,
 				42DDB70429D2EF4E00DBA4C5 /* AdRevenueModel.swift in Sources */,
 				42BA81AA28758A90001F1744 /* AuctionController.swift in Sources */,
 				4298902229D589BE00C5FB7B /* BaseAdRevenueObserver.swift in Sources */,

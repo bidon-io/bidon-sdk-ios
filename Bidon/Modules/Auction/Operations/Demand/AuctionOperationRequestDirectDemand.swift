@@ -89,6 +89,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                     id: UUID().uuidString,
                     roundId: self.round.id,
                     adType: self.context.adType,
+                    eCPM: ad.eCPM ?? lineItem.pricefloor,
                     lineItem: lineItem,
                     ad: ad,
                     provider: self.adapter.provider,

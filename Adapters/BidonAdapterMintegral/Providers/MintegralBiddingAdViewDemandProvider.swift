@@ -103,7 +103,6 @@ extension MintegralBiddingAdViewDemandProvider: MTGBannerAdViewDelegate {
 
 
 extension MTGBannerAdView: Bidon.AdViewContainer {
-    #warning("Force adaptive")
     public var isAdaptive: Bool { true }
 }
 

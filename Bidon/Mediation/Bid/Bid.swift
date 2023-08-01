@@ -8,12 +8,13 @@
 import Foundation
 
 
-protocol Bid: ECPMProvider, Hashable {
+protocol Bid: Hashable {
     associatedtype Provider
     
     var id: String { get }
     var roundId: String { get }
     var adType: AdType { get }
+    var eCPM: Price { get }
     var lineItem: LineItem? { get }
     var ad: DemandAd { get }
     var provider: Provider { get }
@@ -25,6 +26,7 @@ struct BidModel<DemandProviderType>: Bid {
     var id: String
     var roundId: String
     var adType: AdType
+    var eCPM: Price
     var lineItem: LineItem?
     var ad: DemandAd
     var provider: DemandProviderType
@@ -63,6 +65,7 @@ extension AnyAdViewBid {
             id: id,
             roundId: roundId,
             adType: adType,
+            eCPM: eCPM,
             lineItem: lineItem,
             ad: ad,
             provider: provider.wrapped,
@@ -78,6 +81,7 @@ extension AnyInterstitialBid {
             id: id,
             roundId: roundId,
             adType: adType,
+            eCPM: eCPM,
             lineItem: lineItem,
             ad: ad,
             provider: provider.wrapped,
@@ -93,6 +97,7 @@ extension AnyRewardedAdBid {
             id: id,
             roundId: roundId,
             adType: adType,
+            eCPM: eCPM,
             lineItem: lineItem,
             ad: ad,
             provider: provider.wrapped,

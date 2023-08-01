@@ -94,6 +94,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                     id: UUID().uuidString,
                     roundId: self.round.id,
                     adType: self.context.adType,
+                    eCPM: ad.eCPM ?? .unknown,
                     ad: ad,
                     provider: self.adapter.provider,
                     metadata: self.metadata

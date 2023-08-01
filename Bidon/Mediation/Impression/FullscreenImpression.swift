@@ -17,6 +17,7 @@ struct FullscreenImpression: Impression {
     
     var roundId: String
     var lineItem: LineItem?
+    var eCPM: Price
     var adType: AdType
     var ad: DemandAd
     var metadata: AuctionMetadata
@@ -24,6 +25,7 @@ struct FullscreenImpression: Impression {
     init<T: Bid>(bid: T) {
         self.roundId = bid.roundId
         self.lineItem = bid.lineItem
+        self.eCPM = bid.eCPM
         self.adType = bid.adType
         self.ad = bid.ad
         self.metadata = bid.metadata
