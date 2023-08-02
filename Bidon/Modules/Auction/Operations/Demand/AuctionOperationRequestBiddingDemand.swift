@@ -218,7 +218,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                     id: pendingServerBid.id,
                     roundId: self.round.id,
                     adType: self.context.adType,
-                    eCPM: ad.eCPM ?? pendingServerBid.price,
+                    eCPM: (ad.eCPM != nil && ad.eCPM != .unknown) ? ad.eCPM! : pendingServerBid.price,
                     ad: ad,
                     provider: adapter.provider,
                     metadata: self.metadata

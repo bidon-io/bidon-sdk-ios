@@ -20,6 +20,13 @@ extension BigoAd: DemandAd {
     }
     
     public var eCPM: Price {
+        guard
+            getBid() != nil,
+            getBid().getPrice() != nil
+        else {
+            return .unknown
+        }
+        
         let price = Double(getBid().getPrice())
         return price * 1000
     }
