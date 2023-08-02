@@ -74,7 +74,9 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, ParameterizedBiddi
     ) {
         switch event {
         case .lose:
-            ad.destroy()
+            DispatchQueue.main.async {
+                ad.destroy()
+            }
         default:
             break
         }
