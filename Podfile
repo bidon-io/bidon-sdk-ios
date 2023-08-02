@@ -14,17 +14,17 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.2.0'
-  pod 'BidMachineAdColonyAdapter', '~> 2.2.0.0'
-  # pod 'BidMachineMintegralAdapter', '~> 2.2.0.0'
-  pod 'BidMachineAmazonAdapter', '~> 2.2.0.0'
-  pod 'BidMachineCriteoAdapter', '~> 2.2.0.0'
-  pod 'BidMachineMetaAudienceAdapter', '~> 2.2.0.0'
-  pod 'BidMachineMyTargetAdapter', '~> 2.2.0.0'
-  pod 'BidMachineSmaatoAdapter', '~> 2.2.0.0'
-  pod 'BidMachineTapjoyAdapter', '~> 2.2.0.0'
-  pod 'BidMachineVungleAdapter', '~> 2.2.0.0'
-  pod 'BidMachinePangleAdapter', '~> 2.2.0.0'
+  pod 'BidMachine', '~> 2.3.0'
+  pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
+  pod 'BidMachineMintegralAdapter', '~> 2.3.0'
+  pod 'BidMachineAmazonAdapter', '~> 2.3.0'
+  pod 'BidMachineCriteoAdapter', '~> 2.3.0'
+  pod 'BidMachineMetaAudienceAdapter', '~> 2.3.0'
+  pod 'BidMachineMyTargetAdapter', '~> 2.3.0'
+  pod 'BidMachineSmaatoAdapter', '~> 2.3.0'
+  pod 'BidMachineTapjoyAdapter', '~> 2.3.0'
+  pod 'BidMachineVungleAdapter', '~> 2.3.0'
+  pod 'BidMachinePangleAdapter', '~> 2.3.0'
 end
 
 def admob
@@ -73,7 +73,7 @@ def appodeal_mediation
   pod 'APDAdjustAdapter', '3.1.3.0-beta.2'
   pod 'APDAppLovinAdapter', '3.1.3.0-beta.2'
   pod 'APDAppsFlyerAdapter', '3.1.3.0-beta.2'
-  pod 'APDBidMachineAdapter', '3.1.3.0-beta.2' # Required
+  # pod 'APDBidMachineAdapter', '3.1.3.0-beta.2' # Required
   pod 'APDFirebaseAdapter', '3.1.3.0-beta.2'
   pod 'APDGoogleAdMobAdapter', '3.1.3.0-beta.2'
   pod 'APDIABAdapter', '3.1.3.0-beta.2' # Required

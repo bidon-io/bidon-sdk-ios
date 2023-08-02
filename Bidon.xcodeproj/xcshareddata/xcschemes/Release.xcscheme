@@ -90,6 +90,34 @@
                ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4215B8A82A55973B00675ACC"
+               BuildableName = "BidonAdapterMintegral.framework"
+               BlueprintName = "BidonAdapterMintegral"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "420F033C2A67DB4300A4664F"
+               BuildableName = "BidonAdapterBigoAds.framework"
+               BlueprintName = "BidonAdapterBigoAds"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
