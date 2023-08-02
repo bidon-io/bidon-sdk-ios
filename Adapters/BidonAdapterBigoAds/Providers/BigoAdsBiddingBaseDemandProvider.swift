@@ -44,6 +44,12 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, ParameterizedBiddi
     
     final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
         let token = BigoAdSdk.sharedInstance().getBidderToken()
+        
+        guard !token.isEmpty else {
+            response(.failure(.adapterNotInitialized))
+            return
+        }
+        
         let context = BiddingContext(token: token)
         response(.success(context))
     }
