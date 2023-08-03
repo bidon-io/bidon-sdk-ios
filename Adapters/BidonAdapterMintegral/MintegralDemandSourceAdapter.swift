@@ -42,7 +42,7 @@ BiddingAdViewDemandSourceAdapter
 
 extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        var appId, apiKey: String
+        var appId, appKey: String
     }
         
     public func initialize(
@@ -52,7 +52,7 @@ extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
         defer { isInitialized = true }
         MTGSDK.sharedInstance().setAppID(
             parameters.appId,
-            apiKey: parameters.apiKey
+            apiKey: parameters.appKey
         )
         completion(nil)
     }
