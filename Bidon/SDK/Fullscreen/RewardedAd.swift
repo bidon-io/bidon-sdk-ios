@@ -17,7 +17,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         RewardedImpressionController
     >
     
-    @objc public var delegate: RewardedAdDelegate?
+    @objc public weak var delegate: RewardedAdDelegate?
     
     @objc public let placement: String
     

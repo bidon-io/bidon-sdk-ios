@@ -17,7 +17,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         InterstitialImpressionController
     >
     
-    @objc public var delegate: FullscreenAdDelegate?
+    @objc public weak var delegate: FullscreenAdDelegate?
     
     @objc public let placement: String
     

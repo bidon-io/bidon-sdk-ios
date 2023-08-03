@@ -12,10 +12,91 @@ import UIKit
 
 
 internal final class AppLovinRewardedDemandProvider: NSObject {
+    final class AdLoadDelegate: NSObject, ALAdLoadDelegate {
+        private var response: DemandProviderResponse?
+        
+        init(response: DemandProviderResponse? = nil) {
+            self.response = response
+            super.init()
+        }
+        
+        func adService(_ adService: ALAdService, didLoad ad: ALAd) {
+            response?(.success(ad))
+            response = nil
+        }
+        
+        func adService(_ adService: ALAdService, didFailToLoadAdWithError code: Int32) {
+            response?(.failure(.noFill))
+            response = nil
+        }
+    }
+    
+    final class AdRewardDelegate: NSObject, ALAdRewardDelegate, ALAdDisplayDelegate {
+        private weak var delegate: (ALAdRewardDelegate & ALAdDisplayDelegate)?
+        
+        init(delegate: (ALAdRewardDelegate & ALAdDisplayDelegate)?) {
+            self.delegate = delegate
+            super.init()
+        }
+        
+        func rewardValidationRequest(
+            for ad: ALAd,
+            didSucceedWithResponse response: [AnyHashable : Any]
+        ) {
+            delegate?.rewardValidationRequest(
+                for: ad,
+                didSucceedWithResponse: response
+            )
+        }
+        
+        // MARK: No-op
+        func rewardValidationRequest(
+            for ad: ALAd,
+            didExceedQuotaWithResponse response: [AnyHashable : Any]
+        ) {
+            delegate?.rewardValidationRequest(
+                for: ad,
+                didExceedQuotaWithResponse: response
+            )
+        }
+        
+        func rewardValidationRequest(
+            for ad: ALAd,
+            wasRejectedWithResponse response: [AnyHashable : Any]
+        ) {
+            delegate?.rewardValidationRequest(
+                for: ad,
+                wasRejectedWithResponse: response
+            )
+        }
+        
+        func rewardValidationRequest(
+            for ad: ALAd,
+            didFailWithError responseCode: Int
+        ) {
+            delegate?.rewardValidationRequest(
+                for: ad,
+                didFailWithError: responseCode
+            )
+        }
+        
+        func ad(_ ad: ALAd, wasDisplayedIn view: UIView) {
+            delegate?.ad(ad, wasDisplayedIn: view)
+        }
+        
+        func ad(_ ad: ALAd, wasHiddenIn view: UIView) {
+            delegate?.ad(ad, wasHiddenIn: view)
+        }
+        
+        func ad(_ ad: ALAd, wasClickedIn view: UIView) {
+            delegate?.ad(ad, wasClickedIn: view)
+        }
+    }
+    
     private let sdk: ALSdk
     
     private var interstitial: ALIncentivizedInterstitialAd?
-    private var response: DemandProviderResponse?
+    private lazy var bridge = AdRewardDelegate(delegate: self)
     
     weak var delegate: DemandProviderDelegate?
     weak var rewardDelegate: DemandProviderRewardDelegate?
@@ -38,11 +119,12 @@ extension AppLovinRewardedDemandProvider: DirectDemandProvider {
             sdk: sdk
         )
         
-        interstitial.adDisplayDelegate = self
-        interstitial.preloadAndNotify(self)
+        let delegate = AdLoadDelegate(response: response)
+        
+        interstitial.adDisplayDelegate = bridge
+        interstitial.preloadAndNotify(delegate)
         
         self.interstitial = interstitial
-        self.response = response
     }
     
     // MARK: Noop
@@ -61,20 +143,7 @@ extension AppLovinRewardedDemandProvider: RewardedAdDemandProvider {
             return
         }
         
-        interstitial.show(ad, andNotify: self)
-    }
-}
-
-
-extension AppLovinRewardedDemandProvider: ALAdLoadDelegate {
-    func adService(_ adService: ALAdService, didLoad ad: ALAd) {
-        response?(.success(ad))
-        response = nil
-    }
-    
-    func adService(_ adService: ALAdService, didFailToLoadAdWithError code: Int32) {
-        response?(.failure(.noFill))
-        response = nil
+        interstitial.show(ad, andNotify: bridge)
     }
 }
 

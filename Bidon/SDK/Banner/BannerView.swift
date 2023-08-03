@@ -21,9 +21,9 @@ public final class BannerView: UIView, AdView {
     
     @objc public var format: BannerFormat = .banner
     
-    @objc public var rootViewController: UIViewController?
+    @objc public weak var rootViewController: UIViewController?
     
-    @objc public var delegate: AdViewDelegate?
+    @objc public weak var delegate: AdViewDelegate?
     
     @objc public var isReady: Bool { adManager.impression != nil }
     
