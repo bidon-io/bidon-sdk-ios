@@ -71,6 +71,12 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var bidFinishTimestamp: UInt?
         var bids: [BidReportCodableModel]
         
+        enum CodingKeys: String, CodingKey {
+            case bidStartTimestamp = "bid_start_ts"
+            case bidFinishTimestamp = "bid_finish_ts"
+            case bids
+        }
+        
         init<T: RoundBiddingReport>(_ report: T) {
             self.bidStartTimestamp = report.bidStartTimestamp
             self.bidFinishTimestamp = report.bidFinishTimestamp
