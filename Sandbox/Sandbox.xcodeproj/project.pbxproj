@@ -34,7 +34,6 @@
 		426A5C8029AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C7F29AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework */; };
 		426A5C8429AF842A0065AAD5 /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426A5C8329AF842A0065AAD5 /* QRCodeScannerView.swift */; };
 		426DD7AE28A6584600A1ADF5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD7AD28A6584600A1ADF5 /* HomeView.swift */; };
-		4276A234299549DA00EE3991 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4276A233299549DA00EE3991 /* Constants.swift */; };
 		427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCC299A69A1007D4E93 /* AdService.swift */; };
 		427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */; };
 		427B1BD2299A7E6E007D4E93 /* AdServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */; };
@@ -71,6 +70,7 @@
 		42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */; };
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
+		49921B0B2A8125E1007B2056 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49921B0A2A8125E1007B2056 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,7 +107,6 @@
 		426A5C8329AF842A0065AAD5 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
 		426DD7AD28A6584600A1ADF5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4273347929ACE81E0042AE52 /* BidOnAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4276A233299549DA00EE3991 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		427B1BCC299A69A1007D4E93 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
 		427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealAdService.swift; sourceTree = "<group>"; };
 		427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdServiceProvider.swift; sourceTree = "<group>"; };
@@ -145,6 +144,7 @@
 		42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
+		49921B0A2A8125E1007B2056 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		64A1E0483C51188FF09EB928 /* Pods_Sandbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sandbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F846B990A6AF5B081BB0BD12 /* Pods-Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.debug.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,8 +199,7 @@
 				429F4D8628CF6A9C00765BD7 /* Views */,
 				429F4D8528CF6A7F00765BD7 /* Events */,
 				42BE438E28C0E79D000528E3 /* Permissions */,
-				42697DAA2A3B07DD00D6B1EB /* Advanced */,
-				4276A233299549DA00EE3991 /* Constants.swift */,
+				49921B0A2A8125E1007B2056 /* Constants.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -228,13 +227,6 @@
 				64A1E0483C51188FF09EB928 /* Pods_Sandbox.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		42697DAA2A3B07DD00D6B1EB /* Advanced */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Advanced;
 			sourceTree = "<group>";
 		};
 		42697DAD2A3B2A0500D6B1EB /* Extesnions */ = {
@@ -561,6 +553,7 @@
 				4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */,
 				427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */,
 				427B1C0A299FDE94007D4E93 /* AdBannerWrapperView.swift in Sources */,
+				49921B0B2A8125E1007B2056 /* Constants.swift in Sources */,
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,
 				427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */,
@@ -585,7 +578,6 @@
 				42BE439228C0E7CB000528E3 /* LocationPermission.swift in Sources */,
 				42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */,
 				427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */,
-				4276A234299549DA00EE3991 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
