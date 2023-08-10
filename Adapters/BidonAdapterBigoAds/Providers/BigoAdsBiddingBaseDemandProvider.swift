@@ -18,18 +18,6 @@ extension BigoAd: DemandAd {
     public var dsp: String? {
         return nil
     }
-    
-    public var eCPM: Price {
-        guard
-            getBid() != nil,
-            getBid().getPrice() != nil
-        else {
-            return .unknown
-        }
-        
-        let price = Double(getBid().getPrice())
-        return price * 1000
-    }
 }
 
 
