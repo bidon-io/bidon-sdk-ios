@@ -11,11 +11,15 @@ import Bidon
 
 
 protocol GoogleMobileAdsDemandAd: DemandAd {
+    static var adFormat: GADAdFormat { get }
+    
     var paidEventHandler: GADPaidEventHandler? { get set }
 }
 
 
 extension GADInterstitialAd: GoogleMobileAdsDemandAd {
+    static var adFormat: GADAdFormat { .interstitial }
+    
     public var id: String { responseInfo.responseIdentifier ?? UUID().uuidString }
     public var dsp: String? { nil }
     public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }
@@ -23,6 +27,8 @@ extension GADInterstitialAd: GoogleMobileAdsDemandAd {
 
 
 extension GADRewardedAd: GoogleMobileAdsDemandAd {
+    static var adFormat: GADAdFormat { .rewarded }
+    
     public var id: String { responseInfo.responseIdentifier ?? UUID().uuidString }
     public var dsp: String? { nil }
     public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }
@@ -30,6 +36,8 @@ extension GADRewardedAd: GoogleMobileAdsDemandAd {
 
 
 extension GADBannerView: GoogleMobileAdsDemandAd {
+    static var adFormat: GADAdFormat { .banner }
+    
     public var id: String { responseInfo?.responseIdentifier ?? UUID().uuidString }
     public var dsp: String? { nil }
     public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }

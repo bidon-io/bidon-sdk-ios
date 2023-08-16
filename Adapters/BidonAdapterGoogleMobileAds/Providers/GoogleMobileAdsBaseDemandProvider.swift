@@ -15,13 +15,10 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
-    private let request: GADRequest
     private var response: DemandProviderResponse?
     
-    init(_ request: GADRequest) {
-        self.request = request
-        super.init()
-    }
+    @Injected(\.context)
+    var context: Bidon.SdkContext
     
     open func loadAd(_ request: GADRequest, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
@@ -48,15 +45,68 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
             )
         }
     }
+    
+    func notify(
+        ad: AdObject,
+        event: AuctionEvent
+    ) {}
 }
 
 
 extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
     func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
         self.response = response
+        let request = GADRequest { builder in
+            builder.withGDPRConsent(context.regulations.gdrpConsent)
+            builder.withUSPrivacyString(context.regulations.usPrivacyString)
+        }
+        
         loadAd(request, adUnitId: adUnitId)
     }
-    
-    func notify(ad: AdObject, event: AuctionEvent) {}
 }
 
+
+extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider {
+    struct BiddingContext: Codable {
+        var token: String
+    }
+    
+    struct BiddingResponse: Codable {
+        var payload: String
+        var adUnitId: String
+    }
+    
+    func fetchBiddingContext(
+        response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
+    ) {
+        let request = GADRequest { builder in
+            // TODO: query_info_type: requester_type_3 / requester_type_2
+            builder.withGDPRConsent(context.regulations.gdrpConsent)
+            builder.withUSPrivacyString(context.regulations.usPrivacyString)
+        }
+
+        GADQueryInfo.createQueryInfo(with: request, adFormat: AdObject.adFormat) { info, error in
+            guard let token = info?.query else {
+                response(.failure(.adapterNotInitialized))
+                return
+            }
+            
+            let context = BiddingContext(token: token)
+            response(.success(context))
+        }
+    }
+    
+    func prepareBid(
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
+    ) {
+        let request = GADRequest { builder in
+            // TODO: query_info_type: requester_type_3 / requester_type_2
+            builder.withGDPRConsent(context.regulations.gdrpConsent)
+            builder.withUSPrivacyString(context.regulations.usPrivacyString)
+            builder.withBiddingPayload(data.payload)
+        }
+        
+        loadAd(request, adUnitId: data.adUnitId)
+    }
+}

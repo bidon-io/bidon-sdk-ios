@@ -13,7 +13,10 @@ import Bidon
 internal typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
-DirectAdViewDemandSourceAdapter
+DirectAdViewDemandSourceAdapter &
+BiddingInterstitialDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter &
+BiddingRewardedAdDemandSourceAdapter
 
 
 @objc
@@ -30,35 +33,32 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
    
     private(set) public var isInitialized: Bool = false
     
-    private var request: GADRequest {
-        let request = GADRequest()
-        
-        if context.regulations.gdrpConsent == .denied {
-            let extras = GADExtras()
-            extras.additionalParameters = ["npa": "1"]
-            request.register(extras)
-        }
-        
-        if let usPrivacy = context.regulations.usPrivacyString {
-            let extras = GADExtras()
-            extras.additionalParameters = ["IABUSPrivacy_String": usPrivacy]
-            request.register(extras)
-        }
-        
-        return request
-    }
-    
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
-        return GoogleMobileAdsInterstitialDemandProvider(request)
+        return GoogleMobileAdsInterstitialDemandProvider()
     }
     
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
-        return GoogleMobileAdsRewardedAdDemandProvider(request)
+        return GoogleMobileAdsRewardedAdDemandProvider()
     }
     
-    public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
+    public func directAdViewDemandProvider(
+        context: AdViewContext
+    ) throws -> AnyDirectAdViewDemandProvider {
         return GoogleMobileAdsBannerDemandProvider(
-            request: request,
+            context: context
+        )
+    }
+    
+    public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
+        return GoogleMobileAdsInterstitialDemandProvider()
+    }
+    
+    public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
+        return GoogleMobileAdsRewardedAdDemandProvider()
+    }
+    
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return GoogleMobileAdsBannerDemandProvider(
             context: context
         )
     }
