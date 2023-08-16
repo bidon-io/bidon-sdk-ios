@@ -11,6 +11,8 @@ import Combine
 import AppsFlyerLib
 import AppsFlyerAdRevenue
 import Bidon
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 
 final class AdServiceProvider: ObservableObject {
@@ -25,6 +27,10 @@ final class AdServiceProvider: ObservableObject {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) {
         setupAppsFlyer()
+        setupMeta(
+            application: application,
+            launchOptions: launchOptions
+        )
     }
     
     private func setupAppsFlyer() {
@@ -37,6 +43,19 @@ final class AdServiceProvider: ObservableObject {
             .publisher(for: UIApplication.didBecomeActiveNotification)
             .sink(receiveValue: unownedSelf.receiveApplicationDidBecomeActive)
             .store(in: &cancellables)
+    }
+    
+    private func setupMeta(
+        application: UIApplication,
+        launchOptions: [UIApplication.LaunchOptionsKey : Any]?
+    ) {
+        Settings.shared.appID = Constants.Facebook.appId
+        Settings.shared.clientToken = Constants.Facebook.clientToken
+        
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
     }
     
     private func receiveApplicationDidBecomeActive(notification: Notification) {

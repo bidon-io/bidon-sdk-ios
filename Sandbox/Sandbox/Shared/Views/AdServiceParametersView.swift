@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import FBSDKLoginKit
 
 
 struct AdServiceParametersView: View {
@@ -62,6 +63,24 @@ struct AdServiceParametersView: View {
                         in: (0.0...100.0),
                         step: 9.99
                     )
+                }
+                
+                Section(header: Text("Login with Meta")) {
+                    Button(action: vm.handleLoginPress) {
+                        HStack {
+                            Text(vm.isLoggedIn == true ? "Log Out" : vm.isLoggedIn == false ? "Log In" : "Processing")
+                            Spacer()
+                            if let _ = vm.isLoggedIn {
+                                Image(systemName: "chevron.right")
+                                    .imageScale(.small)
+                                    .foregroundColor(.secondary)
+                            } else {
+                                ProgressView()
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .foregroundColor(.primary)
                 }
                 
                 Section {
@@ -339,6 +358,10 @@ final class AdServiceParametersViewModel: ObservableObject {
         didSet { parameters.usPrivacyString = usPrivacyString }
     }
     
+    @Published var isLoggedIn: Bool? = AccessToken.current != nil && AccessToken.current?.isExpired == false
+    
+    let loginManager = LoginManager()
+        
     init(_ parameters: AdServiceParameters) {
         self.parameters = parameters
         self.logLevel = parameters.logLevel
@@ -353,5 +376,23 @@ final class AdServiceParametersViewModel: ObservableObject {
         self.gdprApplies = parameters.gdprApplies ?? false
         self.gdprConsentString = parameters.gdprConsentString ?? ""
         self.usPrivacyString = parameters.usPrivacyString ?? ""
+    }
+    
+    
+    func handleLoginPress() {
+        guard let isLoggedIn = isLoggedIn else { return }
+        guard !isLoggedIn else {
+            loginManager.logOut()
+            self.isLoggedIn = false
+            return
+        }
+        
+        self.isLoggedIn = nil
+        loginManager.logIn(
+            permissions: ["public_profile", "email"],
+            from: nil
+        ) { [weak self] _, _ in
+            self?.isLoggedIn = AccessToken.current != nil && AccessToken.current?.isExpired == false
+        }
     }
 }

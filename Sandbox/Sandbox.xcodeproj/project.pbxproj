@@ -712,6 +712,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Sandbox requires camera usage for QR codes scanning";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Sandbox is using location for better ad personalization";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sandbox requires photo library usage for getting QR codes";
@@ -750,6 +751,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Sandbox requires camera usage for QR codes scanning";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Sandbox is using location for better ad personalization";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Sandbox requires photo library usage for getting QR codes";

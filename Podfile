@@ -44,7 +44,7 @@ def dtexchange
   pod 'Fyber_Marketplace_SDK'
 end
 
-def meta
+def meta_ads
   pod 'FBAudienceNetwork'
 end
 
@@ -66,6 +66,10 @@ end
 
 def ocmock
   pod 'OCMock', '~> 3.9.1'
+end
+
+def meta_sdk
+  pod 'FBSDKLoginKit'
 end
 
 def appodeal_mediation
@@ -121,7 +125,7 @@ end
 
 target 'BidonAdapterMetaAudienceNetwork' do
   project 'Adapters/Adapters.xcodeproj'
-  meta
+  meta_ads
 end
 
 target 'BidonAdapterMintegral' do
@@ -154,7 +158,7 @@ target 'Tests-ObjectiveC' do
   mobilefuse
   vungle
   bigo_ads
-  meta
+  meta_ads
 end
 
 target 'Tests-Swift' do
@@ -177,7 +181,8 @@ target 'Sandbox' do
   mobilefuse
   vungle
   bigo_ads
-  meta
+  meta_ads
+  meta_sdk
   appodeal_mediation
 end
 

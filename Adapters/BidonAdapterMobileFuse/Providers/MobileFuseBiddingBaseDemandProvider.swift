@@ -14,8 +14,6 @@ extension MFAd: DemandAd {
     public var id: String { instanceId() }
     public var networkName: String { MobileFuseDemandSourceAdapter.identifier }
     public var dsp: String? { nil }
-    public var eCPM: Price { winningBidCpmPrice.doubleValue }
-    public var currency: Currency { winningBidCurrency }
 }
 
 
@@ -55,12 +53,10 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
             
             request.privacyPreferences = preferences
         }
-        
-        if let token = MFBiddingTokenProvider.getTokenWith(request) {
+                
+        MFBiddingTokenProvider.getTokenWith(request) { token in
             let context = BiddingContext(token: token)
             response(.success(context))
-        } else {
-            response(.failure(.adapterNotInitialized))
         }
     }
     
