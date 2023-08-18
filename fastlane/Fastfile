@@ -128,14 +128,14 @@ platform :ios do
 
   lane :sandbox_env do |options|
     generate_sandbox_constants(
-      path: $root_dir + '/Sandbox/Sandbox/Shared'
+      path: $root_dir + '/Sandbox/Sandbox'
     )
   end
 
   lane :setup do |options|
     cocoapods(use_bundle_exec: true)
     generate_sandbox_constants(
-      path: $root_dir + '/Sandbox/Sandbox/Shared'
+      path: $root_dir + '/Sandbox/Sandbox'
     )
   end
 end

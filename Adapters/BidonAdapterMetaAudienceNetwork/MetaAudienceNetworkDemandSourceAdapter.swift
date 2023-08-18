@@ -45,8 +45,8 @@ BiddingAdViewDemandSourceAdapter
 
 extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        var placements: [String]
-        var mediationService: String
+        var placements: [String]?
+        var mediationService: String?
     }
     
     public func initialize(
@@ -64,15 +64,30 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
             break
         }
         
-        let settings = FBAdInitSettings(
-            placementIDs: parameters.placements,
-            mediationService: parameters.mediationService
-        )
+        if let mediations = parameters.mediationService {
+            FBAdSettings.setMediationService(mediations)
+        }
         
+        let settings = FBAdInitSettings(parameters: parameters)
+           
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
             completion(result.isSuccess ? SdkError.message(result.message) : nil)
         }
+    }
+}
+
+
+fileprivate extension FBAdInitSettings {
+    convenience init?(parameters: MetaAudienceNetworkDemandSourceAdapter.Parameters) {
+        guard
+            let mediationService = parameters.mediationService
+        else { return nil }
+        
+        self.init(
+            placementIDs: parameters.placements ?? [],
+            mediationService: mediationService
+        )
     }
 }
 

@@ -46,4 +46,5 @@ Pods/
 
 # Secrets
 /Sandbox/**/Constants.swift
-/**/GoogleService-Info.plist
+/Sandbox/**/Info.plist
+/Sandbox/**/GoogleService-Info.plist
