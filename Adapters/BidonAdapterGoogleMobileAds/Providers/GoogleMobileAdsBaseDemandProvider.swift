@@ -73,7 +73,7 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
     
     struct BiddingResponse: Codable {
         var payload: String
-        var unitId: String
+        var adUnitId: String
     }
     
     func fetchBiddingContext(
@@ -107,6 +107,6 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
             builder.withBiddingPayload(data.payload)
         }
         
-        loadAd(request, adUnitId: data.unitId)
+        loadAd(request, adUnitId: data.adUnitId)
     }
 }

@@ -78,6 +78,8 @@ extension GoogleMobileAdsDemandSourceAdapter: InitializableAdapter {
         defer { isInitialized = true }
         
         configure(GADMobileAds.sharedInstance().requestConfiguration)
+        
+        GADMobileAds.sharedInstance().disableMediationInitialization()
         GADMobileAds.sharedInstance().start { _ in
             completion(.success(()))
         }
