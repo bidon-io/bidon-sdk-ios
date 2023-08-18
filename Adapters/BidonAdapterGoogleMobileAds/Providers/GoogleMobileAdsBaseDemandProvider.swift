@@ -73,14 +73,14 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
     
     struct BiddingResponse: Codable {
         var payload: String
-        var adUnitId: String
+        var unitId: String
     }
     
     func fetchBiddingContext(
         response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
     ) {
         let request = GADRequest { builder in
-            // TODO: query_info_type: requester_type_3 / requester_type_2
+            builder.withQueryType(.type2)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
@@ -101,12 +101,12 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
         response: @escaping DemandProviderResponse
     ) {
         let request = GADRequest { builder in
-            // TODO: query_info_type: requester_type_3 / requester_type_2
+            builder.withQueryType(.type2)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
             builder.withBiddingPayload(data.payload)
         }
         
-        loadAd(request, adUnitId: data.adUnitId)
+        loadAd(request, adUnitId: data.unitId)
     }
 }

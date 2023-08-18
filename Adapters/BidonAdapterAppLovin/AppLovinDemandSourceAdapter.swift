@@ -57,7 +57,7 @@ DirectAdViewDemandSourceAdapter
 
 extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        public var appKey: String
+        public var sdkKey: String
     }
     
     public var isInitialized: Bool {
@@ -93,10 +93,10 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
         }
         
         guard let sdk = ALSdk.shared(
-            withKey: parameters.appKey,
+            withKey: parameters.sdkKey,
             settings: settings
         ) else {
-            let error = SdkError.message("Unable create sdk with app key: \(parameters.appKey)")
+            let error = SdkError.message("Unable create sdk with sdk key: \(parameters.sdkKey)")
             completion(error)
             return
         }

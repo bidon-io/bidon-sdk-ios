@@ -10,6 +10,10 @@ import Bidon
 import GoogleMobileAds
 
 
+enum GoogleQueryType: String {
+    case type2 = "requester_type_2"
+}
+
 extension GADRequest {
     final class Builder {
         private var parameters: [String: AnyHashable] = [:]
@@ -38,6 +42,12 @@ extension GADRequest {
         @discardableResult
         func withBiddingPayload(_ biddingPayload: String?) -> Self {
             self.adContent = biddingPayload
+            return self
+        }
+        
+        @discardableResult
+        func withQueryType(_ queryType: GoogleQueryType) -> Self {
+            self.parameters["query_info_type"] = queryType.rawValue
             return self
         }
     }
