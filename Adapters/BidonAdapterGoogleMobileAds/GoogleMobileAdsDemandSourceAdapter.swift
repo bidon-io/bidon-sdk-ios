@@ -21,6 +21,10 @@ BiddingRewardedAdDemandSourceAdapter
 
 @objc
 public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    public struct ServerData: Decodable {
+        var requestAgent, queryInfoType: String?
+    }
+    
     @objc public static let identifier = "admob"
     
     public let identifier: String = GoogleMobileAdsDemandSourceAdapter.identifier
@@ -31,34 +35,38 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     @Injected(\.context)
     var context: Bidon.SdkContext
    
+    private(set) var serverData = ServerData()
+    
     private(set) public var isInitialized: Bool = false
     
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
-        return GoogleMobileAdsInterstitialDemandProvider()
+        return GoogleMobileAdsInterstitialDemandProvider(serverData: serverData)
     }
     
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
-        return GoogleMobileAdsRewardedAdDemandProvider()
+        return GoogleMobileAdsRewardedAdDemandProvider(serverData: serverData)
     }
     
     public func directAdViewDemandProvider(
         context: AdViewContext
     ) throws -> AnyDirectAdViewDemandProvider {
         return GoogleMobileAdsBannerDemandProvider(
+            serverData: serverData,
             context: context
         )
     }
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return GoogleMobileAdsInterstitialDemandProvider()
+        return GoogleMobileAdsInterstitialDemandProvider(serverData: serverData)
     }
     
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return GoogleMobileAdsRewardedAdDemandProvider()
+        return GoogleMobileAdsRewardedAdDemandProvider(serverData: serverData)
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return GoogleMobileAdsBannerDemandProvider(
+            serverData: serverData,
             context: context
         )
     }
@@ -70,18 +78,21 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
 }
 
 
-extension GoogleMobileAdsDemandSourceAdapter: InitializableAdapter {
+extension GoogleMobileAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: ServerData,
+        completion: @escaping (SdkError?) -> Void
     ) {
-        defer { isInitialized = true }
+        defer {
+            serverData = parameters
+            isInitialized = true
+        }
         
         configure(GADMobileAds.sharedInstance().requestConfiguration)
         
         GADMobileAds.sharedInstance().disableMediationInitialization()
         GADMobileAds.sharedInstance().start { _ in
-            completion(.success(()))
+            completion(nil)
         }
     }
 }

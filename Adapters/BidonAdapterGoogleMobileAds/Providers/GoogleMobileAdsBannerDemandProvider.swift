@@ -19,10 +19,13 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
     
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     
-    init(context: AdViewContext) {
+    init(
+        serverData: GoogleMobileAdsDemandSourceAdapter.ServerData,
+        context: AdViewContext
+    ) {
         self.adSize = context.adSize
         self.rootViewController = context.rootViewController
-        super.init()
+        super.init(serverData: serverData)
     }
 
     override func loadAd(_ request: GADRequest, adUnitId: String) {

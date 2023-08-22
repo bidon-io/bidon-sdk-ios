@@ -17,8 +17,15 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     
     private var response: DemandProviderResponse?
     
+    let serverData: GoogleMobileAdsDemandSourceAdapter.ServerData
+    
     @Injected(\.context)
     var context: Bidon.SdkContext
+    
+    init(serverData: GoogleMobileAdsDemandSourceAdapter.ServerData) {
+        self.serverData = serverData
+        super.init()
+    }
     
     open func loadAd(_ request: GADRequest, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
@@ -57,6 +64,7 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
     func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
         self.response = response
         let request = GADRequest { builder in
+            builder.withRequestAgent(serverData.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
@@ -80,7 +88,8 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
         response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
     ) {
         let request = GADRequest { builder in
-            builder.withQueryType(.type2)
+            builder.withQueryType(serverData.queryInfoType)
+            builder.withRequestAgent(serverData.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
@@ -101,7 +110,8 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
         response: @escaping DemandProviderResponse
     ) {
         let request = GADRequest { builder in
-            builder.withQueryType(.type2)
+            builder.withQueryType(serverData.queryInfoType)
+            builder.withRequestAgent(serverData.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
             builder.withBiddingPayload(data.payload)

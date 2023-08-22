@@ -104,9 +104,9 @@ PODS:
   - BidMachineMetaAudienceAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - FBAudienceNetwork (= 6.12.0)
-  - BidMachineMintegralAdapter (2.3.0.0):
+  - BidMachineMintegralAdapter (2.3.0.1):
     - BidMachine (~> 2.3.0.0)
-    - MintegralAdSDK (= 7.3.8)
+    - MintegralAdSDK (= 7.4.2)
   - BidMachineMyTargetAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - myTargetSDK (= 5.17.5)
@@ -196,9 +196,9 @@ PODS:
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreInternal (10.13.0):
+  - FirebaseCoreInternal (10.14.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseInstallations (10.13.0):
+  - FirebaseInstallations (10.14.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -268,40 +268,40 @@ PODS:
   - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
   - IronSourceSDK (7.3.0.0)
-  - MintegralAdSDK (7.3.8):
-    - MintegralAdSDK/BannerAd (= 7.3.8)
-    - MintegralAdSDK/BidBannerAd (= 7.3.8)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 7.3.8)
-    - MintegralAdSDK/BidNativeAd (= 7.3.8)
-    - MintegralAdSDK/BidNewInterstitialAd (= 7.3.8)
-    - MintegralAdSDK/BidRewardVideoAd (= 7.3.8)
-    - MintegralAdSDK/InterstitialVideoAd (= 7.3.8)
-    - MintegralAdSDK/NativeAd (= 7.3.8)
-    - MintegralAdSDK/NewInterstitialAd (= 7.3.8)
-    - MintegralAdSDK/RewardVideoAd (= 7.3.8)
-  - MintegralAdSDK/BannerAd (7.3.8):
+  - MintegralAdSDK (7.4.2):
+    - MintegralAdSDK/BannerAd (= 7.4.2)
+    - MintegralAdSDK/BidBannerAd (= 7.4.2)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 7.4.2)
+    - MintegralAdSDK/BidNativeAd (= 7.4.2)
+    - MintegralAdSDK/BidNewInterstitialAd (= 7.4.2)
+    - MintegralAdSDK/BidRewardVideoAd (= 7.4.2)
+    - MintegralAdSDK/InterstitialVideoAd (= 7.4.2)
+    - MintegralAdSDK/NativeAd (= 7.4.2)
+    - MintegralAdSDK/NewInterstitialAd (= 7.4.2)
+    - MintegralAdSDK/RewardVideoAd (= 7.4.2)
+  - MintegralAdSDK/BannerAd (7.4.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (7.3.8):
+  - MintegralAdSDK/BidBannerAd (7.4.2):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (7.3.8):
+  - MintegralAdSDK/BidInterstitialVideoAd (7.4.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (7.3.8):
+  - MintegralAdSDK/BidNativeAd (7.4.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (7.3.8):
+  - MintegralAdSDK/BidNewInterstitialAd (7.4.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (7.3.8):
+  - MintegralAdSDK/BidRewardVideoAd (7.4.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (7.3.8):
+  - MintegralAdSDK/InterstitialVideoAd (7.4.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (7.3.8)
-  - MintegralAdSDK/NewInterstitialAd (7.3.8):
+  - MintegralAdSDK/NativeAd (7.4.2)
+  - MintegralAdSDK/NewInterstitialAd (7.4.2):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (7.3.8):
+  - MintegralAdSDK/RewardVideoAd (7.4.2):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.6.0)
   - myTargetSDK (5.17.5):
@@ -315,7 +315,7 @@ PODS:
   - OCMock (3.9.1)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
-  - Protobuf (3.24.0)
+  - Protobuf (3.24.1)
   - smaato-ios-sdk (22.0.2):
     - smaato-ios-sdk/Full (= 22.0.2)
   - smaato-ios-sdk/Banner (22.0.2):
@@ -501,6 +501,7 @@ SPEC REPOS:
     - APDVungleAdapter
     - APDYandexAdapter
     - Appodeal
+    - BidMachine
     - BidMachineAdColonyAdapter
     - BidMachineAmazonAdapter
     - BidMachineCriteoAdapter
@@ -587,12 +588,12 @@ SPEC CHECKSUMS:
   Appodeal: cc0793ab38817046f764c39930b4bb9447cd7357
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: cfb3e056683e0dea0bf597dbca9865f420b00c99
+  BidMachine: af2b5a2d335a858d12f1f47ab521e64aacb27477
   BidMachineAdColonyAdapter: 90b4be91688decd68cd3aad940102b4354f59520
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
   BidMachineMetaAudienceAdapter: c558a2a84027cd02be16aa4eab0cca3841682fa9
-  BidMachineMintegralAdapter: c5256f8bf7dd0e8042f3fde342992a338914a550
+  BidMachineMintegralAdapter: 0405db26926f26b09b08082273f90e2b36769c12
   BidMachineMyTargetAdapter: c2be6299ef8aa2756f270a31ab75b841fe2126fe
   BidMachinePangleAdapter: 3f394614b6e0727958cd51e7d5e94191f209a3fd
   BidMachineSmaatoAdapter: 5f2040224544fb99cacd05ab6c2bc26581591e0a
@@ -610,8 +611,8 @@ SPEC CHECKSUMS:
   FirebaseABTesting: 86ac5a4fc749088bb4d55a1cbfb2c4cb42c6d5de
   FirebaseAnalytics: 9a12e090ead49f8877ed8132ae920e3cbbd2fcd0
   FirebaseCore: 9948a31ff2c6cf323f9b040068201a95d271b68d
-  FirebaseCoreInternal: b342e37cd4f5b4454ec34308f073420e7920858e
-  FirebaseInstallations: b28af1b9f997f1a799efe818c94695a3728c352f
+  FirebaseCoreInternal: d558159ee6cc4b823c2296ecc193de9f6d9a5bb3
+  FirebaseInstallations: f672b1eda64e6381c21d424a2f680a943fd83f3b
   FirebaseRemoteConfig: 33e0dcf43899fbb4f8ef2d84200bf5f5e32eaf05
   Fyber_Marketplace_SDK: c51474f63c016c9ff7eb32e3542528d08d456bc5
   Google-Mobile-Ads-SDK: d4846d2d9bfe840ad7444078b5f9f565032bd4c2
@@ -619,7 +620,7 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   IronSourceSDK: 70d098472ea63fa8d58e47ad79ad761ad256ce15
-  MintegralAdSDK: 3b8edca477aecef338e484235090a61578795c07
+  MintegralAdSDK: a7da9c65b3dd69e8194a7b26cec7068b2bade7cc
   MobileFuseSDK: 1db2f268fea5850188f913ca129c711d5f48e558
   myTargetSDK: a4e52b626e687f7be32dce62ebc7339665dab296
   myTrackerSDK: df675bf18db63d9a426bd00d6c3dec4ba4bea57e
@@ -627,7 +628,7 @@ SPEC CHECKSUMS:
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Protobuf: 74a8b46ebe3001096a6f4b624e9efbae8adb2edd
+  Protobuf: 0c0a3eb3c1207ee14bdbca270dc0b40fa953cacc
   smaato-ios-sdk: 4533e9c8c24ecefd0445a78ea89afba35412e1d1
   StackAnalytics: 42307f033e611586dab85081731e1b639327e738
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
