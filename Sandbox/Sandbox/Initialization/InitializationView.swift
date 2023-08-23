@@ -76,7 +76,7 @@ struct InitializationView: View {
                     }
                     .padding(.bottom, 200)
                     .disabled(!vm.initializationState.isIdle)
-                    .listStyle(.automatic)
+                    .listStyle(.insetGrouped)
                 }
                 
                 VStack(alignment: .leading) {
