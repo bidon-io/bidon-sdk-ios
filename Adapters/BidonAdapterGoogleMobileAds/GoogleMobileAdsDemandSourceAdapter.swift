@@ -90,7 +90,7 @@ extension GoogleMobileAdsDemandSourceAdapter: ParameterizedInitializableAdapter 
         
         configure(GADMobileAds.sharedInstance().requestConfiguration)
         
-        GADMobileAds.sharedInstance().disableMediationInitialization()
+//        GADMobileAds.sharedInstance().disableMediationInitialization()
         GADMobileAds.sharedInstance().start { _ in
             completion(nil)
         }

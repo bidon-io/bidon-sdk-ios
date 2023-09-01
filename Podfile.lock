@@ -123,7 +123,7 @@ PODS:
   - BidMachineVungleAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - VungleAds (= 7.0.0)
-  - BigoADS (4.0.2)
+  - BigoADS (4.0.3)
   - BURelyFoundation_Global/AFNetworking (0.1.1.3)
   - BURelyFoundation_Global/Foundation (0.1.1.3):
     - BURelyFoundation_Global/NETWork
@@ -315,7 +315,7 @@ PODS:
   - OCMock (3.9.1)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
-  - Protobuf (3.24.1)
+  - Protobuf (3.24.2)
   - smaato-ios-sdk (22.0.2):
     - smaato-ios-sdk/Full (= 22.0.2)
   - smaato-ios-sdk/Banner (22.0.2):
@@ -599,7 +599,7 @@ SPEC CHECKSUMS:
   BidMachineSmaatoAdapter: 5f2040224544fb99cacd05ab6c2bc26581591e0a
   BidMachineTapjoyAdapter: 9acce59674b01cd1ee571121d2f08cc4c1e2e33f
   BidMachineVungleAdapter: cce13094d3150e866b11458e96c4277e1b8b831c
-  BigoADS: 0ba705cf96cbdbec44049250651b5bd1239451df
+  BigoADS: a856b5caa01411d76ca79ad1d12632a72e04fc46
   BURelyFoundation_Global: 1d1813784aecc249311d4df1b7e80e1dbd559dc3
   CriteoPublisherSdk: 1cfd1c5275aa4418b26e917cb9858901e02ed686
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
@@ -628,7 +628,7 @@ SPEC CHECKSUMS:
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Protobuf: 0c0a3eb3c1207ee14bdbca270dc0b40fa953cacc
+  Protobuf: de0b7ad27d01105fc191b77b003e74af6dbd2c2c
   smaato-ios-sdk: 4533e9c8c24ecefd0445a78ea89afba35412e1d1
   StackAnalytics: 42307f033e611586dab85081731e1b639327e738
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
@@ -641,6 +641,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 4c42873977786cf4aafac132b1c33443e2e3fada
+PODFILE CHECKSUM: d4564e74589ba3fb1b98dd78d110dd4f7ae644cd
 
 COCOAPODS: 1.11.3
