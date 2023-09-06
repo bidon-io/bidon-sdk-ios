@@ -11,10 +11,8 @@ import UIKit
 
 @objc(BDNBannerView)
 public final class BannerView: UIView, AdView {
-//    @available(*, unavailable)
     @objc public var autorefreshInterval: TimeInterval = 15
     
-//    @available(*, unavailable)
     @objc public var isAutorefreshing: Bool = false
     
     @objc public let placement: String

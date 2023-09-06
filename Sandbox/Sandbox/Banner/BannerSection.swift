@@ -56,58 +56,19 @@ struct BannerAdSection: View {
                 }
                 
                 NavigationLink("Events", destination: AdEventsList(events: vm.events))
-            }
-            
-            Section(header: Text("Banner Format")) {
-                ForEach(AdBannerWrapperFormat.allCases, id: \.rawValue) { format in
-                    Button(action: {
-                        withAnimation {
-                            vm.format = format
-                        }
-                    }) {
-                        HStack {
-                            Text(format.rawValue.capitalized)
-                            Spacer()
-                            if vm.format == format {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
-                            }
-                        }
-                    }
-                }
-            }
-            
-            Section(header: Text("Banner Settings")) {
-                Toggle("Autorefreshing", isOn: $vm.isAutorefreshing)
-                HStack {
-                    Text("Refresh interval")
-                    Spacer()
-                    Text(String(format: "%1.0f", vm.autorefreshInterval) + "s")
-                        .foregroundColor(.secondary)
-                }
-                HStack {
-                    Text("5s")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                    Slider(
-                        value: Binding(
-                            get: { vm.autorefreshInterval / 5 },
-                            set: { vm.autorefreshInterval = 5 * $0 }
-                        ),
-                        in: (1...6)
+                NavigationLink(
+                    "Advanced",
+                    destination: AdvancedBannerSettings(
+                        format: $vm.format,
+                        isAutorefreshing: $vm.isAutorefreshing,
+                        autorefreshInterval: $vm.autorefreshInterval
                     )
-                    
-                    Text("30s")
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
+                )
             }
-            .disabled(true)
         }
         .foregroundColor(.primary)
     }
 }
-
 
 extension BannerFormat: CaseIterable {
     public static var allCases: [BannerFormat] = [.adaptive, .banner, .leaderboard, .mrec]

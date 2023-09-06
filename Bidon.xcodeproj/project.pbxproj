@@ -74,6 +74,8 @@
 		42697D9E2A3A148F00D6B1EB /* SegmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697D9D2A3A148F00D6B1EB /* SegmentManager.swift */; };
 		42697DA92A3A1DBC00D6B1EB /* ExtrasManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DA82A3A1DBC00D6B1EB /* ExtrasManager.swift */; };
 		42697DB52A3B4E0600D6B1EB /* SegmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DB42A3B4E0600D6B1EB /* SegmentModel.swift */; };
+		426CD9B02AA62AF1000A2226 /* BannerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9AF2AA62AF1000A2226 /* BannerProvider.swift */; };
+		426CD9B42AA77A41000A2226 /* BannerLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B32AA77A41000A2226 /* BannerLayoutHelper.swift */; };
 		426DD78B28A3E88100A1ADF5 /* AuctionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD78A28A3E88100A1ADF5 /* AuctionRequest.swift */; };
 		426DD78D28A3EDD900A1ADF5 /* LineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD78C28A3EDD900A1ADF5 /* LineItem.swift */; };
 		426DD79128A3EF5C00A1ADF5 /* AuctionRoundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */; };
@@ -251,6 +253,8 @@
 		42697D9D2A3A148F00D6B1EB /* SegmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentManager.swift; sourceTree = "<group>"; };
 		42697DA82A3A1DBC00D6B1EB /* ExtrasManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtrasManager.swift; sourceTree = "<group>"; };
 		42697DB42A3B4E0600D6B1EB /* SegmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentModel.swift; sourceTree = "<group>"; };
+		426CD9AF2AA62AF1000A2226 /* BannerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerProvider.swift; sourceTree = "<group>"; };
+		426CD9B32AA77A41000A2226 /* BannerLayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerLayoutHelper.swift; sourceTree = "<group>"; };
 		426DD78A28A3E88100A1ADF5 /* AuctionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRequest.swift; sourceTree = "<group>"; };
 		426DD78C28A3EDD900A1ADF5 /* LineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItem.swift; sourceTree = "<group>"; };
 		426DD79028A3EF5C00A1ADF5 /* AuctionRoundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRoundModel.swift; sourceTree = "<group>"; };
@@ -942,6 +946,8 @@
 				42BA82062878547C001F1744 /* BannerView.swift */,
 				4219DB5728B90D5E001F38E5 /* BannerAdManager.swift */,
 				42BA820828785506001F1744 /* BannerViewManager.swift */,
+				426CD9AF2AA62AF1000A2226 /* BannerProvider.swift */,
+				426CD9B32AA77A41000A2226 /* BannerLayoutHelper.swift */,
 			);
 			path = Banner;
 			sourceTree = "<group>";
@@ -1137,6 +1143,7 @@
 				422101982859E2C3006596DA /* BidonSdk.swift in Sources */,
 				4243093828A2BCBE002360B0 /* UserModel.swift in Sources */,
 				420EFD802A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift in Sources */,
+				426CD9B02AA62AF1000A2226 /* BannerProvider.swift in Sources */,
 				4221019A2859E35C006596DA /* Adapter.swift in Sources */,
 				42969A8D29A90AF300878C9E /* StrictAuctionLineItemElector.swift in Sources */,
 				423FBAA529F13A9300B20A5D /* AsynchronousOperation.swift in Sources */,
@@ -1181,6 +1188,7 @@
 				426DD79B28A4F47800A1ADF5 /* BaseRequestBuilder.swift in Sources */,
 				426DD7AA28A550F700A1ADF5 /* AdViewConcurrentAuctionControllerBuilder.swift in Sources */,
 				4238BBA728CA0EA9002DC473 /* MediationAttemptReportModel.swift in Sources */,
+				426CD9B42AA77A41000A2226 /* BannerLayoutHelper.swift in Sources */,
 				426DD7A628A5042A00A1ADF5 /* UserDefault.swift in Sources */,
 				42A0155C29F2C79300547B37 /* AuctionOperationStartRound.swift in Sources */,
 				42C46C9729F2ABC50057D7CE /* DirectedAcyclicGraph.swift in Sources */,

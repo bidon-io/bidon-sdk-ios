@@ -14,7 +14,7 @@ import SwiftUI
 
 final class BannerSectionViewModel: ObservableObject {
     @Published var isPresented: Bool = false
-    @Published var format: AdBannerWrapperFormat = .adaptive
+    @Published var format: AdBannerWrapperFormat = .banner
     @Published var isAutorefreshing: Bool = false
     @Published var autorefreshInterval: TimeInterval = 15
     @Published var events: [AdEventModel] = []
