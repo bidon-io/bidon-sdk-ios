@@ -10,22 +10,18 @@ import SwiftUI
 import Bidon
 
 
-extension BannerProvider {
-    static let shared = BannerProvider()
-}
-
-
 struct AdvancedBannerSettings: View {
+    @ObservedObject var bannerProviderReference = BannerProviderReference.shared
+    
     @Binding var format: AdBannerWrapperFormat {
         didSet {
-            BannerProvider.shared.format = Bidon.BannerFormat(format)
+            BannerProviderReference.shared.format = Bidon.BannerFormat(format)
         }
     }
     
     @Binding var isAutorefreshing: Bool
     @Binding var autorefreshInterval: TimeInterval
     
-    @State var angle: CGFloat = 0
     @State var pricefloor: Price = 0.1
     
     var body: some View {
@@ -99,18 +95,35 @@ struct AdvancedBannerSettings: View {
                     )
                     
                     Button(action: {
-                        BannerProvider.shared.loadAd(with: pricefloor)
+                        bannerProviderReference.provider.loadAd(with: pricefloor)
                     }) {
-                        Text("Load")
+                        HStack {
+                            Text("Load")
+                            Spacer()
+                            if bannerProviderReference.isLoaded {
+                                Image(systemName: "checkmark.circle")
+                                    .foregroundColor(.green)
+                            }
+                        }
                     }
+                    .foregroundColor(.primary)
                     
-                    Button(action: BannerProvider.shared.show) {
-                        Text("Show")
+                    Button(action: bannerProviderReference.provider.show) {
+                        HStack {
+                            Text("Show")
+                            Spacer()
+                            if bannerProviderReference.isLoaded {
+                                Image(systemName: "checkmark.circle")
+                                    .foregroundColor(.green)
+                            }
+                        }
                     }
+                    .foregroundColor(.primary)
                     
-                    Button(action: BannerProvider.shared.hide) {
+                    Button(action: bannerProviderReference.provider.hide) {
                         Text("Hide")
                     }
+                    .foregroundColor(.primary)
                 }
             }
             .listStyle(.automatic)

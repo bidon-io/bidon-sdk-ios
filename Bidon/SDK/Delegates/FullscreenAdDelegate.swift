@@ -15,7 +15,5 @@ public protocol FullscreenAdObject: AdObject {}
 public protocol FullscreenAdDelegate: AdObjectDelegate {
     func fullscreenAd(_ fullscreenAd: FullscreenAdObject, willPresentAd ad: Ad)
     
-    func fullscreenAd(_ fullscreenAd: FullscreenAdObject, didFailToPresentAd error: Error)
-    
     func fullscreenAd(_ fullscreenAd: FullscreenAdObject, didDismissAd ad: Ad)
 }

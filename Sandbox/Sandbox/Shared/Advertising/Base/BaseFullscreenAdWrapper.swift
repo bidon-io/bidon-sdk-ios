@@ -86,15 +86,6 @@ extension BaseFullscreenAdWrapper: Bidon.RewardedAdDelegate {
         )
     }
     
-    func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didFailToPresentAd error: Error) {
-        send(
-            event: "Bidon did fail to present ad",
-            detail: error.localizedDescription,
-            bage: "star.fill",
-            color: .red
-        )
-    }
-    
     func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didDismissAd ad: Bidon.Ad) {
         send(
             event: "Bidon did dismiss ad",

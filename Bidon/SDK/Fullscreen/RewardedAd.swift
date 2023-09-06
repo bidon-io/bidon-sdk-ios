@@ -86,7 +86,7 @@ extension RewardedAd: FullscreenAdManagerDelegate {
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {
-        delegate?.fullscreenAd(self, didFailToPresentAd: error.nserror)
+        delegate?.adObject?(self, didFailToPresentAd: error.nserror)
     }
     
     func adManager(_ adManager: FullscreenAdManager, willPresent ad: Ad) {

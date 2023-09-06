@@ -37,6 +37,7 @@
 		426CD9B72AA89E88000A2226 /* BannerPositionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B62AA89E88000A2226 /* BannerPositionPickerView.swift */; };
 		426CD9B92AA89ECF000A2226 /* PointPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B82AA89ECF000A2226 /* PointPickerView.swift */; };
 		426CD9BC2AA8A464000A2226 /* DeviceFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */; };
+		426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */; };
 		426DD7AE28A6584600A1ADF5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD7AD28A6584600A1ADF5 /* HomeView.swift */; };
 		427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCC299A69A1007D4E93 /* AdService.swift */; };
 		427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */; };
@@ -113,6 +114,7 @@
 		426CD9B62AA89E88000A2226 /* BannerPositionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerPositionPickerView.swift; sourceTree = "<group>"; };
 		426CD9B82AA89ECF000A2226 /* PointPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointPickerView.swift; sourceTree = "<group>"; };
 		426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceFrame.swift; sourceTree = "<group>"; };
+		426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerProviderReference.swift; sourceTree = "<group>"; };
 		426DD7AD28A6584600A1ADF5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4273347929ACE81E0042AE52 /* BidOnAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B1BCC299A69A1007D4E93 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				427B1BE0299D2F70007D4E93 /* AdWrapper.swift */,
 				427B1C09299FDE94007D4E93 /* AdBannerWrapperView.swift */,
 				427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */,
+				426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */,
 			);
 			path = Advertising;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				49921B0B2A8125E1007B2056 /* Constants.swift in Sources */,
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,
+				426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */,
 				427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */,
 				4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */,
 				427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */,

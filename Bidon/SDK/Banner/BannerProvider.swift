@@ -108,7 +108,18 @@ public final class BannerProvider:  NSObject, AdObject {
             let view = rootViewController?.view ??
                 UIApplication.shared.bd.topViewcontroller?.view
         else {
+            delegate?.adObject?(
+                self,
+                didFailToPresentAd: SdkError.unableToFindRootViewController
+            )
             return
+        }
+        
+        if !bannerView.isReady {
+            delegate?.adObject?(
+                self,
+                didFailToPresentAd: SdkError.message("Banner ad is not ready and will be presented after loading")
+            )
         }
         
         bannerView.removeFromSuperview()
@@ -172,6 +183,16 @@ extension BannerProvider: AdViewDelegate {
         delegate?.adObject(
             self,
             didFailToLoadAd: error
+        )
+    }
+    
+    public func adObject(
+        _ adObject: AdObject,
+        didFailToPresentAd error: Error
+    ) {
+        delegate?.adObject?(
+            self,
+            didFailToPresentAd: error
         )
     }
     

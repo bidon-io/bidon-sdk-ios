@@ -39,6 +39,15 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         adSubject.send(nil)
     }
     
+    func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
+        send(
+            event: "Bidon did fail to present ad",
+            detail: error.localizedDescription,
+            bage: "star.fill",
+            color: .red
+        )
+    }
+    
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
         send(
             event: "Bidon expire ad",

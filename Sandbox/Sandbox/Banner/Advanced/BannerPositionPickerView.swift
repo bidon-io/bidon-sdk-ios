@@ -11,54 +11,31 @@ import Bidon
 
 
 struct BannerPositionPickerView: View {
-    enum PositioningStyle: String {
-        case fixed
-        case custom
-    }
+    @ObservedObject var bannerProviderReference = BannerProviderReference.shared
     
-    @State var positioningStyle = PositioningStyle.fixed {
-        didSet { updatePosition() }
-    }
-    
-    @State var fixedPosition: BannerPosition? {
-        didSet { updatePosition() }
-    }
-    
-    @State var customPosition: CGPoint? {
-        didSet { updatePosition() }
-    }
-    
-    @State var customRotationAngle: CGFloat = 0.0 {
-        didSet { updatePosition() }
-    }
-    
-    @State var customAnchorPoint: CGPoint = CGPoint(x: 0.5, y: 0.5) {
-        didSet { updatePosition() }
-    }
-        
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack {
-                Picker("Positioning", selection: $positioningStyle) {
-                    Text("Fixed").tag(PositioningStyle.fixed)
-                    Text("Custom").tag(PositioningStyle.custom)
+                Picker("Positioning", selection: $bannerProviderReference.positioningStyle) {
+                    Text("Fixed").tag(BannerProviderReference.PositioningStyle.fixed)
+                    Text("Custom").tag(BannerProviderReference.PositioningStyle.custom)
                 }
                 .padding(.horizontal)
                 .pickerStyle(.segmented)
                 
-                switch positioningStyle {
+                switch bannerProviderReference.positioningStyle {
                 case .fixed:
                     List {
                         ForEach(BannerPosition.allCases, id: \.rawValue) { position in
                             Button(action: {
                                 withAnimation {
-                                    self.fixedPosition = position
+                                    self.bannerProviderReference.fixedPosition = position
                                 }
                             }) {
                                 HStack {
                                     Text(position.title)
                                     Spacer()
-                                    if self.fixedPosition == position {
+                                    if self.bannerProviderReference.fixedPosition == position {
                                         Image(systemName: "checkmark")
                                             .foregroundColor(.accentColor)
                                     }
@@ -70,12 +47,12 @@ struct BannerPositionPickerView: View {
                     List {
                         Section(header: Text("Position")) {
                             HStack {
-                                Text("Position is \(customPosition.map { String(describing: $0) } ?? "-")")
+                                Text("Position is \(bannerProviderReference.customPosition.map { String(describing: $0) } ?? "-")")
                                 Spacer()
                                 
                                 Button(action: {
                                     withAnimation {
-                                        customPosition = nil
+                                        bannerProviderReference.customPosition = nil
                                     }
                                 }) {
                                     Image(systemName: "trash")
@@ -88,12 +65,12 @@ struct BannerPositionPickerView: View {
                                 point: Binding(
                                     get: {
                                         CGPoint(
-                                            x: customPosition.map { $0.x * 0.3 } ?? 0,
-                                            y: customPosition.map { $0.y * 0.3 } ?? 0
+                                            x: bannerProviderReference.customPosition.map { $0.x * 0.3 } ?? 0,
+                                            y: bannerProviderReference.customPosition.map { $0.y * 0.3 } ?? 0
                                         )
                                     },
                                     set: { point in
-                                        customPosition = CGPoint(
+                                        bannerProviderReference.customPosition = CGPoint(
                                             x: floor(point.x / 0.3),
                                             y: floor(point.y / 0.3)
                                         )
@@ -105,12 +82,12 @@ struct BannerPositionPickerView: View {
                         
                         Section(header: Text("Anchor Point")) {
                             HStack {
-                                Text("Anchor point is " + String(describing: customAnchorPoint))
+                                Text("Anchor point is " + String(describing: bannerProviderReference.customAnchorPoint))
                                 Spacer()
                                 
                                 Button(action: {
                                     withAnimation {
-                                        customAnchorPoint = CGPoint(x: 0.5, y: 0.5)
+                                        bannerProviderReference.customAnchorPoint = CGPoint(x: 0.5, y: 0.5)
                                     }
                                 }) {
                                     Image(systemName: "trash")
@@ -123,12 +100,12 @@ struct BannerPositionPickerView: View {
                                 point: Binding(
                                     get: {
                                         CGPoint(
-                                            x: customAnchorPoint.x * 150,
-                                            y: customAnchorPoint.y * 150
+                                            x: bannerProviderReference.customAnchorPoint.x * 150,
+                                            y: bannerProviderReference.customAnchorPoint.y * 150
                                         )
                                     },
                                     set: { point in
-                                        customAnchorPoint = CGPoint(
+                                        bannerProviderReference.customAnchorPoint = CGPoint(
                                             x: round(point.x / 15) / 10.0,
                                             y: round(point.y / 15) / 10.0
                                         )
@@ -141,29 +118,16 @@ struct BannerPositionPickerView: View {
                         Section(header: Text("Rotation Angle")) {
                             Slider(
                                 value: Binding(
-                                    get: { customRotationAngle },
-                                    set: { customRotationAngle = floor($0) }
+                                    get: { bannerProviderReference.customRotationAngle },
+                                    set: { bannerProviderReference.customRotationAngle = floor($0) }
                                 ),
                                 in: (-180...180)
                             )
-                            Text("Rotation angle is \(Int(customRotationAngle))°")
+                            Text("Rotation angle is \(Int(bannerProviderReference.customRotationAngle))°")
                         }
                     }
                 }
             }
-        }
-    }
-    
-    func updatePosition() {
-        switch positioningStyle {
-        case .custom:
-            BannerProvider.shared.setCustomPosition(
-                customPosition ?? .zero,
-                rotationAngleDegrees: customRotationAngle,
-                anchorPoint: customAnchorPoint
-            )
-        case .fixed:
-            BannerProvider.shared.setFixedPosition(fixedPosition ?? .horizontalBottom)
         }
     }
 }
