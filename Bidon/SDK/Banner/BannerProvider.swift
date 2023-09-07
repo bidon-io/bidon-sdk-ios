@@ -115,7 +115,7 @@ public final class BannerProvider:  NSObject, AdObject {
             return
         }
         
-        if !bannerView.isReady {
+        if !bannerView.isReady && bannerView.subviews.isEmpty {
             delegate?.adObject?(
                 self,
                 didFailToPresentAd: SdkError.message("Banner ad is not ready and will be presented after loading")

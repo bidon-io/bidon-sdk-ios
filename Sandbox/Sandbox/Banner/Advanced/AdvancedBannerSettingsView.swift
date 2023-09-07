@@ -112,7 +112,7 @@ struct AdvancedBannerSettings: View {
                         HStack {
                             Text("Show")
                             Spacer()
-                            if bannerProviderReference.isLoaded {
+                            if bannerProviderReference.isShown {
                                 Image(systemName: "checkmark.circle")
                                     .foregroundColor(.green)
                             }
