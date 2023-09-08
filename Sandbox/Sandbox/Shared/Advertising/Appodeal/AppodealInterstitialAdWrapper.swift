@@ -153,8 +153,8 @@ extension AppodealInterstitialAdWrapper {
     }
 
     
-    override func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didFailToPresentAd error: Error) {
-        super.fullscreenAd(fullscreenAd, didFailToPresentAd: error)
+    override func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
+        super.adObject(adObject, didFailToPresentAd: error)
         
         resumeShowingContinuation(throwing: AppodealAdServiceError.invalidPresentationState)
     }

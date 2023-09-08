@@ -43,6 +43,12 @@ public protocol AdObjectDelegate: AnyObject {
     @objc optional
     func adObject(
         _ adObject: AdObject,
+        didFailToPresentAd error: Error
+    )
+    
+    @objc optional
+    func adObject(
+        _ adObject: AdObject,
         didRecordImpression ad: Ad
     )
     

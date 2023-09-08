@@ -33,6 +33,11 @@
 		426A5C7C29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C7B29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework */; };
 		426A5C8029AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C7F29AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework */; };
 		426A5C8429AF842A0065AAD5 /* QRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426A5C8329AF842A0065AAD5 /* QRCodeScannerView.swift */; };
+		426CD9B22AA725DC000A2226 /* AdvancedBannerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B12AA725DC000A2226 /* AdvancedBannerSettingsView.swift */; };
+		426CD9B72AA89E88000A2226 /* BannerPositionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B62AA89E88000A2226 /* BannerPositionPickerView.swift */; };
+		426CD9B92AA89ECF000A2226 /* PointPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9B82AA89ECF000A2226 /* PointPickerView.swift */; };
+		426CD9BC2AA8A464000A2226 /* DeviceFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */; };
+		426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */; };
 		426DD7AE28A6584600A1ADF5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD7AD28A6584600A1ADF5 /* HomeView.swift */; };
 		427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCC299A69A1007D4E93 /* AdService.swift */; };
 		427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */; };
@@ -105,6 +110,11 @@
 		426A5C7B29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C7F29AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426A5C8329AF842A0065AAD5 /* QRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeScannerView.swift; sourceTree = "<group>"; };
+		426CD9B12AA725DC000A2226 /* AdvancedBannerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedBannerSettingsView.swift; sourceTree = "<group>"; };
+		426CD9B62AA89E88000A2226 /* BannerPositionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerPositionPickerView.swift; sourceTree = "<group>"; };
+		426CD9B82AA89ECF000A2226 /* PointPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointPickerView.swift; sourceTree = "<group>"; };
+		426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceFrame.swift; sourceTree = "<group>"; };
+		426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerProviderReference.swift; sourceTree = "<group>"; };
 		426DD7AD28A6584600A1ADF5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4273347929ACE81E0042AE52 /* BidOnAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B1BCC299A69A1007D4E93 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
@@ -176,6 +186,7 @@
 		4200679B28BCA883003B734D /* Banner */ = {
 			isa = PBXGroup;
 			children = (
+				426CD9B52AA89E72000A2226 /* Advanced */,
 				4200679C28BCA8A3003B734D /* BannerSection.swift */,
 				420067A428BCEF06003B734D /* BannerSectionViewModel.swift */,
 			);
@@ -200,6 +211,7 @@
 				429F4D8528CF6A7F00765BD7 /* Events */,
 				42BE438E28C0E79D000528E3 /* Permissions */,
 				49921B0A2A8125E1007B2056 /* Constants.swift */,
+				426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -238,6 +250,15 @@
 			path = Extesnions;
 			sourceTree = "<group>";
 		};
+		426CD9B52AA89E72000A2226 /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+				426CD9B12AA725DC000A2226 /* AdvancedBannerSettingsView.swift */,
+				426CD9B62AA89E88000A2226 /* BannerPositionPickerView.swift */,
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
 		427B1BD0299A7E5A007D4E93 /* Advertising */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +270,7 @@
 				427B1BE0299D2F70007D4E93 /* AdWrapper.swift */,
 				427B1C09299FDE94007D4E93 /* AdBannerWrapperView.swift */,
 				427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */,
+				426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */,
 			);
 			path = Advertising;
 			sourceTree = "<group>";
@@ -315,7 +337,6 @@
 				4243092728A27C46002360B0 /* Info.plist */,
 				4298902629D5A75000C5FB7B /* GoogleService-Info.plist */,
 				4299A410289BC8B40062C580 /* SandboxApp.swift */,
-				4299A412289BC8B40062C580 /* ContentView.swift */,
 				42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */,
 				426DD7AD28A6584600A1ADF5 /* HomeView.swift */,
 				4299A414289BC8B60062C580 /* Assets.xcassets */,
@@ -351,6 +372,7 @@
 				42166C3129DEB5F100095691 /* AdContextMenu.swift */,
 				42C4F45D29E6B37300B12E15 /* ActivityPlaceholder.swift */,
 				42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */,
+				426CD9B82AA89ECF000A2226 /* PointPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -358,6 +380,7 @@
 		42BE438E28C0E79D000528E3 /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
+				4299A412289BC8B40062C580 /* ContentView.swift */,
 				42BE438F28C0E7B3000528E3 /* Permission.swift */,
 				42BE439128C0E7CB000528E3 /* LocationPermission.swift */,
 				42BE439328C0E936000528E3 /* AppTrackingTransparencyPermission.swift */,
@@ -540,7 +563,9 @@
 				4224AA7E28B8D59400E8D886 /* RewardedAdSection.swift in Sources */,
 				426DD7AE28A6584600A1ADF5 /* HomeView.swift in Sources */,
 				420067A528BCEF06003B734D /* BannerSectionViewModel.swift in Sources */,
+				426CD9B22AA725DC000A2226 /* AdvancedBannerSettingsView.swift in Sources */,
 				427B1BE8299E40D5007D4E93 /* RawRewardedAdWrapper.swift in Sources */,
+				426CD9B92AA89ECF000A2226 /* PointPickerView.swift in Sources */,
 				4224AA7428B8BD0500E8D886 /* InterstitialSection.swift in Sources */,
 				4219DB5628B90479001F38E5 /* AdEventsList.swift in Sources */,
 				427B1C0D29A377AA007D4E93 /* BaseAdWrapper.swift in Sources */,
@@ -551,11 +576,13 @@
 				42BE439028C0E7B3000528E3 /* Permission.swift in Sources */,
 				42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */,
 				4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */,
+				426CD9BC2AA8A464000A2226 /* DeviceFrame.swift in Sources */,
 				427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */,
 				427B1C0A299FDE94007D4E93 /* AdBannerWrapperView.swift in Sources */,
 				49921B0B2A8125E1007B2056 /* Constants.swift in Sources */,
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,
+				426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */,
 				427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */,
 				4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */,
 				427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */,
@@ -568,6 +595,7 @@
 				42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */,
 				42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */,
 				427B1BE4299E3DA7007D4E93 /* RawAdService.swift in Sources */,
+				426CD9B72AA89E88000A2226 /* BannerPositionPickerView.swift in Sources */,
 				42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */,
 				427B1BD5299A866F007D4E93 /* Appodeal+Extenstions.swift in Sources */,
 				4299A411289BC8B40062C580 /* SandboxApp.swift in Sources */,
