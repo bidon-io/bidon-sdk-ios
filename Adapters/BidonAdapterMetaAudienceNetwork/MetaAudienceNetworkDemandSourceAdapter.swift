@@ -8,6 +8,7 @@
 import Foundation
 import Bidon
 import FBAudienceNetwork
+import AppTrackingTransparency
 
 
 internal typealias DemandSourceAdapter = Adapter &
@@ -55,6 +56,10 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
     ) {
         FBAdSettings.setLogLevel(.current)
         
+        if #available(iOS 14, *) {
+            FBAdSettings.setAdvertiserTrackingEnabled(ATTrackingManager.isAdvertiserTrackingEnabled)
+        }
+        
         switch context.regulations.coppaApplies {
         case .no:
             FBAdSettings.isMixedAudience = false
@@ -69,7 +74,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         }
         
         let settings = FBAdInitSettings(parameters: parameters)
-           
+        
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
             completion(result.isSuccess ? SdkError.message(result.message) : nil)
@@ -88,6 +93,17 @@ fileprivate extension FBAdInitSettings {
             placementIDs: parameters.placements ?? [],
             mediationService: mediationService
         )
+    }
+}
+
+
+@available(iOS 14, *)
+extension ATTrackingManager {
+    static var isAdvertiserTrackingEnabled: Bool {
+        switch trackingAuthorizationStatus {
+        case .authorized: return true
+        default: return false
+        }
     }
 }
 
