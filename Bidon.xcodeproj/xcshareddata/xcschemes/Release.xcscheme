@@ -118,6 +118,34 @@
                ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4265B5362A5FEFD9007AD808"
+               BuildableName = "BidonAdapterVungle.framework"
+               BlueprintName = "BidonAdapterVungle"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "420F035B2A6818AF00A4664F"
+               BuildableName = "BidonAdapterMetaAudienceNetwork.framework"
+               BlueprintName = "BidonAdapterMetaAudienceNetwork"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
