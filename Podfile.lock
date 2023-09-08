@@ -501,7 +501,6 @@ SPEC REPOS:
     - APDVungleAdapter
     - APDYandexAdapter
     - Appodeal
-    - BidMachine
     - BidMachineAdColonyAdapter
     - BidMachineAmazonAdapter
     - BidMachineCriteoAdapter
@@ -588,7 +587,7 @@ SPEC CHECKSUMS:
   Appodeal: cc0793ab38817046f764c39930b4bb9447cd7357
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: af2b5a2d335a858d12f1f47ab521e64aacb27477
+  BidMachine: cfb3e056683e0dea0bf597dbca9865f420b00c99
   BidMachineAdColonyAdapter: 90b4be91688decd68cd3aad940102b4354f59520
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
