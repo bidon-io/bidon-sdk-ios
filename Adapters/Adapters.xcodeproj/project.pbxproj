@@ -81,6 +81,11 @@
 		42CA43442A28CBB10079AFEA /* BidMachineEmptyReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CA43432A28CBB10079AFEA /* BidMachineEmptyReward.swift */; };
 		42CA43462A28CC2A0079AFEA /* BidMachineBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CA43452A28CC2A0079AFEA /* BidMachineBiddingAdViewDemandProvider.swift */; };
 		42CA43482A28CC6A0079AFEA /* BidMachineBanner+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CA43472A28CC6A0079AFEA /* BidMachineBanner+Extensions.swift */; };
+		42CFF1B12AAF617500AC2C24 /* BidonAdapterInMobi.h in Headers */ = {isa = PBXBuildFile; fileRef = 42CFF1B02AAF617500AC2C24 /* BidonAdapterInMobi.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42CFF1BA2AAF623D00AC2C24 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CFF1B92AAF623D00AC2C24 /* Bidon.framework */; };
+		42CFF1BC2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1BB2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift */; };
+		42CFF1BF2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */; };
+		42CFF1C22AAF6A3800AC2C24 /* InMobiDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1C12AAF6A3800AC2C24 /* InMobiDemandAd.swift */; };
 		42E3D9E92A5D869A00546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9E82A5D869A00546D3A /* Bidon.framework */; };
 		42E3D9EB2A5D86A100546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9EA2A5D86A100546D3A /* Bidon.framework */; };
 		42E3D9ED2A5D86A800546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9EC2A5D86A800546D3A /* Bidon.framework */; };
@@ -92,6 +97,7 @@
 		42E3D9FA2A5D8DDA00546D3A /* MobileFuseBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E3D9F92A5D8DDA00546D3A /* MobileFuseBiddingInterstitialDemandProvider.swift */; };
 		42E3D9FC2A5D90C000546D3A /* MobileFuseBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E3D9FB2A5D90C000546D3A /* MobileFuseBiddingRewardedDemandProvider.swift */; };
 		42E3D9FE2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E3D9FD2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift */; };
+		42E5457C2AB0640100AA909F /* InMobiAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */; };
 		42F71CF8299670DC002FC80D /* BidMachineProgrammaticInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF7299670DC002FC80D /* BidMachineProgrammaticInterstitialDemandProvider.swift */; };
 		42F71CFA29967AEE002FC80D /* BidMachineAdDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */; };
 		42F71CFC29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */; };
@@ -102,6 +108,7 @@
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
 		CA23DEA1E10FEE1D3BF005F0 /* Pods_BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */; };
+		E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */; };
 		F8F2F63903FCDD349CEB76F9 /* Pods_BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853D0841556E776725274166 /* Pods_BidonAdapterUnityAds.framework */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +121,7 @@
 		205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35E0FEB9E11186036169857A /* Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig"; sourceTree = "<group>"; };
 		382F75BCF2BA9F1A2F526441 /* Pods-BidonAdapterGoogleMobileAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleMobileAds.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds.release.xcconfig"; sourceTree = "<group>"; };
+		3AC4BF6C1B8AE747DB87556C /* Pods-BidonAdapterInMobi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterInMobi.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterInMobi/Pods-BidonAdapterInMobi.debug.xcconfig"; sourceTree = "<group>"; };
 		4200679E28BCB069003B734D /* AppLovinRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLovinRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		420067A228BCBCDE003B734D /* AppLovinAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLovinAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		420F033D2A67DB4300A4664F /* BidonAdapterBigoAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterBigoAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -202,6 +210,12 @@
 		42CA43432A28CBB10079AFEA /* BidMachineEmptyReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineEmptyReward.swift; sourceTree = "<group>"; };
 		42CA43452A28CC2A0079AFEA /* BidMachineBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		42CA43472A28CC6A0079AFEA /* BidMachineBanner+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidMachineBanner+Extensions.swift"; sourceTree = "<group>"; };
+		42CFF1AE2AAF617400AC2C24 /* BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42CFF1B02AAF617500AC2C24 /* BidonAdapterInMobi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterInMobi.h; sourceTree = "<group>"; };
+		42CFF1B92AAF623D00AC2C24 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42CFF1BB2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiDemandSourceAdapter.swift; sourceTree = "<group>"; };
+		42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		42CFF1C12AAF6A3800AC2C24 /* InMobiDemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiDemandAd.swift; sourceTree = "<group>"; };
 		42E3D9E82A5D869A00546D3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42E3D9EA2A5D86A100546D3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42E3D9EC2A5D86A800546D3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +227,7 @@
 		42E3D9F92A5D8DDA00546D3A /* MobileFuseBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileFuseBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		42E3D9FB2A5D90C000546D3A /* MobileFuseBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileFuseBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		42E3D9FD2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileFuseBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		42EC98742891416F003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC98782891417F003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC987C28914189003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +239,7 @@
 		590DCEB56042CAE4CC28A8F1 /* Pods_BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ACFA1A9D3D9DF1686E1EF11 /* Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterGoogleMobileAds/Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; sourceTree = "<group>"; };
 		718DCA27F36512A4F8D32A78 /* Pods-BidonAdapterBidMachine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterBidMachine.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine.debug.xcconfig"; sourceTree = "<group>"; };
+		72BC198901D3EDD4D5D8E531 /* Pods-BidonAdapterInMobi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterInMobi.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterInMobi/Pods-BidonAdapterInMobi.release.xcconfig"; sourceTree = "<group>"; };
 		75C86F587053079E58A3D3AA /* Pods-BidonAdapterUnityAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterUnityAds.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds.release.xcconfig"; sourceTree = "<group>"; };
 		79A48039B2D4927C4AA87EB7 /* Pods-BidonAdapterMintegral.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMintegral.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral.debug.xcconfig"; sourceTree = "<group>"; };
 		81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +253,7 @@
 		A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterVungle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29B8A59C7136BC0FDD427C8 /* Pods-BidOnAdapterDTExchange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterDTExchange.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterDTExchange/Pods-BidOnAdapterDTExchange.debug.xcconfig"; sourceTree = "<group>"; };
 		BB69C86D9638891BD3D2A879 /* Pods-BidOnAdapterAppLovin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.debug.xcconfig"; sourceTree = "<group>"; };
+		BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EF50FBFE5B9D0143A1ECB5 /* Pods-BidOnAdapterBidMachine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterBidMachine.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterBidMachine/Pods-BidOnAdapterBidMachine.debug.xcconfig"; sourceTree = "<group>"; };
 		C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A6640EACEB17CE4DA9F4FE /* Pods-BidonAdapterUnityAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterUnityAds.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds.debug.xcconfig"; sourceTree = "<group>"; };
@@ -343,6 +360,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		42CFF1AB2AAF617400AC2C24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */,
+				42CFF1BA2AAF623D00AC2C24 /* Bidon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -422,6 +448,7 @@
 				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
 				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
 				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
+				42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */,
 				42210211285A32ED006596DA /* Products */,
 				8462A3B50D72D26B685AAD18 /* Pods */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
@@ -441,6 +468,7 @@
 				4265B5372A5FEFD9007AD808 /* BidonAdapterVungle.framework */,
 				420F033D2A67DB4300A4664F /* BidonAdapterBigoAds.framework */,
 				420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */,
+				42CFF1AE2AAF617400AC2C24 /* BidonAdapterInMobi.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -653,6 +681,34 @@
 			path = Wrappers;
 			sourceTree = "<group>";
 		};
+		42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */ = {
+			isa = PBXGroup;
+			children = (
+				42CFF1BD2AAF668800AC2C24 /* Providers */,
+				42CFF1C02AAF6A1C00AC2C24 /* Wrappers */,
+				42CFF1B02AAF617500AC2C24 /* BidonAdapterInMobi.h */,
+				42CFF1BB2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift */,
+			);
+			path = BidonAdapterInMobi;
+			sourceTree = "<group>";
+		};
+		42CFF1BD2AAF668800AC2C24 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */,
+				42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		42CFF1C02AAF6A1C00AC2C24 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				42CFF1C12AAF6A3800AC2C24 /* InMobiDemandAd.swift */,
+			);
+			path = Wrappers;
+			sourceTree = "<group>";
+		};
 		42E3D9F62A5D8B3900546D3A /* Providers */ = {
 			isa = PBXGroup;
 			children = (
@@ -667,6 +723,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				42CFF1B92AAF623D00AC2C24 /* Bidon.framework */,
 				420F03652A6819B000A4664F /* Bidon.framework */,
 				420F03462A67DBA000A4664F /* Bidon.framework */,
 				4265B5422A5FF00F007AD808 /* Bidon.framework */,
@@ -697,6 +754,7 @@
 				A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */,
 				DA1035036CA613590D65BEAF /* Pods_BidonAdapterBigoAds.framework */,
 				205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */,
+				BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -732,6 +790,8 @@
 				E88E0FA2261012B4241FBF88 /* Pods-BidonAdapterBigoAds.release.xcconfig */,
 				35E0FEB9E11186036169857A /* Pods-BidonAdapterMetaAudienceNetwork.debug.xcconfig */,
 				EC9780BE17A31A1B99EDE82C /* Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig */,
+				3AC4BF6C1B8AE747DB87556C /* Pods-BidonAdapterInMobi.debug.xcconfig */,
+				72BC198901D3EDD4D5D8E531 /* Pods-BidonAdapterInMobi.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -817,6 +877,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				42BA81B52875ABA3001F1744 /* BidonAdapterGoogleMobileAds.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42CFF1A92AAF617400AC2C24 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42CFF1B12AAF617500AC2C24 /* BidonAdapterInMobi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1016,6 +1084,25 @@
 			productReference = 42BA81B22875ABA3001F1744 /* BidonAdapterGoogleMobileAds.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		42CFF1AD2AAF617400AC2C24 /* BidonAdapterInMobi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42CFF1B42AAF617600AC2C24 /* Build configuration list for PBXNativeTarget "BidonAdapterInMobi" */;
+			buildPhases = (
+				B88DDF3BE0840DD55730344A /* [CP] Check Pods Manifest.lock */,
+				42CFF1A92AAF617400AC2C24 /* Headers */,
+				42CFF1AA2AAF617400AC2C24 /* Sources */,
+				42CFF1AB2AAF617400AC2C24 /* Frameworks */,
+				42CFF1AC2AAF617400AC2C24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BidonAdapterInMobi;
+			productName = BidonAdapterInMobi;
+			productReference = 42CFF1AE2AAF617400AC2C24 /* BidonAdapterInMobi.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1065,6 +1152,10 @@
 						CreatedOnToolsVersion = 13.3.1;
 						LastSwiftMigration = 1330;
 					};
+					42CFF1AD2AAF617400AC2C24 = {
+						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
+					};
 				};
 			};
 			buildConfigurationList = 42210203285A00CF006596DA /* Build configuration list for PBXProject "Adapters" */;
@@ -1090,6 +1181,7 @@
 				4265B5362A5FEFD9007AD808 /* BidonAdapterVungle */,
 				420F033C2A67DB4300A4664F /* BidonAdapterBigoAds */,
 				420F035B2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork */,
+				42CFF1AD2AAF617400AC2C24 /* BidonAdapterInMobi */,
 			);
 		};
 /* End PBXProject section */
@@ -1159,6 +1251,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		42BA81B02875ABA3001F1744 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42CFF1AC2AAF617400AC2C24 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1373,6 +1472,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B88DDF3BE0840DD55730344A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterInMobi-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C6C8E64B9C7F6C21BF2C4703 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1575,6 +1696,17 @@
 				42244DA228C89A4900E9C416 /* MediationError+GADErrorCode.swift in Sources */,
 				422931B029A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift in Sources */,
 				42BA81C22875AE92001F1744 /* GoogleMobileAdsInterstitialDemandProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42CFF1AA2AAF617400AC2C24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42CFF1BC2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift in Sources */,
+				42CFF1BF2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift in Sources */,
+				42E5457C2AB0640100AA909F /* InMobiAdViewDemandProvider.swift in Sources */,
+				42CFF1C22AAF6A3800AC2C24 /* InMobiDemandAd.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1816,7 +1948,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.BidonAdapterMetaAudienceNetwork;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.meta;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1894,7 +2026,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.BidonAdapterMetaAudienceNetwork;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.meta;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -3275,6 +3407,178 @@
 			};
 			name = Release;
 		};
+		42CFF1B22AAF617600AC2C24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AC4BF6C1B8AE747DB87556C /* Pods-BidonAdapterInMobi.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.inmobi;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		42CFF1B32AAF617600AC2C24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72BC198901D3EDD4D5D8E531 /* Pods-BidonAdapterInMobi.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.adapter.inmobi;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3373,6 +3677,15 @@
 			buildConfigurations = (
 				42BA81B62875ABA3001F1744 /* Debug */,
 				42BA81B72875ABA3001F1744 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42CFF1B42AAF617600AC2C24 /* Build configuration list for PBXNativeTarget "BidonAdapterInMobi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42CFF1B22AAF617600AC2C24 /* Debug */,
+				42CFF1B32AAF617600AC2C24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

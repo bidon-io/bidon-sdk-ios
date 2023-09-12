@@ -76,6 +76,7 @@ extension UnityAdsBannerDemandProvider: UADSBannerViewDelegate {
         delegate?.providerDidClick(self)
     }
     
+    
     func bannerViewDidLeaveApplication(_ bannerView: UADSBannerView!) {
         guard let banner = banner, self.banner === bannerView else { return }
         

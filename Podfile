@@ -72,6 +72,10 @@ def meta_sdk
   pod 'FBSDKLoginKit'
 end
 
+def inmobi
+  pod 'InMobiSDK'
+end
+
 def appodeal_mediation
   pod 'APDAdColonyAdapter', '3.1.3.0-beta.2'
   pod 'APDAdjustAdapter', '3.1.3.0-beta.2'
@@ -118,6 +122,12 @@ target 'BidonAdapterDTExchange' do
   dtexchange
 end
 
+target 'BidonAdapterInMobi' do
+  project 'Adapters/Adapters.xcodeproj'
+  inmobi
+end
+
+
 target 'BidonAdapterUnityAds' do
   project 'Adapters/Adapters.xcodeproj'
   unity_ads
@@ -159,6 +169,7 @@ target 'Tests-ObjectiveC' do
   vungle
   bigo_ads
   meta_ads
+  inmobi
 end
 
 target 'Tests-Swift' do
@@ -183,6 +194,7 @@ target 'Sandbox' do
   bigo_ads
   meta_ads
   meta_sdk
+  inmobi
   appodeal_mediation
 end
 

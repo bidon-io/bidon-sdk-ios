@@ -267,6 +267,7 @@ PODS:
     - GoogleUtilities/MethodSwizzler
   - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
+  - InMobiSDK (10.5.8)
   - IronSourceSDK (7.3.0.0)
   - MintegralAdSDK (7.4.2):
     - MintegralAdSDK/BannerAd (= 7.4.2)
@@ -476,6 +477,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - Fyber_Marketplace_SDK
   - Google-Mobile-Ads-SDK
+  - InMobiSDK
   - MintegralAdSDK
   - MobileFuseSDK
   - OCMock (~> 3.9.1)
@@ -501,6 +503,7 @@ SPEC REPOS:
     - APDVungleAdapter
     - APDYandexAdapter
     - Appodeal
+    - BidMachine
     - BidMachineAdColonyAdapter
     - BidMachineAmazonAdapter
     - BidMachineCriteoAdapter
@@ -546,6 +549,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleUserMessagingPlatform
     - GoogleUtilities
+    - InMobiSDK
     - IronSourceSDK
     - MintegralAdSDK
     - MobileFuseSDK
@@ -587,7 +591,7 @@ SPEC CHECKSUMS:
   Appodeal: cc0793ab38817046f764c39930b4bb9447cd7357
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: cfb3e056683e0dea0bf597dbca9865f420b00c99
+  BidMachine: af2b5a2d335a858d12f1f47ab521e64aacb27477
   BidMachineAdColonyAdapter: 90b4be91688decd68cd3aad940102b4354f59520
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
@@ -618,6 +622,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 7fee012a868315d418f365fbc8d394d8e020e749
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
+  InMobiSDK: 7c9f534a2e96ccebdc5e8b7ed1f8ca4dd4a36643
   IronSourceSDK: 70d098472ea63fa8d58e47ad79ad761ad256ce15
   MintegralAdSDK: a7da9c65b3dd69e8194a7b26cec7068b2bade7cc
   MobileFuseSDK: 1db2f268fea5850188f913ca129c711d5f48e558
@@ -640,6 +645,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: d4564e74589ba3fb1b98dd78d110dd4f7ae644cd
+PODFILE CHECKSUM: 6f2fc7dcb9e7057852cf305727ab5ab3291156a8
 
 COCOAPODS: 1.11.3

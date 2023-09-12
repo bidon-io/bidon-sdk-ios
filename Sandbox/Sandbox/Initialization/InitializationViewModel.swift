@@ -18,6 +18,7 @@ import BidonAdapterMobileFuse
 import BidonAdapterVungle
 import BidonAdapterBigoAds
 import BidonAdapterMetaAudienceNetwork
+import BidonAdapterInMobi
 import SwiftUI
 
 
@@ -109,7 +110,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             MobileFuseDemandSourceAdapter(),
             VungleDemandSourceAdapter(),
             BigoAdsDemandSourceAdapter(),
-            MetaAudienceNetworkDemandSourceAdapter()
+            MetaAudienceNetworkDemandSourceAdapter(),
+            InMobiDemandSourceAdapter()
         ].sorted { $0.identifier < $1.identifier }
     }
 }
