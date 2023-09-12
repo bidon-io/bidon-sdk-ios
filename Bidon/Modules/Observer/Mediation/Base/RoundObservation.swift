@@ -15,6 +15,7 @@ struct BidObservation {
     var status: DemandMediationStatus = .unknown
     var eCPM: Price? = nil
     var adUnitId: String?
+    var lineItemUid: UInt64?
     var bidRequestTimestamp: TimeInterval?
     var bidResponeTimestamp: TimeInterval?
     var fillRequestTimestamp: TimeInterval?

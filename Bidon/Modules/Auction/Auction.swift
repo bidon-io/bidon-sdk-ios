@@ -24,6 +24,7 @@ protocol AuctionOperation: Operation {
 struct AuctionMetadata {
     var id: String
     var configuration: Int
+    var configurationUid: UInt64
     var isExternalNotificationsEnabled: Bool
 }
 

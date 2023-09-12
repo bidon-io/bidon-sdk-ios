@@ -23,6 +23,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
@@ -139,6 +140,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
@@ -199,6 +201,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
@@ -262,12 +265,14 @@ extension ConcurrentAuctionControllerTestCase {
         
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId2,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_2"
         )
@@ -341,12 +346,14 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId2,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_2"
         )
@@ -426,18 +433,21 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_2"
         )
         
         let lineItem3 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM3,
             adUnitId: "ad_unit_id_3"
         )
@@ -512,18 +522,21 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_2"
         )
         
         let lineItem3 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM3,
             adUnitId: "ad_unit_id_3"
         )
@@ -627,18 +640,21 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM1,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_2"
         )
         
         let lineItem3 = LineItemModel(
             id: demandId1,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM3,
             adUnitId: "ad_unit_id_3"
         )
@@ -711,6 +727,7 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.rounds[0].demands.count, 1)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].demandId, demandId1)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].adUnitId, lineItem2.adUnitId)
+        XCTAssertEqual(report.rounds[0].sortedDemands[0].lineItemUid, lineItem2.uid)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].status.stringValue, "INCORRECT_AD_UNIT_ID")
         XCTAssertEqual(report.rounds[1].roundId, rounds[1].id)
         XCTAssertEqual(report.rounds[1].demands.count, 1)

@@ -44,6 +44,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         metadata = AuctionMetadata(
             id: UUID().uuidString,
             configuration: Int.random(in: 0..<Int.max),
+            configurationUid: UInt64.random(in: 0..<UInt64.max),
             isExternalNotificationsEnabled: false
         )
         

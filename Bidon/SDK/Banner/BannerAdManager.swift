@@ -198,6 +198,7 @@ final class BannerAdManager: NSObject {
         let metadata = AuctionMetadata(
             id: auctionInfo.auctionId,
             configuration: auctionInfo.auctionConfigurationId,
+            configurationUid: auctionInfo.auctionConfigurationUid,
             isExternalNotificationsEnabled: auctionInfo.externalWinNotifications
         )
         

@@ -10,11 +10,13 @@ import Foundation
 
 struct SegmentResponseModel: Decodable, SegmentResponse {
     var id: String
+    var uid: UInt64
 }
 
 
 struct SegmentModel: Encodable {
     var id: String?
+    var uid: UInt64?
     var gender: String?
     var age: Int?
     var gameLevel: Int?
@@ -47,11 +49,13 @@ struct SegmentModel: Encodable {
     
     enum CodingKeys: CodingKey {
         case id
+        case uid
         case ext
     }
     
     init(_ segment: SegmentManager) {
         self.id = segment.id
+        self.uid = segment.uid
         self.gender = segment._gender?.description.uppercased()
         self.age = segment._age
         self.gameLevel = segment._level

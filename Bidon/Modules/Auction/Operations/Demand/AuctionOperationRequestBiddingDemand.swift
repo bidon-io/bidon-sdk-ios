@@ -121,6 +121,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withAuctionId(metadata.id)
             builder.withAuctionConfigurationId(metadata.configuration)
+            builder.withAuctionConfigurationUid(metadata.configurationUid)
             builder.withRoundId(round.id)
             builder.withAdapters(adapters)
         }

@@ -12,6 +12,9 @@ final class SegmentManager: Segment, Environment {
     @UserDefaultOptional(Constants.UserDefaultsKey.segmentId)
     var id: String?
     
+    @UserDefaultOptional(Constants.UserDefaultsKey.segmentUid)
+    var uid: UInt64?
+    
     var gender: Gender {
         get { _gender ?? .other }
         set { $_gender.wrappedValue = newValue }

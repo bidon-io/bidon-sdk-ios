@@ -10,6 +10,7 @@ import Foundation
 
 struct LineItemModel: Decodable, LineItem {
     var id: String
+    var uid: UInt64
     var pricefloor: Price
     var adUnitId: String
 }

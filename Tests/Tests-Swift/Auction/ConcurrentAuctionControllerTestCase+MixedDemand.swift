@@ -33,12 +33,14 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId2,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId2,
+            uid: UInt64.random(in: 1..<UInt64.max),
             pricefloor: eCPM3,
             adUnitId: "ad_unit_id_2"
         )

@@ -11,10 +11,12 @@ import Foundation
 struct StrictAuctionLineItemElector: AuctionLineItemElector {
     fileprivate struct EquatableLineItem: LineItem, Equatable {
         private let _id: () -> String
+        private let _uid: () -> UInt64
         private let _pricefloor: () -> Price
         private let _adUnitId: () -> String
         
         var id: String { _id() }
+        var uid: UInt64 { _uid() }
         var pricefloor: Price { _pricefloor() }
         var adUnitId: String { _adUnitId() }
         
@@ -22,6 +24,7 @@ struct StrictAuctionLineItemElector: AuctionLineItemElector {
             _id = { lineItem.id }
             _pricefloor = { lineItem.pricefloor }
             _adUnitId = { lineItem.adUnitId }
+            _uid = { lineItem.uid }
         }
         
         static func == (lhs: EquatableLineItem, rhs: EquatableLineItem) -> Bool {

@@ -168,5 +168,6 @@ public final class BidonSdk: NSObject {
     func updateSegmentIfNeeded(_ segment: SegmentResponse?) {
         guard let segment = segment else { return }
         environmentRepository.environment(SegmentManager.self).id = segment.id
+        environmentRepository.environment(SegmentManager.self).uid = segment.uid
     }
 }

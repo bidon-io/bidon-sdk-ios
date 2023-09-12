@@ -14,6 +14,7 @@ final class AdViewBidRequestBuilder: BaseBidRequestBuilder<BannerAdTypeContext> 
             bidfloor: bidfloor,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
+            auctionConfigurationUid: auctionConfigurationUid,
             roundId: roundId,
             banner: BannerAdTypeContextModel(context),
             demands: demands

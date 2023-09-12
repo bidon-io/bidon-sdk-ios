@@ -15,6 +15,7 @@ final class InterstitialBidRequestBuilder: BaseBidRequestBuilder<InterstitialAdT
             bidfloor: bidfloor,
             auctionId: auctionId,
             auctionConfigurationId: auctionConfigurationId,
+            auctionConfigurationUid: auctionConfigurationUid,
             roundId: roundId,
             interstitial: InterstitialAdTypeContextModel(context),
             demands: demands

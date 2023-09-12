@@ -221,6 +221,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         let metadata = AuctionMetadata(
             id: auctionInfo.auctionId,
             configuration: auctionInfo.auctionConfigurationId,
+            configurationUid: auctionInfo.auctionConfigurationUid,
             isExternalNotificationsEnabled: auctionInfo.externalWinNotifications
         )
         

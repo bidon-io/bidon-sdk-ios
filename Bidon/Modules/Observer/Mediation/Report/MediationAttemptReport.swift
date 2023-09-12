@@ -13,6 +13,7 @@ protocol DemandReport {
     var status: DemandMediationStatus { get }
     var eCPM: Price? { get }
     var adUnitId: String? { get }
+    var lineItemUid: UInt64? { get }
     var bidStartTimestamp: UInt? { get }
     var bidFinishTimestamp: UInt? { get }
     var fillStartTimestamp: UInt? { get }

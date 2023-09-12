@@ -249,6 +249,19 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         invokedWithAuctionConfigurationIdParametersList.append((auctionConfigurationId, ()))
         return self
     }
+    
+    var invokedWithAuctionConfigurationUid = false
+    var invokedWithAuctionConfigurationUidCount = 0
+    var invokedWithAuctionConfigurationUidParameters: (auctionConfigurationUid: UInt64, Void)?
+    var invokedWithAuctionConfigurationUidParametersList = [(auctionConfigurationUid: UInt64, Void)]()
+
+    func withAuctionConfigurationUid(_ auctionConfigurationUid: UInt64) -> Self {
+        invokedWithAuctionConfigurationUid = true
+        invokedWithAuctionConfigurationUidCount += 1
+        invokedWithAuctionConfigurationUidParameters = (auctionConfigurationUid, ())
+        invokedWithAuctionConfigurationUidParametersList.append((auctionConfigurationUid, ()))
+        return self
+    }
 
     var invokedWithAdTypeContext = false
     var invokedWithAdTypeContextCount = 0

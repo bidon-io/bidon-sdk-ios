@@ -26,6 +26,7 @@ struct DemandObservation {
             demandId: adapter.identifier,
             eCPM: lineItem.pricefloor,
             adUnitId: lineItem.adUnitId,
+            lineItemUid: lineItem.uid,
             fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
         )
         observations.append(observation)

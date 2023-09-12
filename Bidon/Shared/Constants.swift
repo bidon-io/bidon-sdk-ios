@@ -40,5 +40,6 @@ struct Constants {
         static var idg = "BidonIdg"
         static var coppa = "BidonCoppa"
         static var segmentId = "BidonSegmentId"
+        static var segmentUid = "BidonSegmentUid"
     }
 }

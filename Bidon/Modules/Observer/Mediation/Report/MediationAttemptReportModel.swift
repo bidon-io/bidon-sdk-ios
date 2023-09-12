@@ -12,6 +12,7 @@ struct DemandReportModel: DemandReport {
     var demandId: String
     var status: DemandMediationStatus = .unknown
     var adUnitId: String? = nil
+    var lineItemUid: UInt64? = nil
     var eCPM: Price?
     var bidStartTimestamp: UInt? = Date.timestamp(.wall, units: .milliseconds).uint
     var bidFinishTimestamp: UInt?
@@ -22,6 +23,7 @@ struct DemandReportModel: DemandReport {
         self.demandId = observation.demandId
         self.status = observation.status
         self.adUnitId = observation.adUnitId
+        self.lineItemUid = observation.lineItemUid
         self.eCPM = observation.eCPM
         self.bidStartTimestamp = observation.bidRequestTimestamp?.uint
         self.bidFinishTimestamp = observation.bidResponeTimestamp?.uint

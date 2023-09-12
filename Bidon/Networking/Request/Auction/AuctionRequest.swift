@@ -47,6 +47,7 @@ struct AuctionRequest: Request {
         var auctionId: String
         var segment: SegmentResponseModel?
         var auctionConfigurationId: Int
+        var auctionConfigurationUid: UInt64
         var externalWinNotifications: Bool
     }
 }
