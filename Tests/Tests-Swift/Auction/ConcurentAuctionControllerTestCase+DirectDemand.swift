@@ -598,6 +598,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerDemandId, demandId1)
         XCTAssertEqual(report.result.winnerECPM, eCPM1)
+        XCTAssertEqual(report.result.demandType, "cpm")
+
         XCTAssertEqual(report.rounds.count, 2)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
@@ -705,7 +707,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .cancelled)
         XCTAssertNil(report.result.winnerDemandId)
         XCTAssertNil(report.result.winnerECPM)
-        
+        XCTAssertNil(report.result.demandType)
+
         XCTAssertEqual(report.rounds.count, 2)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 1)
