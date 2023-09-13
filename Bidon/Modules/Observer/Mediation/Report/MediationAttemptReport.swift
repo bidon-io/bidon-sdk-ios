@@ -55,6 +55,7 @@ protocol AuctionResultReport {
     var status: AuctionResultStatus { get }
     var startTimestamp: UInt { get }
     var finishTimestamp: UInt { get }
+    var demandType: String? { get }
     var winnerRoundId: String? { get }
     var winnerDemandId: String? { get }
     var winnerECPM: Price? { get }

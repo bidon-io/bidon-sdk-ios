@@ -16,7 +16,7 @@ struct AdViewImpression: Impression {
     var externalNotificationTrackedAt: TimeInterval = .nan
 
     var roundId: String { bid.roundId }
-    var lineItem: LineItem? { bid.lineItem }
+    var demandType: DemandType { bid.demandType }
     var eCPM: Price { bid.eCPM }
     var adType: AdType { bid.adType }
     var ad: DemandAd { bid.ad }

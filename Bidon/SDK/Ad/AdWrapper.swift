@@ -47,10 +47,10 @@ final class AdContainer: NSObject, Ad {
         self.init(
             id: bid.ad.id,
             adType: bid.adType,
-            eCPM: bid.ad.eCPM ?? bid.lineItem?.pricefloor ?? bid.eCPM,
+            eCPM: bid.eCPM,
             networkName: bid.ad.networkName,
             dsp: bid.ad.dsp,
-            adUnitId: bid.lineItem?.adUnitId,
+            adUnitId: bid.demandType.lineItem?.adUnitId,
             roundId: bid.roundId,
             auctionId: bid.metadata.id,
             currencyCode: bid.ad.currency ?? .default
@@ -61,10 +61,10 @@ final class AdContainer: NSObject, Ad {
         self.init(
             id: impression.ad.id,
             adType: impression.adType,
-            eCPM: impression.ad.eCPM ?? impression.lineItem?.pricefloor ?? impression.eCPM,
+            eCPM: impression.eCPM,
             networkName: impression.ad.networkName,
             dsp: impression.ad.dsp,
-            adUnitId: impression.lineItem?.adUnitId,
+            adUnitId: impression.demandType.lineItem?.adUnitId,
             roundId: impression.roundId,
             auctionId: impression.metadata.id,
             currencyCode: impression.ad.currency ?? .default

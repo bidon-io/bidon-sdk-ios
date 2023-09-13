@@ -214,11 +214,14 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                     previousBid: pendingServerBid
                 )
             case .success(let ad):
+                let eCPM = (ad.eCPM != nil && ad.eCPM != .unknown) ? ad.eCPM! : pendingServerBid.price
+                
                 let bid = BidType(
                     id: pendingServerBid.id,
                     roundId: self.round.id,
                     adType: self.context.adType,
-                    eCPM: (ad.eCPM != nil && ad.eCPM != .unknown) ? ad.eCPM! : pendingServerBid.price,
+                    eCPM: eCPM,
+                    demandType: .bidding,
                     ad: ad,
                     provider: adapter.provider,
                     metadata: self.metadata

@@ -159,6 +159,7 @@ extension BaseMediationObserver: MediationReportProvider {
         
         return AuctionResultReportModel(
             status: .success,
+            demandType: winner.auctionWinner?.demandType?.stringValue,
             startTimestamp: startTimestamp.uint,
             finishTimestamp: finishTimestamp.uint,
             winnerRoundId: winner.id,

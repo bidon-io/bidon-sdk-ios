@@ -24,6 +24,7 @@ struct DemandObservation {
         let observation = BidObservation(
             id: UUID().uuidString,
             demandId: adapter.identifier,
+            demandType: .direct(lineItem),
             eCPM: lineItem.pricefloor,
             adUnitId: lineItem.adUnitId,
             fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
@@ -55,6 +56,7 @@ struct DemandObservation {
         let observation = BidObservation(
             id: UUID().uuidString,
             demandId: adapter.identifier,
+            demandType: .programmatic,
             bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
         )
         observations.append(observation)

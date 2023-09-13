@@ -90,6 +90,7 @@ struct RoundReportModel: RoundReport {
 
 struct AuctionResultReportModel: AuctionResultReport {
     var status: AuctionResultStatus
+    var demandType: String?
     var startTimestamp: UInt
     var finishTimestamp: UInt
     var winnerRoundId: String?

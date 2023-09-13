@@ -90,11 +90,14 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                 self.$bidState.wrappedValue = .unknown
                 self.finish()
             case .success(let ad):
+                let eCPM = ad.eCPM ?? .unknown
+                
                 let bid = BidType(
                     id: UUID().uuidString,
                     roundId: self.round.id,
                     adType: self.context.adType,
-                    eCPM: ad.eCPM ?? .unknown,
+                    eCPM: eCPM,
+                    demandType: .programmatic,
                     ad: ad,
                     provider: self.adapter.provider,
                     metadata: self.metadata

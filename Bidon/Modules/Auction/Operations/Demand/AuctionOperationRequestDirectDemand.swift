@@ -85,12 +85,14 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 )
                 self.finish()
             case .success(let ad):
+                let eCPM = ad.eCPM ?? lineItem.pricefloor
+                
                 let bid = BidType(
                     id: UUID().uuidString,
                     roundId: self.round.id,
                     adType: self.context.adType,
-                    eCPM: ad.eCPM ?? lineItem.pricefloor,
-                    lineItem: lineItem,
+                    eCPM: eCPM,
+                    demandType: .direct(lineItem),
                     ad: ad,
                     provider: self.adapter.provider,
                     metadata: self.metadata

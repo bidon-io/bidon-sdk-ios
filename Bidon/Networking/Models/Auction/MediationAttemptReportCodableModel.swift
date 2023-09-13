@@ -115,6 +115,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var status: AuctionResultStatus
         var startTimestamp: UInt
         var finishTimestamp: UInt
+        var demandType: String?
         var winnerRoundId: String?
         var winnerDemandId: String?
         var winnerECPM: Price?
@@ -125,6 +126,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case winnerRoundId = "round_id"
             case winnerDemandId = "winner_id"
             case winnerECPM = "ecpm"
+            case demandType = "bid_type"
             case winnerAdUnitId = "ad_unit_id"
             case startTimestamp = "auction_start_ts"
             case finishTimestamp = "auction_finish_ts"
@@ -132,6 +134,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         
         init<T: AuctionResultReport>(_ report: T) {
             self.status = report.status
+            self.demandType = report.demandType
             self.winnerDemandId = report.winnerDemandId
             self.winnerRoundId = report.winnerRoundId
             self.winnerECPM = report.winnerECPM

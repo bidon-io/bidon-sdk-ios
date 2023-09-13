@@ -8,17 +8,41 @@
 import Foundation
 
 
+enum DemandType {
+    case bidding
+    case programmatic
+    case direct(LineItem)
+}
+
+
 protocol Bid: Hashable {
     associatedtype Provider
     
     var id: String { get }
     var roundId: String { get }
     var adType: AdType { get }
+    var demandType: DemandType { get }
     var eCPM: Price { get }
-    var lineItem: LineItem? { get }
     var ad: DemandAd { get }
     var provider: Provider { get }
     var metadata: AuctionMetadata { get }
+}
+
+
+extension DemandType {
+    var lineItem: LineItem? {
+        switch self {
+        case .direct(let lineItem): return lineItem
+        default: return nil
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+        case .bidding: return "rtb"
+        default: return "cpm"
+        }
+    }
 }
 
 
@@ -27,7 +51,7 @@ struct BidModel<DemandProviderType>: Bid {
     var roundId: String
     var adType: AdType
     var eCPM: Price
-    var lineItem: LineItem?
+    var demandType: DemandType
     var ad: DemandAd
     var provider: DemandProviderType
     var metadata: AuctionMetadata
@@ -66,7 +90,7 @@ extension AnyAdViewBid {
             roundId: roundId,
             adType: adType,
             eCPM: eCPM,
-            lineItem: lineItem,
+            demandType: demandType,
             ad: ad,
             provider: provider.wrapped,
             metadata: metadata
@@ -82,7 +106,7 @@ extension AnyInterstitialBid {
             roundId: roundId,
             adType: adType,
             eCPM: eCPM,
-            lineItem: lineItem,
+            demandType: demandType,
             ad: ad,
             provider: provider.wrapped,
             metadata: metadata
@@ -98,7 +122,7 @@ extension AnyRewardedAdBid {
             roundId: roundId,
             adType: adType,
             eCPM: eCPM,
-            lineItem: lineItem,
+            demandType: demandType,
             ad: ad,
             provider: provider.wrapped,
             metadata: metadata
