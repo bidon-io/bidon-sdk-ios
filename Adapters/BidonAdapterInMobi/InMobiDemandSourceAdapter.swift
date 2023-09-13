@@ -45,7 +45,7 @@ DirectAdViewDemandSourceAdapter
 
 extension InMobiDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        var accounId: String
+        var accountId: String
     }
     
     public func initialize(
@@ -70,7 +70,7 @@ extension InMobiDemandSourceAdapter: ParameterizedInitializableAdapter {
         }
         
         IMSdk.initWithAccountID(
-            parameters.accounId,
+            parameters.accountId,
             consentDictionary: consentDictionary
         ) { [weak self] error in
             self?.isInitialized = error != nil
