@@ -13,15 +13,15 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     let observer: AnyMediationObserver
     let completion: (Result<BidType, SdkError>) -> ()
     let comparator: AuctionBidComparator
-    let metadata: AuctionMetadata
+    let auctionConfiguration: AuctionConfiguration
     
     init(
         comparator: AuctionBidComparator,
         observer: AnyMediationObserver,
-        metadata: AuctionMetadata,
+        auctionConfiguration: AuctionConfiguration,
         completion: @escaping (Result<BidType, SdkError>) -> ()
     ) {
-        self.metadata = metadata
+        self.auctionConfiguration = auctionConfiguration
         self.observer = observer
         self.comparator = comparator
         self.completion = completion

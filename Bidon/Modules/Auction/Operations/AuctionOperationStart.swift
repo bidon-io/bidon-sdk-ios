@@ -12,16 +12,16 @@ import Foundation
 final class AuctionOperationStart: Operation {
     let pricefloor: Price
     let observer: AnyMediationObserver
-    let metadata: AuctionMetadata
+    let auctionConfiguration: AuctionConfiguration
     
     init(
         pricefloor: Price,
         observer: AnyMediationObserver,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) {
         self.pricefloor = pricefloor
         self.observer = observer
-        self.metadata = metadata
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }

@@ -32,7 +32,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
     var mediationObserver: BaseMediationObserver!
-    var metadata: AuctionMetadata!
+    var auctionConfiguration: AuctionConfiguration!
     var adType: AdType!
     var pricefloor: Price!
     var adaptersRepository: AdaptersRepository!
@@ -41,9 +41,9 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     override func setUp() {
         adType = .interstitial
         pricefloor = Double.random(in: 9.99...999.99)
-        metadata = AuctionMetadata(
-            id: UUID().uuidString,
-            configuration: Int.random(in: 0..<Int.max),
+        auctionConfiguration = AuctionConfiguration(
+            auctionId: UUID().uuidString,
+            auctionConfigurationId: Int.random(in: 0..<Int.max),
             isExternalNotificationsEnabled: false
         )
         
@@ -56,7 +56,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         adaptersRepository = AdaptersRepository()
         adRevenueObserver = BaseAdRevenueObserver()
         mediationObserver = BaseMediationObserver(
-            auctionId: metadata.id,
+            auctionId: auctionConfiguration.auctionId,
             adType: .interstitial
         )
     }
@@ -64,7 +64,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     override func tearDown() {
         controller = nil
         pricefloor = nil
-        metadata = nil
+        auctionConfiguration = nil
         contextMock = nil
         adaptersRepository = nil
         adRevenueObserver = nil
@@ -89,7 +89,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             builder.withPricefloor(pricefloor)
             builder.withAdaptersRepository(adaptersRepository)
             builder.withAdRevenueObserver(adRevenueObserver)
-            builder.withMetadata(metadata)
+            builder.withAuctionConfiguration(auctionConfiguration)
         }
     }
     

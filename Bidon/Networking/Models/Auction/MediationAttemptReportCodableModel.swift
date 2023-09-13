@@ -151,10 +151,10 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     
     init<T: MediationAttemptReport>(
         _ report: T,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) {
-        self.auctionId = metadata.id
-        self.auctionConfigurationId = metadata.configuration
+        self.auctionId = auctionConfiguration.auctionId
+        self.auctionConfigurationId = auctionConfiguration.auctionConfigurationId
         self.rounds = report.rounds.map(RoundReportCodableModel.init)
         self.result = AuctionResultReportCodableModel(report.result)
     }

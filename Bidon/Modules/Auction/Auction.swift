@@ -17,14 +17,7 @@ protocol AuctionRound {
 
 
 protocol AuctionOperation: Operation {
-    var metadata: AuctionMetadata { get }
-}
-
-
-struct AuctionMetadata {
-    var id: String
-    var configuration: Int
-    var isExternalNotificationsEnabled: Bool
+    var auctionConfiguration: AuctionConfiguration { get }
 }
 
 
@@ -69,3 +62,27 @@ struct Auction {
         }
     }
 }
+
+
+struct AuctionConfiguration {
+    var auctionId: String
+    var auctionConfigurationId: Int
+    var isExternalNotificationsEnabled: Bool
+}
+
+
+extension AuctionConfiguration {
+    init(auction: AuctionRequest.ResponseBody) {
+        self.auctionId = auction.auctionId
+        self.auctionConfigurationId = auction.auctionConfigurationId
+        self.isExternalNotificationsEnabled = auction.externalWinNotifications
+    }
+}
+
+
+struct AuctionRoundConfiguration {
+    var roundId: String
+    var roundIndex: Int
+    var timeout: TimeInterval
+}
+

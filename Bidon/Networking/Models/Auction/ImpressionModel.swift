@@ -15,6 +15,7 @@ struct ImpressionModel: Encodable {
     var demandId: String
     var adUnitId: String?
     var roundId: String?
+    var roundIndex: Int
     var ecpm: Price
     var demandType: String
     var banner: BannerAdTypeContextModel?
@@ -27,6 +28,7 @@ struct ImpressionModel: Encodable {
         case auctionConfigurationId = "auction_configuration_id"
         case demandId = "demand_id"
         case roundId = "round_id"
+        case roundIndex = "round_idx"
         case adUnitId = "ad_unit_id"
         case ecpm = "ecpm"
         case banner = "banner"
@@ -41,10 +43,11 @@ struct ImpressionModel: Encodable {
         interstitial: InterstitialAdTypeContextModel? = nil,
         rewarded: RewardedAdTypeContextModel? = nil
     ) {
-        self.roundId = imp.roundId
+        self.roundId = imp.roundConfiguration.roundId
+        self.roundIndex = imp.roundConfiguration.roundIndex
         self.impressionId = imp.impressionId
-        self.auctionId = imp.metadata.id
-        self.auctionConfigurationId = imp.metadata.configuration
+        self.auctionId = imp.auctionConfiguration.auctionId
+        self.auctionConfigurationId = imp.auctionConfiguration.auctionConfigurationId
         self.demandId = imp.ad.networkName
         self.demandType = imp.demandType.stringValue
         self.adUnitId = imp.demandType.lineItem?.adUnitId

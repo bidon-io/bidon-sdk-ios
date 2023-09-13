@@ -16,11 +16,11 @@ final class StatisticRequestBuilder: BaseRequestBuilder {
     @discardableResult
     func withMediationReport<T: MediationAttemptReport>(
         _ report: T,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) -> Self {
         self.stats = MediationAttemptReportCodableModel(
             report,
-            metadata: metadata
+            auctionConfiguration: auctionConfiguration
         )
         return self
     }

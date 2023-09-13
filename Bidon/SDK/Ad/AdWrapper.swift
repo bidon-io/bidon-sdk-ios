@@ -51,8 +51,8 @@ final class AdContainer: NSObject, Ad {
             networkName: bid.ad.networkName,
             dsp: bid.ad.dsp,
             adUnitId: bid.demandType.lineItem?.adUnitId,
-            roundId: bid.roundId,
-            auctionId: bid.metadata.id,
+            roundId: bid.roundConfiguration.roundId,
+            auctionId: bid.auctionConfiguration.auctionId,
             currencyCode: bid.ad.currency ?? .default
         )
     }
@@ -65,8 +65,8 @@ final class AdContainer: NSObject, Ad {
             networkName: impression.ad.networkName,
             dsp: impression.ad.dsp,
             adUnitId: impression.demandType.lineItem?.adUnitId,
-            roundId: impression.roundId,
-            auctionId: impression.metadata.id,
+            roundId: impression.roundConfiguration.roundId,
+            auctionId: impression.auctionConfiguration.auctionId,
             currencyCode: impression.ad.currency ?? .default
         )
     }

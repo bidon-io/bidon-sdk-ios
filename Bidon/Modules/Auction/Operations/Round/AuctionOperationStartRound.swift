@@ -24,21 +24,21 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         return max(initial, latest)
     }
     
-    let round: AuctionRound
     let observer: AnyMediationObserver
     let comparator: AuctionBidComparator
-    let metadata: AuctionMetadata
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     
     init(
-        round: AuctionRound,
         comparator: AuctionBidComparator,
         observer: AnyMediationObserver,
-        metadata: AuctionMetadata
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration
     ) {
         self.observer = observer
-        self.round = round
         self.comparator = comparator
-        self.metadata = metadata
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }
@@ -48,7 +48,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         observer.log(
             RoundStartMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 pricefloor: pricefloor
             )
         )

@@ -19,10 +19,10 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
-    let round: AuctionRound
     let observer: AnyMediationObserver
     let adapter: AdapterType
-    let metadata: AuctionMetadata
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     
     @Atomic private var bidState: BidState = .unknown
@@ -35,19 +35,19 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
             return nil
         }
     }
-
+    
     init(
-        round: AuctionRound,
         adapter: AdapterType,
         observer: AnyMediationObserver,
         context: AdTypeContextType,
-        metadata: AuctionMetadata
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration
     ) {
-        self.round = round
         self.observer = observer
         self.adapter = adapter
-        self.metadata = metadata
         self.context = context
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }
@@ -67,7 +67,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
     private func bid(programmatic provider: any ProgrammaticDemandProvider) {
         observer.log(
             ProgrammaticDemandProviderRequestBidMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapter: adapter
             )
         )
@@ -81,7 +81,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
             case .failure(let error):
                 self.observer.log(
                     ProgrammaticDemandProviderBidErrorMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         error: error
                     )
@@ -94,18 +94,18 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
                 
                 let bid = BidType(
                     id: UUID().uuidString,
-                    roundId: self.round.id,
                     adType: self.context.adType,
                     eCPM: eCPM,
                     demandType: .programmatic,
                     ad: ad,
                     provider: self.adapter.provider,
-                    metadata: self.metadata
+                    roundConfiguration: self.roundConfiguration,
+                    auctionConfiguration: self.auctionConfiguration
                 )
                 
                 self.observer.log(
                     ProgrammaticDemandProviderDidReceiveBidMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         bid: bid
                     )
@@ -122,7 +122,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
     private func fill(programmatic provider: any ProgrammaticDemandProvider, bid: BidType) {
         observer.log(
             ProgrammaticDemandProviderRequestFillMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapter: adapter,
                 bid: bid
             )
@@ -135,7 +135,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
             case .failure(let error):
                 self.observer.log(
                     ProgrammaticDemandProviderDidFailToFillBidMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         error: error
                     )
@@ -146,7 +146,7 @@ final class AuctionOperationRequestProgrammaticDemand<AdTypeContextType: AdTypeC
             case .success:
                 self.observer.log(
                     ProgrammaticDemandProviderDidFillBidMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         bid: bid
                     )
@@ -169,7 +169,7 @@ extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDema
         case .bidding:
             observer.log(
                 ProgrammaticDemandProviderBidErrorMediationEvent(
-                    round: round,
+                    roundConfiguration: roundConfiguration,
                     adapter: adapter,
                     error: MediationError.bidTimeoutReached
                 )
@@ -177,7 +177,7 @@ extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDema
         case .filling:
             observer.log(
                 ProgrammaticDemandProviderDidFailToFillBidMediationEvent(
-                    round: round,
+                    roundConfiguration: roundConfiguration,
                     adapter: adapter,
                     error: MediationError.bidTimeoutReached
                 )
@@ -185,7 +185,7 @@ extension AuctionOperationRequestProgrammaticDemand: AuctionOperationRequestDema
         default:
             observer.log(
                 ProgrammaticDemandProviderBidErrorMediationEvent(
-                    round: round,
+                    roundConfiguration: roundConfiguration,
                     adapter: adapter,
                     error: MediationError.unscpecifiedException
                 )

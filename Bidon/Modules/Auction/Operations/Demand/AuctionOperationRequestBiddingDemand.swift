@@ -31,8 +31,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     let context: AdTypeContextType
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
-    let round: AuctionRound
-    let metadata: AuctionMetadata
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     
     private var encoders: BiddingContextEncoders = [:]
     
@@ -44,18 +44,18 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     }
     
     init(
-        round: AuctionRound,
         adapters: [AdapterType],
         observer: AnyMediationObserver,
         context: AdTypeContextType,
-        metadata: AuctionMetadata
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration
     ) {
-        self.metadata = metadata
-        self.context = context
-        self.observer = observer
         self.adapters = adapters
-        self.round = round
-        
+        self.observer = observer
+        self.context = context
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
+
         super.init()
     }
     
@@ -108,7 +108,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         // Observe bid request start
         observer.log(
             BiddingDemandProviderRequestBidMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapters: bidders
             )
         )
@@ -119,9 +119,9 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             builder.withBiddingContextEncoders(encoders)
             builder.withTestMode(sdk.isTestMode)
             builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withAuctionId(metadata.id)
-            builder.withAuctionConfigurationId(metadata.configuration)
-            builder.withRoundId(round.id)
+            builder.withAuctionId(auctionConfiguration.auctionId)
+            builder.withAuctionConfigurationId(auctionConfiguration.auctionConfigurationId)
+            builder.withRoundId(roundConfiguration.roundId)
             builder.withAdapters(adapters)
         }
         
@@ -132,7 +132,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             case .success(let response):
                 self.observer.log(
                     BiddingDemandProviderBidResponseMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapters: bidders,
                         bids: response.bids
                     )
@@ -142,7 +142,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 self.$bidState.wrappedValue = .unknown
                 self.observer.log(
                     BiddingDemandProviderBidErrorMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapters: bidders,
                         error: .noBid
                     )
@@ -163,7 +163,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             $bidState.wrappedValue = .unknown
             observer.log(
                 BiddingDemandProviderBidErrorMediationEvent(
-                    round: self.round,
+                    roundConfiguration: self.roundConfiguration,
                     adapters: bidders,
                     error: .unknownAdapter
                 )
@@ -189,7 +189,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         
         observer.log(
             BiddingDemandProviderFillRequestMediationEvent(
-                round: self.round,
+                roundConfiguration: self.roundConfiguration,
                 adapter: adapter,
                 bid: pendingServerBid
             )
@@ -203,7 +203,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 self.$bidState.wrappedValue = .unknown
                 self.observer.log(
                     BiddingDemandProviderFillErrorMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: adapter,
                         error:error
                     )
@@ -218,19 +218,19 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 
                 let bid = BidType(
                     id: pendingServerBid.id,
-                    roundId: self.round.id,
                     adType: self.context.adType,
                     eCPM: eCPM,
                     demandType: .bidding,
                     ad: ad,
                     provider: adapter.provider,
-                    metadata: self.metadata
+                    roundConfiguration: self.roundConfiguration,
+                    auctionConfiguration: self.auctionConfiguration
                 )
                 
                 self.$bidState.wrappedValue = .ready(bid)
                 self.observer.log(
                     BiddingDemandProviderDidFillMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: adapter,
                         bid: bid
                     )
@@ -251,7 +251,7 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
         case .prepare(let bidders), .bidding(let bidders):
             observer.log(
                 BiddingDemandProviderBidErrorMediationEvent(
-                    round: round,
+                    roundConfiguration: self.roundConfiguration,
                     adapters: bidders,
                     error: .bidTimeoutReached
                 )
@@ -259,7 +259,7 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
         case .filling(let bidder):
             observer.log(
                 BiddingDemandProviderFillErrorMediationEvent(
-                    round: round,
+                    roundConfiguration: self.roundConfiguration,
                     adapter: bidder,
                     error: .fillTimeoutReached
                 )

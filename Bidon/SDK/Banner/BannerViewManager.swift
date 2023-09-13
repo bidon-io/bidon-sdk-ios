@@ -126,7 +126,7 @@ final internal class BannerViewManager: NSObject {
             _impression.markTrackedIfNeeded(.win)
             adViewContainer?.impression = _impression
         }
-        guard impression.metadata.isExternalNotificationsEnabled else { return }
+        guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
@@ -155,7 +155,7 @@ final internal class BannerViewManager: NSObject {
         // for request logic
         guard let impression = impression, impression.isTrackingAllowed(.loss) else { return }
         defer { hide() }
-        guard impression.metadata.isExternalNotificationsEnabled else { return }
+        guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         let request = context.notificationRequest { builder in

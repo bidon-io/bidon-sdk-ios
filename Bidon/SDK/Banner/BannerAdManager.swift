@@ -91,7 +91,7 @@ final class BannerAdManager: NSObject {
                 impression.markTrackedIfNeeded(.win)
                 state = .ready(impression: impression)
             }
-            guard impression.metadata.isExternalNotificationsEnabled else { return }
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
                   
             let context = BannerAdTypeContext(viewContext: viewContext)
 
@@ -129,7 +129,7 @@ final class BannerAdManager: NSObject {
             // for request logic
             guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
-            guard impression.metadata.isExternalNotificationsEnabled else { return }
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
                  
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in
@@ -195,11 +195,7 @@ final class BannerAdManager: NSObject {
     ) {
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
-        let metadata = AuctionMetadata(
-            id: auctionInfo.auctionId,
-            configuration: auctionInfo.auctionConfigurationId,
-            isExternalNotificationsEnabled: auctionInfo.externalWinNotifications
-        )
+        let auctionConfiguration = AuctionConfiguration(auction: auctionInfo)
         
         let observer = BaseMediationObserver(
             auctionId: auctionInfo.auctionId,
@@ -218,7 +214,7 @@ final class BannerAdManager: NSObject {
             builder.withViewContext(viewContext)
             builder.withMediationObserver(observer)
             builder.withAdRevenueObserver(self.adRevenueObserver)
-            builder.withMetadata(metadata)
+            builder.withAuctionConfiguration(auctionConfiguration)
         }
         
         auction.load { [unowned observer, weak self] result in
@@ -226,7 +222,7 @@ final class BannerAdManager: NSObject {
             
             self.sendMediationAttemptReport(
                 observer.report,
-                metadata: metadata
+                auctionConfiguration: auctionConfiguration
             )
 
             switch result {
@@ -250,14 +246,14 @@ final class BannerAdManager: NSObject {
     
     private func sendMediationAttemptReport<T: MediationAttemptReport>(
         _ report: T,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAdType(.banner)
-            builder.withMediationReport(report, metadata: metadata)
+            builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
         }
         
         networkManager.perform(request: request) { result in
