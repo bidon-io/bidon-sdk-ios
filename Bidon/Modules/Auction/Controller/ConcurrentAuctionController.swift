@@ -17,7 +17,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let adapters: [AnyDemandSourceAdapter<DemandProviderType>]
     private let comparator: AuctionBidComparator
     private let pricefloor: Price
-    private let metadata: AuctionMetadata
+    private let auctionConfiguration: AuctionConfiguration
     
     private let mediationObserver: AnyMediationObserver
     private let adRevenueObserver: AdRevenueObserver
@@ -43,7 +43,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         self.pricefloor = builder.pricefloor
         self.mediationObserver = builder.mediationObserver
         self.adRevenueObserver = builder.adRevenueObserver
-        self.metadata = builder.metadata
+        self.auctionConfiguration = builder.auctionConfiguration
     }
     
     func load(
@@ -57,7 +57,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         let startAuctionOperation = AuctionOperationStart(
             pricefloor: pricefloor,
             observer: mediationObserver,
-            metadata: metadata
+            auctionConfiguration: auctionConfiguration
         )
         auction.addNode(startAuctionOperation)
         
@@ -65,7 +65,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         let finishAuctionOperation = AuctionOperationFinish<AdTypeContextType, BidType>(
             comparator: comparator,
             observer: mediationObserver,
-            metadata: metadata,
+            auctionConfiguration: auctionConfiguration,
             completion: completion
         )
         
@@ -80,21 +80,27 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // every previous round finish and auction start
         // to have actual pricefloor
         var shared: [AuctionOperation] = [startAuctionOperation]
-        rounds.forEach { round in
+        rounds.enumerated().forEach { round in
+            let roundConfiguration = AuctionRoundConfiguration(
+                roundId: round.element.id,
+                roundIndex: round.offset,
+                timeout: round.element.timeout
+            )
+            
             // Instantiate round start operation and add it to DAG
             let startRoundOperation = AuctionOperationStartRound<AdTypeContextType, BidType>(
-                round: round,
                 comparator: comparator,
                 observer: mediationObserver,
-                metadata: metadata
+                roundConfiguration: roundConfiguration,
+                auctionConfiguration: auctionConfiguration
             )
             auction.addNode(startRoundOperation)
             
             // Instantiate timeout operation
             let timeoutOperation = AuctionOperationRoundTimeout(
-                round: round,
                 observer: mediationObserver,
-                metadata: metadata
+                roundConfiguration: roundConfiguration,
+                auctionConfiguration: auctionConfiguration
             )
             
             auction.addNode(timeoutOperation)
@@ -105,12 +111,12 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             
             // Instantiate round finisj opearation and add it to DAG
             let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType>(
-                round: round,
                 comparator: comparator,
                 timeout: timeoutOperation,
                 observer: mediationObserver,
                 adRevenueObserver: adRevenueObserver,
-                metadata: metadata
+                roundConfiguration: roundConfiguration,
+                auctionConfiguration: auctionConfiguration
             )
             
             auction.addNode(finishRoundOperation)
@@ -124,9 +130,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             }
             
             // Create request operation for every demand sources
-            round.demands.forEach { identifier in
+            round.element.demands.forEach { identifier in
                 let requestDemandOperation = requestDemandOperation(
-                    round: round,
+                    roundConfiguration: roundConfiguration,
                     demand: identifier
                 )
                 // Apply timeout restrictions to demand request
@@ -145,7 +151,11 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             }
             
             // Add bidding operation
-            let biddingOperation = biddingOperation(round: round)
+            let biddingOperation = biddingOperation(
+                bidding: round.element.bidding,
+                roundConfiguration: roundConfiguration
+            )
+            
             // Apply timeout restrictions to bidding
             timeoutOperation.add(biddingOperation)
             
@@ -180,7 +190,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     private func requestDemandOperation(
-        round: AuctionRound,
+        roundConfiguration: AuctionRoundConfiguration,
         demand identifier: String
     ) -> AuctionOperation {
         guard let adapter = adapters.first(where: {
@@ -188,14 +198,14 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             !$0.mode.intersection([.classic, .programmatic]).isEmpty
         }) else {
             let event = DemandProviderNotFoundMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapter: identifier
             )
             
             return AuctionOperationLogEvent(
                 event: event,
                 observer: mediationObserver,
-                metadata: metadata
+                auctionConfiguration: auctionConfiguration
             )
         }
         
@@ -203,11 +213,11 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         
         if adapter.mode.contains(.classic) {
             operation = AuctionOperationRequestDirectDemand<AdTypeContextType>(
-                round: round,
                 adapter: adapter,
                 observer: mediationObserver,
                 context: context,
-                metadata: metadata
+                roundConfiguration: roundConfiguration,
+                auctionConfiguration: auctionConfiguration
             ) { [weak self] _adapter, pricefloor in
                 return self?.elector.popLineItem(
                     for: _adapter.identifier,
@@ -216,28 +226,31 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             }
         } else {
             operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
-                round: round,
                 adapter: adapter,
                 observer: mediationObserver,
                 context: context,
-                metadata: metadata
+                roundConfiguration: roundConfiguration,
+                auctionConfiguration: auctionConfiguration
             )
         }
         
         return operation
     }
     
-    private func biddingOperation(round: AuctionRound) -> AuctionOperation {
-        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = round.bidding.compactMap { id in
+    private func biddingOperation(
+        bidding: [String],
+        roundConfiguration: AuctionRoundConfiguration
+    ) -> AuctionOperation {
+        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = bidding.compactMap { id in
             self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
         }
         
         let operation = AuctionOperationRequestBiddingDemand<AdTypeContextType>(
-            round: round,
             adapters: adapters,
             observer: mediationObserver,
             context: context,
-            metadata: metadata
+            roundConfiguration: roundConfiguration,
+            auctionConfiguration: auctionConfiguration
         )
         
         return operation

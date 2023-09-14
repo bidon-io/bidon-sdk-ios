@@ -13,26 +13,26 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
     let comparator: AuctionBidComparator
-    let round: AuctionRound
-    let metadata: AuctionMetadata
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     
     private weak var timeout: AuctionOperationRoundTimeout?
     private(set) var bids: [BidType] = []
     
     init(
-        round: AuctionRound,
         comparator: AuctionBidComparator,
         timeout: AuctionOperationRoundTimeout,
         observer: AnyMediationObserver,
         adRevenueObserver: AdRevenueObserver,
-        metadata: AuctionMetadata
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration
     ) {
         self.observer = observer
         self.adRevenueObserver = adRevenueObserver
         self.comparator = comparator
         self.timeout = timeout
-        self.round = round
-        self.metadata = metadata
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }
@@ -56,7 +56,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         observer.log(
             RoundFinishMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 bid: bids.first
             )
         )

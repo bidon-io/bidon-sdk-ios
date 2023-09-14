@@ -32,67 +32,67 @@ struct AuctionFinishMediationEvent: MediationEvent {
 
 // MARK: Round
 struct RoundStartMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var pricefloor: Price
     
     var description: String {
-        return "did start round \(round) with pricefloor \(pricefloor.pretty)"
+        return "did start round \(roundConfiguration.roundId) with pricefloor \(pricefloor.pretty)"
     }
 }
 
 
 struct RoundScheduleTimeoutMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var interval: TimeInterval
     
     var description: String {
-        return "did schedule timeout with interval \(interval) in round \(round)"
+        return "did schedule timeout with interval \(interval) in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct RoundTimeoutReachedMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     
     var description: String {
-        return "did reach timeout in round \(round)"
+        return "did reach timeout in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct RoundInvalidateTimeoutMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     
     var description: String {
-        return "did invalidate timeout in round: \(round)"
+        return "did invalidate timeout in round: \(roundConfiguration.roundId)"
     }
 }
 
 
 struct RoundFinishMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var bid: AnyBid?
     
     var description: String {
-        return "did finish round \(round) " + (bid.map { "with bid: \($0) " } ?? "without bid")
+        return "did finish round \(roundConfiguration.roundId) " + (bid.map { "with bid: \($0) " } ?? "without bid")
     }
 }
 
 
 // MARK: Abstract Demand
 struct DemandProviderNotFoundMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     
     var description: String {
-        return "unsupported \(adapter) was found in round '\(round)'"
+        return "unsupported \(adapter) was found in round '\(roundConfiguration.roundId)'"
     }
     
     init(
-        round: AuctionRound,
+        roundConfiguration: AuctionRoundConfiguration,
         adapter: String
     ) {
-        self.round = round
+        self.roundConfiguration = roundConfiguration
         self.adapter = UnknownAdapter(identifier: adapter)
     }
 }
@@ -100,176 +100,176 @@ struct DemandProviderNotFoundMediationEvent: MediationEvent {
 
 // MARK: Direct Demand
 struct DirectDemandProviderLineItemNotFoundMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     
     var description: String {
-        return "no appropriate ad unit for \(adapter) was found in round '\(round)'"
+        return "no appropriate ad unit for \(adapter) was found in round '\(roundConfiguration.roundId)'"
     }
 }
 
 
 struct DirectDemandProividerLoadRequestMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var lineItem: LineItem
     
     var description: String {
-        return "\(adapter) will load \(lineItem) in round \(round)"
+        return "\(adapter) will load \(lineItem) in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct DirectDemandProividerDidLoadMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: AnyBid
     
     var description: String {
-        return "\(adapter) did load \(bid) in round \(round)"
+        return "\(adapter) did load \(bid) in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct DirectDemandProividerDidFailToLoadMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "\(adapter) did fail to load ad in round \(round) with \(error)"
+        return "\(adapter) did fail to load ad in round \(roundConfiguration.roundId) with \(error)"
     }
 }
 
 
 // MARK: Programmatic Demand
 struct ProgrammaticDemandProviderRequestBidMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     
     var description: String {
-        return "\(adapter) will request bid in round \(round)"
+        return "\(adapter) will request bid in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct ProgrammaticDemandProviderDidReceiveBidMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: AnyBid
     
     var description: String {
-        return "\(adapter) will request bid in round \(round)"
+        return "\(adapter) will request bid in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct ProgrammaticDemandProviderBidErrorMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "\(adapter) did fail to receive bid in round \(round) with error \(error)"
+        return "\(adapter) did fail to receive bid in round \(roundConfiguration.roundId) with error \(error)"
     }
 }
 
 
 struct ProgrammaticDemandProviderRequestFillMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: AnyBid
     
     var description: String {
-        return "\(adapter) will fill \(bid) in round \(round.id)"
+        return "\(adapter) will fill \(bid) in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct ProgrammaticDemandProviderDidFillBidMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: AnyBid
     
     var description: String {
-        return "\(adapter) did fill \(bid) in round \(round.id)"
+        return "\(adapter) did fill \(bid) in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct ProgrammaticDemandProviderDidFailToFillBidMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "\(adapter) did fail to fill bid in round \(round) with error \(error)"
+        return "\(adapter) did fail to fill bid in round \(roundConfiguration.roundId) with error \(error)"
     }
 }
 
 
 // MARK: Bidding Demand
 struct BiddingDemandProviderRequestBidMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapters: [Adapter]
     
     var description: String {
-        return "bidding \(adapters) will request bid in round \(round)"
+        return "bidding \(adapters) will request bid in round \(roundConfiguration.roundId)"
     }
 }
 
 
 struct BiddingDemandProviderBidErrorMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapters: [Adapter]
     var error: MediationError
     
     var description: String {
-        return "bidding \(adapters) did fail to receive bid in round \(round) with error \(error)"
+        return "bidding \(adapters) did fail to receive bid in round \(roundConfiguration.roundId) with error \(error)"
     }
 }
 
 
 struct BiddingDemandProviderBidResponseMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapters: [Adapter]
     var bids: [BidRequest.ResponseBody.BidModel]
     
     var description: String {
-        return "bidding \(adapters) did receive response round \(round) with bids \(bids)"
+        return "bidding \(adapters) did receive response round \(roundConfiguration.roundId) with bids \(bids)"
     }
 }
 
 
 struct BiddingDemandProviderFillRequestMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: BidRequest.ResponseBody.BidModel
     
     var description: String {
-        return "bidding \(adapter) will fill \(round)"
+        return "bidding \(adapter) will fill \(roundConfiguration.roundId)"
     }
 }
 
 
 struct BiddingDemandProviderFillErrorMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "bidding \(adapter) did fail to fill bid in round \(round) with error \(error)"
+        return "bidding \(adapter) did fail to fill bid in round \(roundConfiguration.roundId) with error \(error)"
     }
 }
 
 
 struct BiddingDemandProviderDidFillMediationEvent: MediationEvent {
-    var round: AuctionRound
+    var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var bid: AnyBid
     
     var description: String {
-        return "bidding \(adapter) did fill bid \(bid) in round \(round)"
+        return "bidding \(adapter) did fill bid \(bid) in round \(roundConfiguration.roundId)"
     }
 }
 

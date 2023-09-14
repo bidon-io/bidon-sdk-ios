@@ -49,9 +49,7 @@ extension UnityAdsBannerDemandProvider: AdViewDemandProvider {
         return ad
     }
     
-    func didTrackImpression(for ad: UADSBannerView) {
-        revenueDelegate?.provider(self, didLogImpression: ad)
-    }
+    func didTrackImpression(for ad: UADSBannerView) {}
 }
 
 
@@ -61,6 +59,10 @@ extension UnityAdsBannerDemandProvider: UADSBannerViewDelegate {
         
         response?(.success(banner))
         response = nil
+    }
+    
+    func bannerViewDidShow(_ bannerView: UADSBannerView!) {
+        revenueDelegate?.provider(self, didLogImpression: bannerView)
     }
     
     func bannerViewDidError(_ bannerView: UADSBannerView!, error: UADSBannerError!) {

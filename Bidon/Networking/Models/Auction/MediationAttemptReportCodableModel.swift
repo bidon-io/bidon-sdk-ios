@@ -12,7 +12,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     struct DemandReportCodableModel: DemandReport, Codable {
         var demandId: String
         var adUnitId: String?
-        var lineItemUid: UInt64?
+        var lineItemUid: String?
         var status: DemandMediationStatus
         var eCPM: Price?
         var bidStartTimestamp: UInt?
@@ -118,6 +118,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var status: AuctionResultStatus
         var startTimestamp: UInt
         var finishTimestamp: UInt
+        var demandType: String?
         var winnerRoundId: String?
         var winnerDemandId: String?
         var winnerECPM: Price?
@@ -128,6 +129,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case winnerRoundId = "round_id"
             case winnerDemandId = "winner_id"
             case winnerECPM = "ecpm"
+            case demandType = "bid_type"
             case winnerAdUnitId = "ad_unit_id"
             case startTimestamp = "auction_start_ts"
             case finishTimestamp = "auction_finish_ts"
@@ -135,6 +137,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         
         init<T: AuctionResultReport>(_ report: T) {
             self.status = report.status
+            self.demandType = report.demandType
             self.winnerDemandId = report.winnerDemandId
             self.winnerRoundId = report.winnerRoundId
             self.winnerECPM = report.winnerECPM
@@ -146,17 +149,17 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     
     var auctionId: String
     var auctionConfigurationId: Int
-    var auctionConfigurationUid: UInt64
+    var auctionConfigurationUid: String
     var rounds: [RoundReportCodableModel]
     var result: AuctionResultReportCodableModel
     
     init<T: MediationAttemptReport>(
         _ report: T,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) {
-        self.auctionId = metadata.id
-        self.auctionConfigurationId = metadata.configuration
-        self.auctionConfigurationUid = metadata.configurationUid
+        self.auctionId = auctionConfiguration.auctionId
+        self.auctionConfigurationId = auctionConfiguration.auctionConfigurationId
+        self.auctionConfigurationUid = auctionConfiguration.auctionConfigurationUid
         self.rounds = report.rounds.map(RoundReportCodableModel.init)
         self.result = AuctionResultReportCodableModel(report.result)
     }

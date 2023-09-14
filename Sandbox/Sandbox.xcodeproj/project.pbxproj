@@ -69,6 +69,7 @@
 		42BE439428C0E936000528E3 /* AppTrackingTransparencyPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42BE439328C0E936000528E3 /* AppTrackingTransparencyPermission.swift */; };
 		42C4F45E29E6B37300B12E15 /* ActivityPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C4F45D29E6B37300B12E15 /* ActivityPlaceholder.swift */; };
 		42C59B9E28C61F1100544EDF /* HostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C59B9D28C61F1100544EDF /* HostView.swift */; };
+		42CFF1B62AAF623000AC2C24 /* BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */; };
 		42E3DA002A5D968500546D3A /* BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9FF2A5D968500546D3A /* BidonAdapterMobileFuse.framework */; };
 		42EDA0AC28C5EEE300BF74DE /* InitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AB28C5EEE300BF74DE /* InitializationView.swift */; };
 		42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AD28C5EF6000BF74DE /* InitializationViewModel.swift */; };
@@ -148,6 +149,7 @@
 		42BE439328C0E936000528E3 /* AppTrackingTransparencyPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparencyPermission.swift; sourceTree = "<group>"; };
 		42C4F45D29E6B37300B12E15 /* ActivityPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPlaceholder.swift; sourceTree = "<group>"; };
 		42C59B9D28C61F1100544EDF /* HostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostView.swift; sourceTree = "<group>"; };
+		42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42E3D9FF2A5D968500546D3A /* BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EDA0AB28C5EEE300BF74DE /* InitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationView.swift; sourceTree = "<group>"; };
 		42EDA0AD28C5EF6000BF74DE /* InitializationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationViewModel.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */,
 				169F7C8E91CEF4CADB6E417E /* Pods_Sandbox.framework in Frameworks */,
 				426A5C8029AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
+				42CFF1B62AAF623000AC2C24 /* BidonAdapterInMobi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +222,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */,
 				420F03672A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework */,
 				420F03482A67DBAF00A4664F /* BidonAdapterBigoAds.framework */,
 				4265B53E2A5FF001007AD808 /* BidonAdapterVungle.framework */,

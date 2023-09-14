@@ -15,20 +15,20 @@ struct FullscreenImpression: Impression {
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
     
-    var roundId: String
-    var lineItem: LineItem?
+    var demandType: DemandType
     var eCPM: Price
     var adType: AdType
     var ad: DemandAd
-    var metadata: AuctionMetadata
+    var roundConfiguration: AuctionRoundConfiguration
+    var auctionConfiguration: AuctionConfiguration
 
     init<T: Bid>(bid: T) {
-        self.roundId = bid.roundId
-        self.lineItem = bid.lineItem
+        self.demandType = bid.demandType
         self.eCPM = bid.eCPM
         self.adType = bid.adType
         self.ad = bid.ad
-        self.metadata = bid.metadata
+        self.roundConfiguration = bid.roundConfiguration
+        self.auctionConfiguration = bid.auctionConfiguration
     }
 }
 

@@ -38,5 +38,5 @@ public protocol Segment {
 
 internal protocol SegmentResponse {
     var id: String { get }
-    var uid: UInt64 { get }
+    var uid: String { get }
 }

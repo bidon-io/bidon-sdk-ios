@@ -10,13 +10,13 @@ import Foundation
 
 struct SegmentResponseModel: Decodable, SegmentResponse {
     var id: String
-    var uid: UInt64
+    var uid: String
 }
 
 
 struct SegmentModel: Encodable {
     var id: String?
-    var uid: UInt64?
+    var uid: String?
     var gender: String?
     var age: Int?
     var gameLevel: Int?

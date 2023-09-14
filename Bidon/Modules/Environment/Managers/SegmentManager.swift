@@ -13,7 +13,7 @@ final class SegmentManager: Segment, Environment {
     var id: String?
     
     @UserDefaultOptional(Constants.UserDefaultsKey.segmentUid)
-    var uid: UInt64?
+    var uid: String?
     
     var gender: Gender {
         get { _gender ?? .other }

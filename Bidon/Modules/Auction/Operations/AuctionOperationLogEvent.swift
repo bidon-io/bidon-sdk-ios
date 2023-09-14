@@ -11,16 +11,16 @@ import Foundation
 final class AuctionOperationLogEvent: Operation {
     let observer: AnyMediationObserver
     let event: MediationEvent
-    let metadata: AuctionMetadata
+    let auctionConfiguration: AuctionConfiguration
     
     init(
         event: MediationEvent,
         observer: AnyMediationObserver,
-        metadata: AuctionMetadata
+        auctionConfiguration: AuctionConfiguration
     ) {
         self.event = event
         self.observer = observer
-        self.metadata = metadata
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }

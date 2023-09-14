@@ -34,7 +34,7 @@ protocol BidRequestBuilder: AdTypeContextRequestBuilder {
     func withAuctionConfigurationId(_ auctionConfigurationId: Int) -> Self
     
     @discardableResult
-    func withAuctionConfigurationUid(_ auctionConfigurationUid: UInt64) -> Self
+    func withAuctionConfigurationUid(_ auctionConfigurationUid: String) -> Self
     
     @discardableResult
     func withAdapters(_ adapters: [Adapter]) -> Self
@@ -48,7 +48,7 @@ class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequ
     private(set) var demands: BidonBiddingExtrasModel!
     private(set) var auctionId: String!
     private(set) var auctionConfigurationId: Int!
-    private(set) var auctionConfigurationUid: UInt64!
+    private(set) var auctionConfigurationUid: String!
     private(set) var roundId: String!
     private(set) var context: Context!
     
@@ -84,7 +84,7 @@ class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequ
     }
     
     @discardableResult
-    func withAuctionConfigurationUid(_ auctionConfigurationUid: UInt64) -> Self {
+    func withAuctionConfigurationUid(_ auctionConfigurationUid: String) -> Self {
         self.auctionConfigurationUid = auctionConfigurationUid
         return self
     }

@@ -33,14 +33,14 @@ extension ConcurrentAuctionControllerTestCase {
 
         let lineItem1 = LineItemModel(
             id: demandId2,
-            uid: UInt64.random(in: 1..<UInt64.max),
+            uid: UUID().uuidString,
             pricefloor: eCPM2,
             adUnitId: "ad_unit_id_1"
         )
         
         let lineItem2 = LineItemModel(
             id: demandId2,
-            uid: UInt64.random(in: 1..<UInt64.max),
+            uid: UUID().uuidString,
             pricefloor: eCPM3,
             adUnitId: "ad_unit_id_2"
         )
@@ -96,7 +96,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload1
                         ]
                     ]
-                ]
+                ] as [String : Any]
             ]
         ]
         )!
@@ -134,7 +134,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.winnerECPM, eCPM3)
         XCTAssertEqual(report.result.winnerDemandId, demandId2)
         XCTAssertEqual(report.result.winnerAdUnitId, lineItem2.adUnitId)
-        
+        XCTAssertEqual(report.result.demandType, "cpm")
+
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 2)

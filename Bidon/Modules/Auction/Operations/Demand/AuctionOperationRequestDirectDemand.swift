@@ -12,29 +12,29 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
-    let round: AuctionRound
     let observer: AnyMediationObserver
     let adapter: AdapterType
-    let metadata: AuctionMetadata
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     let lineItem: (AdapterType, Price) -> LineItem?
     let context: AdTypeContextType
     
     private(set) var bid: BidType?
     
     init(
-        round: AuctionRound,
         adapter: AdapterType,
         observer: AnyMediationObserver,
         context: AdTypeContextType,
-        metadata: AuctionMetadata,
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration,
         lineItem: @escaping (AdapterType, Price) -> LineItem?
     ) {
         self.context = context
-        self.round = round
         self.observer = observer
         self.adapter = adapter
         self.lineItem = lineItem
-        self.metadata = metadata
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
         
         super.init()
     }
@@ -55,7 +55,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         guard let lineItem = lineItem(adapter, pricefloor) else {
             observer.log(
                 DirectDemandProviderLineItemNotFoundMediationEvent(
-                    round: round,
+                    roundConfiguration: roundConfiguration,
                     adapter: adapter
                 )
             )
@@ -65,7 +65,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         
         observer.log(
             DirectDemandProividerLoadRequestMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapter: adapter,
                 lineItem: lineItem
             )
@@ -78,27 +78,29 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             case .failure(let error):
                 self.observer.log(
                     DirectDemandProividerDidFailToLoadMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         error: error
                     )
                 )
                 self.finish()
             case .success(let ad):
+                let eCPM = ad.eCPM ?? lineItem.pricefloor
+                
                 let bid = BidType(
                     id: UUID().uuidString,
-                    roundId: self.round.id,
                     adType: self.context.adType,
-                    eCPM: ad.eCPM ?? lineItem.pricefloor,
-                    lineItem: lineItem,
+                    eCPM: eCPM,
+                    demandType: .direct(lineItem),
                     ad: ad,
                     provider: self.adapter.provider,
-                    metadata: self.metadata
+                    roundConfiguration: self.roundConfiguration,
+                    auctionConfiguration: self.auctionConfiguration
                 )
               
                 self.observer.log(
                     DirectDemandProividerDidLoadMediationEvent(
-                        round: self.round,
+                        roundConfiguration: self.roundConfiguration,
                         adapter: self.adapter,
                         bid: bid
                     )
@@ -118,7 +120,7 @@ extension AuctionOperationRequestDirectDemand: AuctionOperationRequestDemand {
         
         observer.log(
             DirectDemandProividerDidFailToLoadMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 adapter: adapter,
                 error: .fillTimeoutReached
             )

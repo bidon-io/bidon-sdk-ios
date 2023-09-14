@@ -8,27 +8,26 @@
 import Foundation
 
 
-
 final class AuctionOperationRoundTimeout: AsynchronousOperation {
     private var timer: Timer?
     
     let interval: TimeInterval
-    let metadata: AuctionMetadata
     let observer: AnyMediationObserver
-    let round: AuctionRound
+    let roundConfiguration: AuctionRoundConfiguration
+    let auctionConfiguration: AuctionConfiguration
     
     private var operations = NSHashTable<Operation>.weakObjects()
     
     init(
-        round: AuctionRound,
         observer: AnyMediationObserver,
-        metadata: AuctionMetadata
+        roundConfiguration: AuctionRoundConfiguration,
+        auctionConfiguration: AuctionConfiguration
     ) {
         self.observer = observer
-        self.round = round
-        self.metadata = metadata
+        self.roundConfiguration = roundConfiguration
+        self.auctionConfiguration = auctionConfiguration
         self.interval = Date.MeasurementUnits.milliseconds.convert(
-            round.timeout,
+            roundConfiguration.timeout,
             to: .seconds
         )
         
@@ -37,7 +36,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
     
     func invalidate() {
         observer.log(
-            RoundInvalidateTimeoutMediationEvent(round: round)
+            RoundInvalidateTimeoutMediationEvent(roundConfiguration: roundConfiguration)
         )
         
         timer?.invalidate()
@@ -58,7 +57,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
         
         observer.log(
             RoundScheduleTimeoutMediationEvent(
-                round: round,
+                roundConfiguration: roundConfiguration,
                 interval: interval
             )
         )
@@ -70,7 +69,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
             guard let self = self, self.isExecuting else { return }
             
             self.observer.log(
-                RoundTimeoutReachedMediationEvent(round: self.round)
+                RoundTimeoutReachedMediationEvent(roundConfiguration: self.roundConfiguration)
             )
             
             self.operations

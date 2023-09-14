@@ -25,6 +25,7 @@ struct BiddingObservation {
             return BidObservation(
                 id: bid.id,
                 demandId: demandId,
+                demandType: .bidding,
                 eCPM: bid.price
             )
         }

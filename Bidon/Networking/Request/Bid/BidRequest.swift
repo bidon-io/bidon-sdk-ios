@@ -21,7 +21,7 @@ struct BidRequest: Request {
             var bidfloor: Price
             var auctionId: String
             var auctionConfigurationId: Int
-            var auctionConfigurationUid: UInt64
+            var auctionConfigurationUid: String
             var roundId: String
             var orientation: InterfaceOrientation = .current
             var banner: BannerAdTypeContextModel?

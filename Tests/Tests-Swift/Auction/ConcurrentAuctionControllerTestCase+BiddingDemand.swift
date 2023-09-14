@@ -56,7 +56,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload1
                         ]
                     ]
-                ]
+                ] as [String : Any]
             ]
         ]
         )!
@@ -141,7 +141,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload1
                         ]
                     ]
-                ]
+                ] as [String : Any]
             ]
         ]
         )!
@@ -238,7 +238,8 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winnerDemandId)
-        
+        XCTAssertNil(report.result.demandType)
+
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 0)
@@ -289,7 +290,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload1
                         ]
                     ]
-                ]
+                ] as [String : Any]
             ]
         ]
         )!
@@ -403,7 +404,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload1
                         ]
                     ]
-                ]
+                ] as [String : Any]
             ]
         ]
         )!
@@ -439,6 +440,7 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerDemandId, demandId1)
         XCTAssertEqual(report.result.winnerECPM, eCPM2)
+        XCTAssertEqual(report.result.demandType, "rtb")
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
@@ -533,7 +535,7 @@ extension ConcurrentAuctionControllerTestCase {
                             "payload": biddingPayload2
                         ]
                     ]
-                ],
+                ] as [String : Any],
                 [
                     "id": UUID().uuidString,
                     "impid": UUID().uuidString,
@@ -579,7 +581,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerDemandId, demandId2)
         XCTAssertEqual(report.result.winnerECPM, eCPM2)
-        
+        XCTAssertEqual(report.result.demandType, "rtb")
+
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 0)

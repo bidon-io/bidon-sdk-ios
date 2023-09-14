@@ -13,7 +13,7 @@ protocol DemandReport {
     var status: DemandMediationStatus { get }
     var eCPM: Price? { get }
     var adUnitId: String? { get }
-    var lineItemUid: UInt64? { get }
+    var lineItemUid: String? { get }
     var bidStartTimestamp: UInt? { get }
     var bidFinishTimestamp: UInt? { get }
     var fillStartTimestamp: UInt? { get }
@@ -56,6 +56,7 @@ protocol AuctionResultReport {
     var status: AuctionResultStatus { get }
     var startTimestamp: UInt { get }
     var finishTimestamp: UInt { get }
+    var demandType: String? { get }
     var winnerRoundId: String? { get }
     var winnerDemandId: String? { get }
     var winnerECPM: Price? { get }

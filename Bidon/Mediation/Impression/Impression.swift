@@ -10,13 +10,13 @@ import Foundation
 
 protocol Impression {
     var impressionId: String { get }
-    var roundId: String { get }
-    var lineItem: LineItem? { get }
     var eCPM: Price { get }
     var adType: AdType { get }
     var ad: DemandAd { get }
-    var metadata: AuctionMetadata { get }
-
+    var demandType: DemandType { get }
+    var roundConfiguration: AuctionRoundConfiguration { get }
+    var auctionConfiguration: AuctionConfiguration { get }
+    
     var showTrackedAt: TimeInterval { get set }
     var clickTrackedAt: TimeInterval { get set }
     var rewardTrackedAt: TimeInterval { get set }

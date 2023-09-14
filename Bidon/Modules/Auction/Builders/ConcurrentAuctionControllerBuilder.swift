@@ -18,7 +18,7 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var elector: AuctionLineItemElector!
     private(set) var context: AdTypeContextType!
-    private(set) var metadata: AuctionMetadata!
+    private(set) var auctionConfiguration: AuctionConfiguration!
 
     private(set) var rounds: [AuctionRound] = []
     
@@ -85,8 +85,8 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     }
     
     @discardableResult
-    public func withMetadata(_ metadata: AuctionMetadata) -> Self {
-        self.metadata = metadata
+    public func withAuctionConfiguration(_ auctionConfiguration: AuctionConfiguration) -> Self {
+        self.auctionConfiguration = auctionConfiguration
         return self
     }
 }
