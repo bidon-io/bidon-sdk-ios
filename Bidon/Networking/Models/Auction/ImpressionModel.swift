@@ -56,6 +56,7 @@ struct ImpressionModel: Encodable {
         self.demandId = imp.ad.networkName
         self.demandType = imp.demandType.stringValue
         self.adUnitId = imp.demandType.lineItem?.adUnitId
+        self.lineItemUid = imp.demandType.lineItem?.uid
         self.ecpm = imp.eCPM
         self.banner = banner
         self.interstitial = interstitial
