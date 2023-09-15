@@ -32,6 +32,16 @@ extension AdType {
 }
 
 
+extension AdBidType {
+    var title: String {
+        switch self {
+        case .cpm: return "CPM"
+        case .rtb: return "RTB"
+        }
+    }
+}
+
+
 extension Price {
     private static let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -50,7 +60,7 @@ extension Price {
 
 extension Ad {
     var text: String {
-        "Ad #\(id.prefix(3))... from \(networkName), eCPM: \(eCPM.pretty)"
+        "\(bidType.title) Ad #\(id) from \(networkName), eCPM: \(eCPM.pretty)"
     }
 }
 

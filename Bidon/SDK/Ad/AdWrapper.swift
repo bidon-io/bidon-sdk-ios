@@ -13,6 +13,7 @@ final class AdContainer: NSObject, Ad {
     let adType: AdType
     let eCPM: Price
     let networkName: String
+    let bidType: AdBidType
     let dsp: String?
     let adUnitId: String?
     let roundId: String?
@@ -24,6 +25,7 @@ final class AdContainer: NSObject, Ad {
         adType: AdType,
         eCPM: Price,
         networkName: String,
+        bidType: AdBidType,
         dsp: String?,
         adUnitId: String?,
         roundId: String?,
@@ -34,6 +36,7 @@ final class AdContainer: NSObject, Ad {
         self.adType = adType
         self.eCPM = eCPM
         self.networkName = networkName
+        self.bidType = bidType
         self.dsp = dsp
         self.adUnitId = adUnitId
         self.roundId = roundId
@@ -49,6 +52,7 @@ final class AdContainer: NSObject, Ad {
             adType: bid.adType,
             eCPM: bid.eCPM,
             networkName: bid.ad.networkName,
+            bidType: AdBidType(demandType: bid.demandType),
             dsp: bid.ad.dsp,
             adUnitId: bid.demandType.lineItem?.adUnitId,
             roundId: bid.roundConfiguration.roundId,
@@ -63,6 +67,7 @@ final class AdContainer: NSObject, Ad {
             adType: impression.adType,
             eCPM: impression.eCPM,
             networkName: impression.ad.networkName,
+            bidType: AdBidType(demandType: impression.demandType),
             dsp: impression.ad.dsp,
             adUnitId: impression.demandType.lineItem?.adUnitId,
             roundId: impression.roundConfiguration.roundId,
@@ -83,10 +88,27 @@ fileprivate extension Formatter {
 }
 
 
+fileprivate extension AdBidType {
+    init(demandType: DemandType) {
+        switch demandType {
+        case .bidding: self = .rtb
+        default: self = .cpm
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+        case .cpm: return "CPM"
+        case .rtb: return "RTB"
+        }
+    }
+}
+
+
 extension AdContainer {
     override var description: String {
         let components: [String?] = [
-            "\(adType.stringValue) ad #\(id)",
+            "\(adType.stringValue) (\(bidType.stringValue)) ad #\(id)",
             Formatter.eCPM.string(from: eCPM as NSNumber).map { "eCPM \($0)" },
             "network '\(networkName)'",
             dsp.map { "DSP '\($0)'" },

@@ -43,6 +43,12 @@
     [BDNSdk registerAdapterWithClassName:@"BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter"];
 }
 
+- (void)testExtas {
+    [BDNSdk setExtraValue:nil for:@"some_extras"];
+    id extras = [BDNSdk extras];
+    XCTAssertNotNil(extras);
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{

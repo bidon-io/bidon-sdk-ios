@@ -58,4 +58,6 @@
 
 - (void)rewardedAd:(id<BDNRewardedAd>)rewardedAd didRewardUser:(id<BDNReward>)reward {}
 
+- (void)rewardedAd:(id<BDNRewardedAd>)rewardedAd didRewardUser:(id<BDNReward>)reward ad:(id<BDNAd>)ad {}
+
 @end

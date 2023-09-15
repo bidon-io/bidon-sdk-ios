@@ -85,7 +85,12 @@ extension SdkError {
                 domain: ErrorCode.domain,
                 code: ErrorCode.noFill.rawValue
             )
-        case .cancelled, .invalidPresentationState:
+        case .cancelled:
+            return NSError(
+                domain: ErrorCode.domain,
+                code: ErrorCode.auctionCancelled.rawValue
+            )
+        case .invalidPresentationState:
             return NSError(
                 domain: ErrorCode.domain,
                 code: ErrorCode.adNotReady.rawValue

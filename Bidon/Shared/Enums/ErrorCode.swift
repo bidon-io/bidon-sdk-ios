@@ -15,6 +15,7 @@ public enum ErrorCode: Int {
     case internalServerSdkError
     case networkError
     case auctionInProgress
+    case auctionCancelled
     case noAuctionResults
     case noRoundResults
     case noContextFound
