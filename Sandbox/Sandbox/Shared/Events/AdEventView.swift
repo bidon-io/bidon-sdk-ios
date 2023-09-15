@@ -24,6 +24,8 @@ struct AdEventView: View {
                 HStack {
                     Text(model.adType.title)
                         .font(.system(size: 14, weight: .black, design: .monospaced))
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
                     
                     Image(systemName: model.bage)
                         .foregroundColor(model.color)

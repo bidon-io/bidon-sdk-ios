@@ -13,9 +13,9 @@ import UIKit
 public final class BidonSdk: NSObject {
     internal lazy var adaptersRepository = AdaptersRepository()
     internal lazy var environmentRepository = EnvironmentRepository()
-
+    
     public private(set) var isTestMode: Bool = false
-
+    
     @Injected(\.networkManager)
     private var networkManager: NetworkManager
     
@@ -34,7 +34,7 @@ public final class BidonSdk: NSObject {
     }
     
     private var isInitialized: Bool = false
-        
+    
     static let shared: BidonSdk = BidonSdk()
     
     private override init() {
@@ -57,6 +57,16 @@ public final class BidonSdk: NSObject {
     public static var baseURL: String {
         get { shared.networkManager.baseURL }
         set { shared.networkManager.baseURL = newValue }
+    }
+    
+    @objc
+    public static var extras: [String: AnyHashable]? {
+        get {
+            shared
+                .environmentRepository
+                .environment(ExtrasManager.self)
+                .extras
+        }
     }
     
     @objc
@@ -119,7 +129,7 @@ public final class BidonSdk: NSObject {
             completion: completion
         )
     }
-        
+    
     private func initialize(
         appKey: String,
         completion: (() -> ())?
