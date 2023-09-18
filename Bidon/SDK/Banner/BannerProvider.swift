@@ -24,6 +24,10 @@ public final class BannerProvider:  NSObject, AdObject {
         bannerView.isReady
     }
     
+    @objc public var isShown: Bool {
+        bannerView.superview != nil
+    }
+    
     @objc public var extras: [String : AnyHashable] {
         bannerView.extras
     }

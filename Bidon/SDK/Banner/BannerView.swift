@@ -23,7 +23,9 @@ public final class BannerView: UIView, AdView {
     
     @objc public weak var delegate: AdViewDelegate?
     
-    @objc public var isReady: Bool { adManager.impression != nil }
+    @objc public var isReady: Bool {
+        adManager.impression != nil || viewManager.impression != nil
+    }
     
     @objc private(set) public
     lazy var extras: [String : AnyHashable] = [:] {
