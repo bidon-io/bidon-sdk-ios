@@ -36,12 +36,10 @@ To provide control over advertising auctions to Publishers, while making it fair
 -   Ability to A/B test different Demand partners, even Ad Mediators
 -   To let market players and the community contribute to the solution, to add new partners, new integrations, and new features which are demanded by the industry.
 
-## Getting started
+## Docs
 
--   [Integration](/docs/integration.md)
--   [Ad Formats](/docs/ad-formats)
--   [Advanced](/docs/advanced.md)
-  
+Please check out our [documentation](https://bidon-sdk-docs-stage.pages.dev/docs/sdk/ios/integration) to get started on integrating.
+
 ## Join us
 
 Bidon is committed to a welcoming and inclusive environment where everyone can
