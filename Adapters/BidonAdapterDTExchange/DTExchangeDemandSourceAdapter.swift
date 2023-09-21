@@ -59,7 +59,6 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
         IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
-        
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in

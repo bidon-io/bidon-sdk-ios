@@ -32,7 +32,7 @@ public protocol Segment {
     
     var customAttributes: [String: AnyHashable] { get }
     
-    func setCustomAttribute(_ customAttribute: AnyHashable, for key: String)
+    func setCustomAttribute(_ customAttribute: AnyHashable?, for key: String)
 }
 
 

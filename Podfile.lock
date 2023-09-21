@@ -107,9 +107,9 @@ PODS:
   - BidMachineMetaAudienceAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - FBAudienceNetwork (= 6.12.0)
-  - BidMachineMintegralAdapter (2.3.0.1):
+  - BidMachineMintegralAdapter (2.3.0.2):
     - BidMachine (~> 2.3.0.0)
-    - MintegralAdSDK (= 7.4.2)
+    - MintegralAdSDK (= 7.4.4)
   - BidMachineMyTargetAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - myTargetSDK (= 5.17.5)
@@ -126,7 +126,7 @@ PODS:
   - BidMachineVungleAdapter (2.3.0.0):
     - BidMachine (~> 2.3.0.0)
     - VungleAds (= 7.0.0)
-  - BigoADS (4.0.3)
+  - BigoADS (4.0.4)
   - BURelyFoundation_Global/AFNetworking (0.1.1.3)
   - BURelyFoundation_Global/Foundation (0.1.1.3):
     - BURelyFoundation_Global/NETWork
@@ -272,40 +272,40 @@ PODS:
     - GoogleUtilities/Logger
   - InMobiSDK (10.5.8)
   - IronSourceSDK (7.3.0.0)
-  - MintegralAdSDK (7.4.2):
-    - MintegralAdSDK/BannerAd (= 7.4.2)
-    - MintegralAdSDK/BidBannerAd (= 7.4.2)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 7.4.2)
-    - MintegralAdSDK/BidNativeAd (= 7.4.2)
-    - MintegralAdSDK/BidNewInterstitialAd (= 7.4.2)
-    - MintegralAdSDK/BidRewardVideoAd (= 7.4.2)
-    - MintegralAdSDK/InterstitialVideoAd (= 7.4.2)
-    - MintegralAdSDK/NativeAd (= 7.4.2)
-    - MintegralAdSDK/NewInterstitialAd (= 7.4.2)
-    - MintegralAdSDK/RewardVideoAd (= 7.4.2)
-  - MintegralAdSDK/BannerAd (7.4.2):
+  - MintegralAdSDK (7.4.4):
+    - MintegralAdSDK/BannerAd (= 7.4.4)
+    - MintegralAdSDK/BidBannerAd (= 7.4.4)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 7.4.4)
+    - MintegralAdSDK/BidNativeAd (= 7.4.4)
+    - MintegralAdSDK/BidNewInterstitialAd (= 7.4.4)
+    - MintegralAdSDK/BidRewardVideoAd (= 7.4.4)
+    - MintegralAdSDK/InterstitialVideoAd (= 7.4.4)
+    - MintegralAdSDK/NativeAd (= 7.4.4)
+    - MintegralAdSDK/NewInterstitialAd (= 7.4.4)
+    - MintegralAdSDK/RewardVideoAd (= 7.4.4)
+  - MintegralAdSDK/BannerAd (7.4.4):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (7.4.2):
+  - MintegralAdSDK/BidBannerAd (7.4.4):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (7.4.2):
+  - MintegralAdSDK/BidInterstitialVideoAd (7.4.4):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (7.4.2):
+  - MintegralAdSDK/BidNativeAd (7.4.4):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (7.4.2):
+  - MintegralAdSDK/BidNewInterstitialAd (7.4.4):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (7.4.2):
+  - MintegralAdSDK/BidRewardVideoAd (7.4.4):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (7.4.2):
+  - MintegralAdSDK/InterstitialVideoAd (7.4.4):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (7.4.2)
-  - MintegralAdSDK/NewInterstitialAd (7.4.2):
+  - MintegralAdSDK/NativeAd (7.4.4)
+  - MintegralAdSDK/NewInterstitialAd (7.4.4):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (7.4.2):
+  - MintegralAdSDK/RewardVideoAd (7.4.4):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.6.1)
   - myTargetSDK (5.17.5):
@@ -599,13 +599,13 @@ SPEC CHECKSUMS:
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
   BidMachineMetaAudienceAdapter: c558a2a84027cd02be16aa4eab0cca3841682fa9
-  BidMachineMintegralAdapter: 0405db26926f26b09b08082273f90e2b36769c12
+  BidMachineMintegralAdapter: 8a7fe356264984de1cdcc74cbdaf2c3832a40adb
   BidMachineMyTargetAdapter: c2be6299ef8aa2756f270a31ab75b841fe2126fe
   BidMachinePangleAdapter: 3f394614b6e0727958cd51e7d5e94191f209a3fd
   BidMachineSmaatoAdapter: 5f2040224544fb99cacd05ab6c2bc26581591e0a
   BidMachineTapjoyAdapter: 9acce59674b01cd1ee571121d2f08cc4c1e2e33f
   BidMachineVungleAdapter: cce13094d3150e866b11458e96c4277e1b8b831c
-  BigoADS: a856b5caa01411d76ca79ad1d12632a72e04fc46
+  BigoADS: b671aac5e47e05671d1019249e7d78e0c172c233
   BURelyFoundation_Global: 1d1813784aecc249311d4df1b7e80e1dbd559dc3
   CriteoPublisherSdk: 1cfd1c5275aa4418b26e917cb9858901e02ed686
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
@@ -627,7 +627,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   InMobiSDK: 7c9f534a2e96ccebdc5e8b7ed1f8ca4dd4a36643
   IronSourceSDK: 70d098472ea63fa8d58e47ad79ad761ad256ce15
-  MintegralAdSDK: a7da9c65b3dd69e8194a7b26cec7068b2bade7cc
+  MintegralAdSDK: 25e723feacf999dd026093c4eca1c7ee400a6d73
   MobileFuseSDK: ed937169096b5f4d38beca01bf324a328d42a00a
   myTargetSDK: a4e52b626e687f7be32dce62ebc7339665dab296
   myTrackerSDK: df675bf18db63d9a426bd00d6c3dec4ba4bea57e

@@ -49,6 +49,12 @@
     XCTAssertNotNil(extras);
 }
 
+- (void)testSegment {
+    [BDNSdk.segment setCustomAttribute:nil for:@"some_key"];
+    id attributes = [BDNSdk.segment customAttributes];
+    XCTAssertNotNil(attributes);
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{

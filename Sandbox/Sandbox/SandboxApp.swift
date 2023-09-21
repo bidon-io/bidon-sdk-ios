@@ -33,6 +33,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
+        
         return true
     }
 }

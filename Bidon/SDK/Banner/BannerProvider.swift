@@ -24,7 +24,7 @@ public final class BannerProvider:  NSObject, AdObject {
         bannerView.isReady
     }
     
-    @objc public var isShown: Bool {
+    @objc public var isShowing: Bool {
         bannerView.superview != nil
     }
     

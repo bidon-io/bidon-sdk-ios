@@ -12,24 +12,12 @@
 @interface BDNBannerTestCase : XCTestCase <BDNAdViewDelegate>
 
 @property (nonatomic, strong) BDNBannerView *banner;
+@property (nonatomic, strong) BDNBannerProvider *provider;
 
 @end
 
 
 @implementation BDNBannerTestCase
-
-- (void)setUp {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-}
-
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
 
 - (void)createBanner {
     self.banner = [[BDNBannerView alloc] initWithFrame:CGRectZero placement:@"default"];
@@ -40,6 +28,11 @@
     [self.banner loadAdWith:0.1];
 }
 
+- (void)createBannerProvider {
+    self.provider = [[BDNBannerProvider alloc] init];
+    self.provider.format = BDNBannerFormatBanner;
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{
@@ -47,6 +40,15 @@
     }];
 }
 
+- (void)testProviderIsNotReady {
+    [self createBannerProvider];
+    XCTAssertFalse(self.provider.isReady);
+}
+
+- (void)testProviderIsNotShowing {
+    [self createBannerProvider];
+    XCTAssertFalse(self.provider.isShowing);
+}
 
 - (void)adObject:(id<BDNAdObject>)adObject didFailToLoadAd:(NSError *)error {}
 

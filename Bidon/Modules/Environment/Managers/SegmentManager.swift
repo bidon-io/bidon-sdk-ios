@@ -63,7 +63,7 @@ final class SegmentManager: Segment, Environment {
     var _customAttributes: [String : AnyHashable]?
     
     func setCustomAttribute(
-        _ customAttribute: AnyHashable,
+        _ customAttribute: AnyHashable?,
         for key: String
     ) {
         var attributes = _customAttributes ?? [:]
