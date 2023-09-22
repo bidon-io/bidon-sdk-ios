@@ -18,7 +18,6 @@ struct AuctionRequest: Request {
     struct RequestBody: Encodable, Tokenized {
         struct AdObjectModel: Encodable {
             var orientation: InterfaceOrientation = .current
-            var placementId: String
             var auctionId: String
             var pricefloor: Price
             var banner: BannerAdTypeContextModel?

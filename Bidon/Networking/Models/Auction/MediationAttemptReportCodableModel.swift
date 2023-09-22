@@ -122,6 +122,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var winnerRoundId: String?
         var winnerDemandId: String?
         var winnerECPM: Price?
+        var winnerLineItemUid: String?
         var winnerAdUnitId: String?
         
         enum CodingKeys: String, CodingKey {
@@ -133,6 +134,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case winnerAdUnitId = "ad_unit_id"
             case startTimestamp = "auction_start_ts"
             case finishTimestamp = "auction_finish_ts"
+            case winnerLineItemUid = "line_item_uid"
         }
         
         init<T: AuctionResultReport>(_ report: T) {
@@ -144,6 +146,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             self.winnerAdUnitId = report.winnerAdUnitId
             self.startTimestamp = report.startTimestamp
             self.finishTimestamp = report.finishTimestamp
+            self.winnerLineItemUid = report.winnerLineItemUid
         }
     }
     

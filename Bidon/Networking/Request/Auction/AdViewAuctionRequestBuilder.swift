@@ -20,7 +20,6 @@ final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeC
         
     override var adObject: AuctionRequestAdObject {
         AuctionRequestAdObject(
-            placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
             banner: BannerAdTypeContextModel(context)

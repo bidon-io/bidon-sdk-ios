@@ -19,7 +19,6 @@ final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<Interst
     
     override var adObject: AuctionRequestAdObject {
         AuctionRequestAdObject(
-            placementId: placement,
             auctionId: auctionId,
             pricefloor: pricefloor,
             interstitial: InterstitialAdTypeContextModel(context)
