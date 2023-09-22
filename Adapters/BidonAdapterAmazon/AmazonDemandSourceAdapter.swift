@@ -10,7 +10,10 @@ import Bidon
 import DTBiOSSDK
 
 
-@objc public final class AmazonDemandSourceAdapter: NSObject, Adapter {
+internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter
+
+
+@objc public final class AmazonDemandSourceAdapter: NSObject, DemandSourceAdapter {
     static let identifier = "amazon"
     
     public let identifier: String = AmazonDemandSourceAdapter.identifier
@@ -18,17 +21,25 @@ import DTBiOSSDK
     public let adapterVersion: String = "0"
     public let sdkVersion: String = DTBAds.version()
     
+    private var slots: [AmazonSlot] = []
+    
+    @Injected(\.context)
+    var context: Bidon.SdkContext
+    
+    public func biddingInterstitialDemandProvider() throws -> Bidon.AnyBiddingInterstitialDemandProvider {
+        throw Bidon.SdkError.unknown
+    }
 }
 
 
 struct AmazonSlot: Codable {
     enum Format: String, Codable {
-        case interstitial
-        case rewardedVideo
-        case banner
-        case mrec
-        case leaderboard
-        case adaptive
+        case interstitial = "INTERSTITIAL"
+        case rewardedVideo = "REWARDED_VIDEO"
+        case banner = "BANNER"
+        case mrec = "MREC"
+        case leaderboard = "LEADERBOARD"
+        case adaptive = "ADAPTIVE"
     }
     
     var slotId: String
@@ -50,5 +61,26 @@ extension AmazonDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: Parameters,
         completion: @escaping (Bidon.SdkError?) -> Void
     ) {
+        slots = parameters.slots
+        
+        DTBAds.sharedInstance().testMode = context.isTestMode
+        DTBAds.sharedInstance().setLogLevel(.current)
+        DTBAds.sharedInstance().setAppKey(parameters.appKey)
+        
+        completion(nil)
+    }
+}
+
+
+extension DTBLogLevel {
+    static var current: DTBLogLevel {
+        switch Logger.level {
+        case .verbose: return DTBLogLevelAll
+        case .debug: return DTBLogLevelDebug
+        case .info: return DTBLogLevelInfo
+        case .warning: return DTBLogLevelWarn
+        case .error: return DTBLogLevelError
+        case .off: return DTBLogLevelOff
+        }
     }
 }

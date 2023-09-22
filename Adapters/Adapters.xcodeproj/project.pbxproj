@@ -101,6 +101,7 @@
 		42E3D9FC2A5D90C000546D3A /* MobileFuseBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E3D9FB2A5D90C000546D3A /* MobileFuseBiddingRewardedDemandProvider.swift */; };
 		42E3D9FE2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E3D9FD2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift */; };
 		42E5457C2AB0640100AA909F /* InMobiAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */; };
+		42EFE0AC2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFE0AB2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift */; };
 		42F71CF8299670DC002FC80D /* BidMachineProgrammaticInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF7299670DC002FC80D /* BidMachineProgrammaticInterstitialDemandProvider.swift */; };
 		42F71CFA29967AEE002FC80D /* BidMachineAdDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */; };
 		42F71CFC29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */; };
@@ -239,6 +240,7 @@
 		42EC98742891416F003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC98782891417F003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC987C28914189003BE6CF /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42EFE0AB2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonBiddingDemandProvider.swift; sourceTree = "<group>"; };
 		42F71CF7299670DC002FC80D /* BidMachineProgrammaticInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineProgrammaticInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineAdDemand.swift; sourceTree = "<group>"; };
 		42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineProgrammaticRewardedAdDemandProvider.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 		4253FED02ABC97A70013A675 /* BidonAdapterAmazon */ = {
 			isa = PBXGroup;
 			children = (
+				42EFE0AA2ABDC1A100AB2603 /* Bidding */,
 				4253FED12ABC97A70013A675 /* BidonAdapterAmazon.h */,
 				4253FEDA2ABC98580013A675 /* AmazonDemandSourceAdapter.swift */,
 			);
@@ -749,6 +752,14 @@
 				42E3D9FD2A5D94BC00546D3A /* MobileFuseBiddingAdViewDemandProvider.swift */,
 			);
 			path = Providers;
+			sourceTree = "<group>";
+		};
+		42EFE0AA2ABDC1A100AB2603 /* Bidding */ = {
+			isa = PBXGroup;
+			children = (
+				42EFE0AB2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift */,
+			);
+			path = Bidding;
 			sourceTree = "<group>";
 		};
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
@@ -1732,6 +1743,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4253FEDB2ABC98580013A675 /* AmazonDemandSourceAdapter.swift in Sources */,
+				42EFE0AC2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
