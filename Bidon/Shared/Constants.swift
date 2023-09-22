@@ -32,7 +32,8 @@ struct Constants {
             "BidonAdapterVungle.VungleDemandSourceAdapter",
             "BidonAdapterBigoAds.BigoAdsDemandSourceAdapter",
             "BidonAdapterMetaAudienceNetwork.MetaAudienceNetworkDemandSourceAdapter",
-            "BidonAdapterInMobi.InMobiDemandSourceAdapter"
+            "BidonAdapterInMobi.InMobiDemandSourceAdapter",
+            "BidonAdapterAmazon.AmazonDemandSourceAdapter"
         ]
     }
     

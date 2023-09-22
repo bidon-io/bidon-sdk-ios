@@ -72,6 +72,10 @@ def meta_sdk
   pod 'FBSDKLoginKit'
 end
 
+def amazon
+  pod 'AmazonPublisherServicesSDK'
+end
+
 def inmobi
   pod 'InMobiSDK'
 end
@@ -127,7 +131,6 @@ target 'BidonAdapterInMobi' do
   inmobi
 end
 
-
 target 'BidonAdapterUnityAds' do
   project 'Adapters/Adapters.xcodeproj'
   unity_ads
@@ -153,6 +156,11 @@ target 'BidonAdapterVungle' do
   vungle
 end
 
+target 'BidonAdapterAmazon' do
+  project 'Adapters/Adapters.xcodeproj'
+  amazon
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -170,6 +178,7 @@ target 'Tests-ObjectiveC' do
   bigo_ads
   meta_ads
   inmobi
+  amazon
 end
 
 target 'Tests-Swift' do
@@ -195,6 +204,7 @@ target 'Sandbox' do
   meta_ads
   meta_sdk
   inmobi
+  amazon
   appodeal_mediation
 end
 

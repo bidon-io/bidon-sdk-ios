@@ -446,6 +446,7 @@ PODS:
     - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
+  - AmazonPublisherServicesSDK
   - APDAdColonyAdapter (= 3.1.3.0)
   - APDAdjustAdapter (= 3.1.3.0)
   - APDAppLovinAdapter (= 3.1.3.0)
@@ -506,6 +507,7 @@ SPEC REPOS:
     - APDVungleAdapter
     - APDYandexAdapter
     - Appodeal
+    - BidMachine
     - BidMachineAdColonyAdapter
     - BidMachineAmazonAdapter
     - BidMachineCriteoAdapter
@@ -593,7 +595,7 @@ SPEC CHECKSUMS:
   Appodeal: caf6521230a2e296edf50ce21b7d5c14f8cbfb4e
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: d4eaeb15d61764721d9a6e18c3e07a864ce1c351
+  BidMachine: 3dc30795a118b73d2ff72b89508140bf58585975
   BidMachineAdColonyAdapter: 90b4be91688decd68cd3aad940102b4354f59520
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
@@ -647,6 +649,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 5302f0a58550900e0198f7fba43765cb8486e018
+PODFILE CHECKSUM: 72b5dc737502c34ccd3ff6ff132b6875a657a04c
 
 COCOAPODS: 1.11.3
