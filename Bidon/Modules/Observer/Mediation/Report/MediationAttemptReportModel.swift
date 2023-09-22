@@ -99,6 +99,7 @@ struct AuctionResultReportModel: AuctionResultReport {
     var winnerDemandId: String?
     var winnerECPM: Price?
     var winnerAdUnitId: String?
+    var winnerLineItemUid: String?
 }
 
 

@@ -165,7 +165,8 @@ extension BaseMediationObserver: MediationReportProvider {
             winnerRoundId: winner.id,
             winnerDemandId: winner.auctionWinner?.demandId,
             winnerECPM: winner.auctionWinner?.eCPM,
-            winnerAdUnitId: winner.auctionWinner?.adUnitId
+            winnerAdUnitId: winner.auctionWinner?.adUnitId,
+            winnerLineItemUid: winner.auctionWinner?.lineItemUid
         )
     }
     

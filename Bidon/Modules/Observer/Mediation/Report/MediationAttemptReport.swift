@@ -61,6 +61,7 @@ protocol AuctionResultReport {
     var winnerDemandId: String? { get }
     var winnerECPM: Price? { get }
     var winnerAdUnitId: String? { get }
+    var winnerLineItemUid: String? { get }
 }
 
 
