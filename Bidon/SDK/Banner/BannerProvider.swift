@@ -104,7 +104,11 @@ public final class BannerProvider:  NSObject, AdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        bannerView.loadAd(with: pricefloor)
+        if bannerView.isReady, let ad = bannerView.ad {
+            delegate?.adObject(self, didLoadAd: ad)
+        } else {
+            bannerView.loadAd(with: pricefloor)
+        }
     }
     
     @objc public func show() {

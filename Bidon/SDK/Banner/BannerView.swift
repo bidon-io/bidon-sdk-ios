@@ -24,7 +24,7 @@ public final class BannerView: UIView, AdView {
     @objc public weak var delegate: AdViewDelegate?
     
     @objc public var isReady: Bool {
-        adManager.impression != nil || viewManager.impression != nil
+        adManager.impression != nil || (viewManager.impression.map { $0.showTrackedAt.isNaN } ?? false )
     }
     
     @objc private(set) public
@@ -195,4 +195,12 @@ extension BannerView: BannerViewManagerDelegate {
     }
 }
 
+
+internal extension BannerView {
+    var ad: Ad? {
+        return (adManager.impression ?? viewManager.impression).map {
+            AdContainer(impression: $0)
+        }
+    }
+}
 

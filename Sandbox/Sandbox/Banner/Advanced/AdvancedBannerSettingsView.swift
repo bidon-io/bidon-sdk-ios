@@ -106,7 +106,6 @@ struct AdvancedBannerSettings: View {
                             }
                         }
                     }
-                    .foregroundColor(.primary)
                     
                     Button(action: bannerProviderReference.provider.show) {
                         HStack {
@@ -118,12 +117,10 @@ struct AdvancedBannerSettings: View {
                             }
                         }
                     }
-                    .foregroundColor(.primary)
-                    
+
                     Button(action: bannerProviderReference.provider.hide) {
                         Text("Hide")
                     }
-                    .foregroundColor(.primary)
                 }
             }
             .listStyle(.automatic)
