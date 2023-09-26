@@ -49,7 +49,7 @@ BiddingAdViewDemandSourceAdapter
 
 extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        var appId: String
+        var appKey: String
         var publisherId: String
     }
     
@@ -69,7 +69,7 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
         state = .initializing(completion)
         
         MobileFuse.initWithAppId(
-            parameters.appId,
+            parameters.appKey,
             withPublisherId: parameters.publisherId,
             withDelegate: self
         )
