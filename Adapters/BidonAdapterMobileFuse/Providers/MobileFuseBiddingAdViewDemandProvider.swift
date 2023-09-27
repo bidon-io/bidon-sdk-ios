@@ -34,7 +34,7 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
             self.response = response
             
             banner.register(self)
-            banner.load(withBiddingResponseToken: data.payload)
+            banner.load(withBiddingResponseToken: data.signal)
         } else {
             response(.failure(.unscpecifiedException))
         }
@@ -54,6 +54,7 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
 
 extension MobileFuseBiddingAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: MFBannerAd) -> AdViewContainer? {
+        ad.show()
         return ad
     }
     

@@ -24,7 +24,7 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
             self.response = response
             
             rewarded.register(self)
-            rewarded.load(withBiddingResponseToken: data.payload)
+            rewarded.load(withBiddingResponseToken: data.signal)
         } else {
             response(.failure(.unscpecifiedException))
         }
@@ -40,6 +40,7 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
 
 extension MobileFuseBiddingRewardedDemandProvider: RewardedAdDemandProvider {
     func show(ad: MFRewardedAd, from viewController: UIViewController) {
+        viewController.view.addSubview(ad)
         ad.show()
     }
 }

@@ -49,8 +49,8 @@ BiddingAdViewDemandSourceAdapter
 
 extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
     public struct Parameters: Codable {
-        var appKey: String
-        var publisherId: String
+        var appKey: String?
+        var publisherId: String?
     }
     
     public var isInitialized: Bool {
@@ -66,11 +66,20 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        state = .initializing(completion)
+        guard
+            let appId = parameters.appKey,
+            let publisherId = parameters.publisherId
+        else {
+            MobileFuse.initializeCoreServices()
+            state = .ready
+            completion(nil)
+            return
+        }
         
+        state = .initializing(completion)
         MobileFuse.initWithAppId(
-            parameters.appKey,
-            withPublisherId: parameters.publisherId,
+            appId,
+            withPublisherId: publisherId,
             withDelegate: self
         )
     }
