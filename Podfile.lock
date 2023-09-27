@@ -307,7 +307,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.4.4):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.6.2)
+  - MobileFuseSDK (1.6.3)
   - myTargetSDK (5.17.5):
     - myTrackerSDK (~> 3.0.3)
   - myTrackerSDK (3.0.8)
@@ -507,6 +507,7 @@ SPEC REPOS:
     - APDVungleAdapter
     - APDYandexAdapter
     - Appodeal
+    - BidMachine
     - BidMachineAdColonyAdapter
     - BidMachineAmazonAdapter
     - BidMachineCriteoAdapter
@@ -594,7 +595,7 @@ SPEC CHECKSUMS:
   Appodeal: caf6521230a2e296edf50ce21b7d5c14f8cbfb4e
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: d4eaeb15d61764721d9a6e18c3e07a864ce1c351
+  BidMachine: 3dc30795a118b73d2ff72b89508140bf58585975
   BidMachineAdColonyAdapter: 90b4be91688decd68cd3aad940102b4354f59520
   BidMachineAmazonAdapter: daec28c0d4e31159b1abed475fa88d4f10173522
   BidMachineCriteoAdapter: 3b1c9eb82da1e5b449d4c0d50d91d056d6540e1d
@@ -628,7 +629,7 @@ SPEC CHECKSUMS:
   InMobiSDK: 7c9f534a2e96ccebdc5e8b7ed1f8ca4dd4a36643
   IronSourceSDK: 70d098472ea63fa8d58e47ad79ad761ad256ce15
   MintegralAdSDK: 25e723feacf999dd026093c4eca1c7ee400a6d73
-  MobileFuseSDK: d9606e579a717755e60bb56cdc4d61133b7e1bb9
+  MobileFuseSDK: dbbfcc909c137840907182ce68e9cf5890416546
   myTargetSDK: a4e52b626e687f7be32dce62ebc7339665dab296
   myTrackerSDK: df675bf18db63d9a426bd00d6c3dec4ba4bea57e
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
