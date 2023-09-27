@@ -22,8 +22,14 @@ struct AdaptersInfo: Encodable {
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
-            try container.encode(adapter.adapterVersion, forKey: .version)
-            try container.encode(adapter.sdkVersion, forKey: .sdkVersion)
+            try container.encode(
+                Constants.sdkVersion + "." + adapter.adapterVersion,
+                forKey: .version
+            )
+            try container.encode(
+                adapter.sdkVersion,
+                forKey: .sdkVersion
+            )
             
 //            if let encodable = adapter as? ParametersEncodableAdapter {
 //                try encodable.encodeAdapterParameters(to: encoder)

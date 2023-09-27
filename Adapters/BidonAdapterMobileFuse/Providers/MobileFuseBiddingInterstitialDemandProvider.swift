@@ -23,7 +23,7 @@ final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDe
             self.interstitial = interstitial
             
             interstitial.register(self)
-            interstitial.load(withBiddingResponseToken: data.payload)
+            interstitial.load(withBiddingResponseToken: data.signal)
         } else {
             response(.failure(.unscpecifiedException))
         }
@@ -33,6 +33,7 @@ final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDe
 
 extension MobileFuseBiddingInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: MFInterstitialAd, from viewController: UIViewController) {
+        viewController.view.addSubview(ad)
         ad.show()
     }
 }

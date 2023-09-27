@@ -19,10 +19,19 @@ BiddingAdViewDemandSourceAdapter
 @objc public final class MobileFuseDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "mobilefuse"
     
+    enum InitializationState {
+        case idle
+        case initializing((SdkError?) -> Void)
+        case ready
+        case failed
+    }
+    
     public let identifier: String = MobileFuseDemandSourceAdapter.identifier
     public let name: String = "MobileFuse"
     public var adapterVersion: String = "0"
     public var sdkVersion: String = MobileFuse.version()
+    
+    var state = InitializationState.idle
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MobileFuseBiddingInterstitialDemandProvider()
@@ -38,19 +47,65 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension MobileFuseDemandSourceAdapter: InitializableAdapter {
+extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
+    public struct Parameters: Codable {
+        var appKey: String?
+        var publisherId: String?
+    }
+    
     public var isInitialized: Bool {
-        return MobileFuse.isReady()
+        switch state {
+        case .ready:
+            return MobileFuse.isReady()
+        default:
+            return false
+        }
     }
     
     public func initialize(
-        from decoder: Decoder,
-        completion: @escaping (Result<Void, SdkError>) -> Void
+        parameters: Parameters,
+        completion: @escaping (SdkError?) -> Void
     ) {
-        MobileFuse.initializeCoreServices()
-        completion(.success(()))
+        guard
+            let appId = parameters.appKey,
+            let publisherId = parameters.publisherId
+        else {
+            MobileFuse.initializeCoreServices()
+            state = .ready
+            completion(nil)
+            return
+        }
+        
+        state = .initializing(completion)
+        MobileFuse.initWithAppId(
+            appId,
+            withPublisherId: publisherId,
+            withDelegate: self
+        )
     }
 }
 
+
+extension MobileFuseDemandSourceAdapter: IMFInitializationCallbackReceiver {
+    public func onInitSuccess(_ appId: String!, withPublisherId publisherId: String!) {
+        defer { state = .ready }
+        switch state {
+        case .initializing(let response):
+            response(nil)
+        default:
+            break
+        }
+    }
+    
+    public func onInitError(_ appId: String!, withPublisherId publisherId: String!, withError error: MFAdError!) {
+        defer { state = .failed }
+        switch state {
+        case .initializing(let response):
+            response(SdkError.message(error.message()))
+        default:
+            break
+        }
+    }
+}
 
 

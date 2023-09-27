@@ -22,9 +22,34 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         var token: String
     }
     
-    struct BiddingResponse: Codable {
+    struct BiddingResponse: Decodable {
         var placementId: String
-        var payload: String
+        var signal: String
+        
+        enum CodingKeys: String, CodingKey {
+            case placementId
+            case payload
+        }
+        
+        private struct Payload: Decodable {
+            var signaldata: String
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            let payload = try container.decode(String.self, forKey: .payload)
+            guard let payloadData = payload.data(using: .utf8) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .payload,
+                    in: container,
+                    debugDescription: "Can't decode payload"
+                )
+            }
+            
+            signal = try JSONDecoder().decode(Payload.self, from: payloadData).signaldata
+            placementId = try container.decode(String.self, forKey: .placementId)
+        }
     }
     
     weak var delegate: DemandProviderDelegate?

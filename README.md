@@ -38,7 +38,7 @@ To provide control over advertising auctions to Publishers, while making it fair
 
 ## Docs
 
-Please check out our [documentation](https://bidon-sdk-docs-stage.pages.dev/docs/sdk/ios/integration) to get started on integrating.
+Please check out our [documentation](https://docs.bidon.org/docs/sdk/ios/integration) to get started on integrating.
 
 ## Join us
 

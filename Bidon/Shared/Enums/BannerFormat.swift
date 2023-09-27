@@ -26,8 +26,8 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
             return CGSize(width: 300, height: 250)
         case .adaptive:
             return UIDevice.bd.isPhone ?
-            CGSize(width: 320, height: 50) :
-            CGSize(width: 728, height: 90)
+            CGSize(width: UIScreen.main.bounds.width, height: 50) :
+            CGSize(width: UIScreen.main.bounds.width, height: 90)
         }
     }
     
