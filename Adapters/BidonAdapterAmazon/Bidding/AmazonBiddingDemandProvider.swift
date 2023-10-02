@@ -19,16 +19,8 @@ extension DTBAdDispatcher: DemandAd {
 
 class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, ParameterizedBiddingDemandProvider {
     typealias DemandAdType = Dispatcher
-    
-    struct BiddingSlotData: Codable {
-        var slotUuid: String
-        var pricePoint: String
-    }
-    
-    struct BiddingContext: Codable {
-        var slots: [BiddingSlotData]
-    }
-    
+    typealias BiddingContext = AmazonBiddingSlots
+   
     struct BiddingResponse: Codable {
         var slotUuid: String
     }
@@ -37,50 +29,36 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Parame
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     private let adSizes: [DTBAdSize]
-    
-    private lazy var loader: DTBAdLoader = {
-        let loader = DTBAdLoader()
-        loader.setAdSizes(adSizes)
-        return loader
-    }()
+    private lazy var biddingHandler = AmazonBiddingHandler(adSizes: adSizes)
     
     init(adSizes: [DTBAdSize]) {
         self.adSizes = adSizes
         super.init()
     }
     
-    func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
-        let handler = AmazonBiddingContextCallbackHandler(response: response)
-        loader.loadAd(handler)
+    final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
+        biddingHandler.fetch(response: response)
     }
     
-    func prepareBid(data: BiddingResponse, response: @escaping DemandProviderResponse) {
+    final func prepareBid(
+        data: BiddingResponse,
+        response: @escaping DemandProviderResponse
+    ) {
+        guard let data = biddingHandler.response(for: data.slotUuid) else {
+            response(.failure(.noFill))
+            return
+        }
         
+        fill(data, response: response)
     }
     
-    func notify(ad: Dispatcher, event: AuctionEvent) {}
-}
-
-
-extension AmazonBiddingDemandProvider {
-    final class AmazonBiddingContextCallbackHandler: NSObject, DTBAdCallback {
-        private var response: ((Result<BiddingContext, MediationError>) -> ())?
-        
-        init(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
-            self.response = response
-            super.init()
-        }
-        
-        func onSuccess(_ adResponse: DTBAdResponse!) {
-            let context = AmazonBiddingDemandProvider.BiddingContext(slots: [])
-            response?(.success(context))
-            response = nil
-        }
-        
-        func onFailure(_ error: DTBAdError) {
-            response?(.failure(MediationError(error: error)))
-            response = nil
-        }
+    final func notify(ad: Dispatcher, event: AuctionEvent) {}
+    
+    open func fill(
+        _ data: DTBAdResponse,
+        response: @escaping DemandProviderResponse
+    ) {
+        fatalError("AmazonBiddingDemandProvider does not implement fill(_:response:)")
     }
 }
 

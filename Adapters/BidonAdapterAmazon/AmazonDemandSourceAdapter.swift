@@ -10,7 +10,7 @@ import Bidon
 import DTBiOSSDK
 
 
-internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter
+internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter & BiddingAdViewDemandSourceAdapter
 
 
 @objc public final class AmazonDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -27,7 +27,30 @@ internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter
     var context: Bidon.SdkContext
     
     public func biddingInterstitialDemandProvider() throws -> Bidon.AnyBiddingInterstitialDemandProvider {
-        throw Bidon.SdkError.unknown
+        let adSizes = slots
+            .filter { $0.format == .interstitial || $0.format == .video }
+            .compactMap { $0.adSize() }
+        
+        guard !adSizes.isEmpty else {
+            throw MediationError.noAppropriateAdUnitId
+        }
+        
+        return AmazonBiddingInterstitialDemandProvider(adSizes: adSizes)
+    }
+    
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        let adSizes = slots
+            .filter { $0.format == .banner }
+            .compactMap { $0.adSize(context.format) }
+        
+        guard !adSizes.isEmpty else {
+            throw MediationError.noAppropriateAdUnitId
+        }
+        
+        return AmazonBiddingAdViewDemandProvider(
+            adSizes: adSizes,
+            context: context
+        )
     }
 }
 
@@ -35,15 +58,35 @@ internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter
 struct AmazonSlot: Codable {
     enum Format: String, Codable {
         case interstitial = "INTERSTITIAL"
-        case rewardedVideo = "REWARDED_VIDEO"
+        case video = "VIDEO"
         case banner = "BANNER"
-        case mrec = "MREC"
-        case leaderboard = "LEADERBOARD"
-        case adaptive = "ADAPTIVE"
     }
     
-    var slotId: String
+    var slotUuid: String
     var format: Format
+    
+    func adSize(_ format: BannerFormat? = nil) -> DTBAdSize? {
+        switch (self.format, format) {
+        case (.interstitial, _):
+            return DTBAdSize(interstitialAdSizeWithSlotUUID: slotUuid)
+        case (.video, _):
+            return DTBAdSize(videoAdSizeWithSlotUUID: slotUuid)
+        case (.banner, .banner):
+            return DTBAdSize(bannerAdSizeWithWidth: 320, height: 50, andSlotUUID: slotUuid)
+        case (.banner, .leaderboard):
+            return DTBAdSize(bannerAdSizeWithWidth: 728, height: 90, andSlotUUID: slotUuid)
+        case (.banner, .mrec):
+            return DTBAdSize(bannerAdSizeWithWidth: 300, height: 250, andSlotUUID: slotUuid)
+        case (.banner, .adaptive):
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                return DTBAdSize(bannerAdSizeWithWidth: 728, height: 90, andSlotUUID: slotUuid)
+            } else {
+                return DTBAdSize(bannerAdSizeWithWidth: 320, height: 50, andSlotUUID: slotUuid)
+            }
+        default:
+            return nil
+        }
+    }
 }
 
 
