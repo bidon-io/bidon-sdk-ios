@@ -15,16 +15,16 @@ end
 
 def bidmachine 
   pod 'BidMachine', '~> 2.3.0'
-  pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
-  pod 'BidMachineMintegralAdapter', '~> 2.3.0'
-  pod 'BidMachineAmazonAdapter', '~> 2.3.0'
-  pod 'BidMachineCriteoAdapter', '~> 2.3.0'
-  pod 'BidMachineMetaAudienceAdapter', '~> 2.3.0'
-  pod 'BidMachineMyTargetAdapter', '~> 2.3.0'
-  pod 'BidMachineSmaatoAdapter', '~> 2.3.0'
-  pod 'BidMachineTapjoyAdapter', '~> 2.3.0'
-  pod 'BidMachineVungleAdapter', '~> 2.3.0'
-  pod 'BidMachinePangleAdapter', '~> 2.3.0'
+  # pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
+  # pod 'BidMachineMintegralAdapter', '~> 2.3.0'
+  # pod 'BidMachineAmazonAdapter', '~> 2.3.0'
+  # pod 'BidMachineCriteoAdapter', '~> 2.3.0'
+  # pod 'BidMachineMetaAudienceAdapter', '~> 2.3.0'
+  # pod 'BidMachineMyTargetAdapter', '~> 2.3.0'
+  # pod 'BidMachineSmaatoAdapter', '~> 2.3.0'
+  # pod 'BidMachineTapjoyAdapter', '~> 2.3.0'
+  # pod 'BidMachineVungleAdapter', '~> 2.3.0'
+  # pod 'BidMachinePangleAdapter', '~> 2.3.0'
 end
 
 def admob
@@ -37,15 +37,15 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS'
+  pod 'BigoADS', '~> 4.0.4'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK'
+  pod 'Fyber_Marketplace_SDK', '~> 8.2.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork'
+  pod 'FBAudienceNetwork', '~> 6.12.0'
 end
 
 def unity_ads
@@ -53,7 +53,7 @@ def unity_ads
 end
 
 def mintegral
-  pod 'MintegralAdSDK'
+  pod 'MintegralAdSDK', '~> 7.4.4'
 end
 
 def mobilefuse
@@ -61,7 +61,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds'
+  pod 'VungleAds', '~> 7.1.0'
 end
 
 def ocmock
@@ -73,26 +73,27 @@ def meta_sdk
 end
 
 def inmobi
-  pod 'InMobiSDK'
+  pod 'InMobiSDK', '~> 10.5.8'
 end
 
 def appodeal_mediation
-  pod 'APDAdColonyAdapter', '3.1.3.0'
-  pod 'APDAdjustAdapter', '3.1.3.0'
-  pod 'APDAppLovinAdapter', '3.1.3.0'
-  pod 'APDAppsFlyerAdapter', '3.1.3.0'
-  pod 'APDBidMachineAdapter', '3.1.3.0' # Required
-  pod 'APDFirebaseAdapter', '3.1.3.0'
-  pod 'APDGoogleAdMobAdapter', '3.1.3.0'
-  pod 'APDIABAdapter', '3.1.3.0' # Required
-  pod 'APDIronSourceAdapter', '3.1.3.0'
-  pod 'APDFacebookAdapter', '3.1.3.0'
-  pod 'APDMetaAudienceNetworkAdapter', '3.1.3.0'
-  pod 'APDMyTargetAdapter', '3.1.3.0'
-  pod 'APDStackAnalyticsAdapter', '3.1.3.0' # Required
-#  pod 'APDUnityAdapter', '3.1.3.0'
-  pod 'APDVungleAdapter', '3.1.3.0'
-  pod 'APDYandexAdapter', '3.1.3.0'
+  pod 'Appodeal', '~> 3.1'
+  # pod 'APDAdColonyAdapter', '3.1.3.0'
+  # pod 'APDAdjustAdapter', '3.1.3.0'
+  # pod 'APDAppLovinAdapter', '3.1.3.0'
+  # pod 'APDAppsFlyerAdapter', '3.1.3.0'
+  # pod 'APDBidMachineAdapter', '3.1.3.0' # Required
+  # pod 'APDFirebaseAdapter', '3.1.3.0'
+  # pod 'APDGoogleAdMobAdapter', '3.1.3.0'
+  # pod 'APDIABAdapter', '3.1.3.0' # Required
+  # pod 'APDIronSourceAdapter', '3.1.3.0'
+  # pod 'APDFacebookAdapter', '3.1.3.0'
+  # pod 'APDMetaAudienceNetworkAdapter', '3.1.3.0'
+  # pod 'APDMyTargetAdapter', '3.1.3.0'
+  # pod 'APDStackAnalyticsAdapter', '3.1.3.0' # Required
+  # pod 'APDUnityAdapter', '3.1.3.0'
+  # pod 'APDVungleAdapter', '3.1.3.0'
+  # pod 'APDYandexAdapter', '3.1.3.0'
 end
 
 # Targets

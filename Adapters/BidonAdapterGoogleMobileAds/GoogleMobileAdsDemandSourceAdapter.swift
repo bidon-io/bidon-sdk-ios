@@ -30,11 +30,13 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     public let identifier: String = GoogleMobileAdsDemandSourceAdapter.identifier
     public let name: String = "Google Mobile Ads"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = GADMobileAds.sharedInstance().sdkVersion
+    public let sdkVersion: String = GADGetStringFromVersionNumber(
+        GADMobileAds.sharedInstance().versionNumber
+    )
     
     @Injected(\.context)
     var context: Bidon.SdkContext
-   
+    
     private(set) var serverData = ServerData()
     
     private(set) public var isInitialized: Bool = false
@@ -90,7 +92,7 @@ extension GoogleMobileAdsDemandSourceAdapter: ParameterizedInitializableAdapter 
         
         configure(GADMobileAds.sharedInstance().requestConfiguration)
         
-//        GADMobileAds.sharedInstance().disableMediationInitialization()
+        //        GADMobileAds.sharedInstance().disableMediationInitialization()
         GADMobileAds.sharedInstance().start { _ in
             completion(nil)
         }
