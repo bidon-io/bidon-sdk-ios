@@ -12,13 +12,33 @@ import Bidon
 
 protocol InMobiAd {
     var placementId: Int64 { get }
+    
+    func getAdMetaInfo() -> [String: Any]?
 }
 
 
 final class InMobiDemandAd<Ad: InMobiAd>: NSObject, DemandAd {
-    var id: String { String(ad.placementId) }
-    var networkName: String { InMobiDemandSourceAdapter.identifier }
-    var dsp: String? { nil }
+    var id: String {
+        return String(ad.placementId)
+    }
+    
+    var networkName: String {
+        return InMobiDemandSourceAdapter.identifier
+    }
+    
+    var eCPM: Price {
+        return ad
+            .getAdMetaInfo()
+            .flatMap { $0["bidValue"] as? Float }
+            .map { Price($0) } ??
+            .unknown
+    }
+    
+    var dsp: String? {
+        return ad
+            .getAdMetaInfo()
+            .flatMap { $0["adSourceName"] as? String }
+    }
     
     let ad: Ad
     

@@ -19,6 +19,26 @@ struct AdEventView: View {
     }()
     
     var body: some View {
+        if #available(iOS 16, *) {
+            content
+                .contextMenu {
+                    Button(action: {
+                        UIPasteboard.general.string = model.title + "\n" + model.subtitle
+                    }) {
+                        Text("Copy event")
+                        Image(systemName: "doc.on.doc")
+                    }
+                } preview: {
+                    Text(model.title + "\n" + model.subtitle)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
@@ -47,6 +67,8 @@ struct AdEventView: View {
                 Spacer()
                 Text(AdEventView.formatter.string(from: model.date))
                     .font(.caption).foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+                    .frame(minHeight: 80)
             }
         }
     }
