@@ -38,6 +38,7 @@ internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter 
         return AmazonBiddingInterstitialDemandProvider(adSizes: adSizes)
     }
     
+    
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         let adSizes = slots
             .filter { $0.format == .banner }
@@ -60,6 +61,7 @@ struct AmazonSlot: Codable {
         case interstitial = "INTERSTITIAL"
         case video = "VIDEO"
         case banner = "BANNER"
+        case mrec = "MREC"
     }
     
     var slotUuid: String
@@ -75,7 +77,7 @@ struct AmazonSlot: Codable {
             return DTBAdSize(bannerAdSizeWithWidth: 320, height: 50, andSlotUUID: slotUuid)
         case (.banner, .leaderboard):
             return DTBAdSize(bannerAdSizeWithWidth: 728, height: 90, andSlotUUID: slotUuid)
-        case (.banner, .mrec):
+        case (.mrec, .mrec):
             return DTBAdSize(bannerAdSizeWithWidth: 300, height: 250, andSlotUUID: slotUuid)
         case (.banner, .adaptive):
             if UIDevice.current.userInterfaceIdiom == .pad {

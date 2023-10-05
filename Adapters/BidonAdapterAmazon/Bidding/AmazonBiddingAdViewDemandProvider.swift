@@ -81,7 +81,7 @@ extension AmazonBiddingAdViewDemandProvider: DTBAdBannerDispatcherDelegate {
 
 
 final class AmazonAdView: UIView, AdViewContainer {
-    var isAdaptive: Bool { false }
+    var isAdaptive: Bool { true }
     
     init(adView: UIView) {
         super.init(frame: adView.bounds)

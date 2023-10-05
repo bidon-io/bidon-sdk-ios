@@ -30,9 +30,12 @@ struct AmazonBiddingSlots: Codable {
     var token: String
     
     init?(slots: [AmazonBiddingSlot]) {
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        
         guard
             !slots.isEmpty,
-            let data = try? JSONEncoder().encode(slots),
+            let data = try? encoder.encode(slots),
             let token = String(data: data, encoding: .utf8)
         else { return nil }
         
