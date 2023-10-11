@@ -120,7 +120,7 @@ final class BaseMediationObserver: MediationObserver {
             }
         case let _event as BiddingDemandProviderFillErrorMediationEvent:
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.bidding.didFillBidFail(_event.adapter, error: _event.error)
+                observation.bidding.didFillBidFail(_event.adapter, error: _event.error, bid: _event.bid)
             }
         case let _event as BiddingDemandProviderDidFillMediationEvent:
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in

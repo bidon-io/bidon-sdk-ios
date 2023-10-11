@@ -10,7 +10,9 @@ import Bidon
 import DTBiOSSDK
 
 
-internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter & BiddingAdViewDemandSourceAdapter
+internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter &
+BiddingRewardedAdDemandSourceAdapter
 
 
 @objc public final class AmazonDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -38,7 +40,6 @@ internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter 
         return AmazonBiddingInterstitialDemandProvider(adSizes: adSizes)
     }
     
-    
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         let adSizes = slots
             .filter { $0.format == .banner }
@@ -53,6 +54,18 @@ internal typealias DemandSourceAdapter = BiddingInterstitialDemandSourceAdapter 
             context: context
         )
     }
+    
+    public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
+        let adSizes = slots
+            .filter { $0.format == .rewarded }
+            .compactMap { $0.adSize() }
+        
+        guard !adSizes.isEmpty else {
+            throw MediationError.noAppropriateAdUnitId
+        }
+        
+        return AmazonBiddingInterstitialDemandProvider(adSizes: adSizes)
+    }
 }
 
 
@@ -62,6 +75,7 @@ struct AmazonSlot: Codable {
         case video = "VIDEO"
         case banner = "BANNER"
         case mrec = "MREC"
+        case rewarded = "REWARDED"
     }
     
     var slotUuid: String
@@ -71,7 +85,7 @@ struct AmazonSlot: Codable {
         switch (self.format, format) {
         case (.interstitial, _):
             return DTBAdSize(interstitialAdSizeWithSlotUUID: slotUuid)
-        case (.video, _):
+        case (.video, _), (.rewarded, _):
             return DTBAdSize(videoAdSizeWithSlotUUID: slotUuid)
         case (.banner, .banner):
             return DTBAdSize(bannerAdSizeWithWidth: 320, height: 50, andSlotUUID: slotUuid)

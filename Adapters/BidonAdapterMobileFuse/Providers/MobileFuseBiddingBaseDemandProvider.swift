@@ -111,6 +111,10 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         guard let _ = ad as? DemandAdType else { return }
         delegate?.providerDidHide(self)
     }
+    
+    open func onUserEarnedReward(_ ad: MFAd!) {
+        // No-op
+    }
 }
 
 

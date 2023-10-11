@@ -13,7 +13,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         case unknown
         case prepare([AdapterType])
         case bidding([AdapterType])
-        case filling(AdapterType)
+        case filling(AdapterType, BidRequest.ResponseBody.BidModel)
         case ready(BidType)
     }
     
@@ -186,7 +186,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             return
         }
         
-        $bidState.wrappedValue = .filling(adapter)
+        $bidState.wrappedValue = .filling(adapter, pendingServerBid)
         
         observer.log(
             BiddingDemandProviderFillRequestMediationEvent(
@@ -206,7 +206,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                     BiddingDemandProviderFillErrorMediationEvent(
                         roundConfiguration: self.roundConfiguration,
                         adapter: adapter,
-                        error:error
+                        error:error,
+                        bid: pendingServerBid
                     )
                 )
                 self.proceedBidResponse(
@@ -257,12 +258,13 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
                     error: .bidTimeoutReached
                 )
             )
-        case .filling(let bidder):
+        case .filling(let bidder, let bid):
             observer.log(
                 BiddingDemandProviderFillErrorMediationEvent(
                     roundConfiguration: self.roundConfiguration,
                     adapter: bidder,
-                    error: .fillTimeoutReached
+                    error: .fillTimeoutReached,
+                    bid: bid
                 )
             )
         default:

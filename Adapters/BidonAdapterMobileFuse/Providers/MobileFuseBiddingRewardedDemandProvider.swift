@@ -30,7 +30,7 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
         }
     }
     
-    func onUserEarnedReward(_ ad: MFAd!) {
+    override func onUserEarnedReward(_ ad: MFAd!) {
         guard let _ = ad as? MFRewardedAd else { return }
         
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())

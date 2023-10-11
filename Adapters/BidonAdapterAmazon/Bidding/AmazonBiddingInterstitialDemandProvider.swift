@@ -14,6 +14,8 @@ final class AmazonBiddingInterstitialDemandProvider: AmazonBiddingDemandProvider
     private lazy var dispatcher = DTBAdInterstitialDispatcher(delegate: self)
     private var response: DemandProviderResponse?
     
+    weak var rewardDelegate: DemandProviderRewardDelegate?
+    
     override func fill(
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse
@@ -29,6 +31,9 @@ extension AmazonBiddingInterstitialDemandProvider: InterstitialDemandProvider {
         ad.show(from: viewController)
     }
 }
+
+
+extension AmazonBiddingInterstitialDemandProvider: RewardedAdDemandProvider {}
 
 
 extension AmazonBiddingInterstitialDemandProvider: DTBAdInterstitialDispatcherDelegate {
@@ -51,6 +56,7 @@ extension AmazonBiddingInterstitialDemandProvider: DTBAdInterstitialDispatcherDe
     }
     
     func interstitialDidDismissScreen(_ interstitial: DTBAdInterstitialDispatcher?) {
+        rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
         delegate?.providerDidHide(self)
     }
 

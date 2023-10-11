@@ -256,6 +256,7 @@ struct BiddingDemandProviderFillErrorMediationEvent: MediationEvent {
     var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
+    var bid: BidRequest.ResponseBody.BidModel
     
     var description: String {
         return "bidding \(adapter) did fail to fill bid in round \(roundConfiguration.roundId) with error \(error)"

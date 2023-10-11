@@ -22,7 +22,6 @@
 		4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4224AA8428B900AF00E8D886 /* AdEventView.swift */; };
 		4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4249D5F829AFB00400BAA338 /* BidonAdapterUnityAds.framework */; };
 		4253FED72ABC98340013A675 /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253FED62ABC98340013A675 /* BidonAdapterAmazon.framework */; };
-		4253FED82ABC98340013A675 /* BidonAdapterAmazon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4253FED62ABC98340013A675 /* BidonAdapterAmazon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4265B53E2A5FF001007AD808 /* BidonAdapterVungle.framework */; };
 		426827322A5D857B0084A48D /* BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426827312A5D857B0084A48D /* BidonAdapterMobileFuse.framework */; };
 		42697DAC2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */; };
@@ -80,20 +79,6 @@
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
 		49921B0B2A8125E1007B2056 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49921B0A2A8125E1007B2056 /* Constants.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		4253FED92ABC98340013A675 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4253FED82ABC98340013A675 /* BidonAdapterAmazon.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2F533D98A3EB5DDDC412B52F /* Pods-Sandbox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.release.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.release.xcconfig"; sourceTree = "<group>"; };
@@ -456,7 +441,6 @@
 				4299A40B289BC8B40062C580 /* Resources */,
 				E001626C8BF2E00A4CC28939 /* [CP] Embed Pods Frameworks */,
 				FE0AD0976D1363DCD4C9DC8D /* [CP] Copy Pods Resources */,
-				4253FED92ABC98340013A675 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -780,6 +764,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
 				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -819,6 +804,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
 				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
