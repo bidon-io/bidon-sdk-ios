@@ -9,21 +9,15 @@ import Foundation
 import SwiftUI
 
 
-struct ActivityPlaceholder: View {
-    @State var isAnimating: Bool = false
-    
+struct ActivityPlaceholder: View {    
     var body: some View {
-        VisualEffectView(
-            effect: UIBlurEffect(style: .regular)
-        )
-        .opacity(isAnimating ? 1 : 0)
-        .onAppear {
-            withAnimation(
-                .easeInOut(duration: 0.75)
-                .repeatForever(autoreverses: true)
-            ) {
-                isAnimating = true
-            }
+        ZStack {
+            VisualEffectView(
+                effect: UIBlurEffect(style: .regular)
+            )
+            
+            ProgressView()
+                .progressViewStyle(.circular)
         }
     }
 }

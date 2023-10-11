@@ -85,7 +85,8 @@ final internal class BannerViewManager: NSObject {
         
         UIView.animate(
             withDuration: 0.25,
-            delay: 0, options: .curveEaseInOut,
+            delay: 0,
+            options: .curveEaseInOut,
             animations: {
                 container
                     .subviews

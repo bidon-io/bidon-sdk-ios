@@ -32,6 +32,7 @@ struct BannerAdSection: View {
                         Text(vm.isLoading ? "Loading...": "Load")
                             .foregroundColor(!vm.isPresented || vm.isLoading ? .secondary : .primary)
                         Spacer()
+                        
                         if vm.isLoading {
                             ProgressView()
                         }

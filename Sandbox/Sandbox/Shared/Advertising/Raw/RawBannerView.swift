@@ -47,7 +47,6 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         
         banner.format = BannerFormat(format)
         banner.rootViewController = UIApplication.shared.bd.topViewcontroller
-        banner.loadAd(with: pricefloor)
         banner.delegate = context.coordinator
         
         return banner
