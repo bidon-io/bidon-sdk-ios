@@ -18,7 +18,8 @@ $targets = [
   "BidonAdapterBigoAds",
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
-  "BidonAdapterInMobi"
+  "BidonAdapterInMobi",
+  "BidonAdapterAmazon"
 ]
 
 # Defenitions ###

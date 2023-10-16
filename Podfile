@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.3.0'
+  pod 'BidMachine', '~> 2.4.0'
   # pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
   # pod 'BidMachineMintegralAdapter', '~> 2.3.0'
   # pod 'BidMachineAmazonAdapter', '~> 2.3.0'
@@ -81,7 +81,7 @@ def inmobi
 end
 
 def appodeal_mediation
-  pod 'Appodeal', '~> 3.1'
+  pod 'Appodeal', :podspec => './Appodeal.podspec.json'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'

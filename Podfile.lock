@@ -1,29 +1,29 @@
 PODS:
-  - AmazonPublisherServicesSDK (4.7.5)
+  - AmazonPublisherServicesSDK (4.7.6)
   - AppLovinSDK (11.11.3)
-  - Appodeal (3.1.3):
+  - Appodeal (3.2.0-beta.1):
     - Protobuf
     - StackConsentManager (~> 1.2.0)
-    - StackIAB (~> 2.2.1)
-    - StackModules (~> 1.5.0)
+    - StackIAB (~> 2.3.0)
+    - StackModules (~> 1.6.0)
     - StackProtobuf (~> 0.8.0)
   - AppsFlyer-AdRevenue (6.9.1):
     - AppsFlyerFramework (~> 6)
   - AppsFlyerFramework (6.10.1):
     - AppsFlyerFramework/Main (= 6.10.1)
   - AppsFlyerFramework/Main (6.10.1)
-  - BidMachine (2.3.0.2):
-    - BidMachine/Core (= 2.3.0.2)
-  - BidMachine/ApiCore (2.3.0.2)
-  - BidMachine/BiddingCore (2.3.0.2):
+  - BidMachine (2.4.0.0):
+    - BidMachine/Core (= 2.4.0.0)
+  - BidMachine/ApiCore (2.4.0.0)
+  - BidMachine/BiddingCore (2.4.0.0):
     - BidMachine/ApiCore
-    - StackIAB (~> 2.2.1)
-    - StackModules (~> 1.5.1)
-  - BidMachine/Core (2.3.0.2):
+    - StackIAB (~> 2.3.0)
+    - StackModules (~> 1.6.0)
+  - BidMachine/Core (2.4.0.0):
     - BidMachine/ApiCore
     - BidMachine/BiddingCore
     - BidMachine/ModulesCore
-  - BidMachine/ModulesCore (2.3.0.2):
+  - BidMachine/ModulesCore (2.4.0.0):
     - BidMachine/ApiCore
   - BigoADS (4.0.4)
   - FBAEMKit (16.2.0):
@@ -36,7 +36,7 @@ PODS:
   - FBSDKLoginKit (16.2.0):
     - FBSDKCoreKit (= 16.2.0)
   - Fyber_Marketplace_SDK (8.2.4)
-  - Google-Mobile-Ads-SDK (10.11.0):
+  - Google-Mobile-Ads-SDK (10.12.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAppMeasurement (10.16.0):
@@ -122,55 +122,55 @@ PODS:
   - OCMock (3.9.1)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
-  - Protobuf (3.24.3)
+  - Protobuf (3.24.4)
   - StackConsentManager (1.2.5)
-  - StackIAB (2.2.2):
-    - StackIAB/StackIABAssets (= 2.2.2)
-    - StackIAB/StackMRAIDKit (= 2.2.2)
-    - StackIAB/StackNASTKit (= 2.2.2)
-    - StackIAB/StackOpenMeasure (= 2.2.2)
-    - StackIAB/StackRichMedia (= 2.2.2)
-    - StackIAB/StackVASTAssets (= 2.2.2)
-    - StackIAB/StackVASTKit (= 2.2.2)
-    - StackIAB/StackVideoPlayer (= 2.2.2)
-    - StackIAB/StackXML (= 2.2.2)
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackIABAssets (2.2.2):
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackMRAIDKit (2.2.2):
+  - StackIAB (2.3.0):
+    - StackIAB/StackIABAssets (= 2.3.0)
+    - StackIAB/StackMRAIDKit (= 2.3.0)
+    - StackIAB/StackNASTKit (= 2.3.0)
+    - StackIAB/StackOpenMeasure (= 2.3.0)
+    - StackIAB/StackRichMedia (= 2.3.0)
+    - StackIAB/StackVASTAssets (= 2.3.0)
+    - StackIAB/StackVASTKit (= 2.3.0)
+    - StackIAB/StackVideoPlayer (= 2.3.0)
+    - StackIAB/StackXML (= 2.3.0)
+    - StackModules (= 1.6.0)
+  - StackIAB/StackIABAssets (2.3.0):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackMRAIDKit (2.3.0):
     - StackIAB/StackIABAssets
     - StackIAB/StackOpenMeasure
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackNASTKit (2.2.2):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackNASTKit (2.3.0):
     - StackIAB/StackVASTKit
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackOpenMeasure (2.2.2):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackOpenMeasure (2.3.0):
     - OMSDK_Appodeal (~> 1.4.2.0)
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackRichMedia (2.2.2):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackRichMedia (2.3.0):
     - StackIAB/StackIABAssets
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackVASTAssets (2.2.2):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackVASTAssets (2.3.0):
     - StackIAB/StackIABAssets
     - StackIAB/StackXML
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackVASTKit (2.2.2):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackVASTKit (2.3.0):
     - StackIAB/StackMRAIDKit
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackVideoPlayer (2.2.2):
-    - StackModules (~> 1.5.0)
-  - StackIAB/StackXML (2.2.2):
-    - StackModules (~> 1.5.0)
-  - StackModules (1.5.4):
-    - StackModules/StackProductPresentation (= 1.5.4)
-  - StackModules/StackFoundation (1.5.4)
-  - StackModules/StackProductPresentation (1.5.4):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackVideoPlayer (2.3.0):
+    - StackModules (= 1.6.0)
+  - StackIAB/StackXML (2.3.0):
+    - StackModules (= 1.6.0)
+  - StackModules (1.6.0):
+    - StackModules/StackProductPresentation (= 1.6.0)
+  - StackModules/StackFoundation (1.6.0)
+  - StackModules/StackProductPresentation (1.6.0):
     - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.5.4):
+  - StackModules/StackUIKit (1.6.0):
     - StackModules/StackFoundation
   - StackProtobuf (0.8.5):
     - Protobuf (~> 3.13)
@@ -180,10 +180,10 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK
   - AppLovinSDK
-  - Appodeal (~> 3.1)
+  - Appodeal (from `./Appodeal.podspec.json`)
   - AppsFlyer-AdRevenue (~> 6.9.0)
   - AppsFlyerFramework (~> 6.10.1)
-  - BidMachine (~> 2.3.0)
+  - BidMachine (~> 2.4.0)
   - BigoADS (~> 4.0.4)
   - FBAudienceNetwork (~> 6.12.0)
   - FBSDKLoginKit
@@ -198,11 +198,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
-    - Appodeal
     - BidMachine
     - OMSDK_Appodeal
     - StackConsentManager
     - StackIAB
+    - StackModules
     - StackProtobuf
   trunk:
     - AmazonPublisherServicesSDK
@@ -227,17 +227,20 @@ SPEC REPOS:
     - OCMock
     - PromisesObjC
     - Protobuf
-    - StackModules
     - UnityAds
     - VungleAds
 
+EXTERNAL SOURCES:
+  Appodeal:
+    :podspec: "./Appodeal.podspec.json"
+
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 35889640d3edabe3e0102366a47d20e46a82348c
+  AmazonPublisherServicesSDK: 42e44affd14820c7ca17e55934fe8e53f5fb9ca0
   AppLovinSDK: 623ef78363c0dd2c3ff5446cde37e4920a96b7e0
-  Appodeal: caf6521230a2e296edf50ce21b7d5c14f8cbfb4e
+  Appodeal: 31d112516ec3a595824c18fa00d2f5b239ece745
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
-  BidMachine: af2b5a2d335a858d12f1f47ab521e64aacb27477
+  BidMachine: f5969d3a6ca86154fe607c7f50c69ac3b0a05f34
   BigoADS: b671aac5e47e05671d1019249e7d78e0c172c233
   FBAEMKit: 5facf4292bff062963f563d68fd5c0cdd6c90d63
   FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
@@ -245,7 +248,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 8123411ba15df07f9a8da760630f4cdfeeaea6a7
   FBSDKLoginKit: ae454ceaeb9ee753caf78242bdad1b5226968358
   Fyber_Marketplace_SDK: c51474f63c016c9ff7eb32e3542528d08d456bc5
-  Google-Mobile-Ads-SDK: 58b4fda3f9758fc1ed210aa5cf7777b5eb55d47e
+  Google-Mobile-Ads-SDK: 976fdf273815674eed30b8aafffedb3c25b055e4
   GoogleAppMeasurement: 079d7632810e9d9704a99932547ba1554acc4342
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
@@ -256,14 +259,14 @@ SPEC CHECKSUMS:
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Protobuf: 970f7ee93a3a08e3cf64859b8efd95ee32b4f87f
+  Protobuf: 351e9022fe13a6e2af00e9aefc22077cb88520f8
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
-  StackIAB: 980dc7abff4c2a1f579718917b35af946a900049
-  StackModules: f31cd1057b6b2ed4bda25f2730fbbefe96cba785
+  StackIAB: 79d2b9b965142658de0b62ebd469c014b650938d
+  StackModules: c9f1b167ad25398c2d5455caa981f9b39ff99791
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   UnityAds: 390144b2029ac9ce2ec81c3cfd0007686b59236a
   VungleAds: e13f0ea8facb05d5511e31c5abcced79a82409e7
 
-PODFILE CHECKSUM: 2e626ce39d2fee162b6ffff6c09d67bb4647e3d1
+PODFILE CHECKSUM: 3e16604a1057a8585c4059286c1802c6d49a419a
 
 COCOAPODS: 1.11.3
