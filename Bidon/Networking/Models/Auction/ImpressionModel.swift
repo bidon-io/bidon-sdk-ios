@@ -11,7 +11,6 @@ import Foundation
 struct ImpressionModel: Encodable {
     var impressionId: String
     var auctionId: String
-    var auctionConfigurationId: Int
     var auctionConfigurationUid: String
     var demandId: String
     var adUnitId: String?
@@ -27,7 +26,6 @@ struct ImpressionModel: Encodable {
     enum CodingKeys: String, CodingKey {
         case impressionId = "imp_id"
         case auctionId = "auction_id"
-        case auctionConfigurationId = "auction_configuration_id"
         case auctionConfigurationUid = "auction_configuration_uid"
         case demandId = "demand_id"
         case roundId = "round_id"
@@ -51,7 +49,6 @@ struct ImpressionModel: Encodable {
         self.roundIndex = imp.roundConfiguration.roundIndex
         self.impressionId = imp.impressionId
         self.auctionId = imp.auctionConfiguration.auctionId
-        self.auctionConfigurationId = imp.auctionConfiguration.auctionConfigurationId
         self.auctionConfigurationUid = imp.auctionConfiguration.auctionConfigurationUid
         self.demandId = imp.ad.networkName
         self.demandType = imp.demandType.stringValue

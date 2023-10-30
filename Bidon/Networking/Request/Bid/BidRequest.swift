@@ -20,7 +20,6 @@ struct BidRequest: Request {
             var id: String = UUID().uuidString
             var bidfloor: Price
             var auctionId: String
-            var auctionConfigurationId: Int
             var auctionConfigurationUid: String
             var roundId: String
             var orientation: InterfaceOrientation = .current

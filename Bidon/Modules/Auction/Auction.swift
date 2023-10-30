@@ -66,7 +66,6 @@ struct Auction {
 
 struct AuctionConfiguration {
     var auctionId: String
-    var auctionConfigurationId: Int
     var auctionConfigurationUid: String
     var isExternalNotificationsEnabled: Bool
 }
@@ -75,7 +74,6 @@ struct AuctionConfiguration {
 extension AuctionConfiguration {
     init(auction: AuctionRequest.ResponseBody) {
         self.auctionId = auction.auctionId
-        self.auctionConfigurationId = auction.auctionConfigurationId
         self.isExternalNotificationsEnabled = auction.externalWinNotifications
         self.auctionConfigurationUid = auction.auctionConfigurationUid
     }

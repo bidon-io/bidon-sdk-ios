@@ -120,7 +120,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             builder.withTestMode(sdk.isTestMode)
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withAuctionId(auctionConfiguration.auctionId)
-            builder.withAuctionConfigurationId(auctionConfiguration.auctionConfigurationId)
             builder.withAuctionConfigurationUid(auctionConfiguration.auctionConfigurationUid)
             builder.withRoundId(roundConfiguration.roundId)
             builder.withAdapters(adapters)

@@ -151,7 +151,6 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     }
     
     var auctionId: String
-    var auctionConfigurationId: Int
     var auctionConfigurationUid: String
     var rounds: [RoundReportCodableModel]
     var result: AuctionResultReportCodableModel
@@ -161,7 +160,6 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         auctionConfiguration: AuctionConfiguration
     ) {
         self.auctionId = auctionConfiguration.auctionId
-        self.auctionConfigurationId = auctionConfiguration.auctionConfigurationId
         self.auctionConfigurationUid = auctionConfiguration.auctionConfigurationUid
         self.rounds = report.rounds.map(RoundReportCodableModel.init)
         self.result = AuctionResultReportCodableModel(report.result)

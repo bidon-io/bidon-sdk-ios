@@ -13,7 +13,6 @@ final class RewardedBidRequestBuilder: BaseBidRequestBuilder<RewardedAdTypeConte
         BidRequestImp(
             bidfloor: bidfloor,
             auctionId: auctionId,
-            auctionConfigurationId: auctionConfigurationId,
             auctionConfigurationUid: auctionConfigurationUid,
             roundId: roundId,
             rewarded: RewardedAdTypeContextModel(context),
