@@ -21,6 +21,6 @@ struct AdapterIdCodingKey: CodingKey {
     }
     
     init(_ adapter: Adapter) {
-        self.stringValue = adapter.identifier
+        self.stringValue = adapter.demandId
     }
 }

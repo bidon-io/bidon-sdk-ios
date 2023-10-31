@@ -82,7 +82,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
             } else {
                 bid.provider.notify(
                     opaque: bid.ad,
-                    event: .lose(winner.ad, winner.eCPM)
+                    event: .lose(winner.ad, winner.price)
                 )
             }
         }

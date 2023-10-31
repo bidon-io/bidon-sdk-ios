@@ -34,7 +34,7 @@ final class DirectDemandProviderMock: DemandProviderMock, DirectDemandProvider {
 extension DirectDemandProviderMock: DemandProviderMockBuildable {
     final class Builder: DemandProviderMockBuilder {
         var demandId: String!
-        var expectedLineItem: LineItem?
+        var expectedLineItem: AdUnit?
         var result: Result<DemandAd, MediationError>?
         
         @discardableResult
@@ -44,7 +44,7 @@ extension DirectDemandProviderMock: DemandProviderMockBuildable {
         }
         
         @discardableResult
-        func withExpectedLineItem(_ expectedLineItem: LineItem) -> Self {
+        func withExpectedLineItem(_ expectedLineItem: AdUnit) -> Self {
             self.expectedLineItem = expectedLineItem
             return self
         }

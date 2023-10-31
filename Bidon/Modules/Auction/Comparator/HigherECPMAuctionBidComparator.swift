@@ -10,6 +10,6 @@ import Foundation
 
 struct HigherECPMAuctionBidComparator: AuctionBidComparator {
     func compare<T>(_ lhs: T, _ rhs: T) -> Bool where T : Bid {
-        return lhs.eCPM > rhs.eCPM
+        return lhs.price > rhs.price
     }
 }

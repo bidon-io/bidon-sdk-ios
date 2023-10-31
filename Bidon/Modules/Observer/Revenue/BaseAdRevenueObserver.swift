@@ -38,7 +38,7 @@ extension BaseAdRevenueObserver: DemandProviderRevenueDelegate {
         didLogImpression ad: DemandAd
     ) {
         guard let container = container(for: ad) else { return }
-        let adRevenue = AdRevenueModel(eCPM: container.eCPM)
+        let adRevenue = AdRevenueModel(eCPM: container.price)
         
         onRegisterAdRevenue?(container, adRevenue)
     }

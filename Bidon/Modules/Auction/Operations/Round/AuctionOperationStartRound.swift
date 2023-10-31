@@ -19,7 +19,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
             .reduce([]) { $0 + $1.bids }
             .sorted { comparator.compare($0, $1) }
             .first?
-            .eCPM ?? .unknown
+            .price ?? .unknown
         
         return max(initial, latest)
     }

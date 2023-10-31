@@ -10,10 +10,10 @@ import Foundation
 
 final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<InterstitialAdTypeContext> {
     override var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
+        let adapters: [Adapter] =
+        adaptersRepository.all(of: DirectInterstitialDemandSourceAdapter.self) +
+        adaptersRepository.all(of: BiddingInterstitialDemandSourceAdapter.self)
+        
         return AdaptersInfo(adapters: adapters)
     }
     

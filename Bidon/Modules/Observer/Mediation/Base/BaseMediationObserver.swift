@@ -64,10 +64,10 @@ final class BaseMediationObserver: MediationObserver {
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in
                 observation.demand.lineItemNotFound(_event.adapter)
             }
-        case let _event as DirectDemandProividerLoadRequestMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.willLoad(_event.adapter, lineItem: _event.lineItem)
-            }
+//        case let _event as DirectDemandProividerLoadRequestMediationEvent:
+////            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
+////                observation.demand.willLoad(_event.adapter, lineItem: _event.lineItem)
+////            }
         case let _event as DirectDemandProividerDidFailToLoadMediationEvent:
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in
                 observation.demand.didLoadFail(_event.adapter, error: _event.error)
@@ -159,13 +159,13 @@ extension BaseMediationObserver: MediationReportProvider {
         
         return AuctionResultReportModel(
             status: .success,
-            demandType: winner.auctionWinner?.demandType?.stringValue,
+            demandType: winner.auctionWinner?.demandType?.rawValue,
             startTimestamp: startTimestamp.uint,
             finishTimestamp: finishTimestamp.uint,
             winnerRoundId: winner.id,
             winnerDemandId: winner.auctionWinner?.demandId,
             winnerECPM: winner.auctionWinner?.eCPM,
-            winnerAdUnitId: winner.auctionWinner?.adUnitId,
+            winnerAdUnitId: winner.auctionWinner?.id,
             winnerLineItemUid: winner.auctionWinner?.lineItemUid
         )
     }

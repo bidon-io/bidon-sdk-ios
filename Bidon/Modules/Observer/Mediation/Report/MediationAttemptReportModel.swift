@@ -13,7 +13,7 @@ struct DemandReportModel: DemandReport {
     var status: DemandMediationStatus = .unknown
     var adUnitId: String? = nil
     var lineItemUid: String? = nil
-    var eCPM: Price?
+    var price: Price?
     var bidStartTimestamp: UInt? = Date.timestamp(.wall, units: .milliseconds).uint
     var bidFinishTimestamp: UInt?
     var fillStartTimestamp: UInt?
@@ -22,9 +22,9 @@ struct DemandReportModel: DemandReport {
     init(_ observation: BidObservation) {
         self.demandId = observation.demandId
         self.status = observation.status
-        self.adUnitId = observation.adUnitId
+//        self.adUnitId = observation.adUnitId
         self.lineItemUid = observation.lineItemUid
-        self.eCPM = observation.eCPM
+        self.price = observation.eCPM
         self.bidStartTimestamp = observation.bidRequestTimestamp?.uint
         self.bidFinishTimestamp = observation.bidResponeTimestamp?.uint
         self.fillStartTimestamp = observation.fillRequestTimestamp?.uint

@@ -45,8 +45,6 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         bids = (
             deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
                 .compactMap { $0.bid as? BidType } +
-            deps(AuctionOperationRequestProgrammaticDemand<AdTypeContextType>.self)
-                .compactMap { $0.bid as? BidType } +
             deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
                 .compactMap { $0.bid as? BidType }
         )

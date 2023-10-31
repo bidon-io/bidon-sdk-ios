@@ -103,7 +103,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = []
+        let lineItems: [AdUnit] = []
         
         controller = controller(
             rounds: rounds,
@@ -164,7 +164,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [lineItem1]
+        let lineItems: [AdUnit] = [lineItem1]
         
         controller = controller(
             rounds: rounds,
@@ -225,7 +225,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [lineItem1]
+        let lineItems: [AdUnit] = [lineItem1]
         
         controller = controller(
             rounds: rounds,
@@ -302,7 +302,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [lineItem1, lineItem2]
+        let lineItems: [AdUnit] = [lineItem1, lineItem2]
         
         controller = controller(
             rounds: rounds,
@@ -386,7 +386,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [
+        let lineItems: [AdUnit] = [
             lineItem1,
             lineItem2
         ]
@@ -472,7 +472,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [
+        let lineItems: [AdUnit] = [
             lineItem1,
             lineItem2,
             lineItem3
@@ -584,7 +584,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [
+        let lineItems: [AdUnit] = [
             lineItem1,
             lineItem2,
             lineItem3
@@ -696,7 +696,7 @@ extension ConcurrentAuctionControllerTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = [
+        let lineItems: [AdUnit] = [
             lineItem1,
             lineItem2,
             lineItem3

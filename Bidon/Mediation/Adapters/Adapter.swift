@@ -9,7 +9,7 @@ import Foundation
 
 
 public protocol Adapter {
-    var identifier: String { get }
+    var demandId: String { get }
     var name: String { get }
     var adapterVersion: String { get }
     var sdkVersion: String { get }

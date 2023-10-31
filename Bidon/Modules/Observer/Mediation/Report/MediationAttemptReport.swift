@@ -11,7 +11,7 @@ import Foundation
 protocol DemandReport {
     var demandId: String { get }
     var status: DemandMediationStatus { get }
-    var eCPM: Price? { get }
+    var price: Price? { get }
     var adUnitId: String? { get }
     var lineItemUid: String? { get }
     var bidStartTimestamp: UInt? { get }

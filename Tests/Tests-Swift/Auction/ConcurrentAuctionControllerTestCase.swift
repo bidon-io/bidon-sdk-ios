@@ -76,9 +76,9 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     
     final func controller(
         rounds: [AuctionRoundMock],
-        lineItems: [LineItem]
+        lineItems: [AdUnit]
     ) -> ConcurrentAuctionController<AdTypeContextMock> {
-        let elector = StrictAuctionLineItemElector(
+        let elector = DirectAdUnitProvider(
             lineItems: lineItems
         )
         
@@ -139,7 +139,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = []
+        let lineItems: [AdUnit] = []
         
         controller = controller(
             rounds: rounds,

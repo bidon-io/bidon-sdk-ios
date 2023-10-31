@@ -8,16 +8,18 @@
 import Foundation
 
 
-public protocol BiddingContextEncoder {
-    func encodeBiddingContext(to encoder: Encoder) throws
-}
-
-
-public typealias BiddingContextEncoderResponse = (Result<BiddingContextEncoder, MediationError>) -> ()
+public typealias BiddingContextEncoderResponse = (Result<Encodable, MediationError>) -> ()
 
 
 public protocol BiddingDemandProvider: DemandProvider {
-    func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse)
+    func collectBiddingTokenEncoder(
+        adUnitExtrasDecoders: [Decoder],
+        response: @escaping BiddingContextEncoderResponse
+    )
     
-    func prepareBid(from decoder: Decoder, response: @escaping DemandProviderResponse)
+    func load(
+        payloadDecoder: Decoder,
+        adUnitExtrasDecoder: Decoder?,
+        response: @escaping DemandProviderResponse
+    )
 }

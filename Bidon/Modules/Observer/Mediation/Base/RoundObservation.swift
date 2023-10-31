@@ -15,7 +15,6 @@ struct BidObservation {
     var status: DemandMediationStatus = .unknown
     var demandType: DemandType? = nil
     var eCPM: Price? = nil
-    var adUnitId: String?
     var lineItemUid: String?
     var bidRequestTimestamp: TimeInterval?
     var bidResponeTimestamp: TimeInterval?
@@ -42,23 +41,23 @@ struct RoundObservation {
     }
     
     mutating func finishAuctionObservation(_ winner: AnyBid?) {
-        auctionWinner = observations.first { $0.id == winner?.id }
-        demand.observations = demand.observations.map {
-            updated(observation: $0, auctionWinner: winner)
-        }
-        bidding.observations = bidding.observations.map {
-            updated(observation: $0, auctionWinner: winner)
-        }
+//        auctionWinner = observations.first { $0.id == winner?.id }
+//        demand.observations = demand.observations.map {
+//            updated(observation: $0, auctionWinner: winner)
+//        }
+//        bidding.observations = bidding.observations.map {
+//            updated(observation: $0, auctionWinner: winner)
+//        }
     }
     
     mutating func finishObservation(_ winner: AnyBid?) {
-        roundWinner = observations.first { $0.id == winner?.id }
+//        roundWinner = observations.first { $0.id == winner?.id }
     }
     
     mutating func providerNotFound(_ adapter: Adapter) {
         let observation = BidObservation(
             id: UUID().uuidString,
-            demandId: adapter.identifier,
+            demandId: adapter.demandId,
             status: .error(.unknownAdapter)
         )
         demand.observations.append(observation)
@@ -75,7 +74,7 @@ struct RoundObservation {
     ) -> BidObservation {
         guard observation.status.isUnknown else { return observation }
         var observation = observation
-        observation.status = observation.id == auctionWinner?.id ? .win : .lose
+//        observation.status = observation.id == auctionWinner?.id ? .win : .lose
         return observation
     }
     

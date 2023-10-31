@@ -14,28 +14,28 @@ struct DemandObservation {
     mutating func lineItemNotFound(_ adapter: Adapter) {
         let observation = BidObservation(
             id: UUID().uuidString,
-            demandId: adapter.identifier,
+            demandId: adapter.demandId,
             status: .error(.noAppropriateAdUnitId)
         )
         observations.append(observation)
     }
     
-    mutating func willLoad(_ adapter: Adapter, lineItem: LineItem) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            demandType: .direct(lineItem),
-            eCPM: lineItem.pricefloor,
-            adUnitId: lineItem.adUnitId,
-            lineItemUid: lineItem.uid,
-            fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-        )
-        observations.append(observation)
+    mutating func willLoad(_ adapter: Adapter, adUnit: AnyAdUnit) {
+        #warning("Observation")
+//        let observation = BidObservation(
+//            id: UUID().uuidString,
+//            demandId: adapter.identifier,
+//            demandType: .direct(lineItem),
+//            eCPM: lineItem.pricefloor,
+//            lineItemUid: lineItem.uid,
+//            fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
+//        )
+//        observations.append(observation)
     }
     
     mutating func didLoadFail(_ adapter: Adapter, error: MediationError) {
         observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
+            guard observation.demandId == adapter.demandId else { return observation }
             var observation = observation
             observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
             observation.status = .error(error)
@@ -44,28 +44,28 @@ struct DemandObservation {
     }
     
     mutating func didLoadSuccess(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.id = bid.id
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
-        }
+//        observations = observations.map { observation in
+//            guard observation.demandId == adapter.identifier else { return observation }
+//            var observation = observation
+//            observation.id = bid.id
+//            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+//            return observation
+//        }
     }
     
     mutating func willRequestBid(_ adapter: Adapter) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            demandType: .programmatic,
-            bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-        )
-        observations.append(observation)
+//        let observation = BidObservation(
+//            id: UUID().uuidString,
+//            demandId: adapter.identifier,
+//            demandType: .programmatic,
+//            bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
+//        )
+//        observations.append(observation)
     }
     
     mutating func didRequestBidFail(_ adapter: Adapter, error: MediationError) {
         observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
+            guard observation.demandId == adapter.demandId else { return observation }
             var observation = observation
             observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
             observation.status = .error(error)
@@ -74,28 +74,28 @@ struct DemandObservation {
     }
     
     mutating func didReceiveBid(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.id = bid.id
-            observation.eCPM = bid.eCPM
-            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
-        }
+//        observations = observations.map { observation in
+//            guard observation.demandId == adapter.identifier else { return observation }
+//            var observation = observation
+//            observation.id = bid.id
+//            observation.eCPM = bid.eCPM
+//            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
+//            return observation
+//        }
     }
     
     mutating func willFillBid(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard bid.id == observation.id else { return observation }
-            var observation = observation
-            observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
-        }
+//        observations = observations.map { observation in
+//            guard bid.id == observation.id else { return observation }
+//            var observation = observation
+//            observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
+//            return observation
+//        }
     }
     
     mutating func didFillBidFail(_ adapter: Adapter, error: MediationError) {
         observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
+            guard observation.demandId == adapter.demandId else { return observation }
             var observation = observation
             observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
             observation.status = .error(error)
@@ -104,11 +104,11 @@ struct DemandObservation {
     }
     
     mutating func didFillBidSuccess(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard bid.id == observation.id else { return observation }
-            var observation = observation
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
-        }
+//        observations = observations.map { observation in
+//            guard bid.id == observation.id else { return observation }
+//            var observation = observation
+//            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+//            return observation
+//        }
     }
 }

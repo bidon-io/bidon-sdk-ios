@@ -10,7 +10,7 @@ import Foundation
 
 protocol Impression {
     var impressionId: String { get }
-    var eCPM: Price { get }
+    var price: Price { get }
     var adType: AdType { get }
     var ad: DemandAd { get }
     var demandType: DemandType { get }

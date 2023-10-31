@@ -47,7 +47,7 @@ struct BiddingObservation {
     mutating func didFillBidFail(_ adapter: Adapter, error: MediationError, bid: BidRequest.ResponseBody.BidModel) {
         observations = observations.map { observation in
             guard
-                observation.demandId == adapter.identifier,
+                observation.demandId == adapter.demandId,
                 observation.id == bid.id
             else { return observation }
             
@@ -59,15 +59,16 @@ struct BiddingObservation {
     }
     
     mutating func didFillBidSuccess(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard
-                observation.demandId == adapter.identifier,
-                observation.id == bid.id
-            else { return observation }
-            
-            var observation = observation
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
-        }
+        #warning("Observation")
+//        observations = observations.map { observation in
+//            guard
+//                observation.demandId == adapter.identifier,
+//                observation.id == bid.id
+//            else { return observation }
+//            
+//            var observation = observation
+//            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+//            return observation
+//        }
     }
 }

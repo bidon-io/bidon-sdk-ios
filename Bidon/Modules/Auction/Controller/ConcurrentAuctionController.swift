@@ -22,7 +22,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let mediationObserver: AnyMediationObserver
     private let adRevenueObserver: AdRevenueObserver
     
-    private var elector: AuctionLineItemElector
+    private var elector: AdUnitProvider
     
     private lazy var queue: OperationQueue = {
         let queue = OperationQueue()
@@ -133,7 +133,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             round.element.demands.forEach { identifier in
                 let requestDemandOperation = requestDemandOperation(
                     roundConfiguration: roundConfiguration,
-                    demand: identifier
+                    demandId: identifier
                 )
                 // Apply timeout restrictions to demand request
                 timeoutOperation.add(requestDemandOperation)
@@ -191,68 +191,90 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     private func requestDemandOperation(
         roundConfiguration: AuctionRoundConfiguration,
-        demand identifier: String
+        demandId: String
     ) -> AuctionOperation {
-        guard let adapter = adapters.first(where: {
-            $0.identifier == identifier &&
-            !$0.mode.intersection([.classic, .programmatic]).isEmpty
-        }) else {
-            let event = DemandProviderNotFoundMediationEvent(
-                roundConfiguration: roundConfiguration,
-                adapter: identifier
-            )
+        //        guard let adapter = adapters.first(where: {
+        //            $0.identifier == identifier &&
+        //            !$0.supportedTypes.intersection(.direct).isEmpty
+        //        }) else {
+        //            let event = DemandProviderNotFoundMediationEvent(
+        //                roundConfiguration: roundConfiguration,
+        //                adapter: identifier
+        //            )
+        //
+        //            return AuctionOperationLogEvent(
+        //                event: event,
+        //                observer: mediationObserver,
+        //                auctionConfiguration: auctionConfiguration
+        //            )
+        //        }
+        //
+        //        let operation: AuctionOperation
+        //
+        //        if adapter.mode.contains(.classic) {
+        //            operation = AuctionOperationRequestDirectDemand<AdTypeContextType>(
+        //                adapter: adapter,
+        //                observer: mediationObserver,
+        //                context: context,
+        //                roundConfiguration: roundConfiguration,
+        //                auctionConfiguration: auctionConfiguration
+        //            ) { [weak self] _adapter, pricefloor in
+        //                return self?.elector.popLineItem(
+        //                    for: _adapter.identifier,
+        //                    pricefloor: pricefloor
+        //                )
+        //            }
+        //        } else {
+        //            operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
+        //                adapter: adapter,
+        //                observer: mediationObserver,
+        //                context: context,
+        //                roundConfiguration: roundConfiguration,
+        //                auctionConfiguration: auctionConfiguration
+        //            )
+        //        }
+        
+        //        return operation
+        
+        let event = DemandProviderNotFoundMediationEvent(
+            roundConfiguration: roundConfiguration,
+            demandId: demandId
+        )
             
-            return AuctionOperationLogEvent(
-                event: event,
-                observer: mediationObserver,
-                auctionConfiguration: auctionConfiguration
-            )
-        }
-        
-        let operation: AuctionOperation
-        
-        if adapter.mode.contains(.classic) {
-            operation = AuctionOperationRequestDirectDemand<AdTypeContextType>(
-                adapter: adapter,
-                observer: mediationObserver,
-                context: context,
-                roundConfiguration: roundConfiguration,
-                auctionConfiguration: auctionConfiguration
-            ) { [weak self] _adapter, pricefloor in
-                return self?.elector.popLineItem(
-                    for: _adapter.identifier,
-                    pricefloor: pricefloor
-                )
-            }
-        } else {
-            operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
-                adapter: adapter,
-                observer: mediationObserver,
-                context: context,
-                roundConfiguration: roundConfiguration,
-                auctionConfiguration: auctionConfiguration
-            )
-        }
-        
-        return operation
+        return AuctionOperationLogEvent(
+            event: event,
+            observer: mediationObserver,
+            auctionConfiguration: auctionConfiguration
+        )
     }
     
     private func biddingOperation(
         bidding: [String],
         roundConfiguration: AuctionRoundConfiguration
     ) -> AuctionOperation {
-        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = bidding.compactMap { id in
-            self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
-        }
-        
-        let operation = AuctionOperationRequestBiddingDemand<AdTypeContextType>(
-            adapters: adapters,
-            observer: mediationObserver,
-            context: context,
+        let event = DemandProviderNotFoundMediationEvent(
             roundConfiguration: roundConfiguration,
+            demandId: "identifier"
+        )
+            
+        return AuctionOperationLogEvent(
+            event: event,
+            observer: mediationObserver,
             auctionConfiguration: auctionConfiguration
         )
         
-        return operation
+        //        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = bidding.compactMap { id in
+        //            self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
+        //        }
+        //
+        //        let operation = AuctionOperationRequestBiddingDemand<AdTypeContextType>(
+        //            adapters: adapters,
+        //            observer: mediationObserver,
+        //            context: context,
+        //            roundConfiguration: roundConfiguration,
+        //            auctionConfiguration: auctionConfiguration
+        //        )
+        //
+        //        return operation
     }
 }

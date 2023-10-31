@@ -19,8 +19,7 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
     
     override func adapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
         return directDemandWrappedAdapters() +
-        biddingDemandWrappedAdapters() +
-        programmaticDemandWrappedAdapters()
+        biddingDemandWrappedAdapters()
     }
     
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
@@ -37,24 +36,6 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
                 )
             } catch {
                 Logger.warning("Unable to create ad view demand provider for \(adapter), error: \(error)")
-                return nil
-            }
-        }
-    }
-    
-    private func programmaticDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
-        let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
-        return programmatic.compactMap { adapter in
-            do {
-                let provider = try adapter.programmaticAdViewDemandProvider(context: viewContext)
-                let wrappedProvider: AnyAdViewDemandProvider = try ProgrammaticDemandProviderWrapper(provider)
-                
-                return AnyDemandSourceAdapter(
-                    adapter: adapter,
-                    provider: wrappedProvider
-                )
-            } catch {
-                Logger.warning("Unable to ad view demand provider for \(adapter), error: \(error)")
                 return nil
             }
         }

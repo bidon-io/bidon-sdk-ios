@@ -10,9 +10,7 @@ import Foundation
 
 final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<InterstitialAdTypeContext> {
     override func adapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
-        return directDemandWrappedAdapters() +
-        biddingDemandWrappedAdapters() +
-        programmaticDemandWrappedAdapters()
+        return directDemandWrappedAdapters() + biddingDemandWrappedAdapters()
     }
     
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
@@ -22,24 +20,6 @@ final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctio
             do {
                 let provider = try adapter.directInterstitialDemandProvider()
                 let wrappedProvider: AnyInterstitialDemandProvider = try DirectDemandProviderWrapper(provider)
-                
-                return AnyDemandSourceAdapter(
-                    adapter: adapter,
-                    provider: wrappedProvider
-                )
-            } catch {
-                Logger.warning("Unable to create interstitial demand provider for \(adapter), error: \(error)")
-                return nil
-            }
-        }
-    }
-    
-    private func programmaticDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
-        let programmatic: [ProgrammaticInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        return programmatic.compactMap { adapter in
-            do {
-                let provider = try adapter.programmaticInterstitialDemandProvider()
-                let wrappedProvider: AnyInterstitialDemandProvider = try ProgrammaticDemandProviderWrapper(provider)
                 
                 return AnyDemandSourceAdapter(
                     adapter: adapter,

@@ -10,7 +10,8 @@ import Foundation
 
 public protocol DirectDemandProvider: DemandProvider {
     func load(
-        _ adUnitId: String,
+        pricefloor: Double,
+        adUnitExtrasDecoder: Decoder?,
         response: @escaping DemandProviderResponse
     )
 }

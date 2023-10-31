@@ -66,4 +66,8 @@ public final class Repository<Key, Value> where Key: Hashable {
             return self.objects.values.compactMap { $0 as? T }
         }
     }
+    
+    func all<T>(of type: T.Type) -> [T] {
+        return all() as [T]
+    }
 }

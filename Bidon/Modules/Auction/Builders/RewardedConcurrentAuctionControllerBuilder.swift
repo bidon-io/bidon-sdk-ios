@@ -11,8 +11,7 @@ import Foundation
 final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<RewardedAdTypeContext> {
     override func adapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
         return directDemandWrappedAdapters() +
-        biddingDemandWrappedAdapters() +
-        programmaticDemandWrappedAdapters()
+        biddingDemandWrappedAdapters()
     }
     
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
@@ -22,24 +21,6 @@ final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionCon
             do {
                 let provider = try adapter.directRewardedAdDemandProvider()
                 let wrappedProvider: AnyRewardedAdDemandProvider = try DirectDemandProviderWrapper(provider)
-                
-                return AnyDemandSourceAdapter(
-                    adapter: adapter,
-                    provider: wrappedProvider
-                )
-            } catch {
-                Logger.warning("Unable to create rewarded ad demand provider for \(adapter), error: \(error)")
-                return nil
-            }
-        }
-    }
-    
-    private func programmaticDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
-        let programmatic: [ProgrammaticRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        return programmatic.compactMap { adapter in
-            do {
-                let provider = try adapter.programmaticRewardedAdDemandProvider()
-                let wrappedProvider: AnyRewardedAdDemandProvider = try ProgrammaticDemandProviderWrapper(provider)
                 
                 return AnyDemandSourceAdapter(
                     adapter: adapter,

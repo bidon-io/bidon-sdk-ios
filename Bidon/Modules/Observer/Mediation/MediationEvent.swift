@@ -90,10 +90,10 @@ struct DemandProviderNotFoundMediationEvent: MediationEvent {
     
     init(
         roundConfiguration: AuctionRoundConfiguration,
-        adapter: String
+        demandId: String
     ) {
         self.roundConfiguration = roundConfiguration
-        self.adapter = UnknownAdapter(identifier: adapter)
+        self.adapter = UnknownAdapter(demandId: demandId)
     }
 }
 
@@ -112,7 +112,7 @@ struct DirectDemandProviderLineItemNotFoundMediationEvent: MediationEvent {
 struct DirectDemandProividerLoadRequestMediationEvent: MediationEvent {
     var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
-    var lineItem: LineItem
+    var lineItem: any AdUnit
     
     var description: String {
         return "\(adapter) will load \(lineItem) in round \(roundConfiguration.roundId)"

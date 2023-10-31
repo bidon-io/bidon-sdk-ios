@@ -31,6 +31,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     let context: AdTypeContextType
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
+    let adUnitsProvider: AdUnitProvider
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     
@@ -44,18 +45,18 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     }
     
     init(
-        adapters: [AdapterType],
-        observer: AnyMediationObserver,
-        context: AdTypeContextType,
-        roundConfiguration: AuctionRoundConfiguration,
-        auctionConfiguration: AuctionConfiguration
+        build: (AuctionOperationRequestDemandBuilder<AdTypeContextType>) -> ()
     ) {
-        self.adapters = adapters
-        self.observer = observer
-        self.context = context
-        self.roundConfiguration = roundConfiguration
-        self.auctionConfiguration = auctionConfiguration
-
+        let builder = AuctionOperationRequestDemandBuilder<AdTypeContextType>()
+        build(builder)
+        
+        self.context = builder.context
+        self.observer = builder.observer
+        self.adapters = builder.adapters
+        self.adUnitsProvider = builder.adUnitProvider
+        self.roundConfiguration = builder.roundConfiguration
+        self.auctionConfiguration = builder.auctionConfiguration
+        
         super.init()
     }
     
@@ -68,13 +69,13 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             guard let provider = adapter.provider as? any BiddingDemandProvider else { return nil }
             
             group.enter()
-            provider.fetchBiddingContextEncoder { [weak self] result in
+            provider.collectBiddingTokenEncoder(adUnitExtrasDecoders: []) { [weak self] result in
                 defer { group.leave() }
                 guard let self = self else { return }
                 
                 switch result {
                 case .success(let encoder):
-                    self.encoders[adapter.identifier] = encoder
+                    self.encoders[adapter.demandId] = encoder
                 default:
                     break
                 }
@@ -100,7 +101,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         }
         
         let bidders: [AdapterType] = encoders.keys.compactMap { key in
-            adapters.first { $0.identifier == key }
+            adapters.first { $0.demandId == key }
         }
         
         $bidState.wrappedValue = .bidding(bidders)
@@ -174,7 +175,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         
         guard
             let demand = pendingServerBid.demands.decoders.first,
-            let adapter = bidders.first(where: { $0.identifier == demand.key }),
+            let adapter = bidders.first(where: { $0.demandId == demand.key }),
             let provider = adapter.provider as? any BiddingDemandProvider
         else {
             proceedBidResponse(
@@ -195,7 +196,9 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             )
         )
         
-        provider.prepareBid(from: demand.value) { [weak self] result in
+        #warning("AdUnit Extras Encoder")
+        
+        provider.load(payloadDecoder: demand.value, adUnitExtrasDecoder: nil) { [weak self] result in
             guard let self = self, self.isExecuting else { return }
             
             switch result {
@@ -217,25 +220,25 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             case .success(let ad):
                 let eCPM = (ad.eCPM != nil && ad.eCPM != .unknown) ? ad.eCPM! : pendingServerBid.price
                 
-                let bid = BidType(
-                    id: pendingServerBid.id,
-                    adType: self.context.adType,
-                    eCPM: eCPM,
-                    demandType: .bidding,
-                    ad: ad,
-                    provider: adapter.provider,
-                    roundConfiguration: self.roundConfiguration,
-                    auctionConfiguration: self.auctionConfiguration
-                )
-                
-                self.$bidState.wrappedValue = .ready(bid)
-                self.observer.log(
-                    BiddingDemandProviderDidFillMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: adapter,
-                        bid: bid
-                    )
-                )
+//                let bid = BidType(
+//                    id: pendingServerBid.id,
+//                    adType: self.context.adType,
+//                    eCPM: eCPM,
+//                    demandType: .bidding,
+//                    ad: ad,
+//                    provider: adapter.provider,
+//                    roundConfiguration: self.roundConfiguration,
+//                    auctionConfiguration: self.auctionConfiguration
+//                )
+//                
+//                self.$bidState.wrappedValue = .ready(bid)
+//                self.observer.log(
+//                    BiddingDemandProviderDidFillMediationEvent(
+//                        roundConfiguration: self.roundConfiguration,
+//                        adapter: adapter,
+//                        bid: bid
+//                    )
+//                )
                 self.finish()
             }
         }

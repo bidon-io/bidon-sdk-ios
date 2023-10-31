@@ -26,7 +26,7 @@ struct BidRequest: Request {
             var banner: BannerAdTypeContextModel?
             var interstitial: InterstitialAdTypeContextModel?
             var rewarded: RewardedAdTypeContextModel?
-            var demands: BidonBiddingExtrasModel
+            var demands: CodableExtras
         }
         
         var device: DeviceModel
@@ -67,7 +67,7 @@ struct BidRequest: Request {
             var billingNoticeUrl: String?
             var lossNoticeUrl: String?
             var price: Price
-            var demands: BidonBiddingExtrasModel
+            var demands: CodableExtras
         }
         
         var token: String?

@@ -160,7 +160,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
                 builder.withImpression(controller.impression)
-                builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+                builder.withExternalWinner(demandId: demandId, price: eCPM)
             }
 
             networkManager.perform(request: request) { result in
@@ -225,7 +225,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             adType: context.adType
         )
         
-        let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
+        let elector = DirectAdUnitProvider(adUnits: auctionInfo.adUnits)
         
         let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
             builder.withAdaptersRepository(sdk.adaptersRepository)

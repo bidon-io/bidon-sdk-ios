@@ -10,10 +10,9 @@ import Foundation
 
 final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeContext> {    
     override var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
+        let adapters: [Adapter] =
+        adaptersRepository.all(of: DirectAdViewDemandSourceAdapter.self) +
+        adaptersRepository.all(of: BiddingAdViewDemandSourceAdapter.self)
         
         return AdaptersInfo(adapters: adapters)
     }

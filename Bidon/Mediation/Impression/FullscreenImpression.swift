@@ -16,7 +16,7 @@ struct FullscreenImpression: Impression {
     var externalNotificationTrackedAt: TimeInterval = .nan
     
     var demandType: DemandType
-    var eCPM: Price
+    var price: Price
     var adType: AdType
     var ad: DemandAd
     var roundConfiguration: AuctionRoundConfiguration
@@ -24,7 +24,7 @@ struct FullscreenImpression: Impression {
 
     init<T: Bid>(bid: T) {
         self.demandType = bid.demandType
-        self.eCPM = bid.eCPM
+        self.price = bid.price
         self.adType = bid.adType
         self.ad = bid.ad
         self.roundConfiguration = bid.roundConfiguration

@@ -14,7 +14,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var adUnitId: String?
         var lineItemUid: String?
         var status: DemandMediationStatus
-        var eCPM: Price?
+        var price: Price?
         var bidStartTimestamp: UInt?
         var bidFinishTimestamp: UInt?
         var fillStartTimestamp: UInt?
@@ -25,7 +25,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case adUnitId = "ad_unit_id"
             case lineItemUid = "line_item_uid"
             case status
-            case eCPM = "ecpm"
+            case price = "price"
             case bidStartTimestamp = "bid_start_ts"
             case bidFinishTimestamp = "bid_finish_ts"
             case fillStartTimestamp = "fill_start_ts"
@@ -37,7 +37,7 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             self.adUnitId = report.adUnitId
             self.lineItemUid = report.lineItemUid
             self.status = report.status
-            self.eCPM = report.eCPM
+            self.price = report.price
             self.bidStartTimestamp = report.bidStartTimestamp
             self.bidFinishTimestamp = report.bidFinishTimestamp
             self.fillStartTimestamp = report.fillStartTimestamp

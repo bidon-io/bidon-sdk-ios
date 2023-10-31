@@ -8,11 +8,11 @@
 import Foundation
 
 
-typealias BiddingContextEncoders = [String: BiddingContextEncoder]
+typealias BiddingContextEncoders = [String: Encodable]
 typealias BiddingContextDecoders = [String: Decoder]
 
 
-struct BidonBiddingExtrasModel: Codable {
+struct CodableExtras: Codable {
     var encoders: BiddingContextEncoders
     var decoders: BiddingContextDecoders
     
@@ -32,7 +32,7 @@ struct BidonBiddingExtrasModel: Codable {
         try encoders.forEach { id, encoder in
             if let key = AdapterIdCodingKey(stringValue: id) {
                 let superEncoder = container.superEncoder(forKey: key)
-                try encoder.encodeBiddingContext(to: superEncoder)
+                try encoder.encode(to: superEncoder)
             }
         }
     }

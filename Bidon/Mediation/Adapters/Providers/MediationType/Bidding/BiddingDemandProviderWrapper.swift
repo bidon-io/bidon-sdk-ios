@@ -9,27 +9,32 @@ import Foundation
 
 
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, BiddingDemandProvider {
-    private let _fetchBiddingContextEncoder: (@escaping BiddingContextEncoderResponse) -> ()
-    private let _prepareBid: (Decoder, @escaping DemandProviderResponse) -> ()
+    private let _collectBiddingTokenEncoder: ([Decoder], @escaping BiddingContextEncoderResponse) -> ()
+    private let _load: (Decoder, Decoder?, @escaping DemandProviderResponse) -> ()
     
     override init(_ wrapped: W) throws {
-        guard let _wrapped = wrapped as? (any BiddingDemandProvider) else { throw SdkError.internalInconsistency }
+        guard let _wrapped = wrapped as? (any BiddingDemandProvider) 
+        else { throw SdkError.internalInconsistency }
         
-        _fetchBiddingContextEncoder = { _wrapped.fetchBiddingContextEncoder(response: $0) }
-        _prepareBid = { _wrapped.prepareBid(from: $0, response: $1) }
+        _collectBiddingTokenEncoder = { _wrapped.collectBiddingTokenEncoder(adUnitExtrasDecoders: $0, response: $1) }
+        _load = { _wrapped.load(payloadDecoder: $0, adUnitExtrasDecoder: $1, response: $2) }
         
         try super.init(wrapped)
     }
     
-    func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse) {
-        _fetchBiddingContextEncoder(response)
+    func collectBiddingTokenEncoder(
+        adUnitExtrasDecoders: [Decoder],
+        response: @escaping BiddingContextEncoderResponse
+    ) {
+        _collectBiddingTokenEncoder(adUnitExtrasDecoders, response)
     }
     
-    func prepareBid(
-        from decoder: Decoder,
+    func load(
+        payloadDecoder: Decoder,
+        adUnitExtrasDecoder: Decoder?,
         response: @escaping DemandProviderResponse
     ) {
-        _prepareBid(decoder, response)
+       _load(payloadDecoder, adUnitExtrasDecoder, response)
     }
 }
 

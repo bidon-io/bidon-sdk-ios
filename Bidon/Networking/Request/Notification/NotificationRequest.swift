@@ -16,7 +16,7 @@ struct NotificationRequest: Request {
     var body: RequestBody?
     
     struct ExternalWinner: Encodable {
-        var ecpm: Price
+        var price: Price
         var demandId: String
     }
     

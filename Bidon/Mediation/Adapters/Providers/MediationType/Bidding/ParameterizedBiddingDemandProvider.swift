@@ -8,58 +8,55 @@
 import Foundation
 
 
-struct GenericBiddingContextEncoder<BiddingContext: Encodable>: BiddingContextEncoder {
-    var context: BiddingContext
-    
-    func encodeBiddingContext(to encoder: Encoder) throws {
-        try context.encode(to: encoder)
-    }
-}
-
-
 public protocol ParameterizedBiddingDemandProvider: BiddingDemandProvider {
-    associatedtype BiddingContext: Encodable
-    associatedtype BiddingResponse: Decodable
+    associatedtype BiddingToken: Encodable
+    associatedtype BiddingPayload: Decodable
+    associatedtype AdUnitExtras: Decodable
     
-    func fetchBiddingContext(
-        response: @escaping (Result<BiddingContext, MediationError>) -> ()
+    func collectBiddingToken(
+        response: @escaping (Result<BiddingToken, MediationError>) -> ()
     )
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: BiddingPayload,
+        adUnitExtras: AdUnitExtras?,
         response: @escaping DemandProviderResponse
     )
 }
 
 
 extension ParameterizedBiddingDemandProvider {
-    public func fetchBiddingContextEncoder(response: @escaping BiddingContextEncoderResponse) {
-        fetchBiddingContext { result in
+    public func collectBiddingTokenEncoder(response: @escaping BiddingContextEncoderResponse) {
+        collectBiddingToken { result in
             switch result {
             case .failure(let error):
                 response(.failure(error))
             case .success(let context):
-                let encoder = GenericBiddingContextEncoder(context: context)
-                response(.success(encoder))
+                response(.success(context))
             }
         }
     }
     
-    public func prepareBid(
-        from decoder: Decoder,
+    public func load(
+        payloadDecoder: Decoder,
+        adUnitExtrasDecoder: Decoder?,
         response: @escaping DemandProviderResponse
     ) {
-        var data: BiddingResponse?
+        var payload: BiddingPayload?
+        var adUnitExtas: AdUnitExtras?
+        
         do {
-            data = try BiddingResponse(from: decoder)
+            payload = try BiddingPayload(from: payloadDecoder)
+            adUnitExtas = try adUnitExtrasDecoder.map { try AdUnitExtras(from: $0) }
         } catch {
             response(.failure(.incorrectAdUnitId))
         }
         
-        guard let data = data else { return }
+        guard let payload = payload else { return }
         
-        prepareBid(
-            data: data,
+        load(
+            payload: payload,
+            adUnitExtras: adUnitExtas,
             response: response
         )
     }

@@ -165,7 +165,7 @@ final internal class BannerViewManager: NSObject {
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withImpression(impression)
-            builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+            builder.withExternalWinner(demandId: demandId, price: eCPM)
         }
         
         networkManager.perform(request: request) { result in

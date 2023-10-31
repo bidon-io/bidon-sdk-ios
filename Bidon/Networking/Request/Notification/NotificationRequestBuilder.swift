@@ -20,7 +20,7 @@ protocol NotificationRequestBuilder: AdTypeContextRequestBuilder {
     func withRoute(_ route: Route) -> Self
     
     @discardableResult
-    func withExternalWinner(demandId: String, eCPM: Price) -> Self
+    func withExternalWinner(demandId: String, price: Price) -> Self
         
     init()
 }
@@ -52,9 +52,9 @@ class BaseNotificationRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder
     }
     
     @discardableResult
-    func withExternalWinner(demandId: String, eCPM: Price) -> Self {
+    func withExternalWinner(demandId: String, price: Price) -> Self {
         self._externalWinner = NotificationRequest.ExternalWinner(
-            ecpm: eCPM,
+            price: price,
             demandId: demandId
         )
         return self

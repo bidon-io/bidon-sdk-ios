@@ -40,7 +40,7 @@ struct AuctionRequest: Request {
     
     struct ResponseBody: Decodable, Tokenized {
         var rounds: [AuctionRoundModel]
-        var lineItems: [LineItemModel]
+        var adUnits: [AdUnitDecodableModel]
         var pricefloor: Price
         var token: String?
         var auctionId: String

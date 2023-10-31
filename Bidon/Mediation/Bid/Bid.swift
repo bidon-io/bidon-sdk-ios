@@ -8,20 +8,19 @@
 import Foundation
 
 
-enum DemandType {
-    case bidding
-    case programmatic
-    case direct(LineItem)
+enum DemandType: String {
+    case bidding = "rtb"
+    case direct = "cpm"
 }
 
 
 protocol Bid: Hashable {
     associatedtype Provider
     
-    var id: String { get }
+    var adUnit: AnyAdUnit { get }
     var adType: AdType { get }
     var demandType: DemandType { get }
-    var eCPM: Price { get }
+    var price: Price { get }
     var ad: DemandAd { get }
     var provider: Provider { get }
     var roundConfiguration: AuctionRoundConfiguration { get }
@@ -29,27 +28,11 @@ protocol Bid: Hashable {
 }
 
 
-extension DemandType {
-    var lineItem: LineItem? {
-        switch self {
-        case .direct(let lineItem): return lineItem
-        default: return nil
-        }
-    }
-    
-    var stringValue: String {
-        switch self {
-        case .bidding: return "rtb"
-        default: return "cpm"
-        }
-    }
-}
-
-
 struct BidModel<DemandProviderType>: Bid {
     var id: String
     var adType: AdType
-    var eCPM: Price
+    var adUnit: AnyAdUnit
+    var price: Price
     var demandType: DemandType
     var ad: DemandAd
     var provider: DemandProviderType
@@ -88,7 +71,8 @@ extension AnyAdViewBid {
         return AdViewBid(
             id: id,
             adType: adType,
-            eCPM: eCPM,
+            adUnit: adUnit,
+            price: price,
             demandType: demandType,
             ad: ad,
             provider: provider.wrapped,
@@ -104,7 +88,8 @@ extension AnyInterstitialBid {
         return InterstitialBid(
             id: id,
             adType: adType,
-            eCPM: eCPM,
+            adUnit: adUnit,
+            price: price,
             demandType: demandType,
             ad: ad,
             provider: provider.wrapped,
@@ -120,7 +105,8 @@ extension AnyRewardedAdBid {
         return RewardedAdBid(
             id: id,
             adType: adType,
-            eCPM: eCPM,
+            adUnit: adUnit,
+            price: price,
             demandType: demandType,
             ad: ad,
             provider: provider.wrapped,

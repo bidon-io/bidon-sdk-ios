@@ -10,10 +10,9 @@ import Foundation
 
 final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdTypeContext> {    
     override var adapters: AdaptersInfo {
-        let programmatic: [ProgrammaticRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let direct: [DirectRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let bidding: [BiddingRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        let adapters: [Adapter] = programmatic + direct + bidding
+        let adapters: [Adapter] =
+        adaptersRepository.all(of: DirectRewardedAdDemandSourceAdapter.self) +
+        adaptersRepository.all(of: BiddingRewardedAdDemandSourceAdapter.self)
         
         return AdaptersInfo(adapters: adapters)
     }

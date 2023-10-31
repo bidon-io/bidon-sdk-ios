@@ -138,7 +138,7 @@ final class BannerAdManager: NSObject {
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
                 builder.withImpression(impression)
-                builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+                builder.withExternalWinner(demandId: demandId, price: eCPM)
             }
 
             networkManager.perform(request: request) { result in
@@ -203,7 +203,7 @@ final class BannerAdManager: NSObject {
         )
         
         let context = BannerAdTypeContext(viewContext: viewContext)
-        let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
+        let elector = DirectAdUnitProvider(adUnits: auctionInfo.adUnits)
         
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
