@@ -9,19 +9,27 @@ import Foundation
 
 
 
-final class AuctionOperationStart: Operation {
+final class AuctionOperationStart<AdTypeContextType: AdTypeContext>: Operation, AuctionOperation {
+    typealias BuilderType = Builder
+    
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var pricefloor: Price!
+        
+        @discardableResult
+        func withPricefloor(_ pricefloor: Price) -> Self {
+            self.pricefloor = pricefloor
+            return self
+        }
+    }
+    
     let pricefloor: Price
     let observer: AnyMediationObserver
     let auctionConfiguration: AuctionConfiguration
     
-    init(
-        pricefloor: Price,
-        observer: AnyMediationObserver,
-        auctionConfiguration: AuctionConfiguration
-    ) {
-        self.pricefloor = pricefloor
-        self.observer = observer
-        self.auctionConfiguration = auctionConfiguration
+    init(builder: Builder) {
+        self.pricefloor = builder.pricefloor
+        self.observer = builder.observer
+        self.auctionConfiguration = builder.auctionConfiguration
         
         super.init()
     }
@@ -31,6 +39,3 @@ final class AuctionOperationStart: Operation {
         observer.log(AuctionStartMediationEvent())
     }
 }
-
-
-extension AuctionOperationStart: AuctionOperation {}

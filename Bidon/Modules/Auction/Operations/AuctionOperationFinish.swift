@@ -8,23 +8,38 @@
 import Foundation
 
 
-final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation
+final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
 where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
+    
+    typealias BuilderType = Builder
+    
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var completion: ((Result<BidType, SdkError>) -> ())!
+        private(set) var comparator: AuctionBidComparator!
+        
+        @discardableResult
+        func withCompletion(_ completion:  @escaping (Result<BidType, SdkError>) -> ()) -> Self {
+            self.completion = completion
+            return self
+        }
+        
+        @discardableResult
+        func withComparator(_ comparator: AuctionBidComparator) -> Self {
+            self.comparator = comparator
+            return self
+        }
+    }
+    
     let observer: AnyMediationObserver
     let completion: (Result<BidType, SdkError>) -> ()
     let comparator: AuctionBidComparator
     let auctionConfiguration: AuctionConfiguration
     
-    init(
-        comparator: AuctionBidComparator,
-        observer: AnyMediationObserver,
-        auctionConfiguration: AuctionConfiguration,
-        completion: @escaping (Result<BidType, SdkError>) -> ()
-    ) {
-        self.auctionConfiguration = auctionConfiguration
-        self.observer = observer
-        self.comparator = comparator
-        self.completion = completion
+    init(builder: Builder) {
+        self.observer = builder.observer
+        self.auctionConfiguration = builder.auctionConfiguration
+        self.comparator = builder.comparator
+        self.completion = builder.completion
         
         super.init()
     }
@@ -91,6 +106,3 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         return .success(winner)
     }
 }
-
-
-extension AuctionOperationFinish: AuctionOperation {}

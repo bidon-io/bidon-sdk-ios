@@ -8,12 +8,6 @@
 import Foundation
 
 
-enum DemandType: String {
-    case bidding = "rtb"
-    case direct = "cpm"
-}
-
-
 protocol Bid: Hashable {
     associatedtype Provider
     

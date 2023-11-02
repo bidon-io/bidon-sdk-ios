@@ -8,7 +8,21 @@
 import Foundation
 
 
-final class AuctionOperationRoundTimeout: AsynchronousOperation {
+protocol AuctionOperationRoundTimeoutHandler: Operation {
+    func timeoutReached()
+}
+
+
+final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperation {
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        var interval: TimeInterval {
+            return Date.MeasurementUnits.milliseconds.convert(
+                roundConfiguration.timeout,
+                to: .seconds
+            )
+        }
+    }
+    
     private var timer: Timer?
     
     let interval: TimeInterval
@@ -18,18 +32,11 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
     
     private var operations = NSHashTable<Operation>.weakObjects()
     
-    init(
-        observer: AnyMediationObserver,
-        roundConfiguration: AuctionRoundConfiguration,
-        auctionConfiguration: AuctionConfiguration
-    ) {
-        self.observer = observer
-        self.roundConfiguration = roundConfiguration
-        self.auctionConfiguration = auctionConfiguration
-        self.interval = Date.MeasurementUnits.milliseconds.convert(
-            roundConfiguration.timeout,
-            to: .seconds
-        )
+    init(builder: Builder) {
+        self.observer = builder.observer
+        self.roundConfiguration = builder.roundConfiguration
+        self.auctionConfiguration = builder.auctionConfiguration
+        self.interval = builder.interval
         
         super.init()
     }
@@ -43,7 +50,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
         finish()
     }
     
-    func add(_ operation: Operation) {
+    func add(_ operation: AuctionOperationRoundTimeoutHandler) {
         operations.add(operation)
     }
     
@@ -74,7 +81,7 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
             
             self.operations
                 .allObjects
-                .compactMap { $0 as? any AuctionOperationRequestDemand }
+                .compactMap { $0 as? AuctionOperationRoundTimeoutHandler }
                 .forEach { $0.timeoutReached() }
             
             self.finish()
@@ -85,5 +92,3 @@ final class AuctionOperationRoundTimeout: AsynchronousOperation {
     }
 }
 
-
-extension AuctionOperationRoundTimeout: AuctionOperation {}

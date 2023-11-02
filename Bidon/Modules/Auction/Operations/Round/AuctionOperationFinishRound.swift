@@ -8,31 +8,49 @@
 import Foundation
 
 
-final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation
+final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
 where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
+    
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var adRevenueObserver: AdRevenueObserver!
+        private(set) var comparator: AuctionBidComparator!
+        private(set) var timeout: AuctionOperationRoundTimeout<AdTypeContextType>!
+        
+        @discardableResult
+        func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self {
+            self.adRevenueObserver = adRevenueObserver
+            return self
+        }
+        
+        @discardableResult
+        func withTimeout(_ timeout: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self {
+            self.timeout = timeout
+            return self
+        }
+        
+        @discardableResult
+        func withComparator(_ comparator: AuctionBidComparator) -> Self {
+            self.comparator = comparator
+            return self
+        }
+    }
+    
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
     let comparator: AuctionBidComparator
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     
-    private weak var timeout: AuctionOperationRoundTimeout?
+    private weak var timeout: AuctionOperationRoundTimeout<AdTypeContextType>?
     private(set) var bids: [BidType] = []
     
-    init(
-        comparator: AuctionBidComparator,
-        timeout: AuctionOperationRoundTimeout,
-        observer: AnyMediationObserver,
-        adRevenueObserver: AdRevenueObserver,
-        roundConfiguration: AuctionRoundConfiguration,
-        auctionConfiguration: AuctionConfiguration
-    ) {
-        self.observer = observer
-        self.adRevenueObserver = adRevenueObserver
-        self.comparator = comparator
-        self.timeout = timeout
-        self.roundConfiguration = roundConfiguration
-        self.auctionConfiguration = auctionConfiguration
+    init(builder: Builder) {
+        self.observer = builder.observer
+        self.adRevenueObserver = builder.adRevenueObserver
+        self.comparator = builder.comparator
+        self.timeout = builder.timeout
+        self.roundConfiguration = builder.roundConfiguration
+        self.auctionConfiguration = builder.auctionConfiguration
         
         super.init()
     }
@@ -42,15 +60,15 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         timeout?.invalidate()
         
-        bids = (
-            deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
-                .compactMap { $0.bid as? BidType } +
-            deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
-                .compactMap { $0.bid as? BidType }
-        )
-        .sorted { comparator.compare($0, $1) }
-        
-        bids.forEach(adRevenueObserver.observe)
+//        bids = (
+//            deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
+//                .red { $0.bids as? BidType } +
+//            deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
+//                .compactMap { $0.bids as? BidType }
+//        )
+//        .sorted { comparator.compare($0, $1) }
+//        
+//        bids.forEach(adRevenueObserver.observe)
         
         observer.log(
             RoundFinishMediationEvent(
@@ -60,7 +78,3 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         )
     }
 }
-
-
-extension AuctionOperationFinishRound: AuctionOperation {}
-

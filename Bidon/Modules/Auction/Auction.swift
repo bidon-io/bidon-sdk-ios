@@ -16,11 +16,6 @@ protocol AuctionRound {
 }
 
 
-protocol AuctionOperation: Operation {
-    var auctionConfiguration: AuctionConfiguration { get }
-}
-
-
 struct Auction {
     private(set) var graph = DirectedAcyclicGraph<Operation>()
     
@@ -30,13 +25,13 @@ struct Auction {
         }
     }
     
-    mutating func addNode(_ operation: AuctionOperation) {
+    mutating func addNode(_ operation: AnyAuctionOperation) {
         try? graph.add(node: operation)
     }
     
     mutating func addEdge(
-        parent parentOperation: AuctionOperation,
-        child childOperation: AuctionOperation
+        parent parentOperation: AnyAuctionOperation,
+        child childOperation: AnyAuctionOperation
     ) {
         try? graph.addEdge(
             from: parentOperation,
@@ -84,5 +79,14 @@ struct AuctionRoundConfiguration {
     var roundId: String
     var roundIndex: Int
     var timeout: TimeInterval
+}
+
+
+extension AuctionRoundConfiguration {
+    init(round: AuctionRound, idx: Int) {
+        self.roundId = round.id
+        self.timeout = round.timeout
+        self.roundIndex = idx
+    }
 }
 

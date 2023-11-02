@@ -8,9 +8,11 @@
 import Foundation
 
 
-protocol AdUnitProvider {
-    mutating func popAdUnit<AdUnitExtras: Decodable>(
+protocol AdUnitProvider: AnyObject {
+    func directAdUnit(
         for demandId: String,
         pricefloor: Price
-    ) -> AdUnitModel<AdUnitExtras>?
+    ) -> AdUnitModel?
+    
+    func biddingAdUnits(for demandId: String) -> [AdUnitModel]
 }

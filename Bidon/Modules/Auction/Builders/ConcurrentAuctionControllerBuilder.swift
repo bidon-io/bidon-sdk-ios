@@ -16,7 +16,7 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     private(set) var adaptersRepository: AdaptersRepository!
     private(set) var mediationObserver: AnyMediationObserver!
     private(set) var adRevenueObserver: AdRevenueObserver!
-    private(set) var elector: AdUnitProvider!
+    private(set) var adUnitProvider: AdUnitProvider!
     private(set) var context: AdTypeContextType!
     private(set) var auctionConfiguration: AuctionConfiguration!
 
@@ -43,10 +43,10 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     }
     
     @discardableResult
-    public func withElector(
-        _ elector: AdUnitProvider
+    public func withAdUnitProvider(
+        _ adUnitProvider: AdUnitProvider
     ) -> Self {
-        self.elector = elector
+        self.adUnitProvider = adUnitProvider
         return self
     }
     

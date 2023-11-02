@@ -203,12 +203,12 @@ final class BannerAdManager: NSObject {
         )
         
         let context = BannerAdTypeContext(viewContext: viewContext)
-        let elector = DirectAdUnitProvider(adUnits: auctionInfo.adUnits)
+        let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
         
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withRounds(auctionInfo.rounds)
-            builder.withElector(elector)
+            builder.withAdUnitProvider(provider)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withContext(context)
             builder.withViewContext(viewContext)

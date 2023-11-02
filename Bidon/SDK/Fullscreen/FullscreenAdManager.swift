@@ -225,12 +225,12 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             adType: context.adType
         )
         
-        let elector = DirectAdUnitProvider(adUnits: auctionInfo.adUnits)
-        
+        let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
+
         let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withRounds(auctionInfo.rounds)
-            builder.withElector(elector)
+            builder.withAdUnitProvider(provider)
             builder.withMediationObserver(observer)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withAdRevenueObserver(self.adRevenueObserver)

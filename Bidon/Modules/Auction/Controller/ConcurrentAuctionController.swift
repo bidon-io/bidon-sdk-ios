@@ -22,7 +22,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let mediationObserver: AnyMediationObserver
     private let adRevenueObserver: AdRevenueObserver
     
-    private var elector: AdUnitProvider
+    private let adUnitProvider: AdUnitProvider
     
     private lazy var queue: OperationQueue = {
         let queue = OperationQueue()
@@ -35,7 +35,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         let builder = T()
         build(builder)
         
-        self.elector = builder.elector
+        self.adUnitProvider = builder.adUnitProvider
         self.comparator = builder.comparator
         self.rounds = builder.rounds
         self.context = builder.context
@@ -54,20 +54,21 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         var auction = Auction()
         
         // Instantiate auction with start operation
-        let startAuctionOperation = AuctionOperationStart(
-            pricefloor: pricefloor,
-            observer: mediationObserver,
-            auctionConfiguration: auctionConfiguration
-        )
+        let startAuctionOperation = AuctionOperationStart<AdTypeContextType> { builder in
+            builder.withPricefloor(pricefloor)
+            builder.withObserver(mediationObserver)
+            builder.withAuctionConfiguration(auctionConfiguration)
+        }
+        
         auction.addNode(startAuctionOperation)
         
         // Finish auction
-        let finishAuctionOperation = AuctionOperationFinish<AdTypeContextType, BidType>(
-            comparator: comparator,
-            observer: mediationObserver,
-            auctionConfiguration: auctionConfiguration,
-            completion: completion
-        )
+        let finishAuctionOperation = AuctionOperationFinish<AdTypeContextType, BidType> { builder in
+            builder.withComparator(comparator)
+            builder.withObserver(mediationObserver)
+            builder.withAuctionConfiguration(auctionConfiguration)
+            builder.withCompletion(completion)
+        }
         
         // Finish auction is child of the lates round finish
         auction.addNode(finishAuctionOperation)
@@ -79,29 +80,28 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // Use array of operation for backracking. Any start of new round should be children of
         // every previous round finish and auction start
         // to have actual pricefloor
-        var shared: [AuctionOperation] = [startAuctionOperation]
+        var shared: [AnyAuctionOperation] = [startAuctionOperation]
         rounds.enumerated().forEach { round in
             let roundConfiguration = AuctionRoundConfiguration(
-                roundId: round.element.id,
-                roundIndex: round.offset,
-                timeout: round.element.timeout
+                round: round.element,
+                idx: round.offset
             )
             
             // Instantiate round start operation and add it to DAG
-            let startRoundOperation = AuctionOperationStartRound<AdTypeContextType, BidType>(
-                comparator: comparator,
-                observer: mediationObserver,
-                roundConfiguration: roundConfiguration,
-                auctionConfiguration: auctionConfiguration
-            )
+            let startRoundOperation = AuctionOperationStartRound<AdTypeContextType, BidType> { builder in
+                builder.withComparator(comparator)
+                builder.withAuctionConfiguration(auctionConfiguration)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withObserver(mediationObserver)
+            }
             auction.addNode(startRoundOperation)
             
             // Instantiate timeout operation
-            let timeoutOperation = AuctionOperationRoundTimeout(
-                observer: mediationObserver,
-                roundConfiguration: roundConfiguration,
-                auctionConfiguration: auctionConfiguration
-            )
+            let timeoutOperation = AuctionOperationRoundTimeout<AdTypeContextType> { builder in
+                builder.withObserver(mediationObserver)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withAuctionConfiguration(auctionConfiguration)
+            }
             
             auction.addNode(timeoutOperation)
             auction.addEdge(
@@ -110,14 +110,14 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             )
             
             // Instantiate round finisj opearation and add it to DAG
-            let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType>(
-                comparator: comparator,
-                timeout: timeoutOperation,
-                observer: mediationObserver,
-                adRevenueObserver: adRevenueObserver,
-                roundConfiguration: roundConfiguration,
-                auctionConfiguration: auctionConfiguration
-            )
+            let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType> { builder in
+                builder.withComparator(comparator)
+                builder.withTimeout(timeoutOperation)
+                builder.withObserver(mediationObserver)
+                builder.withAdRevenueObserver(adRevenueObserver)
+                builder.withAuctionConfiguration(auctionConfiguration)
+                builder.withRoundConfiguration(roundConfiguration)
+            }
             
             auction.addNode(finishRoundOperation)
             
@@ -129,44 +129,48 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                 )
             }
             
-            // Create request operation for every demand sources
-            round.element.demands.forEach { identifier in
-                let requestDemandOperation = requestDemandOperation(
-                    roundConfiguration: roundConfiguration,
-                    demandId: identifier
-                )
-                // Apply timeout restrictions to demand request
-                timeoutOperation.add(requestDemandOperation)
-                // Every request demand operation should be childern of round start
-                // and parent of round finish
-                auction.addNode(requestDemandOperation)
-                auction.addEdge(
-                    parent: startRoundOperation,
-                    child: requestDemandOperation
-                )
-                auction.addEdge(
-                    parent: requestDemandOperation,
-                    child: finishRoundOperation
-                )
+            // Create request operation for all demands
+            let requestDirectDemandOperation = AuctionOperationRequestDirectDemand<AdTypeContextType> { builder in
+                builder.withDemands(round.element.demands)
+                builder.withAdapters(adapters)
+                builder.withAdUnitProvider(adUnitProvider)
+                builder.withContext(context)
+                builder.withObserver(mediationObserver)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withAuctionConfiguration(auctionConfiguration)
             }
-            
-            // Add bidding operation
-            let biddingOperation = biddingOperation(
-                bidding: round.element.bidding,
-                roundConfiguration: roundConfiguration
-            )
-            
-            // Apply timeout restrictions to bidding
-            timeoutOperation.add(biddingOperation)
-            
-            auction.addNode(biddingOperation)
+            // Apply timeout restrictions to demand request
+            timeoutOperation.add(requestDirectDemandOperation)
+            // Request demand operation should be childern of round start
+            // and parent of round finish
+            auction.addNode(requestDirectDemandOperation)
             auction.addEdge(
                 parent: startRoundOperation,
-                child: biddingOperation
+                child: requestDirectDemandOperation
             )
             auction.addEdge(
-                parent: biddingOperation,
+                parent: requestDirectDemandOperation,
                 child: finishRoundOperation
+            )
+            
+            // Add bidding operation
+            let collectBiddingContextOperation = AuctionOperationCollectBiddingContext<AdTypeContextType> { builder in
+                builder.withDemands(round.element.bidding)
+                builder.withAdapters(adapters)
+                builder.withAdUnitProvider(adUnitProvider)
+                builder.withContext(context)
+                builder.withObserver(mediationObserver)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withAuctionConfiguration(auctionConfiguration)
+            }
+            
+            // Apply timeout restrictions to bidding
+            timeoutOperation.add(collectBiddingContextOperation)
+            
+            auction.addNode(collectBiddingContextOperation)
+            auction.addEdge(
+                parent: startRoundOperation,
+                child: collectBiddingContextOperation
             )
             
             shared.append(finishRoundOperation)
@@ -187,94 +191,5 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     func cancel() {
         queue.cancelAllOperations()
-    }
-    
-    private func requestDemandOperation(
-        roundConfiguration: AuctionRoundConfiguration,
-        demandId: String
-    ) -> AuctionOperation {
-        //        guard let adapter = adapters.first(where: {
-        //            $0.identifier == identifier &&
-        //            !$0.supportedTypes.intersection(.direct).isEmpty
-        //        }) else {
-        //            let event = DemandProviderNotFoundMediationEvent(
-        //                roundConfiguration: roundConfiguration,
-        //                adapter: identifier
-        //            )
-        //
-        //            return AuctionOperationLogEvent(
-        //                event: event,
-        //                observer: mediationObserver,
-        //                auctionConfiguration: auctionConfiguration
-        //            )
-        //        }
-        //
-        //        let operation: AuctionOperation
-        //
-        //        if adapter.mode.contains(.classic) {
-        //            operation = AuctionOperationRequestDirectDemand<AdTypeContextType>(
-        //                adapter: adapter,
-        //                observer: mediationObserver,
-        //                context: context,
-        //                roundConfiguration: roundConfiguration,
-        //                auctionConfiguration: auctionConfiguration
-        //            ) { [weak self] _adapter, pricefloor in
-        //                return self?.elector.popLineItem(
-        //                    for: _adapter.identifier,
-        //                    pricefloor: pricefloor
-        //                )
-        //            }
-        //        } else {
-        //            operation = AuctionOperationRequestProgrammaticDemand<AdTypeContextType>(
-        //                adapter: adapter,
-        //                observer: mediationObserver,
-        //                context: context,
-        //                roundConfiguration: roundConfiguration,
-        //                auctionConfiguration: auctionConfiguration
-        //            )
-        //        }
-        
-        //        return operation
-        
-        let event = DemandProviderNotFoundMediationEvent(
-            roundConfiguration: roundConfiguration,
-            demandId: demandId
-        )
-            
-        return AuctionOperationLogEvent(
-            event: event,
-            observer: mediationObserver,
-            auctionConfiguration: auctionConfiguration
-        )
-    }
-    
-    private func biddingOperation(
-        bidding: [String],
-        roundConfiguration: AuctionRoundConfiguration
-    ) -> AuctionOperation {
-        let event = DemandProviderNotFoundMediationEvent(
-            roundConfiguration: roundConfiguration,
-            demandId: "identifier"
-        )
-            
-        return AuctionOperationLogEvent(
-            event: event,
-            observer: mediationObserver,
-            auctionConfiguration: auctionConfiguration
-        )
-        
-        //        let adapters: [AnyDemandSourceAdapter<DemandProviderType>] = bidding.compactMap { id in
-        //            self.adapters.first { $0.identifier == id && $0.mode.contains(.bidding) }
-        //        }
-        //
-        //        let operation = AuctionOperationRequestBiddingDemand<AdTypeContextType>(
-        //            adapters: adapters,
-        //            observer: mediationObserver,
-        //            context: context,
-        //            roundConfiguration: roundConfiguration,
-        //            auctionConfiguration: auctionConfiguration
-        //        )
-        //
-        //        return operation
     }
 }

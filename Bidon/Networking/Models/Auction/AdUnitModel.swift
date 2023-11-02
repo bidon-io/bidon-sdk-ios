@@ -8,14 +8,11 @@
 import Foundation
 
 
-struct AdUnitDecodableModel: Decodable, AdUnit {
-    struct ExtrasDecoderContainer {
-        var decoder: Decoder
-    }
-    
+struct AdUnitModel: Decodable, AdUnit {
     enum CodingKeys: String, CodingKey {
         case uid = "id"
         case demandId = "demand_id"
+        case demandType = "bid_type"
         case label
         case pricefloor
         case extras = "ext"
@@ -23,27 +20,33 @@ struct AdUnitDecodableModel: Decodable, AdUnit {
     
     var uid: String
     var demandId: String
+    var demandType: DemandType
     var label: String
     var pricefloor: Price
-    var extras: ExtrasDecoderContainer
+    var extras: Decoder
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         uid = try container.decode(String.self, forKey: .uid)
         demandId = try container.decode(String.self, forKey: .demandId)
+        demandType = try container.decode(DemandType.self, forKey: .demandType)
         label = try container.decode(String.self, forKey: .label)
         pricefloor = try container.decode(Price.self, forKey: .pricefloor)
-        
-        extras = ExtrasDecoderContainer(
-            decoder: try container.superDecoder(forKey: .extras)
-        )
+        extras = try container.superDecoder(forKey: .extras)
     }
 }
 
 
-extension AdUnitDecodableModel: Equatable {
-    static func == (lhs: AdUnitDecodableModel, rhs: AdUnitDecodableModel) -> Bool {
+extension AdUnitModel: Equatable {
+    static func == (lhs: AdUnitModel, rhs: AdUnitModel) -> Bool {
         return lhs.uid == rhs.uid
+    }
+}
+
+
+extension AdUnitModel: CustomStringConvertible {
+    var description: String {
+        return "Ad Unit #\(uid), \(label)"
     }
 }

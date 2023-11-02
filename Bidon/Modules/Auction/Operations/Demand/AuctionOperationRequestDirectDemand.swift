@@ -8,112 +8,128 @@
 import Foundation
 
 
-final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
+final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var adapters: [AdapterType]!
+        private(set) var demands: [String]!
+        private(set) var adUnitProvider: AdUnitProvider!
+        
+        @discardableResult
+        func withAdapters(_ adapters: [AdapterType]) -> Self {
+            self.adapters = adapters
+            return self
+        }
+        
+        @discardableResult
+        func withDemands(_ demands: [String]) -> Self {
+            self.demands = demands
+            return self
+        }
+        
+        @discardableResult
+        func withAdUnitProvider(_ adUnitProvider: AdUnitProvider) -> Self {
+            self.adUnitProvider = adUnitProvider
+            return self
+        }
+    }
+    
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
+    let demands: [String]
+    let adUnitProvider: AdUnitProvider
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     
-    private(set) var bid: BidType?
+    private(set) var bids: [BidType] = []
     
-    init(
-        build: (AuctionOperationRequestDemandBuilder<AdTypeContextType>) -> ()
-    ) {
-        let builder = AuctionOperationRequestDemandBuilder<AdTypeContextType>()
-        build(builder)
-        
-        self.context = builder.context
-        self.observer = builder.observer
+    init(builder: Builder) {
         self.adapters = builder.adapters
+        self.demands = builder.demands
+        self.observer = builder.observer
+        self.context = builder.context
         self.roundConfiguration = builder.roundConfiguration
         self.auctionConfiguration = builder.auctionConfiguration
+        self.adUnitProvider = builder.adUnitProvider
         
         super.init()
     }
     
     override func main() {
         super.main()
-        //
-        //        guard let provider = adapter.provider as? any DirectDemandProvider else {
-        //            fatalError("Inconsistent provider")
-        //        }
         
-        //        DispatchQueue.main.async { [unowned self] in
-        //            self.load(direct: provider)
-        //        }
-    }
-    
-    private func load(direct provider: any DirectDemandProvider) {
-        //        guard let lineItem = lineItem(adapter, pricefloor) else {
-        //            observer.log(
-        //                DirectDemandProviderLineItemNotFoundMediationEvent(
-        //                    roundConfiguration: roundConfiguration,
-        //                    adapter: adapter
-        //                )
-        //            )
-        //            finish()
-        //            return
-        //        }
-        //
-        //        observer.log(
-        //            DirectDemandProividerLoadRequestMediationEvent(
-        //                roundConfiguration: roundConfiguration,
-        //                adapter: adapter,
-        //                lineItem: lineItem
-        //            )
-        //        )
-        //
-        //        provider.load(lineItem.adUnitId) { [weak self] result in
-        //            guard let self = self, self.isExecuting else { return }
-        //
-        //            switch result {
-        //            case .failure(let error):
-        //                self.observer.log(
-        //                    DirectDemandProividerDidFailToLoadMediationEvent(
-        //                        roundConfiguration: self.roundConfiguration,
-        //                        adapter: self.adapter,
-        //                        error: error
-        //                    )
-        //                )
-        //                self.finish()
-        //            case .success(let ad):
-        //                let eCPM = ad.eCPM ?? lineItem.pricefloor
-        //
-        //                let bid = BidType(
-        //                    id: UUID().uuidString,
-        //                    adType: self.context.adType,
-        //                    eCPM: eCPM,
-        //                    demandType: .direct(lineItem),
-        //                    ad: ad,
-        //                    provider: self.adapter.provider,
-        //                    roundConfiguration: self.roundConfiguration,
-        //                    auctionConfiguration: self.auctionConfiguration
-        //                )
-        //
-        //                self.observer.log(
-        //                    DirectDemandProividerDidLoadMediationEvent(
-        //                        roundConfiguration: self.roundConfiguration,
-        //                        adapter: self.adapter,
-        //                        bid: bid
-        //                    )
-        //                )
-        //
-        //                self.bid = bid
-        //                self.finish()
-        //            }
-        //        }
+        let group = DispatchGroup()
+        for demandId in demands {
+            guard
+                let adapter = adapters.first(where: { $0.demandId == demandId }),
+                let provider = adapter.provider as? any GenericDirectDemandProvider
+            else {
+                let event = DemandProviderNotFoundMediationEvent(
+                    roundConfiguration: roundConfiguration,
+                    demandId: demandId
+                )
+                
+                observer.log(event)
+                
+                continue
+            }
+            
+            guard let adUnit = adUnitProvider.directAdUnit(for: demandId, pricefloor: pricefloor) else {
+                let event = DirectDemandProviderLineItemNotFoundMediationEvent(
+                    roundConfiguration: roundConfiguration,
+                    adapter: adapter
+                )
+                
+                observer.log(event)
+                
+                continue
+            }
+            
+            group.enter()
+            
+            provider.load(
+                pricefloor: pricefloor,
+                adUnitExtrasDecoder: adUnit.extras
+            ) { [weak self] result in
+                guard let self = self else { return }
+                defer { group.leave() }
+                
+                switch result {
+                case .failure(let error):
+                    let event = DirectDemandProividerDidFailToLoadMediationEvent(
+                        roundConfiguration: self.roundConfiguration,
+                        adapter: adapter,
+                        error: error
+                    )
+                    self.observer.log(event)
+                case .success(let ad):
+                    #warning("Bid")
+//                    let bid = BidType(
+//                        id: UUID().uuidString,
+//                        adType: self.context.adType,
+//                        adUnit: adUnit,
+//                        demandType: <#T##DemandType#>, ad: ad, provider: provider, roundConfiguration: self., auctionConfiguration: <#T##AuctionConfiguration#>)
+//                    let event = DirectDemandProividerDidLoadMediationEvent(roundConfiguration: self.roundConfiguration, adapter: adapter, bid: <#T##AnyBid#>)
+                }
+            }
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self, self.isExecuting else { return }
+            self.finish()
+        }
     }
 }
 
 
-extension AuctionOperationRequestDirectDemand: AuctionOperationRequestDemand {
+extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
-//        guard isExecuting else { return }
-//        
+        guard isExecuting else { return }
+
+        #warning("Log events")
 //        observer.log(
 //            DirectDemandProividerDidFailToLoadMediationEvent(
 //                roundConfiguration: roundConfiguration,
@@ -121,7 +137,7 @@ extension AuctionOperationRequestDirectDemand: AuctionOperationRequestDemand {
 //                error: .fillTimeoutReached
 //            )
 //        )
-//        
-//        finish()
+
+        finish()
     }
 }

@@ -12,9 +12,7 @@ protocol AuctionOperationRequestDemand: AuctionOperation {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
     associatedtype BidType: Bid where BidType.Provider == AdTypeContextType.DemandProviderType
 
-    var bid: BidType? { get }
-        
-    func timeoutReached()
+    var bids: [BidType] { get }
 }
 
 
