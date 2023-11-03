@@ -15,17 +15,10 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     
     final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
         private(set) var completion: ((Result<BidType, SdkError>) -> ())!
-        private(set) var comparator: AuctionBidComparator!
         
         @discardableResult
         func withCompletion(_ completion:  @escaping (Result<BidType, SdkError>) -> ()) -> Self {
             self.completion = completion
-            return self
-        }
-        
-        @discardableResult
-        func withComparator(_ comparator: AuctionBidComparator) -> Self {
-            self.comparator = comparator
             return self
         }
     }

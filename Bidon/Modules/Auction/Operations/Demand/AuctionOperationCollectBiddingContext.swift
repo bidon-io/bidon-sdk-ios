@@ -10,31 +10,7 @@ import Foundation
 
 final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperation {
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
-    typealias BuilderType = Builder
-    
-    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
-        private(set) var adapters: [AdapterType]!
-        private(set) var demands: [String]!
-        private(set) var adUnitProvider: AdUnitProvider!
-        
-        @discardableResult
-        func withAdapters(_ adapters: [AdapterType]) -> Self {
-            self.adapters = adapters
-            return self
-        }
-        
-        @discardableResult
-        func withDemands(_ demands: [String]) -> Self {
-            self.demands = demands
-            return self
-        }
-        
-        @discardableResult
-        func withAdUnitProvider(_ adUnitProvider: AdUnitProvider) -> Self {
-            self.adUnitProvider = adUnitProvider
-            return self
-        }
-    }
+    typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
@@ -44,7 +20,9 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     
-    init(builder: Builder) {
+    private(set) var tokens: [BiddingDemandToken] = []
+    
+    init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.demands = builder.demands
         self.observer = builder.observer
@@ -97,9 +75,13 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
 //
 //                        self.observer.log(event)
                     case .success(let token):
-                        #warning("Context")
+                        let demandToken = BiddingDemandToken(
+                            demandId: adapter.demandId,
+                            token: token
+                        )
+                        
+                        self.tokens.append(demandToken)
                     }
-                    
                 }
             }
         }

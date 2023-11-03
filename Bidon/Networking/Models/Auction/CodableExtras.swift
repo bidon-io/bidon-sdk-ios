@@ -8,43 +8,43 @@
 import Foundation
 
 
-typealias BiddingContextEncoders = [String: Encodable]
-typealias BiddingContextDecoders = [String: Decoder]
+struct BiddingDemandToken {
+    var demandId: String
+    var token: Encodable
+}
 
 
-struct CodableExtras: Codable {
-    var encoders: BiddingContextEncoders
-    var decoders: BiddingContextDecoders
+struct EncodableBiddingDemandTokens: Encodable {
+    var tokens: [BiddingDemandToken]
     
-    init(encoders: BiddingContextEncoders) {
-        self.encoders = encoders
-        self.decoders = [:]
-    }
-    
-    init(decoders: BiddingContextDecoders) {
-        self.decoders = decoders
-        self.encoders = [:]
+    init(tokens: [BiddingDemandToken]) {
+        self.tokens = tokens
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
-        
-        try encoders.forEach { id, encoder in
-            if let key = AdapterIdCodingKey(stringValue: id) {
-                let superEncoder = container.superEncoder(forKey: key)
-                try encoder.encode(to: superEncoder)
-            }
-        }
-    }
-    
-    init(from decoder: Decoder) throws {
-        self.encoders = [:]
-
-        let container = try decoder.container(keyedBy: AdapterIdCodingKey.self)
-        self.decoders = try container.allKeys.reduce([:]) { result, key in
+        let encodables: [String: [Encodable]] = tokens.reduce([:]) { result, token in
             var result = result
-            result[key.stringValue] = try container.superDecoder(forKey: key)
+            if let tokens = result[token.demandId] {
+                result[token.demandId] = tokens + [token.token]
+            } else {
+                result[token.demandId] = [token.token]
+            }
             return result
+        }
+        
+        var container = encoder.container(keyedBy: DemandIdCodingKey.self)
+        
+        for (demandId, encodable) in encodables {
+            guard let key = DemandIdCodingKey(stringValue: demandId) else { continue }
+            
+            let superEncoder = container.superEncoder(forKey: key)
+            
+            try encodable.forEach { value in
+                var nestedContainer = superEncoder.unkeyedContainer()
+                var nestedEncoder = nestedContainer.superEncoder()
+                
+                try value.encode(to: nestedEncoder)
+            }
         }
     }
 }

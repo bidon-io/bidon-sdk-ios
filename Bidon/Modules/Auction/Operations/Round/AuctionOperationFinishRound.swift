@@ -10,30 +10,7 @@ import Foundation
 
 final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
 where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
-    
-    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
-        private(set) var adRevenueObserver: AdRevenueObserver!
-        private(set) var comparator: AuctionBidComparator!
-        private(set) var timeout: AuctionOperationRoundTimeout<AdTypeContextType>!
-        
-        @discardableResult
-        func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self {
-            self.adRevenueObserver = adRevenueObserver
-            return self
-        }
-        
-        @discardableResult
-        func withTimeout(_ timeout: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self {
-            self.timeout = timeout
-            return self
-        }
-        
-        @discardableResult
-        func withComparator(_ comparator: AuctionBidComparator) -> Self {
-            self.comparator = comparator
-            return self
-        }
-    }
+    typealias BuilderType = BaseAuctionOperationBuilder<AdTypeContextType>
     
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
@@ -44,11 +21,11 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     private weak var timeout: AuctionOperationRoundTimeout<AdTypeContextType>?
     private(set) var bids: [BidType] = []
     
-    init(builder: Builder) {
+    init(builder: BuilderType) {
         self.observer = builder.observer
         self.adRevenueObserver = builder.adRevenueObserver
         self.comparator = builder.comparator
-        self.timeout = builder.timeout
+        self.timeout = builder.timeoutOperation
         self.roundConfiguration = builder.roundConfiguration
         self.auctionConfiguration = builder.auctionConfiguration
         

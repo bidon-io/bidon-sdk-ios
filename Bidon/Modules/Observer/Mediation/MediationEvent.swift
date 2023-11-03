@@ -244,7 +244,7 @@ struct BiddingDemandProviderBidResponseMediationEvent: MediationEvent {
 struct BiddingDemandProviderFillRequestMediationEvent: MediationEvent {
     var roundConfiguration: AuctionRoundConfiguration
     var adapter: Adapter
-    var bid: BidRequest.ResponseBody.BidModel
+    var bid: AnyPendingBid
     
     var description: String {
         return "bidding \(adapter) will fill \(roundConfiguration.roundId)"

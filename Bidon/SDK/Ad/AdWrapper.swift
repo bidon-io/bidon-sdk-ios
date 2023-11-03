@@ -49,7 +49,7 @@ final class AdContainer: NSObject, Ad {
             adType: bid.adType,
             price: bid.price,
             networkName: bid.ad.networkName,
-            bidType: AdBidType(demandType: bid.demandType),
+            bidType: AdBidType(demandType: bid.adUnit.demandType),
             dsp: bid.ad.dsp,
             roundId: bid.roundConfiguration.roundId,
             auctionId: bid.auctionConfiguration.auctionId,

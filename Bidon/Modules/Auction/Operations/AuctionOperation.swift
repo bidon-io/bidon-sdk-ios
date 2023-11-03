@@ -43,6 +43,15 @@ protocol AuctionOperationBuilder {
     
     @discardableResult
     func withObserver(_ observer: AnyMediationObserver) -> Self
+    
+    @discardableResult
+    func withComparator(_ comparator: AuctionBidComparator) -> Self
+    
+    @discardableResult
+    func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self
+    
+    @discardableResult
+    func withTimeoutOperation(_ operation: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self
 }
 
 
@@ -51,7 +60,10 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     private(set) var roundConfiguration: AuctionRoundConfiguration!
     private(set) var context: AdTypeContextType!
     private(set) var observer: AnyMediationObserver!
-    
+    private(set) var comparator: AuctionBidComparator!
+    private(set) var adRevenueObserver: AdRevenueObserver!
+    private(set) var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>!
+
     required init() {}
     
     @discardableResult
@@ -75,6 +87,24 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     @discardableResult
     func withObserver(_ observer: AnyMediationObserver) -> Self {
         self.observer = observer
+        return self
+    }
+    
+    @discardableResult
+    func withComparator(_ comparator: AuctionBidComparator) -> Self {
+        self.comparator = comparator
+        return self
+    }
+    
+    @discardableResult
+    func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self {
+        self.adRevenueObserver = adRevenueObserver
+        return self
+    }
+    
+    @discardableResult
+    func withTimeoutOperation(_ operation: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self {
+        self.timeoutOperation = operation
         return self
     }
 }

@@ -23,7 +23,7 @@ struct FullscreenImpression: Impression {
     var auctionConfiguration: AuctionConfiguration
 
     init<T: Bid>(bid: T) {
-        self.demandType = bid.demandType
+        self.demandType = bid.adUnit.demandType
         self.price = bid.price
         self.adType = bid.adType
         self.ad = bid.ad

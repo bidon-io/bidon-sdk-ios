@@ -37,7 +37,7 @@ struct RoundObservation {
     }
     
     private var observations: [BidObservation] {
-        return demand.observations + bidding.observations
+        return demand.observations // + bidding.observations
     }
     
     mutating func finishAuctionObservation(_ winner: AnyBid?) {

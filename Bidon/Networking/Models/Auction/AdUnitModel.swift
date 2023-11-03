@@ -35,10 +35,11 @@ struct AdUnitModel: Decodable, AdUnit {
         pricefloor = try container.decode(Price.self, forKey: .pricefloor)
         extras = try container.superDecoder(forKey: .extras)
     }
-}
-
-
-extension AdUnitModel: Equatable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uid)
+    }
+    
     static func == (lhs: AdUnitModel, rhs: AdUnitModel) -> Bool {
         return lhs.uid == rhs.uid
     }

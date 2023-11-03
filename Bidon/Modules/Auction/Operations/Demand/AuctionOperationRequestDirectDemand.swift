@@ -11,30 +11,7 @@ import Foundation
 final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
-    
-    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
-        private(set) var adapters: [AdapterType]!
-        private(set) var demands: [String]!
-        private(set) var adUnitProvider: AdUnitProvider!
-        
-        @discardableResult
-        func withAdapters(_ adapters: [AdapterType]) -> Self {
-            self.adapters = adapters
-            return self
-        }
-        
-        @discardableResult
-        func withDemands(_ demands: [String]) -> Self {
-            self.demands = demands
-            return self
-        }
-        
-        @discardableResult
-        func withAdUnitProvider(_ adUnitProvider: AdUnitProvider) -> Self {
-            self.adUnitProvider = adUnitProvider
-            return self
-        }
-    }
+    typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     
     let observer: AnyMediationObserver
     let adapters: [AdapterType]
@@ -46,7 +23,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     
     private(set) var bids: [BidType] = []
     
-    init(builder: Builder) {
+    init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.demands = builder.demands
         self.observer = builder.observer

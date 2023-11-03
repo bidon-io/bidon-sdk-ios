@@ -19,7 +19,7 @@ protocol BidRequestBuilder: AdTypeContextRequestBuilder {
     var adapters: AdaptersInfo { get }
 
     @discardableResult
-    func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self
+    func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self
     
     @discardableResult
     func withBidfloor(_ bidfloor: Price) -> Self
@@ -42,7 +42,7 @@ protocol BidRequestBuilder: AdTypeContextRequestBuilder {
 
 class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequestBuilder {
     private(set) var bidfloor: Price = .unknown
-    private(set) var demands: CodableExtras!
+    private(set) var demands: EncodableBiddingDemandTokens!
     private(set) var auctionId: String!
     private(set) var auctionConfigurationUid: String!
     private(set) var roundId: String!
@@ -56,8 +56,8 @@ class BaseBidRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, BidRequ
 
     var imp: BidRequestImp { fatalError("BaseBidRequestBuilder doesn't provide imp") }
     
-    func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
-        self.demands = CodableExtras(encoders: encoders)
+    func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self {
+        self.demands = EncodableBiddingDemandTokens(tokens: tokens)
         return self
     }
     

@@ -26,7 +26,7 @@ struct BidRequest: Request {
             var banner: BannerAdTypeContextModel?
             var interstitial: InterstitialAdTypeContextModel?
             var rewarded: RewardedAdTypeContextModel?
-            var demands: CodableExtras
+            var demands: EncodableBiddingDemandTokens
         }
         
         var device: DeviceModel
@@ -43,15 +43,36 @@ struct BidRequest: Request {
     }
     
     struct ResponseBody: Decodable, Tokenized {
-        struct BidModel: Decodable, Equatable {
+        struct BidModel: Decodable, PendingBid {
             enum CodingKeys: String, CodingKey {
                 case id
                 case impressionId = "impid"
                 case winNoticeUrl = "nurl"
                 case billingNoticeUrl = "burl"
                 case lossNoticeUrl = "lurl"
+                case payload = "ext"
+                case adUnit = "ad_unit"
                 case price
-                case demands
+            }
+            
+            var id: String
+            var impressionId: String
+            var winNoticeUrl: String?
+            var billingNoticeUrl: String?
+            var lossNoticeUrl: String?
+            var adUnit: AdUnitModel
+            var price: Price
+            var payload: Decoder
+            
+            init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                id = try container.decode(String.self, forKey: .id)
+                impressionId = try container.decode(String.self, forKey: .impressionId)
+                winNoticeUrl = try container.decodeIfPresent(String.self, forKey: .winNoticeUrl)
+                lossNoticeUrl = try container.decodeIfPresent(String.self, forKey: .lossNoticeUrl)
+                adUnit = try container.decode(AdUnitModel.self, forKey: .adUnit)
+                price = try container.decode(Price.self, forKey: .price)
+                payload = try container.superDecoder(forKey: .payload)
             }
             
             static func == (
@@ -61,13 +82,9 @@ struct BidRequest: Request {
                 return lhs.id == rhs.id
             }
             
-            var id: String
-            var impressionId: String
-            var winNoticeUrl: String?
-            var billingNoticeUrl: String?
-            var lossNoticeUrl: String?
-            var price: Price
-            var demands: CodableExtras
+            func hash(into hasher: inout Hasher) {
+                hasher.combine(id)
+            }            
         }
         
         var token: String?

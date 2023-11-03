@@ -14,7 +14,7 @@ enum DemandType: String, Codable {
 }
 
 
-protocol AdUnit {
+protocol AdUnit: Hashable {
     associatedtype ExtrasType
                                     
     var uid: String { get }

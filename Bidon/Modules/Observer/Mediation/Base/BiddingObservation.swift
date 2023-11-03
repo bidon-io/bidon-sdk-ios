@@ -20,24 +20,24 @@ struct BiddingObservation {
     
     mutating func didRequestBidSuccess(_ bids: [BidRequest.ResponseBody.BidModel]) {
         bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-        observations = bids.compactMap { bid in
-            guard let demandId = bid.demands.decoders.first?.key else { return nil }
-            return BidObservation(
-                id: bid.id,
-                demandId: demandId,
-                demandType: .bidding,
-                eCPM: bid.price
-            )
-        }
+//        observations = bids.compactMap { bid in
+//            guard let demandId = bid.demands.decoders.first?.key else { return nil }
+//            return BidObservation(
+//                id: bid.id,
+//                demandId: demandId,
+//                demandType: .bidding,
+//                eCPM: bid.price
+//            )
+//        }
     }
     
     mutating func didRequestBidFail(_ error: MediationError) {
         bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
     }
     
-    mutating func willFillBid(_ adapter: Adapter, bid: BidRequest.ResponseBody.BidModel) {
+    mutating func willFillBid(_ adapter: Adapter, bid: AnyPendingBid) {
         observations = observations.map { observation in
-            guard observation.id == bid.id else { return observation }
+            guard observation.id == bid.adUnit.uid else { return observation }
             var observation = observation
             observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
             return observation

@@ -10,17 +10,7 @@ import Foundation
 
 final class AuctionOperationStartRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
 where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
-    typealias BuilderType = Builder
-    
-    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
-        private(set) var comparator: AuctionBidComparator!
-        
-        @discardableResult
-        func withComparator(_ comparator: AuctionBidComparator) -> Self {
-            self.comparator = comparator
-            return self
-        }
-    }
+    typealias BuilderType = BaseAuctionOperationBuilder<AdTypeContextType>
     
     var pricefloor: Price {
         let initial = deps(AuctionOperationStart<AdTypeContextType>.self)
@@ -41,7 +31,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     
-    init(builder: Builder) {
+    init(builder: BuilderType) {
         observer = builder.observer
         comparator = builder.comparator
         roundConfiguration = builder.roundConfiguration

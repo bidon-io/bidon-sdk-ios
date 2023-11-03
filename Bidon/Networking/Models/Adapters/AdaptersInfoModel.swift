@@ -38,10 +38,10 @@ struct AdaptersInfo: Encodable {
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
+        var container = encoder.container(keyedBy: DemandIdCodingKey.self)
         
         try adapters.forEach { adapter in
-            let key = AdapterIdCodingKey(adapter)
+            let key = DemandIdCodingKey(adapter)
             let entity = Entity(adapter: adapter)
             try container.encode(entity, forKey: key)
         }

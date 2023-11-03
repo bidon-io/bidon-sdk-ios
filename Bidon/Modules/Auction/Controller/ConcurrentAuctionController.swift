@@ -52,6 +52,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // TODO: Better error handling
         // Create DAG
         var auction = Auction()
+        var shared: [AnyAuctionOperation] = []
         
         // Instantiate auction with start operation
         let startAuctionOperation = AuctionOperationStart<AdTypeContextType> { builder in
@@ -80,7 +81,8 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // Use array of operation for backracking. Any start of new round should be children of
         // every previous round finish and auction start
         // to have actual pricefloor
-        var shared: [AnyAuctionOperation] = [startAuctionOperation]
+        shared.append(startAuctionOperation)
+        
         rounds.enumerated().forEach { round in
             let roundConfiguration = AuctionRoundConfiguration(
                 round: round.element,
@@ -112,7 +114,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             // Instantiate round finisj opearation and add it to DAG
             let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType> { builder in
                 builder.withComparator(comparator)
-                builder.withTimeout(timeoutOperation)
+                builder.withTimeoutOperation(timeoutOperation)
                 builder.withObserver(mediationObserver)
                 builder.withAdRevenueObserver(adRevenueObserver)
                 builder.withAuctionConfiguration(auctionConfiguration)
@@ -163,7 +165,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                 builder.withRoundConfiguration(roundConfiguration)
                 builder.withAuctionConfiguration(auctionConfiguration)
             }
-            
             // Apply timeout restrictions to bidding
             timeoutOperation.add(collectBiddingContextOperation)
             
@@ -171,6 +172,53 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             auction.addEdge(
                 parent: startRoundOperation,
                 child: collectBiddingContextOperation
+            )
+            
+            let performBidRequestOperation = AuctionOperationPerformBidRequest<AdTypeContextType> { builder in
+                builder.withDemands(round.element.bidding)
+                builder.withAdapters(adapters)
+                builder.withAdUnitProvider(adUnitProvider)
+                builder.withContext(context)
+                builder.withObserver(mediationObserver)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withAuctionConfiguration(auctionConfiguration)
+            }
+            
+            // Apply timeout restrictions to bidding
+            timeoutOperation.add(performBidRequestOperation)
+            
+            auction.addNode(performBidRequestOperation)
+            auction.addEdge(
+                parent: startRoundOperation,
+                child: performBidRequestOperation
+            )
+            auction.addEdge(
+                parent: collectBiddingContextOperation,
+                child: performBidRequestOperation
+            )
+            
+            let requestBiddingDemandOperation = AuctionOperationRequestBiddingDemand<AdTypeContextType> { builder in
+                builder.withDemands(round.element.bidding)
+                builder.withAdapters(adapters)
+                builder.withAdUnitProvider(adUnitProvider)
+                builder.withContext(context)
+                builder.withObserver(mediationObserver)
+                builder.withRoundConfiguration(roundConfiguration)
+                builder.withAuctionConfiguration(auctionConfiguration)
+            }
+            
+            // Apply timeout restrictions to bidding
+            timeoutOperation.add(requestBiddingDemandOperation)
+            
+            auction.addNode(requestBiddingDemandOperation)
+            auction.addEdge(
+                parent: performBidRequestOperation,
+                child: requestBiddingDemandOperation
+            )
+            
+            auction.addEdge(
+                parent: performBidRequestOperation,
+                child: finishRoundOperation
             )
             
             shared.append(finishRoundOperation)
