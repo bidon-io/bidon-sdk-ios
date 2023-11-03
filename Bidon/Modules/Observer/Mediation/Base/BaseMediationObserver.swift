@@ -76,31 +76,6 @@ final class BaseMediationObserver: MediationObserver {
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in
                 observation.demand.didLoadSuccess(_event.adapter, bid: _event.bid)
             }
-            // Programmatic demand level
-        case let _event as ProgrammaticDemandProviderRequestBidMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.willRequestBid(_event.adapter)
-            }
-        case let _event as ProgrammaticDemandProviderBidErrorMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.didRequestBidFail(_event.adapter, error: _event.error)
-            }
-        case let _event as ProgrammaticDemandProviderDidReceiveBidMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.didReceiveBid(_event.adapter, bid: _event.bid)
-            }
-        case let _event as ProgrammaticDemandProviderRequestFillMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.willFillBid(_event.adapter, bid: _event.bid)
-            }
-        case let _event as ProgrammaticDemandProviderDidFailToFillBidMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.didFillBidFail(_event.adapter, error: _event.error)
-            }
-        case let _event as ProgrammaticDemandProviderDidFillBidMediationEvent:
-            $rounds.mutate(_event.roundConfiguration.roundId) { observation in
-                observation.demand.didFillBidSuccess(_event.adapter, bid: _event.bid)
-            }
             // Bidding demand level
         case let _event as BiddingDemandProviderRequestBidMediationEvent:
             $rounds.mutate(_event.roundConfiguration.roundId) { observation in

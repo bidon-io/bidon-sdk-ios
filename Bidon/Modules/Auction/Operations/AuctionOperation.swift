@@ -21,7 +21,7 @@ protocol AuctionOperation: Operation {
 
 
 extension AuctionOperation {
-    init(build: (BuilderType) -> ()) {
+    init(_ build: (BuilderType) -> ()) {
         let builder = BuilderType()
         build(builder)
         
@@ -39,6 +39,9 @@ protocol AuctionOperationBuilder {
     func withAuctionConfiguration(_ auctionConfiguration: AuctionConfiguration) -> Self
     
     @discardableResult
+    func withRoundConfiguration(_ roundConfiguration: AuctionRoundConfiguration) -> Self
+    
+    @discardableResult
     func withContext(_ context: AdTypeContextType) -> Self
     
     @discardableResult
@@ -51,19 +54,23 @@ protocol AuctionOperationBuilder {
     func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self
     
     @discardableResult
-    func withTimeoutOperation(_ operation: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self
+    func withAdUnitProvider(_ provider: AdUnitProvider) -> Self
+    
+    @discardableResult
+    func withAdapters(_ adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]) -> Self
 }
 
 
 class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOperationBuilder {
     private(set) var auctionConfiguration: AuctionConfiguration!
     private(set) var roundConfiguration: AuctionRoundConfiguration!
+    private(set) var adUnitProvider: AdUnitProvider!
     private(set) var context: AdTypeContextType!
     private(set) var observer: AnyMediationObserver!
     private(set) var comparator: AuctionBidComparator!
     private(set) var adRevenueObserver: AdRevenueObserver!
-    private(set) var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>!
-
+    private(set) var adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]!
+    
     required init() {}
     
     @discardableResult
@@ -73,8 +80,20 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     }
     
     @discardableResult
+    func withAdUnitProvider(_ provider: AdUnitProvider) -> Self {
+        self.adUnitProvider = adUnitProvider
+        return self
+    }
+    
+    @discardableResult
     func withRoundConfiguration(_ roundConfiguration: AuctionRoundConfiguration) -> Self {
         self.roundConfiguration = roundConfiguration
+        return self
+    }
+    
+    @discardableResult
+    func withAdapters(_ adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]) -> Self {
+        self.adapters = adapters
         return self
     }
     
@@ -99,12 +118,6 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     @discardableResult
     func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self {
         self.adRevenueObserver = adRevenueObserver
-        return self
-    }
-    
-    @discardableResult
-    func withTimeoutOperation(_ operation: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self {
-        self.timeoutOperation = operation
         return self
     }
 }

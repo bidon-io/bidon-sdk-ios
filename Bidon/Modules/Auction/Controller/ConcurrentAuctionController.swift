@@ -55,19 +55,11 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         var shared: [AnyAuctionOperation] = []
         
         // Instantiate auction with start operation
-        let startAuctionOperation = AuctionOperationStart<AdTypeContextType> { builder in
-            builder.withPricefloor(pricefloor)
-            builder.withObserver(mediationObserver)
-            builder.withAuctionConfiguration(auctionConfiguration)
-        }
-        
+        let startAuctionOperation: AuctionOperationStart<AdTypeContextType> = operation()
         auction.addNode(startAuctionOperation)
         
         // Finish auction
-        let finishAuctionOperation = AuctionOperationFinish<AdTypeContextType, BidType> { builder in
-            builder.withComparator(comparator)
-            builder.withObserver(mediationObserver)
-            builder.withAuctionConfiguration(auctionConfiguration)
+        let finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType> = operation { builder in
             builder.withCompletion(completion)
         }
         
@@ -90,19 +82,15 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             )
             
             // Instantiate round start operation and add it to DAG
-            let startRoundOperation = AuctionOperationStartRound<AdTypeContextType, BidType> { builder in
-                builder.withComparator(comparator)
-                builder.withAuctionConfiguration(auctionConfiguration)
+            let startRoundOperation: AuctionOperationStartRound<AdTypeContextType, BidType> = operation { builder in
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withObserver(mediationObserver)
             }
+    
             auction.addNode(startRoundOperation)
             
             // Instantiate timeout operation
-            let timeoutOperation = AuctionOperationRoundTimeout<AdTypeContextType> { builder in
-                builder.withObserver(mediationObserver)
+            let timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType> = operation { builder in
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withAuctionConfiguration(auctionConfiguration)
             }
             
             auction.addNode(timeoutOperation)
@@ -112,13 +100,8 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             )
             
             // Instantiate round finisj opearation and add it to DAG
-            let finishRoundOperation = AuctionOperationFinishRound<AdTypeContextType, BidType> { builder in
-                builder.withComparator(comparator)
-                builder.withTimeoutOperation(timeoutOperation)
-                builder.withObserver(mediationObserver)
-                builder.withAdRevenueObserver(adRevenueObserver)
-                builder.withAuctionConfiguration(auctionConfiguration)
-                builder.withRoundConfiguration(roundConfiguration)
+            let finishRoundOperation: AuctionOperationFinishRound<AdTypeContextType, BidType> = operation { builder in
+                builder.withRoundTimeoutOperation(timeoutOperation)
             }
             
             auction.addNode(finishRoundOperation)
@@ -132,14 +115,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             }
             
             // Create request operation for all demands
-            let requestDirectDemandOperation = AuctionOperationRequestDirectDemand<AdTypeContextType> { builder in
+            let requestDirectDemandOperation: AuctionOperationRequestDirectDemand<AdTypeContextType> = operation { builder in
                 builder.withDemands(round.element.demands)
-                builder.withAdapters(adapters)
-                builder.withAdUnitProvider(adUnitProvider)
-                builder.withContext(context)
-                builder.withObserver(mediationObserver)
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withAuctionConfiguration(auctionConfiguration)
             }
             // Apply timeout restrictions to demand request
             timeoutOperation.add(requestDirectDemandOperation)
@@ -156,14 +134,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             )
             
             // Add bidding operation
-            let collectBiddingContextOperation = AuctionOperationCollectBiddingContext<AdTypeContextType> { builder in
+            let collectBiddingContextOperation: AuctionOperationCollectBiddingContext<AdTypeContextType> = operation { builder in
                 builder.withDemands(round.element.bidding)
-                builder.withAdapters(adapters)
-                builder.withAdUnitProvider(adUnitProvider)
-                builder.withContext(context)
-                builder.withObserver(mediationObserver)
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withAuctionConfiguration(auctionConfiguration)
             }
             // Apply timeout restrictions to bidding
             timeoutOperation.add(collectBiddingContextOperation)
@@ -174,14 +147,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                 child: collectBiddingContextOperation
             )
             
-            let performBidRequestOperation = AuctionOperationPerformBidRequest<AdTypeContextType> { builder in
+            let performBidRequestOperation: AuctionOperationPerformBidRequest<AdTypeContextType> = operation { builder in
                 builder.withDemands(round.element.bidding)
-                builder.withAdapters(adapters)
-                builder.withAdUnitProvider(adUnitProvider)
-                builder.withContext(context)
-                builder.withObserver(mediationObserver)
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withAuctionConfiguration(auctionConfiguration)
             }
             
             // Apply timeout restrictions to bidding
@@ -197,14 +165,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                 child: performBidRequestOperation
             )
             
-            let requestBiddingDemandOperation = AuctionOperationRequestBiddingDemand<AdTypeContextType> { builder in
+            let requestBiddingDemandOperation: AuctionOperationRequestBiddingDemand<AdTypeContextType> = operation { builder in
                 builder.withDemands(round.element.bidding)
-                builder.withAdapters(adapters)
-                builder.withAdUnitProvider(adUnitProvider)
-                builder.withContext(context)
-                builder.withObserver(mediationObserver)
                 builder.withRoundConfiguration(roundConfiguration)
-                builder.withAuctionConfiguration(auctionConfiguration)
             }
             
             // Apply timeout restrictions to bidding
@@ -235,6 +198,21 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // We can proceed all demand source operations per round at once
         queue.maxConcurrentOperationCount = auction.graph.width
         queue.addOperations(auction.operations(), waitUntilFinished: false)
+    }
+    
+    private func operation<T: AuctionOperation>(build: ((T.BuilderType) -> ())? = nil) -> T
+    where T.BuilderType.AdTypeContextType == AdTypeContextType {
+        return T { builder in
+            builder.withContext(context)
+            builder.withAdapters(adapters)
+            builder.withAuctionConfiguration(auctionConfiguration)
+            builder.withComparator(comparator)
+            builder.withAdUnitProvider(adUnitProvider)
+            builder.withObserver(mediationObserver)
+            builder.withAdRevenueObserver(adRevenueObserver)
+            
+            build?(builder)
+        }
     }
     
     func cancel() {

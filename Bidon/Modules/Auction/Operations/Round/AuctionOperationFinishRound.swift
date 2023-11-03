@@ -10,7 +10,16 @@ import Foundation
 
 final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
 where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
-    typealias BuilderType = BaseAuctionOperationBuilder<AdTypeContextType>
+    
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var roundTimeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>!
+        
+        @discardableResult
+        func withRoundTimeoutOperation(_ operation: AuctionOperationRoundTimeout<AdTypeContextType>) -> Self {
+            self.roundTimeoutOperation = operation
+            return self
+        }
+    }
     
     let observer: AnyMediationObserver
     let adRevenueObserver: AdRevenueObserver
@@ -21,11 +30,11 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     private weak var timeout: AuctionOperationRoundTimeout<AdTypeContextType>?
     private(set) var bids: [BidType] = []
     
-    init(builder: BuilderType) {
+    init(builder: Builder) {
         self.observer = builder.observer
         self.adRevenueObserver = builder.adRevenueObserver
         self.comparator = builder.comparator
-        self.timeout = builder.timeoutOperation
+        self.timeout = builder.roundTimeoutOperation
         self.roundConfiguration = builder.roundConfiguration
         self.auctionConfiguration = builder.auctionConfiguration
         
@@ -37,15 +46,15 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         timeout?.invalidate()
         
-//        bids = (
-//            deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
-//                .red { $0.bids as? BidType } +
-//            deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
-//                .compactMap { $0.bids as? BidType }
-//        )
-//        .sorted { comparator.compare($0, $1) }
-//        
-//        bids.forEach(adRevenueObserver.observe)
+        bids = (
+            deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
+                .compactMap { $0.bids as? BidType } +
+            deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
+                .compactMap { $0.bids as? BidType }
+        )
+        .sorted { comparator.compare($0, $1) }
+        
+        bids.forEach(adRevenueObserver.observe)
         
         observer.log(
             RoundFinishMediationEvent(
