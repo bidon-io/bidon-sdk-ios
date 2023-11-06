@@ -82,11 +82,18 @@ struct AuctionRoundConfiguration {
 }
 
 
-extension AuctionRoundConfiguration {
+extension AuctionRoundConfiguration: Equatable {
     init(round: AuctionRound, idx: Int) {
         self.roundId = round.id
         self.timeout = round.timeout
         self.roundIndex = idx
+    }
+    
+    static func == (
+        lhs: AuctionRoundConfiguration,
+        rhs: AuctionRoundConfiguration
+    ) -> Bool {
+        return lhs.roundId == rhs.roundId
     }
 }
 

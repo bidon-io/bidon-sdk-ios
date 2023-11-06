@@ -55,7 +55,7 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     
     func notify(
         ad: AdObject,
-        event: AuctionEvent
+        event: DemandProviderEvent
     ) {}
 }
 

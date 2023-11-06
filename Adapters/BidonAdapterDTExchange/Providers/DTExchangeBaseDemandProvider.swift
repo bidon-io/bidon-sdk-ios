@@ -80,5 +80,5 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
     }
     
-    func notify(ad: IAAdSpot, event: AuctionEvent) {}
+    func notify(ad: IAAdSpot, event: DemandProviderEvent) {}
 }

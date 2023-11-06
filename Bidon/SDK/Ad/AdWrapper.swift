@@ -43,9 +43,9 @@ final class AdContainer: NSObject, Ad {
         super.init()
     }
     
-    convenience init<T: Bid>(bid: T) {
+    convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.init(
-            id: bid.ad.id,
+            id: bid.adUnit.uid,
             adType: bid.adType,
             price: bid.price,
             networkName: bid.ad.networkName,

@@ -13,16 +13,18 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let adapters: [AdapterType]
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     
-    private var pendingBids: [AnyPendingBid] {
+    private var serverBids: [ServerBidModel] {
         deps(AuctionOperationPerformBidRequest<AdTypeContextType>.self)
             .reduce([]) { $0 + $1.bids }
     }
+    
+    private var activeServerBids = Set<ServerBidModel>()
     
     private(set) var bids: [BidType] = []
     
@@ -40,16 +42,16 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         super.main()
         
         let group = DispatchGroup()
-        for pendingBid in pendingBids {
+        for serverBid in serverBids {
             guard
-                let adapter = adapters.first(where: { $0.demandId == pendingBid.adUnit.demandId }),
+                let adapter = adapters.first(where: { $0.demandId == serverBid.adUnit.demandId }),
                 let provider = adapter.provider as? any GenericBiddingDemandProvider
             else {
-                let event = DemandProviderNotFoundMediationEvent(
-                    roundConfiguration: roundConfiguration,
-                    demandId: pendingBid.adUnit.demandId
+                let event = BiddingDemandLoadingErrorAucitonEvent(
+                    configuration: roundConfiguration,
+                    bid: serverBid,
+                    error: .unknownAdapter
                 )
-                
                 observer.log(event)
                 
                 continue
@@ -57,39 +59,40 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             
             group.enter()
             
+            let event = BiddingDemandWillLoadAuctionEvent(
+                configuration: roundConfiguration,
+                bid: serverBid
+            )
+            observer.log(event)
+            
             provider.load(
-                payloadDecoder: pendingBid.payload,
-                adUnitExtrasDecoder: pendingBid.adUnit.extras
+                payloadDecoder: serverBid.payload,
+                adUnitExtrasDecoder: serverBid.adUnit.extras
             ) { [weak self] result in
                 guard let self = self else { return }
                 defer { group.leave() }
                 
                 switch result {
                 case .failure(let error):
-                    let event = DirectDemandProividerDidFailToLoadMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: adapter,
+                    let event = BiddingDemandLoadingErrorAucitonEvent(
+                        configuration: self.roundConfiguration,
+                        bid: serverBid,
                         error: error
                     )
                     self.observer.log(event)
                 case .success(let ad):
                     let bid = BidType(
-                        id: pendingBid.id,
+                        id: serverBid.id,
                         adType: self.context.adType,
-                        adUnit: pendingBid.adUnit,
-                        price: pendingBid.price,
+                        adUnit: serverBid.adUnit,
+                        price: serverBid.price,
                         ad: ad,
                         provider: adapter.provider,
                         roundConfiguration: self.roundConfiguration,
                         auctionConfiguration: self.auctionConfiguration
                     )
                     
-                    let event = BiddingDemandProviderDidFillMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: adapter,
-                        bid: bid
-                    )
-                    
+                    let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
                     self.observer.log(event)
                     
                     self.bids.append(bid)
@@ -107,6 +110,16 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
 
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
-        
+        guard isExecuting else { return }
+
+        activeServerBids.map { bid in
+            BiddingDemandErrorAuctionEvent(
+                configuration: roundConfiguration,
+                demandId: bid.adUnit.demandId,
+                error: .timeoutReached
+            )
+        }.forEach(observer.log)
+                
+        finish()
     }
 }

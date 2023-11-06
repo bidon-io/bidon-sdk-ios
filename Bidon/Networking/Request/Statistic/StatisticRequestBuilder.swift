@@ -9,19 +9,13 @@ import Foundation
 
 
 final class StatisticRequestBuilder: BaseRequestBuilder {
-    private(set) var stats: MediationAttemptReportCodableModel!
+    private(set) var stats: EncodableAuctionReportModel!
     
     var adType: AdType!
     
     @discardableResult
-    func withMediationReport<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) -> Self {
-        self.stats = MediationAttemptReportCodableModel(
-            report,
-            auctionConfiguration: auctionConfiguration
-        )
+    func withMediationReport<T: AuctionReport>(_ report: T) -> Self {
+        self.stats = EncodableAuctionReportModel(report)
         return self
     }
     

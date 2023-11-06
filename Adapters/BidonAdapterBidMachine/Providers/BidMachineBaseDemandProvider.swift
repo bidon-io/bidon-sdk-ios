@@ -82,7 +82,7 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     func didDismissScreen(_ ad: BidMachineAdProtocol) {}
     func didTrackInteraction(_ ad: BidMachineAdProtocol) {}
     
-    func notify(ad: AdType, event: AuctionEvent) {
+    func notify(ad: AdType, event: DemandProviderEvent) {
         switch event {
         case .win:
             BidMachineSdk.shared.notifyMediationWin(ad.ad)

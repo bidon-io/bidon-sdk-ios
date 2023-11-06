@@ -9,7 +9,7 @@ import Foundation
 
 
 final class AuctionOperationFinishRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
-where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
+where BidType.ProviderType == AdTypeContextType.DemandProviderType {
     
     final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
         private(set) var roundTimeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>!
@@ -21,7 +21,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         }
     }
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let adRevenueObserver: AdRevenueObserver
     let comparator: AuctionBidComparator
     let roundConfiguration: AuctionRoundConfiguration
@@ -57,8 +57,8 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         bids.forEach(adRevenueObserver.observe)
         
         observer.log(
-            RoundFinishMediationEvent(
-                roundConfiguration: roundConfiguration,
+            FinishRoundAuctionEvent(
+                configuration: roundConfiguration,
                 bid: bids.first
             )
         )

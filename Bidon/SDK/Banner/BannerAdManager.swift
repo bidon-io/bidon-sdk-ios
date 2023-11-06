@@ -92,9 +92,9 @@ final class BannerAdManager: NSObject {
                 state = .ready(impression: impression)
             }
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-                  
+            
             let context = BannerAdTypeContext(viewContext: viewContext)
-
+            
             let request = context.notificationRequest { builder in
                 builder.withRoute(.win)
                 builder.withEnvironmentRepository(sdk.environmentRepository)
@@ -102,7 +102,7 @@ final class BannerAdManager: NSObject {
                 builder.withExt(extras)
                 builder.withImpression(impression)
             }
-
+            
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent win with result: \(result)")
             }
@@ -130,7 +130,7 @@ final class BannerAdManager: NSObject {
             guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-                 
+            
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in
                 builder.withRoute(.loss)
@@ -140,7 +140,7 @@ final class BannerAdManager: NSObject {
                 builder.withImpression(impression)
                 builder.withExternalWinner(demandId: demandId, price: eCPM)
             }
-
+            
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent loss with result: \(result)")
             }
@@ -195,10 +195,10 @@ final class BannerAdManager: NSObject {
     ) {
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
-        let auctionConfiguration = AuctionConfiguration(auction: auctionInfo)
+        let configuration = AuctionConfiguration(auction: auctionInfo)
         
-        let observer = BaseMediationObserver(
-            auctionId: auctionInfo.auctionId,
+        let observer = BaseAuctionObserver(
+            configuration: configuration,
             adType: .banner
         )
         
@@ -212,19 +212,16 @@ final class BannerAdManager: NSObject {
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withContext(context)
             builder.withViewContext(viewContext)
-            builder.withMediationObserver(observer)
+            builder.withAuctionObserver(observer)
             builder.withAdRevenueObserver(self.adRevenueObserver)
-            builder.withAuctionConfiguration(auctionConfiguration)
+            builder.withAuctionConfiguration(configuration)
         }
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
-            self.sendMediationAttemptReport(
-                observer.report,
-                auctionConfiguration: auctionConfiguration
-            )
-
+            self.sendMediationAttemptReport(observer.report)
+            
             switch result {
             case .success(let bid):
                 let impression = AdViewImpression(
@@ -244,16 +241,13 @@ final class BannerAdManager: NSObject {
         state = .auction(controller: auction)
     }
     
-    private func sendMediationAttemptReport<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) {
+    private func sendMediationAttemptReport<T: AuctionReport>(_ report: T) {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAdType(.banner)
-            builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
+            builder.withMediationReport(report)
         }
         
         networkManager.perform(request: request) { result in

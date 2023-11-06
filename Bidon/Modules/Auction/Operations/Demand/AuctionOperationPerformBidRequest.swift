@@ -13,7 +13,7 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let adapters: [AdapterType]
     let demands: [String]
     let adUnitProvider: AdUnitProvider
@@ -42,7 +42,7 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
         return adapters.filter { demandIds.contains($0.demandId) }
     }
     
-    private(set) var bids: [any PendingBid] = []
+    private(set) var bids: [ServerBidModel] = []
 
     
     init(builder: BuilderType) {
@@ -60,11 +60,10 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
     override func main() {
         super.main()
         
-        let event = BiddingDemandProviderRequestBidMediationEvent(
-            roundConfiguration: roundConfiguration,
+        let event = BiddingDemandBidRequestAuctionEvent(
+            configuration: roundConfiguration,
             adapters: bidders
         )
-        
         observer.log(event)
         
         // Make bid request
@@ -85,23 +84,21 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
             
             switch result {
             case .success(let response):
-                self.observer.log(
-                    BiddingDemandProviderBidResponseMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapters: self.bidders,
-                        bids: response.bids
-                    )
+                let event = BiddingDemandBidResponseAuctionEvent(
+                    configuration: self.roundConfiguration,
+                    bids: response.bids
                 )
-                
+                self.observer.log(event)
+    
                 self.bids = response.bids
             case .failure:
-                self.observer.log(
-                    BiddingDemandProviderBidErrorMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapters: self.bidders,
+                self.bidders.map { bidder in
+                    BiddingDemandErrorAuctionEvent(
+                        configuration: self.roundConfiguration,
+                        demandId: bidder.demandId,
                         error: .noBid
                     )
-                )
+                }.forEach(observer.log)
             }
         }
     }
@@ -110,6 +107,16 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
 
 extension AuctionOperationPerformBidRequest: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
+        guard isExecuting else { return }
+
+        bidders.map { adapter in
+            BiddingDemandErrorAuctionEvent(
+                configuration: roundConfiguration,
+                demandId: adapter.demandId,
+                error: .timeoutReached
+            )
+        }.forEach(observer.log)
+                
         finish()
     }
 }

@@ -12,7 +12,7 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let adapters: [AdapterType]
     let demands: [String]
     let adUnitProvider: AdUnitProvider
@@ -21,7 +21,8 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
     let context: AdTypeContextType
     
     private(set) var tokens: [BiddingDemandToken] = []
-    
+    private var activeAdUnits = Set<AdUnitModel>()
+
     init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.demands = builder.demands
@@ -44,11 +45,11 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
                 let adapter = adapters.first(where: { $0.demandId == demandId }),
                 let provider = adapter.provider as? any GenericBiddingDemandProvider
             else {
-                let event = DemandProviderNotFoundMediationEvent(
-                    roundConfiguration: roundConfiguration,
-                    demandId: demandId
+                let event = BiddingDemandErrorAuctionEvent(
+                    configuration: roundConfiguration,
+                    demandId: demandId,
+                    error: .unknownAdapter
                 )
-                
                 observer.log(event)
                 
                 continue
@@ -59,21 +60,27 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
             for adUnit in adUnits {
                 group.enter()
                 
+                activeAdUnits.insert(adUnit)
+                
+                let event = BiddingDemandWillCollectTokenAuctionEvent(
+                    configuration: roundConfiguration,
+                    adUnit: adUnit
+                )
+                observer.log(event)
+                
                 provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: adUnit.extras) { [weak self] result in
                     guard let self = self else { return }
                     defer { group.leave() }
-                    
+                    defer { self.activeAdUnits.remove(adUnit) }
+
                     switch result {
                     case .failure(let error):
-                        #warning("Error")
-//                        let event = DemandProviderCollectBiddingTokenEncoderFailedMediationEvent(
-//                            roundConfiguration: self.roundConfiguration,
-//                            demandId: demandId,
-//                            adUnit: adUnit,
-//                            error: error
-//                        )
-//
-//                        self.observer.log(event)
+                        let event = BiddingDemandTokenErrorAuctionEvent(
+                            configuration: self.roundConfiguration,
+                            adUnit: adUnit,
+                            error: error
+                        )
+                        self.observer.log(event)
                     case .success(let token):
                         let demandToken = BiddingDemandToken(
                             demandId: adapter.demandId,
@@ -81,6 +88,12 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
                         )
                         
                         self.tokens.append(demandToken)
+                        
+                        let event = BiddingDemandDidCollectTokenAuctionEvent(
+                            configuration: self.roundConfiguration,
+                            token: demandToken
+                        )
+                        self.observer.log(event)
                     }
                 }
             }
@@ -96,6 +109,18 @@ final class AuctionOperationCollectBiddingContext<AdTypeContextType: AdTypeConte
 
 extension AuctionOperationCollectBiddingContext: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
-        #warning("Timeout")
+        guard isExecuting else { return }
+
+        activeAdUnits.map { adUnit in
+            BiddingDemandTokenErrorAuctionEvent(
+                configuration: roundConfiguration,
+                adUnit: adUnit,
+                error: .timeoutReached
+            )
+        }.forEach(observer.log)
+        
+        activeAdUnits.removeAll()
+
+        finish()
     }
 }

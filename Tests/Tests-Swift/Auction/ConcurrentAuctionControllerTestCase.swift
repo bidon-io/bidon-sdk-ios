@@ -31,7 +31,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     var networkManagerMock: NetworkManagerMockProxy!
     
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
-    var mediationObserver: BaseMediationObserver!
+    var auctionObserver: BaseAuctionObserver!
     var auctionConfiguration: AuctionConfiguration!
     var adType: AdType!
     var pricefloor: Price!
@@ -56,7 +56,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         adaptersRepository = AdaptersRepository()
         adRevenueObserver = BaseAdRevenueObserver()
-        mediationObserver = BaseMediationObserver(
+        auctionObserver = BaseAuctionObserver(
             auctionId: auctionConfiguration.auctionId,
             adType: .interstitial
         )
@@ -69,7 +69,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         contextMock = nil
         adaptersRepository = nil
         adRevenueObserver = nil
-        mediationObserver = nil
+        auctionObserver = nil
         
         NetworkManagerInjectionKey.currentValue = PersistentNetworkManager.shared
     }
@@ -86,7 +86,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             builder.withRounds(rounds)
             builder.withContext(contextMock)
             builder.withElector(elector)
-            builder.withMediationObserver(mediationObserver)
+            builder.withAuctionObserver(auctionObserver)
             builder.withPricefloor(pricefloor)
             builder.withAdaptersRepository(adaptersRepository)
             builder.withAdRevenueObserver(adRevenueObserver)
@@ -155,7 +155,7 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
     
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertEqual(report.rounds.count, 1)

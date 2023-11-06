@@ -9,7 +9,7 @@ import Foundation
 
 
 final class AuctionOperationStartRound<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
-where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
+where BidType.ProviderType == AdTypeContextType.DemandProviderType {
     typealias BuilderType = BaseAuctionOperationBuilder<AdTypeContextType>
     
     var pricefloor: Price {
@@ -26,7 +26,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         return max(initial, latest)
     }
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let comparator: AuctionBidComparator
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
@@ -44,8 +44,8 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         super.main()
         
         observer.log(
-            RoundStartMediationEvent(
-                roundConfiguration: roundConfiguration,
+            StartRoundAuctionEvent(
+                configuration: roundConfiguration,
                 pricefloor: pricefloor
             )
         )

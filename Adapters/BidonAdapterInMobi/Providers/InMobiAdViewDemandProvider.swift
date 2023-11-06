@@ -63,7 +63,7 @@ final class InMobiAdViewDemandProvider: NSObject, DirectDemandProvider {
     
     func notify(
         ad: InMobiDemandAd<IMBanner>,
-        event: AuctionEvent
+        event: DemandProviderEvent
     ) {
         switch event {
         case .lose:

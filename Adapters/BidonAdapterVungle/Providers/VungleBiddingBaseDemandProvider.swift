@@ -83,7 +83,7 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     
     final func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
     
     open func adObject(placement: String) -> AdObject {

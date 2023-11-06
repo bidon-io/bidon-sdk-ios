@@ -41,7 +41,7 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     
     func notify(
         ad: DemandAdType,
-        event: AuctionEvent
+        event: DemandProviderEvent
     ) {
         switch event {
         case .lose:

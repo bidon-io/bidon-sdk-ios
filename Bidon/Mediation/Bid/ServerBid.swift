@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol PendingBid: Hashable {
+protocol ServerBid: Hashable {
     var id: String { get }
     var impressionId: String { get }
     var adUnit: AdUnitModel { get }
@@ -17,4 +17,4 @@ protocol PendingBid: Hashable {
 }
 
 
-typealias AnyPendingBid = any PendingBid
+typealias AnyServerBid = any ServerBid

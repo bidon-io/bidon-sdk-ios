@@ -52,7 +52,7 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Parame
         fill(data, response: response)
     }
     
-    final func notify(ad: Dispatcher, event: AuctionEvent) {}
+    final func notify(ad: Dispatcher, event: DemandProviderEvent) {}
     
     open func fill(
         _ data: DTBAdResponse,

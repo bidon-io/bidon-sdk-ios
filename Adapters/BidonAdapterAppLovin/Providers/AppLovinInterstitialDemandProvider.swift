@@ -51,7 +51,7 @@ extension AppLovinInterstitialDemandProvider: DirectDemandProvider {
         }
     }
     
-    func notify(ad: ALAd, event: AuctionEvent) {}
+    func notify(ad: ALAd, event: DemandProviderEvent) {}
 }
 
 

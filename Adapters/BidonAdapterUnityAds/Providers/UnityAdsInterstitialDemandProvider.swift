@@ -31,7 +31,7 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
         )
     }
     
-    func notify(ad: UADSPlacement, event: AuctionEvent) {}
+    func notify(ad: UADSPlacement, event: DemandProviderEvent) {}
 }
 
 

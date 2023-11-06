@@ -26,7 +26,7 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
     private var timer: Timer?
     
     let interval: TimeInterval
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     
@@ -42,9 +42,7 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
     }
     
     func invalidate() {
-        observer.log(
-            RoundInvalidateTimeoutMediationEvent(roundConfiguration: roundConfiguration)
-        )
+        observer.log(InvalidateTimeoutRoundAuctionEvent(configuration: roundConfiguration))
         
         timer?.invalidate()
         finish()
@@ -63,8 +61,8 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
         }
         
         observer.log(
-            RoundScheduleTimeoutMediationEvent(
-                roundConfiguration: roundConfiguration,
+            ScheduleTimeoutRoundAuctionEvent(
+                configuration: roundConfiguration,
                 interval: interval
             )
         )
@@ -75,9 +73,7 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
         ) { [weak self] _ in
             guard let self = self, self.isExecuting else { return }
             
-            self.observer.log(
-                RoundTimeoutReachedMediationEvent(roundConfiguration: self.roundConfiguration)
-            )
+            self.observer.log(ReachTimeoutRoundAuctionEvent(configuration: self.roundConfiguration))
             
             self.operations
                 .allObjects

@@ -9,7 +9,7 @@ import Foundation
 
 
 final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
-where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
+where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.DemandAdType: DemandAd {
     
     typealias BuilderType = Builder
     
@@ -23,7 +23,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         }
     }
     
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let completion: (Result<BidType, SdkError>) -> ()
     let comparator: AuctionBidComparator
     let auctionConfiguration: AuctionConfiguration
@@ -46,9 +46,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         let winner = bids.first
         
-        observer.log(
-            AuctionFinishMediationEvent(bid: winner)
-        )
+        observer.log(FinishAuctionEvent(winner: winner))
         
         let result = result(for: bids, winner: winner)
         let completion = self.completion
@@ -61,7 +59,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     override func cancel() {
         super.cancel()
         
-        observer.log(CancelAuctionMediationEvent())
+        observer.log(CancelAuctionEvent())
         
         let result = Result<BidType, SdkError>.failure(.cancelled)
         let completion = self.completion
@@ -82,7 +80,7 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
         
         // Notify providers on win/lose
         bids.forEach { bid in
-            if bid.ad.id == winner.ad.id {
+            if bid.adUnit.uid == winner.adUnit.uid {
                 bid.provider.notify(
                     opaque: bid.ad,
                     event: .win

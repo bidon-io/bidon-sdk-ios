@@ -38,6 +38,6 @@ class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSOb
     
     func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
 }

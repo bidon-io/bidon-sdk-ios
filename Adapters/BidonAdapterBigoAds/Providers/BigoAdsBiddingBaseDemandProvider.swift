@@ -58,7 +58,7 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, ParameterizedBiddi
     
     func notify(
         ad: Ad,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {
         switch event {
         case .lose:

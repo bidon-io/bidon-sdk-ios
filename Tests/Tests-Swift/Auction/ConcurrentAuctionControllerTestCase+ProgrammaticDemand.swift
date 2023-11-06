@@ -56,7 +56,7 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
 
-        let report = mediationObserver.report
+        let report = auctionObserver.report
 
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM1)
@@ -132,7 +132,7 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
 
-        let report = mediationObserver.report
+        let report = auctionObserver.report
 
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM2)
@@ -191,7 +191,7 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
 
-        let report = mediationObserver.report
+        let report = auctionObserver.report
 
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winnerECPM)
@@ -266,7 +266,7 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
 
-        let report = mediationObserver.report
+        let report = auctionObserver.report
 
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winnerECPM)

@@ -10,7 +10,7 @@ import Foundation
 
 protocol AuctionOperationRequestDemand: AuctionOperation {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
-    associatedtype BidType: Bid where BidType.Provider == AdTypeContextType.DemandProviderType
+    associatedtype BidType: Bid where BidType.ProviderType == AdTypeContextType.DemandProviderType
 
     var bids: [BidType] { get }
 }

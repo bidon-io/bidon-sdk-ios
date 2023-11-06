@@ -63,7 +63,7 @@ extension ConcurrentAuctionControllerTestCase {
 
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
 
-        let report = mediationObserver.report
+        let report = auctionObserver.report
 
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM1)
@@ -119,7 +119,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertEqual(report.rounds.count, 1)
@@ -180,7 +180,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertEqual(report.rounds.count, 1)
@@ -241,7 +241,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertEqual(report.rounds.count, 1)
@@ -318,7 +318,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         // Demands order in auction round report is not defined
         
         XCTAssertEqual(report.result.status, .success)
@@ -405,7 +405,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerDemandId, demandId1)
@@ -492,7 +492,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual((adapterMock1.stubbedProvider as! DirectDemandProviderMock).invokedLoadCount, 1)
         
@@ -604,7 +604,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual((adapterMock1.stubbedProvider as! DirectDemandProviderMock).invokedLoadCount, 2)
         
@@ -716,7 +716,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual((adapterMock1.stubbedProvider as! DirectDemandProviderMock).invokedLoadCount, 2)
         

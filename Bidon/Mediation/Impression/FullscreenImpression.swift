@@ -22,7 +22,7 @@ struct FullscreenImpression: Impression {
     var roundConfiguration: AuctionRoundConfiguration
     var auctionConfiguration: AuctionConfiguration
 
-    init<T: Bid>(bid: T) {
+    init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.demandType = bid.adUnit.demandType
         self.price = bid.price
         self.adType = bid.adType

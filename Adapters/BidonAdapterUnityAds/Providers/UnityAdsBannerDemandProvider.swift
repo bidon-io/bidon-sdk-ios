@@ -40,7 +40,7 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
         banner.load()
     }
     
-    func notify(ad: UADSBannerView, event: Bidon.AuctionEvent) {}
+    func notify(ad: UADSBannerView, event: Bidon.DemandProviderEvent) {}
 }
 
 

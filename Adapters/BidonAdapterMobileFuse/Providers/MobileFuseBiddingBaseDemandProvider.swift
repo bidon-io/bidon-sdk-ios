@@ -74,7 +74,7 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
     
     func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
     
     final func onAdLoaded(_ ad: MFAd!) {

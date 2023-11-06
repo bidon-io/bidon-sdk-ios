@@ -45,7 +45,7 @@ protocol AuctionOperationBuilder {
     func withContext(_ context: AdTypeContextType) -> Self
     
     @discardableResult
-    func withObserver(_ observer: AnyMediationObserver) -> Self
+    func withObserver(_ observer: AnyAuctionObserver) -> Self
     
     @discardableResult
     func withComparator(_ comparator: AuctionBidComparator) -> Self
@@ -66,7 +66,7 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     private(set) var roundConfiguration: AuctionRoundConfiguration!
     private(set) var adUnitProvider: AdUnitProvider!
     private(set) var context: AdTypeContextType!
-    private(set) var observer: AnyMediationObserver!
+    private(set) var observer: AnyAuctionObserver!
     private(set) var comparator: AuctionBidComparator!
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]!
@@ -104,7 +104,7 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     }
     
     @discardableResult
-    func withObserver(_ observer: AnyMediationObserver) -> Self {
+    func withObserver(_ observer: AnyAuctionObserver) -> Self {
         self.observer = observer
         return self
     }

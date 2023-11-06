@@ -19,7 +19,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let pricefloor: Price
     private let auctionConfiguration: AuctionConfiguration
     
-    private let mediationObserver: AnyMediationObserver
+    private let auctionObserver: AnyAuctionObserver
     private let adRevenueObserver: AdRevenueObserver
     
     private let adUnitProvider: AdUnitProvider
@@ -41,7 +41,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         self.context = builder.context
         self.adapters = builder.adapters()
         self.pricefloor = builder.pricefloor
-        self.mediationObserver = builder.mediationObserver
+        self.auctionObserver = builder.auctionObserver
         self.adRevenueObserver = builder.adRevenueObserver
         self.auctionConfiguration = builder.auctionConfiguration
     }
@@ -193,7 +193,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         }
         
         // TODO: Human readable auction description
-        // Logger.debug("\(mediationObserver.adType.stringValue.capitalized) will proceed auction: \(auction)")
+        // Logger.debug("\(auctionObserver.adType.stringValue.capitalized) will proceed auction: \(auction)")
         
         // We can proceed all demand source operations per round at once
         queue.maxConcurrentOperationCount = auction.graph.width
@@ -208,7 +208,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             builder.withAuctionConfiguration(auctionConfiguration)
             builder.withComparator(comparator)
             builder.withAdUnitProvider(adUnitProvider)
-            builder.withObserver(mediationObserver)
+            builder.withObserver(auctionObserver)
             builder.withAdRevenueObserver(adRevenueObserver)
             
             build?(builder)

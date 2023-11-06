@@ -218,10 +218,10 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
     private func performAuction(_ auctionInfo: AuctionInfo) {
         Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
         
-        let auctionConfiguration = AuctionConfiguration(auction: auctionInfo)
+        let configuration = AuctionConfiguration(auction: auctionInfo)
         
-        let observer = BaseMediationObserver(
-            auctionId: auctionInfo.auctionId,
+        let observer = BaseAuctionObserver(
+            configuration: configuration,
             adType: context.adType
         )
         
@@ -231,20 +231,17 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withRounds(auctionInfo.rounds)
             builder.withAdUnitProvider(provider)
-            builder.withMediationObserver(observer)
+            builder.withAuctionObserver(observer)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withAdRevenueObserver(self.adRevenueObserver)
             builder.withContext(context)
-            builder.withAuctionConfiguration(auctionConfiguration)
+            builder.withAuctionConfiguration(configuration)
         }
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
-            self.sendAuctionStatistics(
-                observer.report,
-                auctionConfiguration: auctionConfiguration
-            )
+            self.sendAuctionStatistics(observer.report)
             
             switch result {
             case .success(let bid):
@@ -263,16 +260,13 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         state = .auction(controller: auction)
     }
     
-    private func sendAuctionStatistics<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) {
+    private func sendAuctionStatistics<T: AuctionReport>(_ report: T) {
         let request = StatisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAdType(context.adType)
-            builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
+            builder.withMediationReport(report)
         }
         
         networkManager.perform(request: request) { result in

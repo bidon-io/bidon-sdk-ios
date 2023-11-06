@@ -9,13 +9,14 @@ import Foundation
 
 
 protocol Bid: Hashable {
-    associatedtype Provider
+    associatedtype ProviderType
+    associatedtype DemandAdType
     
     var adUnit: AnyAdUnit { get }
     var adType: AdType { get }
     var price: Price { get }
-    var ad: DemandAd { get }
-    var provider: Provider { get }
+    var ad: DemandAdType { get }
+    var provider: ProviderType { get }
     var roundConfiguration: AuctionRoundConfiguration { get }
     var auctionConfiguration: AuctionConfiguration { get }
 }

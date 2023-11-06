@@ -19,7 +19,7 @@ class DemandProviderWrapper<W>: NSObject, DemandProvider {
         set { _setRevenueDelegate(newValue) }
     }
     
-    func notify(ad: DemandAd, event: AuctionEvent) {
+    func notify(ad: DemandAd, event: DemandProviderEvent) {
         _notify(ad, event)
     }
     
@@ -31,7 +31,7 @@ class DemandProviderWrapper<W>: NSObject, DemandProvider {
     private let _revenueDelegate: () -> DemandProviderRevenueDelegate?
     private let _setRevenueDelegate: (DemandProviderRevenueDelegate?) -> ()
     
-    private let _notify: (DemandAd, AuctionEvent) -> ()
+    private let _notify: (DemandAd, DemandProviderEvent) -> ()
     
     init(_ wrapped: W) throws {
         self.wrapped = wrapped

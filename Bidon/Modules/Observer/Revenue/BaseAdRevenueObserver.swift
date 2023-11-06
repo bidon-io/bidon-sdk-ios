@@ -13,7 +13,7 @@ final class BaseAdRevenueObserver: AdRevenueObserver {
     var ads: (() -> [Ad])?
     
     func observe<BidType>(_ bid: BidType)
-    where BidType : Bid, BidType.Provider : DemandProvider {
+    where BidType: Bid, BidType.ProviderType: DemandProvider {
         bid.provider.revenueDelegate = self
     }
     

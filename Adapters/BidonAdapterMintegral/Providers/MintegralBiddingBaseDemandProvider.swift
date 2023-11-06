@@ -44,6 +44,6 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Para
     
     final func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
 }

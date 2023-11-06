@@ -43,52 +43,8 @@ struct BidRequest: Request {
     }
     
     struct ResponseBody: Decodable, Tokenized {
-        struct BidModel: Decodable, PendingBid {
-            enum CodingKeys: String, CodingKey {
-                case id
-                case impressionId = "impid"
-                case winNoticeUrl = "nurl"
-                case billingNoticeUrl = "burl"
-                case lossNoticeUrl = "lurl"
-                case payload = "ext"
-                case adUnit = "ad_unit"
-                case price
-            }
-            
-            var id: String
-            var impressionId: String
-            var winNoticeUrl: String?
-            var billingNoticeUrl: String?
-            var lossNoticeUrl: String?
-            var adUnit: AdUnitModel
-            var price: Price
-            var payload: Decoder
-            
-            init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                id = try container.decode(String.self, forKey: .id)
-                impressionId = try container.decode(String.self, forKey: .impressionId)
-                winNoticeUrl = try container.decodeIfPresent(String.self, forKey: .winNoticeUrl)
-                lossNoticeUrl = try container.decodeIfPresent(String.self, forKey: .lossNoticeUrl)
-                adUnit = try container.decode(AdUnitModel.self, forKey: .adUnit)
-                price = try container.decode(Price.self, forKey: .price)
-                payload = try container.superDecoder(forKey: .payload)
-            }
-            
-            static func == (
-                lhs: BidRequest.ResponseBody.BidModel,
-                rhs: BidRequest.ResponseBody.BidModel
-            ) -> Bool {
-                return lhs.id == rhs.id
-            }
-            
-            func hash(into hasher: inout Hasher) {
-                hasher.combine(id)
-            }            
-        }
-        
         var token: String?
-        var bids: [BidModel]
+        var bids: [ServerBidModel]
     }
 }
 

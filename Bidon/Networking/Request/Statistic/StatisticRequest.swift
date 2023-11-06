@@ -25,7 +25,7 @@ struct StatisticRequest: Request {
         var ext: String?
         var test: Bool
         var token: String?
-        var stats: MediationAttemptReportCodableModel
+        var stats: EncodableAuctionReportModel
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -58,6 +58,6 @@ extension StatisticRequest {
 
 extension StatisticRequest: Equatable {
     static func == (lhs: StatisticRequest, rhs: StatisticRequest) -> Bool {
-        return lhs.body?.stats.auctionId == rhs.body?.stats.auctionId
+        return lhs.body?.stats.configuration.auctionId == rhs.body?.stats.configuration.auctionId
     }
 }

@@ -23,7 +23,7 @@ final class AuctionOperationStart<AdTypeContextType: AdTypeContext>: Operation, 
     }
     
     let pricefloor: Price
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let auctionConfiguration: AuctionConfiguration
     
     init(builder: Builder) {
@@ -36,6 +36,6 @@ final class AuctionOperationStart<AdTypeContextType: AdTypeContext>: Operation, 
     
     override func main() {
         super.main()
-        observer.log(AuctionStartMediationEvent())
+        observer.log(StartAuctionEvent())
     }
 }

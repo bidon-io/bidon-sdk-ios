@@ -128,7 +128,7 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
         
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winnerECPM, eCPM3)
