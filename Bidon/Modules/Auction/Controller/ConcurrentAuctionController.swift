@@ -55,7 +55,10 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         var shared: [AnyAuctionOperation] = []
         
         // Instantiate auction with start operation
-        let startAuctionOperation: AuctionOperationStart<AdTypeContextType> = operation()
+        let startAuctionOperation: AuctionOperationStart<AdTypeContextType> = operation { builder in
+            builder.withPricefloor(self.pricefloor)
+        }
+        
         auction.addNode(startAuctionOperation)
         
         // Finish auction
@@ -102,6 +105,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             // Instantiate round finisj opearation and add it to DAG
             let finishRoundOperation: AuctionOperationFinishRound<AdTypeContextType, BidType> = operation { builder in
                 builder.withRoundTimeoutOperation(timeoutOperation)
+                builder.withRoundConfiguration(roundConfiguration)
             }
             
             auction.addNode(finishRoundOperation)

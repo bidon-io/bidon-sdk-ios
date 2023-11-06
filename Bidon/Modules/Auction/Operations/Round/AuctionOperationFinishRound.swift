@@ -48,9 +48,13 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType {
         
         bids = (
             deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
-                .compactMap { $0.bids as? BidType } +
+                .reduce([]) { result, operation in
+                    result + operation.bids.compactMap { $0 as? BidType }
+                } +
             deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
-                .compactMap { $0.bids as? BidType }
+                .reduce([]) { result, operation in
+                    result + operation.bids.compactMap { $0 as? BidType }
+                }
         )
         .sorted { comparator.compare($0, $1) }
         

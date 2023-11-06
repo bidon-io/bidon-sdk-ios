@@ -15,6 +15,8 @@ struct FullscreenImpression: Impression {
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
     
+    var bidId: String
+    var demandId: String
     var demandType: DemandType
     var price: Price
     var adType: AdType
@@ -23,6 +25,8 @@ struct FullscreenImpression: Impression {
     var auctionConfiguration: AuctionConfiguration
 
     init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
+        self.bidId = bid.adUnit.uid
+        self.demandId = bid.adUnit.demandId
         self.demandType = bid.adUnit.demandType
         self.price = bid.price
         self.adType = bid.adType

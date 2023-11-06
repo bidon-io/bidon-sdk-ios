@@ -45,12 +45,12 @@ final class AdContainer: NSObject, Ad {
     
     convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.init(
-            id: bid.adUnit.uid,
+            id: bid.ad.id,
             adType: bid.adType,
             price: bid.price,
-            networkName: bid.ad.networkName,
+            networkName: bid.adUnit.demandId,
             bidType: AdBidType(demandType: bid.adUnit.demandType),
-            dsp: bid.ad.dsp,
+            dsp: bid.ad.networkName,
             roundId: bid.roundConfiguration.roundId,
             auctionId: bid.auctionConfiguration.auctionId,
             currencyCode: bid.ad.currency ?? .default
@@ -62,9 +62,9 @@ final class AdContainer: NSObject, Ad {
             id: impression.ad.id,
             adType: impression.adType,
             price: impression.price,
-            networkName: impression.ad.networkName,
+            networkName: impression.demandId,
             bidType: AdBidType(demandType: impression.demandType),
-            dsp: impression.ad.dsp,
+            dsp: impression.ad.networkName,
             roundId: impression.roundConfiguration.roundId,
             auctionId: impression.auctionConfiguration.auctionId,
             currencyCode: impression.ad.currency ?? .default

@@ -27,7 +27,9 @@ struct RoundObservation {
     }
     
     mutating func didFinishAuction(_ winner: AnyBid?) {
-        self.auctionWinner = entries.first { $0.adUnit?.uid == winner?.adUnit.uid }
+        self.auctionWinner = winner.flatMap { winner in
+            entries.first { $0.adUnit?.uid == winner.adUnit.uid }
+        }
         
         var demand = demand
         demand.update {

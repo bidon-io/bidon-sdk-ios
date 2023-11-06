@@ -41,7 +41,7 @@ struct EncodableBiddingDemandTokens: Encodable {
             
             try encodable.forEach { value in
                 var nestedContainer = superEncoder.unkeyedContainer()
-                var nestedEncoder = nestedContainer.superEncoder()
+                let nestedEncoder = nestedContainer.superEncoder()
                 
                 try value.encode(to: nestedEncoder)
             }

@@ -48,7 +48,7 @@ struct ImpressionModel: Encodable {
         self.impressionId = imp.impressionId
         self.auctionId = imp.auctionConfiguration.auctionId
         self.auctionConfigurationUid = imp.auctionConfiguration.auctionConfigurationUid
-        self.demandId = imp.ad.networkName
+        self.demandId = imp.demandId
         self.demandType = imp.demandType.rawValue
         self.price = imp.price
         self.banner = banner

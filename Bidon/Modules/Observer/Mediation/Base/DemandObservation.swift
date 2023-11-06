@@ -73,6 +73,7 @@ struct DemandObservation {
             let entry = Entry(
                 demandId: bid.adUnit.demandId,
                 adUnit: DummyAdUnit(bid.adUnit),
+                bid: DummyBid(bid),
                 startTimestamp: Date.timestamp(.wall, units: .milliseconds),
                 finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
             )

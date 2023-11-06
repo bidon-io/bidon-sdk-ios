@@ -185,16 +185,17 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         return self
     }
 
-    var invokedWithBiddingContextEncoders = false
-    var invokedWithBiddingContextEncodersCount = 0
-    var invokedWithBiddingContextEncodersParameters: (encoders: BiddingContextEncoders, Void)?
-    var invokedWithBiddingContextEncodersParametersList = [(encoders: BiddingContextEncoders, Void)]()
+    var invokedWithBiddingTokens = false
+    var invokedWithBiddingTokensCount = 0
+    var invokedWithBiddingTokensParameters: (tokens: [BiddingDemandToken], Void)?
+    var invokedWithBiddingTokensParametersList = [(tokens: [BiddingDemandToken], Void)]()
 
-    func withBiddingContextEncoders(_ encoders: BiddingContextEncoders) -> Self {
-        invokedWithBiddingContextEncoders = true
-        invokedWithBiddingContextEncodersCount += 1
-        invokedWithBiddingContextEncodersParameters = (encoders, ())
-        invokedWithBiddingContextEncodersParametersList.append((encoders, ()))
+    func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self {
+        invokedWithBiddingTokens = true
+        invokedWithBiddingTokensCount += 1
+        invokedWithBiddingTokensParameters = (tokens, ())
+        invokedWithBiddingTokensParametersList.append((tokens, ()))
+        
         return self
     }
 
@@ -289,12 +290,12 @@ final class BidRequestBuilderMock: BaseRequestBuilder, BidRequestBuilder {
         return self
     }
     
-    func biddingToken(for demandId: String) -> String? {
-        let encoder = invokedWithBiddingContextEncodersParameters?.encoders[demandId] as? GenericBiddingContextEncoder<SomeToken>
-        return encoder?.context.token
+    func biddingToken(for demandId: String) -> TestBiddingToken? {
+        let token = invokedWithBiddingTokensParameters?.tokens.first { $0.demandId == demandId }
+        return token?.token as? TestBiddingToken
     }
     
-    var demandsCount: Int {
-        invokedWithBiddingContextEncodersParameters?.encoders.count ?? 0
+    var tokensCount: Int {
+        invokedWithBiddingTokensParameters?.tokens.count ?? 0
     }
 }

@@ -60,6 +60,11 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
     override func main() {
         super.main()
         
+        guard !tokens.isEmpty else {
+            finish()
+            return
+        }
+        
         let event = BiddingDemandBidRequestAuctionEvent(
             configuration: roundConfiguration,
             adapters: bidders

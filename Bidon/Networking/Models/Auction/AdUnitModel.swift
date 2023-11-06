@@ -8,7 +8,17 @@
 import Foundation
 
 
-struct AdUnitModel: Decodable, AdUnit {
+struct AdUnitModel: AdUnit {
+    var uid: String
+    var demandId: String
+    var demandType: DemandType
+    var label: String
+    var pricefloor: Price
+    var extras: Decoder
+}
+
+
+extension AdUnitModel: Decodable {
     enum CodingKeys: String, CodingKey {
         case uid = "id"
         case demandId = "demand_id"
@@ -18,13 +28,6 @@ struct AdUnitModel: Decodable, AdUnit {
         case extras = "ext"
     }
     
-    var uid: String
-    var demandId: String
-    var demandType: DemandType
-    var label: String
-    var pricefloor: Price
-    var extras: Decoder
-    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -32,7 +35,7 @@ struct AdUnitModel: Decodable, AdUnit {
         demandId = try container.decode(String.self, forKey: .demandId)
         demandType = try container.decode(DemandType.self, forKey: .demandType)
         label = try container.decode(String.self, forKey: .label)
-        pricefloor = try container.decode(Price.self, forKey: .pricefloor)
+        pricefloor = try container.decodeIfPresent(Price.self, forKey: .pricefloor) ?? .unknown
         extras = try container.superDecoder(forKey: .extras)
     }
     

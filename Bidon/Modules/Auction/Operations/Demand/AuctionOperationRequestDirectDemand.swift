@@ -91,16 +91,17 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                         id: UUID().uuidString,
                         adType: self.context.adType,
                         adUnit: adUnit,
-                        price: self.pricefloor,
+                        price: ad.price ?? adUnit.pricefloor,
                         ad: ad,
                         provider: adapter.provider,
                         roundConfiguration: self.roundConfiguration,
                         auctionConfiguration: self.auctionConfiguration
                     )
-                    self.bids.append(bid)
                     
                     let event = DirectDemandDidLoadAuctionEvent(bid: bid)
                     self.observer.log(event)
+                    
+                    self.bids.append(bid)
                 }
             }
         }

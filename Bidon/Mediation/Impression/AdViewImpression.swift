@@ -15,6 +15,7 @@ struct AdViewImpression: Impression {
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
 
+    var demandId: String { bid.adUnit.demandId }
     var demandType: DemandType { bid.adUnit.demandType }
     var price: Price { bid.price }
     var adType: AdType { bid.adType }

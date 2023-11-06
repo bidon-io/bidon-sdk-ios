@@ -81,7 +81,7 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     
     @discardableResult
     func withAdUnitProvider(_ provider: AdUnitProvider) -> Self {
-        self.adUnitProvider = adUnitProvider
+        self.adUnitProvider = provider
         return self
     }
     

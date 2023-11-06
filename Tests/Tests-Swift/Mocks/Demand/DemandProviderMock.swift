@@ -8,13 +8,11 @@
 import Foundation
 import XCTest
 
+
 @testable import Bidon
 
 
-protocol DemandProviderMockBuilder {
-    @discardableResult
-    func withDemandId(_ identifier: String) -> Self
-}
+protocol DemandProviderMockBuilder {}
 
 
 protocol DemandProviderMockBuildable: DemandProviderMock {
