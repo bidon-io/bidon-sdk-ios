@@ -12,6 +12,7 @@ import Bidon
 
 extension IMBanner: InMobiAd {}
 
+
 extension IMBanner: AdViewContainer {
     public var isAdaptive: Bool {
         return false
@@ -37,21 +38,17 @@ final class InMobiAdViewDemandProvider: NSObject, DirectDemandProvider {
     }
     
     func load(
-        _ adUnitId: String,
+        pricefloor: Price,
+        adUnitExtras: InMobiAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        guard let placement = Int64(adUnitId) else {
-            response(.failure(.incorrectAdUnitId))
-            return
-        }
-        
         let frame = CGRect(
             origin: .zero,
             size: format.preferredSize
         )
         let banner = IMBanner(
             frame: frame,
-            placementId: placement
+            placementId: adUnitExtras.placementId
         )
         banner.delegate = self
         banner.shouldAutoRefresh(false)

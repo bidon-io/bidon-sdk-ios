@@ -9,7 +9,7 @@ import Foundation
 
 
 struct FullscreenImpression: Impression {
-    var impressionId: String = UUID().uuidString
+    var impressionId: String
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
@@ -25,6 +25,7 @@ struct FullscreenImpression: Impression {
     var auctionConfiguration: AuctionConfiguration
 
     init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
+        self.impressionId = bid.impressionId
         self.bidId = bid.adUnit.uid
         self.demandId = bid.adUnit.demandId
         self.demandType = bid.adUnit.demandType

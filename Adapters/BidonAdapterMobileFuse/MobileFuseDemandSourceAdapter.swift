@@ -26,7 +26,7 @@ BiddingAdViewDemandSourceAdapter
         case failed
     }
     
-    public let identifier: String = MobileFuseDemandSourceAdapter.identifier
+    public let demandId: String = MobileFuseDemandSourceAdapter.identifier
     public let name: String = "MobileFuse"
     public var adapterVersion: String = "0"
     public var sdkVersion: String = MobileFuse.version()
@@ -47,12 +47,7 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appKey: String?
-        var publisherId: String?
-    }
-    
+extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {    
     public var isInitialized: Bool {
         switch state {
         case .ready:
@@ -63,7 +58,7 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: MobileFuseParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         guard

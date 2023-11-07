@@ -24,19 +24,19 @@ final class MintegralBiddingInterstitialDemandProvider: MintegralBiddingBaseDema
     
     private var interstitial: MTGNewInterstitialBidAdManager!
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MintegralBiddingResponse,
+        adUnitExtras: MintegralAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        
         self.response = response
         
         interstitial = MTGNewInterstitialBidAdManager(
-            placementId: data.placementId,
-            unitId: data.unitId,
+            placementId: adUnitExtras.placementId,
+            unitId: adUnitExtras.unitId,
             delegate: self
         )
-        interstitial.loadAd(withBidToken: data.payload)
+        interstitial.loadAd(withBidToken: payload.payload)
     }
 }
 

@@ -19,7 +19,7 @@ BiddingAdViewDemandSourceAdapter
 @objc public final class MintegralDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "mintegral"
     
-    public let identifier: String = MintegralDemandSourceAdapter.identifier
+    public let demandId: String = MintegralDemandSourceAdapter.identifier
     public let name: String = "Mintegral"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = MTGSDKVersion
@@ -41,12 +41,8 @@ BiddingAdViewDemandSourceAdapter
 
 
 extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appId, appKey: String
-    }
-        
     public func initialize(
-        parameters: Parameters,
+        parameters: MintegralParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         defer { isInitialized = true }

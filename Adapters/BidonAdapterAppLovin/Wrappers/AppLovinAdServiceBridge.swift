@@ -28,13 +28,13 @@ final class AppLovinAdServiceBridge: NSObject {
     
     func load(
         service: ALAdService,
-        adUnitId: String,
+        zoneId: String,
         response: @escaping (Result<ALAd, MediationError>) -> ()
     ) {
         self.response = response
         
         service.loadNextAd(
-            forZoneIdentifier: adUnitId,
+            forZoneIdentifier: zoneId,
             andNotify: self
         )
     }

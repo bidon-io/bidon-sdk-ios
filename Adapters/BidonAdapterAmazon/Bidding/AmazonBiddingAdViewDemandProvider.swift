@@ -26,12 +26,13 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
     
     let format: BannerFormat
     
-    init(
-        adSizes: [DTBAdSize],
-        context: AdViewContext
-    ) {
+    init(context: AdViewContext) {
         self.format = context.format
-        super.init(adSizes: adSizes)
+        super.init()
+    }
+    
+    override func adSize(_ extras: AmazonAdUnitExtras) -> DTBAdSize? {
+        return extras.adSize(format)
     }
     
     override func fill(

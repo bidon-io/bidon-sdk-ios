@@ -15,14 +15,15 @@ final class BigoAdsBiddingInterstitialDemandProvider: BigoAdsBiddingBaseDemandPr
     
     private var response: DemandProviderResponse?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: BigoAdsBiddingPayload,
+        adUnitExtras: BigoAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
         
-        let request = BigoInterstitialAdRequest(slotId: data.slotId)
-        request.setServerBidPayload(data.payload)
+        let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
+        request.setServerBidPayload(payload.payload)
         
         loader.loadAd(request)
     }

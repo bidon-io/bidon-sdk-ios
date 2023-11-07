@@ -17,14 +17,15 @@ final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvid
     
     private var response: DemandProviderResponse?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: BigoAdsBiddingPayload,
+        adUnitExtras: BigoAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
 
-        let request = BigoRewardVideoAdRequest(slotId: data.slotId)
-        request.setServerBidPayload(data.payload)
+        let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
+        request.setServerBidPayload(payload.payload)
         
         loader.loadAd(request)
     }

@@ -21,7 +21,7 @@ DirectAdViewDemandSourceAdapter
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    public let identifier: String = DTExchangeDemandSourceAdapter.identifier
+    public let demandId: String = DTExchangeDemandSourceAdapter.identifier
     public let name: String = "DT Exchange"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = IASDKCore.sharedInstance().version()
@@ -43,16 +43,12 @@ DirectAdViewDemandSourceAdapter
 
 
 extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        public var appId: String
-    }
-    
     public var isInitialized: Bool {
         return IASDKCore.sharedInstance().isInitialised
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: DTExchangeParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)

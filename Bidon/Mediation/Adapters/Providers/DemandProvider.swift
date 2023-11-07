@@ -10,7 +10,7 @@ import Foundation
 
 public enum DemandProviderEvent {
     case win
-    case lose(DemandAd, Price)
+    case lose(String, DemandAd, Price)
 }
 
 

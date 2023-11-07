@@ -52,7 +52,7 @@ final class AppodealInterstitialAdWrapper: BaseFullscreenAdWrapper {
     override func notify(loss ad: Ad) {
         bidonInterstitial?.notifyLoss(
             external: "some_appodeal_ad_network",
-            eCPM: ad.eCPM + 0.1
+            eCPM: ad.price + 0.1
         )
     }
     

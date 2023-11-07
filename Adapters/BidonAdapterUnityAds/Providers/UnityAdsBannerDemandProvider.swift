@@ -26,9 +26,13 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
         super.init()
     }
     
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: UnityAdsAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         let banner = UADSBannerView(
-            placementId: adUnitId,
+            placementId: adUnitExtras.placementId,
             size: size
         )
         

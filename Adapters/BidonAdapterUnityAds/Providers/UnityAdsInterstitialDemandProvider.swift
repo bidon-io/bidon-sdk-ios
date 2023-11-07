@@ -19,8 +19,12 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
     private var placements = Set<UADSPlacement>()
     private var response: DemandProviderResponse?
     
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
-        let placement = UADSPlacement(adUnitId)
+    func load(
+        pricefloor: Price,
+        adUnitExtras: UnityAdsAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        let placement = UADSPlacement(adUnitExtras.placementId)
         
         self.placements.insert(placement)
         self.response = response

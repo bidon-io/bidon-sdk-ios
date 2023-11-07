@@ -95,6 +95,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 case .success(let ad):
                     let bid = BidType(
                         id: UUID().uuidString,
+                        impressionId: UUID().uuidString,
                         adType: self.context.adType,
                         adUnit: adUnit,
                         price: ad.price ?? adUnit.pricefloor,

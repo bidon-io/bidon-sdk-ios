@@ -20,9 +20,9 @@ struct AdUnitModel: AdUnit {
 
 extension AdUnitModel: Decodable {
     enum CodingKeys: String, CodingKey {
-        case uid = "id"
-        case demandId = "demand_id"
-        case demandType = "bid_type"
+        case uid = "uid"
+        case demandId
+        case demandType = "bidType"
         case label
         case pricefloor
         case extras = "ext"

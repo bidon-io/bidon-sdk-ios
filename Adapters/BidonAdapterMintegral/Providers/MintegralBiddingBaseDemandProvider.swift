@@ -10,33 +10,23 @@ import MTGSDKBidding
 import Bidon
 
 
-class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, ParameterizedBiddingDemandProvider {
-    struct BiddingContext: Codable {
-        var buyerUID: String
-        
-        enum CodingKeys: String, CodingKey {
-            case buyerUID = "token"
-        }
-    }
-    
-    struct BiddingResponse: Codable {
-        var payload: String
-        var unitId: String
-        var placementId: String
-    }
-    
+class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
-    final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
-        let context = BiddingContext(
+    func collectBiddingToken(
+        adUnitExtras: MintegralAdUnitExtras,
+        response: @escaping (Result<MintegralBiddingToken, MediationError>) -> ()
+    ) {
+        let context = MintegralBiddingToken(
             buyerUID: MTGBiddingSDK.buyerUID()
         )
         response(.success(context))
     }
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: MintegralBiddingResponse,
+        adUnitExtras: MintegralAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         fatalError("MintegralBiddingBaseDemandProvider is unable to prepare bid")

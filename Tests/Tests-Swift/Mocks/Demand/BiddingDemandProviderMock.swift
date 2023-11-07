@@ -44,11 +44,11 @@ where AdUnitExtras: Decodable & Equatable, BiddingToken: Encodable & Equatable, 
     var invokedLoadPayloadParameters: (payload: BiddingPayload, adUnitExtras: AdUnitExtras?, response: DemandProviderResponse)?
     var invokedLoadPayloadParametersList = [(payload: BiddingPayload, adUnitExtras: AdUnitExtras?, response: DemandProviderResponse)]()
 
-    var _load: ((BiddingPayload, AdUnitExtras?, @escaping DemandProviderResponse) -> ())?
+    var _load: ((BiddingPayload, AdUnitExtras, @escaping DemandProviderResponse) -> ())?
     
     func load(
         payload: BiddingPayload,
-        adUnitExtras: AdUnitExtras?,
+        adUnitExtras: AdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         invokedLoadPayload = true

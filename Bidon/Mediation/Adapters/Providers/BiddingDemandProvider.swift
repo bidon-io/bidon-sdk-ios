@@ -37,7 +37,7 @@ public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
     
     func load(
         payload: BiddingPayload,
-        adUnitExtras: AdUnitExtras?,
+        adUnitExtras: AdUnitExtras,
         response: @escaping DemandProviderResponse
     )
 }

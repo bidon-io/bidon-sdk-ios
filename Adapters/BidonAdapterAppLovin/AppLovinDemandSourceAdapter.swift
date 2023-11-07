@@ -19,7 +19,7 @@ DirectAdViewDemandSourceAdapter
 @objc public final class AppLovinDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "applovin"
     
-    public let identifier: String = AppLovinDemandSourceAdapter.identifier
+    public let demandId: String = AppLovinDemandSourceAdapter.identifier
     public let name: String = "AppLovin"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = ALSdk.version()
@@ -56,16 +56,12 @@ DirectAdViewDemandSourceAdapter
 
 
 extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        public var sdkKey: String
-    }
-    
     public var isInitialized: Bool {
         return sdk?.isInitialized == true
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: AppLovinParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         let currentDeviceUUID = ASIdentifierManager.shared().advertisingIdentifier.uuidString

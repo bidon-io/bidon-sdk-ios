@@ -83,6 +83,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 case .success(let ad):
                     let bid = BidType(
                         id: serverBid.id,
+                        impressionId: serverBid.impressionId,
                         adType: self.context.adType,
                         adUnit: serverBid.adUnit,
                         price: ad.price ?? serverBid.price,

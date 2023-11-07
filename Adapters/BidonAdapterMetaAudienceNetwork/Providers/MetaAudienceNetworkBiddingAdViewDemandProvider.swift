@@ -41,12 +41,13 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
         super.init()
     }
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         let banner = FBAdView(
-            placementID: data.placementId,
+            placementID: adUnitExtras.placementId,
             adSize: format.fbAdSize,
             rootViewController: rootViewController
         )
@@ -55,7 +56,7 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
         self.banner = banner
         self.response = response
         
-        banner.loadAd(withBidPayload: data.payload)
+        banner.loadAd(withBidPayload: payload.payload)
     }
 }
 

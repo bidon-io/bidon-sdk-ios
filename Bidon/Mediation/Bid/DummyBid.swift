@@ -12,6 +12,8 @@ struct DummyBid: Bid {
     typealias ProviderType = Void
     typealias DemandAdType = Void
     
+    var id: String
+    var impressionId: String
     var adUnit: AnyAdUnit
     var adType: AdType
     var price: Price
@@ -25,6 +27,8 @@ struct DummyBid: Bid {
     }
     
     init<T: Bid>(_ bid: T) {
+        self.id = bid.id
+        self.impressionId = bid.impressionId
         self.adUnit = bid.adUnit
         self.adType = bid.adType
         self.price = bid.price

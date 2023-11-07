@@ -19,7 +19,7 @@ BiddingAdViewDemandSourceAdapter
 @objc public final class VungleDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "vungle"
 
-    public let identifier: String = VungleDemandSourceAdapter.identifier
+    public let demandId: String = VungleDemandSourceAdapter.identifier
     public let name: String = "Vungle"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = VungleAds.sdkVersion
@@ -38,17 +38,13 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension VungleDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appId: String
-    }
-    
+extension VungleDemandSourceAdapter: ParameterizedInitializableAdapter {    
     public var isInitialized: Bool {
         return VungleAds.isInitialized()
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: VungleParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         VungleAds.initWithAppId(parameters.appId) { error in

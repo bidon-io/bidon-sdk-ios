@@ -14,7 +14,7 @@ struct AdaptersView: View {
     @Binding var adapters: [Bidon.Adapter]
     
     var body: some View {
-        ForEach($adapters, id: \.identifier) { $adapter in
+        ForEach($adapters, id: \.demandId) { $adapter in
             Button(action: {
                 withAnimation {
                     adapter.isEnabled = true
@@ -46,7 +46,7 @@ struct AdaptersView: View {
 
 extension Bidon.Adapter {    
     var isEnabled: Bool {
-        get { BidonSdk.registeredAdapters().contains { $0.identifier == self.identifier } }
+        get { BidonSdk.registeredAdapters().contains { $0.demandId == self.demandId } }
         set {
             guard newValue else { return }
             BidonSdk.registerAdapter(adapter: self)

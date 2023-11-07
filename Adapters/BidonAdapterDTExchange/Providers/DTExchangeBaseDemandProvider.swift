@@ -36,9 +36,13 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
 
 
 extension DTExchangeBaseDemandProvider: DirectDemandProvider {
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: DTExchangeAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         let adRequest = IAAdRequest.build { builder in
-            builder.spotID = adUnitId
+            builder.spotID = adUnitExtras.spotId
         }
         
         guard let adRequest = adRequest else {

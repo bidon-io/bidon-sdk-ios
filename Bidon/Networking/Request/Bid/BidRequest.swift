@@ -17,7 +17,6 @@ struct BidRequest: Request {
    
     struct RequestBody: Encodable, Tokenized {
         struct ImpModel: Encodable {
-            var id: String = UUID().uuidString
             var bidfloor: Price
             var auctionId: String
             var auctionConfigurationUid: String
@@ -74,6 +73,7 @@ extension BidRequest {
 
 extension BidRequest: Equatable {
     static func == (lhs: BidRequest, rhs: BidRequest) -> Bool {
-        return lhs.body?.imp.id == rhs.body?.imp.id
+        return lhs.body?.imp.auctionId == rhs.body?.imp.auctionId &&
+        lhs.body?.imp.roundId == rhs.body?.imp.roundId
     }
 }

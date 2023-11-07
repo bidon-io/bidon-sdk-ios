@@ -19,7 +19,7 @@ BiddingAdViewDemandSourceAdapter
 @objc final public class BigoAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "bigoads"
     
-    public let identifier: String = BigoAdsDemandSourceAdapter.identifier
+    public let demandId: String = BigoAdsDemandSourceAdapter.identifier
     public let name: String = "BigoAds"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = BigoAdSdk.sharedInstance().getVersion()
@@ -41,17 +41,13 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension BigoAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appId: String
-    }
-    
+extension BigoAdsDemandSourceAdapter: ParameterizedInitializableAdapter {    
     public var isInitialized: Bool {
         return BigoAdSdk.sharedInstance().isInitialized()
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: BigoAdsParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         let adConfig = BigoAdConfig(appId: parameters.appId)

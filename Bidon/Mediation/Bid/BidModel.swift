@@ -10,6 +10,7 @@ import Foundation
 
 struct BidModel<DemandProviderType>: Bid {
     var id: String
+    var impressionId: String
     var adType: AdType
     var adUnit: AnyAdUnit
     var price: Price
@@ -22,9 +23,7 @@ struct BidModel<DemandProviderType>: Bid {
         lhs: BidModel<DemandProviderType>,
         rhs: BidModel<DemandProviderType>
     ) -> Bool {
-        return lhs.ad.id == rhs.ad.id &&
-        lhs.auctionConfiguration.auctionId == rhs.auctionConfiguration.auctionId &&
-        lhs.roundConfiguration.roundId == rhs.roundConfiguration.roundId
+        return lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher) {

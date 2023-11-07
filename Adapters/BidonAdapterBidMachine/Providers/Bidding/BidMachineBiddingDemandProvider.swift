@@ -13,50 +13,51 @@ import Bidon
 
 
 
-class BidMachineBiddingDemandProvider<AdObject>: BidMachineBaseDemandProvider<AdObject>, ParameterizedBiddingDemandProvider
+class BidMachineBiddingDemandProvider<AdObject>: BidMachineBaseDemandProvider<AdObject>, BiddingDemandProvider
 where AdObject: BidMachineAdProtocol {
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
     struct BiddingResponse: Codable {
         var payload: String
     }
     
-    func fetchBiddingContext(
-        response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
+    func collectBiddingToken(
+        adUnitExtras: BidMachineAdUnitExtras,
+        response: @escaping (Result<BidMachineBiddingToken, MediationError>) -> ()
     ) {
         guard let token = BidMachineSdk.shared.token else {
             response(.failure(.unscpecifiedException))
             return
         }
         
-        let context = BiddingContext(token: token) 
-        response(.success(context))
+        response(.success(BidMachineBiddingToken(token: token)))
     }
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: BidMachineBiddingPayload,
+        adUnitExtras: BidMachineAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         do {
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
             
             configuration.populate { builder in
-                builder.withPayload(data.payload)
+                builder.withPayload(payload.payload)
                 builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             
             BidMachineSdk.shared.ad(AdObject.self, configuration) { [weak self] ad, error in
+                guard let self = self else { return }
+                
                 guard let ad = ad, error == nil else {
                     response(.failure(.noBid))
                     return
                 }
                                 
-                self?.response = response
-                
                 ad.controller = UIApplication.shared.bd.topViewcontroller
                 ad.delegate = self
+                
+                self.response = response
+                self.ad = ad
+                
                 ad.loadAd()
             }
         } catch {

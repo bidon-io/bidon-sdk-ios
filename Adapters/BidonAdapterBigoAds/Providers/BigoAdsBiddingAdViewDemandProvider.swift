@@ -63,17 +63,18 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
         super.init()
     }
     
-    override func prepareBid(
-        data: BigoAdsBiddingBaseDemandProvider<BigoBannerAd>.BiddingResponse,
+    override func load(
+        payload: BigoAdsBiddingPayload,
+        adUnitExtras: BigoAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
         
         let request = BigoBannerAdRequest(
-            slotId: data.slotId,
+            slotId: adUnitExtras.slotId,
             adSizes: [format.bigoAdSize]
         )
-        request.setServerBidPayload(data.payload)
+        request.setServerBidPayload(payload.payload)
         
         loader.loadAd(request)
     }

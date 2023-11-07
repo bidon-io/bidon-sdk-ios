@@ -12,7 +12,7 @@ import BidMachineApiCore
 import Bidon
 
 
-final class BidMachineProgrammaticRewardedAdDemandProvider: BidMachineProgrammaticDemandProvider<BidMachineRewarded> {
+final class BidMachineDirectRewardedAdDemandProvider: BidMachineDirectDemandProvider<BidMachineRewarded> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
     override var placementFormat: BidMachineApiCore.PlacementFormat { .rewarded }
@@ -25,7 +25,7 @@ final class BidMachineProgrammaticRewardedAdDemandProvider: BidMachineProgrammat
 }
 
 
-extension BidMachineProgrammaticRewardedAdDemandProvider: RewardedAdDemandProvider {
+extension BidMachineDirectRewardedAdDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: BidMachineAdDemand<BidMachineRewarded>,
         from viewController: UIViewController

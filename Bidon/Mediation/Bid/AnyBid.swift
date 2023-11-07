@@ -22,6 +22,7 @@ extension AnyAdViewBid {
     func unwrapped() -> AdViewBid {
         return AdViewBid(
             id: id,
+            impressionId: impressionId,
             adType: adType,
             adUnit: adUnit,
             price: price,
@@ -38,6 +39,7 @@ extension AnyInterstitialBid {
     func unwrapped() -> InterstitialBid {
         return InterstitialBid(
             id: id,
+            impressionId: impressionId,
             adType: adType,
             adUnit: adUnit,
             price: price,
@@ -54,6 +56,7 @@ extension AnyRewardedAdBid {
     func unwrapped() -> RewardedAdBid {
         return RewardedAdBid(
             id: id,
+            impressionId: impressionId,
             adType: adType,
             adUnit: adUnit,
             price: price,

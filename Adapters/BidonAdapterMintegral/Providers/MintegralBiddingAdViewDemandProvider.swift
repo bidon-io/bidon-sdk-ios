@@ -35,22 +35,23 @@ final class MintegralBiddingAdViewDemandProvider: MintegralBiddingBaseDemandProv
     
     var adView: MTGBannerAdView!
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MintegralBiddingResponse,
+        adUnitExtras: MintegralAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
         
         adView = MTGBannerAdView(
             bannerAdViewWith: adType,
-            placementId: data.placementId,
-            unitId: data.unitId,
+            placementId: adUnitExtras.placementId,
+            unitId: adUnitExtras.unitId,
             rootViewController: self.rootViewController
         )
         
         adView.autoRefreshTime = 0
         adView.delegate = self
-        adView.loadBannerAd(withBidToken: data.payload)
+        adView.loadBannerAd(withBidToken: payload.payload)
     }
 }
 

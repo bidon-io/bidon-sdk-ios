@@ -23,7 +23,8 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     }
     
     internal var response: DemandProviderResponse?
-    
+    internal var ad: AdObject?
+
     func didLoadAd(_ ad: BidMachineAdProtocol) {
         defer { response = nil }
         
@@ -86,10 +87,10 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
         switch event {
         case .win:
             BidMachineSdk.shared.notifyMediationWin(ad.ad)
-        case .lose(let winner, let eCPM):
+        case .lose(let demandId, let winner, let price):
             BidMachineSdk.shared.notifyMediationLoss(
-                winner.networkName,
-                eCPM,
+                winner.networkName ?? demandId,
+                price,
                 ad.ad
             )
         }

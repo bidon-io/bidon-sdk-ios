@@ -20,7 +20,7 @@ BiddingAdViewDemandSourceAdapter
 @objc final public class MetaAudienceNetworkDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "meta"
     
-    public let identifier: String = MetaAudienceNetworkDemandSourceAdapter.identifier
+    public let demandId: String = MetaAudienceNetworkDemandSourceAdapter.identifier
     public let name: String = "MetaAudienceNetwork"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = FB_AD_SDK_VERSION
@@ -45,13 +45,8 @@ BiddingAdViewDemandSourceAdapter
 
 
 extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var placements: [String]?
-        var mediationService: String?
-    }
-    
     public func initialize(
-        parameters: Parameters,
+        parameters: MetaAudienceNetworkParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         FBAdSettings.setLogLevel(.current)

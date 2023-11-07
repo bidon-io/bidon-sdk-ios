@@ -25,13 +25,12 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     
     private var ad: DemandAdType?
     
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
-        guard let placement = Int64(adUnitId) else {
-            response(.failure(.incorrectAdUnitId))
-            return
-        }
-        
-        let interstitial = IMInterstitial(placementId: placement)
+    func load(
+        pricefloor: Price,
+        adUnitExtras: InMobiAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        let interstitial = IMInterstitial(placementId: adUnitExtras.placementId)
         interstitial.delegate = self
         interstitial.load()
 

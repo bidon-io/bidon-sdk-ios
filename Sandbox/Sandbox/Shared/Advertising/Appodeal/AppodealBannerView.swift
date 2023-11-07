@@ -242,7 +242,7 @@ extension AppodealBannerView.Coordinator: Bidon.AdViewDelegate {
     override func adObject(_ adObject: AdObject, didLoadAd ad: Ad) {
         super.adObject(adObject, didLoadAd: ad)
         cache = cache.filter { $0 !== adObject }
-        banners[ad.eCPM] = adObject as? UIView
+        banners[ad.price] = adObject as? UIView
         
         layoutBannerIfNeeded()
     }

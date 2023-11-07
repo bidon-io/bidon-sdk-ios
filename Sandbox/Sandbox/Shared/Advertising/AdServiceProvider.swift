@@ -74,7 +74,7 @@ extension AppsFlyerAdRevenue {
     ) {
         var additionalParameters: [AnyHashable: Any] = [:]
         additionalParameters[kAppsFlyerAdRevenueAdType] = adType.rawValue
-        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
+//        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
         additionalParameters[kAppsFlyerAdRevenuePlacement] = placement
         
         logAdRevenue(

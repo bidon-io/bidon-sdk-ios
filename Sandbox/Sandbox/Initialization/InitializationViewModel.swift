@@ -114,6 +114,6 @@ fileprivate extension Array where Element == Bidon.Adapter {
             MetaAudienceNetworkDemandSourceAdapter(),
             InMobiDemandSourceAdapter(),
             BidonAdapterAmazon.AmazonDemandSourceAdapter()
-        ].sorted { $0.identifier < $1.identifier }
+        ].sorted { $0.demandId < $1.demandId }
     }
 }

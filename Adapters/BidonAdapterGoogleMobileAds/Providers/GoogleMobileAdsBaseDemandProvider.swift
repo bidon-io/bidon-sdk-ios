@@ -17,13 +17,13 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     
     private var response: DemandProviderResponse?
     
-    let serverData: GoogleMobileAdsDemandSourceAdapter.ServerData
+    let parameters: GoogleMobileAdsParameters
     
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    init(serverData: GoogleMobileAdsDemandSourceAdapter.ServerData) {
-        self.serverData = serverData
+    init(parameters: GoogleMobileAdsParameters) {
+        self.parameters = parameters
         super.init()
     }
     
@@ -61,35 +61,31 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
 
 
 extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: GoogleMobileAdsAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         self.response = response
         let request = GADRequest { builder in
-            builder.withRequestAgent(serverData.requestAgent)
+            builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
         
-        loadAd(request, adUnitId: adUnitId)
+        loadAd(request, adUnitId: adUnitExtras.adUnitId)
     }
 }
 
 
-extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider {
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
-    struct BiddingResponse: Codable {
-        var payload: String
-        var adUnitId: String
-    }
-    
-    func fetchBiddingContext(
-        response: @escaping (Result<BiddingContext, Bidon.MediationError>) -> ()
+extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
+    func collectBiddingToken(
+        adUnitExtras: GoogleMobileAdsAdUnitExtras,
+        response: @escaping (Result<GoogleMobileAdsBiddingToken, MediationError>) -> ()
     ) {
         let request = GADRequest { builder in
-            builder.withQueryType(serverData.queryInfoType)
-            builder.withRequestAgent(serverData.requestAgent)
+            builder.withQueryType(parameters.queryInfoType)
+            builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
@@ -100,23 +96,24 @@ extension GoogleMobileAdsBaseDemandProvider: ParameterizedBiddingDemandProvider 
                 return
             }
             
-            let context = BiddingContext(token: token)
+            let context = GoogleMobileAdsBiddingToken(token: token)
             response(.success(context))
         }
     }
-    
-    func prepareBid(
-        data: BiddingResponse,
+
+    func load(
+        payload: GoogleMobileAdsBiddingPayload,
+        adUnitExtras: GoogleMobileAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         let request = GADRequest { builder in
-            builder.withQueryType(serverData.queryInfoType)
-            builder.withRequestAgent(serverData.requestAgent)
+            builder.withQueryType(parameters.queryInfoType)
+            builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdrpConsent)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
-            builder.withBiddingPayload(data.payload)
+            builder.withBiddingPayload(payload.payload)
         }
         
-        loadAd(request, adUnitId: data.adUnitId)
+        loadAd(request, adUnitId: adUnitExtras.adUnitId)
     }
 }

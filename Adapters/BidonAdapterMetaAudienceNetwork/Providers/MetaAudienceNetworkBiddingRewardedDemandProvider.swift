@@ -32,17 +32,18 @@ final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetwor
     
     private var response: DemandProviderResponse?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let rewarded = FBRewardedVideoAd(placementID: data.placementId)
+        let rewarded = FBRewardedVideoAd(placementID: adUnitExtras.placementId)
         rewarded.delegate = self
         
         self.rewardedAd = rewarded
         self.response = response
         
-        rewarded.load(withBidPayload: data.payload)
+        rewarded.load(withBidPayload: payload.payload)
     }
 }
 

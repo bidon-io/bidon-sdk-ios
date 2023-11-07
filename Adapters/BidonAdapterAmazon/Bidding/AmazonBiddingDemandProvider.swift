@@ -17,9 +17,8 @@ extension DTBAdDispatcher: DemandAd {
 }
 
 
-class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, ParameterizedBiddingDemandProvider {
+class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, BiddingDemandProvider, DTBAdCallback {
     typealias DemandAdType = Dispatcher
-    typealias BiddingContext = AmazonBiddingSlots
    
     struct BiddingResponse: Codable {
         var slotUuid: String
@@ -27,32 +26,62 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Parame
     
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
+
+    private lazy var loader = DTBAdLoader()
+    private lazy var adResponses = Set<DTBAdResponse>()
     
-    private let adSizes: [DTBAdSize]
-    private lazy var biddingHandler = AmazonBiddingHandler(adSizes: adSizes)
+    private var tokenResponse: ((Result<AmazonBiddingToken, MediationError>) -> ())?
     
-    init(adSizes: [DTBAdSize]) {
-        self.adSizes = adSizes
-        super.init()
-    }
-    
-    final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
-        biddingHandler.fetch(response: response)
-    }
-    
-    final func prepareBid(
-        data: BiddingResponse,
-        response: @escaping DemandProviderResponse
+    func collectBiddingToken(
+        adUnitExtras: AmazonAdUnitExtras,
+        response: @escaping (Result<AmazonBiddingToken, MediationError>) -> ()
     ) {
-        guard let data = biddingHandler.response(for: data.slotUuid) else {
-            response(.failure(.noFill))
+        guard let adSize = adSize(adUnitExtras) else {
+            response(.failure(.noAppropriateAdUnitId))
             return
         }
         
-        fill(data, response: response)
+        loader.setAdSizes([adSize])
+        
+        self.tokenResponse = response
+        
+        loader.loadAd(self)
+    }
+    
+    func load(
+        payload: AmazonBiddingPayload,
+        adUnitExtras: AmazonAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        guard let adResponse = adResponses.first(where: { $0.adSize()?.slotUUID == adUnitExtras.slotUuid })
+        else {
+            response(.failure(.noAppropriateAdUnitId))
+            return
+        }
+        
+        fill(adResponse, response: response)
+    }
+
+    
+    func onSuccess(_ adResponse: DTBAdResponse!) {
+        adResponses.insert(adResponse)
+        guard let token = AmazonBiddingToken(response: adResponse) else {
+            tokenResponse?(.failure(.unscpecifiedException))
+            return
+        }
+        
+        tokenResponse?(.success(token))
+    }
+    
+    func onFailure(_ error: DTBAdError) {
+        tokenResponse?(.failure(MediationError(error: error)))
     }
     
     final func notify(ad: Dispatcher, event: DemandProviderEvent) {}
+    
+    open func adSize(_ extras: AmazonAdUnitExtras) -> DTBAdSize? {
+        return extras.adSize()
+    }
     
     open func fill(
         _ data: DTBAdResponse,
@@ -61,7 +90,6 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Parame
         fatalError("AmazonBiddingDemandProvider does not implement fill(_:response:)")
     }
 }
-
 
 extension Bidon.MediationError {
     init(error: DTBAdError) {

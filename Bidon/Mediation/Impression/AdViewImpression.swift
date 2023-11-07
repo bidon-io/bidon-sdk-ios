@@ -9,12 +9,12 @@ import Foundation
 
 
 struct AdViewImpression: Impression {
-    var impressionId: String = UUID().uuidString
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
 
+    var impressionId: String { bid.impressionId }
     var demandId: String { bid.adUnit.demandId }
     var demandType: DemandType { bid.adUnit.demandType }
     var price: Price { bid.price }

@@ -23,18 +23,9 @@ final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
 }
 
 
-class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, ParameterizedBiddingDemandProvider {
+class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider {
     typealias DemandAdType = VungleDemandAd<AdObject>
-    
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
-    struct BiddingResponse: Codable {
-        var payload: String
-        var placementId: String
-    }
-    
+
     private(set) var demandAd: VungleDemandAd<AdObject>!
     
     weak var delegate: Bidon.DemandProviderDelegate?
@@ -45,7 +36,10 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     
     var response: DemandProviderResponse?
     
-    final func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
+    func collectBiddingToken(
+        adUnitExtras: VungleAdUnitExtras,
+        response: @escaping (Result<VungleBiddingToken, MediationError>) -> ()
+    ) {
         // Synchronize privacy data
         switch context.regulations.gdrpConsent {
         case .given:
@@ -66,18 +60,19 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         }
     
         let token = VungleAds.getBiddingToken()
-        let context = BiddingContext(token: token)
+        let context = VungleBiddingToken(token: token)
         
         response(.success(context))
     }
     
-    final func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: VungleBiddingPayload,
+        adUnitExtras: VungleAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        let adObject = adObject(placement: data.placementId)
-        adObject.load(data.payload)
+        let adObject = adObject(placement: adUnitExtras.placementId)
+        adObject.load(payload.payload)
         demandAd = VungleDemandAd(adObject: adObject)
     }
     

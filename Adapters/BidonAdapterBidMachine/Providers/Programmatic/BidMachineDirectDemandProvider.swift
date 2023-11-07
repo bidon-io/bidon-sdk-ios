@@ -12,9 +12,12 @@ import BidMachineApiCore
 import Bidon
 
 
-class BidMachineProgrammaticDemandProvider<AdObject: BidMachineAdProtocol>: BidMachineBaseDemandProvider<AdObject>, ProgrammaticDemandProvider {
-    
-    func bid(_ pricefloor: Price, response: @escaping DemandProviderResponse) {
+class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachineBaseDemandProvider<AdObject>, DirectDemandProvider {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: BidMachineAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         do {
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
             
@@ -23,25 +26,24 @@ class BidMachineProgrammaticDemandProvider<AdObject: BidMachineAdProtocol>: BidM
                 builder.withCustomParameters(["mediation_mode": "bidon"])
             }
             
-            BidMachineSdk.shared.ad(AdObject.self, configuration) { ad, error in
+            BidMachineSdk.shared.ad(AdObject.self, configuration) { [weak self] ad, error in
+                guard let self = self else { return }
+                
                 guard let ad = ad, error == nil else {
                     response(.failure(.noBid))
                     return
                 }
                 
-                let wrapper = AdType(ad)
-                response(.success(wrapper))
+                ad.controller = UIApplication.shared.bd.topViewcontroller
+                ad.delegate = self
+                
+                self.response = response
+                self.ad = ad
+                
+                ad.loadAd()
             }
         } catch {
             response(.failure(.unscpecifiedException))
         }
-    }
-    
-    func fill(ad: AdType, response: @escaping DemandProviderResponse) {
-        self.response = response
-        
-        ad.ad.controller = UIApplication.shared.bd.topViewcontroller
-        ad.ad.delegate = self
-        ad.ad.loadAd()
     }
 }

@@ -17,11 +17,7 @@ extension MFAd: DemandAd {
 }
 
 
-class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, ParameterizedBiddingDemandProvider, IMFAdCallbackReceiver {
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
+class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, BiddingDemandProvider, IMFAdCallbackReceiver {
     struct BiddingResponse: Decodable {
         var placementId: String
         var signal: String
@@ -40,8 +36,9 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
     @Injected(\.context)
     var context: SdkContext
     
-    final func fetchBiddingContext(
-        response: @escaping (Result<BiddingContext, MediationError>) -> ()
+    func collectBiddingToken(
+        adUnitExtras: MobileFuseAdUnitExtras,
+        response: @escaping (Result<MobileFuseBiddingToken, MediationError>) -> ()
     ) {
         let request = MFBiddingTokenRequest()
         request.isTestMode = context.isTestMode
@@ -60,13 +57,14 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         }
                 
         MFBiddingTokenProvider.getTokenWith(request) { token in
-            let context = BiddingContext(token: token)
+            let context = MobileFuseBiddingToken(token: token)
             response(.success(context))
         }
     }
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: MobileFuseBiddingPayload,
+        adUnitExtras: MobileFuseAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         fatalError("MobileFuseBiddingBaseDemandProvider is unable to prepare bid")
