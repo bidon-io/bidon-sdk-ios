@@ -12,13 +12,38 @@ import Foundation
 
 
 extension BidRequest.ResponseBody {
-    init?(raw: Any) {
-        guard
-            let data = try? JSONSerialization.data(withJSONObject: raw),
-            let response = try? JSONDecoder().decode(Self.self, from: data)
-        else { return nil }
+    init(_ response: TestResponse) {
+        let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
         
-        self = response
+        let data = try! encoder.encode(response)
+        self = try! decoder.decode(Self.self, from: data)
+    }
+    
+    init(bids: [TestServerBid]) {
+        let response = TestResponse(bids: bids)
+        self.init(response)
     }
 }
 
+
+struct TestServerBid: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case impid
+        case price
+        case adUnit = "ad_unit"
+        case ext
+    }
+    
+    var id: String = UUID().uuidString
+    var impid: String = UUID().uuidString
+    var price: Price
+    var adUnit: TestAdUnit
+    var ext: TestBiddingPayload
+}
+
+
+struct TestResponse: Codable {
+    var bids: [TestServerBid]
+}

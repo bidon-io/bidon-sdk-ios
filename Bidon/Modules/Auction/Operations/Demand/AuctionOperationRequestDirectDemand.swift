@@ -68,6 +68,12 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             
             group.enter()
             
+            let event = DirectDemandWillLoadAuctionEvent(
+                configuration: roundConfiguration,
+                adUnit: adUnit
+            )
+            observer.log(event)
+            
             activeAdUnits.insert(adUnit)
             
             provider.load(
@@ -122,7 +128,7 @@ extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandl
             DirectDemandLoadingErrorAucitonEvent(
                 configuration: roundConfiguration,
                 adUnit: adUnit,
-                error: .timeoutReached
+                error: .fillTimeoutReached
             )
         }.forEach(observer.log)
         

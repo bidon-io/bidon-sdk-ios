@@ -118,7 +118,7 @@ extension AuctionOperationPerformBidRequest: AuctionOperationRoundTimeoutHandler
             BiddingDemandErrorAuctionEvent(
                 configuration: roundConfiguration,
                 demandId: adapter.demandId,
-                error: .timeoutReached
+                error: .bidTimeoutReached
             )
         }.forEach(observer.log)
                 

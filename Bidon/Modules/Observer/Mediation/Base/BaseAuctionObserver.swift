@@ -67,7 +67,7 @@ final class BaseAuctionObserver: AuctionObserver {
             $rounds.mutate(_event.configuration) { round in
                 round.demand.didFailDemand(_event.adapter.demandId, error: _event.error)
             }
-        case let _event as DirectDemandWillLoadAuctionEventEvent:
+        case let _event as DirectDemandWillLoadAuctionEvent:
             $rounds.mutate(_event.configuration) { observation in
                 observation.demand.willLoadAdUnit(_event.adUnit)
             }

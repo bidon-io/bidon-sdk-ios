@@ -13,7 +13,8 @@ public enum MediationError: String, Error {
     case noFill
     case unknownAdapter
     case adapterNotInitialized
-    case timeoutReached
+    case bidTimeoutReached
+    case fillTimeoutReached
     case networkError
     case incorrectAdUnitId
     case noAppropriateAdUnitId

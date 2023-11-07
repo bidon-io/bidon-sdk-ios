@@ -40,13 +40,13 @@ class AdapterMock: Adapter {
     var stubbedProvider: DemandProviderMock!
     
     convenience init<T: DemandProviderMockBuildable>(
-        id: String,
+        demandId: String,
         provider: T.Type,
         build: ((T.Builder) -> ())? = nil
     ) {
         self.init()
-        self.stubbedName = "Mock Adapter #" + id
-        self.stubbedDemandId = id
+        self.stubbedName = "Mock Adapter #" + demandId
+        self.stubbedDemandId = demandId
         self.stubbedSdkVersion = "0.0.0"
         self.stubbedAdapterVersion = "0"
         self.stubbedProvider = T { builder in

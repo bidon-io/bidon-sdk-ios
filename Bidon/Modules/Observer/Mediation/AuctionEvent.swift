@@ -109,7 +109,7 @@ struct DirectDemandErrorAuctionEvent: AuctionEvent {
 }
 
 
-struct DirectDemandWillLoadAuctionEventEvent: AuctionEvent {
+struct DirectDemandWillLoadAuctionEvent: AuctionEvent {
     var configuration: AuctionRoundConfiguration
     var adUnit: any AdUnit
     

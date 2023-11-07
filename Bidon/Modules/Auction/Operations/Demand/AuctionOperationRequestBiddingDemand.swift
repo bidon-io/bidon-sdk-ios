@@ -116,7 +116,7 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHand
             BiddingDemandErrorAuctionEvent(
                 configuration: roundConfiguration,
                 demandId: bid.adUnit.demandId,
-                error: .timeoutReached
+                error: .fillTimeoutReached
             )
         }.forEach(observer.log)
                 

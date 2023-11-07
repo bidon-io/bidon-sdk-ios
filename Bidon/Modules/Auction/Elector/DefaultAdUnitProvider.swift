@@ -22,7 +22,9 @@ final class DefaultAdUnitProvider: AdUnitProvider {
         let candidate = adUnits
             .filter { $0.demandType == .direct && $0.demandId == demandId && $0.pricefloor > pricefloor }
             .sorted { $0.pricefloor < $1.pricefloor }
-            .first
+            .first ??
+        adUnits
+            .first { $0.demandType == .direct && $0.pricefloor.isUnknown }
         
         adUnits = adUnits.filter { $0 != candidate }
         return candidate

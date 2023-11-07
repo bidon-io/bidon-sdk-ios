@@ -11,12 +11,14 @@ import Foundation
 struct EncodableAuctionReportModel: AuctionReport, Encodable {
     
     struct EncodableAuctionDemandReportModel: AuctionDemandReport, Encodable {
-        
+
         typealias BidType = DummyBid
+        typealias AdUnitType = DummyAdUnit
         
         var demandId: String
         var status: DemandMediationStatus
         var bid: BidType?
+        var adUnit: DummyAdUnit?
         var startTimestamp: UInt?
         var finishTimestamp: UInt?
         
@@ -37,8 +39,8 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             try container.encode(status, forKey: .status)
             try container.encodeIfPresent(startTimestamp, forKey: .startTimestamp)
             try container.encodeIfPresent(finishTimestamp, forKey: .finishTimestamp)
-            try container.encodeIfPresent(bid?.adUnit.uid, forKey: .adUnitUid)
-            try container.encodeIfPresent(bid?.adUnit.label, forKey: .adUnitLabel)
+            try container.encodeIfPresent(adUnit?.uid, forKey: .adUnitUid)
+            try container.encodeIfPresent(adUnit?.label, forKey: .adUnitLabel)
             try container.encodeIfPresent(bid?.price, forKey: .price)
         }
     }
@@ -158,6 +160,7 @@ extension EncodableAuctionReportModel.EncodableAuctionDemandReportModel {
         self.demandId = demand.demandId
         self.status = demand.status
         self.bid = demand.bid.map(DummyBid.init)
+        self.adUnit = demand.adUnit.map(DummyAdUnit.init)
         self.startTimestamp = demand.startTimestamp
         self.finishTimestamp = demand.finishTimestamp
     }

@@ -10,10 +10,12 @@ import Foundation
 
 struct AuctionDemandReportModel: AuctionDemandReport {
     typealias BidType = DummyBid
-
+    typealias AdUnitType = DummyAdUnit
+    
     var demandId: String
     var status: DemandMediationStatus
     var bid: BidType?
+    var adUnit: AdUnitType?
     var startTimestamp: UInt?
     var finishTimestamp: UInt?
 }
@@ -64,6 +66,7 @@ extension AuctionDemandReportModel {
         self.demandId = entry.demandId
         self.status = entry.status
         self.bid = entry.bid
+        self.adUnit = entry.adUnit
         self.startTimestamp = entry.startTimestamp?.uint
         self.finishTimestamp = entry.finishTimestamp?.uint
     }
@@ -71,7 +74,9 @@ extension AuctionDemandReportModel {
 
 
 extension AuctionRoundBiddingReportModel {
-    init(observation: DemandObservation) {
+    init?(observation: DemandObservation) {
+        guard let _ = observation.bidRequestTimestamp else { return nil }
+        
         self.startTimestamp = observation.bidRequestTimestamp?.uint
         self.finishTimestamp = observation.bidResponseTimestamp?.uint
         self.demands = observation.entries.map(AuctionDemandReportModel.init)

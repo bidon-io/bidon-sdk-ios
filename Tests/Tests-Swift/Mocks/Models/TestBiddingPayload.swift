@@ -11,3 +11,10 @@ import Foundation
 struct TestBiddingPayload: Codable, Equatable {
     var payload: String = UUID().uuidString
 }
+
+
+extension TestBiddingPayload: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(payload: value)
+    }
+}

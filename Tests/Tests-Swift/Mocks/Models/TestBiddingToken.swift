@@ -11,3 +11,10 @@ import Foundation
 struct TestBiddingToken: Codable, Equatable {
     var token: String = UUID().uuidString
 }
+
+
+extension TestBiddingToken: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(token: value)
+    }
+}

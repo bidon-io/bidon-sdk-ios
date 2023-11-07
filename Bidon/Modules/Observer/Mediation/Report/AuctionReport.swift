@@ -10,10 +10,12 @@ import Foundation
 
 protocol AuctionDemandReport {
     associatedtype BidType: Bid
+    associatedtype AdUnitType: AdUnit
     
     var demandId: String { get }
     var status: DemandMediationStatus { get }
     var bid: BidType? { get }
+    var adUnit: AdUnitType? { get } 
     var startTimestamp: UInt? { get }
     var finishTimestamp: UInt? { get }
 }

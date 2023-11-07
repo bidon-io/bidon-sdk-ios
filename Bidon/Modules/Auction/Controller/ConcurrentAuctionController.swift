@@ -184,7 +184,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             )
             
             auction.addEdge(
-                parent: performBidRequestOperation,
+                parent: requestBiddingDemandOperation,
                 child: finishRoundOperation
             )
             
