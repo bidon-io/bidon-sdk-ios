@@ -203,7 +203,6 @@ SPEC REPOS:
     - OMSDK_Appodeal
     - StackConsentManager
     - StackIAB
-    - StackModules
     - StackProtobuf
   trunk:
     - AmazonPublisherServicesSDK
@@ -260,7 +259,7 @@ SPEC CHECKSUMS:
   Protobuf: 6a4183ec1d51649eb2be7b86ccc286e5c539219c
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
   StackIAB: 13b2ec9602f1e8f142e0d8768655e7cbc29657cf
-  StackModules: 3034904ea7ae7071e098ef995d2a4adc6aee47fb
+  StackModules: afc32e3e4e5e7e82a0059b2df65b5c0ecb2eb296
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   UnityAds: 6fa6b68b831706c9761dcd97555dd60b03e3254b
   VungleAds: e13f0ea8facb05d5511e31c5abcced79a82409e7

@@ -4,10 +4,8 @@ workspace 'Bidon.xcworkspace'
 source 'https://github.com/appodeal/CocoaPods.git'
 source 'https://cdn.cocoapods.org/'
 
-plugin 'cocoapods-pod-linkage'
-
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
-use_frameworks! :linkage => :static
+use_frameworks! 
 
 # Defenitions
 
@@ -75,7 +73,7 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', :linkage => :dynamic
+  pod 'AmazonPublisherServicesSDK'
 end
 
 def inmobi
