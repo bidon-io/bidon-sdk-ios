@@ -24,9 +24,9 @@ struct TestAdUnit: Codable, AdUnit {
     typealias ExtrasType = TestAdUnitExtras
     
     enum CodingKeys: String, CodingKey {
-        case uid = "id"
-        case demandId = "demand_id"
-        case demandType = "bid_type"
+        case uid = "uid"
+        case demandId = "demandId"
+        case demandType = "bidType"
         case label
         case pricefloor
         case extras = "ext"

@@ -17,6 +17,7 @@ struct BidRequest: Request {
    
     struct RequestBody: Encodable, Tokenized {
         struct ImpModel: Encodable {
+            var id: String = UUID().uuidString
             var bidfloor: Price
             var auctionId: String
             var auctionConfigurationUid: String

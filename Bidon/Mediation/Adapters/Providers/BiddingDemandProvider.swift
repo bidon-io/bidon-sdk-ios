@@ -13,7 +13,7 @@ public typealias BiddingContextEncoderResponse = (Result<Encodable, MediationErr
 
 public protocol GenericBiddingDemandProvider: DemandProvider {
     func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: Decoder,
+        adUnitExtrasDecoder: [Decoder],
         response: @escaping BiddingContextEncoderResponse
     )
     
@@ -31,7 +31,7 @@ public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
     associatedtype AdUnitExtras: Decodable
     
     func collectBiddingToken(
-        adUnitExtras: AdUnitExtras,
+        adUnitExtras: [AdUnitExtras],
         response: @escaping (Result<BiddingToken, MediationError>) -> ()
     )
     
@@ -45,11 +45,11 @@ public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
 
 extension BiddingDemandProvider {
     public func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: Decoder,
+        adUnitExtrasDecoder: [Decoder],
         response: @escaping BiddingContextEncoderResponse
     ) {
         do {
-            let adUnitExtas = try AdUnitExtras(from: adUnitExtrasDecoder)
+            let adUnitExtas = try adUnitExtrasDecoder.map { try AdUnitExtras(from: $0) }
             collectBiddingToken(adUnitExtras: adUnitExtas) { result in
                 switch result {
                 case .failure(let error):
@@ -85,7 +85,7 @@ extension BiddingDemandProvider {
 
 
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericBiddingDemandProvider {
-    private let _collectBiddingTokenEncoder: (Decoder, @escaping BiddingContextEncoderResponse) -> ()
+    private let _collectBiddingTokenEncoder: ([Decoder], @escaping BiddingContextEncoderResponse) -> ()
     private let _load: (Decoder, Decoder, @escaping DemandProviderResponse) -> ()
     
     override init(_ wrapped: W) throws {
@@ -99,7 +99,7 @@ final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericBi
     }
     
     func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: Decoder,
+        adUnitExtrasDecoder: [Decoder],
         response: @escaping BiddingContextEncoderResponse
     ) {
         _collectBiddingTokenEncoder(adUnitExtrasDecoder, response)

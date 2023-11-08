@@ -15,7 +15,7 @@ class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSOb
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     func collectBiddingToken(
-        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
+        adUnitExtras: [MetaAudienceNetworkAdUnitExtras],
         response: @escaping (Result<MetaAudienceNetworkBiddingToken, MediationError>) -> ()
     ) {
         let token = FBAdSettings.bidderToken

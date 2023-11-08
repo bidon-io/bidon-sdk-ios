@@ -9,20 +9,22 @@ import Foundation
 
 
 struct AdViewImpression: Impression {
+    var impressionId: String { bid.impressionId }
+    var demandId: String { bid.adUnit.demandId }
+    var ad: DemandAd { bid.ad }
+    var adType: AdType { bid.adType }
+    var price: Price { bid.price }
+    var demandType: DemandType { bid.adUnit.demandType }
+    var adUnitUid: String { bid.adUnit.uid }
+    var adUnitLabel: String { bid.adUnit.label }
+    var roundConfiguration: AuctionRoundConfiguration { bid.roundConfiguration }
+    var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
+    
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
 
-    var impressionId: String { bid.impressionId }
-    var demandId: String { bid.adUnit.demandId }
-    var demandType: DemandType { bid.adUnit.demandType }
-    var price: Price { bid.price }
-    var adType: AdType { bid.adType }
-    var ad: DemandAd { bid.ad }
-    var roundConfiguration: AuctionRoundConfiguration { bid.roundConfiguration }
-    var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
-    
     var format: BannerFormat
     var bid: AdViewBid
     

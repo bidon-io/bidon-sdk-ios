@@ -24,8 +24,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             .reduce([]) { $0 + $1.bids }
     }
     
-    private var activeServerBids = Set<ServerBidModel>()
-    
     private(set) var bids: [BidType] = []
     
     init(builder: BuilderType) {
@@ -41,69 +39,69 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     override func main() {
         super.main()
         
-        let group = DispatchGroup()
-        for serverBid in serverBids {
-            guard
-                let adapter = adapters.first(where: { $0.demandId == serverBid.adUnit.demandId }),
-                let provider = adapter.provider as? any GenericBiddingDemandProvider
-            else {
-                let event = BiddingDemandLoadingErrorAucitonEvent(
-                    configuration: roundConfiguration,
-                    bid: serverBid,
-                    error: .unknownAdapter
-                )
-                observer.log(event)
-                
-                continue
-            }
-            
-            group.enter()
-            
-            let event = BiddingDemandWillLoadAuctionEvent(
+        recursivelyLoadBids()
+    }
+    
+    private func recursivelyLoadBids(index: Int = 0) {
+        guard isExecuting else { return }
+        guard index < serverBids.count else { return finish() }
+        
+        let serverBid = serverBids[index]
+        
+        guard
+            let adapter = adapters.first(where: { $0.demandId == serverBid.adUnit.demandId }),
+            let provider = adapter.provider as? any GenericBiddingDemandProvider
+        else {
+            let event = BiddingDemandLoadingErrorAucitonEvent(
                 configuration: roundConfiguration,
-                bid: serverBid
+                bid: serverBid,
+                error: .unknownAdapter
             )
             observer.log(event)
-            
-            provider.load(
-                payloadDecoder: serverBid.payload,
-                adUnitExtrasDecoder: serverBid.adUnit.extras
-            ) { [weak self] result in
-                guard let self = self else { return }
-                defer { group.leave() }
-                
-                switch result {
-                case .failure(let error):
-                    let event = BiddingDemandLoadingErrorAucitonEvent(
-                        configuration: self.roundConfiguration,
-                        bid: serverBid,
-                        error: error
-                    )
-                    self.observer.log(event)
-                case .success(let ad):
-                    let bid = BidType(
-                        id: serverBid.id,
-                        impressionId: serverBid.impressionId,
-                        adType: self.context.adType,
-                        adUnit: serverBid.adUnit,
-                        price: ad.price ?? serverBid.price,
-                        ad: ad,
-                        provider: adapter.provider,
-                        roundConfiguration: self.roundConfiguration,
-                        auctionConfiguration: self.auctionConfiguration
-                    )
-                    
-                    let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
-                    self.observer.log(event)
-                    
-                    self.bids.append(bid)
-                }
-            }
+            return recursivelyLoadBids(index: index + 1)
         }
+                
+        let event = BiddingDemandWillLoadAuctionEvent(
+            configuration: roundConfiguration,
+            bid: serverBid
+        )
+        observer.log(event)
         
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self, self.isExecuting else { return }
-            self.finish()
+        provider.load(
+            payloadDecoder: serverBid.payload,
+            adUnitExtrasDecoder: serverBid.adUnit.extras
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .failure(let error):
+                let event = BiddingDemandLoadingErrorAucitonEvent(
+                    configuration: self.roundConfiguration,
+                    bid: serverBid,
+                    error: error
+                )
+                self.observer.log(event)
+                
+                self.recursivelyLoadBids(index: index + 1)
+            case .success(let ad):
+                let bid = BidType(
+                    id: serverBid.id,
+                    impressionId: serverBid.impressionId,
+                    adType: self.context.adType,
+                    adUnit: serverBid.adUnit,
+                    price: ad.price ?? serverBid.price,
+                    ad: ad,
+                    provider: adapter.provider,
+                    roundConfiguration: self.roundConfiguration,
+                    auctionConfiguration: self.auctionConfiguration
+                )
+                
+                let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
+                self.observer.log(event)
+                
+                self.bids.append(bid)
+                self.finish()
+            }
         }
     }
 }
@@ -113,7 +111,7 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHand
     func timeoutReached() {
         guard isExecuting else { return }
 
-        activeServerBids.map { bid in
+        serverBids.map { bid in
             BiddingDemandErrorAuctionEvent(
                 configuration: roundConfiguration,
                 demandId: bid.adUnit.demandId,

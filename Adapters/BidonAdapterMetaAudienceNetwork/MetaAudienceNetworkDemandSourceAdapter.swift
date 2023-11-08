@@ -79,7 +79,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
 
 
 fileprivate extension FBAdInitSettings {
-    convenience init?(parameters: MetaAudienceNetworkDemandSourceAdapter.Parameters) {
+    convenience init?(parameters: MetaAudienceNetworkParameters) {
         guard
             let mediationService = parameters.mediationService
         else { return nil }

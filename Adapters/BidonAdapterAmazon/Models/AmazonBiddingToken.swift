@@ -10,16 +10,18 @@ import DTBiOSSDK
 
 
 struct AmazonBiddingToken: Codable {
-    var slotUuid: String
-    var pricePoint: String
+    var token: String
     
-    init?(response: DTBAdResponse) {
+    init?(slots: [AmazonBiddingSlot]) {
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        
         guard
-            let adSize = response.adSize(),
-            let slotUuid = adSize.slotUUID
+            !slots.isEmpty,
+            let data = try? encoder.encode(slots),
+            let token = String(data: data, encoding: .utf8)
         else { return nil }
         
-        self.slotUuid = slotUuid
-        self.pricePoint = response.amznSlots()
+        self.token = token
     }
 }

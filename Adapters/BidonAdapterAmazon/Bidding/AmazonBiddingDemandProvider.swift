@@ -17,35 +17,21 @@ extension DTBAdDispatcher: DemandAd {
 }
 
 
-class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, BiddingDemandProvider, DTBAdCallback {
+class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, BiddingDemandProvider {
     typealias DemandAdType = Dispatcher
    
-    struct BiddingResponse: Codable {
-        var slotUuid: String
-    }
-    
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
 
-    private lazy var loader = DTBAdLoader()
-    private lazy var adResponses = Set<DTBAdResponse>()
-    
-    private var tokenResponse: ((Result<AmazonBiddingToken, MediationError>) -> ())?
-    
+    private var handler: AmazonBiddingHandler?
+        
     func collectBiddingToken(
-        adUnitExtras: AmazonAdUnitExtras,
+        adUnitExtras: [AmazonAdUnitExtras],
         response: @escaping (Result<AmazonBiddingToken, MediationError>) -> ()
     ) {
-        guard let adSize = adSize(adUnitExtras) else {
-            response(.failure(.noAppropriateAdUnitId))
-            return
-        }
-        
-        loader.setAdSizes([adSize])
-        
-        self.tokenResponse = response
-        
-        loader.loadAd(self)
+        let adSizes = adUnitExtras.compactMap(adSize)
+        handler = AmazonBiddingHandler(adSizes: adSizes)
+        handler?.fetch(response: response)
     }
     
     func load(
@@ -53,28 +39,13 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Biddin
         adUnitExtras: AmazonAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        guard let adResponse = adResponses.first(where: { $0.adSize()?.slotUUID == adUnitExtras.slotUuid })
+        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid)
         else {
             response(.failure(.noAppropriateAdUnitId))
             return
         }
         
         fill(adResponse, response: response)
-    }
-
-    
-    func onSuccess(_ adResponse: DTBAdResponse!) {
-        adResponses.insert(adResponse)
-        guard let token = AmazonBiddingToken(response: adResponse) else {
-            tokenResponse?(.failure(.unscpecifiedException))
-            return
-        }
-        
-        tokenResponse?(.success(token))
-    }
-    
-    func onFailure(_ error: DTBAdError) {
-        tokenResponse?(.failure(MediationError(error: error)))
     }
     
     final func notify(ad: Dispatcher, event: DemandProviderEvent) {}

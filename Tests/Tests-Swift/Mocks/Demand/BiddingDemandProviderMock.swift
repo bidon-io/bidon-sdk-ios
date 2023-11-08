@@ -21,14 +21,14 @@ where AdUnitExtras: Decodable & Equatable, BiddingToken: Encodable & Equatable, 
     
     var invokedCollectBiddingToken = false
     var invokedCollectBiddingTokenCount = 0
-    var invokedCollectBiddingTokenParameters: (adUnitExtras: AdUnitExtras, Void)?
-    var invokedCollectBiddingTokenParametersList = [(adUnitExtras: AdUnitExtras, Void)]()
+    var invokedCollectBiddingTokenParameters: (adUnitExtras: [AdUnitExtras], Void)?
+    var invokedCollectBiddingTokenParametersList = [(adUnitExtras: [AdUnitExtras], Void)]()
     var stubbedCollectBiddingTokenResponseResult: (Result<BiddingToken, MediationError>, Void)?
     
-    var _collectBiddingToken: ((AdUnitExtras, @escaping (Result<BiddingToken, MediationError>) -> ()) -> ())?
+    var _collectBiddingToken: (([AdUnitExtras], @escaping (Result<BiddingToken, MediationError>) -> ()) -> ())?
     
     func collectBiddingToken(
-        adUnitExtras: AdUnitExtras,
+        adUnitExtras: [AdUnitExtras],
         response: @escaping (Result<BiddingToken, MediationError>) -> ()
     ) {
         invokedCollectBiddingToken = true
@@ -68,9 +68,16 @@ extension BiddingDemandProviderMock: DemandProviderMockBuildable {
     final class Builder: DemandProviderMockBuilder {
         fileprivate var expectedBiddingPayload: BiddingPayload?
         fileprivate var expectedAdUnitExtras: AdUnitExtras?
+        fileprivate var expectedAdUnitTokenExtras: [AdUnitExtras]?
 
         var biddingContextResult: Result<BiddingToken, MediationError>?
         var prepareBidResult: Result<DemandAd, MediationError>?
+        
+        @discardableResult
+        func withExpectedAdUnitTokenExtras(_ extras: [AdUnitExtras]) -> Self {
+            self.expectedAdUnitTokenExtras = extras
+            return self
+        }
         
         @discardableResult
         func withExpectedAdUnitExtras(_ extras: AdUnitExtras) -> Self {
@@ -124,8 +131,8 @@ extension BiddingDemandProviderMock: DemandProviderMockBuildable {
         
         if let result = builder.biddingContextResult {
             _collectBiddingToken = { extras, response in
-                if let expectedExtras = builder.expectedAdUnitExtras {
-                    XCTAssertEqual(extras, expectedExtras, "Recieved ad unit extras doesn't match expected value!")
+                if let expectedAdUnitTokenExtras = builder.expectedAdUnitTokenExtras {
+                    XCTAssertEqual(extras, expectedAdUnitTokenExtras, "Recieved ad unit extras doesn't match expected value!")
                 }
                 response(result)
             }

@@ -10,28 +10,30 @@ import Foundation
 
 struct FullscreenImpression: Impression {
     var impressionId: String
+    var demandId: String
+    var ad: DemandAd
+    var adType: AdType
+    var price: Price
+    var demandType: DemandType
+    var adUnitUid: String
+    var adUnitLabel: String
+    var roundConfiguration: AuctionRoundConfiguration
+    var auctionConfiguration: AuctionConfiguration
+    
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
     var externalNotificationTrackedAt: TimeInterval = .nan
-    
-    var bidId: String
-    var demandId: String
-    var demandType: DemandType
-    var price: Price
-    var adType: AdType
-    var ad: DemandAd
-    var roundConfiguration: AuctionRoundConfiguration
-    var auctionConfiguration: AuctionConfiguration
 
     init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.impressionId = bid.impressionId
-        self.bidId = bid.adUnit.uid
         self.demandId = bid.adUnit.demandId
-        self.demandType = bid.adUnit.demandType
-        self.price = bid.price
-        self.adType = bid.adType
         self.ad = bid.ad
+        self.adType = bid.adType
+        self.price = bid.price
+        self.demandType = bid.adUnit.demandType
+        self.adUnitUid = bid.adUnit.uid
+        self.adUnitLabel = bid.adUnit.label
         self.roundConfiguration = bid.roundConfiguration
         self.auctionConfiguration = bid.auctionConfiguration
     }

@@ -132,6 +132,7 @@
 		42D377982AFAB072003DCCA2 /* MetaAudienceNetworkAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D377972AFAB072003DCCA2 /* MetaAudienceNetworkAdUnitExtras.swift */; };
 		42D3779A2AFAB084003DCCA2 /* MetaAudienceNetworkBiddingToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D377992AFAB084003DCCA2 /* MetaAudienceNetworkBiddingToken.swift */; };
 		42D3779C2AFAB099003DCCA2 /* MetaAudienceNetworkBiddingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D3779B2AFAB099003DCCA2 /* MetaAudienceNetworkBiddingPayload.swift */; };
+		42D3779E2AFBB177003DCCA2 /* AmazonBiddingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D3779D2AFBB177003DCCA2 /* AmazonBiddingHandler.swift */; };
 		42E13A9F2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E13A9E2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift */; };
 		42E3D9E92A5D869A00546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9E82A5D869A00546D3A /* Bidon.framework */; };
 		42E3D9EB2A5D86A100546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9EA2A5D86A100546D3A /* Bidon.framework */; };
@@ -312,6 +313,7 @@
 		42D377972AFAB072003DCCA2 /* MetaAudienceNetworkAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkAdUnitExtras.swift; sourceTree = "<group>"; };
 		42D377992AFAB084003DCCA2 /* MetaAudienceNetworkBiddingToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingToken.swift; sourceTree = "<group>"; };
 		42D3779B2AFAB099003DCCA2 /* MetaAudienceNetworkBiddingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingPayload.swift; sourceTree = "<group>"; };
+		42D3779D2AFBB177003DCCA2 /* AmazonBiddingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonBiddingHandler.swift; sourceTree = "<group>"; };
 		42E13A9E2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmazonBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		42E3D9E82A5D869A00546D3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42E3D9EA2A5D86A100546D3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -986,6 +988,7 @@
 				42EFE0AB2ABDC1E800AB2603 /* AmazonBiddingDemandProvider.swift */,
 				4215C5D52AC59E2D00312802 /* AmazonBiddingInterstitialDemandProvider.swift */,
 				42E13A9E2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift */,
+				42D3779D2AFBB177003DCCA2 /* AmazonBiddingHandler.swift */,
 			);
 			path = Bidding;
 			sourceTree = "<group>";
@@ -1973,6 +1976,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42D3776B2AFAA4B3003DCCA2 /* AmazonParameters.swift in Sources */,
+				42D3779E2AFBB177003DCCA2 /* AmazonBiddingHandler.swift in Sources */,
 				4253FEDB2ABC98580013A675 /* AmazonDemandSourceAdapter.swift in Sources */,
 				42D3776D2AFAA57F003DCCA2 /* AmazonBiddingToken.swift in Sources */,
 				4215C5D62AC59E2E00312802 /* AmazonBiddingInterstitialDemandProvider.swift in Sources */,

@@ -22,13 +22,9 @@ struct EncodableBiddingDemandTokens: Encodable {
     }
     
     func encode(to encoder: Encoder) throws {
-        let encodables: [String: [Encodable]] = tokens.reduce([:]) { result, token in
+        let encodables: [String: Encodable] = tokens.reduce([:]) { result, token in
             var result = result
-            if let tokens = result[token.demandId] {
-                result[token.demandId] = tokens + [token.token]
-            } else {
-                result[token.demandId] = [token.token]
-            }
+            result[token.demandId] = token.token
             return result
         }
         
@@ -37,14 +33,7 @@ struct EncodableBiddingDemandTokens: Encodable {
         for (demandId, encodable) in encodables {
             guard let key = DemandIdCodingKey(stringValue: demandId) else { continue }
             
-            let superEncoder = container.superEncoder(forKey: key)
-            
-            try encodable.forEach { value in
-                var nestedContainer = superEncoder.unkeyedContainer()
-                let nestedEncoder = nestedContainer.superEncoder()
-                
-                try value.encode(to: nestedEncoder)
-            }
+            try container.encode(encodable, forKey: key)
         }
     }
 }

@@ -16,7 +16,7 @@ struct ServerBidModel: Decodable, ServerBid {
         case billingNoticeUrl = "burl"
         case lossNoticeUrl = "lurl"
         case payload = "ext"
-        case adUnit = "ad_unit"
+        case adUnit
         case price
     }
     

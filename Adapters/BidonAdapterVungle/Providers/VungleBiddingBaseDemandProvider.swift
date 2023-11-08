@@ -37,7 +37,7 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     var response: DemandProviderResponse?
     
     func collectBiddingToken(
-        adUnitExtras: VungleAdUnitExtras,
+        adUnitExtras: [VungleAdUnitExtras],
         response: @escaping (Result<VungleBiddingToken, MediationError>) -> ()
     ) {
         // Synchronize privacy data

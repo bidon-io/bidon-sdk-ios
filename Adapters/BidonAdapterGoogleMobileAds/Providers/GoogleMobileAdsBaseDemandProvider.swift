@@ -80,7 +80,7 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
 
 extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
     func collectBiddingToken(
-        adUnitExtras: GoogleMobileAdsAdUnitExtras,
+        adUnitExtras: [GoogleMobileAdsAdUnitExtras],
         response: @escaping (Result<GoogleMobileAdsBiddingToken, MediationError>) -> ()
     ) {
         let request = GADRequest { builder in

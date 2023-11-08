@@ -20,7 +20,7 @@ where AdObject: BidMachineAdProtocol {
     }
     
     func collectBiddingToken(
-        adUnitExtras: BidMachineAdUnitExtras,
+        adUnitExtras: [BidMachineAdUnitExtras],
         response: @escaping (Result<BidMachineBiddingToken, MediationError>) -> ()
     ) {
         guard let token = BidMachineSdk.shared.token else {

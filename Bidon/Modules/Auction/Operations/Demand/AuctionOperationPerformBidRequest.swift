@@ -97,6 +97,12 @@ final class AuctionOperationPerformBidRequest<AdTypeContextType: AdTypeContext>:
     
                 self.bids = response.bids
             case .failure:
+                let event = BiddingDemandBidResponseAuctionEvent(
+                    configuration: self.roundConfiguration,
+                    bids: []
+                )
+                self.observer.log(event)
+                
                 self.bidders.map { bidder in
                     BiddingDemandErrorAuctionEvent(
                         configuration: self.roundConfiguration,

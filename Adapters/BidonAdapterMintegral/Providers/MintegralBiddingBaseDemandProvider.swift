@@ -15,7 +15,7 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidd
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     func collectBiddingToken(
-        adUnitExtras: MintegralAdUnitExtras,
+        adUnitExtras: [MintegralAdUnitExtras],
         response: @escaping (Result<MintegralBiddingToken, MediationError>) -> ()
     ) {
         let context = MintegralBiddingToken(

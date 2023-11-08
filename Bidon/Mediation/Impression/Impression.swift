@@ -11,10 +11,12 @@ import Foundation
 protocol Impression {
     var impressionId: String { get }
     var demandId: String { get }
-    var price: Price { get }
-    var adType: AdType { get }
     var ad: DemandAd { get }
+    var adType: AdType { get }
+    var price: Price { get }
     var demandType: DemandType { get }
+    var adUnitUid: String { get }
+    var adUnitLabel: String { get }
     var roundConfiguration: AuctionRoundConfiguration { get }
     var auctionConfiguration: AuctionConfiguration { get }
     

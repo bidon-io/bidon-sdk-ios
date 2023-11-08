@@ -141,21 +141,21 @@ struct DirectDemandLoadingErrorAucitonEvent: AuctionEvent {
 // MARK: Bidding Demand
 struct BiddingDemandWillCollectTokenAuctionEvent: AuctionEvent {
     var configuration: AuctionRoundConfiguration
-    var adUnit: AnyAdUnit
+    var adapter: Adapter
     
     var description: String {
-        return "bidding demand will collect token \(adUnit) in round \(configuration.roundId)"
+        return "bidding demand will collect token \(adapter) in round \(configuration.roundId)"
     }
 }
 
 
 struct BiddingDemandTokenErrorAuctionEvent: AuctionEvent {
     var configuration: AuctionRoundConfiguration
-    var adUnit: AnyAdUnit
+    var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "bidding demand collect token \(adUnit) error \(error) in round \(configuration.roundId)"
+        return "bidding demand collect token \(adapter) error \(error) in round \(configuration.roundId)"
     }
 }
 
