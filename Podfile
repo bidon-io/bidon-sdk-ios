@@ -7,7 +7,7 @@ source 'https://cdn.cocoapods.org/'
 plugin 'cocoapods-pod-linkage'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
-use_frameworks!
+use_frameworks! :linkage => :static
 
 # Defenitions
 
@@ -47,11 +47,11 @@ def dtexchange
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '~> 6.12.0'
+  pod 'FBAudienceNetwork', '~> 6.14.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.8.0'
+  pod 'UnityAds', '~> 4.9.0'
 end
 
 def mintegral
@@ -79,7 +79,7 @@ def amazon
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.5.8'
+  pod 'InMobiSDK', '~> 10.6.0'
 end
 
 def appodeal_mediation
@@ -210,7 +210,6 @@ target 'Sandbox' do
   amazon
   appodeal_mediation
 end
-
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

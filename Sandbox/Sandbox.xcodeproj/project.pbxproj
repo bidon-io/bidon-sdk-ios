@@ -744,7 +744,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DEVELOPMENT_TEAM = NZLK3N5NR4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
@@ -765,7 +765,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stasko.simplenumbers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -784,7 +784,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DEVELOPMENT_TEAM = NZLK3N5NR4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
@@ -805,7 +805,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stasko.simplenumbers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
