@@ -4,8 +4,11 @@ workspace 'Bidon.xcworkspace'
 source 'https://github.com/appodeal/CocoaPods.git'
 source 'https://cdn.cocoapods.org/'
 
+plugin 'cocoapods-user-defined-build-types'
+
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
 use_frameworks!
+enable_user_defined_build_types!
 
 # Defenitions
 
@@ -49,7 +52,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.8.0'
+  pod 'UnityAds', '~> 4.6.0'
 end
 
 def mintegral
@@ -73,7 +76,7 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK'
+  pod 'AmazonPublisherServicesSDK', :build_type => :dynamic_framework
 end
 
 def inmobi
