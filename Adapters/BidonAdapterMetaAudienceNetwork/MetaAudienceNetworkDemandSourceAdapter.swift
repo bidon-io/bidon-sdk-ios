@@ -22,7 +22,7 @@ BiddingAdViewDemandSourceAdapter
     
     public let identifier: String = MetaAudienceNetworkDemandSourceAdapter.identifier
     public let name: String = "MetaAudienceNetwork"
-    public let adapterVersion: String = "0"
+    public let adapterVersion: String = "1"
     public let sdkVersion: String = FB_AD_SDK_VERSION
     
     private(set) public var isInitialized: Bool = false
