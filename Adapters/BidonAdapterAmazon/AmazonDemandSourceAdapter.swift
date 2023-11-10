@@ -20,7 +20,7 @@ BiddingRewardedAdDemandSourceAdapter
     
     public let identifier: String = AmazonDemandSourceAdapter.identifier
     public let name: String = "Amazon"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = DTBAds.version()
     
     private var slots: [AmazonSlot] = []

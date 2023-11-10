@@ -113,7 +113,7 @@ fileprivate extension Array where Element == Bidon.Adapter {
             BigoAdsDemandSourceAdapter(),
             MetaAudienceNetworkDemandSourceAdapter(),
             InMobiDemandSourceAdapter(),
-            BidonAdapterAmazon.AmazonDemandSourceAdapter()
+            AmazonDemandSourceAdapter()
         ].sorted { $0.identifier < $1.identifier }
     }
 }

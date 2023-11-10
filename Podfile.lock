@@ -78,40 +78,40 @@ PODS:
   - GoogleUtilities/Reachability (7.12.0):
     - GoogleUtilities/Logger
   - InMobiSDK (10.6.0)
-  - MintegralAdSDK (7.4.8):
-    - MintegralAdSDK/BannerAd (= 7.4.8)
-    - MintegralAdSDK/BidBannerAd (= 7.4.8)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 7.4.8)
-    - MintegralAdSDK/BidNativeAd (= 7.4.8)
-    - MintegralAdSDK/BidNewInterstitialAd (= 7.4.8)
-    - MintegralAdSDK/BidRewardVideoAd (= 7.4.8)
-    - MintegralAdSDK/InterstitialVideoAd (= 7.4.8)
-    - MintegralAdSDK/NativeAd (= 7.4.8)
-    - MintegralAdSDK/NewInterstitialAd (= 7.4.8)
-    - MintegralAdSDK/RewardVideoAd (= 7.4.8)
-  - MintegralAdSDK/BannerAd (7.4.8):
+  - MintegralAdSDK (7.4.9):
+    - MintegralAdSDK/BannerAd (= 7.4.9)
+    - MintegralAdSDK/BidBannerAd (= 7.4.9)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 7.4.9)
+    - MintegralAdSDK/BidNativeAd (= 7.4.9)
+    - MintegralAdSDK/BidNewInterstitialAd (= 7.4.9)
+    - MintegralAdSDK/BidRewardVideoAd (= 7.4.9)
+    - MintegralAdSDK/InterstitialVideoAd (= 7.4.9)
+    - MintegralAdSDK/NativeAd (= 7.4.9)
+    - MintegralAdSDK/NewInterstitialAd (= 7.4.9)
+    - MintegralAdSDK/RewardVideoAd (= 7.4.9)
+  - MintegralAdSDK/BannerAd (7.4.9):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (7.4.8):
+  - MintegralAdSDK/BidBannerAd (7.4.9):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (7.4.8):
+  - MintegralAdSDK/BidInterstitialVideoAd (7.4.9):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (7.4.8):
+  - MintegralAdSDK/BidNativeAd (7.4.9):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (7.4.8):
+  - MintegralAdSDK/BidNewInterstitialAd (7.4.9):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (7.4.8):
+  - MintegralAdSDK/BidRewardVideoAd (7.4.9):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (7.4.8):
+  - MintegralAdSDK/InterstitialVideoAd (7.4.9):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (7.4.8)
-  - MintegralAdSDK/NewInterstitialAd (7.4.8):
+  - MintegralAdSDK/NativeAd (7.4.9)
+  - MintegralAdSDK/NewInterstitialAd (7.4.9):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (7.4.8):
+  - MintegralAdSDK/RewardVideoAd (7.4.9):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.6.5)
   - nanopb (2.30909.1):
@@ -174,7 +174,7 @@ PODS:
     - StackModules/StackFoundation
   - StackProtobuf (0.8.5):
     - Protobuf (~> 3.13)
-  - UnityAds (4.9.1)
+  - UnityAds (4.9.2)
   - VungleAds (7.1.0)
 
 DEPENDENCIES:
@@ -203,6 +203,7 @@ SPEC REPOS:
     - OMSDK_Appodeal
     - StackConsentManager
     - StackIAB
+    - StackModules
     - StackProtobuf
   trunk:
     - AmazonPublisherServicesSDK
@@ -250,7 +251,7 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   InMobiSDK: 7c62b28415c663b881fa7009d04e0a5484f67902
-  MintegralAdSDK: ee69f71e371f25c2459315a1f724d13fa119ad88
+  MintegralAdSDK: 02de2ed30953e2a5b3d83fed1c31015349039248
   MobileFuseSDK: a46844fe3fefb9322524ed69da73dab948a6d768
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
@@ -259,11 +260,11 @@ SPEC CHECKSUMS:
   Protobuf: 6a4183ec1d51649eb2be7b86ccc286e5c539219c
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
   StackIAB: 13b2ec9602f1e8f142e0d8768655e7cbc29657cf
-  StackModules: afc32e3e4e5e7e82a0059b2df65b5c0ecb2eb296
+  StackModules: 3034904ea7ae7071e098ef995d2a4adc6aee47fb
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
-  UnityAds: 6fa6b68b831706c9761dcd97555dd60b03e3254b
+  UnityAds: 358547edbd4c923cd03462289b8813d0ef91999e
   VungleAds: e13f0ea8facb05d5511e31c5abcced79a82409e7
 
-PODFILE CHECKSUM: a89a180b0fd1a0d5663a5e03a6ac2fd3c5f868c2
+PODFILE CHECKSUM: 16b171edd5b15cfd501f5576e2a227a7d10dbdcd
 
 COCOAPODS: 1.11.3
