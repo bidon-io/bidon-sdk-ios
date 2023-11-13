@@ -1,11 +1,11 @@
 default_platform :ios
 
-fastlane_require 'dotenv'
+fastlane_require "dotenv"
 
 # Global variables
 $root_dir = File.expand_path(Dir.pwd + "/..")
 $build_dir = File.expand_path($root_dir + "/build")
-$podspecs_dir = $build_dir + '/Podspecs'
+$podspecs_dir = $build_dir + "/Podspecs"
 $scheme = "Release"
 $targets = [
   "Bidon",
@@ -18,13 +18,14 @@ $targets = [
   "BidonAdapterBigoAds",
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
-  "BidonAdapterInMobi"
+  "BidonAdapterInMobi",
+  "BidonAdapterAmazon"
 ]
 
 # Defenitions ###
 def build_universal(scheme)
   xcargs = [
-   "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
+    "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
     "STRIP_INSTALLED_PRODUCT=YES",
     "LINK_FRAMEWORKS_AUTOMATICALLY=NO",
     "BUILD_LIBRARY_FOR_DISTRIBUTION=YES",
@@ -38,7 +39,7 @@ def build_universal(scheme)
     "SKIP_INSTALL=NO",
     "CODE_SIGN_IDENTITY=\"\"",
     "CODE_SIGNING_REQUIRED=NO",
-    "CODE_SIGN_ENTITLEMENTS=\"\""
+    "CODE_SIGN_ENTITLEMENTS=\"\"",
   ]
 
   xcodebuild(
@@ -47,7 +48,7 @@ def build_universal(scheme)
     scheme: scheme,
     workspace: "Bidon.xcworkspace",
     sdk: "iphoneos",
-    xcargs: (xcargs + [ "VALID_ARCHS=\"arm64 armv7\"" ]).join(" ")
+    xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" "),
   )
 
   xcodebuild(
@@ -56,25 +57,23 @@ def build_universal(scheme)
     scheme: scheme,
     workspace: "Bidon.xcworkspace",
     sdk: "iphonesimulator",
-    xcargs: (xcargs + [ "VALID_ARCHS=\"x86_64 arm64\"" ]).join(" ")
+    xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" "),
   )
 end
-
 
 def xcframework(scheme, target, framework, version)
   create_xcframework(
     frameworks: [
       "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/Library/Frameworks/#{framework}.framework",
-      "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework"
+      "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework",
     ],
-    output: "#{$build_dir}/#{scheme}/#{target}-#{version}/#{framework}.xcframework"
+    output: "#{$build_dir}/#{scheme}/#{target}-#{version}/#{framework}.xcframework",
   )
 end
 
-
 platform :ios do
   before_all do
-    Dotenv.load '.env.default'
+    Dotenv.load ".env.default"
 
     clean_build_artifacts
 
@@ -86,10 +85,10 @@ platform :ios do
   desc "Build all modules into xcframeworks"
   lane :sdk do |options|
     raise "No SDK version specified".red if options[:version].nil?
-    
+
     upload = options[:upload] || false
     version = options[:version]
-    adapters_version = options[:adapters_version] || version + '.1'
+    adapters_version = options[:adapters_version] || version + ".1"
 
     cocoapods(use_bundle_exec: true)
     build_universal($scheme)
@@ -97,48 +96,48 @@ platform :ios do
     $targets.each do |target|
       is_adapter = target.start_with?("BidonAdapter")
       ver = is_adapter ? adapters_version : version
-      
+
       xcframework($scheme, target, target, ver)
 
       zip(
         path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}",
-        output_path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip"
+        output_path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip",
       )
 
       aws_s3(
-        access_key: ENV["S3_ACCESS_KEY"],  
-        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"], 
-        bucket: ENV['S3_BUCKET'],
-        region: ENV['S3_REGION'],
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
         acl: "bucket-owner-full-control",
         path: "#{target}/#{ver}",
-        files: [ "#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip" ]
+        files: ["#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip"],
       ) if upload
 
       podspec(
         name: target,
         version: ver,
         sdk_version: version,
-        podfile: $root_dir + '/Podfile',
-        s3_region: ENV['S3_REGION'],
-        s3_bucket: ENV['S3_BUCKET'],
+        podfile: $root_dir + "/Podfile",
+        s3_region: ENV["S3_REGION"],
+        s3_bucket: ENV["S3_BUCKET"],
         path: $podspecs_dir,
-        vendored_frameworks: [ "#{target}-#{ver}/#{target}.xcframework" ],
-        is_adapter: is_adapter
+        vendored_frameworks: ["#{target}-#{ver}/#{target}.xcframework"],
+        is_adapter: is_adapter,
       )
     end
   end
 
   lane :sandbox_env do |options|
     generate_sandbox_constants(
-      path: $root_dir + '/Sandbox/Sandbox'
+      path: $root_dir + "/Sandbox/Sandbox",
     )
   end
 
   lane :setup do |options|
     cocoapods(use_bundle_exec: true)
     generate_sandbox_constants(
-      path: $root_dir + '/Sandbox/Sandbox'
+      path: $root_dir + "/Sandbox/Sandbox",
     )
   end
 end

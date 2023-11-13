@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import SwiftUI
+
 import Bidon
 import BidonAdapterAppLovin
 import BidonAdapterBidMachine
@@ -20,7 +22,6 @@ import BidonAdapterBigoAds
 import BidonAdapterMetaAudienceNetwork
 import BidonAdapterInMobi
 import BidonAdapterAmazon
-import SwiftUI
 
 
 final class InitializationViewModel: ObservableObject, AdResponder {
@@ -41,6 +42,18 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         .init(
             name: "Production",
             baseURL: Constants.Bidon.baseURL
+        ),
+        .init(
+            name: "Staging 1",
+            baseURL: Constants.Bidon.stagingFirstURL,
+            user: Constants.Bidon.stagingUser,
+            password: Constants.Bidon.stagingPassword
+        ),
+        .init(
+            name: "Staging 2",
+            baseURL: Constants.Bidon.stagingSecondURL,
+            user: Constants.Bidon.stagingUser,
+            password: Constants.Bidon.stagingPassword
         )
     ]
     
@@ -58,7 +71,23 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         name: "Production",
         baseURL: Constants.Bidon.baseURL
     ) {
-        didSet { adService.bidonURL = host.baseURL }
+        didSet {
+            adService.bidonURL = host.baseURL
+            
+            let credentials = [host.user, host.password].compactMap { $0 }
+            guard
+                credentials.count == 2,
+                let authorization = credentials
+                    .joined(separator: ":")
+                    .data(using: .utf8)?
+                    .base64EncodedString()
+            else {
+                adService.bidonHTTPHeaders = [:]
+                return
+            }
+            
+            adService.bidonHTTPHeaders = ["Authorization": "Basic \(authorization)"]
+        }
     }
     
     @Published var mediation: Mediation = .none {
@@ -113,7 +142,7 @@ fileprivate extension Array where Element == Bidon.Adapter {
             BigoAdsDemandSourceAdapter(),
             MetaAudienceNetworkDemandSourceAdapter(),
             InMobiDemandSourceAdapter(),
-            BidonAdapterAmazon.AmazonDemandSourceAdapter()
+            AmazonDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }

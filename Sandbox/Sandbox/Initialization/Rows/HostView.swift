@@ -15,6 +15,8 @@ struct HostView: View {
         
         var name: String
         var baseURL: String
+        var user: String?
+        var password: String?
     }
     
     @Binding var hosts: [Model]
@@ -78,7 +80,7 @@ struct SelectHostView: View {
                 selected: $selected
             )
         }
-        .navigationTitle("Log Level")
+        .navigationTitle("Base URL")
         .toolbar {
             ToolbarItem(
                 placement: .navigationBarTrailing

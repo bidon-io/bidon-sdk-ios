@@ -89,6 +89,11 @@ extension AdService {
         get { BidonSdk.baseURL }
         set { BidonSdk.baseURL = newValue }
     }
+    
+    var bidonHTTPHeaders: [String: String] {
+        get { BidonSdk.HTTPHeaders }
+        set { BidonSdk.HTTPHeaders = newValue }
+    }
 }
 
 extension AdResponder {

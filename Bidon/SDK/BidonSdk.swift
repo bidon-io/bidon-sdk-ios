@@ -60,6 +60,12 @@ public final class BidonSdk: NSObject {
     }
     
     @objc
+    public static var HTTPHeaders: [String: String] {
+        get { shared.networkManager.HTTPHeaders }
+        set { shared.networkManager.HTTPHeaders = newValue } 
+    }
+    
+    @objc
     public static var extras: [String: AnyHashable]? {
         get {
             shared

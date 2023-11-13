@@ -13,6 +13,8 @@ protocol NetworkManager {
     
     var baseURL: String { get set }
     
+    var HTTPHeaders: [String: String] { get set }
+    
     func perform<T: Request>(
         request: T,
         completion: @escaping Completion<T>
@@ -41,6 +43,8 @@ final class PersistentNetworkManager: NetworkManager {
         
     var baseURL: String = Constants.API.baseURL
     
+    var HTTPHeaders: [String : String] = [:]
+    
     func perform<T: Request>(
         request: T,
         completion: @escaping (Result<T.ResponseBody, HTTPTask.HTTPError>) -> ()
@@ -61,13 +65,20 @@ final class PersistentNetworkManager: NetworkManager {
         
         guard let data = data else { return }
         
+        let headers = HTTPHeaders.reduce(into: HTTPTask.HTTPHeaders()) { result, pair in
+            let key = HTTPTask.HTTPHeader(stringValue: pair.key)
+            result[key] = pair.value
+        }.merging(request.headers) { _, second in
+            return second
+        }
+        
         HTTPTask(
             baseURL: baseURL,
             route: request.route,
             body: data,
             method: request.method,
             timeout: request.timeout,
-            headers: request.headers
+            headers: headers
         ) { result in
             // TODO: Cache logic
             switch result {
