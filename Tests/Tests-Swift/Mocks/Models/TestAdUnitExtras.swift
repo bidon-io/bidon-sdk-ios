@@ -26,7 +26,7 @@ struct TestAdUnit: Codable, AdUnit {
     enum CodingKeys: String, CodingKey {
         case uid = "uid"
         case demandId = "demandId"
-        case demandType = "bidType"
+        case demandType = "bid_type"
         case label
         case pricefloor
         case extras = "ext"

@@ -22,9 +22,9 @@ extension AdUnitModel: Decodable {
     enum CodingKeys: String, CodingKey {
         case uid = "uid"
         case demandId
-        case demandType = "bidType"
+        case demandType = "bid_type"
         case label
-        case pricefloor
+        case pricefloor = "price_floor"
         case extras = "ext"
     }
     

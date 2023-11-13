@@ -32,7 +32,7 @@ struct TestServerBid: Codable {
         case id
         case impid
         case price
-        case adUnit = "ad_unit"
+        case adUnit
         case ext
     }
     

@@ -12,6 +12,8 @@ import XCTest
 
 
 final class NetworkManagerMockProxy: NetworkManager {
+    var HTTPHeaders: [String : String] = [:]
+    
     var baseURL: String = ""
     
     private var mocks: [NetworkManager] = []
@@ -66,6 +68,28 @@ final class NetworkManagerMock<RequestType: Request>: NetworkManager {
             invokedBaseURLGetter = true
             invokedBaseURLGetterCount += 1
             return stubbedBaseURL
+        }
+    }
+    
+    var invokedHTTPHeadersSetter = false
+    var invokedHTTPHeadersSetterCount = 0
+    var invokedHTTPHeaders: [String: String]?
+    var invokedHTTPHeadersList = [[String: String]]()
+    var invokedHTTPHeadersGetter = false
+    var invokedHTTPHeadersGetterCount = 0
+    var stubbedHTTPHeaders: [String: String]! = [:]
+        
+    var HTTPHeaders: [String : String] {
+        set {
+            invokedHTTPHeadersSetter = true
+            invokedHTTPHeadersSetterCount += 1
+            invokedHTTPHeaders = newValue
+            invokedHTTPHeadersList.append(newValue)
+        }
+        get {
+            invokedHTTPHeadersGetter = true
+            invokedHTTPHeadersGetterCount += 1
+            return stubbedHTTPHeaders
         }
     }
 
