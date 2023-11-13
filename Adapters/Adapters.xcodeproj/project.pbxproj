@@ -39,6 +39,7 @@
 		422931B029A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931AF29A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift */; };
 		422931B229A79D9C00C9923D /* GADAdValue+AdRevenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931B129A79D9C00C9923D /* GADAdValue+AdRevenue.swift */; };
 		422931B429A7A3AA00C9923D /* GoogleMobileAdsRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931B329A7A3AA00C9923D /* GoogleMobileAdsRewardedAdDemandProvider.swift */; };
+		42381A042AFBED3800979B59 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4233F8E92AFBEADF008A2851 /* DTBiOSSDK.xcframework */; };
 		4249D5F429AFAF6800BAA338 /* BidonAdapterUnityAds.h in Headers */ = {isa = PBXBuildFile; fileRef = 4249D5F329AFAF6800BAA338 /* BidonAdapterUnityAds.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		424D295F28BE416400F6F2D6 /* GoogleMobileAdsDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424D295E28BE416400F6F2D6 /* GoogleMobileAdsDemandAd.swift */; };
 		4253FED22ABC97A70013A675 /* BidonAdapterAmazon.h in Headers */ = {isa = PBXBuildFile; fileRef = 4253FED12ABC97A70013A675 /* BidonAdapterAmazon.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -71,7 +72,6 @@
 		428C45DE2A27A645009E90EF /* BidMachineProgrammaticDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45DD2A27A645009E90EF /* BidMachineProgrammaticDemandProvider.swift */; };
 		428C45E12A27A80D009E90EF /* BidMachineBiddingDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45E02A27A80D009E90EF /* BidMachineBiddingDemandProvider.swift */; };
 		428C45E32A27A86D009E90EF /* BidMachineBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C45E22A27A86D009E90EF /* BidMachineBiddingInterstitialDemandProvider.swift */; };
-		428EE95D2AEFC9D000B9E894 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428EE95C2AEFC9D000B9E894 /* DTBiOSSDK.xcframework */; };
 		429EE2B8286C7293009439C6 /* BidMachineDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429EE2B7286C7293009439C6 /* BidMachineDemandSourceAdapter.swift */; };
 		42B35C5629AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B35C5529AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift */; };
 		42B35C5929AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B35C5829AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift */; };
@@ -164,6 +164,7 @@
 		422931AF29A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMobileAdsBaseDemandProvider.swift; sourceTree = "<group>"; };
 		422931B129A79D9C00C9923D /* GADAdValue+AdRevenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GADAdValue+AdRevenue.swift"; sourceTree = "<group>"; };
 		422931B329A7A3AA00C9923D /* GoogleMobileAdsRewardedAdDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMobileAdsRewardedAdDemandProvider.swift; sourceTree = "<group>"; };
+		4233F8E92AFBEADF008A2851 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.7.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		4249D5F129AFAF6700BAA338 /* BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4249D5F329AFAF6800BAA338 /* BidonAdapterUnityAds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterUnityAds.h; sourceTree = "<group>"; };
 		424D295E28BE416400F6F2D6 /* GoogleMobileAdsDemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMobileAdsDemandAd.swift; sourceTree = "<group>"; };
@@ -209,7 +210,6 @@
 		428C45DD2A27A645009E90EF /* BidMachineProgrammaticDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineProgrammaticDemandProvider.swift; sourceTree = "<group>"; };
 		428C45E02A27A80D009E90EF /* BidMachineBiddingDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineBiddingDemandProvider.swift; sourceTree = "<group>"; };
 		428C45E22A27A86D009E90EF /* BidMachineBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
-		428EE95C2AEFC9D000B9E894 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.7.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		429EE2B7286C7293009439C6 /* BidMachineDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		42B35C5529AFB2B00099199D /* UnityAdsDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityAdsDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		42B35C5829AFB90A0099199D /* UnityAdsInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityAdsInterstitialDemandProvider.swift; sourceTree = "<group>"; };
@@ -340,7 +340,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				428EE95D2AEFC9D000B9E894 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -777,7 +776,6 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				428EE95C2AEFC9D000B9E894 /* DTBiOSSDK.xcframework */,
 				4253FEDC2ABC98670013A675 /* Bidon.framework */,
 				42CFF1B92AAF623D00AC2C24 /* Bidon.framework */,
 				420F03652A6819B000A4664F /* Bidon.framework */,
@@ -2034,6 +2032,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2119,6 +2118,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -5,7 +5,7 @@ source 'https://github.com/appodeal/CocoaPods.git'
 source 'https://cdn.cocoapods.org/'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
-use_frameworks!
+use_frameworks! 
 
 # Defenitions
 
@@ -49,7 +49,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.8.0'
+  pod 'UnityAds', '~> 4.9.0'
 end
 
 def mintegral
@@ -77,7 +77,7 @@ def amazon
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.5.8'
+  pod 'InMobiSDK', '~> 10.6.0'
 end
 
 def appodeal_mediation
@@ -208,7 +208,6 @@ target 'Sandbox' do
   amazon
   appodeal_mediation
 end
-
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
