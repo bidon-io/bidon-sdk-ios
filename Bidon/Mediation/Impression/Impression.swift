@@ -17,6 +17,7 @@ protocol Impression {
     var demandType: DemandType { get }
     var adUnitUid: String { get }
     var adUnitLabel: String { get }
+    var roundPricefloor: Price { get }
     var roundConfiguration: AuctionRoundConfiguration { get }
     var auctionConfiguration: AuctionConfiguration { get }
     

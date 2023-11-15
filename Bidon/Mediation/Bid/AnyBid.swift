@@ -28,6 +28,7 @@ extension AnyAdViewBid {
             price: price,
             ad: ad,
             provider: provider.wrapped,
+            roundPricefloor: roundPricefloor,
             roundConfiguration: roundConfiguration,
             auctionConfiguration: auctionConfiguration
         )
@@ -45,6 +46,7 @@ extension AnyInterstitialBid {
             price: price,
             ad: ad,
             provider: provider.wrapped,
+            roundPricefloor: roundPricefloor,
             roundConfiguration: roundConfiguration,
             auctionConfiguration: auctionConfiguration
         )
@@ -62,6 +64,7 @@ extension AnyRewardedAdBid {
             price: price,
             ad: ad,
             provider: provider.wrapped,
+            roundPricefloor: roundPricefloor,
             roundConfiguration: roundConfiguration,
             auctionConfiguration: auctionConfiguration
         )

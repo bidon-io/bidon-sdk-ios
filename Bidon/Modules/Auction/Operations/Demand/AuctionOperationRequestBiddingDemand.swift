@@ -92,6 +92,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                     price: ad.price ?? serverBid.price,
                     ad: ad,
                     provider: adapter.provider,
+                    roundPricefloor: self.pricefloor,
                     roundConfiguration: self.roundConfiguration,
                     auctionConfiguration: self.auctionConfiguration
                 )

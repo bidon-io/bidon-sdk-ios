@@ -101,6 +101,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                         price: ad.price ?? adUnit.pricefloor,
                         ad: ad,
                         provider: adapter.provider,
+                        roundPricefloor: self.pricefloor,
                         roundConfiguration: self.roundConfiguration,
                         auctionConfiguration: self.auctionConfiguration
                     )

@@ -14,6 +14,7 @@ struct AdViewImpression: Impression {
     var ad: DemandAd { bid.ad }
     var adType: AdType { bid.adType }
     var price: Price { bid.price }
+    var roundPricefloor: Price { bid.roundPricefloor } 
     var demandType: DemandType { bid.adUnit.demandType }
     var adUnitUid: String { bid.adUnit.uid }
     var adUnitLabel: String { bid.adUnit.label }

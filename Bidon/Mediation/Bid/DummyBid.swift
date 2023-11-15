@@ -19,6 +19,7 @@ struct DummyBid: Bid {
     var price: Price
     var ad: Void
     var provider: Void
+    var roundPricefloor: Price
     var roundConfiguration: AuctionRoundConfiguration
     var auctionConfiguration: AuctionConfiguration
     
@@ -32,6 +33,7 @@ struct DummyBid: Bid {
         self.adUnit = bid.adUnit
         self.adType = bid.adType
         self.price = bid.price
+        self.roundPricefloor = bid.price
         self.ad = ()
         self.provider = ()
         self.roundConfiguration = bid.roundConfiguration

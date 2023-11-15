@@ -17,6 +17,7 @@ struct FullscreenImpression: Impression {
     var demandType: DemandType
     var adUnitUid: String
     var adUnitLabel: String
+    var roundPricefloor: Price
     var roundConfiguration: AuctionRoundConfiguration
     var auctionConfiguration: AuctionConfiguration
     
@@ -34,6 +35,7 @@ struct FullscreenImpression: Impression {
         self.demandType = bid.adUnit.demandType
         self.adUnitUid = bid.adUnit.uid
         self.adUnitLabel = bid.adUnit.label
+        self.roundPricefloor = bid.roundPricefloor
         self.roundConfiguration = bid.roundConfiguration
         self.auctionConfiguration = bid.auctionConfiguration
     }

@@ -18,6 +18,7 @@ struct ImpressionModel: Encodable {
     var roundId: String
     var roundIndex: Int
     var price: Price
+    var roundPricefloor: Price
     var demandType: String
     var banner: BannerAdTypeContextModel?
     var interstitial: InterstitialAdTypeContextModel?
@@ -33,6 +34,7 @@ struct ImpressionModel: Encodable {
         case adUnitUid = "ad_unit_uid"
         case adUnitLabel = "ad_unit_label"
         case price = "price"
+        case roundPricefloor = "round_pricefloor"
         case banner = "banner"
         case interstitial = "interstitial"
         case rewarded = "rewarded"
@@ -55,6 +57,7 @@ struct ImpressionModel: Encodable {
         self.adUnitUid = imp.adUnitUid
         self.adUnitLabel = imp.adUnitLabel
         self.price = imp.price
+        self.roundPricefloor = imp.roundPricefloor
         self.banner = banner
         self.interstitial = interstitial
         self.rewarded = rewarded

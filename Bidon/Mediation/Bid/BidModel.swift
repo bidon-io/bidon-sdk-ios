@@ -16,6 +16,7 @@ struct BidModel<DemandProviderType>: Bid {
     var price: Price
     var ad: DemandAd
     var provider: DemandProviderType
+    var roundPricefloor: Price
     var roundConfiguration: AuctionRoundConfiguration
     var auctionConfiguration: AuctionConfiguration
     

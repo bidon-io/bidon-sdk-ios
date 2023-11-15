@@ -19,6 +19,7 @@ protocol Bid: Hashable {
     var price: Price { get }
     var ad: DemandAdType { get }
     var provider: ProviderType { get }
+    var roundPricefloor: Price { get }
     var roundConfiguration: AuctionRoundConfiguration { get }
     var auctionConfiguration: AuctionConfiguration { get }
 }
