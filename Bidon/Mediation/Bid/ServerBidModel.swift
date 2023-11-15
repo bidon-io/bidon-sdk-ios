@@ -11,7 +11,7 @@ import Foundation
 struct ServerBidModel: Decodable, ServerBid {
     enum CodingKeys: String, CodingKey {
         case id
-        case impressionId = "impid"
+        case impressionId = "impId"
         case winNoticeUrl = "nurl"
         case billingNoticeUrl = "burl"
         case lossNoticeUrl = "lurl"

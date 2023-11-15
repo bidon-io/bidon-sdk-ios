@@ -30,14 +30,14 @@ extension BidRequest.ResponseBody {
 struct TestServerBid: Codable {
     enum CodingKeys: String, CodingKey {
         case id
-        case impid
+        case impId
         case price
         case adUnit
         case ext
     }
     
     var id: String = UUID().uuidString
-    var impid: String = UUID().uuidString
+    var impId: String = UUID().uuidString
     var price: Price
     var adUnit: TestAdUnit
     var ext: TestBiddingPayload
