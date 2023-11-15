@@ -57,7 +57,10 @@ struct RoundObservation {
         entry: inout DemandObservation.Entry,
         auctionWinner: AnyBid?
     ) {
-        guard entry.status.isUnknown else { return }
-        entry.status = entry.adUnit?.uid == auctionWinner?.adUnit.uid ? .win : .lose
+        guard
+            entry.status.isUnknown,
+            let winner = auctionWinner
+        else { return }
+        entry.status = entry.adUnit?.uid == winner.adUnit.uid ? .win : .lose
     }
 }

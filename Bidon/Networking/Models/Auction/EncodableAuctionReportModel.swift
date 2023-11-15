@@ -123,6 +123,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             try container.encodeIfPresent(winner?.price, forKey: .price)
             try container.encodeIfPresent(winner?.adUnit.demandType, forKey: .bidType)
             try container.encodeIfPresent(winner?.adUnit.demandId, forKey: .winnedDemandId)
+            try container.encodeIfPresent(winner?.adUnit.uid, forKey: .winnedAdUnitUid)
             try container.encodeIfPresent(winner?.adUnit.label, forKey: .winnedAdUnitLabel)
         }
     }
