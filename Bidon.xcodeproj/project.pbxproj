@@ -172,6 +172,7 @@
 		42D047EF289D6A380096A8C6 /* EnvironmentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D047EE289D6A380096A8C6 /* EnvironmentRepository.swift */; };
 		42D047F1289D73F80096A8C6 /* GeoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D047F0289D73F80096A8C6 /* GeoManager.swift */; };
 		42D3E72F28BE059F00936B3E /* Impression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D3E72E28BE059F00936B3E /* Impression.swift */; };
+		42D40BDA2B064BEB0008B34A /* AdaptersInitializator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D40BD92B064BEB0008B34A /* AdaptersInitializator.swift */; };
 		42DDB70429D2EF4E00DBA4C5 /* AdRevenueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DDB70329D2EF4E00DBA4C5 /* AdRevenueModel.swift */; };
 		42DDB70629D2EF6A00DBA4C5 /* AdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DDB70529D2EF6A00DBA4C5 /* AdWrapper.swift */; };
 		42DDB70829D2EF8C00DBA4C5 /* DemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DDB70729D2EF8C00DBA4C5 /* DemandAd.swift */; };
@@ -352,6 +353,7 @@
 		42D047EE289D6A380096A8C6 /* EnvironmentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentRepository.swift; sourceTree = "<group>"; };
 		42D047F0289D73F80096A8C6 /* GeoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoManager.swift; sourceTree = "<group>"; };
 		42D3E72E28BE059F00936B3E /* Impression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Impression.swift; sourceTree = "<group>"; };
+		42D40BD92B064BEB0008B34A /* AdaptersInitializator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersInitializator.swift; sourceTree = "<group>"; };
 		42DDB70329D2EF4E00DBA4C5 /* AdRevenueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdRevenueModel.swift; sourceTree = "<group>"; };
 		42DDB70529D2EF6A00DBA4C5 /* AdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdWrapper.swift; sourceTree = "<group>"; };
 		42DDB70729D2EF8C00DBA4C5 /* DemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandAd.swift; sourceTree = "<group>"; };
@@ -821,6 +823,7 @@
 		4299A41F289BC9560062C580 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				429EE2C3286CA252009439C6 /* Adapters */,
 				4243092F28A2B91B002360B0 /* Environment */,
 				4299A420289BC9610062C580 /* Auction */,
 				428FFC6A28BF7BA80090B126 /* Observer */,
@@ -844,7 +847,6 @@
 		4299A422289BCDA90062C580 /* Mediation */ = {
 			isa = PBXGroup;
 			children = (
-				429EE2C3286CA252009439C6 /* Adapters */,
 				4243093028A2BBC0002360B0 /* Ad */,
 				42FE946C29D42D5800DF7920 /* Bid */,
 				42FE947029D459AE00DF7920 /* Impression */,
@@ -896,6 +898,7 @@
 				422101992859E35C006596DA /* Adapter.swift */,
 				427DB5C029BF2A8500057D08 /* UnknownAdapter.swift */,
 				42389DEB2872F497006024BA /* AdaptersRepository.swift */,
+				42D40BD92B064BEB0008B34A /* AdaptersInitializator.swift */,
 			);
 			path = Adapters;
 			sourceTree = "<group>";
@@ -1283,6 +1286,7 @@
 				420EFD8D2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift in Sources */,
 				4299A427289BCF3F0062C580 /* HTTPTask.swift in Sources */,
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
+				42D40BDA2B064BEB0008B34A /* AdaptersInitializator.swift in Sources */,
 				426DD7B328A68BF400A1ADF5 /* FullscreenAdDelegate.swift in Sources */,
 				42697DA92A3A1DBC00D6B1EB /* ExtrasManager.swift in Sources */,
 				428C45D12A2772C0009E90EF /* InterfaceOrientation.swift in Sources */,

@@ -146,22 +146,11 @@ public final class BidonSdk: NSObject {
             self.networkManager.perform(request: request) { [unowned self] result in
                 switch result {
                 case .success(let response):
-                    self.updateSegmentIfNeeded(response.segment)
-                    let group = DispatchGroup()
-                    response.adaptersInitializationParameters.adapters.forEach { [unowned self] parameters in
-                        if
-                            let adapter: InitializableAdapter = self.adaptersRepository[parameters.key],
-                            !adapter.isInitialized
-                        {
-                            group.enter()
-                            let name = adapter.name
-                            adapter.initialize(from: parameters.value) { result in
-                                Logger.info("\(name) adapter initilized with result: \(result)")
-                                DispatchQueue.global().async(execute: group.leave)
-                            }
-                        }
-                    }
-                    group.notify(queue: .main) { [unowned self] in
+                    AdaptersInitializator(
+                        parameters: response.adaptersInitializationParameters,
+                        respoitory: self.adaptersRepository
+                    )
+                    .initialize { [unowned self] in
                         self.isInitialized = true
                         completion?()
                     }
