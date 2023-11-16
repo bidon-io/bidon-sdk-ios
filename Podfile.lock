@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (4.7.6)
+  - AmazonPublisherServicesSDK (4.7.7)
   - AppLovinSDK (12.0.0)
   - Appodeal (3.1.3):
     - Protobuf
@@ -119,10 +119,10 @@ PODS:
     - nanopb/encode (= 2.30909.1)
   - nanopb/decode (2.30909.1)
   - nanopb/encode (2.30909.1)
-  - OCMock (3.9.1)
+  - OCMock (3.9.3)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
-  - Protobuf (3.25.0)
+  - Protobuf (3.25.1)
   - StackConsentManager (1.2.5)
   - StackIAB (2.2.3):
     - StackIAB/StackIABAssets (= 2.2.3)
@@ -233,7 +233,7 @@ SPEC REPOS:
     - VungleAds
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 42e44affd14820c7ca17e55934fe8e53f5fb9ca0
+  AmazonPublisherServicesSDK: 539059263689d2d14c25017f2ef89ac5db4787a8
   AppLovinSDK: 15679e9f576a4d8662e1dc537c9a4ed47d3292a5
   Appodeal: caf6521230a2e296edf50ce21b7d5c14f8cbfb4e
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
@@ -254,10 +254,10 @@ SPEC CHECKSUMS:
   MintegralAdSDK: 02de2ed30953e2a5b3d83fed1c31015349039248
   MobileFuseSDK: a46844fe3fefb9322524ed69da73dab948a6d768
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
-  OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
+  OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Protobuf: 6a4183ec1d51649eb2be7b86ccc286e5c539219c
+  Protobuf: d94761c33f1239c0a43a0817ca1a5f7f7c900241
   StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
   StackIAB: 13b2ec9602f1e8f142e0d8768655e7cbc29657cf
   StackModules: 3034904ea7ae7071e098ef995d2a4adc6aee47fb
@@ -267,4 +267,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: cf9752f9f053152161b56ad84c5e89c4568c2373
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

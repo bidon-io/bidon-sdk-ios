@@ -74,6 +74,8 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         let adObject = adObject(placement: adUnitExtras.placementId)
         adObject.load(payload.payload)
         demandAd = VungleDemandAd(adObject: adObject)
+        
+        adObject.load(payload.payload)
     }
     
     final func notify(
