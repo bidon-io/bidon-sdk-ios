@@ -82,9 +82,7 @@ extension VungleBiddingAdViewDemandProvider: VungleBannerDelegate {
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
     
-    func bannerAdWillLeaveApplication(_ banner: VungleBanner) {
-//        adViewDelegate?.providerWillLeaveApplication(self, adView: AdViewContainer)
-    }
+    func bannerAdWillLeaveApplication(_ banner: VungleBanner) {}
     
     func bannerAdDidClick(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
