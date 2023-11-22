@@ -112,6 +112,11 @@ target 'BidonAdapterGoogleMobileAds' do
   admob
 end
 
+target 'BidonAdapterGoogleAdManager' do
+  project 'Adapters/Adapters.xcodeproj'
+  admob
+end
+
 target 'BidonAdapterAppLovin' do
   project 'Adapters/Adapters.xcodeproj'
   applovin

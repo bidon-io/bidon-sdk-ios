@@ -13,6 +13,7 @@ import Bidon
 import BidonAdapterAppLovin
 import BidonAdapterBidMachine
 import BidonAdapterGoogleMobileAds
+import BidonAdapterGoogleAdManager
 import BidonAdapterDTExchange
 import BidonAdapterUnityAds
 import BidonAdapterMintegral
@@ -142,7 +143,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             BigoAdsDemandSourceAdapter(),
             MetaAudienceNetworkDemandSourceAdapter(),
             InMobiDemandSourceAdapter(),
-            AmazonDemandSourceAdapter()
+            AmazonDemandSourceAdapter(),
+            GoogleAdManagerDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }
