@@ -12,12 +12,6 @@ import BigoADS
 
 extension BigoAd: DemandAd {
     public var id: String { getCreativeId() }
-    
-    public var networkName: String { BigoAdsDemandSourceAdapter.identifier }
-    
-    public var dsp: String? {
-        return nil
-    }
 }
 
 

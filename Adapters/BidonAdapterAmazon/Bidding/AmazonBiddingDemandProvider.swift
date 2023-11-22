@@ -12,8 +12,6 @@ import DTBiOSSDK
 
 extension DTBAdDispatcher: DemandAd {
     public var id: String { String(hash) }
-    public var networkName: String { AmazonDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
 }
 
 

@@ -12,8 +12,6 @@ import VungleAdsSDK
 
 final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
     public var id: String { adObject.creativeId }
-    public var networkName: String { VungleDemandSourceAdapter.identifier }
-    public var dsp: String? { return nil }
     
     let adObject: AdObject
     

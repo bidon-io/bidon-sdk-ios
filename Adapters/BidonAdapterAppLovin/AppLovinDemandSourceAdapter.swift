@@ -11,7 +11,8 @@ import AdSupport
 import Bidon
 
 
-internal typealias DemandSourceAdapter = DirectInterstitialDemandSourceAdapter &
+internal typealias DemandSourceAdapter =
+DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
 DirectAdViewDemandSourceAdapter
 

@@ -20,25 +20,43 @@ protocol GoogleMobileAdsDemandAd: DemandAd {
 extension GADInterstitialAd: GoogleMobileAdsDemandAd {
     static var adFormat: GADAdFormat { .interstitial }
     
-    public var id: String { responseInfo.responseIdentifier ?? UUID().uuidString }
-    public var dsp: String? { nil }
-    public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }
+    public var id: String {
+        responseInfo.responseIdentifier ??
+        String(hash)
+    }
+
+    public var networkName: String {
+        responseInfo.loadedAdNetworkResponseInfo?.adSourceName ??
+        GoogleMobileAdsDemandSourceAdapter.identifier
+    }
 }
 
 
 extension GADRewardedAd: GoogleMobileAdsDemandAd {
     static var adFormat: GADAdFormat { .rewarded }
     
-    public var id: String { responseInfo.responseIdentifier ?? UUID().uuidString }
-    public var dsp: String? { nil }
-    public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }
+    public var id: String {
+        responseInfo.responseIdentifier ??
+        String(hash)
+    }
+    
+    public var networkName: String {
+        responseInfo.loadedAdNetworkResponseInfo?.adSourceName ??
+        GoogleMobileAdsDemandSourceAdapter.identifier
+    }
 }
 
 
 extension GADBannerView: GoogleMobileAdsDemandAd {
     static var adFormat: GADAdFormat { .banner }
     
-    public var id: String { responseInfo?.responseIdentifier ?? UUID().uuidString }
-    public var dsp: String? { nil }
-    public var networkName: String { GoogleMobileAdsDemandSourceAdapter.identifier }
+    public var id: String {
+        responseInfo?.responseIdentifier ??
+        String(hash)
+    }
+    
+    public var networkName: String {
+        responseInfo?.loadedAdNetworkResponseInfo?.adSourceName ??
+        GoogleMobileAdsDemandSourceAdapter.identifier
+    }
 }

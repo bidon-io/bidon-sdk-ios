@@ -14,8 +14,6 @@ import MTGSDKNewInterstitial
 
 extension MTGNewInterstitialBidAdManager: DemandAd {
     public var id: String { currentUnitId }
-    public var networkName: String { MintegralDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
 }
 
 

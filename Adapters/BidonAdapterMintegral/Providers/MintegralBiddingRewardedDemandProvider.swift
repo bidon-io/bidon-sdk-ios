@@ -14,8 +14,6 @@ import MTGSDKReward
 final class MintegralRewardedDemandAd: DemandAd {
     let id: String
     let placement: String?
-    let networkName: String = MintegralDemandSourceAdapter.identifier
-    let dsp: String? = nil
     
     init(
         id: String,

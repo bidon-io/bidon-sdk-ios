@@ -15,16 +15,25 @@ public enum AdBidType: Int {
 }
 
 
+@objc(BDNAdNetworkUnit)
+public protocol AdNetworkUnit {
+    var uid: String { get }
+    var demandId: String { get }
+    var label: String { get }
+    var pricefloor: Price { get }
+    var bidType: AdBidType { get }
+}
+
+
 @objc(BDNAd)
 public protocol Ad {
     @objc var id: String { get }
-    @objc var price: Price { get }
-    @objc var networkName: String { get }
-    @objc var bidType: AdBidType { get }
-    @objc var dsp: String? { get }
-    @objc var roundId: String? { get }
-    @objc var auctionId: String? { get }
-    @objc var currencyCode: Currency? { get }
     @objc var adType: AdType { get }
+    @objc var price: Price { get }
+    @objc var currencyCode: Currency? { get }
+    @objc var networkName: String { get }
+    @objc var roundId: String { get }
+    @objc var auctionId: String { get }
+    @objc var adUnit: AdNetworkUnit { get }
 }
 

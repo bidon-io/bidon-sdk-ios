@@ -13,8 +13,6 @@ import MTGSDKBanner
 
 extension MTGBannerAdView: DemandAd {
     public var id: String { unitId }
-    public var networkName: String { MintegralDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
 }
 
 

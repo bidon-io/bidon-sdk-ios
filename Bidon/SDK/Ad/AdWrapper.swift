@@ -9,38 +9,66 @@ import Foundation
 
 
 final class AdContainer: NSObject, Ad {
+    final class AdNetworkUnitModel: NSObject, AdNetworkUnit {
+        let uid: String
+        let demandId: String
+        let label: String
+        let pricefloor: Price
+        let bidType: AdBidType
+        
+        init(
+            uid: String,
+            demandId: String,
+            label: String,
+            pricefloor: Price,
+            bidType: AdBidType
+        ) {
+            self.uid = uid
+            self.demandId = demandId
+            self.pricefloor = pricefloor
+            self.label = label
+            self.bidType = bidType
+            super.init()
+        }
+        
+        convenience init(_ adUnit: AnyAdUnit) {
+            self.init(
+                uid: adUnit.uid,
+                demandId: adUnit.demandId,
+                label: adUnit.label,
+                pricefloor: adUnit.pricefloor,
+                bidType: AdBidType(demandType: adUnit.demandType)
+            )
+        }
+    }
+    
     let id: String
     let adType: AdType
     let price: Price
+    let currencyCode: Currency?
     let networkName: String
-    let bidType: AdBidType
-    let dsp: String?
-    let roundId: String?
-    var auctionId: String?
-    let currencyCode: String?
+    let roundId: String
+    let auctionId: String
+    let adUnit: AdNetworkUnit
     
     init(
         id: String,
         adType: AdType,
         price: Price,
+        currencyCode: Currency?,
         networkName: String,
-        bidType: AdBidType,
-        dsp: String?,
-        roundId: String?,
-        auctionId: String?,
-        currencyCode: String?
+        roundId: String,
+        auctionId: String,
+        adUnit: AdNetworkUnitModel
     ) {
         self.id = id
         self.adType = adType
         self.price = price
+        self.currencyCode = currencyCode
         self.networkName = networkName
-        self.bidType = bidType
-        self.dsp = dsp
         self.roundId = roundId
         self.auctionId = auctionId
-        self.currencyCode = currencyCode
-        
-        super.init()
+        self.adUnit = adUnit
     }
     
     convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
@@ -48,12 +76,11 @@ final class AdContainer: NSObject, Ad {
             id: bid.ad.id,
             adType: bid.adType,
             price: bid.price,
-            networkName: bid.adUnit.demandId,
-            bidType: AdBidType(demandType: bid.adUnit.demandType),
-            dsp: bid.ad.networkName,
+            currencyCode: bid.ad.currency,
+            networkName: bid.ad.networkName ?? bid.adUnit.demandId,
             roundId: bid.roundConfiguration.roundId,
             auctionId: bid.auctionConfiguration.auctionId,
-            currencyCode: bid.ad.currency ?? .default
+            adUnit: AdNetworkUnitModel(bid.adUnit)
         )
     }
     
@@ -62,12 +89,17 @@ final class AdContainer: NSObject, Ad {
             id: impression.ad.id,
             adType: impression.adType,
             price: impression.price,
-            networkName: impression.demandId,
-            bidType: AdBidType(demandType: impression.demandType),
-            dsp: impression.ad.networkName,
+            currencyCode: impression.ad.currency,
+            networkName: impression.ad.networkName ?? impression.demandId,
             roundId: impression.roundConfiguration.roundId,
             auctionId: impression.auctionConfiguration.auctionId,
-            currencyCode: impression.ad.currency ?? .default
+            adUnit: AdNetworkUnitModel(
+                uid: impression.adUnitUid,
+                demandId: impression.demandId,
+                label: impression.adUnitLabel,
+                pricefloor: impression.adUnitPricefloor,
+                bidType: AdBidType(demandType: impression.demandType)
+            )
         )
     }
 }
@@ -103,10 +135,9 @@ fileprivate extension AdBidType {
 extension AdContainer {
     override var description: String {
         let components: [String?] = [
-            "\(adType.stringValue) (\(bidType.stringValue)) ad #\(id)",
+            "\(adType.stringValue) (\(adUnit.bidType.stringValue)) ad #\(adUnit.uid)",
             Formatter.price.string(from: price as NSNumber).map { "price \($0)" },
             "network '\(networkName)'",
-            dsp.map { "DSP '\($0)'" },
         ]
         
         return components
@@ -118,6 +149,7 @@ extension AdContainer {
     override var hash: Int {
         var hasher = Hasher()
         hasher.combine(id)
+        hasher.combine(adUnit.uid)
         hasher.combine(auctionId)
         hasher.combine(roundId)
         return hasher.finalize()
@@ -125,7 +157,10 @@ extension AdContainer {
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let object = object as? AdContainer else { return false }
-        return object.id == id && object.auctionId == auctionId
+        return object.id == id && 
+        object.adUnit.uid == object.adUnit.uid &&
+        object.auctionId == auctionId &&
+        object.roundId == roundId
     }
 }
 

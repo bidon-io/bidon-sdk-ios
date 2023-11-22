@@ -13,11 +13,11 @@ public protocol DemandAd {
     @objc var id: String { get }
     
     @objc optional
+    var networkName: String { get }
+    
+    @objc optional
     var price: Price { get }
     
     @objc optional
     var currency: Currency { get }
-    
-    @objc optional
-    var networkName: String { get }
 }

@@ -14,7 +14,5 @@ protocol DTExchangeDemandAd: DemandAd {}
 
 
 extension IAAdSpot: DemandAd {
-    public var id: String { adRequest.unitID ?? UUID().uuidString }
-    public var networkName: String { DTExchangeDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
+    public var id: String { adRequest.unitID ?? String(hash) }
 }

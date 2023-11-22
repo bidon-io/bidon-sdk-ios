@@ -23,23 +23,20 @@ final class InMobiDemandAd<Ad: InMobiAd>: NSObject, DemandAd {
     }
     
     var networkName: String {
-        return InMobiDemandSourceAdapter.identifier
+        return ad
+            .getAdMetaInfo()
+            .flatMap { $0["adSourceName"] as? String } ??
+        InMobiDemandSourceAdapter.identifier
     }
     
-    var eCPM: Price {
+    var price: Price {
         return ad
             .getAdMetaInfo()
             .flatMap { $0["bidValue"] as? Float }
             .map { Price($0) } ??
             .unknown
     }
-    
-    var dsp: String? {
-        return ad
-            .getAdMetaInfo()
-            .flatMap { $0["adSourceName"] as? String }
-    }
-    
+
     let ad: Ad
     
     init(ad: Ad) {

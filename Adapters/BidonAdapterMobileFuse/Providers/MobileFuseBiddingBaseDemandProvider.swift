@@ -12,8 +12,6 @@ import Bidon
 
 extension MFAd: DemandAd {
     public var id: String { instanceId() }
-    public var networkName: String { MobileFuseDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
 }
 
 

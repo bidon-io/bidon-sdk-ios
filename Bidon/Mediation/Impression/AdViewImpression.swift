@@ -18,6 +18,7 @@ struct AdViewImpression: Impression {
     var demandType: DemandType { bid.adUnit.demandType }
     var adUnitUid: String { bid.adUnit.uid }
     var adUnitLabel: String { bid.adUnit.label }
+    var adUnitPricefloor: Price { bid.adUnit.pricefloor }
     var roundConfiguration: AuctionRoundConfiguration { bid.roundConfiguration }
     var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
     

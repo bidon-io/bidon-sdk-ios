@@ -12,10 +12,9 @@ import UnityAds
 
 protocol UnityAdsDemandAd: DemandAd {}
 
+
 final class UADSPlacement: NSObject, UnityAdsDemandAd {
     public var id: String { placementId }
-    public var networkName: String { UnityAdsDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
     
     let placementId: String
     
@@ -33,6 +32,4 @@ final class UADSPlacement: NSObject, UnityAdsDemandAd {
 
 extension UADSBannerView: UnityAdsDemandAd {
     public var id: String { placementId }
-    public var networkName: String { UnityAdsDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
 }

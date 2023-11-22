@@ -14,14 +14,6 @@ extension FBInterstitialAd: DemandAd {
     public var id: String {
         return placementID
     }
-    
-    public var networkName: String {
-        return MetaAudienceNetworkDemandSourceAdapter.identifier
-    }
-    
-    public var dsp: String? {
-        return nil
-    }
 }
 
 
