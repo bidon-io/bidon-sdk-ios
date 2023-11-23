@@ -74,6 +74,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         }
         
         let settings = FBAdInitSettings(parameters: parameters)
+    
         
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
