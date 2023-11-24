@@ -30,7 +30,7 @@ struct AdaptersInitializator {
         override func main() {
             super.main()
             
-            Logger.info("Initialize \(adapter.name) ad network")
+            Logger.info("Initialize \(adapter.name) ad network, order: \(config.order)")
 
             if timeout > 0 {
                 let timeout = Date.MeasurementUnits.milliseconds.convert(
@@ -140,7 +140,7 @@ struct AdaptersInitializator {
             }
         }
         
-        queue.maxConcurrentOperationCount = count + 1
+        queue.maxConcurrentOperationCount = parameters.adapters.count
         queue.addOperations(
             graph.operations(),
             waitUntilFinished: false
