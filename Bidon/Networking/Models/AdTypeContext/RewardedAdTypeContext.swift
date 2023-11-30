@@ -13,6 +13,7 @@ struct RewardedAdTypeContext: AdTypeContext {
     typealias DemandProviderType = AnyRewardedAdDemandProvider
     typealias AuctionRequestBuilderType = RewardedAuctionRequestBuilder
     typealias BidRequestBuilderType = RewardedBidRequestBuilder
+    typealias StatisticRequestBuilderType = RewardedStatisticRequestBuilder
     typealias ImpressionRequestBuilderType = RewardedImpressionRequestBuilder
     typealias NotificationRequestBuilderType = RewardedNotificationRequestBuilder
     
@@ -32,6 +33,13 @@ struct RewardedAdTypeContext: AdTypeContext {
         }
     }
 
+    func statisticRequest(build: (RewardedStatisticRequestBuilder) -> ()) -> StatisticRequest {
+        return StatisticRequest { (builder: StatisticRequestBuilderType) in
+            builder.withAdTypeContext(self)
+            build(builder)
+        }
+    }
+    
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
         return ImpressionRequest { (builder: ImpressionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -48,7 +56,7 @@ struct RewardedAdTypeContext: AdTypeContext {
 }
 
 
-struct RewardedAdTypeContextModel: Encodable {
+struct RewardedAdTypeContextModel: Codable {
     init(_ context: RewardedAdTypeContext) {
         // TODO: Add interstitial specific properties
     }

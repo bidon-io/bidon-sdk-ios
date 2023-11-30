@@ -13,6 +13,7 @@ struct BannerAdTypeContext: AdTypeContext {
     typealias DemandProviderType = AnyAdViewDemandProvider
     typealias AuctionRequestBuilderType = AdViewAuctionRequestBuilder
     typealias BidRequestBuilderType = AdViewBidRequestBuilder
+    typealias StatisticRequestBuilderType = AdViewStatisticsRequestBuilder
     typealias ImpressionRequestBuilderType = AdViewImpressionRequestBuilder
     typealias NotificationRequestBuilderType = AdViewNotificationRequestBuilder
 
@@ -34,6 +35,13 @@ struct BannerAdTypeContext: AdTypeContext {
         }
     }
 
+    func statisticRequest(build: (AdViewStatisticsRequestBuilder) -> ()) -> StatisticRequest {
+        return StatisticRequest { (builder: StatisticRequestBuilderType) in
+            builder.withAdTypeContext(self)
+            build(builder)
+        }
+    }
+    
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
         return ImpressionRequest { (builder: ImpressionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -50,7 +58,7 @@ struct BannerAdTypeContext: AdTypeContext {
 }
 
 
-struct BannerAdTypeContextModel: Encodable {
+struct BannerAdTypeContextModel: Codable {
     var format: BannerFormat
 
     init(_ context: BannerAdTypeContext) {

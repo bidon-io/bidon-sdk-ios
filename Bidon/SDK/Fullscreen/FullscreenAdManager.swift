@@ -267,11 +267,10 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         _ report: T,
         auctionConfiguration: AuctionConfiguration
     ) {
-        let request = StatisticRequest { builder in
+        let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
-            builder.withAdType(context.adType)
             builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
         }
         

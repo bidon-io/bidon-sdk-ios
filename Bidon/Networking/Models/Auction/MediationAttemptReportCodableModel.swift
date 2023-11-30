@@ -124,6 +124,9 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
         var winnerECPM: Price?
         var winnerLineItemUid: String?
         var winnerAdUnitId: String?
+        var banner: BannerAdTypeContextModel?
+        var interstitial: InterstitialAdTypeContextModel?
+        var rewarded: RewardedAdTypeContextModel?
         
         enum CodingKeys: String, CodingKey {
             case status
@@ -135,9 +138,17 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             case startTimestamp = "auction_start_ts"
             case finishTimestamp = "auction_finish_ts"
             case winnerLineItemUid = "line_item_uid"
+            case banner
+            case interstitial
+            case rewarded
         }
         
-        init<T: AuctionResultReport>(_ report: T) {
+        init<T: AuctionResultReport>(
+            _ report: T,
+            banner: BannerAdTypeContextModel?,
+            interstitial: InterstitialAdTypeContextModel?,
+            rewarded: RewardedAdTypeContextModel?
+        ) {
             self.status = report.status
             self.demandType = report.demandType
             self.winnerDemandId = report.winnerDemandId
@@ -147,6 +158,9 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
             self.startTimestamp = report.startTimestamp
             self.finishTimestamp = report.finishTimestamp
             self.winnerLineItemUid = report.winnerLineItemUid
+            self.interstitial = interstitial
+            self.banner = banner
+            self.rewarded = rewarded
         }
     }
     
@@ -158,12 +172,20 @@ struct MediationAttemptReportCodableModel: MediationAttemptReport, Codable {
     
     init<T: MediationAttemptReport>(
         _ report: T,
-        auctionConfiguration: AuctionConfiguration
+        auctionConfiguration: AuctionConfiguration,
+        interstitial: InterstitialAdTypeContextModel? = nil,
+        banner: BannerAdTypeContextModel? = nil,
+        rewarded: RewardedAdTypeContextModel? = nil
     ) {
         self.auctionId = auctionConfiguration.auctionId
         self.auctionConfigurationId = auctionConfiguration.auctionConfigurationId
         self.auctionConfigurationUid = auctionConfiguration.auctionConfigurationUid
         self.rounds = report.rounds.map(RoundReportCodableModel.init)
-        self.result = AuctionResultReportCodableModel(report.result)
+        self.result = AuctionResultReportCodableModel(
+            report.result,
+            banner: banner,
+            interstitial: interstitial,
+            rewarded: rewarded
+        )
     }
 }

@@ -222,7 +222,8 @@ final class BannerAdManager: NSObject {
             
             self.sendMediationAttemptReport(
                 observer.report,
-                auctionConfiguration: auctionConfiguration
+                auctionConfiguration: auctionConfiguration,
+                viewContext: viewContext
             )
 
             switch result {
@@ -246,13 +247,15 @@ final class BannerAdManager: NSObject {
     
     private func sendMediationAttemptReport<T: MediationAttemptReport>(
         _ report: T,
-        auctionConfiguration: AuctionConfiguration
+        auctionConfiguration: AuctionConfiguration,
+        viewContext: AdViewContext
     ) {
-        let request = StatisticRequest { builder in
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        
+        let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
-            builder.withAdType(.banner)
             builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
         }
         

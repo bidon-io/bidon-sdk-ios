@@ -35,8 +35,8 @@ PODS:
   - FBSDKCoreKit_Basics (16.2.1)
   - FBSDKLoginKit (16.2.1):
     - FBSDKCoreKit (= 16.2.1)
-  - Fyber_Marketplace_SDK (8.2.4)
-  - Google-Mobile-Ads-SDK (10.13.0):
+  - Fyber_Marketplace_SDK (8.2.5)
+  - Google-Mobile-Ads-SDK (10.14.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAppMeasurement (10.18.0):
@@ -123,7 +123,7 @@ PODS:
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
   - Protobuf (3.25.1)
-  - StackConsentManager (1.2.5)
+  - StackConsentManager (1.2.6)
   - StackIAB (2.2.3):
     - StackIAB/StackIABAssets (= 2.2.3)
     - StackIAB/StackMRAIDKit (= 2.2.3)
@@ -165,12 +165,12 @@ PODS:
     - StackModules (~> 1.5.0)
   - StackIAB/StackXML (2.2.3):
     - StackModules (~> 1.5.0)
-  - StackModules (1.5.5):
-    - StackModules/StackProductPresentation (= 1.5.5)
-  - StackModules/StackFoundation (1.5.5)
-  - StackModules/StackProductPresentation (1.5.5):
+  - StackModules (1.5.6):
+    - StackModules/StackProductPresentation (= 1.5.6)
+  - StackModules/StackFoundation (1.5.6)
+  - StackModules/StackProductPresentation (1.5.6):
     - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.5.5):
+  - StackModules/StackUIKit (1.5.6):
     - StackModules/StackFoundation
   - StackProtobuf (0.8.5):
     - Protobuf (~> 3.13)
@@ -245,8 +245,8 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: 40ae989ca1da1bbeba56acd4671dde64ad415506
   FBSDKCoreKit_Basics: 1257d71d2d692661290bf2af4bea5f9a101387af
   FBSDKLoginKit: bf4f96d0ce475de2da4b1800ce150bd8a6f120f3
-  Fyber_Marketplace_SDK: c51474f63c016c9ff7eb32e3542528d08d456bc5
-  Google-Mobile-Ads-SDK: 517003a1a2430005da3e85df4d061cd7de107a5a
+  Fyber_Marketplace_SDK: 800635259b18679a60f083ae9e7b8a518d40c98f
+  Google-Mobile-Ads-SDK: 8f67a72f88d057335b1ac3f501e2b68ad054116e
   GoogleAppMeasurement: 70ce9aa438cff1cfb31ea3e660bcc67734cb716e
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
@@ -258,9 +258,9 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   Protobuf: d94761c33f1239c0a43a0817ca1a5f7f7c900241
-  StackConsentManager: b4ede83061d59bebe0206255651e04a9e1e80d66
+  StackConsentManager: 84236919432139434ec78f65552bcd1e7ab249aa
   StackIAB: 13b2ec9602f1e8f142e0d8768655e7cbc29657cf
-  StackModules: 3034904ea7ae7071e098ef995d2a4adc6aee47fb
+  StackModules: 5fb97f9516fa9d3ccfce93c17da32a2486465907
   StackProtobuf: 6b78e9e5c5f7ead500a5d1527e569c4d49599a74
   UnityAds: 358547edbd4c923cd03462289b8813d0ef91999e
   VungleAds: e13f0ea8facb05d5511e31c5abcced79a82409e7

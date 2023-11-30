@@ -8,26 +8,55 @@
 import Foundation
 
 
-final class StatisticRequestBuilder: BaseRequestBuilder {
-    private(set) var stats: MediationAttemptReportCodableModel!
+protocol StatisticRequestBuilder: AdTypeContextRequestBuilder {
+    var stats: MediationAttemptReportCodableModel { get }
+    var route: Route { get }
     
-    var adType: AdType!
+    @discardableResult
+    func withMediationReport<T: MediationAttemptReport>(
+        _ report: T,
+        auctionConfiguration: AuctionConfiguration
+    ) -> Self
+    
+    init()
+}
+
+
+class BaseStatisticRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, StatisticRequestBuilder {
+    private(set) var context: Context!
+    
+    var stats: MediationAttemptReportCodableModel { _stats }
+    
+    private var _stats: MediationAttemptReportCodableModel!
+
+    var route: Route { .complex(.adType(context.adType), .stats) }
+    
+    func transform<T: MediationAttemptReport>(
+        report: T,
+        configuration: AuctionConfiguration
+    ) -> MediationAttemptReportCodableModel {
+        fatalError("BaseStatisticRequestBuilder can't transform report")
+    }
     
     @discardableResult
     func withMediationReport<T: MediationAttemptReport>(
         _ report: T,
         auctionConfiguration: AuctionConfiguration
     ) -> Self {
-        self.stats = MediationAttemptReportCodableModel(
-            report,
-            auctionConfiguration: auctionConfiguration
+        self._stats = transform(
+            report: report,
+            configuration: auctionConfiguration
         )
         return self
     }
     
     @discardableResult
-    func withAdType(_ adType: AdType) -> Self {
-        self.adType = adType
+    func withAdTypeContext(_ context: Context) -> Self {
+        self.context = context
         return self
+    }
+    
+    required override init() {
+        super.init()
     }
 }
