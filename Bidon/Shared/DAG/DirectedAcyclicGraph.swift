@@ -69,3 +69,30 @@ struct DirectedAcyclicGraph<Node: Equatable & CustomStringConvertible> {
         return seeds.compactMap { nodes[$0] }
     }
 }
+
+
+extension DirectedAcyclicGraph where Node == Operation {
+    func operations() -> [Operation] {
+        return root.reduce([]) {
+            traverse(operation: $1, previous: $0)
+        }
+    }
+    
+    private func traverse(
+        operation: Operation,
+        previous: [Operation]
+    ) -> [Operation] {
+        var previous = previous
+        
+        if !previous.contains(operation) {
+            previous.append(operation)
+        }
+        
+        let seeds = seeds(of: operation)
+        seeds.forEach { $0.addDependency(operation) }
+        
+        return seeds.reduce(previous) {
+            traverse(operation: $1, previous: $0)
+        }
+    }
+}

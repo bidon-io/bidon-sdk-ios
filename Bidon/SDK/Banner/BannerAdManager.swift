@@ -219,8 +219,8 @@ final class BannerAdManager: NSObject {
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
-            
-            self.sendMediationAttemptReport(observer.report)
+
+            self.sendAuctionReport(observer.report, viewContext: viewContext)
             
             switch result {
             case .success(let bid):
@@ -241,13 +241,14 @@ final class BannerAdManager: NSObject {
         state = .auction(controller: auction)
     }
     
-    private func sendMediationAttemptReport<T: AuctionReport>(_ report: T) {
-        let request = StatisticRequest { builder in
+    private func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        
+        let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
-            builder.withAdType(.banner)
-            builder.withMediationReport(report)
+            builder.withAuctionReport(report)
         }
         
         networkManager.perform(request: request) { result in

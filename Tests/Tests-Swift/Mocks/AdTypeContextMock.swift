@@ -15,6 +15,7 @@ final class AdTypeContextMock: AdTypeContext {
     typealias AuctionRequestBuilderType = AuctionRequestBuilderMock
     typealias BidRequestBuilderType = BidRequestBuilderMock
     typealias ImpressionRequestBuilderType = ImpressionRequestBuilderMock
+    typealias StatisticRequestBuilderType = StatisticBuilderMock
     typealias NotificationRequestBuilderType = NotificationRequestBuilderMock
 
     var invokedAdTypeGetter = false
@@ -55,6 +56,16 @@ final class AdTypeContextMock: AdTypeContext {
         invokedImpressionRequest = true
         invokedImpressionRequestCount += 1
         return stubbedImpressionRequest(build)
+    }
+    
+    var invokedStatisticRequest = false
+    var invokedStatisticRequestCount = 0
+    var stubbedStatisticRequest: (((StatisticBuilderMock) -> ()) -> StatisticRequest)!
+
+    func statisticRequest(build: (StatisticBuilderMock) -> ()) -> StatisticRequest {
+        invokedStatisticRequest = true
+        invokedStatisticRequestCount += 1
+        return stubbedStatisticRequest(build)
     }
 
     var invokedNotificationRequest = false

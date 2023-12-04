@@ -36,11 +36,11 @@ struct StatisticRequest: Request {
 
 
 extension StatisticRequest {
-    init(_ build: (StatisticRequestBuilder) -> ()) {
-        let builder = StatisticRequestBuilder()
+    init<T: StatisticRequestBuilder>(_ build: (T) -> ()) {
+        let builder = T()
         build(builder)
         
-        self.route = .complex(.adType(builder.adType), .stats)
+        self.route = builder.route
         self.body = RequestBody(
             device: builder.device,
             session: builder.session,

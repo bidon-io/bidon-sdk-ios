@@ -101,6 +101,9 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         var finishTimestamp: UInt
         var winnerRoundConfiguration: AuctionRoundConfiguration?
         var winner: DummyBid?
+        var banner: BannerAdTypeContextModel?
+        var interstitial: InterstitialAdTypeContextModel?
+        var rewarded: RewardedAdTypeContextModel?
         
         enum CodingKeys: String, CodingKey {
             case startTimestamp = "auction_start_ts"
@@ -112,6 +115,9 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             case winnedDemandId
             case winnedAdUnitUid
             case winnedAdUnitLabel
+            case banner
+            case interstitial
+            case rewarded
         }
         
         func encode(to encoder: Encoder) throws {
@@ -139,11 +145,20 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         case result
     }
     
-    init<T: AuctionReport>(_ report: T) {
+    init<T: AuctionReport>(
+        report: T,
+        banner: BannerAdTypeContextModel? = nil,
+        interstitial: InterstitialAdTypeContextModel? = nil,
+        rewarded: RewardedAdTypeContextModel? = nil
+    ) {
         self.configuration = report.configuration
         self.rounds = report.rounds.map(EncodableAuctionRoundReportModel.init)
-        self.result = EncodableAuctionResultReportModel(report.result)
-
+        self.result = EncodableAuctionResultReportModel(
+            result: report.result,
+            banner: banner,
+            interstitial: interstitial,
+            rewarded: rewarded
+        )
     }
     
     func encode(to encoder: Encoder) throws {
@@ -189,11 +204,19 @@ extension EncodableAuctionReportModel.EncodableAuctionRoundReportModel {
 
 
 extension EncodableAuctionReportModel.EncodableAuctionResultReportModel {
-    init<T: AuctionResultReport>(_ result: T) {
+    init<T: AuctionResultReport>(
+        result: T,
+        banner: BannerAdTypeContextModel?,
+        interstitial: InterstitialAdTypeContextModel?,
+        rewarded: RewardedAdTypeContextModel?
+    ) {
         self.winnerRoundConfiguration = result.winnerRoundConfiguration
         self.finishTimestamp = result.finishTimestamp
         self.startTimestamp = result.startTimestamp
         self.status = result.status
         self.winner = result.winner.map(DummyBid.init)
+        self.banner = banner
+        self.interstitial = interstitial
+        self.rewarded = rewarded
     }
 }

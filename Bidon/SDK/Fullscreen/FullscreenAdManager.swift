@@ -241,7 +241,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
-            self.sendAuctionStatistics(observer.report)
+            self.sendAuctionReport(observer.report)
             
             switch result {
             case .success(let bid):
@@ -260,13 +260,12 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         state = .auction(controller: auction)
     }
     
-    private func sendAuctionStatistics<T: AuctionReport>(_ report: T) {
-        let request = StatisticRequest { builder in
+    private func sendAuctionReport<T: AuctionReport>(_ report: T) {
+        let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
-            builder.withAdType(context.adType)
-            builder.withMediationReport(report)
+            builder.withAuctionReport(report)
         }
         
         networkManager.perform(request: request) { result in
