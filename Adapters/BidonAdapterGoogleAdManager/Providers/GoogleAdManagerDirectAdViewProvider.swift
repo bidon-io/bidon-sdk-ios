@@ -16,6 +16,7 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
     
     private let adSize: GADAdSize
     private var banner: GAMBannerView?
+    private var container: GoogleMobileAdsBannerContainerView
     
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     
@@ -23,19 +24,29 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
         serverData: GoogleAdManagerDemandSourceAdapter.ServerData,
         context: AdViewContext
     ) {
+        let frame = CGRect(origin: .zero, size: context.format.preferredSize)
         self.adSize = context.adSize
         self.rootViewController = context.rootViewController
+        self.container = context.format == .adaptive ?
+        GoogleMobileAdsAdaptiveBannerContainerView(frame: frame, adSize: context.adSize) :
+        GoogleMobileAdsFixedBannerContainerView(frame: frame, adSize: context.adSize)
+        
         super.init(serverData: serverData)
     }
-
+    
     override func loadAd(_ request: GADRequest, adUnitId: String) {
         let banner = GAMBannerView(adSize: adSize)
-                
+        
         banner.delegate = self
         banner.adUnitID = adUnitId
+        banner.isAutoloadEnabled = false
         banner.rootViewController = rootViewController
         
         setupAdRevenueHandler(adObject: banner)
+        
+        banner.translatesAutoresizingMaskIntoConstraints = false
+        
+        container.layout(banner)
         
         banner.load(request)
         
@@ -46,10 +57,12 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
 
 extension GoogleAdManagerDirectAdViewProvider: AdViewDemandProvider {
     func container(for ad: GAMBannerView) -> AdViewContainer? {
-        return ad
+        return self.container
     }
     
-    func didTrackImpression(for ad: GAMBannerView) {}
+    func didTrackImpression(for ad: GAMBannerView) {
+        ad.unhideSubviews()
+    }
 }
 
 
@@ -64,11 +77,11 @@ extension GoogleAdManagerDirectAdViewProvider: GADBannerViewDelegate {
     }
     
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-        adViewDelegate?.providerWillPresentModalView(self, adView: bannerView)
+        adViewDelegate?.providerWillPresentModalView(self, adView: container)
     }
     
     func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-        adViewDelegate?.providerDidDismissModalView(self, adView: bannerView)
+        adViewDelegate?.providerDidDismissModalView(self, adView: container)
     }
     
     func bannerViewDidRecordClick(_ bannerView: GADBannerView) {
@@ -98,7 +111,19 @@ extension AdViewContext {
 }
 
 
-extension GADBannerView: AdViewContainer {
-    public var isAdaptive: Bool { return true }
+extension GADBannerView {
+    func unhideSubviews() {
+        recursiveSubviews
+            .filter { $0.isHidden }
+            .forEach { $0.isHidden = false }
+    }
 }
 
+
+extension UIView {
+    var recursiveSubviews:[UIView] {
+        var recursiveSubviews:[UIView] = subviews
+        subviews.forEach { recursiveSubviews += $0.recursiveSubviews }
+        return recursiveSubviews
+    }
+}
