@@ -10,6 +10,7 @@ $scheme = "Release"
 $targets = [
   "Bidon",
   "BidonAdapterBidMachine",
+  "BidonAdapterGoogleAdManager",
   "BidonAdapterGoogleMobileAds",
   "BidonAdapterAppLovin",
   "BidonAdapterDTExchange",

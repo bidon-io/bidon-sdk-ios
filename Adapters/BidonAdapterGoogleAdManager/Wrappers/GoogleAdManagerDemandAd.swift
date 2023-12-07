@@ -47,7 +47,7 @@ extension GADRewardedAd: GoogleAdManagerDemandAd {
 }
 
 
-extension GADBannerView: GoogleAdManagerDemandAd {
+extension GAMBannerView: GoogleAdManagerDemandAd {
     static var adFormat: GADAdFormat { .banner }
     
     public var id: String {

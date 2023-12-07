@@ -70,7 +70,6 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     }
     
     private func configure(_ request: GADRequestConfiguration) {
-        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
         request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppaApplies == .yes)
     }
 }
