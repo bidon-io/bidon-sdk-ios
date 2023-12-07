@@ -155,7 +155,10 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     
         let report = auctionObserver.report
         
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         XCTAssertEqual(report.result.status, .fail)
+        
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)

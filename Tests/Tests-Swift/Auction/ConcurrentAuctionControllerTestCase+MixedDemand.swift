@@ -127,6 +127,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.winner?.adUnit.uid, adUnit2.uid)
         XCTAssertEqual(report.result.winner?.adUnit.demandId, adUnit2.demandId)
         XCTAssertEqual(report.result.winner?.adUnit.demandType, .direct)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
 
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)

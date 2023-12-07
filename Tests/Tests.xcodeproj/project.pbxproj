@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		421992142A726C3F0045CD5B /* BidRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */; };
 		42218E422A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */; };
+		4250FD612B21D03300654558 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4250FD602B21D03300654558 /* XCTest+Extensions.swift */; };
+		4250FD632B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4250FD622B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift */; };
 		42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */; };
 		42540AAE2A44718F00C7F7B6 /* DemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */; };
 		42540AB02A4471F300C7F7B6 /* DemandAdMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */; };
@@ -47,6 +49,8 @@
 		421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidRequest+Extensions.swift"; sourceTree = "<group>"; };
 		422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-ObjectiveC.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+MixedDemand.swift"; sourceTree = "<group>"; };
+		4250FD602B21D03300654558 /* XCTest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+Extensions.swift"; sourceTree = "<group>"; };
+		4250FD622B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+CornerCases.swift"; sourceTree = "<group>"; };
 		42540AAB2A446FE000C7F7B6 /* AdTypeContextMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdTypeContextMock.swift; sourceTree = "<group>"; };
 		42540AAD2A44718F00C7F7B6 /* DemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandProviderMock.swift; sourceTree = "<group>"; };
 		42540AAF2A4471F300C7F7B6 /* DemandAdMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandAdMock.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */,
+				4250FD602B21D03300654558 /* XCTest+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 				42ABAF932A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift */,
 				42F265122A52DC110081EC55 /* ConcurrentAuctionControllerTestCase+BiddingDemand.swift */,
 				42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */,
+				4250FD622B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -455,7 +461,9 @@
 				42540AB92A447BA500C7F7B6 /* ImpressionRequestBuilderMock.swift in Sources */,
 				42540AB72A4477EB00C7F7B6 /* BidRequestBuilderMock.swift in Sources */,
 				42D3773C2AF936F2003DCCA2 /* TestBiddingPayload.swift in Sources */,
+				4250FD632B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift in Sources */,
 				42540ABB2A447C5100C7F7B6 /* NotificationRequestBuilderMock.swift in Sources */,
+				4250FD612B21D03300654558 /* XCTest+Extensions.swift in Sources */,
 				42D377372AF9347B003DCCA2 /* TestBiddingToken.swift in Sources */,
 				42ABAF942A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift in Sources */,
 				42D3773A2AF934A9003DCCA2 /* TestAdUnitExtras.swift in Sources */,

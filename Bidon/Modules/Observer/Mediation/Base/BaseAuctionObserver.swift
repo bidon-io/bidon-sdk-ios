@@ -16,7 +16,7 @@ final class BaseAuctionObserver: AuctionObserver {
     private var rounds: [RoundObservation] = []
     
     @Atomic
-    private var startTimestamp: TimeInterval = 0
+    private var startTimestamp: TimeInterval = Date.timestamp(.wall, units: .milliseconds)
     
     @Atomic
     private var finishTimestamp: TimeInterval = 0

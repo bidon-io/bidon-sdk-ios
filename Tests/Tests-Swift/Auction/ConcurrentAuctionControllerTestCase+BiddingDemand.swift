@@ -85,6 +85,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winner?.price, price1)
         XCTAssertEqual(report.result.winner?.adUnit.demandId, demandId1)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -166,6 +168,8 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winner?.adUnit.demandId)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -243,6 +247,8 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winner?.adUnit.demandId)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -313,6 +319,8 @@ extension ConcurrentAuctionControllerTestCase {
         
         XCTAssertEqual(report.result.status, .fail)
         XCTAssertNil(report.result.winner)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -390,6 +398,8 @@ extension ConcurrentAuctionControllerTestCase {
         let report = auctionObserver.report
         
         XCTAssertEqual(report.result.status, .fail)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -515,6 +525,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.status, .success)
         XCTAssertEqual(report.result.winner?.adUnit.demandId, demandId1)
         XCTAssertEqual(report.result.winner?.price, price2)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
@@ -644,6 +656,8 @@ extension ConcurrentAuctionControllerTestCase {
         XCTAssertEqual(report.result.winner?.adUnit.demandId, demandId2)
         XCTAssertEqual(report.result.winner?.price, price2)
         XCTAssertEqual(report.result.winner?.adUnit.demandType, .bidding)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         
         XCTAssertEqual(report.rounds.count, 1)
         XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
