@@ -72,6 +72,9 @@
 		42C59B9E28C61F1100544EDF /* HostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C59B9D28C61F1100544EDF /* HostView.swift */; };
 		42CD462B2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CD462A2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework */; };
 		42CFF1B62AAF623000AC2C24 /* BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */; };
+		42DBB0EA2B307DDB00BF1C50 /* GenderPickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DBB0E92B307DDB00BF1C50 /* GenderPickerRow.swift */; };
+		42DBB0EC2B307DF700BF1C50 /* DynamicDictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DBB0EB2B307DF700BF1C50 /* DynamicDictionaryView.swift */; };
+		42DBB0EE2B307EBC00BF1C50 /* CMPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DBB0ED2B307EBC00BF1C50 /* CMPRow.swift */; };
 		42E3DA002A5D968500546D3A /* BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9FF2A5D968500546D3A /* BidonAdapterMobileFuse.framework */; };
 		42EDA0AC28C5EEE300BF74DE /* InitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AB28C5EEE300BF74DE /* InitializationView.swift */; };
 		42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AD28C5EF6000BF74DE /* InitializationViewModel.swift */; };
@@ -154,6 +157,9 @@
 		42C59B9D28C61F1100544EDF /* HostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostView.swift; sourceTree = "<group>"; };
 		42CD462A2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterGoogleAdManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42DBB0E92B307DDB00BF1C50 /* GenderPickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderPickerRow.swift; sourceTree = "<group>"; };
+		42DBB0EB2B307DF700BF1C50 /* DynamicDictionaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDictionaryView.swift; sourceTree = "<group>"; };
+		42DBB0ED2B307EBC00BF1C50 /* CMPRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMPRow.swift; sourceTree = "<group>"; };
 		42E3D9FF2A5D968500546D3A /* BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EDA0AB28C5EEE300BF74DE /* InitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationView.swift; sourceTree = "<group>"; };
 		42EDA0AD28C5EF6000BF74DE /* InitializationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializationViewModel.swift; sourceTree = "<group>"; };
@@ -408,6 +414,9 @@
 				427B1BE9299E43AB007D4E93 /* SelectMediationView.swift */,
 				42C59B9D28C61F1100544EDF /* HostView.swift */,
 				427B1BD8299BC585007D4E93 /* AdaptersView.swift */,
+				42DBB0E92B307DDB00BF1C50 /* GenderPickerRow.swift */,
+				42DBB0EB2B307DF700BF1C50 /* DynamicDictionaryView.swift */,
+				42DBB0ED2B307EBC00BF1C50 /* CMPRow.swift */,
 			);
 			path = Rows;
 			sourceTree = "<group>";
@@ -578,6 +587,7 @@
 				426CD9B22AA725DC000A2226 /* AdvancedBannerSettingsView.swift in Sources */,
 				427B1BE8299E40D5007D4E93 /* RawRewardedAdWrapper.swift in Sources */,
 				426CD9B92AA89ECF000A2226 /* PointPickerView.swift in Sources */,
+				42DBB0EC2B307DF700BF1C50 /* DynamicDictionaryView.swift in Sources */,
 				4224AA7428B8BD0500E8D886 /* InterstitialSection.swift in Sources */,
 				4219DB5628B90479001F38E5 /* AdEventsList.swift in Sources */,
 				427B1C0D29A377AA007D4E93 /* BaseAdWrapper.swift in Sources */,
@@ -595,6 +605,7 @@
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,
 				426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */,
+				42DBB0EE2B307EBC00BF1C50 /* CMPRow.swift in Sources */,
 				427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */,
 				4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */,
 				427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */,
@@ -608,6 +619,7 @@
 				42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */,
 				427B1BE4299E3DA7007D4E93 /* RawAdService.swift in Sources */,
 				426CD9B72AA89E88000A2226 /* BannerPositionPickerView.swift in Sources */,
+				42DBB0EA2B307DDB00BF1C50 /* GenderPickerRow.swift in Sources */,
 				42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */,
 				427B1BD5299A866F007D4E93 /* Appodeal+Extenstions.swift in Sources */,
 				4299A411289BC8B40062C580 /* SandboxApp.swift in Sources */,

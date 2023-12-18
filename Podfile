@@ -81,7 +81,7 @@ def inmobi
 end
 
 def appodeal_mediation
-  pod 'Appodeal', '~> 3.1'
+  pod 'Appodeal', '3.2.1-alpha.1'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
