@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.3.0'
+  pod 'BidMachine', '~> 2.4.0'
   # pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
   # pod 'BidMachineMintegralAdapter', '~> 2.3.0'
   # pod 'BidMachineAmazonAdapter', '~> 2.3.0'
@@ -37,11 +37,11 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.0.4'
+  pod 'BigoADS', '~> 4.1.1'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.2.2'
+  pod 'Fyber_Marketplace_SDK', '~> 8.2.6'
 end
 
 def meta_ads
@@ -53,7 +53,7 @@ def unity_ads
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.4.4'
+  pod 'MintegralAdSDK', '~> 7.5.3'
 end
 
 def mobilefuse
@@ -61,7 +61,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '~> 7.1.0'
+  pod 'VungleAds', '~> 7.2.0'
 end
 
 def ocmock
@@ -81,7 +81,7 @@ def inmobi
 end
 
 def appodeal_mediation
-  pod 'Appodeal', '3.2.1-alpha.1'
+  # pod 'Appodeal', '~> 3.2.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'

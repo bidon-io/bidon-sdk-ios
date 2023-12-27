@@ -21,7 +21,7 @@ BiddingAdViewDemandSourceAdapter
     
     public let identifier: String = MintegralDemandSourceAdapter.identifier
     public let name: String = "Mintegral"
-    public let adapterVersion: String = "0"
+    public let adapterVersion: String = "2"
     public let sdkVersion: String = MTGSDKVersion
     
     private(set) public var isInitialized: Bool = false
