@@ -176,7 +176,7 @@ DEPENDENCIES:
   - BigoADS (~> 4.1.1)
   - FBAudienceNetwork (~> 6.12.0)
   - FBSDKLoginKit
-  - Fyber_Marketplace_SDK (~> 8.2.6)
+  - Fyber_Marketplace_SDK (~> 8.2.4)
   - Google-Mobile-Ads-SDK
   - InMobiSDK (~> 10.6.0)
   - MintegralAdSDK (~> 7.5.3)
@@ -245,6 +245,6 @@ SPEC CHECKSUMS:
   UnityAds: 358547edbd4c923cd03462289b8813d0ef91999e
   VungleAds: 85eb3468e8a6dfcf86f2b2e7891181df426c0433
 
-PODFILE CHECKSUM: bc262c6f11f8f75a5a449ddf4758c0377678a6a1
+PODFILE CHECKSUM: 7d83aca2fe5d2434f9a5dfd708a6077e6fb247f3
 
 COCOAPODS: 1.11.3
