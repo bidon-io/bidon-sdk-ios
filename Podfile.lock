@@ -19,7 +19,7 @@ PODS:
     - BidMachine/ModulesCore
   - BidMachine/ModulesCore (2.4.0.1):
     - BidMachine/ApiCore
-  - BigoADS (4.1.1)
+  - BigoADS (4.2.0)
   - FBAEMKit (16.3.1):
     - FBSDKCoreKit_Basics (= 16.3.1)
   - FBAudienceNetwork (6.12.0)
@@ -173,11 +173,11 @@ DEPENDENCIES:
   - AppsFlyer-AdRevenue (~> 6.9.0)
   - AppsFlyerFramework (~> 6.10.1)
   - BidMachine (~> 2.4.0)
-  - BigoADS (~> 4.1.1)
+  - BigoADS (~> 4.2.0)
   - FBAudienceNetwork (~> 6.12.0)
   - FBSDKLoginKit
   - Fyber_Marketplace_SDK (~> 8.2.4)
-  - Google-Mobile-Ads-SDK
+  - Google-Mobile-Ads-SDK (~> 10.14.0)
   - InMobiSDK (~> 10.6.0)
   - MintegralAdSDK (~> 7.5.3)
   - MobileFuseSDK
@@ -222,7 +222,7 @@ SPEC CHECKSUMS:
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
   BidMachine: 14e8969e2cce77732bcefb6ee34ec1c2505c89cb
-  BigoADS: 3300b0210d49ad547f9211b8c0496374bdb287ce
+  BigoADS: 14fa36d2f5da852cf84e69dcf7bbcb400563b3d7
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBAudienceNetwork: e0fcc9091fced34910ed0b6da06f129db46ac9e6
   FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
@@ -245,6 +245,6 @@ SPEC CHECKSUMS:
   UnityAds: 358547edbd4c923cd03462289b8813d0ef91999e
   VungleAds: 85eb3468e8a6dfcf86f2b2e7891181df426c0433
 
-PODFILE CHECKSUM: 7d83aca2fe5d2434f9a5dfd708a6077e6fb247f3
+PODFILE CHECKSUM: 1c733a145d064a80e78290d77eb134e4afc7b595
 
 COCOAPODS: 1.11.3

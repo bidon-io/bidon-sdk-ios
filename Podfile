@@ -28,7 +28,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK'
+  pod 'Google-Mobile-Ads-SDK', '~> 10.14.0'
 end
 
 def appsflyer
@@ -37,7 +37,7 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.1.1'
+  pod 'BigoADS', '~> 4.2.0'
 end
 
 def dtexchange
