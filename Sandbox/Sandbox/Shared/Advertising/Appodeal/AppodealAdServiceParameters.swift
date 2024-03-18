@@ -73,7 +73,6 @@ final class AppodealAdServiceParameters: AdServiceParameters {
     var gdprApplies: Bool? {
         didSet {
             BidonSdk.regulations.gdrpConsent = Bidon.GDPRConsentStatus(gdprApplies)
-            Appodeal.updateUserConsentGDPR(APDGDPRUserConsent(gdprApplies))
         }
     }
     
