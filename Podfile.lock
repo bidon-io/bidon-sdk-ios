@@ -1,11 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (4.7.7)
   - AppLovinSDK (12.1.0)
-  - Appodeal (3.3.0-beta.2):
-    - Protobuf
-    - StackConsentManager (~> 2.0.1)
-    - StackIAB (~> 2.4.0)
-    - StackModules (~> 1.6.0)
   - AppsFlyer-AdRevenue (6.9.1):
     - AppsFlyerFramework (~> 6)
   - AppsFlyerFramework (6.10.1):
@@ -121,56 +116,53 @@ PODS:
   - OCMock (3.9.3)
   - OMSDK_Appodeal (1.4.2.0)
   - PromisesObjC (2.3.1)
-  - Protobuf (3.26.0)
-  - StackConsentManager (2.0.2):
-    - GoogleUserMessagingPlatform (~> 2.1)
-  - StackIAB (2.4.1):
-    - StackIAB/StackIABAssets (= 2.4.1)
-    - StackIAB/StackMRAIDKit (= 2.4.1)
-    - StackIAB/StackNASTKit (= 2.4.1)
-    - StackIAB/StackOpenMeasure (= 2.4.1)
-    - StackIAB/StackRichMedia (= 2.4.1)
-    - StackIAB/StackVASTAssets (= 2.4.1)
-    - StackIAB/StackVASTKit (= 2.4.1)
-    - StackIAB/StackVideoPlayer (= 2.4.1)
-    - StackIAB/StackXML (= 2.4.1)
+  - StackIAB (2.4.2):
+    - StackIAB/StackIABAssets (= 2.4.2)
+    - StackIAB/StackMRAIDKit (= 2.4.2)
+    - StackIAB/StackNASTKit (= 2.4.2)
+    - StackIAB/StackOpenMeasure (= 2.4.2)
+    - StackIAB/StackRichMedia (= 2.4.2)
+    - StackIAB/StackVASTAssets (= 2.4.2)
+    - StackIAB/StackVASTKit (= 2.4.2)
+    - StackIAB/StackVideoPlayer (= 2.4.2)
+    - StackIAB/StackXML (= 2.4.2)
     - StackModules (~> 1.6.0)
-  - StackIAB/StackIABAssets (2.4.1):
+  - StackIAB/StackIABAssets (2.4.2):
     - StackModules (~> 1.6.0)
-  - StackIAB/StackMRAIDKit (2.4.1):
+  - StackIAB/StackMRAIDKit (2.4.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackOpenMeasure
     - StackModules (~> 1.6.0)
-  - StackIAB/StackNASTKit (2.4.1):
+  - StackIAB/StackNASTKit (2.4.2):
     - StackIAB/StackVASTKit
     - StackModules (~> 1.6.0)
-  - StackIAB/StackOpenMeasure (2.4.1):
+  - StackIAB/StackOpenMeasure (2.4.2):
     - OMSDK_Appodeal (~> 1.4.2.0)
     - StackModules (~> 1.6.0)
-  - StackIAB/StackRichMedia (2.4.1):
+  - StackIAB/StackRichMedia (2.4.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
     - StackModules (~> 1.6.0)
-  - StackIAB/StackVASTAssets (2.4.1):
+  - StackIAB/StackVASTAssets (2.4.2):
     - StackIAB/StackIABAssets
     - StackIAB/StackXML
     - StackModules (~> 1.6.0)
-  - StackIAB/StackVASTKit (2.4.1):
+  - StackIAB/StackVASTKit (2.4.2):
     - StackIAB/StackMRAIDKit
     - StackIAB/StackVASTAssets
     - StackIAB/StackVideoPlayer
     - StackModules (~> 1.6.0)
-  - StackIAB/StackVideoPlayer (2.4.1):
+  - StackIAB/StackVideoPlayer (2.4.2):
     - StackModules (~> 1.6.0)
-  - StackIAB/StackXML (2.4.1):
+  - StackIAB/StackXML (2.4.2):
     - StackModules (~> 1.6.0)
-  - StackModules (1.6.4):
-    - StackModules/StackProductPresentation (= 1.6.4)
-  - StackModules/StackFoundation (1.6.4)
-  - StackModules/StackProductPresentation (1.6.4):
+  - StackModules (1.6.7):
+    - StackModules/StackProductPresentation (= 1.6.7)
+  - StackModules/StackFoundation (1.6.7)
+  - StackModules/StackProductPresentation (1.6.7):
     - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.6.4):
+  - StackModules/StackUIKit (1.6.7):
     - StackModules/StackFoundation
   - UnityAds (4.9.3)
   - VungleAds (7.2.0)
@@ -178,7 +170,6 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK
   - AppLovinSDK
-  - Appodeal (~> 3.3.0-beta.2)
   - AppsFlyer-AdRevenue (~> 6.9.0)
   - AppsFlyerFramework (~> 6.10.1)
   - BidMachine (~> 2.4.0)
@@ -196,10 +187,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
-    - Appodeal
     - BidMachine
     - OMSDK_Appodeal
-    - StackConsentManager
     - StackIAB
     - StackModules
   trunk:
@@ -224,14 +213,12 @@ SPEC REPOS:
     - nanopb
     - OCMock
     - PromisesObjC
-    - Protobuf
     - UnityAds
     - VungleAds
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 539059263689d2d14c25017f2ef89ac5db4787a8
   AppLovinSDK: 179d509c258e01a3a77eb8416f0ba843a12ed322
-  Appodeal: 72e00e9e0e9467da708b3707d4974f0fffb911c5
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 88a6eed37ad52bcee4ad74232efa8e22809d06c9
   BidMachine: 14e8969e2cce77732bcefb6ee34ec1c2505c89cb
@@ -253,13 +240,11 @@ SPEC CHECKSUMS:
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OMSDK_Appodeal: f4e97878c54edd6be63259a4ba38a5491be6226a
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  Protobuf: 5685c66a07eaad9d18ce5ab618e9ac01fd04b5aa
-  StackConsentManager: a2bebf77e1a18cfb7299161f43ae3c5ba3c3ce38
-  StackIAB: 382fdd2c75cf826b79887a0ed95228edb6689bdf
-  StackModules: 380ada7dc4a46684ba20e2f0cb89874c9a614d60
+  StackIAB: 5c11cebe2916bb814e884a95d5186ff272a493e0
+  StackModules: a2d96a26eaeca0b83567626f86ea738abbf5836d
   UnityAds: c503b06232a002ff6dc9677f4e32c6e1ae286232
   VungleAds: 85eb3468e8a6dfcf86f2b2e7891181df426c0433
 
-PODFILE CHECKSUM: 4e6969b71c74bbb7e94ccd6361244a2a16a6a7c0
+PODFILE CHECKSUM: 7a7fb651ccc2706a118f2c3e4f8ccfd7f4e0bf1e
 
 COCOAPODS: 1.13.0
