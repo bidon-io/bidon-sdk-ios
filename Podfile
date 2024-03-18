@@ -37,7 +37,7 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.2.0'
+  pod 'BigoADS', '~> 4.2.1'
 end
 
 def dtexchange
@@ -49,7 +49,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.9.0'
+  pod 'UnityAds', '~> 4.9.3'
 end
 
 def mintegral
@@ -77,11 +77,11 @@ def amazon
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.6.0'
+  pod 'InMobiSDK', '~> 10.6.4'
 end
 
 def appodeal_mediation
-  # pod 'Appodeal', '~> 3.2.0'
+  # pod 'Appodeal', '~> 3.3.0-beta.2'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
