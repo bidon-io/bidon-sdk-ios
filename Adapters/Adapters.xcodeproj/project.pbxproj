@@ -102,7 +102,6 @@
 		42CFF1BC2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1BB2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift */; };
 		42CFF1BF2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */; };
 		42CFF1C22AAF6A3800AC2C24 /* InMobiDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CFF1C12AAF6A3800AC2C24 /* InMobiDemandAd.swift */; };
-		42D40BD62B064B700008B34A /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D40BD52B064B700008B34A /* DTBiOSSDK.xcframework */; };
 		42E13A9D2AC6CF96007400EC /* AmazonBiddingSlotsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E13A9C2AC6CF96007400EC /* AmazonBiddingSlotsManager.swift */; };
 		42E13A9F2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E13A9E2AC6EECB007400EC /* AmazonBiddingAdViewDemandProvider.swift */; };
 		42E3D9E92A5D869A00546D3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E3D9E82A5D869A00546D3A /* Bidon.framework */; };
@@ -122,6 +121,8 @@
 		42F71CFA29967AEE002FC80D /* BidMachineAdDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */; };
 		42F71CFC29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */; };
 		42F71D002996B0B5002FC80D /* BidMachineProgrammaticAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFF2996B0B5002FC80D /* BidMachineProgrammaticAdViewDemandProvider.swift */; };
+		497A8D6F2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */; };
+		497A8D702BC00E2500AAEDD4 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
 		64633AAE6A85C150106AA924 /* Pods_BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */; };
@@ -133,6 +134,20 @@
 		E3730B683DCFE2F41D886B36 /* Pods_BidonAdapterGoogleAdManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13C11827C0553DF1B0E449B /* Pods_BidonAdapterGoogleAdManager.framework */; };
 		F8F2F63903FCDD349CEB76F9 /* Pods_BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853D0841556E776725274166 /* Pods_BidonAdapterUnityAds.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		497A8D712BC00E2500AAEDD4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				497A8D702BC00E2500AAEDD4 /* DTBiOSSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0456E548692C5EE25FCAA2BE /* Pods-BidOnAdapterGoogleMobileAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterGoogleMobileAds.release.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterGoogleMobileAds/Pods-BidOnAdapterGoogleMobileAds.release.xcconfig"; sourceTree = "<group>"; };
@@ -280,6 +295,7 @@
 		42F71CFB29969E3B002FC80D /* BidMachineProgrammaticRewardedAdDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineProgrammaticRewardedAdDemandProvider.swift; sourceTree = "<group>"; };
 		42F71CFF2996B0B5002FC80D /* BidMachineProgrammaticAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineProgrammaticAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		4900278EEAEDF82D74C48F6D /* Pods-BidonAdapterMobileFuse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMobileFuse.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMobileFuse/Pods-BidonAdapterMobileFuse.release.xcconfig"; sourceTree = "<group>"; };
+		497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		590DCEB56042CAE4CC28A8F1 /* Pods_BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ACFA1A9D3D9DF1686E1EF11 /* Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterGoogleMobileAds/Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; sourceTree = "<group>"; };
 		718DCA27F36512A4F8D32A78 /* Pods-BidonAdapterBidMachine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterBidMachine.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine.debug.xcconfig"; sourceTree = "<group>"; };
@@ -369,7 +385,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42D40BD62B064B700008B34A /* DTBiOSSDK.xcframework in Frameworks */,
+				497A8D6F2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -851,6 +867,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */,
 				42CD461E2B068BDC00900683 /* Bidon.framework */,
 				42D40BD52B064B700008B34A /* DTBiOSSDK.xcframework */,
 				4253FEDC2ABC98670013A675 /* Bidon.framework */,
@@ -1092,6 +1109,7 @@
 				4215B8A52A55973B00675ACC /* Sources */,
 				4215B8A62A55973B00675ACC /* Frameworks */,
 				4215B8A72A55973B00675ACC /* Resources */,
+				3334372D71C5EA70755B74EA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1111,6 +1129,7 @@
 				42210227285A3318006596DA /* Sources */,
 				42210228285A3318006596DA /* Frameworks */,
 				42210229285A3318006596DA /* Resources */,
+				EF0F67B2FF00703FEE3D291D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1130,6 +1149,7 @@
 				4249D5ED29AFAF6700BAA338 /* Sources */,
 				4249D5EE29AFAF6700BAA338 /* Frameworks */,
 				4249D5EF29AFAF6700BAA338 /* Resources */,
+				4F4C789A065AC06AB0350A1C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1149,6 +1169,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
+				497A8D712BC00E2500AAEDD4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1168,7 +1189,6 @@
 				425E9C4128B76B0F00F4E4C7 /* Sources */,
 				425E9C4228B76B0F00F4E4C7 /* Frameworks */,
 				425E9C4328B76B0F00F4E4C7 /* Resources */,
-				845C1E0C5D4E313B1FAB4907 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1245,6 +1265,7 @@
 				42BA81AE2875ABA3001F1744 /* Sources */,
 				42BA81AF2875ABA3001F1744 /* Frameworks */,
 				42BA81B02875ABA3001F1744 /* Resources */,
+				79F4F5DA4E055A4E4C1EF1C5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1264,6 +1285,7 @@
 				42CD46072B06772900900683 /* Sources */,
 				42CD46082B06772900900683 /* Frameworks */,
 				42CD46092B06772900900683 /* Resources */,
+				5F8ECCFF17D373E72B40FB58 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1283,6 +1305,7 @@
 				42CFF1AA2AAF617400AC2C24 /* Sources */,
 				42CFF1AB2AAF617400AC2C24 /* Frameworks */,
 				42CFF1AC2AAF617400AC2C24 /* Resources */,
+				EC193AE5423F319B192D0366 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1520,6 +1543,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3334372D71C5EA70755B74EA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4E5313C769D3FB9FDBB5F3F3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1542,6 +1582,57 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4F4C789A065AC06AB0350A1C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F8ECCFF17D373E72B40FB58 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79F4F5DA4E055A4E4C1EF1C5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		8019DD383D129C20066949FE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1562,23 +1653,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		845C1E0C5D4E313B1FAB4907 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterAppLovin/Pods-BidonAdapterAppLovin-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterAppLovin/Pods-BidonAdapterAppLovin-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterAppLovin/Pods-BidonAdapterAppLovin-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9B9F51FA57BB6EB4E816FF13 /* [CP] Check Pods Manifest.lock */ = {
@@ -1799,6 +1873,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC193AE5423F319B192D0366 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterInMobi/Pods-BidonAdapterInMobi-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterInMobi/Pods-BidonAdapterInMobi-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterInMobi/Pods-BidonAdapterInMobi-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EF0F67B2FF00703FEE3D291D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
