@@ -21,7 +21,7 @@ BiddingAdViewDemandSourceAdapter
 
     public let identifier: String = VungleDemandSourceAdapter.identifier
     public let name: String = "Vungle"
-    public let adapterVersion: String = "2"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = VungleAds.sdkVersion
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {

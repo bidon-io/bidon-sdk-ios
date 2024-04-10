@@ -1,4 +1,4 @@
-platform :ios, '12.0'
+platform :ios, '12.4'
 workspace 'Bidon.xcworkspace'
 
 source 'https://github.com/appodeal/CocoaPods.git'
@@ -14,17 +14,16 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.4.0'
-  # pod 'BidMachineAdColonyAdapter', '~> 2.3.0'
-  # pod 'BidMachineMintegralAdapter', '~> 2.3.0'
-  # pod 'BidMachineAmazonAdapter', '~> 2.3.0'
-  # pod 'BidMachineCriteoAdapter', '~> 2.3.0'
-  # pod 'BidMachineMetaAudienceAdapter', '~> 2.3.0'
-  # pod 'BidMachineMyTargetAdapter', '~> 2.3.0'
-  # pod 'BidMachineSmaatoAdapter', '~> 2.3.0'
-  # pod 'BidMachineTapjoyAdapter', '~> 2.3.0'
-  # pod 'BidMachineVungleAdapter', '~> 2.3.0'
-  # pod 'BidMachinePangleAdapter', '~> 2.3.0'
+  pod 'BidMachine', '~> 2.6.0'
+#  pod 'BidMachineMintegralAdapter', '~> 2.6.0'
+#  pod 'BidMachineAmazonAdapter', '~> 2.6.0'
+#  pod 'BidMachineCriteoAdapter', '~> 2.6.0'
+#  pod 'BidMachineMetaAudienceAdapter', '~> 2.6.0'
+#  pod 'BidMachineMyTargetAdapter', '~> 2.6.0'
+#  pod 'BidMachineSmaatoAdapter', '~> 2.6.0'
+#  pod 'BidMachineTapjoyAdapter', '~> 2.6.0'
+#  pod 'BidMachineVungleAdapter', '~> 2.6.0'
+#  pod 'BidMachinePangleAdapter', '~> 2.6.0'
 end
 
 def admob
@@ -32,12 +31,12 @@ def admob
 end
 
 def appsflyer
-  pod 'AppsFlyerFramework', '~> 6.10.1'
+  pod 'AppsFlyerFramework', '~> 6.14.0'
   pod 'AppsFlyer-AdRevenue', '~> 6.9.0'
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.2.1'
+  pod 'BigoADS', '~> 4.2.2'
 end
 
 def dtexchange
@@ -45,15 +44,15 @@ def dtexchange
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '~> 6.12.0'
+  pod 'FBAudienceNetwork', '~> 6.15.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.9.3'
+  pod 'UnityAds', '~> 4.10.0'
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.5.3'
+  pod 'MintegralAdSDK', '~> 7.6.1'
 end
 
 def mobilefuse
@@ -61,7 +60,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '~> 7.2.0'
+  pod 'VungleAds', '~> 7.3.0'
 end
 
 def ocmock
@@ -73,15 +72,15 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK'
+  pod 'AmazonPublisherServicesSDK', '~> 4.9.0'
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.6.4'
+  pod 'InMobiSDK', '~> 10.7.1'
 end
 
 def appodeal_mediation
-  # pod 'Appodeal', '~> 3.3.0-beta.2'
+#   pod 'Appodeal', '~> 3.3.0-beta.3'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'

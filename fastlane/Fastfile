@@ -72,6 +72,10 @@ def xcframework(scheme, target, framework, version)
   )
 end
 
+def copy_resources(path, name)
+  FileUtils.cp_r($root_dir + "/Bidon/" + name, path)
+end
+
 platform :ios do
   before_all do
     Dotenv.load ".env.default"
@@ -99,6 +103,10 @@ platform :ios do
       ver = is_adapter ? adapters_version : version
 
       xcframework($scheme, target, target, ver)
+
+    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework", "PrivacyInfo.xcprivacy")
+
+    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework", "PrivacyInfo.xcprivacy")
 
       zip(
         path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}",

@@ -21,7 +21,7 @@ BiddingAdViewDemandSourceAdapter
     
     public let identifier: String = BigoAdsDemandSourceAdapter.identifier
     public let name: String = "BigoAds"
-    public let adapterVersion: String = "4"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = BigoAdSdk.sharedInstance().getVersion()
     
     @Injected(\.context)
