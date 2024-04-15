@@ -72,7 +72,7 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '~> 4.9.0'
+  pod 'AmazonPublisherServicesSDK', '~> 4.9.2'
 end
 
 def inmobi
@@ -80,7 +80,7 @@ def inmobi
 end
 
 def appodeal_mediation
-#   pod 'Appodeal', '~> 3.3.0-beta.3'
+  # pod 'Appodeal', '~> 3.3.0-test.beta.4'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'

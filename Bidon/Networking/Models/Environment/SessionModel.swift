@@ -20,8 +20,6 @@ struct SessionModel: Session, Codable {
     var memoryWaraningsTimestampsMonotonic: [UInt]
     var RAMUsedBytes: UInt
     var RAMTotalBytes: UInt
-    var diskSpaceUsedBytes: UInt
-    var diskSpaceFreeBytes: UInt
     var batteryLevelPercentage: Float
     var CPUUsagePercentage: Float
         
@@ -37,8 +35,6 @@ struct SessionModel: Session, Codable {
         self.memoryWaraningsTimestampsMonotonic = session.memoryWaraningsTimestampsMonotonic
         self.RAMUsedBytes = session.RAMUsedBytes
         self.RAMTotalBytes = session.RAMTotalBytes
-        self.diskSpaceUsedBytes = session.diskSpaceUsedBytes
-        self.diskSpaceFreeBytes = session.diskSpaceFreeBytes
         self.batteryLevelPercentage = session.batteryLevelPercentage
         self.CPUUsagePercentage = session.CPUUsagePercentage
     }
@@ -55,8 +51,6 @@ struct SessionModel: Session, Codable {
         case memoryWaraningsTimestampsMonotonic = "memory_warnings_monotonic_ts"
         case RAMUsedBytes = "ram_used"
         case RAMTotalBytes = "ram_size"
-        case diskSpaceUsedBytes = "storage_free"
-        case diskSpaceFreeBytes = "storage_used"
         case batteryLevelPercentage = "battery"
         case CPUUsagePercentage = "cpu_usage"
     }
