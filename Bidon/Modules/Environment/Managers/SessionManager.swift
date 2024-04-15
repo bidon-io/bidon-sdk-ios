@@ -37,14 +37,6 @@ final class SessionManager: Session, Environment {
     @MainThreadComputable(UIDevice.current.batteryLevel)
     var batteryLevelPercentage: Float
     
-    var diskSpaceUsedBytes: UInt {
-        return (fileSystemAttributes?[.systemSize] as? UInt) ?? .zero
-    }
-    
-    var diskSpaceFreeBytes: UInt {
-        return (fileSystemAttributes?[.systemFreeSize] as? UInt) ?? .zero
-    }
-    
     var RAMTotalBytes: UInt {
         UInt(ProcessInfo.processInfo.physicalMemory)
     }
