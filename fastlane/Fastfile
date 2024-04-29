@@ -20,7 +20,7 @@ $targets = [
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
   "BidonAdapterInMobi",
-  "BidonAdapterAmazon"
+  #"BidonAdapterAmazon"
 ]
 
 # Defenitions ###
@@ -104,9 +104,9 @@ platform :ios do
 
       xcframework($scheme, target, target, ver)
 
-    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework", "PrivacyInfo.xcprivacy")
+    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework", "Bidon.bundle")
 
-    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework", "PrivacyInfo.xcprivacy")
+    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework", "Bidon.bundle")
 
       zip(
         path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}",
