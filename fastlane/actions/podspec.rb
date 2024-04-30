@@ -48,7 +48,7 @@ module Fastlane
           spec.swift_versions = "4.0", "4.2", "5.0"
           if params[:is_adapter]
           else
-              spec.resource_bundles = { "Bidon": "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.bundle" }
+              spec.resource_bundles = { "Bidon": "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/PrivacyInfo.xcprivacy" }
           end
         
           spec.vendored_frameworks = params[:vendored_frameworks]
