@@ -72,11 +72,26 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     private func fetchUserDefaultsValues() {
         let dictionary = UserDefaults.standard.dictionaryRepresentation()
         
-        let tcfV1 = dictionary.filter { $0.key.hasPrefix("IABConsent_") }
-        let tcfV2 = dictionary.filter { $0.key.hasPrefix("IABTCF_") }
+        let tcfV1 = dictionary.filter { isSupported(key: $0.key, value: $0.value, prefix: "IABConsent_") }
+        let tcfV2 = dictionary.filter { isSupported(key: $0.key, value: $0.value, prefix: "IABTCF_") }
         
         $tcfV1.wrappedValue = tcfV1
         $tcfV2.wrappedValue = tcfV2
         $usPrivacyStringIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
+    }
+    
+    private func isSupported(
+        key: String,
+        value: Any,
+        prefix: String
+    ) -> Bool {
+        let isKeyHasPrefix = key.hasPrefix(prefix)
+        let isValueCodable = value is String ||
+        value is Bool ||
+        value is Int ||
+        value is Double ||
+        value is Float
+        
+        return isKeyHasPrefix && isValueCodable
     }
 }

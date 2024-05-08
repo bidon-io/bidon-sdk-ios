@@ -20,8 +20,6 @@ protocol Session {
     var memoryWaraningsTimestampsMonotonic: [UInt] { get }
     var RAMUsedBytes: UInt { get }
     var RAMTotalBytes: UInt { get }
-    var diskSpaceUsedBytes: UInt { get }
-    var diskSpaceFreeBytes: UInt { get }
     var batteryLevelPercentage: Float { get }
     var CPUUsagePercentage: Float { get }
 }
