@@ -29,7 +29,7 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     
     public let identifier: String = GoogleMobileAdsDemandSourceAdapter.identifier
     public let name: String = "Google Mobile Ads"
-    public let adapterVersion: String = "0"
+    public let adapterVersion: String = "1"
     public let sdkVersion: String = GADGetStringFromVersionNumber(
         GADMobileAds.sharedInstance().versionNumber
     )
@@ -74,8 +74,7 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     }
     
     private func configure(_ request: GADRequestConfiguration) {
-        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
-        request.tag(forChildDirectedTreatment: context.regulations.coppaApplies == .yes)
+        request.tagForChildDirectedTreatment = context.regulations.coppaApplies == .yes ? 1 : 0
     }
 }
 
