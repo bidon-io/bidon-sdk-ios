@@ -1,11 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (4.9.2)
   - AppLovinSDK (12.4.1)
-  - Appodeal (3.3.0):
-    - Protobuf
-    - StackConsentManager (~> 2.0.4)
-    - StackIAB (~> 2.6.0)
-    - StackModules (~> 1.7.0)
   - AppsFlyer-AdRevenue (6.9.1):
     - AppsFlyerFramework (~> 6)
   - AppsFlyerFramework (6.14.0):
@@ -93,9 +88,6 @@ PODS:
   - MobileFuseSDK (1.7.3)
   - OCMock (3.9.3)
   - OMSDK_Appodeal (1.4.12)
-  - Protobuf (3.26.1)
-  - StackConsentManager (2.0.5):
-    - GoogleUserMessagingPlatform (~> 2.1)
   - StackIAB (2.6.0):
     - StackIAB/StackIABAssets (= 2.6.0)
     - StackIAB/StackMRAIDKit (= 2.6.0)
@@ -150,7 +142,6 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 4.9.2)
   - AppLovinSDK
-  - Appodeal (~> 3.3.0)
   - AppsFlyer-AdRevenue (~> 6.9.0)
   - AppsFlyerFramework (~> 6.14.0)
   - BidMachine (~> 2.6.0)
@@ -168,10 +159,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
-    - Appodeal
     - BidMachineRendering
     - OMSDK_Appodeal
-    - StackConsentManager
     - StackIAB
     - StackModules
   trunk:
@@ -193,14 +182,12 @@ SPEC REPOS:
     - MintegralAdSDK
     - MobileFuseSDK
     - OCMock
-    - Protobuf
     - UnityAds
     - VungleAds
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 3ccd81a70c200022af6b01838b3428bc064da035
   AppLovinSDK: c57ad0d34625c971d2db127f8ef60570b28ff51a
-  Appodeal: 88cc3790f727b1bdc581e8217f3019d94c037fb7
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 84e73360fc5b277da2a9322281c21cc467eaf023
   BidMachine: e8ee7ae1c80d3a2c4abeced647d96918ec5b2a9e
@@ -219,13 +206,11 @@ SPEC CHECKSUMS:
   MobileFuseSDK: faf54c2e5b6b7c2c552aa76b817ae1e13c24a58b
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OMSDK_Appodeal: 488b1094f7ba13129caaa1b7b6d6d08a794301af
-  Protobuf: a53f5173a603075b3522a5c50be63a67a5f3353a
-  StackConsentManager: 3f03656a53224b08149dbc66ef9f4153f0f68c44
   StackIAB: 3127eb14106c86f5eaeaf98d2fb3de71a1dff8d4
   StackModules: d07cef20468293452184c2ee01f93e730e6ee5ad
   UnityAds: 4c2dbd3e82778b536b0bad23b640c16aae91dbb1
   VungleAds: c7bf642b4a4581177b5c76042423a21d8c32ef1e
 
-PODFILE CHECKSUM: b4a98bff71f3f2119dd3bbe18016f335b7f57073
+PODFILE CHECKSUM: 0c51c49e3e27c540f9a82bf2559d7e1722f291e8
 
 COCOAPODS: 1.12.1
