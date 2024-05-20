@@ -27,7 +27,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 10.14.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.5.0'
 end
 
 def appsflyer
@@ -48,7 +48,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.10.0'
+  pod 'UnityAds', '~> 4.11.3'
 end
 
 def mintegral
@@ -80,7 +80,7 @@ def inmobi
 end
 
 def appodeal_mediation
-  # pod 'Appodeal', '~> 3.3.0-test.beta.4'
+  # pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
