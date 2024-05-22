@@ -23,7 +23,7 @@ DirectAdViewDemandSourceAdapter
     
     public let identifier: String = UnityAdsDemandSourceAdapter.identifier
     public let name: String = "Unity Ads"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = UnityAds.getVersion()
     
     private var completion: ((SdkError?) -> Void)?

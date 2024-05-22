@@ -29,7 +29,7 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     
     public let identifier: String = GoogleMobileAdsDemandSourceAdapter.identifier
     public let name: String = "Google Mobile Ads"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = GADGetStringFromVersionNumber(
         GADMobileAds.sharedInstance().versionNumber
     )

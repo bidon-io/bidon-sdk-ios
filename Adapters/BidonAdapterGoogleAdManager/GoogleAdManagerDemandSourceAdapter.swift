@@ -26,7 +26,7 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     
     public let identifier: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = GADGetStringFromVersionNumber(
         GADMobileAds.sharedInstance().versionNumber
     )

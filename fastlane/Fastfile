@@ -131,7 +131,7 @@ platform :ios do
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
         path: $podspecs_dir,
-        vendored_frameworks: ["#{target}-#{ver}/#{target}.xcframework"],
+        vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
         is_adapter: is_adapter,
       )
     end
