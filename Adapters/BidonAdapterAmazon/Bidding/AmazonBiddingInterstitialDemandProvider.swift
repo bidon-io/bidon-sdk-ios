@@ -21,7 +21,9 @@ final class AmazonBiddingInterstitialDemandProvider: AmazonBiddingDemandProvider
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        dispatcher.fetchAd(withParameters: data.mediationHints())
+        DispatchQueue.main.async { [weak self] in
+            self?.dispatcher.fetchAd(withParameters: data.mediationHints())
+        }
     }
 }
 
