@@ -16,6 +16,10 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
     var pricefloor: Price { get }
+    var auctionKey: String? { get }
+    
+    @discardableResult
+    func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self
     
     @discardableResult
     func withPlacement(_ placement: String) -> Self
@@ -26,6 +30,9 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     @discardableResult
     func withPricefloor(_ pricefloor: Price) -> Self
     
+    @discardableResult
+    func withAuctionKey(_ key: String?) -> Self
+    
     init()
 }
 
@@ -34,13 +41,21 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     private(set) var placement: String!
     private(set) var auctionId: String!
     private(set) var pricefloor: Price = .unknown
+    private(set) var demands: EncodableBiddingDemandTokens!
     private(set) var context: Context!
+    private(set) var auctionKey: String?
 
     var adObject: AuctionRequestAdObject { fatalError("BaseAuctionRequestBuilder doesn't provide adObject") }
     
     var adapters: AdaptersInfo { fatalError("BaseAuctionRequestBuilder doesn't provide adapters") }
     
     var adType: AdType { context.adType }
+    
+    @discardableResult
+    func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self {
+        self.demands = EncodableBiddingDemandTokens(tokens: tokens)
+        return self
+    }
     
     @discardableResult
     func withPlacement(_ placement: String) -> Self {
@@ -63,6 +78,12 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     @discardableResult
     func withAdTypeContext(_ context: Context) -> Self {
         self.context = context
+        return self
+    }
+    
+    @discardableResult
+    func withAuctionKey(_ key: String?) -> Self {
+        self.auctionKey = key
         return self
     }
     

@@ -75,12 +75,12 @@ final class AppodealAdService: NSObject, AdService {
         }
     }
     
-    func load(pricefloor: Double, adType: AdType) async throws {
+    func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws {
         switch adType {
         case .interstitial:
-            try await interstitial.load(pricefloor: pricefloor)
+            try await interstitial.load(pricefloor: pricefloor, auctionKey: auctionKey)
         case .rewardedAd:
-            try await rewardedAd.load(pricefloor: pricefloor)
+            try await rewardedAd.load(pricefloor: pricefloor, auctionKey: auctionKey)
         default:
             throw AppodealAdServiceError.unsupported
         }

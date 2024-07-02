@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class AdContainer: NSObject, Ad {
     final class AdNetworkUnitModel: NSObject, AdNetworkUnit {
         let uid: String
@@ -37,7 +36,7 @@ final class AdContainer: NSObject, Ad {
                 demandId: adUnit.demandId,
                 label: adUnit.label,
                 pricefloor: adUnit.pricefloor,
-                bidType: AdBidType(demandType: adUnit.demandType)
+                bidType: AdBidType(bidType: adUnit.bidType)
             )
         }
     }
@@ -47,7 +46,6 @@ final class AdContainer: NSObject, Ad {
     let price: Price
     let currencyCode: Currency?
     let networkName: String
-    let roundId: String
     let auctionId: String
     let adUnit: AdNetworkUnit
     
@@ -57,7 +55,6 @@ final class AdContainer: NSObject, Ad {
         price: Price,
         currencyCode: Currency?,
         networkName: String,
-        roundId: String,
         auctionId: String,
         adUnit: AdNetworkUnitModel
     ) {
@@ -66,7 +63,6 @@ final class AdContainer: NSObject, Ad {
         self.price = price
         self.currencyCode = currencyCode
         self.networkName = networkName
-        self.roundId = roundId
         self.auctionId = auctionId
         self.adUnit = adUnit
     }
@@ -78,7 +74,6 @@ final class AdContainer: NSObject, Ad {
             price: bid.price,
             currencyCode: bid.ad.currency,
             networkName: bid.ad.networkName ?? bid.adUnit.demandId,
-            roundId: bid.roundConfiguration.roundId,
             auctionId: bid.auctionConfiguration.auctionId,
             adUnit: AdNetworkUnitModel(bid.adUnit)
         )
@@ -91,14 +86,13 @@ final class AdContainer: NSObject, Ad {
             price: impression.price,
             currencyCode: impression.ad.currency,
             networkName: impression.ad.networkName ?? impression.demandId,
-            roundId: impression.roundConfiguration.roundId,
             auctionId: impression.auctionConfiguration.auctionId,
             adUnit: AdNetworkUnitModel(
                 uid: impression.adUnitUid,
                 demandId: impression.demandId,
                 label: impression.adUnitLabel,
                 pricefloor: impression.adUnitPricefloor,
-                bidType: AdBidType(demandType: impression.demandType)
+                bidType: AdBidType(bidType: impression.bidType)
             )
         )
     }
@@ -116,8 +110,8 @@ fileprivate extension Formatter {
 
 
 fileprivate extension AdBidType {
-    init(demandType: DemandType) {
-        switch demandType {
+    init(bidType: BidType) {
+        switch bidType {
         case .bidding: self = .rtb
         default: self = .cpm
         }
@@ -151,7 +145,6 @@ extension AdContainer {
         hasher.combine(id)
         hasher.combine(adUnit.uid)
         hasher.combine(auctionId)
-        hasher.combine(roundId)
         return hasher.finalize()
     }
     
@@ -159,8 +152,7 @@ extension AdContainer {
         guard let object = object as? AdContainer else { return false }
         return object.id == id && 
         object.adUnit.uid == object.adUnit.uid &&
-        object.auctionId == auctionId &&
-        object.roundId == roundId
+        object.auctionId == auctionId
     }
 }
 

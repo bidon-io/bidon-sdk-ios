@@ -9,7 +9,6 @@ import Foundation
 import DTBiOSSDK
 import Bidon
 
-
 struct AmazonAdUnitExtras: Codable {
     enum Format: String, Codable {
         case interstitial = "INTERSTITIAL"

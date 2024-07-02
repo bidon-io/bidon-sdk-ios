@@ -80,8 +80,8 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
 
 extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
     func collectBiddingToken(
-        adUnitExtras: [GoogleMobileAdsAdUnitExtras],
-        response: @escaping (Result<GoogleMobileAdsBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let request = GADRequest { builder in
             builder.withQueryType(parameters.queryInfoType)
@@ -96,8 +96,7 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
                 return
             }
             
-            let context = GoogleMobileAdsBiddingToken(token: token)
-            response(.success(context))
+            response(.success(token))
         }
     }
 

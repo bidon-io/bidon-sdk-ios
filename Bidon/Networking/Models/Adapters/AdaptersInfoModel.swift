@@ -30,10 +30,6 @@ struct AdaptersInfo: Encodable {
                 adapter.sdkVersion,
                 forKey: .sdkVersion
             )
-            
-//            if let encodable = adapter as? ParametersEncodableAdapter {
-//                try encodable.encodeAdapterParameters(to: encoder)
-//            }
         }
     }
     

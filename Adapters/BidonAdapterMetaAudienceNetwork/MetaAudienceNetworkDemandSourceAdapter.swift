@@ -73,7 +73,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
-            completion(result.isSuccess ? SdkError.message(result.message) : nil)
+            completion(result.isSuccess ? nil : SdkError.message(result.message))
         }
     }
 }

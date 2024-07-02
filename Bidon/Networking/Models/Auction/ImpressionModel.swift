@@ -9,36 +9,32 @@ import Foundation
 
 
 struct ImpressionModel: Encodable {
-    var impressionId: String
-    var auctionId: String
-    var auctionConfigurationUid: String
-    var demandId: String
-    var adUnitUid: String
-    var adUnitLabel: String
-    var roundId: String
-    var roundIndex: Int
-    var price: Price
-    var roundPricefloor: Price
-    var demandType: String
-    var banner: BannerAdTypeContextModel?
-    var interstitial: InterstitialAdTypeContextModel?
-    var rewarded: RewardedAdTypeContextModel?
+    let auctionId: String
+    let auctionPricefloor: Price
+    let auctionConfigurationUid: String
+    let auctionConfigurationId: Int
+    let bidType: BidType
+    let demandId: String
+    let adUnitUid: String
+    let adUnitLabel: String
+    let price: Price
+    let banner: BannerAdTypeContextModel?
+    let interstitial: InterstitialAdTypeContextModel?
+    let rewarded: RewardedAdTypeContextModel?
     
     enum CodingKeys: String, CodingKey {
-        case impressionId = "imp_id"
         case auctionId = "auction_id"
+        case auctionPricefloor = "auction_pricefloor"
         case auctionConfigurationUid = "auction_configuration_uid"
+        case auctionConfigurationId = "auction_configuration_id"
+        case bidType = "bid_type"
         case demandId = "demand_id"
-        case roundId = "round_id"
-        case roundIndex = "round_idx"
         case adUnitUid = "ad_unit_uid"
         case adUnitLabel = "ad_unit_label"
         case price = "price"
-        case roundPricefloor = "round_pricefloor"
         case banner = "banner"
         case interstitial = "interstitial"
         case rewarded = "rewarded"
-        case demandType = "bid_type"
     }
     
     init(
@@ -47,19 +43,17 @@ struct ImpressionModel: Encodable {
         interstitial: InterstitialAdTypeContextModel? = nil,
         rewarded: RewardedAdTypeContextModel? = nil
     ) {
-        self.roundId = imp.roundConfiguration.roundId
-        self.roundIndex = imp.roundConfiguration.roundIndex
-        self.impressionId = imp.impressionId
         self.auctionId = imp.auctionConfiguration.auctionId
         self.auctionConfigurationUid = imp.auctionConfiguration.auctionConfigurationUid
         self.demandId = imp.demandId
-        self.demandType = imp.demandType.rawValue
+        self.bidType = imp.bidType
         self.adUnitUid = imp.adUnitUid
         self.adUnitLabel = imp.adUnitLabel
         self.price = imp.price
-        self.roundPricefloor = imp.roundPricefloor
+        self.auctionPricefloor = imp.auctionPricefloor
         self.banner = banner
         self.interstitial = interstitial
         self.rewarded = rewarded
+        self.auctionConfigurationId = imp.auctionConfiguration.auctionConfigurationId
     }
 }

@@ -18,7 +18,7 @@ final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
     override var adType: AdType { .interstitial }
     
     override func _load() {
-        let interstitial = Bidon.Interstitial()
+        let interstitial = Bidon.Interstitial(auctionKey: auctionKey)
         interstitial.delegate = self
         interstitial.loadAd(with: pricefloor)
         self.bidonInterstitial = interstitial

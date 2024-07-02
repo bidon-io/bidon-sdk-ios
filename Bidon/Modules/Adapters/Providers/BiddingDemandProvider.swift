@@ -8,12 +8,12 @@
 import Foundation
 
 
-public typealias BiddingContextEncoderResponse = (Result<Encodable, MediationError>) -> ()
+public typealias BiddingContextEncoderResponse = (Result<String, MediationError>) -> ()
 
 
 public protocol GenericBiddingDemandProvider: DemandProvider {
     func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: [Decoder],
+        adUnitExtrasDecoder: Decoder,
         response: @escaping BiddingContextEncoderResponse
     )
     
@@ -26,13 +26,13 @@ public protocol GenericBiddingDemandProvider: DemandProvider {
 
 
 public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
-    associatedtype BiddingToken: Encodable
     associatedtype BiddingPayload: Decodable
+    associatedtype BiddingTokenExtras: Decodable
     associatedtype AdUnitExtras: Decodable
     
     func collectBiddingToken(
-        adUnitExtras: [AdUnitExtras],
-        response: @escaping (Result<BiddingToken, MediationError>) -> ()
+        biddingTokenExtras: BiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     )
     
     func load(
@@ -42,20 +42,19 @@ public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
     )
 }
 
-
 extension BiddingDemandProvider {
     public func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: [Decoder],
+        adUnitExtrasDecoder: Decoder,
         response: @escaping BiddingContextEncoderResponse
     ) {
         do {
-            let adUnitExtas = try adUnitExtrasDecoder.map { try AdUnitExtras(from: $0) }
-            collectBiddingToken(adUnitExtras: adUnitExtas) { result in
+            let adUnitExtas = try BiddingTokenExtras(from: adUnitExtrasDecoder)
+            collectBiddingToken(biddingTokenExtras: adUnitExtas) { result in
                 switch result {
-                case .failure(let error):
-                    response(.failure(error))
                 case .success(let context):
                     response(.success(context))
+                case .failure(let error):
+                    response(.failure(error))
                 }
             }
         } catch {
@@ -85,7 +84,7 @@ extension BiddingDemandProvider {
 
 
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericBiddingDemandProvider {
-    private let _collectBiddingTokenEncoder: ([Decoder], @escaping BiddingContextEncoderResponse) -> ()
+    private let _collectBiddingTokenEncoder: (Decoder, @escaping BiddingContextEncoderResponse) -> ()
     private let _load: (Decoder, Decoder, @escaping DemandProviderResponse) -> ()
     
     override init(_ wrapped: W) throws {
@@ -99,7 +98,7 @@ final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericBi
     }
     
     func collectBiddingTokenEncoder(
-        adUnitExtrasDecoder: [Decoder],
+        adUnitExtrasDecoder: Decoder,
         response: @escaping BiddingContextEncoderResponse
     ) {
         _collectBiddingTokenEncoder(adUnitExtrasDecoder, response)

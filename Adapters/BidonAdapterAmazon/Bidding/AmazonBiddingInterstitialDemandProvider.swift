@@ -16,6 +16,28 @@ final class AmazonBiddingInterstitialDemandProvider: AmazonBiddingDemandProvider
     
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
+    private var handler: AmazonBiddingHandler?
+    
+    override func collectBiddingToken(biddingTokenExtras: AmazonBiddingTokenExtras, response: @escaping (Result<String, MediationError>) -> ()) {
+        let adSizes = biddingTokenExtras.slots.filter({ $0.format == .interstitial || $0.format == .video }).compactMap({ $0.adSize() })
+        handler = AmazonBiddingHandler(adSizes: adSizes)
+        handler?.fetch(response: response)
+    }
+    
+    override func load(
+        payload: AmazonBiddingPayload,
+        adUnitExtras: AmazonAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid)
+        else {
+            response(.failure(.noAppropriateAdUnitId))
+            return
+        }
+        
+        fill(adResponse, response: response)
+    }
+    
     override func fill(
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse

@@ -22,8 +22,8 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvi
     typealias DemandAdType = Ad
     
     func collectBiddingToken(
-        adUnitExtras: [BigoAdsAdUnitExtras],
-        response: @escaping (Result<BigoAdsBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: BigoAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let token = BigoAdSdk.sharedInstance().getBidderToken()
         
@@ -32,8 +32,7 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvi
             return
         }
         
-        let context = BigoAdsBiddingToken(token: token)
-        response(.success(context))
+        response(.success(token))
     }
     
     func load(

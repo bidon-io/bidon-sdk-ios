@@ -14,12 +14,11 @@ struct FullscreenImpression: Impression {
     var ad: DemandAd
     var adType: AdType
     var price: Price
-    var demandType: DemandType
+    var bidType: BidType
     var adUnitUid: String
     var adUnitLabel: String
     var adUnitPricefloor: Price
-    var roundPricefloor: Price
-    var roundConfiguration: AuctionRoundConfiguration
+    var auctionPricefloor: Price
     var auctionConfiguration: AuctionConfiguration
     
     var showTrackedAt: TimeInterval = .nan
@@ -33,12 +32,11 @@ struct FullscreenImpression: Impression {
         self.ad = bid.ad
         self.adType = bid.adType
         self.price = bid.price
-        self.demandType = bid.adUnit.demandType
+        self.bidType = bid.adUnit.bidType
         self.adUnitUid = bid.adUnit.uid
         self.adUnitLabel = bid.adUnit.label
-        self.adUnitPricefloor = bid.adUnit.pricefloor
-        self.roundPricefloor = bid.roundPricefloor
-        self.roundConfiguration = bid.roundConfiguration
+        self.adUnitPricefloor = bid.price
+        self.auctionPricefloor = bid.auctionConfiguration.pricefloor
         self.auctionConfiguration = bid.auctionConfiguration
     }
 }

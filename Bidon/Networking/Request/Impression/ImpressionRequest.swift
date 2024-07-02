@@ -16,21 +16,21 @@ struct ImpressionRequest: Request {
     var body: RequestBody?
     
     struct RequestBody: Encodable, Tokenized {
-        var device: DeviceModel
-        var session: SessionModel
-        var app: AppModel
-        var user: UserModel
-        var regs: RegulationsModel
-        var segment: SegmentModel
-        var ext: String?
-        var test: Bool
+        let device: DeviceModel
+        let session: SessionModel
+        let app: AppModel
+        let user: UserModel
+        let regs: RegulationsModel
+        let segment: SegmentModel
+        let ext: String?
+        let test: Bool
         var token: String?
-        var bid: ImpressionModel
+        let bid: ImpressionModel
     }
     
     struct ResponseBody: Decodable, Tokenized {
         var token: String?
-        var success: Bool
+        let success: Bool
     }
 }
 
@@ -59,7 +59,8 @@ extension ImpressionRequest {
 
 extension ImpressionRequest: Equatable {
     static func == (lhs: ImpressionRequest, rhs: ImpressionRequest) -> Bool {
-        return lhs.body?.bid.impressionId == rhs.body?.bid.impressionId &&
+        return lhs.body?.bid.adUnitUid == rhs.body?.bid.adUnitUid &&
+        lhs.body?.bid.adUnitLabel == rhs.body?.bid.adUnitLabel &&
         lhs.route.stringValue == rhs.route.stringValue
     }
 }

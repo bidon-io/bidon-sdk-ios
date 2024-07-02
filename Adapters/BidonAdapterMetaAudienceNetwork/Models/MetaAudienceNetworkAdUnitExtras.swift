@@ -11,3 +11,6 @@ import Foundation
 struct MetaAudienceNetworkAdUnitExtras: Codable {
     var placementId: String
 }
+
+
+struct MetaAudienceNetworkBiddingTokenExtras: Codable { }

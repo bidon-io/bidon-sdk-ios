@@ -11,8 +11,6 @@ import BidMachine
 import BidMachineApiCore
 import Bidon
 
-
-
 class BidMachineBiddingDemandProvider<AdObject>: BidMachineBaseDemandProvider<AdObject>, BiddingDemandProvider
 where AdObject: BidMachineAdProtocol {
     struct BiddingResponse: Codable {
@@ -20,15 +18,15 @@ where AdObject: BidMachineAdProtocol {
     }
     
     func collectBiddingToken(
-        adUnitExtras: [BidMachineAdUnitExtras],
-        response: @escaping (Result<BidMachineBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: BidMachineAdUnitExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         guard let token = BidMachineSdk.shared.token else {
             response(.failure(.unscpecifiedException))
             return
         }
         
-        response(.success(BidMachineBiddingToken(token: token)))
+        response(.success(token))
     }
     
     func load(

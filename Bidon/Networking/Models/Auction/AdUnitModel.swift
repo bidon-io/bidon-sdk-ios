@@ -9,9 +9,9 @@ import Foundation
 
 
 struct AdUnitModel: AdUnit {
-    var uid: String
     var demandId: String
-    var demandType: DemandType
+    var uid: String
+    var bidType: BidType
     var label: String
     var pricefloor: Price
     var extras: Decoder
@@ -20,11 +20,11 @@ struct AdUnitModel: AdUnit {
 
 extension AdUnitModel: Decodable {
     enum CodingKeys: String, CodingKey {
-        case uid = "uid"
         case demandId
-        case demandType = "bidType"
+        case pricefloor
         case label
-        case pricefloor 
+        case uid
+        case bidType
         case extras = "ext"
     }
     
@@ -33,7 +33,7 @@ extension AdUnitModel: Decodable {
         
         uid = try container.decode(String.self, forKey: .uid)
         demandId = try container.decode(String.self, forKey: .demandId)
-        demandType = try container.decode(DemandType.self, forKey: .demandType)
+        bidType = try container.decode(BidType.self, forKey: .bidType)
         label = try container.decode(String.self, forKey: .label)
         pricefloor = try container.decodeIfPresent(Price.self, forKey: .pricefloor) ?? .unknown
         extras = try container.superDecoder(forKey: .extras)

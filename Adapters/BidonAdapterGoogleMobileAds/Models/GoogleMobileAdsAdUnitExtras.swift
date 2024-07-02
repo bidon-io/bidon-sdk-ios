@@ -11,3 +11,5 @@ import Foundation
 struct GoogleMobileAdsAdUnitExtras: Codable {
     var adUnitId: String
 }
+
+struct GoogleMobileAdsBiddingTokenExtras: Codable { }

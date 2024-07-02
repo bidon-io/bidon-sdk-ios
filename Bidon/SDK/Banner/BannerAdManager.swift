@@ -50,6 +50,8 @@ final class BannerAdManager: NSObject {
     
     var extras: [String: AnyHashable] = [:]
     
+    var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
+    
     init(
         placement: String,
         adRevenueObserver: AdRevenueObserver
@@ -66,7 +68,8 @@ final class BannerAdManager: NSObject {
     
     func loadAd(
         pricefloor: Price,
-        viewContext: AdViewContext
+        viewContext: AdViewContext,
+        auctionKey: String?
     ) {
         guard state.isIdle else {
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
@@ -75,90 +78,56 @@ final class BannerAdManager: NSObject {
         
         fetchAuctionInfo(
             pricefloor: pricefloor,
-            viewContext: viewContext
+            viewContext: viewContext,
+            auctionKey: auctionKey
         )
-    }
-    
-    func notifyWin(viewContext: AdViewContext) {
-        switch state {
-        case .ready(var impression):
-            // win notification just sends
-            // a corresponding request
-            // we need to mark impression as notified
-            // regardless of whether a request was sent
-            guard impression.isTrackingAllowed(.win) else { return }
-            defer {
-                impression.markTrackedIfNeeded(.win)
-                state = .ready(impression: impression)
-            }
-            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
-            let context = BannerAdTypeContext(viewContext: viewContext)
-            
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.win)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(impression)
-            }
-            
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent win with result: \(result)")
-            }
-        default:
-            break
-        }
-    }
-    
-    func notifyLoss(
-        winner demandId: String,
-        eCPM: Price,
-        viewContext: AdViewContext
-    ) {
-        switch state {
-        case .preparing:
-            state = .idle
-            delegate?.adManager(self, didFailToLoad: .cancelled)
-        case .auction(let controller):
-            controller.cancel()
-        case .ready(let impression):
-            // Invalidate a bid only in case the SDK doesn't
-            // received win/loss yet,
-            // isExternalNotificationsEnabled applies only
-            // for request logic
-            guard impression.isTrackingAllowed(.loss) else { return }
-            defer { state = .idle }
-            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
-            let context = BannerAdTypeContext(viewContext: viewContext)
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.loss)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(impression)
-                builder.withExternalWinner(demandId: demandId, price: eCPM)
-            }
-            
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent loss with result: \(result)")
-            }
-        default:
-            break
-        }
     }
     
     private func fetchAuctionInfo(
         pricefloor: Price,
-        viewContext: AdViewContext
+        viewContext: AdViewContext,
+        auctionKey: String?
     ) {
         state = .preparing
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
+        guard let initializationParameters = ConfigParametersStorage.adaptersInitializationParameters else {
+            self.state = .idle
+            Logger.warning("No adapters were found")
+            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"))
+            return
+        }
+        
+        let demands = initializationParameters.adapters.map({ $0.demandId })
+        
+        let builder = DemandsTokensManagerBuilder<BannerAdTypeContext>()
+        builder.withDemands(demands)
+        builder.withAdapters(context.adViewAdapters(viewContext: viewContext))
+        builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
+        
+        let demandsManager = DemandsTokensManager<BannerAdTypeContext>(builder: builder)
+        self.demandsTokensManager = demandsManager
+        
+        demandsManager.load(initializationParameters: initializationParameters) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let tokens):
+                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
+            case .failure(let error):
+                self.state = .idle
+                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+            }
+        }
+    }
+    
+    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+        let context = BannerAdTypeContext(viewContext: viewContext)
+        
         let request = context.auctionRequest { builder in
-            builder.withPlacement(placement)
+            builder.withAuctionKey(auctionKey)
+            builder.withBiddingTokens(tokens)
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
@@ -179,6 +148,7 @@ final class BannerAdManager: NSObject {
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(
                     auctionInfo: response,
+                    tokens: tokens,
                     viewContext: viewContext
                 )
             case .failure(let error):
@@ -191,11 +161,12 @@ final class BannerAdManager: NSObject {
     
     private func performAuction(
         auctionInfo: AuctionInfo,
+        tokens: [BiddingDemandToken],
         viewContext: AdViewContext
     ) {
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
-        let configuration = AuctionConfiguration(auction: auctionInfo)
+        let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
         
         let observer = BaseAuctionObserver(
             configuration: configuration,
@@ -207,7 +178,6 @@ final class BannerAdManager: NSObject {
         
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
-            builder.withRounds(auctionInfo.rounds)
             builder.withAdUnitProvider(provider)
             builder.withPricefloor(auctionInfo.pricefloor)
             builder.withContext(context)
@@ -253,6 +223,74 @@ final class BannerAdManager: NSObject {
         
         networkManager.perform(request: request) { result in
             Logger.debug("Sent statistics with result: \(result)")
+        }
+    }
+    
+    func notifyWin(viewContext: AdViewContext) {
+        switch state {
+        case .ready(var impression):
+            // win notification just sends
+            // a corresponding request
+            // we need to mark impression as notified
+            // regardless of whether a request was sent
+            guard impression.isTrackingAllowed(.win) else { return }
+            defer {
+                impression.markTrackedIfNeeded(.win)
+                state = .ready(impression: impression)
+            }
+            
+            let context = BannerAdTypeContext(viewContext: viewContext)
+            
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.win)
+                builder.withEnvironmentRepository(sdk.environmentRepository)
+                builder.withTestMode(sdk.isTestMode)
+                builder.withExt(extras)
+                builder.withImpression(impression)
+            }
+            
+            networkManager.perform(request: request) { result in
+                Logger.debug("Sent win with result: \(result)")
+            }
+        default:
+            break
+        }
+    }
+    
+    func notifyLoss(
+        winner demandId: String,
+        eCPM: Price,
+        viewContext: AdViewContext
+    ) {
+        switch state {
+        case .preparing:
+            state = .idle
+            delegate?.adManager(self, didFailToLoad: .cancelled)
+        case .auction(let controller):
+            controller.cancel()
+        case .ready(let impression):
+            // Invalidate a bid only in case the SDK doesn't
+            // received win/loss yet,
+            // isExternalNotificationsEnabled applies only
+            // for request logic
+            guard impression.isTrackingAllowed(.loss) else { return }
+            defer { state = .idle }
+            
+            let context = BannerAdTypeContext(viewContext: viewContext)
+            let request = context.notificationRequest { builder in
+                builder.withRoute(.loss)
+                builder.withEnvironmentRepository(sdk.environmentRepository)
+                builder.withTestMode(sdk.isTestMode)
+                builder.withExt(extras)
+                builder.withImpression(impression)
+                builder.withExternalWinner(demandId: demandId, price: eCPM)
+            }
+            
+            networkManager.perform(request: request) { result in
+                Logger.debug("Sent loss with result: \(result)")
+            }
+        default:
+            break
         }
     }
 }

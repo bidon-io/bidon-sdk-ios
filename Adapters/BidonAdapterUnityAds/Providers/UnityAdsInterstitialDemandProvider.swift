@@ -28,7 +28,7 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
         
         self.placements.insert(placement)
         self.response = response
-        
+
         UnityAds.load(
             placement.placementId,
             loadDelegate: self

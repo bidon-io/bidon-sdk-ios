@@ -8,18 +8,18 @@
 import Foundation
 
 
-struct AnyDemandSourceAdapterDemandType: OptionSet {
+struct AnyDemandSourceAdapterBidType: OptionSet {
     let rawValue: UInt
     
-    static let direct = AnyDemandSourceAdapterDemandType(rawValue: 1 << 0)
-    static let bidding = AnyDemandSourceAdapterDemandType(rawValue: 1 << 1)
+    static let direct = AnyDemandSourceAdapterBidType(rawValue: 1 << 0)
+    static let bidding = AnyDemandSourceAdapterBidType(rawValue: 1 << 1)
     
     init(rawValue: UInt) {
         self.rawValue = rawValue
     }
     
     fileprivate init<Provider: DemandProvider>(from provider: Provider) {
-        var result: AnyDemandSourceAdapterDemandType = []
+        var result: AnyDemandSourceAdapterBidType = []
         
         if provider is any DirectDemandProvider {
             result.insert(.direct)
@@ -40,7 +40,7 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
     var adapterVersion: String
     var sdkVersion: String
     var provider: DemandProviderType
-    var supportedTypes: AnyDemandSourceAdapterDemandType
+    var supportedTypes: AnyDemandSourceAdapterBidType
     
     init(
         adapter: Adapter,
@@ -51,7 +51,7 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
         self.adapterVersion = adapter.adapterVersion
         self.sdkVersion = adapter.sdkVersion
         self.provider = provider
-        self.supportedTypes = AnyDemandSourceAdapterDemandType(from: provider)
+        self.supportedTypes = AnyDemandSourceAdapterBidType(from: provider)
     }
     
     init() {

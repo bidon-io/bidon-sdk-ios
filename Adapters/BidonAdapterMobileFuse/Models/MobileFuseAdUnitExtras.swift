@@ -11,3 +11,5 @@ import Foundation
 struct MobileFuseAdUnitExtras: Codable {
     var placementId: String
 }
+
+struct MobileFuseBiddingTokenExtras: Codable { }

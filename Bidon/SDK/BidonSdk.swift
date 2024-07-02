@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-
 @objc(BDNSdk)
 public final class BidonSdk: NSObject {
-    internal lazy var adaptersRepository = AdaptersRepository()
-    internal lazy var environmentRepository = EnvironmentRepository()
+    lazy var adaptersRepository = AdaptersRepository()
+    lazy var environmentRepository = EnvironmentRepository()
     
     public private(set) var isTestMode: Bool = false
     
@@ -152,6 +151,9 @@ public final class BidonSdk: NSObject {
             self.networkManager.perform(request: request) { [unowned self] result in
                 switch result {
                 case .success(let response):
+                    ConfigParametersStorage.store(response.adaptersInitializationParameters)
+                    ConfigParametersStorage.store(response.bidding.tokenTimeoutMs)
+                    
                     AdaptersInitializator(
                         parameters: response.adaptersInitializationParameters,
                         respoitory: self.adaptersRepository

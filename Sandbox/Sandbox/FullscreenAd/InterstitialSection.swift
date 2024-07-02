@@ -20,6 +20,8 @@ struct InterstitialSection: View {
                 in: (0.0...100.0),
                 step: 0.1
             )
+            
+            TextField("Auction Key", text: $vm.auctionKey)
         
             Button(action: load) {
                 HStack {
