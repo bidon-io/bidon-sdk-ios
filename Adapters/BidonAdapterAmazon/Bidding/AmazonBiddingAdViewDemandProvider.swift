@@ -64,8 +64,8 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse
     ) {
+        self.response = response
         DispatchQueue.main.async { [weak self] in
-            self?.response = response
             self?.dispatcher.fetchBannerAd(withParameters: data.mediationHints())
         }
     }
