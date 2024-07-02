@@ -30,7 +30,7 @@ class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachine
                 guard let self = self else { return }
                 
                 guard let ad = ad, error == nil else {
-                    response(.failure(.noBid))
+                    response(.failure(.noFill))
                     return
                 }
                 

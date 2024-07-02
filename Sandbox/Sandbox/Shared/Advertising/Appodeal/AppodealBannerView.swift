@@ -21,6 +21,7 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
     var autorefreshInterval: TimeInterval
     var pricefloor: Price
     var onEvent: AdBannerWrapperViewEvent
+    var auctionKey: String?
     
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
@@ -30,6 +31,7 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
         isAutorefreshing: Bool,
         autorefreshInterval: TimeInterval,
         pricefloor: Price = 0.1,
+        auctionKey: String?,
         onEvent: @escaping AdBannerWrapperViewEvent,
         ad: Binding<Bidon.Ad?>,
         isLoading: Binding<Bool>
@@ -41,6 +43,7 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
         self.pricefloor = pricefloor
         self._ad = ad
         self._isLoading = isLoading
+        self.auctionKey = auctionKey
     }
     
     func makeUIView(context: Context) -> UIView {
@@ -54,7 +57,8 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
                 format: format,
                 isAutorefreshing: isAutorefreshing,
                 autorefreshInterval: autorefreshInterval,
-                pricefloor: pricefloor
+                pricefloor: pricefloor,
+                auctionKey: auctionKey
             )
         }
     }
@@ -77,6 +81,7 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
         
         private var format: AdBannerWrapperFormat!
         private var pricefloor: Double!
+        private var auctionKey: String?
         private var isAutorefreshing: Bool!
         private var autorefreshInterval: TimeInterval!
         
@@ -105,13 +110,15 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
             format: AdBannerWrapperFormat,
             isAutorefreshing: Bool,
             autorefreshInterval: TimeInterval,
-            pricefloor: Price
+            pricefloor: Price,
+            auctionKey: String?
         ) {
             self.container = container
             self.format = format
             self.isAutorefreshing = isAutorefreshing
             self.autorefreshInterval = autorefreshInterval
             self.pricefloor = pricefloor
+            self.auctionKey = auctionKey
             
             performMediation()
         }
@@ -137,7 +144,7 @@ struct AppodealBannerView: UIViewRepresentable, AdBannerWrapperView {
         func performPostBid() {
             let pricefloor = max(pricefloor, (banners.keys.max() ?? 0))
             
-            let banner = Bidon.BannerView(frame: .zero)
+            let banner = Bidon.BannerView(frame: .zero, auctionKey: auctionKey)
             
             banner[extrasKey: "appodeal_key"] = true
             

@@ -12,27 +12,17 @@ protocol AuctionOperationRequestDemand: AuctionOperation {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
     associatedtype BidType: Bid where BidType.ProviderType == AdTypeContextType.DemandProviderType
 
-    var bids: [BidType] { get }
+    var bid: BidType? { get }
 }
-
-
-extension AuctionOperationRequestDemand {
-    var pricefloor: Price {
-        deps(AuctionOperationStartRound<AdTypeContextType, BidType>.self)
-            .first?
-            .pricefloor ?? .unknown
-    }
-}
-
 
 final class AuctionOperationRequestDemandBuilder<AdTypeContextType: AdTypeContext>: BaseAuctionOperationBuilder<AdTypeContextType> {
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
 
-    private(set) var demands: [String]!
+    private(set) var demand: String!
         
     @discardableResult
-    func withDemands(_ demands: [String]) -> Self {
-        self.demands = demands
+    func withDemand(_ demand: String) -> Self {
+        self.demand = demand
         return self
     }
 }

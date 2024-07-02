@@ -12,3 +12,5 @@ struct MintegralAdUnitExtras: Codable {
     var unitId: String
     var placementId: String
 }
+
+struct MintegralBiddingTokenExtras: Codable { }

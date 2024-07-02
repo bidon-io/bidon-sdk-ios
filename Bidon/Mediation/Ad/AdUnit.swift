@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum DemandType: String, Codable {
+enum BidType: String, Codable {
     case bidding = "RTB"
     case direct = "CPM"
 }
@@ -16,12 +16,12 @@ enum DemandType: String, Codable {
 
 protocol AdUnit: Hashable {
     associatedtype ExtrasType
-                                    
-    var uid: String { get }
+                           
     var demandId: String { get }
-    var demandType: DemandType { get }
-    var label: String { get }
     var pricefloor: Price { get }
+    var label: String { get }
+    var uid: String { get }
+    var bidType: BidType { get }
     var extras: ExtrasType { get }
 }
 

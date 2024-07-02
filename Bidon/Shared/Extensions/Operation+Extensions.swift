@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 extension Operation {
     func deps<T: Operation>(_ type: T.Type) -> [T] {
         return dependencies.compactMap { $0 as? T }

@@ -18,7 +18,7 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
     override var adType: AdType { .rewardedAd } 
     
     override func _load() {
-        let rewardedAd = Bidon.RewardedAd()
+        let rewardedAd = Bidon.RewardedAd(auctionKey: auctionKey)
         rewardedAd.delegate = self
         rewardedAd.loadAd(with: pricefloor)
         self.bidonRewardedAd = rewardedAd

@@ -20,7 +20,6 @@ struct DummyBid: Bid {
     var ad: Void
     var provider: Void
     var roundPricefloor: Price
-    var roundConfiguration: AuctionRoundConfiguration
     var auctionConfiguration: AuctionConfiguration
     
     static func == (lhs: DummyBid, rhs: DummyBid) -> Bool {
@@ -36,7 +35,6 @@ struct DummyBid: Bid {
         self.roundPricefloor = bid.price
         self.ad = ()
         self.provider = ()
-        self.roundConfiguration = bid.roundConfiguration
         self.auctionConfiguration = bid.auctionConfiguration
     }
     

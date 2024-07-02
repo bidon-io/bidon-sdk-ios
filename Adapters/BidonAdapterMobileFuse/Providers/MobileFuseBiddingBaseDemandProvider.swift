@@ -35,8 +35,8 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
     var context: SdkContext
     
     func collectBiddingToken(
-        adUnitExtras: [MobileFuseAdUnitExtras],
-        response: @escaping (Result<MobileFuseBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: MobileFuseBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let request = MFBiddingTokenRequest()
         request.isTestMode = context.isTestMode
@@ -55,8 +55,7 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
         }
                 
         MFBiddingTokenProvider.getTokenWith(request) { token in
-            let context = MobileFuseBiddingToken(token: token)
-            response(.success(context))
+            response(.success(token))
         }
     }
     

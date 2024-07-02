@@ -11,7 +11,6 @@ import Foundation
 indirect enum Route {
     case config
     case auction
-    case bid
     case stats
     case show
     case click
@@ -63,15 +62,14 @@ extension Route {
     
     private var pathComponent: String {
         switch self {
-        case .auction:  return "auction"
-        case .config:   return "config"
-        case .stats:    return "stats"
-        case .bid:      return "bidding"
-        case .show:     return "show"
-        case .click:    return "click"
-        case .loss:     return "loss"
-        case .win:      return "win"
-        case .reward:   return "reward"
+        case .auction:  return "v2/auction"
+        case .config:   return "v2/config"
+        case .stats:    return "v2/stats"
+        case .show:     return "v2/show"
+        case .click:    return "v2/click"
+        case .loss:     return "v2/loss"
+        case .win:      return "v2/win"
+        case .reward:   return "v2/reward"
         case .adType(let adType): return adType.stringValue
         default: return ""
         }

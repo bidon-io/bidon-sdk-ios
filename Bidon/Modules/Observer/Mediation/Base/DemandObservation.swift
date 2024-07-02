@@ -17,10 +17,14 @@ struct DemandObservation {
         var bid: DummyBid?
         var startTimestamp: TimeInterval?
         var finishTimestamp: TimeInterval?
+        var tokenStartTimestamp: UInt?
+        var tokenFinishTimestamp: UInt?
     }
     
     private(set) var bidRequestTimestamp: TimeInterval?
     private(set) var bidResponseTimestamp: TimeInterval?
+    
+    private(set) var tokens: [BiddingDemandToken]
 
     private(set) var entries: [Entry] = []
     
@@ -66,6 +70,8 @@ struct DemandObservation {
                     entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                     entry.price = bid.price
                     entry.bid = DummyBid(bid)
+                    entry.tokenStartTimestamp = tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenStartTs
+                    entry.tokenFinishTimestamp = tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenFinishTs
                 }
                 return entry
             }
@@ -75,7 +81,9 @@ struct DemandObservation {
                 adUnit: DummyAdUnit(bid.adUnit),
                 bid: DummyBid(bid),
                 startTimestamp: Date.timestamp(.wall, units: .milliseconds),
-                finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenStartTs,
+                tokenFinishTimestamp: tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenFinishTs
             )
             entries.append(entry)
         }
@@ -128,15 +136,15 @@ struct DemandObservation {
     }
     
     mutating func cancel() {
-        entries = entries.map { entry in
-            var entry = entry
-            if entry.status.isUnknown {
-                entry.status = .error(.auctionCancelled)
-                entry.startTimestamp = nil
-                entry.finishTimestamp = nil
-            }
-            return entry
-        }
+//        entries = entries.map { entry in
+//            var entry = entry
+//            if entry.status.isUnknown {
+//                entry.status = .error(.auctionCancelled)
+//                entry.startTimestamp = nil
+//                entry.finishTimestamp = nil
+//            }
+//            return entry
+//        }
     }
     
     mutating func update(mutation: (inout Entry) -> ()) {

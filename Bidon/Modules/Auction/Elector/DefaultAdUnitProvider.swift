@@ -20,11 +20,11 @@ final class DefaultAdUnitProvider: AdUnitProvider {
         pricefloor: Price
     ) -> AdUnitModel? {
         let candidate = adUnits
-            .filter { $0.demandType == .direct && $0.demandId == demandId && $0.pricefloor > pricefloor }
+            .filter { $0.bidType == .direct && $0.demandId == demandId && $0.pricefloor > pricefloor }
             .sorted { $0.pricefloor < $1.pricefloor }
             .first ??
         adUnits
-            .first { $0.demandType == .direct && $0.pricefloor.isUnknown }
+            .first { $0.bidType == .direct && $0.pricefloor.isUnknown }
         
         adUnits = adUnits.filter { $0 != candidate }
         return candidate
@@ -32,6 +32,6 @@ final class DefaultAdUnitProvider: AdUnitProvider {
     
     func biddingAdUnits(for demandId: String) -> [AdUnitModel] {
         return adUnits
-            .filter { $0.demandType == .bidding && $0.demandId == demandId }
+            .filter { $0.bidType == .bidding && $0.demandId == demandId }
     }
 }

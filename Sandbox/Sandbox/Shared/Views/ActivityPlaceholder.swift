@@ -12,10 +12,6 @@ import SwiftUI
 struct ActivityPlaceholder: View {    
     var body: some View {
         ZStack {
-            VisualEffectView(
-                effect: UIBlurEffect(style: .regular)
-            )
-            
             ProgressView()
                 .progressViewStyle(.circular)
         }

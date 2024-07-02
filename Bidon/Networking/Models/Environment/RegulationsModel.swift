@@ -9,11 +9,11 @@ import Foundation
 
 
 struct RegulationsModel: Encodable {
-    var coppa: Bool
-    var gdpr: Bool
-    var euPrivacy: String?
-    var usPrivacy: String?
-    var iab: IABModel
+    let coppa: Bool
+    let gdpr: Bool
+    let euPrivacy: String?
+    let usPrivacy: String?
+    let iab: IABModel
     
     struct IABModel: Encodable {
         var tcfV1: [String: Any]

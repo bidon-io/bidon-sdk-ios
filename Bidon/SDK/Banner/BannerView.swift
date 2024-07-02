@@ -17,6 +17,8 @@ public final class BannerView: UIView, AdView {
     
     @objc public let placement: String
     
+    @objc public let auctionKey: String?
+    
     @objc public var format: BannerFormat = .banner
     
     @objc public weak var rootViewController: UIViewController?
@@ -89,9 +91,11 @@ public final class BannerView: UIView, AdView {
     @objc
     public init(
         frame: CGRect,
+        auctionKey: String?,
         placement: String = "default"
     ) {
         self.placement = placement
+        self.auctionKey = auctionKey
         super.init(frame: frame)
     }
     
@@ -107,11 +111,13 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero
+        with pricefloor: Price = .zero,
+        auctionKey: String? = nil
     ) {
         adManager.loadAd(
             pricefloor: pricefloor,
-            viewContext: viewContext
+            viewContext: viewContext,
+            auctionKey: auctionKey
         )
     }
     
@@ -143,7 +149,9 @@ public final class BannerView: UIView, AdView {
         guard
             let impression = adManager.impression,
             let adView = impression.bid.provider.container(opaque: impression.bid.ad)
-        else { return }
+        else {
+            return
+        }
         
         Logger.verbose("Banner \(self) will refresh ad view")
         

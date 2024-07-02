@@ -9,11 +9,11 @@ import Foundation
 
 
 struct RoundObservation {
-    var configuration: AuctionRoundConfiguration
     var pricefloor: Price
+    var tokens: [BiddingDemandToken]
     
-    var demand = DemandObservation()
-    var bidding = DemandObservation()
+    lazy var demand = DemandObservation(tokens: tokens)
+    lazy var bidding = DemandObservation(tokens: tokens)
     
     var roundWinner: DemandObservation.Entry?
     var auctionWinner: DemandObservation.Entry?
@@ -22,8 +22,20 @@ struct RoundObservation {
         return auctionWinner != nil
     }
     
-    private var entries: [DemandObservation.Entry] {
+    private lazy var entries: [DemandObservation.Entry] = {
         return demand.entries + bidding.entries
+    }()
+    
+    init(
+        pricefloor: Price,
+        tokens: [BiddingDemandToken],
+        roundWinner: DemandObservation.Entry? = nil,
+        auctionWinner: DemandObservation.Entry? = nil
+    ) {
+        self.pricefloor = pricefloor
+        self.tokens = tokens
+        self.roundWinner = roundWinner
+        self.auctionWinner = auctionWinner
     }
     
     mutating func didFinishAuction(_ winner: AnyBid?) {

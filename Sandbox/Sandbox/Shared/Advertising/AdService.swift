@@ -69,7 +69,7 @@ protocol AdService: AnyObject {
     
     func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never>
     
-    func load(pricefloor: Double, adType: AdType) async throws
+    func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws
     
     func canShow(adType: AdType) -> Bool 
     

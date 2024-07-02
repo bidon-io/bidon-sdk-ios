@@ -15,13 +15,14 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidd
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     func collectBiddingToken(
-        adUnitExtras: [MintegralAdUnitExtras],
-        response: @escaping (Result<MintegralBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: MintegralBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        let context = MintegralBiddingToken(
-            buyerUID: MTGBiddingSDK.buyerUID()
-        )
-        response(.success(context))
+        guard let token = MTGBiddingSDK.buyerUID() else {
+            response(.failure(.unscpecifiedException))
+            return
+        }
+        response(.success(token))
     }
     
     func load(

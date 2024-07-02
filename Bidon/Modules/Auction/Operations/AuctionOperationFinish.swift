@@ -40,15 +40,37 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
     override func main() {
         super.main()
         
-        let bids = deps(AuctionOperationFinishRound<AdTypeContextType, BidType>.self)
-            .reduce([]) { $0 + $1.bids }
+        let directResults = deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
+            .compactMap({ $0.bid })
             .sorted { comparator.compare($0, $1) }
         
-        let winner = bids.first
+        let bidResults = deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
+            .compactMap({ $0.bid })
+            .sorted { comparator.compare($0, $1) }
         
-        observer.log(FinishAuctionEvent(winner: winner))
+        let directWinner = directResults.first
+        let bidWinner = bidResults.first
         
-        let result = result(for: bids, winner: winner)
+        var result: Result<BidType, SdkError>
+        switch (directWinner, bidWinner) {
+        case (.none, .none):
+            result = .failure(.noFill)
+            observer.log(FinishAuctionEvent(winner: nil))
+        case (.none, .some(let winner)):
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+            notifyBids(bidResults, winner: winner)
+        case (.some(let winner), .none):
+            notifyBids(directResults, winner: winner)
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+        case (.some(let directWrappedWinner), .some(let bidWrappedWinner)):
+            let winner = max(directWrappedWinner, bidWrappedWinner)
+            notifyBids(directResults + bidResults, winner: winner)
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+        }
+        
         let completion = self.completion
         
         DispatchQueue.main.async {
@@ -69,15 +91,7 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         }
     }
     
-    private func result(
-        for bids: [BidType],
-        winner: BidType?
-    ) -> Result<BidType, SdkError> {
-        guard let winner = winner else {
-            // TODO: Better error handling
-            return .failure(.noFill)
-        }
-        
+    private func notifyBids(_ bids: [BidModel<AdTypeContextType.DemandProviderType>], winner: BidModel<AdTypeContextType.DemandProviderType>) {
         // Notify providers on win/lose
         bids.forEach { bid in
             if bid.adUnit.uid == winner.adUnit.uid {
@@ -96,8 +110,5 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
                 )
             }
         }
-        
-        // Auction result is success
-        return .success(winner)
     }
 }

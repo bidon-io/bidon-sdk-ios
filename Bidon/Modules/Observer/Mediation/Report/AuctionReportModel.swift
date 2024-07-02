@@ -18,6 +18,8 @@ struct AuctionDemandReportModel: AuctionDemandReport {
     var adUnit: AdUnitType?
     var startTimestamp: UInt?
     var finishTimestamp: UInt?
+    var tokenStartTimestamp: UInt?
+    var tokenFinishTimestamp: UInt?
 }
 
 
@@ -35,7 +37,6 @@ struct AuctionRoundReportModel: AuctionRoundReport {
     typealias AuctionDemandReportType = AuctionDemandReportModel
     typealias AuctionRoundBiddingReportType = AuctionRoundBiddingReportModel
     
-    var configuration: AuctionRoundConfiguration
     var pricefloor: Price
     var winner: DummyBid?
     var demands: [AuctionDemandReportModel]
@@ -49,14 +50,13 @@ struct AuctionResultReportModel: AuctionResultReport {
     var status: AuctionResultStatus
     var startTimestamp: UInt
     var finishTimestamp: UInt
-    var winnerRoundConfiguration: AuctionRoundConfiguration?
     var winner: DummyBid?
 }
 
 
 struct AuctionReportModel: AuctionReport {
     var configuration: AuctionConfiguration
-    var rounds: [AuctionRoundReportModel]
+    var round: AuctionRoundReportModel
     var result: AuctionResultReportModel
 }
 
@@ -69,6 +69,8 @@ extension AuctionDemandReportModel {
         self.adUnit = entry.adUnit
         self.startTimestamp = entry.startTimestamp?.uint
         self.finishTimestamp = entry.finishTimestamp?.uint
+        self.tokenStartTimestamp = entry.tokenStartTimestamp
+        self.tokenFinishTimestamp = entry.tokenFinishTimestamp
     }
 }
 

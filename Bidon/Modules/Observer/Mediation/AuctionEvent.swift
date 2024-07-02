@@ -38,71 +38,20 @@ struct CancelAuctionEvent: AuctionEvent {
 }
 
 
-// MARK: Round
-struct StartRoundAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    var pricefloor: Price
-    
-    var description: String {
-        return "did start round \(configuration.roundId) with pricefloor \(pricefloor.pretty)"
-    }
-}
-
-
-struct ScheduleTimeoutRoundAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    var interval: TimeInterval
-    
-    var description: String {
-        return "did schedule timeout with interval \(interval) in round \(configuration.roundId)"
-    }
-}
-
-
-struct ReachTimeoutRoundAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    
-    var description: String {
-        return "did reach timeout in round \(configuration.roundId)"
-    }
-}
-
-
-struct InvalidateTimeoutRoundAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    
-    var description: String {
-        return "did invalidate timeout in round: \(configuration.roundId)"
-    }
-}
-
-
-struct FinishRoundAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    var bid: AnyBid?
-    
-    var description: String {
-        return "did finish round \(configuration.roundId) " + (bid.map { "with bid: \($0) " } ?? "without bid")
-    }
-}
-
 
 // MARK: Direct Demand
 struct DirectDemandErrorAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "direct demand \(adapter) error \(error) in round '\(configuration.roundId)'"
+        return "direct demand \(adapter) error \(error)'"
     }
     
     init(
-        configuration: AuctionRoundConfiguration,
         demandId: String,
         error: MediationError
     ) {
-        self.configuration = configuration
         self.adapter = UnknownAdapter(demandId: demandId)
         self.error = error
     }
@@ -110,11 +59,10 @@ struct DirectDemandErrorAuctionEvent: AuctionEvent {
 
 
 struct DirectDemandWillLoadAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adUnit: any AdUnit
     
     var description: String {
-        return "direct demand \(adUnit) will load in round \(configuration.roundId)"
+        return "direct demand \(adUnit) will load"
     }
 }
 
@@ -123,78 +71,70 @@ struct DirectDemandDidLoadAuctionEvent: AuctionEvent {
     var bid: AnyBid
     
     var description: String {
-        return "direct demand did load \(bid) in round \(bid.roundConfiguration.roundId)"
+        return "direct demand did load \(bid)"
     }
 }
 
 
 struct DirectDemandLoadingErrorAucitonEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adUnit: AnyAdUnit
     var error: MediationError
     
     var description: String {
-        return "direct demand did fail to load \(adUnit) in round \(configuration.roundId) with error \(error)"
+        return "direct demand did fail to load \(adUnit) with error \(error)"
     }
 }
 
 // MARK: Bidding Demand
 struct BiddingDemandWillCollectTokenAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adapter: Adapter
     
     var description: String {
-        return "bidding demand will collect token \(adapter) in round \(configuration.roundId)"
+        return "bidding demand will collect token \(adapter)"
     }
 }
 
 
 struct BiddingDemandTokenErrorAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "bidding demand collect token \(adapter) error \(error) in round \(configuration.roundId)"
+        return "bidding demand collect token \(adapter) error \(error)"
     }
 }
 
 
 struct BiddingDemandDidCollectTokenAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var token: BiddingDemandToken
     
     var description: String {
-        return "bidding demand did collect token \(token) in round \(configuration.roundId)"
+        return "bidding demand did collect token \(token)"
     }
 }
 
 
 struct BiddingDemandBidRequestAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adapters: [Adapter]
     
     var description: String {
-        return "bidding demand will request bid for \(adapters) in round \(configuration.roundId)"
+        return "bidding demand will request bid for \(adapters)"
     }
 }
 
 
 struct BiddingDemandErrorAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var adapter: Adapter
     var error: MediationError
     
     var description: String {
-        return "bidding demand \(adapter) did fail with error \(error) in round \(configuration.roundId)"
+        return "bidding demand \(adapter) did fail with error \(error)"
     }
     
     init(
-        configuration: AuctionRoundConfiguration,
         demandId: String,
         error: MediationError
     ) {
-        self.configuration = configuration
         self.adapter = UnknownAdapter(demandId: demandId)
         self.error = error
     }
@@ -202,32 +142,29 @@ struct BiddingDemandErrorAuctionEvent: AuctionEvent {
 
 
 struct BiddingDemandBidResponseAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
     var bids: [AnyServerBid]
     
     var description: String {
-        return "bidding demand did receive \(bids) in round \(configuration.roundId)"
+        return "bidding demand did receive \(bids)"
     }
 }
 
 
 struct BiddingDemandWillLoadAuctionEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    var bid: AnyServerBid
+    var adUnit: any AdUnit
     
     var description: String {
-        return "bidding demand will load \(bid) in round \(configuration.roundId)"
+        return "bidding demand \(adUnit) will load"
     }
 }
 
 
 struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
-    var configuration: AuctionRoundConfiguration
-    var bid: AnyServerBid
+    var adUnit: AnyAdUnit
     var error: MediationError
     
     var description: String {
-        return "bidding demand did fail to load \(bid) in round \(configuration.roundId) with error \(error)"
+        return "bidding demand did fail to load \(adUnit) with error \(error)"
     }
 }
 
@@ -236,7 +173,7 @@ struct BiddingDemandDidLoadAuctionEvent: AuctionEvent {
     var bid: AnyBid
     
     var description: String {
-        return "direct demand did load \(bid) in round \(bid.roundConfiguration.roundId)"
+        return "direct demand did load \(bid)"
     }
 }
 

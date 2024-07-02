@@ -11,3 +11,5 @@ import Foundation
 struct VungleAdUnitExtras: Codable {
     var placementId: String
 }
+
+struct VungleBiddingTokenExtras: Codable { }

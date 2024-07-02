@@ -37,10 +37,7 @@ protocol AuctionOperationBuilder {
     
     @discardableResult
     func withAuctionConfiguration(_ auctionConfiguration: AuctionConfiguration) -> Self
-    
-    @discardableResult
-    func withRoundConfiguration(_ roundConfiguration: AuctionRoundConfiguration) -> Self
-    
+        
     @discardableResult
     func withContext(_ context: AdTypeContextType) -> Self
     
@@ -54,40 +51,25 @@ protocol AuctionOperationBuilder {
     func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self
     
     @discardableResult
-    func withAdUnitProvider(_ provider: AdUnitProvider) -> Self
-    
-    @discardableResult
     func withAdapters(_ adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]) -> Self
 }
 
 
 class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOperationBuilder {
     private(set) var auctionConfiguration: AuctionConfiguration!
-    private(set) var roundConfiguration: AuctionRoundConfiguration!
     private(set) var adUnitProvider: AdUnitProvider!
     private(set) var context: AdTypeContextType!
     private(set) var observer: AnyAuctionObserver!
     private(set) var comparator: AuctionBidComparator!
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]!
+    private(set) var adUnit: AdUnitModel!
     
     required init() {}
     
     @discardableResult
     func withAuctionConfiguration(_ auctionConfiguration: AuctionConfiguration) -> Self {
         self.auctionConfiguration = auctionConfiguration
-        return self
-    }
-    
-    @discardableResult
-    func withAdUnitProvider(_ provider: AdUnitProvider) -> Self {
-        self.adUnitProvider = provider
-        return self
-    }
-    
-    @discardableResult
-    func withRoundConfiguration(_ roundConfiguration: AuctionRoundConfiguration) -> Self {
-        self.roundConfiguration = roundConfiguration
         return self
     }
     
@@ -118,6 +100,12 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     @discardableResult
     func withAdRevenueObserver(_ adRevenueObserver: AdRevenueObserver) -> Self {
         self.adRevenueObserver = adRevenueObserver
+        return self
+    }
+    
+    @discardableResult
+    func withAdUnit(_ adUnit: AdUnitModel) -> Self {
+        self.adUnit = adUnit
         return self
     }
 }

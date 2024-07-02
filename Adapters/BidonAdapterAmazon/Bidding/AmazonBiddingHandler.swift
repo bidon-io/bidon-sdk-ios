@@ -38,7 +38,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
         super.init()
     }
     
-    func fetch(response: @escaping (Result<AmazonBiddingToken, MediationError>) -> ()) {
+    func fetch(response: @escaping (Result<String, MediationError>) -> ()) {
         guard !adSizes.isEmpty else {
             response(.failure(.incorrectAdUnitId))
             return
@@ -61,7 +61,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
                 return
             }
             
-            response(.success(context))
+            response(.success(context.token))
         }
     }
     

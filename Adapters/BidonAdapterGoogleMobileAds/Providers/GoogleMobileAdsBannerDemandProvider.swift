@@ -29,17 +29,20 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
     }
 
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        let banner = GADBannerView(adSize: adSize)
-                
-        banner.delegate = self
-        banner.adUnitID = adUnitId
-        banner.rootViewController = rootViewController
-        
-        setupAdRevenueHandler(adObject: banner)
-        
-        banner.load(request)
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let banner = GADBannerView(adSize: adSize)
+                    
+            banner.delegate = self
+            banner.adUnitID = adUnitId
+            banner.rootViewController = rootViewController
+            
+            setupAdRevenueHandler(adObject: banner)
+            
+            banner.load(request)
+            
+            self.banner = banner
+        }
     }
 }
 

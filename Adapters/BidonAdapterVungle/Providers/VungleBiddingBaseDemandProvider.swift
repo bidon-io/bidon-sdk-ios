@@ -35,8 +35,8 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     var response: DemandProviderResponse?
     
     func collectBiddingToken(
-        adUnitExtras: [VungleAdUnitExtras],
-        response: @escaping (Result<VungleBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: VungleBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         // Synchronize privacy data
         switch context.regulations.gdrpConsent {
@@ -58,9 +58,8 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         }
     
         let token = VungleAds.getBiddingToken()
-        let context = VungleBiddingToken(token: token)
         
-        response(.success(context))
+        response(.success(token))
     }
     
     func load(
@@ -70,9 +69,7 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     ) {
         self.response = response
         let adObject = adObject(placement: adUnitExtras.placementId)
-        adObject.load(payload.payload)
         demandAd = VungleDemandAd(adObject: adObject)
-        
         adObject.load(payload.payload)
     }
     

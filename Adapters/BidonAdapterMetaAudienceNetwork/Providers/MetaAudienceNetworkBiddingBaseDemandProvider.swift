@@ -15,12 +15,11 @@ class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSOb
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
     func collectBiddingToken(
-        adUnitExtras: [MetaAudienceNetworkAdUnitExtras],
-        response: @escaping (Result<MetaAudienceNetworkBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: MetaAudienceNetworkBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let token = FBAdSettings.bidderToken
-        let context = MetaAudienceNetworkBiddingToken(token: token)
-        response(.success(context))
+        response(.success(token))
     }
     
     func load(

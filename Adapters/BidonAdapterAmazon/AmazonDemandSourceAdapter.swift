@@ -26,16 +26,35 @@ BiddingRewardedAdDemandSourceAdapter
     @Injected(\.context)
     var context: Bidon.SdkContext
     
+    private var interstitial: AnyBiddingInterstitialDemandProvider?
+    private var rewarded: AnyBiddingRewardedAdDemandProvider?
+    private var banner: AnyBiddingAdViewDemandProvider?
+    
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return AmazonBiddingInterstitialDemandProvider()
+        if let interstitial {
+            return interstitial
+        }
+        let adapter = AmazonBiddingInterstitialDemandProvider()
+        interstitial = adapter
+        return adapter
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-        return AmazonBiddingAdViewDemandProvider(context: context)
+        if let banner {
+            return banner
+        }
+        let adapter = AmazonBiddingAdViewDemandProvider(context: context)
+        banner = adapter
+        return adapter
     }
     
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return AmazonBiddingInterstitialDemandProvider()
+        if let rewarded {
+            return rewarded
+        }
+        let adapter = AmazonBiddingRewardedDemandProvider()
+        rewarded = adapter
+        return adapter
     }
 }
 

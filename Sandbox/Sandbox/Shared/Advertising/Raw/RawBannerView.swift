@@ -19,6 +19,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Price
+    var auctionKey: String?
     var onEvent: AdBannerWrapperViewEvent
     
     @Binding var ad: Bidon.Ad?
@@ -29,6 +30,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         isAutorefreshing: Bool,
         autorefreshInterval: TimeInterval,
         pricefloor: Price = 0.1,
+        auctionKey: String?,
         onEvent: @escaping AdBannerWrapperViewEvent,
         ad: Binding<Bidon.Ad?>,
         isLoading: Binding<Bool>
@@ -40,10 +42,11 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         self.pricefloor = pricefloor
         self._ad = ad
         self._isLoading = isLoading
+        self.auctionKey = auctionKey
     }
     
     func makeUIView(context: Context) -> BannerView {
-        let banner = BannerView(frame: .zero)
+        let banner = BannerView(frame: .zero, auctionKey: auctionKey)
         
         banner.format = BannerFormat(format)
         banner.rootViewController = UIApplication.shared.bd.topViewcontroller
@@ -56,7 +59,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         uiView.format = BannerFormat(format)
         
         if isLoading {
-            uiView.loadAd(with: pricefloor)
+            uiView.loadAd(with: pricefloor, auctionKey: auctionKey)
         }
     }
     

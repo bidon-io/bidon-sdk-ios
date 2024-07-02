@@ -7,17 +7,15 @@
 
 import Foundation
 
-
 protocol AuctionOperationRoundTimeoutHandler: Operation {
     func timeoutReached()
 }
-
 
 final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperation {
     final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
         var interval: TimeInterval {
             return Date.MeasurementUnits.milliseconds.convert(
-                roundConfiguration.timeout,
+                Double(auctionConfiguration.auctionTimeout),
                 to: .seconds
             )
         }
@@ -27,14 +25,12 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
     
     let interval: TimeInterval
     let observer: AnyAuctionObserver
-    let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
     
     private var operations = NSHashTable<Operation>.weakObjects()
     
     init(builder: Builder) {
         self.observer = builder.observer
-        self.roundConfiguration = builder.roundConfiguration
         self.auctionConfiguration = builder.auctionConfiguration
         self.interval = builder.interval
         
@@ -42,8 +38,6 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
     }
     
     func invalidate() {
-        observer.log(InvalidateTimeoutRoundAuctionEvent(configuration: roundConfiguration))
-        
         timer?.invalidate()
         finish()
     }
@@ -60,31 +54,22 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
             return
         }
         
-        observer.log(
-            ScheduleTimeoutRoundAuctionEvent(
-                configuration: roundConfiguration,
-                interval: interval
-            )
-        )
-        
         let timer = Timer(
             timeInterval: interval,
             repeats: false
         ) { [weak self] _ in
             guard let self = self, self.isExecuting else { return }
             
-            self.observer.log(ReachTimeoutRoundAuctionEvent(configuration: self.roundConfiguration))
+            observer.log(CancelAuctionEvent())
+            self.finish()
             
             self.operations
                 .allObjects
                 .compactMap { $0 as? AuctionOperationRoundTimeoutHandler }
                 .forEach { $0.timeoutReached() }
-            
-            self.finish()
         }
         
         RunLoop.main.add(timer, forMode: .default)
         self.timer = timer
     }
 }
-
