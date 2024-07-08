@@ -117,7 +117,7 @@ public final class BannerView: UIView, AdView {
         adManager.loadAd(
             pricefloor: pricefloor,
             viewContext: viewContext,
-            auctionKey: auctionKey
+            auctionKey: auctionKey ?? self.auctionKey
         )
     }
     

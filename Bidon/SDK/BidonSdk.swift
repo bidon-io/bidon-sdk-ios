@@ -146,6 +146,7 @@ public final class BidonSdk: NSObject {
                 builder.withAdaptersRepository(self.adaptersRepository)
                 builder.withEnvironmentRepository(self.environmentRepository)
                 builder.withTestMode(self.isTestMode)
+                builder.withExt(BidonSdk.extras ?? [:])
             }
             
             self.networkManager.perform(request: request) { [unowned self] result in

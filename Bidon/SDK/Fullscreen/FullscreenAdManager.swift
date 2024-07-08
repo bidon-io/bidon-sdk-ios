@@ -83,7 +83,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
     
-    lazy var extras: [String : AnyHashable] = [:]
+    lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         

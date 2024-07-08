@@ -47,6 +47,7 @@ extension StatisticRequest {
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
+            ext: builder.encodedExt,
             segment: builder.segment
         )
     }

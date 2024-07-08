@@ -60,7 +60,8 @@ extension ConfigurationRequest {
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
-            adapters: builder.adapters, 
+            adapters: builder.adapters,
+            ext: builder.encodedExt,
             test: builder.testMode
         )
     }
