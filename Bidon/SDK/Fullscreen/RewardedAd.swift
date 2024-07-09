@@ -82,12 +82,12 @@ public final class RewardedAd: NSObject, RewardedAdObject {
 
 
 extension RewardedAd: FullscreenAdManagerDelegate {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror)
+    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad) {
-        delegate?.adObject(self, didLoadAd: ad)
+    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {

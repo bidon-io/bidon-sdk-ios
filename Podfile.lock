@@ -1,7 +1,7 @@
 PODS:
   - AmazonPublisherServicesSDK (4.9.2)
   - AppLovinSDK (12.4.1)
-  - Appodeal (3.3.0):
+  - Appodeal (3.3.1):
     - Protobuf
     - StackConsentManager (~> 2.0.4)
     - StackIAB (~> 2.6.0)
@@ -145,8 +145,8 @@ PODS:
   - OCMock (3.9.3)
   - OMSDK_Appodeal (1.4.12)
   - PromisesObjC (2.4.0)
-  - Protobuf (3.26.1)
-  - StackConsentManager (2.0.4):
+  - Protobuf (3.27.2)
+  - StackConsentManager (2.0.5):
     - GoogleUserMessagingPlatform (~> 2.1)
   - StackIAB (2.6.0):
     - StackIAB/StackIABAssets (= 2.6.0)
@@ -256,7 +256,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 3ccd81a70c200022af6b01838b3428bc064da035
   AppLovinSDK: c57ad0d34625c971d2db127f8ef60570b28ff51a
-  Appodeal: 88cc3790f727b1bdc581e8217f3019d94c037fb7
+  Appodeal: 3fbd1b67c0ba7b3849074a9ce8c6060ecd78cb6a
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 84e73360fc5b277da2a9322281c21cc467eaf023
   BidMachine: e8ee7ae1c80d3a2c4abeced647d96918ec5b2a9e
@@ -279,8 +279,8 @@ SPEC CHECKSUMS:
   OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
   OMSDK_Appodeal: 488b1094f7ba13129caaa1b7b6d6d08a794301af
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  Protobuf: a53f5173a603075b3522a5c50be63a67a5f3353a
-  StackConsentManager: 69cb8d62a818c32240209bf08309aad70db9d7fe
+  Protobuf: fb2c13674723f76ff6eede14f78847a776455fa2
+  StackConsentManager: 3f03656a53224b08149dbc66ef9f4153f0f68c44
   StackIAB: 3127eb14106c86f5eaeaf98d2fb3de71a1dff8d4
   StackModules: d07cef20468293452184c2ee01f93e730e6ee5ad
   UnityAds: 5601f6397b0e02ed3ed6ee92827f5177a523aab6

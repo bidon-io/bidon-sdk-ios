@@ -23,6 +23,7 @@ protocol AdUnit: Hashable {
     var uid: String { get }
     var bidType: BidType { get }
     var extras: ExtrasType { get }
+    var extrasDictionary: [String: String] { get }
 }
 
 

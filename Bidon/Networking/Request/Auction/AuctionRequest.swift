@@ -52,6 +52,7 @@ struct AuctionRequest: Request {
     
     struct ResponseBody: Decodable, Tokenized {
         let adUnits: [AdUnitModel]
+        let noBids: [AdUnitModel]?
         let segment: SegmentResponseModel?
         var token: String?
         let auctionId: String
@@ -69,6 +70,7 @@ struct AuctionRequest: Request {
             case auctionConfigurationUid
             case auctionPricefloor
             case auctionTimeout
+            case noBids
         }
         
         init(from decoder: Decoder) throws {
@@ -81,6 +83,7 @@ struct AuctionRequest: Request {
             auctionConfigurationUid = try container.decode(String.self, forKey: .auctionConfigurationUid)
             pricefloor = try container.decode(Price.self, forKey: .auctionPricefloor)
             auctionTimeout = try container.decodeIfPresent(Float.self, forKey: .auctionTimeout) ?? Constants.Timeout.defaultAuctionTimeout
+            noBids = try container.decodeIfPresent([AdUnitModel].self, forKey: .noBids)
         }
     }
 }

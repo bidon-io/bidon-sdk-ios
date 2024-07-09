@@ -68,16 +68,20 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
         }
     }
     
-    func adObject(_ adObject: AdObject, didLoadAd ad: Ad) {
+    func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
         print("[Banner Provider Reference] Did load ad \(ad)")
+        
+        Logger.debug("[Public API] Public callback adObject didLoadAd was called, auctionInfo: \(auctionInfo.description ?? "")")
         
         withAnimation { [unowned self] in
             self.isLoaded = true
         }
     }
     
-    func adObject(_ adObject: AdObject, didFailToLoadAd error: Error) {
+    func adObject(_ adObject: AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         print("[Banner Provider Reference] Did fail to load ad with error: \(error)")
+        
+        Logger.debug("[Public API] Public callback adObject didLoadAd was called, auctionInfo: \(auctionInfo.description ?? ""), error: \(error)")
         
         withAnimation { [unowned self] in
             self.isLoaded = false

@@ -50,6 +50,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                 let provider = adapter.provider as? any GenericBiddingDemandProvider,
                 let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId })
             else {
+                #warning("ADD PROPER EVENT that there is no adapter")
                 continue
             }
                         

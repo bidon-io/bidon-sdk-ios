@@ -57,14 +57,14 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
 
 
 extension RawRewardedAdWrapper {
-    override func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad) {
-        super.adObject(adObject, didLoadAd: ad)
+    override func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didLoadAd: ad, auctionInfo: auctionInfo)
         
         resumeLoadingContinuation()
     }
     
-    override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error) {
-        super.adObject(adObject, didFailToLoadAd: error)
+    override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didFailToLoadAd: error, auctionInfo: auctionInfo)
         
         resumeLoadingContinuation(throwing: AppodealAdServiceError.noFill)
     }

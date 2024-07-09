@@ -177,3 +177,20 @@ struct BiddingDemandDidLoadAuctionEvent: AuctionEvent {
     }
 }
 
+struct BiddingDemandBelowPricefloorAucitonEvent: AuctionEvent {
+    var adUnit: AnyAdUnit
+    
+    var description: String {
+        return "bidding demand \(adUnit) will not be loaded because its pricefloor (\(adUnit.pricefloor)) is lower that the filled one"
+    }
+}
+
+
+struct DirectDemandBelowPricefloorAucitonEvent: AuctionEvent {
+    var adUnit: AnyAdUnit
+    var error: MediationError
+    
+    var description: String {
+        return "bidding demand \(adUnit) will not be loaded because its pricefloor (\(adUnit.pricefloor)) is lower that the filled one"
+    }
+}

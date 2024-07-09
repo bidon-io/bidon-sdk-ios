@@ -91,6 +91,14 @@ final class BaseAuctionObserver: AuctionObserver {
             $round.mutate { observation in
                 observation.bidding.didReceiveClientBid(_event.bid)
             }
+        case let _event as BiddingDemandBelowPricefloorAucitonEvent:
+            $round.mutate { observation in
+                observation.bidding.didFailPricefloor(_event.adUnit)
+            }
+        case let _event as DirectDemandBelowPricefloorAucitonEvent:
+            $round.mutate { observation in
+                observation.bidding.didFailPricefloor(_event.adUnit)
+            }
         default:
             break
         }

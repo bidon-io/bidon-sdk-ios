@@ -15,8 +15,8 @@ protocol FullscreenAdManager: AnyObject {
 
 
 protocol FullscreenAdManagerDelegate: AnyObject {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError)
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad)
+    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
+    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo)
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError)
     func adManager(_ adManager: FullscreenAdManager, didExpire ad: Ad)
     func adManager(_ adManager: FullscreenAdManager, willPresent ad: Ad)
@@ -84,6 +84,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     lazy var extras: [String : AnyHashable] = [:]
+    private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         
@@ -108,12 +109,14 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     private func fetchAuctionInfo(_ pricefloor: Price, auctionKey: String?) {
+        auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
+        
         state = .preparing
         
         guard let configParameters = ConfigParametersStorage.adaptersInitializationParameters else {
             self.state = .idle
             Logger.warning("No adapters were found")
-            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"))
+            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"), auctionInfo: auctionInfo)
             return
         }
         
@@ -135,7 +138,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
             }
         }
     }
@@ -161,12 +164,17 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             
             switch (self.state, result) {
             case (.preparing, .success(let response)):
+                self.auctionInfo.auctionId = response.auctionId
+                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
+                self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultBidInfo($0) })
+                
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response, tokens: tokens)
             case (.preparing, .failure(let error)):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
             default:
                 break
             }
@@ -199,6 +207,11 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             guard let self = self else { return }
             
             self.sendAuctionReport(observer.report)
+            var allDemands = observer.report.round.demands
+            if let biddingDemands = observer.report.round.bidding?.demands {
+                allDemands += biddingDemands
+            }
+            self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
             
             switch result {
             case .success(let bid):
@@ -207,10 +220,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 self.state = .ready(controller: controller)
                 let ad = AdContainer(bid: bid)
                 
-                self.delegate?.adManager(self, didLoad: ad)
+                self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
             case .failure(let error):
                 self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: error)
+                self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
             }
         }
         
@@ -251,7 +264,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         switch state {
         case .preparing:
             state = .idle
-            delegate?.adManager(self, didFailToLoad: .cancelled)
+            delegate?.adManager(self, didFailToLoad: .cancelled, auctionInfo: self.auctionInfo)
         case .auction(let controller):
             controller.cancel()
         case .ready(let controller):

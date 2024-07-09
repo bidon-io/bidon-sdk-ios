@@ -19,7 +19,7 @@ class BaseAdWrapper: NSObject, AdWrapper {
 
 
 extension BaseAdWrapper: Bidon.AdObjectDelegate {
-    func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad) {
+    func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad, auctionInfo: AuctionInfo) {
         send(
             event: "Bidon did load ad",
             detail: ad.text,
@@ -27,9 +27,11 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
         adSubject.send(ad)
+        
+        Logger.debug("[Public API] Public callback adObject didLoadAd was called, auctionInfo: \(auctionInfo.description ?? "")")
     }
     
-    func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error) {
+    func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         send(
             event: "Bidon did fail to load ad",
             detail: error.localizedDescription,
@@ -37,6 +39,8 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .red
         )
         adSubject.send(nil)
+        
+        Logger.debug("[Public API] Public callback adObject didFailToLoadAd was called, auctionInfo: \(auctionInfo.description ?? ""), error: \(error)")
     }
     
     func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {

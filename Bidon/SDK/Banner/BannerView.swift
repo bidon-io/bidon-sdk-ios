@@ -87,7 +87,7 @@ public final class BannerView: UIView, AdView {
         manager.delegate = self
         return manager
     }()
-    
+        
     @objc
     public init(
         frame: CGRect,
@@ -117,7 +117,7 @@ public final class BannerView: UIView, AdView {
         adManager.loadAd(
             pricefloor: pricefloor,
             viewContext: viewContext,
-            auctionKey: auctionKey
+            auctionKey: auctionKey ?? self.auctionKey
         )
     }
     
@@ -170,12 +170,12 @@ public final class BannerView: UIView, AdView {
 
 
 extension BannerView: BannerAdManagerDelegate {
-    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror)
+    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad) {
-        delegate?.adObject(self, didLoadAd: ad)
+    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
         presentIfNeeded()
     }
 }

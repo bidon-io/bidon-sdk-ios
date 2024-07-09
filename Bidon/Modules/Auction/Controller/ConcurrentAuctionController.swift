@@ -76,8 +76,19 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         
         // skip all ad units if their pricefloor is lower than the filled ad price
         if adUnit.pricefloor < maxPrice {
-            Logger.debug("[\(context.adType)] Demand \(adUnit.demandId) will not be loaded, because there is a fill and its pricefloor (\(adUnit.pricefloor)) is lower then filled one (\(maxPrice))")
-            
+            if adUnit.bidType == .direct {
+                let event = DirectDemandBelowPricefloorAucitonEvent(
+                    adUnit: adUnit,
+                    error: .belowPricefloor
+                )
+                auctionObserver.log(event)
+            } else {
+                let event = BiddingDemandBelowPricefloorAucitonEvent(
+                    adUnit: adUnit
+                )
+                auctionObserver.log(event)
+            }
+                        
             scheduleNextOperation()
         } else {
             // operation for handling demand loading

@@ -17,6 +17,7 @@ struct DummyAdUnit: AdUnit {
     var label: String
     var pricefloor: Price
     var extras: ExtrasType
+    var extrasDictionary: [String : String]
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
@@ -33,6 +34,7 @@ struct DummyAdUnit: AdUnit {
         self.label = adUnit.label
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
+        self.extrasDictionary = adUnit.extrasDictionary
     }
     
     init(_ adUnit: AnyAdUnit) {
@@ -42,6 +44,7 @@ struct DummyAdUnit: AdUnit {
         self.label = adUnit.label
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
+        self.extrasDictionary = adUnit.extrasDictionary
     }
 }
 

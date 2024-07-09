@@ -3,7 +3,6 @@ require 'cocoapods-core'
 require 'json'
 require 'cgi'
 
-
 module Fastlane
   module Actions
     module SharedValues
@@ -19,16 +18,15 @@ module Fastlane
         s3_region = params[:s3_region]
         s3_bucket = params[:s3_bucket]
          
-        dependencies =  podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep| 
+        dependencies = podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep|
           Dependency.new(
             name: dep.name.split("/").first,
             version: dep.to_s.scan(/\((.*)\)/m).flatten[0]
           )
         end
 
-        # Removes Stack dependencies from adapters 
-        # And BidMachine bidding adapters
-        if params[:is_adapter] 
+        # Remove Stack dependencies from adapters and BidMachine bidding adapters
+        if params[:is_adapter]
           dependencies.append(Dependency.new(
             name: "Bidon",
             version: params[:sdk_version]
@@ -41,22 +39,21 @@ module Fastlane
           spec.summary = params[:name] == "Bidon" ? "Bidon iOS Framework" : "Bidon adapter for #{params[:name]}"
           spec.description = "Makes the top mobile mediation SDKs more transparent"
           spec.homepage = "https://bidon.org"
-          spec.license = { :type => "Copyright", :text => "Copyright #{Time.new.year}. Bidon Inc." }
+          spec.license = { type: "Copyright", text: "Copyright #{Time.new.year}. Bidon Inc." }
           spec.author = { "Bidon Inc." => "https://http://bidon.org" }
           spec.platform = :ios, "12.0"
-          spec.source = { :http => "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
-          spec.swift_versions = "4.0", "4.2", "5.0"
-          if params[:is_adapter]
-          else
-              spec.resource_bundles = { "BidonPrivacyInfo": "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
+          spec.source = { http: "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
+          spec.swift_versions = ["4.0", "4.2", "5.0"]
+          unless params[:is_adapter]
+            spec.resource_bundles = { "BidonPrivacyInfo" => "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
           end
-        
-          spec.vendored_frameworks = params[:vendored_frameworks]
-            
-          dependencies.each do | dep |
-            if dep.version.nil? 
+
+          spec.vendored_frameworks = [params[:vendored_frameworks]]
+
+          dependencies.each do |dep|
+            if dep.version.nil?
               spec.dependency dep.name
-            else 
+            else
               spec.dependency dep.name, dep.version
             end
           end
@@ -64,15 +61,15 @@ module Fastlane
           root = params[:podfile].split('/')[0...-1].join('/') + "/Pods"
 
           pod_target_xcconfig = {
-            "OTHER_LDFLAGS": "-lObjC",
-            "VALID_ARCHS[sdk=iphoneos*]": "arm64 armv7",
+            "OTHER_LDFLAGS" => "-lObjC",
+            "VALID_ARCHS[sdk=iphoneos*]" => "arm64 armv7",
           }
 
           user_target_xcconfig = {
-            "OTHER_LDFLAGS": "-lObjC"
+            "OTHER_LDFLAGS" => "-lObjC"
           }
 
-          if self.is_apple_silicon_compatible(dependencies, root) 
+          if self.is_apple_silicon_compatible(dependencies, root)
             pod_target_xcconfig["VALID_ARCHS[sdk=iphonesimulator*]"] = "x86_64 arm64"
           elsif self.is_legacy_framework(dependencies, root)
             pod_target_xcconfig["VALID_ARCHS[sdk=iphonesimulator*]"] = "x86_64"
@@ -85,9 +82,15 @@ module Fastlane
           spec.pod_target_xcconfig = pod_target_xcconfig
           spec.user_target_xcconfig = user_target_xcconfig
         end
-        
+
+
+        # Convert podspec to hash and debug print
+        podspec_hash = podspec.to_hash
+        UI.message("Podspec hash: #{podspec_hash}")
+
+        # Write podspec to file
         File.open(params[:path] + "/" + params[:name] + ".podspec.json", "w") do |f|
-          f.write(JSON.pretty_generate(podspec))
+          f.write(JSON.pretty_generate(podspec_hash))
         end
       end
 
@@ -95,11 +98,10 @@ module Fastlane
         "Generate Podspec by using of project Podfile"
       end
 
-      def self.is_apple_silicon_compatible(dependencies, root) 
+      def self.is_apple_silicon_compatible(dependencies, root)
         return dependencies.inject(true) do |result, dep|
-          return  Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
+          Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
             components = path.split('/')
-            # Search xcframeworks first and read it info.plist
             if components[-1] == 'Info.plist' && components[-2].end_with?(".xcframework")
               plist = Xcodeproj::Plist.read_from_path(path)
               supports_arm_64_simulator = plist["AvailableLibraries"]
@@ -108,7 +110,7 @@ module Fastlane
               result && supports_arm_64_simulator
             elsif components[-1].end_with?(".framework") && !path.include?("xcframework")
               result && false
-            else 
+            else
               result && true
             end
           end
@@ -117,7 +119,7 @@ module Fastlane
 
       def self.is_legacy_framework(dependencies, root)
         return dependencies.inject(true) do |result, dep|
-          return  Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
+          Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
             components = path.split('/')
             result && components[-1].end_with?(".framework") && !path.include?("xcframework")
           end
@@ -163,29 +165,30 @@ module Fastlane
             key: :s3_bucket,
             description: "AWS S3 bucket where file is located",
             verify_block: proc do |value|
-              UI.user_error!("No AWS S3 bucket given, pass using `s3_bucket: my-bucket`") unless (value and not value.empty?)
-            end
-          ),
-          FastlaneCore::ConfigItem.new(
-            key: :name,
-            description: "Name of Podspec",
-            verify_block: proc do |value|
-              UI.user_error!("No Podspec path given, pass using `name: 'name'`") unless (value and not value.empty?)
+              UI.user_error!("No AWS S3 bucket given, pass using `s3_bucket: 'your-bucket'`") unless (value and not value.empty?)
             end
           ),
           FastlaneCore::ConfigItem.new(
             key: :path,
-            description: "Path to Podspec file",
+            description: "Path where podspec file will be generated",
             verify_block: proc do |value|
-              UI.user_error!("No Podspec path given, pass using `path: '/User/../*.podspec'`") unless (value and not value.empty?)
+              UI.user_error!("No path for podspec file given, pass using `path: '/User/../'`") unless (value and not value.empty?)
             end
           ),
           FastlaneCore::ConfigItem.new(
             key: :vendored_frameworks,
-            description: "Vendored frameworks",
-            is_string: false,
-            default_value: []
-          )
+            description: "List of vendored frameworks",
+            verify_block: proc do |value|
+              UI.user_error!("No vendored frameworks given, pass using `vendored_frameworks: ['path/to/framework']`") unless (value and not value.empty?)
+            end
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :name,
+            description: "Pod name",
+            verify_block: proc do |value|
+              UI.user_error!("No pod name given, pass using `name: 'MyPod'`") unless (value and not value.empty?)
+            end
+          ),
         ]
       end
 
@@ -193,6 +196,10 @@ module Fastlane
         [
           ['PODSPEC_CUSTOM_VALUE', '']
         ]
+      end
+
+      def self.return_value
+        nil
       end
 
       def self.authors
