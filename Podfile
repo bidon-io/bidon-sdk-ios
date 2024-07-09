@@ -44,7 +44,7 @@ def dtexchange
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '~> 6.15.0'
+  pod 'FBAudienceNetwork', '6.15.0'
 end
 
 def unity_ads
