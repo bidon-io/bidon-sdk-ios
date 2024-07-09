@@ -72,7 +72,6 @@ final class BannerAdManager: NSObject {
         viewContext: AdViewContext,
         auctionKey: String?
     ) {
-        Logger.debug("reiogjewgiojegiog \(auctionKey)")
         guard state.isIdle else {
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
             return
