@@ -12,7 +12,7 @@ final class DefaultAuctionInfo: AuctionInfo {
     var auctionConfigurationId: String?
     var auctionConfigurationUid: String?
     var auctionPricefloor: NSNumber?
-    var noBids: [BidInfo]?
+    var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
     
     var description: String? {
@@ -40,24 +40,6 @@ final class DefaultAuctionInfo: AuctionInfo {
     }
 }
 
-final class DefaultBidInfo: BidInfo {
-    var demandId: String
-    var label: String?
-    var price: NSNumber?
-    var uid: String?
-    var bidType: String?
-    var ext: [String: Any]?
-
-    init(_ bid: AdUnitModel) {
-        self.demandId = bid.demandId
-        self.label = bid.label
-        self.price = NSNumber(bid.pricefloor)
-        self.uid = bid.uid
-        self.bidType = bid.bidType.rawValue
-        self.ext = bid.extrasDictionary
-    }
-}
-
 final class DefaultAdUnitInfo: AdUnitInfo {
     var demandId: String
     var label: String?
@@ -66,8 +48,6 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var bidType: String?
     var fillStartTs: NSNumber?
     var fillFinishTs: NSNumber?
-    var tokenStartTs: NSNumber?
-    var tokenFinishTs: NSNumber?
     var status: String?
     var ext: [String: Any]?
     
@@ -79,10 +59,18 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.adUnit?.bidType.rawValue
         self.fillStartTs = NSNumber(bid.startTimestamp)
         self.fillFinishTs = NSNumber(bid.finishTimestamp)
-        self.tokenStartTs = NSNumber(bid.tokenStartTimestamp)
-        self.tokenFinishTs = NSNumber(bid.tokenFinishTimestamp)
         self.status = bid.status.stringValue
         self.ext = bid.adUnit?.extrasDictionary
+    }
+    
+    init(_ bid: AdUnitModel) {
+        self.demandId = bid.demandId
+        self.label = bid.label
+        self.price = NSNumber(bid.pricefloor)
+        self.uid = bid.uid
+        self.bidType = bid.bidType.rawValue
+        self.status = MediationError.noBid.rawValue
+        self.ext = bid.extrasDictionary
     }
 }
 
@@ -98,8 +86,7 @@ private extension NSNumber {
     }
 }
 
-private extension BidInfo {
-    
+private extension AdUnitInfo {
     func dictionaryRepresentation() -> [String: Any] {
         return [
             "demandId": demandId,
@@ -107,26 +94,20 @@ private extension BidInfo {
             "price": price ?? "null",
             "uid": uid ?? "null",
             "bidType": bidType ?? "null",
-            "ext": ext ?? "null"
+            "fillStartTs": fillStartTs ?? "null",
+            "fillFinishTs": fillFinishTs ?? "null",
+            "status": status ?? "null",
+            "ext": ext?.mapToStringedValues() ?? "null",
         ]
     }
 }
 
-private extension AdUnitInfo {
-    
-    func dictionaryRepresentation() -> [String: Any] {
-        return [
-            "demandId": demandId,
-            "label": label ?? "null",
-            "price": price ?? "null",
-            "uid": uid ?? "null",
-            "bidType": bidType ?? "null",
-            "ext": ext ?? "null",
-            "fillStartTs": fillStartTs ?? "null",
-            "fillFinishTs": fillFinishTs ?? "null",
-            "tokenStartTs": tokenStartTs ?? "null",
-            "tokenFinishTs": tokenFinishTs ?? "null",
-            "status": status ?? "null"
-        ]
+private extension Dictionary where Key == String {
+    func mapToStringedValues() -> [String: String] {
+        var result: [String: String] = [:]
+        for (key, value) in self {
+            result[key] = AnyDecodable(value: value).stringValue
+        }
+        return result
     }
 }

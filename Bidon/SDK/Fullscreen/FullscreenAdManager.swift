@@ -167,7 +167,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 self.auctionInfo.auctionId = response.auctionId
                 self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
-                self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultBidInfo($0) })
+                self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response, tokens: tokens)
