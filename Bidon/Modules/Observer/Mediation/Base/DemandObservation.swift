@@ -135,6 +135,31 @@ struct DemandObservation {
         }
     }
     
+    mutating func didFailPricefloor(
+        _ adUnit: AnyAdUnit
+    ) {
+        if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if adUnit.bidType == .bidding {
+                    entry.status = .lose
+                } else {
+                    entry.status = .error(.belowPricefloor)
+                }
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: adUnit.demandId,
+                status: adUnit.bidType == .bidding ? .lose : .error(.belowPricefloor),
+                adUnit: DummyAdUnit(adUnit),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
+            )
+            entries.append(entry)
+        }
+    }
+    
     mutating func cancel() {
 //        entries = entries.map { entry in
 //            var entry = entry

@@ -246,16 +246,16 @@ extension AppodealBannerView.Coordinator: APDBannerViewDelegate {
 
 
 extension AppodealBannerView.Coordinator: Bidon.AdViewDelegate {
-    override func adObject(_ adObject: AdObject, didLoadAd ad: Ad) {
-        super.adObject(adObject, didLoadAd: ad)
+    override func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didLoadAd: ad, auctionInfo: auctionInfo)
         cache = cache.filter { $0 !== adObject }
         banners[ad.price] = adObject as? UIView
         
         layoutBannerIfNeeded()
     }
     
-    override func adObject(_ adObject: AdObject, didFailToLoadAd error: Error) {
-        super.adObject(adObject, didFailToLoadAd: error)
+    override func adObject(_ adObject: AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didFailToLoadAd: error, auctionInfo: auctionInfo)
         cache = cache.filter { $0 !== adObject }
         
         layoutBannerIfNeeded()

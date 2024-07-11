@@ -10,8 +10,8 @@ import UIKit
 
 
 protocol BannerAdManagerDelegate: AnyObject {
-    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError)
-    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad)
+    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
+    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo)
 }
 
 
@@ -51,6 +51,7 @@ final class BannerAdManager: NSObject {
     var extras: [String: AnyHashable] = [:]
     
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
+    private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     
     init(
         placement: String,
@@ -88,6 +89,7 @@ final class BannerAdManager: NSObject {
         viewContext: AdViewContext,
         auctionKey: String?
     ) {
+        auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
         
         let context = BannerAdTypeContext(viewContext: viewContext)
@@ -95,7 +97,7 @@ final class BannerAdManager: NSObject {
         guard let initializationParameters = ConfigParametersStorage.adaptersInitializationParameters else {
             self.state = .idle
             Logger.warning("No adapters were found")
-            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"))
+            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"), auctionInfo: auctionInfo)
             return
         }
         
@@ -117,7 +119,7 @@ final class BannerAdManager: NSObject {
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
             }
         }
     }
@@ -145,6 +147,11 @@ final class BannerAdManager: NSObject {
             
             switch result {
             case .success(let response):
+                self.auctionInfo.auctionId = response.auctionId
+                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
+                self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
+                
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(
                     auctionInfo: response,
@@ -154,7 +161,7 @@ final class BannerAdManager: NSObject {
             case .failure(let error):
                 Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
                 self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
             }
         }
     }
@@ -192,6 +199,12 @@ final class BannerAdManager: NSObject {
 
             self.sendAuctionReport(observer.report, viewContext: viewContext)
             
+            var allDemands = observer.report.round.demands
+            if let biddingDemands = observer.report.round.bidding?.demands {
+                allDemands += biddingDemands
+            }
+            self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
+            
             switch result {
             case .success(let bid):
                 let impression = AdViewImpression(
@@ -201,10 +214,10 @@ final class BannerAdManager: NSObject {
                 self.state = .ready(impression: impression)
                 
                 let ad = AdContainer(bid: bid)
-                self.delegate?.adManager(self, didLoad: ad)
+                self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
             case .failure(let error):
                 self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: error)
+                self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
             }
         }
         
@@ -265,7 +278,7 @@ final class BannerAdManager: NSObject {
         switch state {
         case .preparing:
             state = .idle
-            delegate?.adManager(self, didFailToLoad: .cancelled)
+            delegate?.adManager(self, didFailToLoad: .cancelled, auctionInfo: auctionInfo)
         case .auction(let controller):
             controller.cancel()
         case .ready(let impression):

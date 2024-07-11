@@ -180,6 +180,8 @@
 		494C02542C298133003D881D /* CollectTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02532C298133003D881D /* CollectTokenOperation.swift */; };
 		494C02562C298504003D881D /* CollectTokenTimeoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02552C298504003D881D /* CollectTokenTimeoutOperation.swift */; };
 		496A77142C00C88700316B05 /* DemandsTokensManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496A77132C00C88700316B05 /* DemandsTokensManager.swift */; };
+		49BB8E3E2C369F1C00A51877 /* AuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */; };
+		49BB8E402C36A22E00A51877 /* DefaultAuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */; };
 		49E43B242C048EA100C2EC6B /* ConfigParametersStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B232C048EA100C2EC6B /* ConfigParametersStorage.swift */; };
 		49E43B262C04A8E300C2EC6B /* DemandsTokensManagerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B252C04A8E300C2EC6B /* DemandsTokensManagerBuilder.swift */; };
 		49E43B292C04ABAC00C2EC6B /* AdaptersFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B282C04ABAC00C2EC6B /* AdaptersFetcher.swift */; };
@@ -365,6 +367,8 @@
 		494C02532C298133003D881D /* CollectTokenOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectTokenOperation.swift; sourceTree = "<group>"; };
 		494C02552C298504003D881D /* CollectTokenTimeoutOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectTokenTimeoutOperation.swift; sourceTree = "<group>"; };
 		496A77132C00C88700316B05 /* DemandsTokensManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandsTokensManager.swift; sourceTree = "<group>"; };
+		49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionInfo.swift; sourceTree = "<group>"; };
+		49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuctionInfo.swift; sourceTree = "<group>"; };
 		49E43B232C048EA100C2EC6B /* ConfigParametersStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigParametersStorage.swift; sourceTree = "<group>"; };
 		49E43B252C04A8E300C2EC6B /* DemandsTokensManagerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandsTokensManagerBuilder.swift; sourceTree = "<group>"; };
 		49E43B282C04ABAC00C2EC6B /* AdaptersFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersFetcher.swift; sourceTree = "<group>"; };
@@ -430,6 +434,7 @@
 		422101962859E2B3006596DA /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				49BB8E3C2C369F1000A51877 /* Auction */,
 				42FE946F29D4315300DF7920 /* Ad */,
 				4298902329D58F2700C5FB7B /* AdRevenue */,
 				424F180C28ABC0780082AEF3 /* Fullscreen */,
@@ -1026,6 +1031,15 @@
 			path = Demands;
 			sourceTree = "<group>";
 		};
+		49BB8E3C2C369F1000A51877 /* Auction */ = {
+			isa = PBXGroup;
+			children = (
+				49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */,
+				49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */,
+			);
+			path = Auction;
+			sourceTree = "<group>";
+		};
 		49E43B272C04AB9400C2EC6B /* Fetcher */ = {
 			isa = PBXGroup;
 			children = (
@@ -1206,6 +1220,7 @@
 				42389E172874665A006024BA /* UIApplication+Extensions.swift in Sources */,
 				4243093A28A2BCCC002360B0 /* GeoModel.swift in Sources */,
 				494C02522C2443E5003D881D /* AuctionOperationRoundTimeout.swift in Sources */,
+				49BB8E402C36A22E00A51877 /* DefaultAuctionInfo.swift in Sources */,
 				42481FA02AF39DE200FF3065 /* AuctionOperation.swift in Sources */,
 				428FFC7628BF95AC0090B126 /* ImpressionRequest.swift in Sources */,
 				423FBAA129F0491E00B20A5D /* BannerFormat.swift in Sources */,
@@ -1282,6 +1297,7 @@
 				4243093628A2BCAC002360B0 /* AppModel.swift in Sources */,
 				49E43B2F2C04AC7E00C2EC6B /* AdViewAdaptersFetcher.swift in Sources */,
 				4224AA7128B7E2F400E8D886 /* RewardedImpressionController.swift in Sources */,
+				49BB8E3E2C369F1C00A51877 /* AuctionInfo.swift in Sources */,
 				420EFD912A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift in Sources */,
 				421D48EC2888582B007DE2E4 /* OSLogDestination.swift in Sources */,
 				42D3772F2AF6CA81003DCCA2 /* DummyBid.swift in Sources */,

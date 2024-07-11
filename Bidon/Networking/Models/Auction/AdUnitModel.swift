@@ -15,6 +15,7 @@ struct AdUnitModel: AdUnit {
     var label: String
     var pricefloor: Price
     var extras: Decoder
+    var extrasDictionary: [String: AnyDecodable]?
 }
 
 
@@ -37,6 +38,7 @@ extension AdUnitModel: Decodable {
         label = try container.decode(String.self, forKey: .label)
         pricefloor = try container.decodeIfPresent(Price.self, forKey: .pricefloor) ?? .unknown
         extras = try container.superDecoder(forKey: .extras)
+        extrasDictionary = try? container.decode([String: AnyDecodable].self, forKey: .extras)
     }
     
     func hash(into hasher: inout Hasher) {
