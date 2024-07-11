@@ -71,7 +71,9 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
         print("[Banner Provider Reference] Did load ad \(ad)")
         
-        Logger.debug("[Public API] Public callback adObject didLoadAd was called, auctionInfo: \(auctionInfo.description ?? "")")
+        Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
+        
+        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description ?? "")")
         
         withAnimation { [unowned self] in
             self.isLoaded = true
@@ -81,7 +83,7 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     func adObject(_ adObject: AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         print("[Banner Provider Reference] Did fail to load ad with error: \(error)")
         
-        Logger.debug("[Public API] Public callback adObject didLoadAd was called, auctionInfo: \(auctionInfo.description ?? ""), error: \(error)")
+        Logger.debug("[Public API] [AUCTION] [LOAD] [ERROR]: \(auctionInfo.description ?? ""), error: \(error)")
         
         withAnimation { [unowned self] in
             self.isLoaded = false
@@ -98,6 +100,9 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
         print("[Banner Provider Reference] Did record impression for ad \(ad)")
+        
+        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description ?? "")")
+        
         withAnimation { [unowned self] in
             self.isShown = true
         }
@@ -112,6 +117,8 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     }
     
     func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
+        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description ?? "")")
+        
         print("[Banner Provider Reference] Did pay revenue \(revenue) for ad \(ad)")
     }
 }

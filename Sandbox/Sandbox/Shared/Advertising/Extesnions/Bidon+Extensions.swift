@@ -54,3 +54,39 @@ extension Bidon.GDPRConsentStatus {
         self = flag ? .given : .denied
     }
 }
+
+extension Bidon.Ad {
+    
+    var description: String? {
+        let dictRepresentation: [String: Any] = [
+            "unit_name": adUnit.label,
+            "network_name": "Bidon",
+            "placement_id": "null",
+            "placement_name": "null",
+            "revenue": price,
+            "currency": currencyCode ?? "USD",
+            "precision": adUnit.bidType == .cpm ? "estimated" : "exact",
+            "demand_source": adUnit.demandId,
+            "ext": [
+                "network_name": adUnit.demandId,
+                "dsp_name": networkName,
+                "ad_unit_id": adUnit.uid,
+                "credentials": adUnit.extras
+            ]
+        ]
+        
+        if #available(iOS 13.0, *) {
+            if let data = try? JSONSerialization.data(withJSONObject: dictRepresentation, options: .withoutEscapingSlashes) {
+                let convertedString = String(data: data, encoding: .utf8)
+                return convertedString
+            }
+        } else {
+            if let data = try? JSONSerialization.data(withJSONObject: dictRepresentation, options: []) {
+                let convertedString = String(data: data, encoding: .utf8)
+                return convertedString
+            }
+        }
+        
+        return nil
+    }
+}
