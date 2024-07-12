@@ -30,7 +30,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         
         Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
         
-        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
     }
     
     func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
@@ -76,7 +76,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         )
         adSubject.send(nil)
         
-        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description() ?? "")")
     }
     
     func adObject(
@@ -103,6 +103,6 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .primary
         )
         
-        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description(with: revenue) ?? "")")
     }
 }

@@ -73,7 +73,7 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
         
         Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
         
-        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
         
         withAnimation { [unowned self] in
             self.isLoaded = true
@@ -101,7 +101,7 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
         print("[Banner Provider Reference] Did record impression for ad \(ad)")
         
-        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description() ?? "")")
         
         withAnimation { [unowned self] in
             self.isShown = true
@@ -117,7 +117,7 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     }
     
     func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
-        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description ?? "")")
+        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description(with: revenue) ?? "")")
         
         print("[Banner Provider Reference] Did pay revenue \(revenue) for ad \(ad)")
     }

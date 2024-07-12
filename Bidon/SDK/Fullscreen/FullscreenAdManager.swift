@@ -215,6 +215,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             
             switch result {
             case .success(let bid):
+                adRevenueObserver.observe(bid)
                 let controller = ImpressionControllerType(bid: bid)
                 controller.delegate = self
                 self.state = .ready(controller: controller)

@@ -57,13 +57,13 @@ extension Bidon.GDPRConsentStatus {
 
 extension Bidon.Ad {
     
-    var description: String? {
+    func description(with revenue: AdRevenue? = nil) -> String? {
         let dictRepresentation: [String: Any] = [
             "unit_name": adUnit.label,
             "network_name": "Bidon",
             "placement_id": "null",
             "placement_name": "null",
-            "revenue": price,
+            "revenue": revenue?.revenue ?? price,
             "currency": currencyCode ?? "USD",
             "precision": adUnit.bidType == .cpm ? "estimated" : "exact",
             "demand_source": adUnit.demandId,
@@ -75,18 +75,6 @@ extension Bidon.Ad {
             ]
         ]
         
-        if #available(iOS 13.0, *) {
-            if let data = try? JSONSerialization.data(withJSONObject: dictRepresentation, options: .withoutEscapingSlashes) {
-                let convertedString = String(data: data, encoding: .utf8)
-                return convertedString
-            }
-        } else {
-            if let data = try? JSONSerialization.data(withJSONObject: dictRepresentation, options: []) {
-                let convertedString = String(data: data, encoding: .utf8)
-                return convertedString
-            }
-        }
-        
-        return nil
+        return String(describing: dictRepresentation)
     }
 }
