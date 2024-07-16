@@ -42,7 +42,14 @@ module Fastlane
           spec.license = { type: "Copyright", text: "Copyright #{Time.new.year}. Bidon Inc." }
           spec.author = { "Bidon Inc." => "https://http://bidon.org" }
           spec.platform = :ios, "12.0"
-          spec.source = { http: "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
+
+          if params[:is_development_pod]
+            spec.source = { git: "" }
+            spec.source_files     = 'Bidon/**/*.{h,m,swift}'
+          else
+            spec.source = { http: "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
+          end
+
           spec.swift_versions = ["4.0", "4.2", "5.0"]
           unless params[:is_adapter]
             spec.resource_bundles = { "BidonPrivacyInfo" => "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
@@ -189,6 +196,13 @@ module Fastlane
               UI.user_error!("No pod name given, pass using `name: 'MyPod'`") unless (value and not value.empty?)
             end
           ),
+          FastlaneCore::ConfigItem.new(
+            key: :is_development_pod,
+            description: "Is development pod",
+            default_value: false,
+            optional: true,
+            is_string: false
+          )
         ]
       end
 
