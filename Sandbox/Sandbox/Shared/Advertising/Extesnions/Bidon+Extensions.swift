@@ -54,3 +54,27 @@ extension Bidon.GDPRConsentStatus {
         self = flag ? .given : .denied
     }
 }
+
+extension Bidon.Ad {
+    
+    func description(with revenue: AdRevenue? = nil) -> String? {
+        let dictRepresentation: [String: Any] = [
+            "unit_name": adUnit.label,
+            "network_name": "Bidon",
+            "placement_id": "null",
+            "placement_name": "null",
+            "revenue": revenue?.revenue ?? price,
+            "currency": currencyCode ?? "USD",
+            "precision": adUnit.bidType == .cpm ? "estimated" : "exact",
+            "demand_source": adUnit.demandId,
+            "ext": [
+                "network_name": adUnit.demandId,
+                "dsp_name": networkName,
+                "ad_unit_id": adUnit.uid,
+                "credentials": adUnit.extras
+            ]
+        ]
+        
+        return String(describing: dictRepresentation)
+    }
+}

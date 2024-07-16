@@ -168,6 +168,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
+                self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)
                 
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response, tokens: tokens)
@@ -215,6 +216,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             
             switch result {
             case .success(let bid):
+                adRevenueObserver.observe(bid)
                 let controller = ImpressionControllerType(bid: bid)
                 controller.delegate = self
                 self.state = .ready(controller: controller)

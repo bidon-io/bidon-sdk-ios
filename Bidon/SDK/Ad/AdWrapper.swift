@@ -14,19 +14,22 @@ final class AdContainer: NSObject, Ad {
         let label: String
         let pricefloor: Price
         let bidType: AdBidType
+        let extras: [String: BidonDecodable]
         
         init(
             uid: String,
             demandId: String,
             label: String,
             pricefloor: Price,
-            bidType: AdBidType
+            bidType: AdBidType,
+            extras: [String: BidonDecodable]
         ) {
             self.uid = uid
             self.demandId = demandId
             self.pricefloor = pricefloor
             self.label = label
             self.bidType = bidType
+            self.extras = extras
             super.init()
         }
         
@@ -36,7 +39,8 @@ final class AdContainer: NSObject, Ad {
                 demandId: adUnit.demandId,
                 label: adUnit.label,
                 pricefloor: adUnit.pricefloor,
-                bidType: AdBidType(bidType: adUnit.bidType)
+                bidType: AdBidType(bidType: adUnit.bidType),
+                extras: adUnit.extrasDictionary ?? [:]
             )
         }
     }
@@ -92,7 +96,8 @@ final class AdContainer: NSObject, Ad {
                 demandId: impression.demandId,
                 label: impression.adUnitLabel,
                 pricefloor: impression.adUnitPricefloor,
-                bidType: AdBidType(bidType: impression.bidType)
+                bidType: AdBidType(bidType: impression.bidType), 
+                extras: impression.adUnitExtras ?? [:]
             )
         )
     }

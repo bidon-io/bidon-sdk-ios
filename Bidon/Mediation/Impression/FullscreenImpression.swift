@@ -18,6 +18,7 @@ struct FullscreenImpression: Impression {
     var adUnitUid: String
     var adUnitLabel: String
     var adUnitPricefloor: Price
+    var adUnitExtras: [String: BidonDecodable]?
     var auctionPricefloor: Price
     var auctionConfiguration: AuctionConfiguration
     
@@ -38,6 +39,7 @@ struct FullscreenImpression: Impression {
         self.adUnitPricefloor = bid.price
         self.auctionPricefloor = bid.auctionConfiguration.pricefloor
         self.auctionConfiguration = bid.auctionConfiguration
+        self.adUnitExtras = bid.adUnit.extrasDictionary
     }
 }
 

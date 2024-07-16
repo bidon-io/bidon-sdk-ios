@@ -65,12 +65,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             timeoutQueue.cancelAllOperations()
             return
         }
-        var adUnit: AnyAdUnit
-        if let operation = operation as? AuctionOperationRequestBiddingDemand<AdTypeContextType> {
-            adUnit = operation.adUnit
-        } else if let operation = operation as? AuctionOperationRequestDirectDemand<AdTypeContextType> {
-            adUnit = operation.adUnit
-        } else {
+        guard let adUnit = adUnit(from: operation) else {
             return
         }
         
@@ -169,6 +164,15 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         // run first ad unit loading
         let firstOperation = pendingOperations.removeFirst()
         addOperation(firstOperation)
+    }
+    
+    private func adUnit(from operation: any AuctionOperationRequestDemand) -> AnyAdUnit? {
+        if let operation = operation as? AuctionOperationRequestBiddingDemand<AdTypeContextType> {
+            return operation.adUnit
+        } else if let operation = operation as? AuctionOperationRequestDirectDemand<AdTypeContextType> {
+            return operation.adUnit
+        }
+        return nil
     }
     
     private func operation<T: AuctionOperation>(build: ((T.BuilderType) -> ())? = nil) -> T
