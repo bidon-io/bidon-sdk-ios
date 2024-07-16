@@ -17,7 +17,7 @@ struct DummyAdUnit: AdUnit {
     var label: String
     var pricefloor: Price
     var extras: ExtrasType
-    var extrasDictionary: [String: AnyDecodable]?
+    var extrasDictionary: [String: BidonDecodable]?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)

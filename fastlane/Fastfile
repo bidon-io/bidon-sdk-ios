@@ -157,7 +157,7 @@ platform :ios do
         podfile: $root_dir + "/Podfile",
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
-        path: $development_podspec_dir + path,
+        path: is_adapter  ? $development_podspec_dir + "/Adapters" : $development_podspec_dir,
         vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
         is_adapter: is_adapter,
         is_development_pod: true

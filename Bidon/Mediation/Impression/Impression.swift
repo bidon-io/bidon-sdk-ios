@@ -18,7 +18,7 @@ protocol Impression {
     var adUnitUid: String { get }
     var adUnitLabel: String { get }
     var adUnitPricefloor: Price { get }
-    var adUnitExtras: [String: Any]? { get }
+    var adUnitExtras: [String: BidonDecodable]? { get }
     var auctionPricefloor: Price { get }
     var auctionConfiguration: AuctionConfiguration { get }
     

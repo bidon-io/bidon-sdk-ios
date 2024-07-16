@@ -14,7 +14,7 @@ final class AdContainer: NSObject, Ad {
         let label: String
         let pricefloor: Price
         let bidType: AdBidType
-        let extras: [String : Any]
+        let extras: [String: BidonDecodable]
         
         init(
             uid: String,
@@ -22,7 +22,7 @@ final class AdContainer: NSObject, Ad {
             label: String,
             pricefloor: Price,
             bidType: AdBidType,
-            extras: [String : Any]
+            extras: [String: BidonDecodable]
         ) {
             self.uid = uid
             self.demandId = demandId

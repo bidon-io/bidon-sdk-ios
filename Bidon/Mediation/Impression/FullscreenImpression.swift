@@ -18,7 +18,7 @@ struct FullscreenImpression: Impression {
     var adUnitUid: String
     var adUnitLabel: String
     var adUnitPricefloor: Price
-    var adUnitExtras: [String: Any]?
+    var adUnitExtras: [String: BidonDecodable]?
     var auctionPricefloor: Price
     var auctionConfiguration: AuctionConfiguration
     
