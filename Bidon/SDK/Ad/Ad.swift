@@ -22,7 +22,7 @@ public protocol AdNetworkUnit {
     var label: String { get }
     var pricefloor: Price { get }
     var bidType: AdBidType { get }
-    var extras: [String: Any] { get }
+    var extras: [String: BidonDecodable] { get }
 }
 
 

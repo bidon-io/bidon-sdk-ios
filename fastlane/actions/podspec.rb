@@ -45,7 +45,8 @@ module Fastlane
 
           if params[:is_development_pod]
             spec.source = { git: "" }
-            spec.source_files     = 'Bidon/**/*.{h,m,swift}'
+            spec.source_files = params[:name] == "Bidon" ? 'Bidon/**/*.{h,m,swift}' : params[:name] + '/**/*.{h,m,swift}'
+            spec.static_framework = true
           else
             spec.source = { http: "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
           end

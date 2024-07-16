@@ -14,6 +14,7 @@ final class DefaultAuctionInfo: AuctionInfo {
     var auctionPricefloor: NSNumber?
     var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
+    var timeout: NSNumber?
     
     var description: String? {
         let dictRepresentation: [String: Any] = [
@@ -48,7 +49,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var bidType: String?
     var fillStartTs: NSNumber?
     var fillFinishTs: NSNumber?
-    var status: String?
+    var status: AdUnitStatus
     var ext: [String: Any]?
     
     init(_ bid: any AuctionDemandReport) {
@@ -59,7 +60,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.adUnit?.bidType.rawValue
         self.fillStartTs = NSNumber(bid.startTimestamp)
         self.fillFinishTs = NSNumber(bid.finishTimestamp)
-        self.status = bid.status.stringValue
+        self.status = bid.status.adUnitStatus
         self.ext = bid.adUnit?.extrasDictionary
     }
     
@@ -69,7 +70,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.price = NSNumber(bid.pricefloor)
         self.uid = bid.uid
         self.bidType = bid.bidType.rawValue
-        self.status = MediationError.noBid.rawValue
+        self.status = .adLoadNotAttempted
         self.ext = bid.extrasDictionary
     }
 }
@@ -96,7 +97,7 @@ private extension AdUnitInfo {
             "bidType": bidType ?? "null",
             "fillStartTs": fillStartTs ?? "null",
             "fillFinishTs": fillFinishTs ?? "null",
-            "status": status ?? "null",
+            "status": status.description,
             "ext": ext?.mapToStringedValues() ?? "null",
         ]
     }
@@ -106,8 +107,24 @@ private extension Dictionary where Key == String {
     func mapToStringedValues() -> [String: String] {
         var result: [String: String] = [:]
         for (key, value) in self {
-            result[key] = AnyDecodable(value: value).stringValue
+            result[key] = BidonDecodable(value: value).stringValue
         }
         return result
+    }
+}
+
+private extension DemandMediationStatus {
+    
+    var adUnitStatus: AdUnitStatus {
+        switch self {
+        case .unknown:
+            return .undefined
+        case .win:
+            return .adLoaded
+        case .lose:
+            return .adLoaded
+        case .error(_):
+            return .failedToLoad
+        }
     }
 }

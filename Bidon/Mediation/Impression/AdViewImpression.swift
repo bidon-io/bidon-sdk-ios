@@ -20,7 +20,7 @@ struct AdViewImpression: Impression {
     var adUnitLabel: String { bid.adUnit.label }
     var adUnitPricefloor: Price { bid.adUnit.pricefloor }
     var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
-    var adUnitExtras: [String: Any]? { bid.adUnit.extrasDictionary }
+    var adUnitExtras: [String: BidonDecodable]? { bid.adUnit.extrasDictionary }
     
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan

@@ -7,6 +7,27 @@
 
 import Foundation
 
+@objc(BDNAdUnitStatus)
+public enum AdUnitStatus: Int, CustomStringConvertible {
+    case undefined
+    case adLoadNotAttempted
+    case adLoaded
+    case failedToLoad
+    
+    public var description: String {
+        switch self {
+        case .undefined:
+            return "UNDEFINED"
+        case .adLoadNotAttempted:
+            return "AD_LOAD_NOT_ATTEMPTED"
+        case .adLoaded:
+            return "AD_LOADED"
+        case .failedToLoad:
+            return "FAILED_TO_LOAD"
+        }
+    }
+}
+
 @objc(BDNAuctionInfo)
 public protocol AuctionInfo {
     var auctionId: String? { get set }
@@ -15,6 +36,7 @@ public protocol AuctionInfo {
     var auctionPricefloor: NSNumber? { get set }
     var noBids: [AdUnitInfo]? { get set }
     var adUnits: [AdUnitInfo]? { get set }
+    var timeout: NSNumber? { get set }
     
     var description: String? { get }
 }
@@ -28,6 +50,6 @@ public protocol AdUnitInfo {
     var bidType: String? { get }
     var fillStartTs: NSNumber? { get }
     var fillFinishTs: NSNumber? { get }
-    var status: String? { get }
+    var status: AdUnitStatus { get }
     var ext: [String: Any]? { get }
 }
