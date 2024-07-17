@@ -108,6 +108,14 @@ final class BaseAuctionObserver: AuctionObserver {
 
 extension BaseAuctionObserver: AuctionReportProvider {
     private var result: AuctionResultReportModel {
+        if isCancelled {
+            return AuctionResultReportModel(
+                status: .cancelled,
+                startTimestamp: startTimestamp.uint,
+                finishTimestamp: finishTimestamp.uint,
+                winner: round.auctionWinner?.bid
+            )
+        }
         if round.auctionWinner != nil {
             return AuctionResultReportModel(
                 status: .success,

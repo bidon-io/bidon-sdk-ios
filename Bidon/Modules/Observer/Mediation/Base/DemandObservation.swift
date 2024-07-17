@@ -161,15 +161,15 @@ struct DemandObservation {
     }
     
     mutating func cancel() {
-//        entries = entries.map { entry in
-//            var entry = entry
-//            if entry.status.isUnknown {
-//                entry.status = .error(.auctionCancelled)
-//                entry.startTimestamp = nil
-//                entry.finishTimestamp = nil
-//            }
-//            return entry
-//        }
+        entries = entries.map { entry in
+            var entry = entry
+            if entry.status.isUnknown {
+                entry.status = .error(.auctionCancelled)
+                entry.startTimestamp = nil
+                entry.finishTimestamp = nil
+            }
+            return entry
+        }
     }
     
     mutating func update(mutation: (inout Entry) -> ()) {

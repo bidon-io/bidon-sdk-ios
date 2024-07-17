@@ -24,6 +24,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         
     private lazy var queue: OperationQueue = {
         let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
         queue.name = "com.bidon.auction.queue"
         queue.qualityOfService = .default
         return queue
@@ -41,6 +42,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>?
     var auctionTimeoutReached = false
+    var completion: Completion?
     
     init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AdTypeContextType> {
         let builder = T()
@@ -122,7 +124,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     func load(
         completion: @escaping Completion
     ) {
-        queue.maxConcurrentOperationCount = 1
+        self.completion = completion
         
         // temout restrictions
         let timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType> = operation { builder in
@@ -190,6 +192,12 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     func cancel() {
+        auctionObserver.log(CancelAuctionEvent())
+        
         queue.cancelAllOperations()
+        if finishAuctionOperation?.isFinished == false {
+            queue.addOperation(finishAuctionOperation!)
+            finishAuctionOperation?.cancel()
+        }
     }
 }
