@@ -70,8 +70,8 @@ struct DemandObservation {
                     entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                     entry.price = bid.price
                     entry.bid = DummyBid(bid)
-                    entry.tokenStartTimestamp = tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenStartTs
-                    entry.tokenFinishTimestamp = tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenFinishTs
+                    entry.tokenStartTimestamp = tokenStartTs(for: bid.adUnit)
+                    entry.tokenFinishTimestamp = tokenFinishTs(for: bid.adUnit)
                 }
                 return entry
             }
@@ -82,8 +82,8 @@ struct DemandObservation {
                 bid: DummyBid(bid),
                 startTimestamp: Date.timestamp(.wall, units: .milliseconds),
                 finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
-                tokenStartTimestamp: tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenStartTs,
-                tokenFinishTimestamp: tokens.first(where: { $0.demandId == bid.adUnit.demandId && bid.adUnit.bidType == .bidding })?.tokenFinishTs
+                tokenStartTimestamp: tokenStartTs(for: bid.adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: bid.adUnit)
             )
             entries.append(entry)
         }
@@ -146,6 +146,8 @@ struct DemandObservation {
                 } else {
                     entry.status = .error(.belowPricefloor)
                 }
+                entry.tokenStartTimestamp = tokenStartTs(for: adUnit)
+                entry.tokenFinishTimestamp = tokenFinishTs(for: adUnit)
                 return entry
             }
         } else {
@@ -154,7 +156,9 @@ struct DemandObservation {
                 status: adUnit.bidType == .bidding ? .lose : .error(.belowPricefloor),
                 adUnit: DummyAdUnit(adUnit),
                 startTimestamp: Date.timestamp(.wall, units: .milliseconds),
-                finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokenStartTs(for: adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: adUnit)
             )
             entries.append(entry)
         }
@@ -178,5 +182,13 @@ struct DemandObservation {
             mutation(&entry)
             return entry
         }
+    }
+    
+    private func tokenStartTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenStartTs
+    }
+    
+    private func tokenFinishTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenFinishTs
     }
 }
