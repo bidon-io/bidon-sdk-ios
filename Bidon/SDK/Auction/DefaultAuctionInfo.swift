@@ -49,7 +49,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var bidType: String?
     var fillStartTs: NSNumber?
     var fillFinishTs: NSNumber?
-    var status: AdUnitStatus
+    var status: String
     var ext: [String: Any]?
     
     init(_ bid: any AuctionDemandReport) {
@@ -60,7 +60,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.adUnit?.bidType.rawValue
         self.fillStartTs = NSNumber(bid.startTimestamp)
         self.fillFinishTs = NSNumber(bid.finishTimestamp)
-        self.status = bid.status.adUnitStatus
+        self.status = bid.status.stringValue
         self.ext = bid.adUnit?.extrasDictionary
     }
     
@@ -70,7 +70,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.price = NSNumber(bid.pricefloor)
         self.uid = bid.uid
         self.bidType = bid.bidType.rawValue
-        self.status = .adLoadNotAttempted
+        self.status = DemandMediationStatus(.noBid).stringValue
         self.ext = bid.extrasDictionary
     }
 }
@@ -110,21 +110,5 @@ private extension Dictionary where Key == String {
             result[key] = BidonDecodable(value: value).stringValue
         }
         return result
-    }
-}
-
-private extension DemandMediationStatus {
-    
-    var adUnitStatus: AdUnitStatus {
-        switch self {
-        case .unknown:
-            return .undefined
-        case .win:
-            return .adLoaded
-        case .lose:
-            return .adLoaded
-        case .error(_):
-            return .failedToLoad
-        }
     }
 }
