@@ -52,6 +52,7 @@ final class BannerAdManager: NSObject {
     
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    private var isCanceled = false
     
     init(
         placement: String,
@@ -172,6 +173,9 @@ final class BannerAdManager: NSObject {
         tokens: [BiddingDemandToken],
         viewContext: AdViewContext
     ) {
+        if isCanceled {
+            return
+        }
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
@@ -278,6 +282,7 @@ final class BannerAdManager: NSObject {
     ) {
         switch state {
         case .preparing:
+            isCanceled = true
             state = .idle
             delegate?.adManager(self, didFailToLoad: .cancelled, auctionInfo: auctionInfo)
         case .auction(let controller):
