@@ -34,7 +34,9 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
         
         private func setup(ad: BigoBannerAd) {
             self.ad = ad
-            let adView = ad.adView()
+            guard let adView = ad.adView() else {
+                return
+            }
             
             addSubview(adView)
             adView.translatesAutoresizingMaskIntoConstraints = false

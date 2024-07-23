@@ -1,6 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (4.9.2)
-  - AppLovinSDK (12.4.1)
+  - AppLovinSDK (12.6.0)
   - Appodeal (3.3.0):
     - Protobuf
     - StackConsentManager (~> 2.0.4)
@@ -40,7 +40,7 @@ PODS:
     - BidMachineRendering/UtilsKit
   - BidMachineRendering/WebKit (0.1.0):
     - BidMachineRendering/UtilsKit
-  - BigoADS (4.2.2)
+  - BigoADS (4.3.0)
   - FBAEMKit (17.0.0):
     - FBSDKCoreKit_Basics (= 17.0.0)
   - FBAudienceNetwork (6.15.0)
@@ -50,7 +50,7 @@ PODS:
   - FBSDKCoreKit_Basics (17.0.0)
   - FBSDKLoginKit (17.0.0):
     - FBSDKCoreKit (= 17.0.0)
-  - Fyber_Marketplace_SDK (8.2.7)
+  - Fyber_Marketplace_SDK (8.3.1)
   - Google-Mobile-Ads-SDK (10.14.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
     - GoogleUserMessagingPlatform (>= 1.1)
@@ -206,10 +206,10 @@ DEPENDENCIES:
   - AppsFlyer-AdRevenue (~> 6.9.0)
   - AppsFlyerFramework (~> 6.14.0)
   - BidMachine (~> 2.6.0)
-  - BigoADS (~> 4.2.2)
+  - BigoADS (~> 4.3.0)
   - FBAudienceNetwork (~> 6.15.0)
   - FBSDKLoginKit
-  - Fyber_Marketplace_SDK (~> 8.2.7)
+  - Fyber_Marketplace_SDK (~> 8.3.1)
   - Google-Mobile-Ads-SDK (~> 10.14.0)
   - InMobiSDK (~> 10.7.1)
   - MintegralAdSDK (~> 7.6.1)
@@ -255,19 +255,19 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 3ccd81a70c200022af6b01838b3428bc064da035
-  AppLovinSDK: c57ad0d34625c971d2db127f8ef60570b28ff51a
+  AppLovinSDK: 76c1f378b8492110a197c288ea4907930d703829
   Appodeal: 88cc3790f727b1bdc581e8217f3019d94c037fb7
   AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
   AppsFlyerFramework: 84e73360fc5b277da2a9322281c21cc467eaf023
   BidMachine: e8ee7ae1c80d3a2c4abeced647d96918ec5b2a9e
   BidMachineRendering: e8c4005b94b483315d9ded92d82ce571698b1374
-  BigoADS: 3b0ddf8dea35c0b0a93f5d6120741208b2d14752
+  BigoADS: 017654927491e2ff6421ab958048c0ef82979534
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
   FBAudienceNetwork: 80a035aa69cc3a71c99e44cb5c2874e4cef9909f
   FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
   FBSDKCoreKit_Basics: 92b7b7458d57091370b0b6cc197578874c3b4b16
   FBSDKLoginKit: 5d5271ebfd1e39c6b071de8db5c4bd6255be3561
-  Fyber_Marketplace_SDK: 90d17e7cb04f505b00c2410679f115aefc9fd4e5
+  Fyber_Marketplace_SDK: 23285d363d7a56d77e97a9699685885069deb3f7
   Google-Mobile-Ads-SDK: 8f67a72f88d057335b1ac3f501e2b68ad054116e
   GoogleAppMeasurement: 794d1d2f71fdf77a077a3986258a5c2dac0f9d48
   GoogleUserMessagingPlatform: b1ad7bb1ee3ce64749d4fec24f667b36e45c396c
@@ -286,6 +286,6 @@ SPEC CHECKSUMS:
   UnityAds: 5601f6397b0e02ed3ed6ee92827f5177a523aab6
   VungleAds: c7bf642b4a4581177b5c76042423a21d8c32ef1e
 
-PODFILE CHECKSUM: f9e2653dac83cc680a9ba0641407418fe02ac551
+PODFILE CHECKSUM: 9d764493cd5c6630b685aca676e348d58b6e240f
 
 COCOAPODS: 1.15.2

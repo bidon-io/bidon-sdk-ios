@@ -11,7 +11,7 @@ import BigoADS
 
 
 extension BigoAd: DemandAd {
-    public var id: String { getCreativeId() }
+    public var id: String { getCreativeId() ?? "" }
 }
 
 
@@ -25,7 +25,10 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvi
         biddingTokenExtras: BigoAdsBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        let token = BigoAdSdk.sharedInstance().getBidderToken()
+        guard let token = BigoAdSdk.sharedInstance().getBidderToken() else {
+            response(.failure(.adapterNotInitialized))
+            return
+        }
         
         guard !token.isEmpty else {
             response(.failure(.adapterNotInitialized))

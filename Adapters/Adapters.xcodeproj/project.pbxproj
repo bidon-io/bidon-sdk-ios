@@ -614,21 +614,21 @@
 			isa = PBXGroup;
 			children = (
 				4253FED02ABC97A70013A675 /* BidonAdapterAmazon */,
+				425E9C4628B76B0F00F4E4C7 /* BidonAdapterAppLovin */,
 				4221022C285A3318006596DA /* BidonAdapterBidMachine */,
+				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
+				4273347329ACE7DF0042AE52 /* BidonAdapterDTExchange */,
 				42CD460C2B06772900900683 /* BidonAdapterGoogleAdManager */,
 				42BA81B32875ABA3001F1744 /* BidonAdapterGoogleMobileAds */,
-				425E9C4628B76B0F00F4E4C7 /* BidonAdapterAppLovin */,
-				4273347329ACE7DF0042AE52 /* BidonAdapterDTExchange */,
-				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
+				42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */,
+				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
 				4215B8AA2A55973B00675ACC /* BidonAdapterMintegral */,
 				4268272B2A5D84B20084A48D /* BidonAdapterMobileFuse */,
+				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
 				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
-				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
-				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
-				42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */,
-				42210211285A32ED006596DA /* Products */,
-				8462A3B50D72D26B685AAD18 /* Pods */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
+				8462A3B50D72D26B685AAD18 /* Pods */,
+				42210211285A32ED006596DA /* Products */,
 				422BB4322B024E300013EFEE /* Recovered References */,
 			);
 			sourceTree = "<group>";
@@ -1490,6 +1490,7 @@
 				4273346E29ACE7DF0042AE52 /* Sources */,
 				4273346F29ACE7DF0042AE52 /* Frameworks */,
 				4273347029ACE7DF0042AE52 /* Resources */,
+				CC9FDA2E129EF94D1F9C9214 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2031,23 +2032,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C6167203AD191D97F3501B33 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		C6C8E64B9C7F6C21BF2C4703 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2090,6 +2074,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CC9FDA2E129EF94D1F9C9214 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D39A9DE2E836C7E97B686ABD /* [CP] Check Pods Manifest.lock */ = {
