@@ -79,6 +79,17 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
         loader.loadAd(request)
     }
     
+    override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+        
+        let request = BigoBannerAdRequest(
+            slotId: adUnitExtras.slotId,
+            adSizes: [format.bigoAdSize]
+        )
+        
+        loader.loadAd(request)
+    }
+    
     override func onAdOpened(_ ad: BigoAd) {
         guard let container = adContainer, container.ad === ad else {
             return

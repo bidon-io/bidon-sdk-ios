@@ -27,6 +27,14 @@ final class BigoAdsBiddingInterstitialDemandProvider: BigoAdsBiddingBaseDemandPr
         
         loader.loadAd(request)
     }
+    
+    override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+        
+        let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
+        
+        loader.loadAd(request)
+    }
 }
 
 

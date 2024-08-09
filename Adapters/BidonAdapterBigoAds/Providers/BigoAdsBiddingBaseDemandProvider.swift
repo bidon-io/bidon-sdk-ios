@@ -15,7 +15,7 @@ extension BigoAd: DemandAd {
 }
 
 
-class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, BigoAdInteractionDelegate {
+class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, DirectDemandProvider, BigoAdInteractionDelegate {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
@@ -40,6 +40,10 @@ class BigoAdsBiddingBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvi
         adUnitExtras: BigoAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
+        fatalError("BigoAdsBiddingBaseDemandProvider is not able to create ad object")
+    }
+    
+    func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
         fatalError("BigoAdsBiddingBaseDemandProvider is not able to create ad object")
     }
     
