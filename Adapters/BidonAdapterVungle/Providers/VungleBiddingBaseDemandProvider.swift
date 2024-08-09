@@ -21,7 +21,7 @@ final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
 }
 
 
-class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider {
+class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
     typealias DemandAdType = VungleDemandAd<AdObject>
 
     private(set) var demandAd: VungleDemandAd<AdObject>!
@@ -71,6 +71,12 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
         let adObject = adObject(placement: adUnitExtras.placementId)
         demandAd = VungleDemandAd(adObject: adObject)
         adObject.load(payload.payload)
+    }
+    
+    func load(pricefloor: Price, adUnitExtras: VungleAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+        let adObject = adObject(placement: adUnitExtras.placementId)
+        adObject.load()
     }
     
     final func notify(
