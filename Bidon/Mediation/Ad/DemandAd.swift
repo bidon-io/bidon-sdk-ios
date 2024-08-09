@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 @objc
 public protocol DemandAd {
     @objc var id: String { get }
