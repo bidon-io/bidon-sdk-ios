@@ -1,5 +1,5 @@
 //
-//  MyTargetBiddingAdViewDemandProvider.swift
+//  MyTargetAdViewDemandProvider.swift
 //  BidonAdapterMyTarget
 //
 //  Created by Евгения Григорович on 05/08/2024.
@@ -18,7 +18,7 @@ final class MyTargetBannerDemandAd: DemandAd {
     }
 }
 
-final class MyTargetBiddingAdViewDemandProvider: MyTargetBiddingBaseDemandProvider<MyTargetBannerDemandAd> {
+final class MyTargetAdViewDemandProvider: MyTargetBaseDemandProvider<MyTargetBannerDemandAd> {
     private var banner: MTRGAdView?
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
@@ -80,7 +80,7 @@ final class MyTargetBiddingAdViewDemandProvider: MyTargetBiddingBaseDemandProvid
     }
 }
 
-extension MyTargetBiddingAdViewDemandProvider: AdViewDemandProvider {
+extension MyTargetAdViewDemandProvider: AdViewDemandProvider {
     
     func container(for ad: MyTargetBannerDemandAd) -> Bidon.AdViewContainer? {
         return ad.banner
@@ -89,7 +89,7 @@ extension MyTargetBiddingAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: MyTargetBannerDemandAd) { }
 }
 
-extension MyTargetBiddingAdViewDemandProvider: MTRGAdViewDelegate {
+extension MyTargetAdViewDemandProvider: MTRGAdViewDelegate {
     func onLoad(with adView: MTRGAdView) {
         let ad = MyTargetBannerDemandAd(banner: adView)
         response?(.success(ad))

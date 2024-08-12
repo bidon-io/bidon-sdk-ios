@@ -170,10 +170,10 @@
 		495FB52E2C6385360023E8A0 /* MyTargetBiddingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB5252C6385360023E8A0 /* MyTargetBiddingPayload.swift */; };
 		495FB52F2C6385360023E8A0 /* MyTargetAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB5262C6385360023E8A0 /* MyTargetAdUnitExtras.swift */; };
 		495FB5302C6385360023E8A0 /* MyTargetParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB5272C6385360023E8A0 /* MyTargetParameters.swift */; };
-		495FB5312C6385360023E8A0 /* MyTargetBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB5292C6385360023E8A0 /* MyTargetBiddingRewardedDemandProvider.swift */; };
-		495FB5322C6385360023E8A0 /* MyTargetBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52A2C6385360023E8A0 /* MyTargetBiddingBaseDemandProvider.swift */; };
-		495FB5332C6385360023E8A0 /* MyTargetBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52B2C6385360023E8A0 /* MyTargetBiddingInterstitialDemandProvider.swift */; };
-		495FB5342C6385360023E8A0 /* MyTargetBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52C2C6385360023E8A0 /* MyTargetBiddingAdViewDemandProvider.swift */; };
+		495FB5312C6385360023E8A0 /* MyTargetRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB5292C6385360023E8A0 /* MyTargetRewardedDemandProvider.swift */; };
+		495FB5322C6385360023E8A0 /* MyTargetBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52A2C6385360023E8A0 /* MyTargetBaseDemandProvider.swift */; };
+		495FB5332C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */; };
+		495FB5342C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */; };
 		495FB5352C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */; };
 		49C4083B2C62443A005CB90B /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */; };
 		49C4083C2C62443A005CB90B /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -402,10 +402,10 @@
 		495FB5252C6385360023E8A0 /* MyTargetBiddingPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBiddingPayload.swift; sourceTree = "<group>"; };
 		495FB5262C6385360023E8A0 /* MyTargetAdUnitExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetAdUnitExtras.swift; sourceTree = "<group>"; };
 		495FB5272C6385360023E8A0 /* MyTargetParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetParameters.swift; sourceTree = "<group>"; };
-		495FB5292C6385360023E8A0 /* MyTargetBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
-		495FB52A2C6385360023E8A0 /* MyTargetBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
-		495FB52B2C6385360023E8A0 /* MyTargetBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
-		495FB52C2C6385360023E8A0 /* MyTargetBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		495FB5292C6385360023E8A0 /* MyTargetRewardedDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		495FB52A2C6385360023E8A0 /* MyTargetBaseDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetBaseDemandProvider.swift; sourceTree = "<group>"; };
+		495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E412C3D683A00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
@@ -1177,10 +1177,10 @@
 		495FB5282C6385360023E8A0 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				495FB52A2C6385360023E8A0 /* MyTargetBiddingBaseDemandProvider.swift */,
-				495FB52B2C6385360023E8A0 /* MyTargetBiddingInterstitialDemandProvider.swift */,
-				495FB5292C6385360023E8A0 /* MyTargetBiddingRewardedDemandProvider.swift */,
-				495FB52C2C6385360023E8A0 /* MyTargetBiddingAdViewDemandProvider.swift */,
+				495FB52A2C6385360023E8A0 /* MyTargetBaseDemandProvider.swift */,
+				495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */,
+				495FB5292C6385360023E8A0 /* MyTargetRewardedDemandProvider.swift */,
+				495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -2567,13 +2567,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				495FB5342C6385360023E8A0 /* MyTargetBiddingAdViewDemandProvider.swift in Sources */,
+				495FB5342C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift in Sources */,
 				495FB5302C6385360023E8A0 /* MyTargetParameters.swift in Sources */,
 				495FB52F2C6385360023E8A0 /* MyTargetAdUnitExtras.swift in Sources */,
-				495FB5332C6385360023E8A0 /* MyTargetBiddingInterstitialDemandProvider.swift in Sources */,
+				495FB5332C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift in Sources */,
 				495FB5352C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift in Sources */,
-				495FB5322C6385360023E8A0 /* MyTargetBiddingBaseDemandProvider.swift in Sources */,
-				495FB5312C6385360023E8A0 /* MyTargetBiddingRewardedDemandProvider.swift in Sources */,
+				495FB5322C6385360023E8A0 /* MyTargetBaseDemandProvider.swift in Sources */,
+				495FB5312C6385360023E8A0 /* MyTargetRewardedDemandProvider.swift in Sources */,
 				495FB52E2C6385360023E8A0 /* MyTargetBiddingPayload.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

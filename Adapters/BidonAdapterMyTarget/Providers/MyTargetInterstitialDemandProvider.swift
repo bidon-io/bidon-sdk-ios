@@ -1,5 +1,5 @@
 //
-//  MyTargetBiddingInterstitialDemandProvider.swift
+//  MyTargetInterstitialDemandProvider.swift
 //  BidonAdapterMyTarget
 //
 //  Created by Евгения Григорович on 05/08/2024.
@@ -18,7 +18,7 @@ final class MintegralInterstitialDemandAd: DemandAd {
     }
 }
 
-final class MyTargetBiddingInterstitialDemandProvider: MyTargetBiddingBaseDemandProvider<MintegralInterstitialDemandAd> {
+final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<MintegralInterstitialDemandAd> {
     
     private var interstitial: MTRGInterstitialAd?
     private var response: DemandProviderResponse?
@@ -63,7 +63,7 @@ final class MyTargetBiddingInterstitialDemandProvider: MyTargetBiddingBaseDemand
     }
 }
 
-extension MyTargetBiddingInterstitialDemandProvider: InterstitialDemandProvider {
+extension MyTargetInterstitialDemandProvider: InterstitialDemandProvider {
     func show(
         ad: MintegralInterstitialDemandAd,
         from viewController: UIViewController
@@ -72,7 +72,7 @@ extension MyTargetBiddingInterstitialDemandProvider: InterstitialDemandProvider 
     }
 }
 
-extension MyTargetBiddingInterstitialDemandProvider: MTRGInterstitialAdDelegate {
+extension MyTargetInterstitialDemandProvider: MTRGInterstitialAdDelegate {
     func onLoad(with interstitialAd: MTRGInterstitialAd) {
         let ad = MintegralInterstitialDemandAd(interstitial: interstitialAd)
         response?(.success(ad))

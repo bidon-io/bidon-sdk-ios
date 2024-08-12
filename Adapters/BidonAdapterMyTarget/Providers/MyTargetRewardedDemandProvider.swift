@@ -1,5 +1,5 @@
 //
-//  MyTargetBiddingRewardedDemandProvider.swift
+//  MyTargetRewardedDemandProvider.swift
 //  BidonAdapterMyTarget
 //
 //  Created by Евгения Григорович on 05/08/2024.
@@ -18,7 +18,7 @@ final class MyTargetRewardedDemandAd: DemandAd {
     }
 }
 
-final class MyTargetBiddingRewardedDemandProvider: MyTargetBiddingBaseDemandProvider<MyTargetRewardedDemandAd> {
+final class MyTargetRewardedDemandProvider: MyTargetBaseDemandProvider<MyTargetRewardedDemandAd> {
     
     private var rewarded: MTRGRewardedAd?
     private var response: DemandProviderResponse?
@@ -65,7 +65,7 @@ final class MyTargetBiddingRewardedDemandProvider: MyTargetBiddingBaseDemandProv
     }
 }
 
-extension MyTargetBiddingRewardedDemandProvider: RewardedAdDemandProvider {
+extension MyTargetRewardedDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: MyTargetRewardedDemandAd,
         from viewController: UIViewController
@@ -74,7 +74,7 @@ extension MyTargetBiddingRewardedDemandProvider: RewardedAdDemandProvider {
     }
 }
 
-extension MyTargetBiddingRewardedDemandProvider: MTRGRewardedAdDelegate {
+extension MyTargetRewardedDemandProvider: MTRGRewardedAdDelegate {
     func onLoad(with rewardedAd: MTRGRewardedAd) {
         let ad = MyTargetRewardedDemandAd(rewarded: rewardedAd)
         response?(.success(ad))

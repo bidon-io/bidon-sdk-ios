@@ -32,27 +32,27 @@ DirectAdViewDemandSourceAdapter
     var context: SdkContext
     
     public func biddingInterstitialDemandProvider() throws -> Bidon.AnyBiddingInterstitialDemandProvider {
-        return MyTargetBiddingInterstitialDemandProvider()
+        return MyTargetInterstitialDemandProvider()
     }
     
     public func biddingRewardedAdDemandProvider() throws -> Bidon.AnyBiddingRewardedAdDemandProvider {
-        return MyTargetBiddingRewardedDemandProvider()
+        return MyTargetRewardedDemandProvider()
     }
     
     public func biddingAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyBiddingAdViewDemandProvider {
-        return MyTargetBiddingAdViewDemandProvider(context: context)
+        return MyTargetAdViewDemandProvider(context: context)
     }
     
     public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
-        return MyTargetBiddingInterstitialDemandProvider()
+        return MyTargetInterstitialDemandProvider()
     }
     
     public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
-        return MyTargetBiddingRewardedDemandProvider()
+        return MyTargetRewardedDemandProvider()
     }
     
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
-        return MyTargetBiddingAdViewDemandProvider(context: context)
+        return MyTargetAdViewDemandProvider(context: context)
     }
 }
 

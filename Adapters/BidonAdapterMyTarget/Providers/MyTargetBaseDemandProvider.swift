@@ -1,5 +1,5 @@
 //
-//  MyTargetBiddingBaseDemandProvider.swift
+//  MyTargetBaseDemandProvider.swift
 //  BidonAdapterMyTarget
 //
 //  Created by Евгения Григорович on 05/08/2024.
@@ -9,7 +9,7 @@ import Foundation
 import MyTargetSDK
 import Bidon
 
-class MyTargetBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
+class MyTargetBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
     
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
@@ -27,7 +27,7 @@ class MyTargetBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
         adUnitExtras: MyTargetAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        fatalError("MyTargetBiddingBaseDemandProvider is unable to prepare bid")
+        fatalError("MyTargetBaseDemandProvider is unable to prepare bid")
     }
     
     func load(
@@ -35,7 +35,7 @@ class MyTargetBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
         adUnitExtras: MyTargetAdUnitExtras,
         response: @escaping Bidon.DemandProviderResponse
     ) {
-        fatalError("MyTargetBiddingBaseDemandProvider is unable to prepare bid")
+        fatalError("MyTargetBaseDemandProvider is unable to prepare bid")
     }
     
     func synchronise(ad: MTRGBaseAd, adUnitExtras: MyTargetAdUnitExtras) {
