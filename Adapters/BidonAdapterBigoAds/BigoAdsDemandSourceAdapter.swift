@@ -13,10 +13,14 @@ import BigoADS
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc final public class BigoAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "bigoads"
     
     public let demandId: String = BigoAdsDemandSourceAdapter.identifier
@@ -36,6 +40,18 @@ BiddingAdViewDemandSourceAdapter
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return BigoAdsBiddingAdViewDemandProvider(context: context)
+    }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return BigoAdsBiddingInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return BigoAdsBiddingRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
         return BigoAdsBiddingAdViewDemandProvider(context: context)
     }
 }
