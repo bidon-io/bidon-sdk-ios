@@ -15,10 +15,10 @@
 		420F03402A67DB4300A4664F /* BidonAdapterBigoAds.h in Headers */ = {isa = PBXBuildFile; fileRef = 420F033F2A67DB4300A4664F /* BidonAdapterBigoAds.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		420F03452A67DB9000A4664F /* BigoAdsDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03442A67DB9000A4664F /* BigoAdsDemandSourceAdapter.swift */; };
 		420F03472A67DBA000A4664F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03462A67DBA000A4664F /* Bidon.framework */; };
-		420F03502A67E57800A4664F /* BigoAdsBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F034F2A67E57800A4664F /* BigoAdsBiddingBaseDemandProvider.swift */; };
-		420F03522A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03512A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift */; };
-		420F03542A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03532A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift */; };
-		420F03562A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03552A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift */; };
+		420F03502A67E57800A4664F /* BigoAdsBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F034F2A67E57800A4664F /* BigoAdsBaseDemandProvider.swift */; };
+		420F03522A67E87600A4664F /* BigoAdsInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03512A67E87600A4664F /* BigoAdsInterstitialDemandProvider.swift */; };
+		420F03542A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03532A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift */; };
+		420F03562A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03552A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift */; };
 		420F035F2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		420F03642A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */; };
 		420F03662A6819B000A4664F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03652A6819B000A4664F /* Bidon.framework */; };
@@ -52,10 +52,10 @@
 		4265B53A2A5FEFDA007AD808 /* BidonAdapterVungle.h in Headers */ = {isa = PBXBuildFile; fileRef = 4265B5392A5FEFDA007AD808 /* BidonAdapterVungle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4265B5432A5FF00F007AD808 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4265B5422A5FF00F007AD808 /* Bidon.framework */; };
 		4265B5452A5FF025007AD808 /* VungleDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B5442A5FF025007AD808 /* VungleDemandSourceAdapter.swift */; };
-		4265B5482A5FFEBF007AD808 /* VungleBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B5472A5FFEBF007AD808 /* VungleBiddingBaseDemandProvider.swift */; };
-		4265B55D2A601B2D007AD808 /* VungleBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B55C2A601B2D007AD808 /* VungleBiddingInterstitialDemandProvider.swift */; };
-		4265B55F2A602383007AD808 /* VungleBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B55E2A602383007AD808 /* VungleBiddingRewardedDemandProvider.swift */; };
-		4265B5612A602B31007AD808 /* VungleBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B5602A602B31007AD808 /* VungleBiddingAdViewDemandProvider.swift */; };
+		4265B5482A5FFEBF007AD808 /* VungleBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B5472A5FFEBF007AD808 /* VungleBaseDemandProvider.swift */; };
+		4265B55D2A601B2D007AD808 /* VungleInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B55C2A601B2D007AD808 /* VungleInterstitialDemandProvider.swift */; };
+		4265B55F2A602383007AD808 /* VungleRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B55E2A602383007AD808 /* VungleRewardedDemandProvider.swift */; };
+		4265B5612A602B31007AD808 /* VungleAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4265B5602A602B31007AD808 /* VungleAdViewDemandProvider.swift */; };
 		4267C9E829ACEB4500B5988E /* DTExchangeDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267C9E729ACEB4500B5988E /* DTExchangeDemandSourceAdapter.swift */; };
 		4267C9EC29ACFEF500B5988E /* DTExchangeBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267C9EB29ACFEF500B5988E /* DTExchangeBaseDemandProvider.swift */; };
 		4267C9EE29AD0A6300B5988E /* DTExchangeDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267C9ED29AD0A6300B5988E /* DTExchangeDemandAd.swift */; };
@@ -220,10 +220,10 @@
 		420F033F2A67DB4300A4664F /* BidonAdapterBigoAds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterBigoAds.h; sourceTree = "<group>"; };
 		420F03442A67DB9000A4664F /* BigoAdsDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		420F03462A67DBA000A4664F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		420F034F2A67E57800A4664F /* BigoAdsBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
-		420F03512A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
-		420F03532A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
-		420F03552A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		420F034F2A67E57800A4664F /* BigoAdsBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsBaseDemandProvider.swift; sourceTree = "<group>"; };
+		420F03512A67E87600A4664F /* BigoAdsInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		420F03532A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		420F03552A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterMetaAudienceNetwork.h; sourceTree = "<group>"; };
 		420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkDemandSourceAdapter.swift; sourceTree = "<group>"; };
@@ -266,10 +266,10 @@
 		4265B5392A5FEFDA007AD808 /* BidonAdapterVungle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterVungle.h; sourceTree = "<group>"; };
 		4265B5422A5FF00F007AD808 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4265B5442A5FF025007AD808 /* VungleDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleDemandSourceAdapter.swift; sourceTree = "<group>"; };
-		4265B5472A5FFEBF007AD808 /* VungleBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
-		4265B55C2A601B2D007AD808 /* VungleBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
-		4265B55E2A602383007AD808 /* VungleBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
-		4265B5602A602B31007AD808 /* VungleBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		4265B5472A5FFEBF007AD808 /* VungleBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleBaseDemandProvider.swift; sourceTree = "<group>"; };
+		4265B55C2A601B2D007AD808 /* VungleInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		4265B55E2A602383007AD808 /* VungleRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		4265B5602A602B31007AD808 /* VungleAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VungleAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		4267C9E729ACEB4500B5988E /* DTExchangeDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		4267C9EB29ACFEF500B5988E /* DTExchangeBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeBaseDemandProvider.swift; sourceTree = "<group>"; };
 		4267C9ED29AD0A6300B5988E /* DTExchangeDemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTExchangeDemandAd.swift; sourceTree = "<group>"; };
@@ -602,10 +602,10 @@
 		420F034E2A67E41B00A4664F /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				420F034F2A67E57800A4664F /* BigoAdsBiddingBaseDemandProvider.swift */,
-				420F03512A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift */,
-				420F03532A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift */,
-				420F03552A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift */,
+				420F034F2A67E57800A4664F /* BigoAdsBaseDemandProvider.swift */,
+				420F03512A67E87600A4664F /* BigoAdsInterstitialDemandProvider.swift */,
+				420F03532A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift */,
+				420F03552A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -798,10 +798,10 @@
 		4265B5462A5FFEA0007AD808 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				4265B5472A5FFEBF007AD808 /* VungleBiddingBaseDemandProvider.swift */,
-				4265B55C2A601B2D007AD808 /* VungleBiddingInterstitialDemandProvider.swift */,
-				4265B55E2A602383007AD808 /* VungleBiddingRewardedDemandProvider.swift */,
-				4265B5602A602B31007AD808 /* VungleBiddingAdViewDemandProvider.swift */,
+				4265B5472A5FFEBF007AD808 /* VungleBaseDemandProvider.swift */,
+				4265B55C2A601B2D007AD808 /* VungleInterstitialDemandProvider.swift */,
+				4265B55E2A602383007AD808 /* VungleRewardedDemandProvider.swift */,
+				4265B5602A602B31007AD808 /* VungleAdViewDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -2348,14 +2348,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				420F03502A67E57800A4664F /* BigoAdsBiddingBaseDemandProvider.swift in Sources */,
+				420F03502A67E57800A4664F /* BigoAdsBaseDemandProvider.swift in Sources */,
 				42D377882AFAAD88003DCCA2 /* BigoAdsParameters.swift in Sources */,
-				420F03542A67FC0E00A4664F /* BigoAdsBiddingRewardedDemandProvider.swift in Sources */,
+				420F03542A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift in Sources */,
 				42D3778A2AFAAD9F003DCCA2 /* BigoAdsAdUnitExtras.swift in Sources */,
-				420F03562A67FE3300A4664F /* BigoAdsBiddingAdViewDemandProvider.swift in Sources */,
+				420F03562A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift in Sources */,
 				42D3778E2AFAADE4003DCCA2 /* BigoAdsBiddingPayload.swift in Sources */,
 				420F03452A67DB9000A4664F /* BigoAdsDemandSourceAdapter.swift in Sources */,
-				420F03522A67E87600A4664F /* BigoAdsBiddingInterstitialDemandProvider.swift in Sources */,
+				420F03522A67E87600A4664F /* BigoAdsInterstitialDemandProvider.swift in Sources */,
 				42D3778C2AFAADC8003DCCA2 /* BigoAdsBiddingToken.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2469,11 +2469,11 @@
 			files = (
 				42D3777F2AFAAC68003DCCA2 /* VungleParameters.swift in Sources */,
 				42D377852AFAAD09003DCCA2 /* VungleBiddingPayload.swift in Sources */,
-				4265B55F2A602383007AD808 /* VungleBiddingRewardedDemandProvider.swift in Sources */,
+				4265B55F2A602383007AD808 /* VungleRewardedDemandProvider.swift in Sources */,
 				4265B5452A5FF025007AD808 /* VungleDemandSourceAdapter.swift in Sources */,
-				4265B5482A5FFEBF007AD808 /* VungleBiddingBaseDemandProvider.swift in Sources */,
-				4265B55D2A601B2D007AD808 /* VungleBiddingInterstitialDemandProvider.swift in Sources */,
-				4265B5612A602B31007AD808 /* VungleBiddingAdViewDemandProvider.swift in Sources */,
+				4265B5482A5FFEBF007AD808 /* VungleBaseDemandProvider.swift in Sources */,
+				4265B55D2A601B2D007AD808 /* VungleInterstitialDemandProvider.swift in Sources */,
+				4265B5612A602B31007AD808 /* VungleAdViewDemandProvider.swift in Sources */,
 				42D377832AFAACC0003DCCA2 /* VungleBiddingToken.swift in Sources */,
 				42D377812AFAAC9B003DCCA2 /* VungleAdUnitExtras.swift in Sources */,
 			);

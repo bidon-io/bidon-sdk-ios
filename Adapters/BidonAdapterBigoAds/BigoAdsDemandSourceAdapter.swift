@@ -13,10 +13,14 @@ import BigoADS
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc final public class BigoAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "bigoads"
     
     public let demandId: String = BigoAdsDemandSourceAdapter.identifier
@@ -28,15 +32,27 @@ BiddingAdViewDemandSourceAdapter
     var context: SdkContext
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return BigoAdsBiddingInterstitialDemandProvider()
+        return BigoAdsInterstitialDemandProvider()
     }
     
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return BigoAdsBiddingRewardedDemandProvider()
+        return BigoAdsRewardedDemandProvider()
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-        return BigoAdsBiddingAdViewDemandProvider(context: context)
+        return BigoAdsAdViewDemandProvider(context: context)
+    }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return BigoAdsInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return BigoAdsRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
+        return BigoAdsAdViewDemandProvider(context: context)
     }
 }
 
