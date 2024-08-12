@@ -2,7 +2,7 @@
 //  DefaultAuctionInfo.swift
 //  Bidon
 //
-//  Created by Евгения Григорович on 04/07/2024.
+//  Created by Evgenia Gorbacheva on 04/07/2024.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  MyTargetRewardedDemandProvider.swift
 //  BidonAdapterMyTarget
 //
-//  Created by Евгения Григорович on 05/08/2024.
+//  Created by Evgenia Gorbacheva on 05/08/2024.
 //
 
 import UIKit

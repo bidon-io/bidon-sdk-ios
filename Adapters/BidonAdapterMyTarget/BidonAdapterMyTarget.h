@@ -2,7 +2,7 @@
 //  BidonAdapterMyTarget.h
 //  BidonAdapterMyTarget
 //
-//  Created by Евгения Григорович on 07/08/2024.
+//  Created by Evgenia Gorbacheva on 07/08/2024.
 //
 
 #import <Foundation/Foundation.h>
