@@ -29,27 +29,27 @@ DirectAdViewDemandSourceAdapter
     public let sdkVersion: String = VungleAds.sdkVersion
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return VungleBiddingInterstitialDemandProvider()
+        return VungleInterstitialDemandProvider()
     }
 
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return VungleBiddingRewardedDemandProvider()
+        return VungleRewardedDemandProvider()
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-        return VungleBiddingAdViewDemandProvider(context: context)
+        return VungleAdViewDemandProvider(context: context)
     }
     
     public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
-        return VungleBiddingInterstitialDemandProvider()
+        return VungleInterstitialDemandProvider()
     }
     
     public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
-        return VungleBiddingRewardedDemandProvider()
+        return VungleRewardedDemandProvider()
     }
     
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
-        return VungleBiddingAdViewDemandProvider(context: context)
+        return VungleAdViewDemandProvider(context: context)
     }
 }
 

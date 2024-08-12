@@ -1,5 +1,5 @@
 //
-//  VungleBiddingRewardedDemandProvider.swift
+//  VungleRewardedDemandProvider.swift
 //  BidonAdapterVungle
 //
 //  Created by Bidon Team on 13.07.2023.
@@ -11,7 +11,7 @@ import Bidon
 import VungleAdsSDK
 
 
-final class VungleBiddingRewardedDemandProvider: VungleBiddingBaseDemandProvider<VungleRewarded> {
+final class VungleRewardedDemandProvider: VungleBaseDemandProvider<VungleRewarded> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
     override func adObject(placement: String) -> VungleRewarded {
@@ -22,7 +22,7 @@ final class VungleBiddingRewardedDemandProvider: VungleBiddingBaseDemandProvider
 }
 
 
-extension VungleBiddingRewardedDemandProvider: RewardedAdDemandProvider {
+extension VungleRewardedDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: VungleDemandAd<VungleRewarded>,
         from viewController: UIViewController
@@ -40,7 +40,7 @@ extension VungleBiddingRewardedDemandProvider: RewardedAdDemandProvider {
 }
 
 
-extension VungleBiddingRewardedDemandProvider: VungleRewardedDelegate {
+extension VungleRewardedDemandProvider: VungleRewardedDelegate {
     func rewardedAdDidLoad(_ rewarded: VungleRewarded) {
         guard demandAd.adObject === rewarded else { return }
         

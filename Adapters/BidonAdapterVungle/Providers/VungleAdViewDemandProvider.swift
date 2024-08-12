@@ -1,5 +1,5 @@
 //
-//  VungleBiddingAdViewDemandProvider.swift
+//  VungleAdViewDemandProvider.swift
 //  BidonAdapterVungle
 //
 //  Created by Bidon Team on 13.07.2023.
@@ -16,7 +16,7 @@ final class VungleAdViewContainer: UIView, AdViewContainer {
 }
 
 
-final class VungleBiddingAdViewDemandProvider: VungleBiddingBaseDemandProvider<VungleBanner> {
+final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBanner> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
     
@@ -40,7 +40,7 @@ final class VungleBiddingAdViewDemandProvider: VungleBiddingBaseDemandProvider<V
 }
 
 
-extension VungleBiddingAdViewDemandProvider: AdViewDemandProvider {
+extension VungleAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: VungleDemandAd<VungleBanner>) -> AdViewContainer? {
         let rect = CGRect(origin: .zero, size: adSize.cgSize)
         let container = VungleAdViewContainer(frame: rect)
@@ -51,7 +51,7 @@ extension VungleBiddingAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: VungleDemandAd<VungleAdsSDK.VungleBanner>) {}
 }
 
-extension VungleBiddingAdViewDemandProvider: VungleBannerDelegate {
+extension VungleAdViewDemandProvider: VungleBannerDelegate {
     func bannerAdDidLoad(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
         

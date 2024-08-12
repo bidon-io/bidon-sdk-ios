@@ -1,5 +1,5 @@
 //
-//  VungleBiddingBaseDemandProvider.swift
+//  VungleBaseDemandProvider.swift
 //  BidonAdapterVungle
 //
 //  Created by Bidon Team on 13.07.2023.
@@ -21,7 +21,7 @@ final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
 }
 
 
-class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
+class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
     typealias DemandAdType = VungleDemandAd<AdObject>
 
     private(set) var demandAd: VungleDemandAd<AdObject>!
@@ -86,6 +86,6 @@ class VungleBiddingBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSOb
     ) {}
     
     open func adObject(placement: String) -> AdObject {
-        fatalError("VungleBiddingBaseDemandProvider is not able to create ad object")
+        fatalError("VungleBaseDemandProvider is not able to create ad object")
     }
 }

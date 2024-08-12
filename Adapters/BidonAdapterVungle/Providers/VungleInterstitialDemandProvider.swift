@@ -1,5 +1,5 @@
 //
-//  VungleBiddingInterstitialDemandProvider.swift
+//  VungleInterstitialDemandProvider.swift
 //  BidonAdapterVungle
 //
 //  Created by Bidon Team on 13.07.2023.
@@ -12,7 +12,7 @@ import VungleAdsSDK
 
 
 
-final class VungleBiddingInterstitialDemandProvider: VungleBiddingBaseDemandProvider<VungleInterstitial> {
+final class VungleInterstitialDemandProvider: VungleBaseDemandProvider<VungleInterstitial> {
     override func adObject(placement: String) -> VungleInterstitial {
         let interstitial = VungleInterstitial(placementId: placement)
         interstitial.delegate = self
@@ -21,7 +21,7 @@ final class VungleBiddingInterstitialDemandProvider: VungleBiddingBaseDemandProv
 }
 
 
-extension VungleBiddingInterstitialDemandProvider: InterstitialDemandProvider {
+extension VungleInterstitialDemandProvider: InterstitialDemandProvider {
     func show(
         ad: VungleDemandAd<VungleInterstitial>,
         from viewController: UIViewController
@@ -38,7 +38,7 @@ extension VungleBiddingInterstitialDemandProvider: InterstitialDemandProvider {
     }
 }
 
-extension VungleBiddingInterstitialDemandProvider: VungleInterstitialDelegate {
+extension VungleInterstitialDemandProvider: VungleInterstitialDelegate {
     func interstitialAdDidLoad(_ interstitial: VungleInterstitial) {
         guard demandAd.adObject === interstitial else { return }
         
