@@ -93,7 +93,6 @@ extension MyTargetBiddingRewardedDemandProvider: MTRGRewardedAdDelegate {
     func onDisplay(with rewardedAd: MTRGRewardedAd) {
         delegate?.providerWillPresent(self)
 
-        guard let rewarded else { return }
         let ad = MyTargetRewardedDemandAd(rewarded: rewardedAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

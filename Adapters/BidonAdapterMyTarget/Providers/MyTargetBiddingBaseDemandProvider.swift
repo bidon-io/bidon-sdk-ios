@@ -41,7 +41,6 @@ class MyTargetBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
     func synchronise(ad: MTRGBaseAd, adUnitExtras: MyTargetAdUnitExtras) {
         let customParams = ad.customParams
         customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
-        customParams.setCustomParam(adUnitExtras.bidId, forKey: "bid_id")
     }
     
     final func notify(

@@ -421,8 +421,10 @@
 		75C86F587053079E58A3D3AA /* Pods-BidonAdapterUnityAds.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterUnityAds.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds.release.xcconfig"; sourceTree = "<group>"; };
 		79A48039B2D4927C4AA87EB7 /* Pods-BidonAdapterMintegral.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMintegral.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral.debug.xcconfig"; sourceTree = "<group>"; };
 		81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84AAA56990B0B7F933789065 /* Pods-BidonAdapterIronSource.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterIronSource.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource.debug.xcconfig"; sourceTree = "<group>"; };
 		84D05911DFEF219E28C72FBA /* Pods-BidOnAdapterBidMachine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterBidMachine.release.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterBidMachine/Pods-BidOnAdapterBidMachine.release.xcconfig"; sourceTree = "<group>"; };
 		853D0841556E776725274166 /* Pods_BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D05DF78C13682FF7649E56D /* Pods-BidonAdapterIronSource.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterIronSource.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource.release.xcconfig"; sourceTree = "<group>"; };
 		8D17AC4D220631FA0B3DE47B /* Pods_BidonAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E97FBE0C6B88C127715A603 /* Pods-BidOnAdapterAppLovin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.release.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.release.xcconfig"; sourceTree = "<group>"; };
 		92AFA70C7A8BA2308E3FFBC8 /* Pods-BidonAdapterGoogleAdManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleAdManager.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager.release.xcconfig"; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 		BB69C86D9638891BD3D2A879 /* Pods-BidOnAdapterAppLovin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.debug.xcconfig"; sourceTree = "<group>"; };
 		BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EF50FBFE5B9D0143A1ECB5 /* Pods-BidOnAdapterBidMachine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterBidMachine.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterBidMachine/Pods-BidOnAdapterBidMachine.debug.xcconfig"; sourceTree = "<group>"; };
+		C124516AEEF15DF1F1D20DE5 /* Pods_BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6A6640EACEB17CE4DA9F4FE /* Pods-BidonAdapterUnityAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterUnityAds.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds.debug.xcconfig"; sourceTree = "<group>"; };
 		C74658EE41140449A422925D /* Pods-BidonAdapterVungle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterVungle.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle.release.xcconfig"; sourceTree = "<group>"; };
@@ -655,22 +658,22 @@
 			isa = PBXGroup;
 			children = (
 				4253FED02ABC97A70013A675 /* BidonAdapterAmazon */,
+				425E9C4628B76B0F00F4E4C7 /* BidonAdapterAppLovin */,
 				4221022C285A3318006596DA /* BidonAdapterBidMachine */,
+				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
+				4273347329ACE7DF0042AE52 /* BidonAdapterDTExchange */,
 				42CD460C2B06772900900683 /* BidonAdapterGoogleAdManager */,
 				42BA81B32875ABA3001F1744 /* BidonAdapterGoogleMobileAds */,
-				425E9C4628B76B0F00F4E4C7 /* BidonAdapterAppLovin */,
-				4273347329ACE7DF0042AE52 /* BidonAdapterDTExchange */,
-				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
+				42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */,
+				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
 				4215B8AA2A55973B00675ACC /* BidonAdapterMintegral */,
 				4268272B2A5D84B20084A48D /* BidonAdapterMobileFuse */,
-				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
-				420F033E2A67DB4300A4664F /* BidonAdapterBigoAds */,
-				420F035D2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork */,
-				42CFF1AF2AAF617500AC2C24 /* BidonAdapterInMobi */,
 				495FB5152C637D090023E8A0 /* BidonAdapterMyTarget */,
-				42210211285A32ED006596DA /* Products */,
-				8462A3B50D72D26B685AAD18 /* Pods */,
+				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
+				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
+				8462A3B50D72D26B685AAD18 /* Pods */,
+				42210211285A32ED006596DA /* Products */,
 				422BB4322B024E300013EFEE /* Recovered References */,
 			);
 			sourceTree = "<group>";
@@ -1232,6 +1235,7 @@
 				D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */,
 				D13C11827C0553DF1B0E449B /* Pods_BidonAdapterGoogleAdManager.framework */,
 				1BB99F652294D4BB007C15C5 /* Pods_BidonAdapterMyTarget.framework */,
+				C124516AEEF15DF1F1D20DE5 /* Pods_BidonAdapterIronSource.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1275,6 +1279,8 @@
 				92AFA70C7A8BA2308E3FFBC8 /* Pods-BidonAdapterGoogleAdManager.release.xcconfig */,
 				CF78106954E01DC85DF80907 /* Pods-BidonAdapterMyTarget.debug.xcconfig */,
 				541F1EE757A50972CB6F2B53 /* Pods-BidonAdapterMyTarget.release.xcconfig */,
+				84AAA56990B0B7F933789065 /* Pods-BidonAdapterIronSource.debug.xcconfig */,
+				8D05DF78C13682FF7649E56D /* Pods-BidonAdapterIronSource.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;

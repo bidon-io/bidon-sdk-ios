@@ -10,7 +10,6 @@ import Foundation
 struct MyTargetAdUnitExtras: Codable {
     let slotId: String
     let mediation: String
-    let bidId: String
 }
 
 struct MyTargetBiddingTokenExtras: Codable { }

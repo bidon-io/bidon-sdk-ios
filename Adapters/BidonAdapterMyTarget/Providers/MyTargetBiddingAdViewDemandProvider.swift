@@ -48,7 +48,6 @@ final class MyTargetBiddingAdViewDemandProvider: MyTargetBiddingBaseDemandProvid
         
         let customParams = banner.customParams
         customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
-        customParams.setCustomParam(adUnitExtras.bidId, forKey: "bid_id")
         
         banner.delegate = self
         banner.viewController = rootViewController
@@ -72,7 +71,6 @@ final class MyTargetBiddingAdViewDemandProvider: MyTargetBiddingBaseDemandProvid
         
         let customParams = banner.customParams
         customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
-        customParams.setCustomParam(adUnitExtras.bidId, forKey: "bid_id")
         
         banner.delegate = self
         banner.viewController = rootViewController
