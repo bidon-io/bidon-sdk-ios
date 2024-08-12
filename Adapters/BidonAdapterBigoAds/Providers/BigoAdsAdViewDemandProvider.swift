@@ -1,5 +1,5 @@
 //
-//  BigoAdsBiddingAdViewDemandProvider.swift
+//  BigoAdsAdViewDemandProvider.swift
 //  BidonAdapterBigoAds
 //
 //  Created by Bidon Team on 19.07.2023.
@@ -11,7 +11,7 @@ import Bidon
 import BigoADS
 
 
-final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider<BigoBannerAd> {
+final class BigoAdsAdViewDemandProvider: BigoAdsBaseDemandProvider<BigoBannerAd> {
     final class BigoBannerAdContainer: UIView, AdViewContainer {
         let isAdaptive: Bool = false
         
@@ -79,6 +79,17 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
         loader.loadAd(request)
     }
     
+    override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+        
+        let request = BigoBannerAdRequest(
+            slotId: adUnitExtras.slotId,
+            adSizes: [format.bigoAdSize]
+        )
+        
+        loader.loadAd(request)
+    }
+    
     override func onAdOpened(_ ad: BigoAd) {
         guard let container = adContainer, container.ad === ad else {
             return
@@ -95,7 +106,7 @@ final class BigoAdsBiddingAdViewDemandProvider: BigoAdsBiddingBaseDemandProvider
 }
 
 
-extension BigoAdsBiddingAdViewDemandProvider: AdViewDemandProvider {
+extension BigoAdsAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: BigoBannerAd) -> AdViewContainer? {
         if let container = adContainer, container.ad === ad {
             return container
@@ -115,7 +126,7 @@ extension BigoAdsBiddingAdViewDemandProvider: AdViewDemandProvider {
 }
 
 
-extension BigoAdsBiddingAdViewDemandProvider: BigoBannerAdLoaderDelegate {
+extension BigoAdsAdViewDemandProvider: BigoBannerAdLoaderDelegate {
     func onBannerAdLoaded(_ ad: BigoBannerAd) {
         ad.setAdInteractionDelegate(self)
         

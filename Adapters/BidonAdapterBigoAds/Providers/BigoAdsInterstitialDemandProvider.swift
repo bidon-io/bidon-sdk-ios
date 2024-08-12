@@ -1,5 +1,5 @@
 //
-//  BigoAdsBiddingInterstitialDemandProvider.swift
+//  BigoAdsInterstitialDemandProvider.swift
 //  BidonAdapterBigoAds
 //
 //  Created by Bidon Team on 19.07.2023.
@@ -10,7 +10,7 @@ import Bidon
 import BigoADS
 
 
-final class BigoAdsBiddingInterstitialDemandProvider: BigoAdsBiddingBaseDemandProvider<BigoInterstitialAd> {
+final class BigoAdsInterstitialDemandProvider: BigoAdsBaseDemandProvider<BigoInterstitialAd> {
     private lazy var loader = BigoInterstitialAdLoader(interstitialAdLoaderDelegate: self)
     
     private var response: DemandProviderResponse?
@@ -27,10 +27,18 @@ final class BigoAdsBiddingInterstitialDemandProvider: BigoAdsBiddingBaseDemandPr
         
         loader.loadAd(request)
     }
+    
+    override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+        
+        let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
+        
+        loader.loadAd(request)
+    }
 }
 
 
-extension BigoAdsBiddingInterstitialDemandProvider: InterstitialDemandProvider {
+extension BigoAdsInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: BigoInterstitialAd, from viewController: UIViewController) {
         if ad.isExpired() {
             delegate?.provider(
@@ -45,7 +53,7 @@ extension BigoAdsBiddingInterstitialDemandProvider: InterstitialDemandProvider {
 }
 
 
-extension BigoAdsBiddingInterstitialDemandProvider: BigoInterstitialAdLoaderDelegate {
+extension BigoAdsInterstitialDemandProvider: BigoInterstitialAdLoaderDelegate {
     func onInterstitialAdLoaded(_ ad: BigoInterstitialAd) {
         ad.setAdInteractionDelegate(self)
         response?(.success(ad))
