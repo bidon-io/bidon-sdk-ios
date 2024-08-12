@@ -13,10 +13,14 @@ import VungleAdsSDK
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class VungleDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "vungle"
 
     public let demandId: String = VungleDemandSourceAdapter.identifier
@@ -33,6 +37,18 @@ BiddingAdViewDemandSourceAdapter
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return VungleBiddingAdViewDemandProvider(context: context)
+    }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return VungleBiddingInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return VungleBiddingRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
         return VungleBiddingAdViewDemandProvider(context: context)
     }
 }
