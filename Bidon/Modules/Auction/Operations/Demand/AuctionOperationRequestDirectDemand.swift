@@ -36,8 +36,10 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     override func main() {
         super.main()
         
+        guard isExecuting else { return }
+        
         guard
-            let adapter = adapters.first(where: { $0.demandId == demand }),
+            let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericDirectDemandProvider }),
             let provider = adapter.provider as? any GenericDirectDemandProvider
         else {
             let event = DirectDemandErrorAuctionEvent(

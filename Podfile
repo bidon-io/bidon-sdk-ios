@@ -79,6 +79,11 @@ def inmobi
   pod 'InMobiSDK', '~> 10.7.1'
 end
 
+def my_target
+  pod "myTargetSDK", "~> 5.20.1"
+  pod "myTrackerSDK", "<= 3.1.7"
+end
+
 def appodeal_mediation
    pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
@@ -166,6 +171,11 @@ target 'BidonAdapterAmazon' do
   amazon
 end
 
+target 'BidonAdapterMyTarget' do
+  project 'Adapters/Adapters.xcodeproj'
+  my_target
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -211,6 +221,7 @@ target 'Sandbox' do
   inmobi
   amazon
   appodeal_mediation
+  my_target
 end
 
 post_install do |installer|

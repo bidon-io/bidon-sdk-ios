@@ -1,5 +1,5 @@
 //
-//  BigoAdsBiddingRewardedDemandProvider.swift
+//  BigoAdsRewardedDemandProvider.swift
 //  BidonAdapterBigoAds
 //
 //  Created by Bidon Team on 19.07.2023.
@@ -10,7 +10,7 @@ import Bidon
 import BigoADS
 
 
-final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvider<BigoRewardVideoAd> {
+final class BigoAdsRewardedDemandProvider: BigoAdsBaseDemandProvider<BigoRewardVideoAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     private lazy var loader = BigoRewardVideoAdLoader(rewardVideoAdLoaderDelegate: self)
@@ -29,10 +29,18 @@ final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvid
         
         loader.loadAd(request)
     }
+    
+    override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
+        self.response = response
+
+        let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
+        
+        loader.loadAd(request)
+    }
 }
 
 
-extension BigoAdsBiddingRewardedDemandProvider: RewardedAdDemandProvider {
+extension BigoAdsRewardedDemandProvider: RewardedAdDemandProvider {
     func show(ad: BigoRewardVideoAd, from viewController: UIViewController) {
         if ad.isExpired() {
             delegate?.provider(
@@ -47,7 +55,7 @@ extension BigoAdsBiddingRewardedDemandProvider: RewardedAdDemandProvider {
 }
 
 
-extension BigoAdsBiddingRewardedDemandProvider: BigoRewardVideoAdLoaderDelegate {
+extension BigoAdsRewardedDemandProvider: BigoRewardVideoAdLoaderDelegate {
     func onRewardVideoAdLoaded(_ ad: BigoRewardVideoAd) {
         ad.setRewardVideoAdInteractionDelegate(self)
         
@@ -62,7 +70,7 @@ extension BigoAdsBiddingRewardedDemandProvider: BigoRewardVideoAdLoaderDelegate 
 }
 
 
-extension BigoAdsBiddingRewardedDemandProvider: BigoRewardVideoAdInteractionDelegate {
+extension BigoAdsRewardedDemandProvider: BigoRewardVideoAdInteractionDelegate {
     func onAdRewarded(_ ad: BigoRewardVideoAd) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }

@@ -40,7 +40,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         guard isExecuting else { return }
                 
         guard
-            let adapter = adapters.first(where: { $0.demandId == demand }),
+            let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericBiddingDemandProvider }),
             let provider = adapter.provider as? any GenericBiddingDemandProvider
         else {
             let event = BiddingDemandLoadingErrorAucitonEvent(
