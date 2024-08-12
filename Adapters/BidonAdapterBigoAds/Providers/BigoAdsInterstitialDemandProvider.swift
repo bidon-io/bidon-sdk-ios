@@ -1,5 +1,5 @@
 //
-//  BigoAdsBiddingRewardedDemandProvider.swift
+//  BigoAdsInterstitialDemandProvider.swift
 //  BidonAdapterBigoAds
 //
 //  Created by Bidon Team on 19.07.2023.
@@ -10,10 +10,8 @@ import Bidon
 import BigoADS
 
 
-final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvider<BigoRewardVideoAd> {
-    weak var rewardDelegate: DemandProviderRewardDelegate?
-
-    private lazy var loader = BigoRewardVideoAdLoader(rewardVideoAdLoaderDelegate: self)
+final class BigoAdsInterstitialDemandProvider: BigoAdsBaseDemandProvider<BigoInterstitialAd> {
+    private lazy var loader = BigoInterstitialAdLoader(interstitialAdLoaderDelegate: self)
     
     private var response: DemandProviderResponse?
     
@@ -23,8 +21,8 @@ final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvid
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-
-        let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
+        
+        let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
         request.setServerBidPayload(payload.payload)
         
         loader.loadAd(request)
@@ -32,16 +30,16 @@ final class BigoAdsBiddingRewardedDemandProvider: BigoAdsBiddingBaseDemandProvid
     
     override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
-
-        let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
+        
+        let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
         
         loader.loadAd(request)
     }
 }
 
 
-extension BigoAdsBiddingRewardedDemandProvider: RewardedAdDemandProvider {
-    func show(ad: BigoRewardVideoAd, from viewController: UIViewController) {
+extension BigoAdsInterstitialDemandProvider: InterstitialDemandProvider {
+    func show(ad: BigoInterstitialAd, from viewController: UIViewController) {
         if ad.isExpired() {
             delegate?.provider(
                 self,
@@ -55,23 +53,15 @@ extension BigoAdsBiddingRewardedDemandProvider: RewardedAdDemandProvider {
 }
 
 
-extension BigoAdsBiddingRewardedDemandProvider: BigoRewardVideoAdLoaderDelegate {
-    func onRewardVideoAdLoaded(_ ad: BigoRewardVideoAd) {
-        ad.setRewardVideoAdInteractionDelegate(self)
-        
+extension BigoAdsInterstitialDemandProvider: BigoInterstitialAdLoaderDelegate {
+    func onInterstitialAdLoaded(_ ad: BigoInterstitialAd) {
+        ad.setAdInteractionDelegate(self)
         response?(.success(ad))
         response = nil
     }
     
-    func onRewardVideoAdLoadError(_ error: BigoAdError) {
+    func onInterstitialAdLoadError(_ error: BigoAdError) {
         response?(.failure(MediationError(error: error)))
         response = nil
-    }
-}
-
-
-extension BigoAdsBiddingRewardedDemandProvider: BigoRewardVideoAdInteractionDelegate {
-    func onAdRewarded(_ ad: BigoRewardVideoAd) {
-        rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
 }
