@@ -44,16 +44,20 @@ final class MyTargetAdViewDemandProvider: MyTargetBaseDemandProvider<MyTargetBan
         }
         self.response = response
         
-        let banner = MTRGAdView(slotId: slotId)
-        
-        let customParams = banner.customParams
-        customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
-        
-        banner.delegate = self
-        banner.viewController = rootViewController
-        banner.load(fromBid: payload.bidId)
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            let banner = MTRGAdView(slotId: slotId)
+            
+            let customParams = banner.customParams
+            customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
+            
+            banner.delegate = self
+            banner.viewController = rootViewController
+            banner.load(fromBid: payload.bidId)
+            
+            self.banner = banner
+        }
     }
     
     override func load(
@@ -67,16 +71,20 @@ final class MyTargetAdViewDemandProvider: MyTargetBaseDemandProvider<MyTargetBan
         }
         self.response = response
         
-        let banner = MTRGAdView(slotId: slotId)
-        
-        let customParams = banner.customParams
-        customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
-        
-        banner.delegate = self
-        banner.viewController = rootViewController
-        banner.load()
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            let banner = MTRGAdView(slotId: slotId)
+            
+            let customParams = banner.customParams
+            customParams.setCustomParam(adUnitExtras.mediation, forKey: kMTRGCustomParamsMediationKey)
+            
+            banner.delegate = self
+            banner.viewController = rootViewController
+            banner.load()
+            
+            self.banner = banner
+        }
     }
 }
 
