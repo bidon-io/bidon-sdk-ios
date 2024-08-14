@@ -55,6 +55,8 @@ extension IronSourceDemandSourceAdapter: ParameterizedInitializableAdapter {
         api.addImpressionDataDelegate(delegate)
         api.initialiseIronSource(with: parameters.appKey)
         isInitialized = true
+        
+        completion(nil)
     }
 }
 
