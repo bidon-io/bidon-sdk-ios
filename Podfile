@@ -1,4 +1,4 @@
-platform :ios, '12.4'
+platform :ios, '13.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://github.com/appodeal/CocoaPods.git'
@@ -86,6 +86,10 @@ end
 
 def ironsource
   pod "IronSourceSDK", "8.1.0"
+end
+
+def yandex
+  pod 'YandexMobileAds', '7.1.1'
 end
 
 def appodeal_mediation
@@ -185,6 +189,11 @@ target 'BidonAdapterIronSource' do
   ironsource
 end
 
+target 'BidonAdapterYandex' do
+  project 'Adapters/Adapters.xcodeproj'
+  yandex
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -232,12 +241,13 @@ target 'Sandbox' do
   appodeal_mediation
   my_target
   ironsource
+  yandex
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
       xcconfig_path = config.base_configuration_reference.real_path
       xcconfig = File.read(xcconfig_path)
@@ -247,7 +257,7 @@ post_install do |installer|
 
     installer.pods_project.build_configurations.each do |config|
       config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '13.0'
     end
   end
 end
