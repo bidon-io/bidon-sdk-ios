@@ -55,6 +55,10 @@ extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
     func rewardedAdLoader(_ adLoader: RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
         self.rewardedAd = rewardedAd
         self.rewardedAd?.delegate = self
+        
+        let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
+        response?(.success(ad))
+        response = nil
     }
 
     func rewardedAdLoader(_ adLoader: RewardedAdLoader, didFailToLoadWithError error: AdRequestError) {
