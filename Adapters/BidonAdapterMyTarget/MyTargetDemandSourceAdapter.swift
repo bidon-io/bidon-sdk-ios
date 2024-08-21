@@ -65,6 +65,7 @@ extension MyTargetDemandSourceAdapter: ParameterizedInitializableAdapter {
         MTRGPrivacy.setUserConsent(context.regulations.gdrpConsent == .given || context.regulations.usPrivacyString != nil)
         MTRGPrivacy.setUserAgeRestricted(context.regulations.coppaApplies == .yes)
         
+        isInitialized = true
         completion(nil)
     }
 }

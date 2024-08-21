@@ -58,10 +58,11 @@ extension ChartboostDemandSourceAdapter: ParameterizedInitializableAdapter {
         Chartboost.start(
             withAppID: parameters.appId,
             appSignature: parameters.appSignature
-        ) { error in
+        ) { [weak self] error in
             if let error {
                 completion(SdkError(error.localizedDescription))
             } else {
+                self?.isInitialized = true
                 completion(nil)
             }
         }
