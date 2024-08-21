@@ -48,6 +48,7 @@ struct AuctionRequest: Request {
         let segment: SegmentModel
         let adObject: AdObjectModel
         var token: String?
+        let test: Bool
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -105,7 +106,8 @@ extension AuctionRequest {
             adapters: builder.adapters, 
             ext: builder.encodedExt,
             segment: builder.segment,
-            adObject: builder.adObject
+            adObject: builder.adObject,
+            test: builder.testMode
         )
     }
 }

@@ -84,6 +84,10 @@ def my_target
   pod "myTrackerSDK", "<= 3.1.7"
 end
 
+def chartboost
+  pod 'ChartboostSDK', '9.7.0'
+end
+
 def appodeal_mediation
    pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
@@ -176,6 +180,11 @@ target 'BidonAdapterMyTarget' do
   my_target
 end
 
+target 'BidonAdapterChartboost' do
+  project 'Adapters/Adapters.xcodeproj'
+  chartboost
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -222,6 +231,7 @@ target 'Sandbox' do
   amazon
   appodeal_mediation
   my_target
+  chartboost
 end
 
 post_install do |installer|

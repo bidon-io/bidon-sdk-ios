@@ -41,6 +41,7 @@ PODS:
   - BidMachineRendering/WebKit (0.1.0):
     - BidMachineRendering/UtilsKit
   - BigoADS (4.2.3)
+  - ChartboostSDK (9.7.0)
   - FBAEMKit (17.0.2):
     - FBSDKCoreKit_Basics (= 17.0.2)
   - FBAudienceNetwork (6.15.0)
@@ -210,6 +211,7 @@ DEPENDENCIES:
   - AppsFlyerFramework (~> 6.14.0)
   - BidMachine (~> 2.6.0)
   - BigoADS (~> 4.2.2)
+  - ChartboostSDK (= 9.7.0)
   - FBAudienceNetwork (= 6.15.0)
   - FBSDKLoginKit
   - Fyber_Marketplace_SDK (~> 8.2.7)
@@ -238,6 +240,7 @@ SPEC REPOS:
     - AppsFlyer-AdRevenue
     - AppsFlyerFramework
     - BigoADS
+    - ChartboostSDK
     - FBAEMKit
     - FBAudienceNetwork
     - FBSDKCoreKit
@@ -269,6 +272,7 @@ SPEC CHECKSUMS:
   BidMachine: c300a4ec4499c75d2215b9055cf0b5ace00c8648
   BidMachineRendering: e8c4005b94b483315d9ded92d82ce571698b1374
   BigoADS: dc47625e5eb8f83b651a75788973d04acd655d62
+  ChartboostSDK: 0cd093c90a5a21c89783fe5be486e511fb2dbfc8
   FBAEMKit: 619f96ea65427e8afca240d5b0f4703738dfdf5c
   FBAudienceNetwork: 80a035aa69cc3a71c99e44cb5c2874e4cef9909f
   FBSDKCoreKit: a5f384db2e9ee84e98494fed8f983d2bd79accff
@@ -295,6 +299,6 @@ SPEC CHECKSUMS:
   UnityAds: 5601f6397b0e02ed3ed6ee92827f5177a523aab6
   VungleAds: 0d696ed96dd7d715a9432997356d59b2e3b58882
 
-PODFILE CHECKSUM: f3c87cc2c4cdca55a204c43394e7268138981409
+PODFILE CHECKSUM: 69662b648f072a298f7db8ad7d618eec2e089197
 
 COCOAPODS: 1.15.2
