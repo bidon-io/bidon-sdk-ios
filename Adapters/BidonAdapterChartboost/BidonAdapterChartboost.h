@@ -2,7 +2,7 @@
 //  BidonAdapterChartboost.h
 //  BidonAdapterChartboost
 //
-//  Created by Евгения Григорович on 20/08/2024.
+//  Created by Евгения Григорович on 22/08/2024.
 //
 
 #import <Foundation/Foundation.h>
