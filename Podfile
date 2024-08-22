@@ -92,6 +92,7 @@ def yandex
   pod 'YandexMobileAds', '7.1.1'
 end
 
+
 def appodeal_mediation
    pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'

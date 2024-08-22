@@ -106,15 +106,15 @@ PODS:
     - VGSLBaseUI (~> 5.0)
   - DivKit_Serialization (30.2.0):
     - VGSLCommonCore (~> 5.0)
-  - FBAEMKit (17.0.2):
-    - FBSDKCoreKit_Basics (= 17.0.2)
+  - FBAEMKit (17.0.3):
+    - FBSDKCoreKit_Basics (= 17.0.3)
   - FBAudienceNetwork (6.15.0)
-  - FBSDKCoreKit (17.0.2):
-    - FBAEMKit (= 17.0.2)
-    - FBSDKCoreKit_Basics (= 17.0.2)
-  - FBSDKCoreKit_Basics (17.0.2)
-  - FBSDKLoginKit (17.0.2):
-    - FBSDKCoreKit (= 17.0.2)
+  - FBSDKCoreKit (17.0.3):
+    - FBAEMKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+  - FBSDKCoreKit_Basics (17.0.3)
+  - FBSDKLoginKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
   - Fyber_Marketplace_SDK (8.2.8)
   - Google-Mobile-Ads-SDK (10.14.0):
     - GoogleAppMeasurement (< 11.0, >= 7.0)
@@ -167,9 +167,9 @@ PODS:
     - GoogleUtilities/Privacy
   - InMobiSDK (10.7.5)
   - IronSourceSDK (8.1.0.0)
-  - KSCrash/Recording (1.17.4):
-    - KSCrash/Recording/Tools (= 1.17.4)
-  - KSCrash/Recording/Tools (1.17.4)
+  - KSCrash/Recording (1.17.5):
+    - KSCrash/Recording/Tools (= 1.17.5)
+  - KSCrash/Recording/Tools (1.17.5)
   - MintegralAdSDK (7.6.9):
     - MintegralAdSDK/BannerAd (= 7.6.9)
     - MintegralAdSDK/BidBannerAd (= 7.6.9)
@@ -205,7 +205,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.6.9):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.7.5)
+  - MobileFuseSDK (1.7.6)
   - myTargetSDK (5.20.2):
     - myTrackerSDK (~> 3.1.1)
   - myTrackerSDK (3.1.7)
@@ -403,11 +403,11 @@ SPEC CHECKSUMS:
   DivKit_LayoutKit: de875092a505ff1b3b5d4301b0151adf8479a3a7
   DivKit_LayoutKitInterface: 292edf7193f77ab40672f608b1ed0ca87f5c9d50
   DivKit_Serialization: 442db283fdb39402e207c5bed0758a09feaa75d5
-  FBAEMKit: 619f96ea65427e8afca240d5b0f4703738dfdf5c
+  FBAEMKit: 9900b2edd99a2d21629a6277e6166f14c6215799
   FBAudienceNetwork: 80a035aa69cc3a71c99e44cb5c2874e4cef9909f
-  FBSDKCoreKit: a5f384db2e9ee84e98494fed8f983d2bd79accff
-  FBSDKCoreKit_Basics: d35c775aaf243a2d731dfae7be3a74b1987285ab
-  FBSDKLoginKit: f8ca5f7ab7c4e5b93e729d94975b0db7fcc511ed
+  FBSDKCoreKit: 0791f8f68a8630931a4c12aa23a56cc021551596
+  FBSDKCoreKit_Basics: 46d6b472c0dd0a5a7e972c025033d1c567f54eb4
+  FBSDKLoginKit: b4a4eba1d62eb452544411824f41689adabd5bd2
   Fyber_Marketplace_SDK: 50fb9e3077ddbd99e3da08dfcaab60df689ac106
   Google-Mobile-Ads-SDK: 8f67a72f88d057335b1ac3f501e2b68ad054116e
   GoogleAppMeasurement: f9de05ee17401e3355f68e8fc8b5064d429f5918
@@ -415,9 +415,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   InMobiSDK: 728c861e41cd738eaf0a26b87f0e3f945e8c5602
   IronSourceSDK: f4380fe08a2bfa1cd37c26948fcfd2585a0493a2
-  KSCrash: 158a0998f08ae7d4e54ef8a2da62d6e08b46d03a
+  KSCrash: b104a00c75f4c454590ae8d23cc8d8b003dae900
   MintegralAdSDK: 229e75c801be1302fb1aeac4249923234bfc480a
-  MobileFuseSDK: e6b9ceab10e60e3fcf32bee79d10992f68380682
+  MobileFuseSDK: aeb8ddc70e99ead934a05df7a85b69a5a8100ae7
   myTargetSDK: e89c7750ae10be5fa9deb4c01fce50c8ec1e078d
   myTrackerSDK: 437c4e215b37a6eb3a38f2a07b6c4c58b59215f9
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
@@ -439,6 +439,6 @@ SPEC CHECKSUMS:
   VungleAds: 0d696ed96dd7d715a9432997356d59b2e3b58882
   YandexMobileAds: 62025e5c6e1be4611d14db2cc4f94034d218def3
 
-PODFILE CHECKSUM: fd92b7b204de4d7ba23f9d1c74cb32af9a119673
+PODFILE CHECKSUM: 3f77f9b69c0226580e79e59e51e20cbc7bd2ceca
 
 COCOAPODS: 1.15.2

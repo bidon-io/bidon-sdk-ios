@@ -1346,7 +1346,6 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */,
 				49088C0D2C6A505C0024A640 /* Bidon.framework */,
 				495FB5212C637D610023E8A0 /* Pods_BidonAdapterMyTarget.framework */,
 				495FB51D2C637D4E0023E8A0 /* Bidon.framework */,
