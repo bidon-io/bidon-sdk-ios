@@ -35,7 +35,8 @@ struct Constants {
             "BidonAdapterAmazon.AmazonDemandSourceAdapter",
             "BidonAdapterGoogleAdManager.GoogleAdManagerDemandSourceAdapter",
             "BidonAdapterMyTarget.MyTargetDemandSourceAdapter",
-            "BidonAdapterIronSource.IronSourceDemandSourceAdapter"
+            "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
+            "BidonAdapterYandex.YandexDemandSourceAdapter"
         ]
     }
     

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -84,6 +84,7 @@
 		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
 		49921B0B2A8125E1007B2056 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49921B0A2A8125E1007B2056 /* Constants.swift */; };
+		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -171,6 +172,8 @@
 		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49921B0A2A8125E1007B2056 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EK7Z26L6D4:Yandex LLC"; lastKnownFileType = wrapper.xcframework; name = YandexMobileAds.xcframework; path = ../Pods/YandexMobileAds/static/YandexMobileAds.xcframework; sourceTree = "<group>"; };
 		64A1E0483C51188FF09EB928 /* Pods_Sandbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sandbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F846B990A6AF5B081BB0BD12 /* Pods-Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.debug.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,6 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */,
 				49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */,
 				426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */,
 				420F03682A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
@@ -240,6 +244,8 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */,
+				49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */,
 				49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */,
 				49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */,
 				42CD462A2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework */,
