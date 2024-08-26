@@ -16,19 +16,45 @@ final class MintegralDirectRewardedDemandProvider: MintegralDirectBaseDemandProv
     private var response: Bidon.DemandProviderResponse?
 
     override func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
+        MTGRewardAdManager.sharedInstance().cleanAllVideoFileCache()
         self.response = response
-        MTGRewardAdManager.sharedInstance().loadVideo(
+        if MTGRewardAdManager.sharedInstance().isVideoReadyToPlay(
             withPlacementId: adUnitExtras.placementId,
-            unitId: adUnitExtras.unitId,
-            delegate: self
-        )
+            unitId: adUnitExtras.unitId
+        ) {
+            let ad = MintegralRewardedDemandAd(
+                id: adUnitExtras.unitId,
+                placement: adUnitExtras.placementId
+            )
+            
+            self.response?(.success(ad))
+            self.response = nil
+        } else {
+            MTGRewardAdManager.sharedInstance().loadVideo(
+                withPlacementId: adUnitExtras.placementId,
+                unitId: adUnitExtras.unitId,
+                delegate: self
+            )
+        }
     }
 }
 
 
 extension MintegralDirectRewardedDemandProvider: RewardedAdDemandProvider {
     func show(ad: MintegralRewardedDemandAd, from viewController: UIViewController) {
-        MTGBidRewardAdManager.sharedInstance().showVideo(
+        guard
+            MTGRewardAdManager.sharedInstance().isVideoReadyToPlay(withPlacementId: ad.placement, unitId: ad.id)
+        else {
+            let ad = MintegralRewardedDemandAd(
+                id: ad.id,
+                placement: ad.placement
+            )
+            
+            delegate?.provider(self, didFailToDisplayAd: ad, error: .message("Ad is not ready to be shown"))
+            return
+        }
+        
+        MTGRewardAdManager.sharedInstance().showVideo(
             withPlacementId: ad.placement,
             unitId: ad.id,
             withRewardId: nil,

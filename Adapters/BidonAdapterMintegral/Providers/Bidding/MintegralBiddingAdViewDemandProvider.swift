@@ -40,16 +40,20 @@ final class MintegralBiddingAdViewDemandProvider: MintegralBiddingBaseDemandProv
     ) {
         self.response = response
         
-        adView = MTGBannerAdView(
-            bannerAdViewWith: adType,
-            placementId: adUnitExtras.placementId,
-            unitId: adUnitExtras.unitId,
-            rootViewController: self.rootViewController
-        )
-        
-        adView.autoRefreshTime = 0
-        adView.delegate = self
-        adView.loadBannerAd(withBidToken: payload.payload)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            self.adView = MTGBannerAdView(
+                bannerAdViewWith: adType,
+                placementId: adUnitExtras.placementId,
+                unitId: adUnitExtras.unitId,
+                rootViewController: self.rootViewController
+            )
+            
+            self.adView.autoRefreshTime = 0
+            self.adView.delegate = self
+            self.adView.loadBannerAd(withBidToken: payload.payload)
+        }
     }
 }
 
