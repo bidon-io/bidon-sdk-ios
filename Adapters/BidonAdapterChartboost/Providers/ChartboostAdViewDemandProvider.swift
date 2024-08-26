@@ -57,6 +57,9 @@ final class ChartboostAdViewDemandProvider: ChartboostBaseDemandProvider<Chartbo
 extension ChartboostAdViewDemandProvider: AdViewDemandProvider {
     
     func container(for ad: ChartboostDemandAd) -> Bidon.AdViewContainer? {
+        if let rootViewController {
+            banner?.show(from: rootViewController)
+        }
         return banner
     }
     
@@ -79,5 +82,5 @@ private extension BannerFormat {
 }
 
 extension CHBBanner: Bidon.AdViewContainer {
-    public var isAdaptive: Bool { false }
+    public var isAdaptive: Bool { true }
 }
