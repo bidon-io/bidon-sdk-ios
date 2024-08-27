@@ -93,6 +93,14 @@ extension MintegralDirectRewardedDemandProvider: MTGRewardAdLoadDelegate {
 extension MintegralDirectRewardedDemandProvider: MTGRewardAdShowDelegate {
     func onVideoAdShowSuccess(_ placementId: String?, unitId: String?) {
         delegate?.providerWillPresent(self)
+        
+        if let unitId = unitId, let placementId = placementId {
+            let ad = MintegralRewardedDemandAd(
+                id: unitId,
+                placement: placementId
+            )
+            revenueDelegate?.provider(self, didLogImpression: ad)
+        }
     }
     
     func onVideoAdShowFailed(_ placementId: String?, unitId: String?, withError error: Error) {
