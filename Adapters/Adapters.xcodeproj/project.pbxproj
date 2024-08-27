@@ -188,6 +188,10 @@
 		495CD33E2C77621100590AAD /* ChartboostInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD3372C77621100590AAD /* ChartboostInterstitialDemandProvider.swift */; };
 		495CD33F2C77621100590AAD /* ChartboostBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD3382C77621100590AAD /* ChartboostBaseDemandProvider.swift */; };
 		495CD3402C77621100590AAD /* ChartboostDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD3392C77621100590AAD /* ChartboostDemandSourceAdapter.swift */; };
+		495CD3482C776FC500590AAD /* MintegralDirectBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD3472C776FC500590AAD /* MintegralDirectBaseDemandProvider.swift */; };
+		495CD34A2C776FEA00590AAD /* MintegralDirectInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD3492C776FEA00590AAD /* MintegralDirectInterstitialDemandProvider.swift */; };
+		495CD34C2C77715900590AAD /* MintegralDirectRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD34B2C77715900590AAD /* MintegralDirectRewardedDemandProvider.swift */; };
+		495CD34E2C77892A00590AAD /* MintegralDirectAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CD34D2C77892A00590AAD /* MintegralDirectAdViewDemandProvider.swift */; };
 		495FB5172C637D090023E8A0 /* BidonAdapterMyTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 495FB5162C637D090023E8A0 /* BidonAdapterMyTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		495FB51E2C637D4E0023E8A0 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495FB51D2C637D4E0023E8A0 /* Bidon.framework */; };
 		495FB5222C637D610023E8A0 /* Pods_BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495FB5212C637D610023E8A0 /* Pods_BidonAdapterMyTarget.framework */; };
@@ -470,6 +474,10 @@
 		495CD3372C77621100590AAD /* ChartboostInterstitialDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartboostInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		495CD3382C77621100590AAD /* ChartboostBaseDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartboostBaseDemandProvider.swift; sourceTree = "<group>"; };
 		495CD3392C77621100590AAD /* ChartboostDemandSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartboostDemandSourceAdapter.swift; sourceTree = "<group>"; };
+		495CD3472C776FC500590AAD /* MintegralDirectBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralDirectBaseDemandProvider.swift; sourceTree = "<group>"; };
+		495CD3492C776FEA00590AAD /* MintegralDirectInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralDirectInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		495CD34B2C77715900590AAD /* MintegralDirectRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralDirectRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		495CD34D2C77892A00590AAD /* MintegralDirectAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MintegralDirectAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		495FB4CE2C6376D40023E8A0 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495FB5142C637D080023E8A0 /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495FB5162C637D090023E8A0 /* BidonAdapterMyTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterMyTarget.h; sourceTree = "<group>"; };
@@ -761,10 +769,8 @@
 		4215B8B62A559A0B00675ACC /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				4215B8B92A55A4B900675ACC /* MintegralBiddingBaseDemandProvider.swift */,
-				4215B8B72A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift */,
-				426827212A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift */,
-				426827232A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift */,
+				495CD3462C776FA900590AAD /* Direct */,
+				495CD3452C776FA500590AAD /* Bidding */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -1356,6 +1362,28 @@
 				495CD3382C77621100590AAD /* ChartboostBaseDemandProvider.swift */,
 			);
 			path = Providers;
+			sourceTree = "<group>";
+		};
+		495CD3452C776FA500590AAD /* Bidding */ = {
+			isa = PBXGroup;
+			children = (
+				4215B8B92A55A4B900675ACC /* MintegralBiddingBaseDemandProvider.swift */,
+				4215B8B72A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift */,
+				426827212A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift */,
+				426827232A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift */,
+			);
+			path = Bidding;
+			sourceTree = "<group>";
+		};
+		495CD3462C776FA900590AAD /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				495CD3472C776FC500590AAD /* MintegralDirectBaseDemandProvider.swift */,
+				495CD3492C776FEA00590AAD /* MintegralDirectInterstitialDemandProvider.swift */,
+				495CD34B2C77715900590AAD /* MintegralDirectRewardedDemandProvider.swift */,
+				495CD34D2C77892A00590AAD /* MintegralDirectAdViewDemandProvider.swift */,
+			);
+			path = Direct;
 			sourceTree = "<group>";
 		};
 		495FB5152C637D090023E8A0 /* BidonAdapterMyTarget */ = {
@@ -2864,11 +2892,15 @@
 			files = (
 				426827242A5D78A80084A48D /* MintegralBiddingAdViewDemandProvider.swift in Sources */,
 				4215B8B52A55986800675ACC /* MintegralDemandSourceAdapter.swift in Sources */,
+				495CD34A2C776FEA00590AAD /* MintegralDirectInterstitialDemandProvider.swift in Sources */,
 				426827222A5D74610084A48D /* MintegralBiddingRewardedDemandProvider.swift in Sources */,
 				42D3775F2AFAA038003DCCA2 /* MintegralBiddingToken.swift in Sources */,
 				42D377612AFAA227003DCCA2 /* MintegralBiddingPayload.swift in Sources */,
+				495CD34C2C77715900590AAD /* MintegralDirectRewardedDemandProvider.swift in Sources */,
 				4215B8BA2A55A4B900675ACC /* MintegralBiddingBaseDemandProvider.swift in Sources */,
 				4215B8B82A559A3400675ACC /* MintegralBiddingInterstitialDemandProvider.swift in Sources */,
+				495CD3482C776FC500590AAD /* MintegralDirectBaseDemandProvider.swift in Sources */,
+				495CD34E2C77892A00590AAD /* MintegralDirectAdViewDemandProvider.swift in Sources */,
 				42D3775D2AFA9FD9003DCCA2 /* MintegralAdUnitExtras.swift in Sources */,
 				42D3775B2AFA87F4003DCCA2 /* MintegralParameters.swift in Sources */,
 			);
