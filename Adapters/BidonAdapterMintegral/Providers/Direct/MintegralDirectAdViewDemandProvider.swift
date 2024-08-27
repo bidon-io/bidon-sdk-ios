@@ -29,16 +29,20 @@ final class MintegralDirectAdViewDemandProvider: MintegralDirectBaseDemandProvid
     override func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
         
-        adView = MTGBannerAdView(
-            bannerAdViewWith: adType,
-            placementId: adUnitExtras.placementId,
-            unitId: adUnitExtras.unitId,
-            rootViewController: self.rootViewController
-        )
-        
-        adView.autoRefreshTime = 0
-        adView.delegate = self
-        adView.loadBannerAd()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            adView = MTGBannerAdView(
+                bannerAdViewWith: adType,
+                placementId: adUnitExtras.placementId,
+                unitId: adUnitExtras.unitId,
+                rootViewController: self.rootViewController
+            )
+            
+            adView.autoRefreshTime = 0
+            adView.delegate = self
+            adView.loadBannerAd()
+        }
     }
 }
 
