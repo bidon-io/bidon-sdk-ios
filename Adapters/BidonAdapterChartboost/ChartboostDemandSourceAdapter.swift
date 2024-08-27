@@ -54,7 +54,7 @@ extension ChartboostDemandSourceAdapter: ParameterizedInitializableAdapter {
         } else {
             Chartboost.addDataUseConsent(CHBDataUseConsent.CCPA(CHBDataUseConsent.CCPA.Consent.optOutSale))
         }
-                
+                        
         Chartboost.start(
             withAppID: parameters.appId,
             appSignature: parameters.appSignature

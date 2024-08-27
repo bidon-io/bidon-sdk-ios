@@ -79,8 +79,7 @@ class ChartboostBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDema
     
     // MARK: - Ad Delegate (Rewarded)
     
-    #warning("CHECK")
     func didEarnReward(_ event: CHBRewardEvent) {
-        rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
+        rewardDelegate?.provider(self, didReceiveReward: RewardWrapper(label: "", amount: event.reward, wrapped: event))
     }
 }
