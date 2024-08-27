@@ -1,22 +1,15 @@
 //
-//  MintegralBiddingAdViewDemandProvider.swift
+//  MintegralDirectAdViewDemandProvider.swift
 //  BidonAdapterMintegral
 //
-//  Created by Bidon Team on 11.07.2023.
+//  Created by Евгения Григорович on 22/08/2024.
 //
 
 import Foundation
 import Bidon
-import MTGSDKBidding
 import MTGSDKBanner
 
-
-extension MTGBannerAdView: DemandAd {
-    public var id: String { unitId }
-}
-
-
-final class MintegralBiddingAdViewDemandProvider: MintegralBiddingBaseDemandProvider<MTGBannerAdView> {
+final class MintegralDirectAdViewDemandProvider: MintegralDirectBaseDemandProvider<MTGBannerAdView> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
     
@@ -33,11 +26,7 @@ final class MintegralBiddingAdViewDemandProvider: MintegralBiddingBaseDemandProv
     
     var adView: MTGBannerAdView!
     
-    override func load(
-        payload: MintegralBiddingResponse,
-        adUnitExtras: MintegralAdUnitExtras,
-        response: @escaping DemandProviderResponse
-    ) {
+    override func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
         
         adView = MTGBannerAdView(
@@ -49,12 +38,12 @@ final class MintegralBiddingAdViewDemandProvider: MintegralBiddingBaseDemandProv
         
         adView.autoRefreshTime = 0
         adView.delegate = self
-        adView.loadBannerAd(withBidToken: payload.payload)
+        adView.loadBannerAd()
     }
 }
 
 
-extension MintegralBiddingAdViewDemandProvider: AdViewDemandProvider {
+extension MintegralDirectAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: MTGBannerAdView) -> Bidon.AdViewContainer? {
         return ad
     }
@@ -63,7 +52,7 @@ extension MintegralBiddingAdViewDemandProvider: AdViewDemandProvider {
 }
 
 
-extension MintegralBiddingAdViewDemandProvider: MTGBannerAdViewDelegate {
+extension MintegralDirectAdViewDemandProvider: MTGBannerAdViewDelegate {
     func adViewLoadSuccess(_ adView: MTGBannerAdView!) {
         response?(.success(adView))
         response = nil
@@ -97,24 +86,5 @@ extension MintegralBiddingAdViewDemandProvider: MTGBannerAdViewDelegate {
     
     func adViewClosed(_ adView: MTGBannerAdView!) {
         delegate?.providerDidHide(self)
-    }
-}
-
-
-extension MTGBannerAdView: Bidon.AdViewContainer {
-    public var isAdaptive: Bool { true }
-}
-
-
-extension Bidon.BannerFormat {
-    var mtg: MTGBannerSizeType {
-        switch self {
-        case .banner:
-            return .standardBannerType320x50
-        case .mrec:
-            return .mediumRectangularBanner300x250
-        case .adaptive, .leaderboard:
-            return .smartBannerType
-        }
     }
 }

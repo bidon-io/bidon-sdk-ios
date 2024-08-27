@@ -13,10 +13,14 @@ import MTGSDK
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class MintegralDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "mintegral"
     
     public let demandId: String = MintegralDemandSourceAdapter.identifier
@@ -36,6 +40,18 @@ BiddingAdViewDemandSourceAdapter
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return MintegralBiddingAdViewDemandProvider(context: context)
+    }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return MintegralDirectInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return MintegralDirectRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
+        return MintegralDirectAdViewDemandProvider(context: context)
     }
 }
 

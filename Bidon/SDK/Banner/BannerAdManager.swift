@@ -212,6 +212,7 @@ final class BannerAdManager: NSObject {
             
             switch result {
             case .success(let bid):
+                adRevenueObserver.observe(bid)
                 let impression = AdViewImpression(
                     bid: bid.unwrapped(),
                     format: context.format

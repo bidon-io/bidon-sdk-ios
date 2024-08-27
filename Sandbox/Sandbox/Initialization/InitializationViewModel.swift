@@ -24,6 +24,7 @@ import BidonAdapterMetaAudienceNetwork
 import BidonAdapterInMobi
 import BidonAdapterAmazon
 import BidonAdapterMyTarget
+import BidonAdapterChartboost
 import BidonAdapterIronSource
 import BidonAdapterYandex
 
@@ -135,6 +136,7 @@ final class InitializationViewModel: ObservableObject, AdResponder {
 fileprivate extension Array where Element == Bidon.Adapter {
     static func `default`() -> [Element] {
         return [
+            ChartboostDemandSourceAdapter(),
             YandexDemandSourceAdapter(),
             IronSourceDemandSourceAdapter(),
             MyTargetDemandSourceAdapter(),

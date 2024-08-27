@@ -84,6 +84,10 @@ def my_target
   pod "myTrackerSDK", "<= 3.1.7"
 end
 
+def chartboost
+  pod 'ChartboostSDK', '9.7.0'
+end
+
 def ironsource
   pod "IronSourceSDK", "8.1.0"
 end
@@ -185,6 +189,11 @@ target 'BidonAdapterMyTarget' do
   my_target
 end
 
+target 'BidonAdapterChartboost' do
+  project 'Adapters/Adapters.xcodeproj'
+  chartboost
+end
+
 target 'BidonAdapterIronSource' do
   project 'Adapters/Adapters.xcodeproj'
   ironsource
@@ -241,6 +250,7 @@ target 'Sandbox' do
   amazon
   appodeal_mediation
   my_target
+  chartboost
   ironsource
   yandex
 end
