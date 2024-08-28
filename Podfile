@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK'
+  pod 'AppLovinSDK', "12.6.0"
 end
 
 def bidmachine 
@@ -27,7 +27,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 10.14.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.5.0'
 end
 
 def appsflyer
@@ -36,11 +36,11 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.2.2'
+  pod 'BigoADS', '~> 4.3.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.2.7'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.1'
 end
 
 def meta_ads
@@ -48,7 +48,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.10.0'
+  pod 'UnityAds', '~> 4.11.3'
 end
 
 def mintegral
@@ -76,7 +76,7 @@ def amazon
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.7.1'
+  pod 'InMobiSDK', '~> 10.7.2'
 end
 
 def my_target
