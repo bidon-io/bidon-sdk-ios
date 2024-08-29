@@ -2026,7 +2026,7 @@
 				49D69C9B2C6CB4ED007EF1F8 /* Sources */,
 				49D69C9C2C6CB4ED007EF1F8 /* Frameworks */,
 				49D69C9D2C6CB4ED007EF1F8 /* Resources */,
-				51184AA5A8E38190664C0794 /* [CP] Copy Pods Resources */,
+				0B54B655C421722BAA6DC6E8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2295,6 +2295,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		0B54B655C421722BAA6DC6E8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		10F2244DF770FA96A6FA95D2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2388,23 +2405,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		51184AA5A8E38190664C0794 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		58759AA8EAF8B271C916C466 /* [CP] Check Pods Manifest.lock */ = {

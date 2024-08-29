@@ -22,10 +22,10 @@ $targets = [
   "BidonAdapterVungle",
   "BidonAdapterInMobi",
   "BidonAdapterAmazon",
-  "BidonAdapterMyTarget",
   "BidonAdapterChartboost",
-  "BidonAdapterYandex",
-  "BidonAdapterIronSource"
+  #"BidonAdapterYandex",
+  "BidonAdapterIronSource",
+  "BidonAdapterMyTarget"
 ]
 
 # Defenitions ###

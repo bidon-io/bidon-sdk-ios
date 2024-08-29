@@ -12,8 +12,8 @@ import YandexMobileAds
 final class YandexRewardedDemandAd: DemandAd {
     public var id: String
 
-    init(rewarded: YandexMobileAds.RewardedAd) {
-        self.id = rewarded.adInfo?.adUnitId ?? String(rewarded.hash)
+    init(rewarded: YMARewardedAd) {
+        self.id = rewarded.adUnitID
     }
 }
 
@@ -22,14 +22,8 @@ final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewarde
     private var response: DemandProviderResponse?
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    private var rewardedAd: YandexMobileAds.RewardedAd?
+    private var rewardedAd: YMARewardedAd?
     
-    private lazy var rewardedAdLoader: RewardedAdLoader = {
-        let loader = RewardedAdLoader()
-        loader.delegate = self
-        return loader
-    }()
-
     override func load(
         pricefloor: Price,
         adUnitExtras: YandexAdUnitExtras,
@@ -37,8 +31,10 @@ final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewarde
     ) {
         self.response = response
         
-        let configuration = AdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
-        rewardedAdLoader.loadAd(with: configuration)
+        let request = YMAMutableAdRequest()
+        rewardedAd = YMARewardedAd(adUnitID: adUnitExtras.adUnitId)
+        rewardedAd?.delegate = self
+        rewardedAd?.load(with: request)
     }
 }
 
@@ -47,49 +43,44 @@ extension YandexRewardedDemandProvider: RewardedAdDemandProvider {
         ad: YandexRewardedDemandAd,
         from viewController: UIViewController
     ) {
-        self.rewardedAd?.show(from: viewController)
+        rewardedAd?.present(from: viewController)
     }
 }
 
-extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
-    func rewardedAdLoader(_ adLoader: RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
-        self.rewardedAd = rewardedAd
-        self.rewardedAd?.delegate = self
-        
+extension YandexRewardedDemandProvider: YMARewardedAdDelegate {
+    func rewardedAdDidLoad(_ rewardedAd: YMARewardedAd) {        
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         response?(.success(ad))
         response = nil
     }
-
-    func rewardedAdLoader(_ adLoader: RewardedAdLoader, didFailToLoadWithError error: AdRequestError) {
+    
+    func rewardedAdDidFail(toLoad rewardedAd: YMARewardedAd, error: Error) {
         response?(.failure(.noFill))
         response = nil
     }
-}
-
-extension YandexRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
-    func rewardedAdDidShow(_ rewardedAd: YandexMobileAds.RewardedAd) {
+    
+    func rewardedAdWillAppear(_ rewardedAd: YMARewardedAd) {
         delegate?.providerWillPresent(self)
     }
     
-    func rewardedAdDidDismiss(_ rewardedAd: YandexMobileAds.RewardedAd) {
+    func rewardedAdDidDisappear(_ rewardedAd: YMARewardedAd) {
         delegate?.providerDidHide(self)
     }
     
-    func rewardedAdDidClick(_ rewardedAd: YandexMobileAds.RewardedAd) {
+    func rewardedAdDidClick(_ rewardedAd: YMARewardedAd) {
         delegate?.providerDidClick(self)
     }
     
-    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didTrackImpressionWith impressionData: (ImpressionData)?) {
+    func rewardedAd(_ rewardedAd: YMARewardedAd, didTrackImpressionWith impressionData: YMAImpressionData?) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
     
-    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didReward reward: YandexMobileAds.Reward) {
-        rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
+    func rewardedAd(_ rewardedAd: YMARewardedAd, didReward reward: YMAReward) {
+        rewardDelegate?.provider(self, didReceiveReward: RewardWrapper(label: reward.type, amount: reward.amount, wrapped: reward))
     }
     
-    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didFailToShowWithError error: Error) {
+    func rewardedAdDidFail(toPresent rewardedAd: YMARewardedAd, error: Error) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         delegate?.provider(
             self,

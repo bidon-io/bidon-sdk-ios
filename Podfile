@@ -93,7 +93,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.1.1'
+  pod 'YandexMobileAds', '5.2.1'
 end
 
 
