@@ -23,7 +23,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
     
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
-    @Published var pricefloor: Double = 0.1
+    @Published var pricefloor: Double = 0.0
+    @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
     
     private var cancellables = Set<AnyCancellable>()
@@ -51,7 +52,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         do {
             try await adService.load(
                 pricefloor: pricefloor,
-                adType: adType
+                adType: adType,
+                auctionKey: auctionKey
             )
             update(.ready)
         } catch {

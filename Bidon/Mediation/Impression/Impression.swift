@@ -14,12 +14,12 @@ protocol Impression {
     var ad: DemandAd { get }
     var adType: AdType { get }
     var price: Price { get }
-    var demandType: DemandType { get }
+    var bidType: BidType { get }
     var adUnitUid: String { get }
     var adUnitLabel: String { get }
     var adUnitPricefloor: Price { get }
-    var roundPricefloor: Price { get }
-    var roundConfiguration: AuctionRoundConfiguration { get }
+    var adUnitExtras: [String: BidonDecodable]? { get }
+    var auctionPricefloor: Price { get }
     var auctionConfiguration: AuctionConfiguration { get }
     
     var showTrackedAt: TimeInterval { get set }

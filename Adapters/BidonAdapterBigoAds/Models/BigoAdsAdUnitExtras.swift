@@ -10,3 +10,5 @@ import Foundation
 struct BigoAdsAdUnitExtras: Codable {
     var slotId: String
 }
+
+struct BigoAdsBiddingTokenExtras: Codable { }

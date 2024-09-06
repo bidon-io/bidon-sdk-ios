@@ -35,14 +35,6 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     }
     
     @discardableResult
-    public func withRounds(
-        _ rounds: [AuctionRound]
-    ) -> Self {
-        self.rounds = rounds
-        return self
-    }
-    
-    @discardableResult
     public func withAdUnitProvider(
         _ adUnitProvider: AdUnitProvider
     ) -> Self {

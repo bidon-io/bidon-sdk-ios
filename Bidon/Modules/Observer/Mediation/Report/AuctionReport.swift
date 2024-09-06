@@ -18,6 +18,8 @@ protocol AuctionDemandReport {
     var adUnit: AdUnitType? { get } 
     var startTimestamp: UInt? { get }
     var finishTimestamp: UInt? { get }
+    var tokenStartTimestamp: UInt? { get }
+    var tokenFinishTimestamp: UInt? { get }
 }
 
 
@@ -35,7 +37,6 @@ protocol AuctionRoundReport {
     associatedtype AuctionDemandReportType: AuctionDemandReport where AuctionDemandReportType.BidType == BidType
     associatedtype AuctionRoundBiddingReportType: AuctionRoundBiddingReport
     
-    var configuration: AuctionRoundConfiguration { get }
     var pricefloor: Price { get }
     var winner: BidType? { get }
     var demands: [AuctionDemandReportType] { get }
@@ -49,17 +50,14 @@ protocol AuctionResultReport {
     var status: AuctionResultStatus { get }
     var startTimestamp: UInt { get }
     var finishTimestamp: UInt { get }
-    var winnerRoundConfiguration: AuctionRoundConfiguration? { get }
     var winner: BidType? { get }
 }
 
 
 protocol AuctionReport {
     associatedtype AuctionResultReportType: AuctionResultReport
-    associatedtype AuctionRoundReportType: AuctionRoundReport where AuctionRoundReportType.BidType == AuctionResultReportType.BidType
         
     var configuration: AuctionConfiguration { get }
-    
-    var rounds: [AuctionRoundReportType] { get }
+    var round: AuctionRoundReportModel { get }
     var result: AuctionResultReportType { get }
 }

@@ -42,38 +42,26 @@ struct Auction {
 struct AuctionConfiguration {
     var auctionId: String
     var auctionConfigurationUid: String
-    var isExternalNotificationsEnabled: Bool
+    var auctionConfigurationId: Int
+    var adUnits: [AdUnitModel]
+    var segment: SegmentResponseModel?
+    var token: String?
+    var pricefloor: Price
+    var auctionTimeout: Float
+    var tokens: [BiddingDemandToken]
 }
 
 
 extension AuctionConfiguration {
-    init(auction: AuctionRequest.ResponseBody) {
+    init(auction: AuctionRequest.ResponseBody, tokens: [BiddingDemandToken]) {
         self.auctionId = auction.auctionId
-        self.isExternalNotificationsEnabled = auction.externalWinNotifications
         self.auctionConfigurationUid = auction.auctionConfigurationUid
+        self.auctionConfigurationId = auction.auctionConfigurationId
+        self.adUnits = auction.adUnits
+        self.segment = auction.segment
+        self.token = auction.token
+        self.pricefloor = auction.pricefloor
+        self.auctionTimeout = auction.auctionTimeout
+        self.tokens = tokens
     }
 }
-
-
-struct AuctionRoundConfiguration {
-    var roundId: String
-    var roundIndex: Int
-    var timeout: TimeInterval
-}
-
-
-extension AuctionRoundConfiguration: Equatable {
-    init(round: AuctionRound, idx: Int) {
-        self.roundId = round.id
-        self.timeout = round.timeout
-        self.roundIndex = idx
-    }
-    
-    static func == (
-        lhs: AuctionRoundConfiguration,
-        rhs: AuctionRoundConfiguration
-    ) -> Bool {
-        return lhs.roundId == rhs.roundId
-    }
-}
-

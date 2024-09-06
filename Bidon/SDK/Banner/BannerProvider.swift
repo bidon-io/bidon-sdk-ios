@@ -49,12 +49,14 @@ public final class BannerProvider:  NSObject, AdObject {
     }
     
     private lazy var bannerView: BannerView = {
-        let bannerView = BannerView(frame: .zero)
+        let bannerView = BannerView(frame: .zero, auctionKey: auctionKey)
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         bannerView.delegate = self
         
         return bannerView
     }()
+    
+    private let auctionKey: String?
     
     private lazy var constraintsHashTable = NSHashTable<NSLayoutConstraint>(options: .weakMemory)
     
@@ -62,6 +64,12 @@ public final class BannerProvider:  NSObject, AdObject {
         format: .banner,
         position: .fixed(.horizontalBottom)
     )
+        
+    public init(auctionKey: String?) {
+        self.auctionKey = auctionKey
+        
+        super.init()
+    }
     
     @objc public func notifyWin() {
         bannerView.notifyWin()
@@ -102,12 +110,14 @@ public final class BannerProvider:  NSObject, AdObject {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero
+        with pricefloor: Price = .zero,
+        auctionKey: String?
     ) {
         if bannerView.isReady, let ad = bannerView.ad {
-            delegate?.adObject(self, didLoadAd: ad)
+            #warning("FIX IT")
+            delegate?.adObject(self, didLoadAd: ad, auctionInfo: DefaultAuctionInfo())
         } else {
-            bannerView.loadAd(with: pricefloor)
+            bannerView.loadAd(with: pricefloor, auctionKey: auctionKey)
         }
     }
     
@@ -179,18 +189,20 @@ extension BannerProvider: AdViewDelegate {
     
     public func adObject(
         _ adObject: AdObject,
-        didLoadAd ad: Ad
+        didLoadAd ad: Ad,
+        auctionInfo: AuctionInfo
     ) {
-        delegate?.adObject(self, didLoadAd: ad)
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     
     public func adObject(
         _ adObject: AdObject,
-        didFailToLoadAd error: Error
+        didFailToLoadAd error: Error,
+        auctionInfo: AuctionInfo
     ) {
         delegate?.adObject(
             self,
-            didFailToLoadAd: error
+            didFailToLoadAd: error, auctionInfo: auctionInfo
         )
     }
     

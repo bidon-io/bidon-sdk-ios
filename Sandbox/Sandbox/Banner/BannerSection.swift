@@ -23,6 +23,8 @@ struct BannerAdSection: View {
                     step: 0.1
                 )
                 
+                TextField("Auction Key", text: $vm.auctionKey)
+                
                 Button(action: {
                     withAnimation {
                         vm.isLoading.toggle()

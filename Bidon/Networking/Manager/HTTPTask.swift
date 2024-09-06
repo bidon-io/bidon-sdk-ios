@@ -33,13 +33,13 @@ struct HTTPTask {
         case custom(String)
     }
     
-    var baseURL: String
-    var route: Route
-    var body: Data?
-    var method: HTTPMethod
-    var timeout: TimeInterval
-    var headers: HTTPHeaders
-    var completion: (Result<Data, HTTPError>) -> ()
+    let baseURL: String
+    let route: Route
+    let body: Data?
+    let method: HTTPMethod
+    let timeout: TimeInterval
+    let headers: HTTPHeaders
+    let completion: (Result<Data, HTTPError>) -> ()
     
     func resume() {
         guard let url = URL(string: baseURL).map({ route.url($0) }) else {

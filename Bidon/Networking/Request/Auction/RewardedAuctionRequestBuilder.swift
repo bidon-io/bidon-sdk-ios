@@ -18,10 +18,12 @@ final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdT
     }
     
     override var adObject: AuctionRequestAdObject {
-        AuctionRequestAdObject(
+        return AuctionRequestAdObject(
             auctionId: auctionId,
+            auctionKey: auctionKey,
             pricefloor: pricefloor,
-            rewarded: RewardedAdTypeContextModel(context)
+            rewarded: RewardedAdTypeContextModel(context),
+            demands: demands
         )
     }
 }

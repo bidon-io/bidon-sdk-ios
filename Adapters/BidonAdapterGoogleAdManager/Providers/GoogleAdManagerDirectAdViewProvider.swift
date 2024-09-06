@@ -35,22 +35,25 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
     }
     
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        let banner = GAMBannerView(adSize: adSize)
-        
-        banner.delegate = self
-        banner.adUnitID = adUnitId
-        banner.isAutoloadEnabled = false
-        banner.rootViewController = rootViewController
-        
-        setupAdRevenueHandler(adObject: banner)
-        
-        banner.translatesAutoresizingMaskIntoConstraints = false
-        
-        container.layout(banner)
-        
-        banner.load(request)
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let banner = GAMBannerView(adSize: adSize)
+            
+            banner.delegate = self
+            banner.adUnitID = adUnitId
+            banner.isAutoloadEnabled = false
+            banner.rootViewController = self.rootViewController
+            
+            self.setupAdRevenueHandler(adObject: banner)
+            
+            banner.translatesAutoresizingMaskIntoConstraints = false
+            
+            self.container.layout(banner)
+            
+            banner.load(request)
+            
+            self.banner = banner
+        }
     }
 }
 

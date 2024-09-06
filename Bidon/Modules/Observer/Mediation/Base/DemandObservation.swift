@@ -17,10 +17,14 @@ struct DemandObservation {
         var bid: DummyBid?
         var startTimestamp: TimeInterval?
         var finishTimestamp: TimeInterval?
+        var tokenStartTimestamp: UInt?
+        var tokenFinishTimestamp: UInt?
     }
     
     private(set) var bidRequestTimestamp: TimeInterval?
     private(set) var bidResponseTimestamp: TimeInterval?
+    
+    private(set) var tokens: [BiddingDemandToken]
 
     private(set) var entries: [Entry] = []
     
@@ -66,6 +70,8 @@ struct DemandObservation {
                     entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                     entry.price = bid.price
                     entry.bid = DummyBid(bid)
+                    entry.tokenStartTimestamp = tokenStartTs(for: bid.adUnit)
+                    entry.tokenFinishTimestamp = tokenFinishTs(for: bid.adUnit)
                 }
                 return entry
             }
@@ -75,7 +81,9 @@ struct DemandObservation {
                 adUnit: DummyAdUnit(bid.adUnit),
                 bid: DummyBid(bid),
                 startTimestamp: Date.timestamp(.wall, units: .milliseconds),
-                finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokenStartTs(for: bid.adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: bid.adUnit)
             )
             entries.append(entry)
         }
@@ -127,6 +135,35 @@ struct DemandObservation {
         }
     }
     
+    mutating func didFailPricefloor(
+        _ adUnit: AnyAdUnit
+    ) {
+        if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if adUnit.bidType == .bidding {
+                    entry.status = .lose
+                } else {
+                    entry.status = .error(.belowPricefloor)
+                }
+                entry.tokenStartTimestamp = tokenStartTs(for: adUnit)
+                entry.tokenFinishTimestamp = tokenFinishTs(for: adUnit)
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: adUnit.demandId,
+                status: adUnit.bidType == .bidding ? .lose : .error(.belowPricefloor),
+                adUnit: DummyAdUnit(adUnit),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokenStartTs(for: adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: adUnit)
+            )
+            entries.append(entry)
+        }
+    }
+    
     mutating func cancel() {
         entries = entries.map { entry in
             var entry = entry
@@ -145,5 +182,13 @@ struct DemandObservation {
             mutation(&entry)
             return entry
         }
+    }
+    
+    private func tokenStartTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenStartTs
+    }
+    
+    private func tokenFinishTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenFinishTs
     }
 }

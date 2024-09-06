@@ -34,7 +34,7 @@ struct TestAdUnit: Codable, AdUnit {
     
     var uid: String
     var demandId: String
-    var demandType: DemandType
+    var demandType: BidType
     var label: String
     var pricefloor: Price
     var extras: TestAdUnitExtras
@@ -49,7 +49,7 @@ extension TestAdUnit {
     init(
         uid: String = UUID().uuidString,
         demandId: String,
-        demandType: DemandType,
+        demandType: BidType,
         label: String = "Test Ad Unit",
         pricefloor: Price,
         extras: String

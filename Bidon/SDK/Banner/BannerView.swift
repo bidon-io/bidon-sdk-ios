@@ -17,6 +17,8 @@ public final class BannerView: UIView, AdView {
     
     @objc public let placement: String
     
+    @objc public let auctionKey: String?
+    
     @objc public var format: BannerFormat = .banner
     
     @objc public weak var rootViewController: UIViewController?
@@ -85,13 +87,15 @@ public final class BannerView: UIView, AdView {
         manager.delegate = self
         return manager
     }()
-    
+        
     @objc
     public init(
         frame: CGRect,
+        auctionKey: String?,
         placement: String = "default"
     ) {
         self.placement = placement
+        self.auctionKey = auctionKey
         super.init(frame: frame)
     }
     
@@ -107,11 +111,13 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero
+        with pricefloor: Price = .zero,
+        auctionKey: String? = nil
     ) {
         adManager.loadAd(
             pricefloor: pricefloor,
-            viewContext: viewContext
+            viewContext: viewContext,
+            auctionKey: auctionKey ?? self.auctionKey
         )
     }
     
@@ -143,7 +149,9 @@ public final class BannerView: UIView, AdView {
         guard
             let impression = adManager.impression,
             let adView = impression.bid.provider.container(opaque: impression.bid.ad)
-        else { return }
+        else {
+            return
+        }
         
         Logger.verbose("Banner \(self) will refresh ad view")
         
@@ -162,12 +170,12 @@ public final class BannerView: UIView, AdView {
 
 
 extension BannerView: BannerAdManagerDelegate {
-    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror)
+    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad) {
-        delegate?.adObject(self, didLoadAd: ad)
+    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
         presentIfNeeded()
     }
 }

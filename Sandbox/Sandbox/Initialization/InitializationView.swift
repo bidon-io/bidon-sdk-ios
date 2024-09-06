@@ -28,6 +28,26 @@ struct InitializationView: View {
                 VStack {
                     List {
                         Section(
+                            header: HStack {
+                                Text("Demand Source Adapters")
+                                Spacer()
+                                Button(action: vm.registerDefaultAdapters) {
+                                    Text("Register all")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 10, weight: .light))
+                                        .padding(.vertical, 2)
+                                        .padding(.horizontal, 8)
+                                        .background(
+                                            Capsule()
+                                                .fill(Color.accentColor)
+                                        )
+                                }
+                            }
+                        ) {
+                            AdaptersView(adapters: $vm.adapters)
+                        }
+                        
+                        Section(
                             header: Text("Mediation"),
                             footer: Text("Change of mediation will reset configuration")
                         ) {
@@ -54,25 +74,6 @@ struct InitializationView: View {
                             }
                         }
                         
-                        Section(
-                            header: HStack {
-                                Text("Demand Source Adapters")
-                                Spacer()
-                                Button(action: vm.registerDefaultAdapters) {
-                                    Text("Register all")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 10, weight: .light))
-                                        .padding(.vertical, 2)
-                                        .padding(.horizontal, 8)
-                                        .background(
-                                            Capsule()
-                                                .fill(Color.accentColor)
-                                        )
-                                }
-                            }
-                        ) {
-                            AdaptersView(adapters: $vm.adapters)
-                        }
                     }
                     .padding(.bottom, 200)
                     .disabled(!vm.initializationState.isIdle)

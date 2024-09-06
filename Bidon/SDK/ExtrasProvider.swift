@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 @objc(BDNExtrasProvider)
 public protocol ExtrasProvider {
     var extras: [String: AnyHashable] { get }

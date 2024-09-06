@@ -1,4 +1,4 @@
-platform :ios, '12.4'
+platform :ios, '13.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://github.com/appodeal/CocoaPods.git'
@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK'
+  pod 'AppLovinSDK', "12.6.0"
 end
 
 def bidmachine 
@@ -27,7 +27,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 10.14.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.5.0'
 end
 
 def appsflyer
@@ -36,19 +36,19 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.2.2'
+  pod 'BigoADS', '~> 4.3.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.2.7'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.1'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '~> 6.15.0'
+  pod 'FBAudienceNetwork', '6.15.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.10.0'
+  pod 'UnityAds', '~> 4.11.3'
 end
 
 def mintegral
@@ -76,8 +76,26 @@ def amazon
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.7.1'
+  pod 'InMobiSDK', '~> 10.7.2'
 end
+
+def my_target
+  pod "myTargetSDK", "~> 5.20.1"
+  pod "myTrackerSDK", "<= 3.1.7"
+end
+
+def chartboost
+  pod 'ChartboostSDK', '9.7.0'
+end
+
+def ironsource
+  pod "IronSourceSDK", "8.1.0"
+end
+
+def yandex
+  pod 'YandexMobileAds', '5.2.1'
+end
+
 
 def appodeal_mediation
    pod 'Appodeal', '~> 3.3.0'
@@ -166,6 +184,26 @@ target 'BidonAdapterAmazon' do
   amazon
 end
 
+target 'BidonAdapterMyTarget' do
+  project 'Adapters/Adapters.xcodeproj'
+  my_target
+end
+
+target 'BidonAdapterChartboost' do
+  project 'Adapters/Adapters.xcodeproj'
+  chartboost
+end
+
+target 'BidonAdapterIronSource' do
+  project 'Adapters/Adapters.xcodeproj'
+  ironsource
+end
+
+target 'BidonAdapterYandex' do
+  project 'Adapters/Adapters.xcodeproj'
+  yandex
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -211,12 +249,16 @@ target 'Sandbox' do
   inmobi
   amazon
   appodeal_mediation
+  my_target
+  chartboost
+  ironsource
+  yandex
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
       xcconfig_path = config.base_configuration_reference.real_path
       xcconfig = File.read(xcconfig_path)
@@ -226,7 +268,7 @@ post_install do |installer|
 
     installer.pods_project.build_configurations.each do |config|
       config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '13.0'
     end
   end
 end

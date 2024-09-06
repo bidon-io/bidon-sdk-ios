@@ -9,7 +9,6 @@ import Foundation
 import DTBiOSSDK
 import Bidon
 
-
 struct AmazonAdUnitExtras: Codable {
     enum Format: String, Codable {
         case interstitial = "INTERSTITIAL"
@@ -21,6 +20,7 @@ struct AmazonAdUnitExtras: Codable {
     
     var slotUuid: String
     var format: Format
+    var isVideo: Bool
     
     func adSize(_ format: BannerFormat? = nil) -> DTBAdSize? {
         switch (self.format, format) {

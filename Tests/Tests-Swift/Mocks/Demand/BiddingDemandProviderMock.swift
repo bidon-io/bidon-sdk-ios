@@ -28,7 +28,7 @@ where AdUnitExtras: Decodable & Equatable, BiddingToken: Encodable & Equatable, 
     var _collectBiddingToken: (([AdUnitExtras], @escaping (Result<BiddingToken, MediationError>) -> ()) -> ())?
     
     func collectBiddingToken(
-        adUnitExtras: [AdUnitExtras],
+        biddingTokenExtras: [AdUnitExtras],
         response: @escaping (Result<BiddingToken, MediationError>) -> ()
     ) {
         invokedCollectBiddingToken = true

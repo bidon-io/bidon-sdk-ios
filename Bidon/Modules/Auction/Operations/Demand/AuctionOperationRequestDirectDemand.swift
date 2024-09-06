@@ -15,23 +15,20 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     
     let observer: AnyAuctionObserver
     let adapters: [AdapterType]
-    let demands: [String]
-    let adUnitProvider: AdUnitProvider
-    let roundConfiguration: AuctionRoundConfiguration
+    let demand: String
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
+    let adUnit: AdUnitModel
     
-    private(set) var bids: [BidType] = []
-    private var activeAdUnits = Set<AdUnitModel>()
-   
+    private(set) var bid: BidType?
+
     init(builder: BuilderType) {
         self.adapters = builder.adapters
-        self.demands = builder.demands
+        self.demand = builder.demand
         self.observer = builder.observer
         self.context = builder.context
-        self.roundConfiguration = builder.roundConfiguration
         self.auctionConfiguration = builder.auctionConfiguration
-        self.adUnitProvider = builder.adUnitProvider
+        self.adUnit = builder.adUnit
         
         super.init()
     }
@@ -39,84 +36,61 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     override func main() {
         super.main()
         
-        let group = DispatchGroup()
-        for demandId in demands {
-            guard
-                let adapter = adapters.first(where: { $0.demandId == demandId }),
-                let provider = adapter.provider as? any GenericDirectDemandProvider
-            else {
-                let event = DirectDemandErrorAuctionEvent(
-                    configuration: roundConfiguration,
-                    demandId: demandId,
-                    error: .unknownAdapter
-                )
-                observer.log(event)
-                
-                continue
-            }
-            
-            guard let adUnit = adUnitProvider.directAdUnit(for: demandId, pricefloor: pricefloor) else {
-                let event = DirectDemandErrorAuctionEvent(
-                    configuration: roundConfiguration,
-                    demandId: demandId,
-                    error: .noAppropriateAdUnitId
-                )
-                observer.log(event)
-                
-                continue
-            }
-            
-            group.enter()
-            
-            let event = DirectDemandWillLoadAuctionEvent(
-                configuration: roundConfiguration,
-                adUnit: adUnit
+        guard isExecuting else { return }
+        
+        guard
+            let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericDirectDemandProvider }),
+            let provider = adapter.provider as? any GenericDirectDemandProvider
+        else {
+            let event = DirectDemandErrorAuctionEvent(
+                demandId: demand,
+                error: .unknownAdapter
             )
             observer.log(event)
             
-            activeAdUnits.insert(adUnit)
-            
-            provider.load(
-                pricefloor: pricefloor,
-                adUnitExtrasDecoder: adUnit.extras
-            ) { [weak self] result in
-                guard let self = self else { return }
-                defer { group.leave() }
-                defer { self.activeAdUnits.remove(adUnit) }
-                
-                switch result {
-                case .failure(let error):
-                    let event = DirectDemandLoadingErrorAucitonEvent(
-                        configuration: self.roundConfiguration,
-                        adUnit: adUnit,
-                        error: error
-                    )
-                    self.observer.log(event)
-                case .success(let ad):
-                    let bid = BidType(
-                        id: UUID().uuidString,
-                        impressionId: UUID().uuidString,
-                        adType: self.context.adType,
-                        adUnit: adUnit,
-                        price: ad.price ?? adUnit.pricefloor,
-                        ad: ad,
-                        provider: adapter.provider,
-                        roundPricefloor: self.pricefloor,
-                        roundConfiguration: self.roundConfiguration,
-                        auctionConfiguration: self.auctionConfiguration
-                    )
-                    
-                    let event = DirectDemandDidLoadAuctionEvent(bid: bid)
-                    self.observer.log(event)
-                    
-                    self.bids.append(bid)
-                }
-            }
+            finish()
+            return
         }
         
-        group.notify(queue: .main) { [weak self] in
-            guard let self = self, self.isExecuting else { return }
-            self.finish()
+        let event = DirectDemandWillLoadAuctionEvent(
+            adUnit: adUnit
+        )
+        observer.log(event)
+                
+        provider.load(
+            pricefloor: auctionConfiguration.pricefloor,
+            adUnitExtrasDecoder: adUnit.extras
+        ) { [weak self] result in
+            guard let self = self else { return }
+            defer {
+                self.finish()
+            }
+            
+            switch result {
+            case .success(let ad):
+                let bid = BidType(
+                    id: UUID().uuidString,
+                    impressionId: UUID().uuidString,
+                    adType: self.context.adType,
+                    adUnit: adUnit,
+                    price: ad.price ?? adUnit.pricefloor,
+                    ad: ad,
+                    provider: adapter.provider,
+                    roundPricefloor: self.auctionConfiguration.pricefloor,
+                    auctionConfiguration: self.auctionConfiguration
+                )
+                
+                self.bid = bid
+                
+                let event = DirectDemandDidLoadAuctionEvent(bid: bid)
+                self.observer.log(event)
+            case .failure(let error):
+                let event = DirectDemandLoadingErrorAucitonEvent(
+                    adUnit: adUnit,
+                    error: error
+                )
+                self.observer.log(event)
+            }
         }
     }
 }
@@ -126,16 +100,13 @@ extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandl
     func timeoutReached() {
         guard isExecuting else { return }
 
-        activeAdUnits.map { adUnit in
+        observer.log(
             DirectDemandLoadingErrorAucitonEvent(
-                configuration: roundConfiguration,
                 adUnit: adUnit,
                 error: .fillTimeoutReached
             )
-        }.forEach(observer.log)
+        )
         
-        activeAdUnits.removeAll()
-
         finish()
     }
 }

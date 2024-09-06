@@ -12,7 +12,6 @@ import Foundation
 struct BannerAdTypeContext: AdTypeContext {
     typealias DemandProviderType = AnyAdViewDemandProvider
     typealias AuctionRequestBuilderType = AdViewAuctionRequestBuilder
-    typealias BidRequestBuilderType = AdViewBidRequestBuilder
     typealias StatisticRequestBuilderType = AdViewStatisticsRequestBuilder
     typealias ImpressionRequestBuilderType = AdViewImpressionRequestBuilder
     typealias NotificationRequestBuilderType = AdViewNotificationRequestBuilder
@@ -23,13 +22,6 @@ struct BannerAdTypeContext: AdTypeContext {
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
-            builder.withAdTypeContext(self)
-            build(builder)
-        }
-    }
-
-    func bidRequest(build: (BidRequestBuilderType) -> ()) -> BidRequest {
-        return BidRequest { (builder: BidRequestBuilderType) in
             builder.withAdTypeContext(self)
             build(builder)
         }
@@ -54,6 +46,16 @@ struct BannerAdTypeContext: AdTypeContext {
             builder.withAdTypeContext(self)
             build(builder)
         }
+    }
+    
+    func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        fatalError("Banner Ad Type context does not has fullscreen adapters")
+    }
+    
+    func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        let fetcher = AdViewAdaptersFetcher()
+        fetcher.withViewContext(viewContext)
+        return fetcher.adapters()
     }
 }
 

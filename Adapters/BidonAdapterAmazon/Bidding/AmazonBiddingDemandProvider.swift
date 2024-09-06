@@ -20,16 +20,12 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Biddin
    
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-
-    private var handler: AmazonBiddingHandler?
-        
+    
     func collectBiddingToken(
-        adUnitExtras: [AmazonAdUnitExtras],
-        response: @escaping (Result<AmazonBiddingToken, MediationError>) -> ()
+        biddingTokenExtras: AmazonBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        let adSizes = adUnitExtras.compactMap(adSize)
-        handler = AmazonBiddingHandler(adSizes: adSizes)
-        handler?.fetch(response: response)
+        fatalError("AmazonBiddingDemandProvider does not implement collectBiddingToken")
     }
     
     func load(
@@ -37,13 +33,7 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Biddin
         adUnitExtras: AmazonAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid)
-        else {
-            response(.failure(.noAppropriateAdUnitId))
-            return
-        }
-        
-        fill(adResponse, response: response)
+        fatalError("AmazonBiddingDemandProvider does not implement method load")
     }
     
     final func notify(ad: Dispatcher, event: DemandProviderEvent) {}

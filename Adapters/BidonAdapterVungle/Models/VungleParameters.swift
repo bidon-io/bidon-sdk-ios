@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 public struct VungleParameters: Codable {
     var appId: String
 }

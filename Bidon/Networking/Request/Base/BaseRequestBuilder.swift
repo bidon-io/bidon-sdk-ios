@@ -15,16 +15,16 @@ class BaseRequestBuilder {
     private var ext: [String: Any]?
     private var environmentRepository: EnvironmentRepository!
     
+    var device: DeviceModel {
+        let manager = environmentRepository.environment(DeviceManager.self)
+        return DeviceModel(manager, geo: geo)
+    }
+    
     private var geo: GeoModel? {
         let manager = environmentRepository.environment(GeoManager.self)
         guard manager.isAvailable else { return nil }
         
         return GeoModel(manager)
-    }
-    
-    var device: DeviceModel {
-        let manager = environmentRepository.environment(DeviceManager.self)
-        return DeviceModel(manager, geo: geo)
     }
     
     var session: SessionModel {

@@ -14,12 +14,15 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     private typealias Manager = BaseFullscreenAdManager<
         RewardedAdTypeContext,
         RewardedConcurrentAuctionControllerBuilder,
-        RewardedImpressionController
+        RewardedImpressionController,
+        RewardedAdaptersFetcher
     >
     
     @objc public weak var delegate: RewardedAdDelegate?
     
     @objc public let placement: String
+    
+    @objc public let auctionKey: String?
     
     @objc public var isReady: Bool { return manager.isReady }
 
@@ -35,9 +38,11 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     )
     
     @objc public init(
+        auctionKey: String? = nil,
         placement: String = "default"
     ) {
         self.placement = placement
+        self.auctionKey = auctionKey
         super.init()
     }
     
@@ -51,7 +56,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        manager.loadAd(pricefloor: pricefloor)
+        manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
@@ -77,12 +82,12 @@ public final class RewardedAd: NSObject, RewardedAdObject {
 
 
 extension RewardedAd: FullscreenAdManagerDelegate {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror)
+    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad) {
-        delegate?.adObject(self, didLoadAd: ad)
+    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {

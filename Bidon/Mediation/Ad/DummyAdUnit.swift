@@ -13,10 +13,11 @@ struct DummyAdUnit: AdUnit {
     
     var uid: String
     var demandId: String
-    var demandType: DemandType
+    var bidType: BidType
     var label: String
     var pricefloor: Price
     var extras: ExtrasType
+    var extrasDictionary: [String: BidonDecodable]?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
@@ -29,19 +30,21 @@ struct DummyAdUnit: AdUnit {
     init<T: AdUnit>(_ adUnit: T) {
         self.uid = adUnit.uid
         self.demandId = adUnit.demandId
-        self.demandType = adUnit.demandType
+        self.bidType = adUnit.bidType
         self.label = adUnit.label
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
+        self.extrasDictionary = adUnit.extrasDictionary
     }
     
     init(_ adUnit: AnyAdUnit) {
         self.uid = adUnit.uid
         self.demandId = adUnit.demandId
-        self.demandType = adUnit.demandType
+        self.bidType = adUnit.bidType
         self.label = adUnit.label
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
+        self.extrasDictionary = adUnit.extrasDictionary
     }
 }
 

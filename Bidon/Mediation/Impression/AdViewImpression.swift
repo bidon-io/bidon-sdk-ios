@@ -14,13 +14,13 @@ struct AdViewImpression: Impression {
     var ad: DemandAd { bid.ad }
     var adType: AdType { bid.adType }
     var price: Price { bid.price }
-    var roundPricefloor: Price { bid.roundPricefloor } 
-    var demandType: DemandType { bid.adUnit.demandType }
+    var auctionPricefloor: Price { bid.auctionConfiguration.pricefloor }
+    var bidType: BidType { bid.adUnit.bidType }
     var adUnitUid: String { bid.adUnit.uid }
     var adUnitLabel: String { bid.adUnit.label }
     var adUnitPricefloor: Price { bid.adUnit.pricefloor }
-    var roundConfiguration: AuctionRoundConfiguration { bid.roundConfiguration }
     var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
+    var adUnitExtras: [String: BidonDecodable]? { bid.adUnit.extrasDictionary }
     
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
