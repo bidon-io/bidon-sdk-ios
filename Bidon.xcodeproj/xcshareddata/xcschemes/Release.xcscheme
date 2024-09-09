@@ -244,6 +244,20 @@
                ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49D69C9E2C6CB4ED007EF1F8"
+               BuildableName = "BidonAdapterYandex.framework"
+               BlueprintName = "BidonAdapterYandex"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
