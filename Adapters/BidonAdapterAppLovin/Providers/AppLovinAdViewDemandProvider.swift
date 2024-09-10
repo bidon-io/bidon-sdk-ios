@@ -87,7 +87,7 @@ extension AppLovinAdViewDemandProvider: AdViewDemandProvider {
 
 extension AppLovinAdViewDemandProvider: ALAdViewEventDelegate {
     func ad(_ ad: ALAd, didFailToDisplayIn adView: ALAdView, withError code: ALAdViewDisplayErrorCode) {
-        response?(.failure(.noFill))
+        response?(.failure(.unscpecifiedException("Code: \(code)")))
         response = nil
     }
     

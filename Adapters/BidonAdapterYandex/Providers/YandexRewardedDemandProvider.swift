@@ -55,7 +55,7 @@ extension YandexRewardedDemandProvider: YMARewardedAdDelegate {
     }
     
     func rewardedAdDidFail(toLoad rewardedAd: YMARewardedAd, error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

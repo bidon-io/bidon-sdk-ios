@@ -63,7 +63,7 @@ extension MetaAudienceNetworkBiddingInterstitialDemandProvider: FBInterstitialAd
     }
     
     func interstitialAd(_ interstitialAd: FBInterstitialAd, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

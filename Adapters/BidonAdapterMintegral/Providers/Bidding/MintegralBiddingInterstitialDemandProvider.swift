@@ -57,7 +57,7 @@ extension MintegralBiddingInterstitialDemandProvider: MTGNewInterstitialBidAdDel
     }
     
     func newInterstitialBidAdLoadFail(_ error: Error, adManager: MTGNewInterstitialBidAdManager) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

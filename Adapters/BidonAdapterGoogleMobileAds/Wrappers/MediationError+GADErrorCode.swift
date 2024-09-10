@@ -16,16 +16,16 @@ extension MediationError {
             let gadError = gadError as? NSError,
             let code = GADErrorCode(rawValue: gadError.code)
         else {
-            self = .unscpecifiedException
+            self = .unscpecifiedException("Mapping Error")
             return
         }
         
         switch code {
-        case .noFill: self = .noFill
+        case .noFill: self = .noFill(nil)
         case .networkError: self = .networkError
         case .invalidRequest, .invalidArgument: self = .incorrectAdUnitId
         case .timeout: self = .networkError
-        default: self = .unscpecifiedException
+        default: self = .unscpecifiedException("Unknown Error")
         }
     }
 }

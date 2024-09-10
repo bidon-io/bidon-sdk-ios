@@ -105,7 +105,7 @@ extension MyTargetAdViewDemandProvider: MTRGAdViewDelegate {
     }
     
     func onLoadFailed(error: Error, adView: MTRGAdView) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

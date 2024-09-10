@@ -33,12 +33,12 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
             response?(.success(wrapper))
             
         } else {
-            response?(.failure(.unscpecifiedException))
+            response?(.failure(.unscpecifiedException("Mapping Error")))
         }
     }
     
     func didFailLoadAd(_ ad: BidMachineAdProtocol, _ error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
     }
     
     func didPresentAd(_ ad: BidMachineAdProtocol) {

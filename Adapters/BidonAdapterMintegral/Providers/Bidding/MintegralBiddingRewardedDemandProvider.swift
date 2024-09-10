@@ -78,7 +78,7 @@ extension MintegralBiddingRewardedDemandProvider: MTGRewardAdLoadDelegate {
     }
     
     func onVideoAdLoadFailed(_ placementId: String?, unitId: String?, error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
 }

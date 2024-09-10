@@ -30,7 +30,7 @@ class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachine
                 guard let self = self else { return }
                 
                 guard let ad = ad, error == nil else {
-                    response(.failure(.noFill))
+                    response(.failure(.noFill(error?.localizedDescription)))
                     return
                 }
                 
@@ -42,8 +42,8 @@ class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachine
                 
                 ad.loadAd()
             }
-        } catch {
-            response(.failure(.unscpecifiedException))
+        } catch let error {
+            response(.failure(.unscpecifiedException(error.localizedDescription)))
         }
     }
 }

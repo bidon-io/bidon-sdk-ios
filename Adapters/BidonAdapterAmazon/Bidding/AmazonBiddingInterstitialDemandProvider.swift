@@ -71,7 +71,7 @@ extension AmazonBiddingInterstitialDemandProvider: DTBAdInterstitialDispatcherDe
         _ interstitial: DTBAdInterstitialDispatcher?,
         didFailToLoadAdWith errorCode: DTBAdErrorCode
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(MediationError(errorCode)))
         response = nil
     }
     

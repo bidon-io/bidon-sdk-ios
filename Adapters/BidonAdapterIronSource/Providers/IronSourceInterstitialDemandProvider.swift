@@ -54,7 +54,7 @@ extension IronSourceInterstitialDemandProvider: ISDemandOnlyInterstitialDelegate
     }
     
     func interstitialDidFailToLoadWithError(_ error: Error!, instanceId: String!) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

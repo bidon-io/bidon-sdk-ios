@@ -69,7 +69,7 @@ extension MetaAudienceNetworkBiddingAdViewDemandProvider: FBAdViewDelegate {
     }
     
     func adView(_ adView: FBAdView, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

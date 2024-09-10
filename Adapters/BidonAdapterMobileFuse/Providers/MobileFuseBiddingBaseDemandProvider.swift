@@ -80,13 +80,13 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
     
     final func onAdNotFilled(_ ad: MFAd!) {
         guard let _ = ad as? DemandAdType else { return }
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(nil)))
         response = nil
     }
     
     final func onAdError(_ ad: MFAd!, withError error: MFAdError!) {
         guard let _ = ad as? DemandAdType else { return }
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

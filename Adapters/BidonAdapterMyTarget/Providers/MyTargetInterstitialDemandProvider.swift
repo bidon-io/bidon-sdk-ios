@@ -80,7 +80,7 @@ extension MyTargetInterstitialDemandProvider: MTRGInterstitialAdDelegate {
     }
     
     func onLoadFailed(error: Error, interstitialAd: MTRGInterstitialAd) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

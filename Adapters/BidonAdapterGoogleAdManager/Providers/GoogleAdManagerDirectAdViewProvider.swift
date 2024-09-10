@@ -76,7 +76,7 @@ extension GoogleAdManagerDirectAdViewProvider: GADBannerViewDelegate {
     }
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        handleDidFailToLoad(.noFill)
+        handleDidFailToLoad(.noFill(error.localizedDescription))
     }
     
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {

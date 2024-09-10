@@ -47,8 +47,8 @@ class ChartboostBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDema
     // MARK: - Ad Delegate (Interstitial & Rewarded & Banner)
     
     func didCacheAd(_ event: CHBCacheEvent, error: CacheError?) {
-        if error != nil {
-            response?(.failure(.noFill))
+        if let error {
+            response?(.failure(MediationError(error)))
             response = nil
             return
         }
@@ -81,5 +81,32 @@ class ChartboostBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDema
     
     func didEarnReward(_ event: CHBRewardEvent) {
         rewardDelegate?.provider(self, didReceiveReward: RewardWrapper(label: "", amount: event.reward, wrapped: event))
+    }
+}
+
+extension Bidon.MediationError {
+    init(_ error: CacheError) {
+        guard let code = error.cacheCode else {
+            self = .unscpecifiedException("Unknown error")
+            return
+        }
+        switch code {
+        case .internalError:
+            self = .unscpecifiedException("Internal Error")
+        case .internetUnavailable, .networkFailure:
+            self = .networkError
+        case .noAdFound:
+            self = .noFill("No Ad Found")
+        case .sessionNotStarted:
+            self = .adapterNotInitialized
+        case .assetDownloadFailure:
+            self = .noFill("Asset Download Failure")
+        case .publisherDisabled:
+            self = .unscpecifiedException("Publisher Disabled")
+        case .serverError:
+            self = .unscpecifiedException("Server Error")
+        @unknown default:
+            self = .unscpecifiedException("Unknown error")
+        }
     }
 }

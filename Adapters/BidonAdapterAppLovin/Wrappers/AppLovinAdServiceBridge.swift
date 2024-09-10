@@ -54,15 +54,15 @@ extension AppLovinAdServiceBridge: ALAdLoadDelegate {
     }
 }
 
-
-private extension MediationError {
+extension MediationError {
     init(alErrorCode: Int32) {
         switch alErrorCode {
         case kALErrorCodeSdkDisabled: self = .adapterNotInitialized
         case kALErrorCodeAdRequestNetworkTimeout: self = .networkError
         case kALErrorCodeNotConnectedToInternet: self = .networkError
         case kALErrorCodeInvalidZone: self = .incorrectAdUnitId
-        default: self = .noFill
+        case kALErrorCodeNoFill: self = .noFill(nil)
+        default: self = .unscpecifiedException("Code: \(alErrorCode)")
         }
     }
 }

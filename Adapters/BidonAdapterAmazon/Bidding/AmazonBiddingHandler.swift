@@ -57,7 +57,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
             
             let slots = self.responses.compactMap { AmazonBiddingSlot(response: $0) }
             guard let context = AmazonBiddingToken(slots: slots) else {
-                response(.failure(.noBid))
+                response(.failure(.noBid("Amazon has not provided bidding token")))
                 return
             }
             
