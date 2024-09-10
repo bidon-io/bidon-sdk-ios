@@ -124,13 +124,23 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     func load(
         completion: @escaping Completion
     ) {
+        guard !auctionConfiguration.adUnits.isEmpty else {
+            auctionObserver.log(FinishAuctionEvent(winner: nil))
+            completion(.failure(.cancelled))
+            return
+        }
         self.completion = completion
         
         // temout restrictions
         let timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType> = operation { builder in
             builder.withAuctionConfiguration(self.auctionConfiguration)
         }
-        let timeoutOperationHandler = BlockOperation {
+        let timeoutOperationHandler = BlockOperation { [weak self] in
+            guard let self else { return }
+            self.pendingOperations
+                .compactMap { self.adUnit(from: $0) }
+                .forEach { self.auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
+
             self.pendingOperations = []
             self.auctionTimeoutReached = true
         }
@@ -195,9 +205,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         auctionObserver.log(CancelAuctionEvent())
         
         queue.cancelAllOperations()
-        if finishAuctionOperation?.isFinished == false {
-            queue.addOperation(finishAuctionOperation!)
-            finishAuctionOperation?.cancel()
+        if let finishAuctionOperation = finishAuctionOperation, !finishAuctionOperation.isFinished {
+            queue.addOperation(finishAuctionOperation)
+            finishAuctionOperation.cancel()
         }
     }
 }

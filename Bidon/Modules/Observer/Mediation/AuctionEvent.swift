@@ -37,6 +37,13 @@ struct CancelAuctionEvent: AuctionEvent {
     }
 }
 
+struct AuctionTimeoutEvent: AuctionEvent {
+    var adUnit: any AdUnit
+    
+    var description: String {
+        return "auction timeout fired"
+    }
+}
 
 
 // MARK: Direct Demand
