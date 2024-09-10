@@ -22,7 +22,7 @@ where AdObject: BidMachineAdProtocol {
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
         guard let token = BidMachineSdk.shared.token else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("BidMachine has not provided bidding token")))
             return
         }
         
@@ -46,7 +46,7 @@ where AdObject: BidMachineAdProtocol {
                 guard let self = self else { return }
                 
                 guard let ad = ad, error == nil else {
-                    response(.failure(.noBid))
+                    response(.failure(.noBid(error?.localizedDescription)))
                     return
                 }
                                 

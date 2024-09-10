@@ -13,7 +13,7 @@ import Bidon
 extension MediationError {
     init(_ error: UnityAdsLoadError) {
         switch error {
-        case .noFill: self = .noFill
+        case .noFill: self = .noFill(nil)
         case .invalidArgument: self = .incorrectAdUnitId
         case .initializeFailed: self = .adapterNotInitialized
         default: self = .unknownAdapter
@@ -25,14 +25,14 @@ extension MediationError {
             let error = error,
             let code = UADSBannerErrorCode(rawValue: error.code)
         else {
-            self = .noFill
+            self = .noFill(nil)
             return
         }
         
         switch code {
-        case .codeNoFillError: self = .noFill
+        case .codeNoFillError: self = .noFill(error.localizedDescription)
         case .codeWebViewError: self = .networkError
-        default: self = .unscpecifiedException
+        default: self = .unscpecifiedException(error.localizedDescription)
         }
     }
 }

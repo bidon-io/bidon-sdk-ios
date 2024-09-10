@@ -91,7 +91,7 @@ extension InMobiAdViewDemandProvider: IMBannerDelegate {
         _ banner: IMBanner,
         didFailToReceiveWithError error: IMRequestStatus
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     
@@ -99,7 +99,7 @@ extension InMobiAdViewDemandProvider: IMBannerDelegate {
         _ banner: IMBanner,
         didFailToLoadWithError error: IMRequestStatus
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

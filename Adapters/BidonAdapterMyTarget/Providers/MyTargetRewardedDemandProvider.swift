@@ -82,7 +82,7 @@ extension MyTargetRewardedDemandProvider: MTRGRewardedAdDelegate {
     }
     
     func onLoadFailed(error: Error, rewardedAd: MTRGRewardedAd) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

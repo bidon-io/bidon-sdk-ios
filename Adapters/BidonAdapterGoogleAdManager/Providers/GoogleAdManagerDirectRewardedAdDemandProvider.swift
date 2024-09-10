@@ -18,11 +18,11 @@ final class GoogleAdManagerDirectRewardedAdDemandProvider: GoogleAdManagerBaseDe
         GADRewardedAd.load(
             withAdUnitID: adUnitId,
             request: request
-        ) { [weak self] rewardedAd, _ in
+        ) { [weak self] rewardedAd, error in
             guard let self = self else { return }
             
             guard let rewardedAd = rewardedAd else {
-                self.handleDidFailToLoad(.noFill)
+                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
             

@@ -89,7 +89,7 @@ extension AmazonBiddingAdViewDemandProvider: DTBAdBannerDispatcherDelegate {
     }
     
     func adFailed(toLoad banner: UIView?, errorCode: Int) {
-        response?(.failure(.noFill))
+        response?(.failure(.unscpecifiedException("Code: \(errorCode)")))
         response = nil
     }
     

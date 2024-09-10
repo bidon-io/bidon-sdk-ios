@@ -47,7 +47,7 @@ final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSou
         response: @escaping DemandProviderResponse
     ) {
         guard let viewController = context.rootViewController else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("View Controller is nil")))
             return
         }
         self.response = response
@@ -79,7 +79,7 @@ extension IronSourceAdViewDemandProvider: ISDemandOnlyBannerDelegate {
     }
     
     func bannerDidFailToLoadWithError(_ error: Error!, instanceId: String!) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

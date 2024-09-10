@@ -26,7 +26,7 @@ final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDe
             interstitial.register(self)
             interstitial.load(withBiddingResponseToken: payload.signal)
         } else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("Mapping Error")))
         }
     }
 }

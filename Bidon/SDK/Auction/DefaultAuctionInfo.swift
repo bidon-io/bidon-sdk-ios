@@ -70,7 +70,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.price = NSNumber(bid.pricefloor)
         self.uid = bid.uid
         self.bidType = bid.bidType.rawValue
-        self.status = DemandMediationStatus(.noBid).stringValue
+        self.status = DemandMediationStatus(.noBid(nil)).stringValue
         self.ext = bid.extrasDictionary
     }
 }

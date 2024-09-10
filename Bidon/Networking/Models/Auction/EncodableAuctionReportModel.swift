@@ -63,6 +63,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         var adUnitUid: String
         var adUnitLabel: String
         var status: DemandMediationStatus
+        var errorMessage: String?
         
         enum CodingKeys: String, CodingKey {
             case price
@@ -75,9 +76,21 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             case adUnitUid = "ad_unit_uid"
             case adUnitLabel = "ad_unit_label"
             case status
+            case errorMessage
         }
         
-        init(price: Price?, tokenStart: UInt?, tokenFinish: UInt?, fillStart: UInt?, fillFinish: UInt?, demandId: String, bidType: BidType, adUnitUid: String, adUnitLabel: String, status: DemandMediationStatus) {
+        init(
+            price: Price?,
+            tokenStart: UInt?,
+            tokenFinish: UInt?,
+            fillStart: UInt?,
+            fillFinish: UInt?,
+            demandId: String,
+            bidType: BidType,
+            adUnitUid: String,
+            adUnitLabel: String,
+            status: DemandMediationStatus
+        ) {
             self.price = price
             self.tokenStart = tokenStart
             self.tokenFinish = tokenFinish
@@ -88,6 +101,16 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             self.adUnitUid = adUnitUid
             self.adUnitLabel = adUnitLabel
             self.status = status
+            if case let .error(mediationError) = status {
+                switch mediationError {
+                case .noBid(let text), .noFill(let text):
+                    self.errorMessage = text
+                case .unscpecifiedException(let text):
+                    self.errorMessage = text
+                default:
+                    self.errorMessage = nil
+                }
+            }
         }
     }
     

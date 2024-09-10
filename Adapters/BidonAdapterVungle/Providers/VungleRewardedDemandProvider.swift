@@ -51,7 +51,7 @@ extension VungleRewardedDemandProvider: VungleRewardedDelegate {
     func rewardedAdDidFailToLoad(_ rewarded: VungleRewarded, withError: NSError) {
         guard demandAd.adObject === rewarded else { return }
 
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(withError.localizedDescription)))
         response = nil
     }
     

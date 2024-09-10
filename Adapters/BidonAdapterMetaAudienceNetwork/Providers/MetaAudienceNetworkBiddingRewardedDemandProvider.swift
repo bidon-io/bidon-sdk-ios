@@ -65,7 +65,7 @@ extension MetaAudienceNetworkBiddingRewardedDemandProvider: FBRewardedVideoAdDel
     }
     
     func rewardedVideoAd(_ rewardedVideoAd: FBRewardedVideoAd, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

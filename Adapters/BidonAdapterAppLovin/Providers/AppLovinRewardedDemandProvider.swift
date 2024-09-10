@@ -26,7 +26,7 @@ internal final class AppLovinRewardedDemandProvider: NSObject {
         }
         
         func adService(_ adService: ALAdService, didFailToLoadAdWithError code: Int32) {
-            response?(.failure(.noFill))
+            response?(.failure(MediationError(alErrorCode: code)))
             response = nil
         }
     }

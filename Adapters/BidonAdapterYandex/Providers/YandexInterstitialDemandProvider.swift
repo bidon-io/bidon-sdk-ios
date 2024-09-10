@@ -54,7 +54,7 @@ extension YandexInterstitialDemandProvider: YMAInterstitialAdDelegate {
     }
     
     func interstitialAdDidFail(toLoad interstitialAd: YMAInterstitialAd, error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

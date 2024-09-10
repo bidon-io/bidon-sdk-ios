@@ -58,7 +58,7 @@ extension IronSourceRewardedDemandProvider: ISDemandOnlyRewardedVideoDelegate {
     }
     
     func rewardedVideoDidFailToLoadWithError(_ error: Error!, instanceId: String!) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

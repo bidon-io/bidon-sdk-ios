@@ -56,13 +56,13 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         guard let adSpot = adSpot else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
             return
         }
         
         adSpot.fetchAd { adSpot, model, error in
             guard let adSpot = adSpot, error == nil else {
-                response(.failure(.noFill))
+                response(.failure(.noFill(error?.localizedDescription)))
                 return
             }
     

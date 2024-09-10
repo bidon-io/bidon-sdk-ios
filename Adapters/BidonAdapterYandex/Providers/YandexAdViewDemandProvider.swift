@@ -71,7 +71,7 @@ extension YandexAdViewDemandProvider: YMAAdViewDelegate {
     }
     
     func adViewDidFailLoading(_ adView: YMAAdView, error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

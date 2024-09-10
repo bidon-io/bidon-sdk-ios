@@ -63,7 +63,7 @@ extension MintegralDirectAdViewDemandProvider: MTGBannerAdViewDelegate {
     }
     
     func adViewLoadFailedWithError(_ error: Error!, adView: MTGBannerAdView!) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

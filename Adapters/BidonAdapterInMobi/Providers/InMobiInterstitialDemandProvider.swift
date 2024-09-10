@@ -77,7 +77,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         _ interstitial: IMInterstitial,
         didFailToReceiveWithError error: Error
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     
@@ -85,7 +85,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         _ interstitial: IMInterstitial,
         didFailToLoadWithError error: IMRequestStatus
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

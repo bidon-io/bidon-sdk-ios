@@ -52,7 +52,7 @@ extension MintegralDirectInterstitialDemandProvider: MTGNewInterstitialAdDelegat
     }
     
     func newInterstitialAdLoadFail(_ error: Error, adManager: MTGNewInterstitialAdManager) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

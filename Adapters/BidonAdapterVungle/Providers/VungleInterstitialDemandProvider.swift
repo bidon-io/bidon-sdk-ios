@@ -49,7 +49,7 @@ extension VungleInterstitialDemandProvider: VungleInterstitialDelegate {
     func interstitialAdDidFailToLoad(_ interstitial: VungleInterstitial, withError: NSError) {
         guard demandAd.adObject === interstitial else { return }
 
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(withError.localizedDescription)))
         response = nil
     }
     

@@ -62,7 +62,7 @@ extension VungleAdViewDemandProvider: VungleBannerDelegate {
     func bannerAdDidFailToLoad(_ banner: VungleBanner, withError: NSError) {
         guard demandAd.adObject === banner else { return }
 
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(withError.localizedDescription)))
         response = nil
     }
     
