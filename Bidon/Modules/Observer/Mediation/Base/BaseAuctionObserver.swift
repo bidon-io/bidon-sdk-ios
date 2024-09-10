@@ -99,6 +99,10 @@ final class BaseAuctionObserver: AuctionObserver {
             $round.mutate { observation in
                 observation.bidding.didFailPricefloor(_event.adUnit)
             }
+        case let _event as AuctionTimeoutEvent:
+            $round.mutate { observation in
+                observation.bidding.didFailAdUnit(_event.adUnit, error: .fillTimeoutReached)
+            }
         default:
             break
         }
