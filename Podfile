@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK', "12.6.0"
+  pod 'AppLovinSDK', "12.6.1"
 end
 
 def bidmachine 
@@ -27,7 +27,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 11.5.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.8.0'
 end
 
 def appsflyer
@@ -36,23 +36,23 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.3.0'
+  pod 'BigoADS', '~> 4.4.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.3.1'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.15.0'
+  pod 'FBAudienceNetwork', '6.15.2'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.11.3'
+  pod 'UnityAds', '~> 4.12.2'
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.6.1'
+  pod 'MintegralAdSDK', '~> 7.7.2'
 end
 
 def mobilefuse
@@ -60,7 +60,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '~> 7.3.0'
+  pod 'VungleAds', '~> 7.4.1'
 end
 
 def ocmock
@@ -72,15 +72,15 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '~> 4.9.2'
+  pod 'AmazonPublisherServicesSDK', '~> 4.9.7'
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.7.2'
+  pod 'InMobiSDK', '~> 10.7.5'
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.20.1"
+  pod "myTargetSDK", "~> 5.21.7"
   pod "myTrackerSDK", "<= 3.1.7"
 end
 
@@ -89,7 +89,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.1.0"
+  pod "IronSourceSDK", "8.3.0"
 end
 
 def yandex
