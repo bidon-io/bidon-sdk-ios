@@ -6,11 +6,9 @@ PODS:
     - StackConsentManager (~> 2.0.5)
     - StackIAB (~> 2.6.0)
     - StackModules (~> 1.7.0)
-  - AppsFlyer-AdRevenue (6.9.1):
-    - AppsFlyerFramework (~> 6)
-  - AppsFlyerFramework (6.14.6):
-    - AppsFlyerFramework/Main (= 6.14.6)
-  - AppsFlyerFramework/Main (6.14.6)
+  - AppsFlyerFramework (6.15.2):
+    - AppsFlyerFramework/Main (= 6.15.2)
+  - AppsFlyerFramework/Main (6.15.2)
   - BidMachine (2.6.1):
     - BidMachine/Core (= 2.6.1)
   - BidMachine/ApiCore (2.6.1)
@@ -168,8 +166,7 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 4.9.7)
   - AppLovinSDK (= 12.6.1)
   - Appodeal (~> 3.3.0)
-  - AppsFlyer-AdRevenue (~> 6.9.0)
-  - AppsFlyerFramework (~> 6.14.0)
+  - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (~> 2.6.0)
   - BigoADS (~> 4.4.0)
   - ChartboostSDK (= 9.7.0)
@@ -200,7 +197,6 @@ SPEC REPOS:
   trunk:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
-    - AppsFlyer-AdRevenue
     - AppsFlyerFramework
     - BigoADS
     - ChartboostSDK
@@ -229,8 +225,7 @@ SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: c9e8ce9b12d9263d1635f490c1a57eaf6e595c69
   AppLovinSDK: a892bbeff744749a8121bd863aa1399f7eef6ef1
   Appodeal: f95211c1f30f33b9f3e278ca6dc662a9d2417c60
-  AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
-  AppsFlyerFramework: bef4087719ce689835bbf408c61e2bcc5d4b8bd8
+  AppsFlyerFramework: 3c6c50b7b3f0f37f648a5b23114940e0766e65e8
   BidMachine: c300a4ec4499c75d2215b9055cf0b5ace00c8648
   BidMachineRendering: e8c4005b94b483315d9ded92d82ce571698b1374
   BigoADS: 164e32b1b7b5e78b2e99d9997e7fd1429708961c
@@ -260,6 +255,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: ef57caa20dce7b0f58c878c684b94cf499bbb8a2
+PODFILE CHECKSUM: 0a4a752d67ecee269965f6d8144438f7cb54dab5
 
 COCOAPODS: 1.15.2

@@ -31,8 +31,7 @@ def admob
 end
 
 def appsflyer
-  pod 'AppsFlyerFramework', '~> 6.14.0'
-  pod 'AppsFlyer-AdRevenue', '~> 6.9.0'
+  pod 'AppsFlyerFramework', '~> 6.15.2'
 end
 
 def bigo_ads
