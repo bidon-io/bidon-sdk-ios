@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import BidMachineApiCore
 import BidMachine
 import Bidon
 
@@ -17,7 +16,7 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
     
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     
-    override var placementFormat: BidMachineApiCore.PlacementFormat { .init(format: format) }
+    override var placementFormat: PlacementFormat { .init(format: format) }
     
     init(context: AdViewContext) {
         self.format = context.format

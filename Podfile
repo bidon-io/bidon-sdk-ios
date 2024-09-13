@@ -14,16 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.6.0'
-#  pod 'BidMachineMintegralAdapter', '~> 2.6.0'
-#  pod 'BidMachineAmazonAdapter', '~> 2.6.0'
-#  pod 'BidMachineCriteoAdapter', '~> 2.6.0'
-#  pod 'BidMachineMetaAudienceAdapter', '~> 2.6.0'
-#  pod 'BidMachineMyTargetAdapter', '~> 2.6.0'
-#  pod 'BidMachineSmaatoAdapter', '~> 2.6.0'
-#  pod 'BidMachineTapjoyAdapter', '~> 2.6.0'
-#  pod 'BidMachineVungleAdapter', '~> 2.6.0'
-#  pod 'BidMachinePangleAdapter', '~> 2.6.0'
+  pod 'BidMachine', '~> 3.0.1'
 end
 
 def admob
@@ -97,7 +88,7 @@ end
 
 
 def appodeal_mediation
-   pod 'Appodeal', '~> 3.3.0'
+  # pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
