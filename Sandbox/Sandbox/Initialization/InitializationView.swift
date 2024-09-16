@@ -46,13 +46,13 @@ struct InitializationView: View {
                         ) {
                             AdaptersView(adapters: $vm.adapters)
                         }
-                        
-                        Section(
-                            header: Text("Mediation"),
-                            footer: Text("Change of mediation will reset configuration")
-                        ) {
-                            SelectMediationView(mediation: $vm.mediation)
-                        }
+// MARK: DROP_APD_SUPPORT
+//                        Section(
+//                            header: Text("Mediation"),
+//                            footer: Text("Change of mediation will reset configuration")
+//                        ) {
+//                            SelectMediationView(mediation: $vm.mediation)
+//                        }
                         
                         Section(header: Text("Base URL")) {
                             HostView(

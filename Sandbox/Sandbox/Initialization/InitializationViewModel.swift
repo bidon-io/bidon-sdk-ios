@@ -100,8 +100,9 @@ final class InitializationViewModel: ObservableObject, AdResponder {
             switch mediation {
             case .none:
                 AdServiceProvider.shared.service = RawAdService()
-            case .appodeal:
-                AdServiceProvider.shared.service = AppodealAdService()
+            case .appodeal: break
+// MARK: DROP_APD_SUPPORT
+//                AdServiceProvider.shared.service = AppodealAdService()
             }
         }
     }

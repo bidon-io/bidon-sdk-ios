@@ -11,7 +11,6 @@ import Combine
 import SwiftUI
 
 
-
 final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
     private var bidonRewardedAd: Bidon.RewardedAd?
     
@@ -66,13 +65,13 @@ extension RawRewardedAdWrapper {
     override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         super.adObject(adObject, didFailToLoadAd: error, auctionInfo: auctionInfo)
         
-        resumeLoadingContinuation(throwing: AppodealAdServiceError.noFill)
+        resumeLoadingContinuation(throwing: RawAdServiceError.noFill)
     }
     
     override func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
         super.adObject(adObject, didFailToPresentAd: error)
         
-        resumeShowingContinuation(throwing: AppodealAdServiceError.invalidPresentationState)
+        resumeShowingContinuation(throwing: RawAdServiceError.invalidPresentationState)
     }
     
     override func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didDismissAd ad: Bidon.Ad) {

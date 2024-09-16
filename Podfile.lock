@@ -66,6 +66,8 @@ PODS:
   - myTrackerSDK (3.1.7)
   - OCMock (3.9.4)
   - OMSDK_Appodeal (1.5.0)
+  - StackConsentManager (2.0.5):
+    - GoogleUserMessagingPlatform (~> 2.1)
   - StackModules/Core-Static (2.2.0)
   - StackModules/ProductPresentation-Static (2.2.0):
     - StackModules/Core-Static
@@ -108,13 +110,16 @@ DEPENDENCIES:
   - MintegralAdSDK (~> 7.7.2)
   - MobileFuseSDK
   - myTargetSDK (~> 5.21.7)
-  - myTrackerSDK (~> 3.1.7)
+  - myTrackerSDK (<= 3.1.7)
   - OCMock (~> 3.9.1)
+  - StackConsentManager (~> 2.0.5)
   - UnityAds (~> 4.12.2)
   - VungleAds (~> 7.4.1)
   - YandexMobileAds (= 5.2.1)
 
 SPEC REPOS:
+  https://github.com/appodeal/CocoaPods.git:
+    - StackConsentManager
   trunk:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
@@ -167,12 +172,13 @@ SPEC CHECKSUMS:
   myTrackerSDK: 437c4e215b37a6eb3a38f2a07b6c4c58b59215f9
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OMSDK_Appodeal: e826c93f06bef197c0fb32c19929e03d0c4cd92e
+  StackConsentManager: 3f03656a53224b08149dbc66ef9f4153f0f68c44
   StackModules: 01456d85a6ddbaa52059e9d9d6ee7ec8812d10ca
   UnityAds: f746f4baac748fcf8b70f0d70c816f6316808d3e
   VungleAds: 97140121d0b909891eb217d1c102a194601da607
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 8cb9e5c3029283734f1b8e4b3e11aefe3fef0d27
+PODFILE CHECKSUM: 88d1008dd79795f049fdb13d2106113be87e30cf
 
 COCOAPODS: 1.15.2

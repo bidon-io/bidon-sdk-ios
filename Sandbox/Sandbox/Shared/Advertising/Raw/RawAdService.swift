@@ -73,7 +73,7 @@ final class RawAdService: NSObject, AdService {
         case .rewardedAd:
             try await rewardedAd.load(pricefloor: pricefloor, auctionKey: auctionKey)
         default:
-            throw AppodealAdServiceError.unsupported
+            throw RawAdServiceError.unsupported
         }
     }
     
@@ -95,7 +95,7 @@ final class RawAdService: NSObject, AdService {
         case .rewardedAd:
             try await rewardedAd.show()
         default:
-            throw AppodealAdServiceError.unsupported
+            throw RawAdServiceError.unsupported
         }
     }
     
