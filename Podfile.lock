@@ -1,6 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (4.9.7)
-  - AppLovinSDK (12.6.1)
+  - AppLovinSDK (13.0.0)
   - AppsFlyerFramework (6.15.2):
     - AppsFlyerFramework/Main (= 6.15.2)
   - AppsFlyerFramework/Main (6.15.2)
@@ -96,7 +96,7 @@ PODS:
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 4.9.7)
-  - AppLovinSDK (= 12.6.1)
+  - AppLovinSDK (= 13.0.0)
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (~> 3.0.1)
   - BigoADS (~> 4.4.0)
@@ -151,7 +151,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: c9e8ce9b12d9263d1635f490c1a57eaf6e595c69
-  AppLovinSDK: a892bbeff744749a8121bd863aa1399f7eef6ef1
+  AppLovinSDK: c0ecb434df24008b6ecdd7f1e5b8587bc45ff381
   AppsFlyerFramework: 3c6c50b7b3f0f37f648a5b23114940e0766e65e8
   BidMachine: cb15c3d1324c8864954550cddd968605a2cfb3cf
   BigoADS: 164e32b1b7b5e78b2e99d9997e7fd1429708961c
@@ -179,6 +179,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 88d1008dd79795f049fdb13d2106113be87e30cf
+PODFILE CHECKSUM: 8109b232dff850e8e420b56da1e8ef6848b16db4
 
 COCOAPODS: 1.15.2
