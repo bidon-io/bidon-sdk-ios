@@ -63,7 +63,7 @@ PODS:
   - MobileFuseSDK (1.7.6)
   - myTargetSDK (5.21.7):
     - myTrackerSDK (~> 3.1.1)
-  - myTrackerSDK (3.1.7)
+  - myTrackerSDK (3.1.13)
   - OCMock (3.9.4)
   - OMSDK_Appodeal (1.5.0)
   - StackConsentManager (2.0.5):
@@ -110,7 +110,6 @@ DEPENDENCIES:
   - MintegralAdSDK (~> 7.7.2)
   - MobileFuseSDK
   - myTargetSDK (~> 5.21.7)
-  - myTrackerSDK (<= 3.1.7)
   - OCMock (~> 3.9.1)
   - StackConsentManager (~> 2.0.5)
   - UnityAds (~> 4.12.2)
@@ -169,7 +168,7 @@ SPEC CHECKSUMS:
   MintegralAdSDK: 7e05f9ab5f555b7049435a9477d457d7bf9b5473
   MobileFuseSDK: aeb8ddc70e99ead934a05df7a85b69a5a8100ae7
   myTargetSDK: 9d2e3f4ca51aa8ae9ecf7501941b3f2fbd5ea088
-  myTrackerSDK: 437c4e215b37a6eb3a38f2a07b6c4c58b59215f9
+  myTrackerSDK: 00e1b88f81d701f2c31cd0d7db736c9fc66cad61
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OMSDK_Appodeal: e826c93f06bef197c0fb32c19929e03d0c4cd92e
   StackConsentManager: 3f03656a53224b08149dbc66ef9f4153f0f68c44
@@ -179,6 +178,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 8109b232dff850e8e420b56da1e8ef6848b16db4
+PODFILE CHECKSUM: 7230523dbd5e8d02b9c488f421c55bbe70bcf35a
 
 COCOAPODS: 1.15.2

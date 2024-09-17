@@ -71,7 +71,6 @@ end
 
 def my_target
   pod "myTargetSDK", "~> 5.21.7"
-  pod "myTrackerSDK", "<= 3.1.7"
 end
 
 def chartboost
