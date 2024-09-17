@@ -79,6 +79,7 @@
 		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
 		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
 		9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18C91C2C903E07005BE4F2 /* Constants.swift */; };
+		9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +164,7 @@
 		9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A18C91A2C903DE1005BE4F2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A18C91C2C903E07005BE4F2 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+AppVersion.swift"; sourceTree = "<group>"; };
 		F846B990A6AF5B081BB0BD12 /* Pods-Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.debug.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -226,6 +228,7 @@
 				42BE438E28C0E79D000528E3 /* Permissions */,
 				426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */,
 				9A18C91C2C903E07005BE4F2 /* Constants.swift */,
+				9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				42BE439428C0E936000528E3 /* AppTrackingTransparencyPermission.swift in Sources */,
 				429F4D8828CF6AA700765BD7 /* Wave.swift in Sources */,
 				427B1C0F29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift in Sources */,
+				9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */,
 				42BE439228C0E7CB000528E3 /* LocationPermission.swift in Sources */,
 				42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */,
 				427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */,

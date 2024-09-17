@@ -86,7 +86,7 @@ final class CMPViewModel: ObservableObject {
         let parameters = ConsentUpdateRequestParameters(
             appKey: Constants.Appodeal.appKey,
             mediationSdkName: "Appodeal",
-            mediationSdkVersion: "x.y.z.test",
+            mediationSdkVersion: Bundle.main.appVersion,
             COPPA: false
         )
         ConsentManager.shared.requestConsentInfoUpdate(
