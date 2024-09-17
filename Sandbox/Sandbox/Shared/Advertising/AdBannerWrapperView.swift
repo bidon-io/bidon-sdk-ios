@@ -61,14 +61,16 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var body: some View {
         switch mediation {
         case .appodeal:
-            AppodealBannerView(
-                format: format,
-                isAutorefreshing: isAutorefreshing,
-                autorefreshInterval: autorefreshInterval,
-                auctionKey: auctionKey, onEvent: onEvent,
-                ad: $ad,
-                isLoading: $isLoading
-            )
+            Color.black
+// MARK: DROP_APD_SUPPORT
+//            AppodealBannerView(
+//                format: format,
+//                isAutorefreshing: isAutorefreshing,
+//                autorefreshInterval: autorefreshInterval,
+//                auctionKey: auctionKey, onEvent: onEvent,
+//                ad: $ad,
+//                isLoading: $isLoading
+//            )
         case .none:
             RawBannerView(
                 format: format,

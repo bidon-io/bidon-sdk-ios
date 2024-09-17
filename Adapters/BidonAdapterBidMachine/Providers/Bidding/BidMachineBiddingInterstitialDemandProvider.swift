@@ -8,12 +8,11 @@
 import Foundation
 import UIKit
 import BidMachine
-import BidMachineApiCore
 import Bidon
 
 
 final class BidMachineBiddingInterstitialDemandProvider: BidMachineBiddingDemandProvider<BidMachineInterstitial> {
-    override var placementFormat: BidMachineApiCore.PlacementFormat { .interstitial }
+    override var placementFormat: PlacementFormat { .interstitial }
 }
 
 
