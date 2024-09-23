@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.21.7"
+  pod "myTargetSDK", "~> 5.21.8"
 end
 
 def chartboost
