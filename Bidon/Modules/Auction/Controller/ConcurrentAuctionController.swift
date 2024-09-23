@@ -206,7 +206,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         
         queue.cancelAllOperations()
         if let finishAuctionOperation = finishAuctionOperation, !finishAuctionOperation.isFinished {
-            queue.addOperation(finishAuctionOperation)
             finishAuctionOperation.cancel()
         }
     }
