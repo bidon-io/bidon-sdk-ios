@@ -53,7 +53,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         )
         observer.log(event)
         
-        let timeInterval = adUnit.timeout
+        let timeInterval = adUnit.timeoutInterval
         setupOperationTimeout(interval: timeInterval)
         
         provider.load(
