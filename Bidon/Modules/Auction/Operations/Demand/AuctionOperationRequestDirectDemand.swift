@@ -9,6 +9,7 @@ import Foundation
 
 
 final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
+
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
@@ -40,13 +41,9 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericDirectDemandProvider }),
             let provider = adapter.provider as? any GenericDirectDemandProvider
         else {
-            let event = DirectDemandErrorAuctionEvent(
-                demandId: demand,
-                error: .unknownAdapter
-            )
-            observer.log(event)
-            
+            logLoadingError(error: .unknownAdapter)
             finish()
+            
             return
         }
         
@@ -54,7 +51,9 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             adUnit: adUnit
         )
         observer.log(event)
-                
+        
+        setupTimeout()
+        
         provider.load(
             pricefloor: auctionConfiguration.pricefloor,
             adUnitExtrasDecoder: adUnit.extras
@@ -87,19 +86,30 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 self.observer.log(event)
                 
             case .failure(let error):
-                let event = DirectDemandLoadingErrorAucitonEvent(
-                    adUnit: adUnit,
-                    error: error
-                )
-                self.observer.log(event)
+                logLoadingError(error: error)
             }
         }
     }
+    
+    private func logLoadingError(error: MediationError) {
+        let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
+        observer.log(event)
+    }
 }
 
-
-extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
-    func timeoutReached() {
+extension AuctionOperationRequestDirectDemand: TimeoutOperation {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
+            self?.operationTimeoutReached()
+        }
+    }
+    
+    func operationTimeoutReached() {
         guard isExecuting else { return }
         
         observer.log(
