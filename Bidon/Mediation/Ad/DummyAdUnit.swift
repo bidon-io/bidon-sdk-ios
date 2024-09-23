@@ -18,6 +18,7 @@ struct DummyAdUnit: AdUnit {
     var pricefloor: Price
     var extras: ExtrasType
     var extrasDictionary: [String: BidonDecodable]?
+    let timeout: TimeInterval
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
@@ -35,6 +36,7 @@ struct DummyAdUnit: AdUnit {
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
         self.extrasDictionary = adUnit.extrasDictionary
+        self.timeout = adUnit.timeout
     }
     
     init(_ adUnit: AnyAdUnit) {
@@ -45,6 +47,7 @@ struct DummyAdUnit: AdUnit {
         self.pricefloor = adUnit.pricefloor
         self.extras = ()
         self.extrasDictionary = adUnit.extrasDictionary
+        self.timeout = adUnit.timeout
     }
 }
 
