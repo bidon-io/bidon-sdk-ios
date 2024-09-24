@@ -47,7 +47,7 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
         adUnitExtras: AmazonAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid)
+        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid) ?? AmazonHandlersStorage.fetch(for: adUnitExtras.slotUuid)
         else {
             response(.failure(.noAppropriateAdUnitId))
             return
