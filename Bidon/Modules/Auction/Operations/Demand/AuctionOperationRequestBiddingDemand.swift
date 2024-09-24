@@ -53,8 +53,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         )
         observer.log(event)
         
-        let timeInterval = adUnit.timeoutInterval
-        setupOperationTimeout(interval: timeInterval)
+        setupTimeout()
         
         provider.load(
             payloadDecoder: adUnit.extras,
@@ -95,12 +94,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
 }
 
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
-    func setupOperationTimeout(interval: TimeInterval) {
-        guard isExecuting else { return }
-        DispatchQueue.global().asyncAfter(deadline: .now() + interval) { [weak self] in
-            self?.timeoutReached()
-        }
-    }
     
     func timeoutReached() {
         guard isExecuting else { return }

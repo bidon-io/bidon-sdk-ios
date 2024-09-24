@@ -8,7 +8,6 @@
 import Foundation
 
 protocol AuctionOperationRoundTimeoutHandler: Operation {
-    func setupOperationTimeout(interval: TimeInterval)
     func timeoutReached()
 }
 

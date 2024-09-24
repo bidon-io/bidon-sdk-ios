@@ -8,7 +8,8 @@
 import Foundation
 
 
-final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {    
+final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
+
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
@@ -53,8 +54,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         )
         observer.log(event)
         
-        let timeInterval = adUnit.timeoutInterval
-        setupOperationTimeout(interval: timeInterval)
+        setupTimeout()
         
         provider.load(
             pricefloor: auctionConfiguration.pricefloor,
@@ -94,14 +94,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     }
 }
 
-
 extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
-    func setupOperationTimeout(interval: TimeInterval) {
-        guard isExecuting else { return }
-        DispatchQueue.global().asyncAfter(deadline: .now() + interval) { [weak self] in
-            self?.timeoutReached()
-        }
-    }
     
     func timeoutReached() {
         guard isExecuting else { return }
