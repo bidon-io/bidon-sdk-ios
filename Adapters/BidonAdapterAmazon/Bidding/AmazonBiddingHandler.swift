@@ -9,6 +9,18 @@ import Foundation
 import Bidon
 import DTBiOSSDK
 
+struct AmazonHandlersStorage {
+    private static var responses = [DTBAdResponse]() // this is evil I know
+    
+    static func store(_ response: DTBAdResponse) {
+        responses.append(response)
+    }
+    
+    static func fetch(for slotUUID: String) -> DTBAdResponse? {
+        return responses.first { $0.adSize()?.slotUUID == slotUUID }
+    }
+}
+
 
 struct AmazonBiddingSlot: Codable {
     var slotUuid: String
@@ -67,6 +79,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
     
     func onSuccess(_ adResponse: DTBAdResponse!) {
         responses.append(adResponse)
+        AmazonHandlersStorage.store(adResponse)
         group.leave()
     }
     
