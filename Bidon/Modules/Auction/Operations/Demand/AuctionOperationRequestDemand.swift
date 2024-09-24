@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-protocol AuctionOperationRequestDemand: AuctionOperation {
+protocol AuctionOperationRequestDemand: AuctionOperation, TimeoutOperation {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
     associatedtype BidType: Bid where BidType.ProviderType == AdTypeContextType.DemandProviderType
 

@@ -17,11 +17,6 @@ struct AdUnitModel: AdUnit {
     let extras: Decoder
     let extrasDictionary: [String: BidonDecodable]?
     let timeout: TimeInterval
-    
-    var timeoutInterval: TimeInterval {
-        return Date.MeasurementUnits.milliseconds
-            .convert(timeout, to: .seconds)
-    }
 }
 
 
