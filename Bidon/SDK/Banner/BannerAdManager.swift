@@ -220,10 +220,16 @@ final class BannerAdManager: NSObject {
                 self.state = .ready(impression: impression)
                 
                 let ad = AdContainer(bid: bid)
-                self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                }
             case .failure(let error):
                 self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                }
             }
         }
         

@@ -40,6 +40,31 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
     override func main() {
         super.main()
         
+        let result = findWinner()
+        
+        let completion = self.completion
+        
+        DispatchQueue.main.async {
+            completion(result)
+        }
+    }
+    
+    override func cancel() {
+        super.cancel()
+        
+        observer.log(CancelAuctionEvent())
+        
+        findWinner()
+        let result = Result<BidType, SdkError>.failure(.cancelled)
+        let completion = self.completion
+        
+        completion(result)
+        
+        print("weoinhwoegh FINISH CANCEL")
+    }
+    
+    @discardableResult
+    private func findWinner() -> Result<BidType, SdkError> {
         let directResults = deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
             .compactMap({ $0.bid })
             .sorted { comparator.compare($0, $1) }
@@ -71,24 +96,7 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
             observer.log(FinishAuctionEvent(winner: winner))
         }
         
-        let completion = self.completion
-        
-        DispatchQueue.main.async {
-            completion(result)
-        }
-    }
-    
-    override func cancel() {
-        super.cancel()
-        
-        observer.log(CancelAuctionEvent())
-        
-        let result = Result<BidType, SdkError>.failure(.cancelled)
-        let completion = self.completion
-        
-        DispatchQueue.main.async {
-            completion(result)
-        }
+        return result
     }
     
     private func notifyBids(_ bids: [BidModel<AdTypeContextType.DemandProviderType>], winner: BidModel<AdTypeContextType.DemandProviderType>) {
