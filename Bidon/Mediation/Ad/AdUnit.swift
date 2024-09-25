@@ -24,7 +24,6 @@ protocol AdUnit: Hashable {
     var bidType: BidType { get }
     var extras: ExtrasType { get }
     var extrasDictionary: [String: BidonDecodable]? { get }
-    var timeout: TimeInterval { get }
 }
 
 @objc

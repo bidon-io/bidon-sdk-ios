@@ -43,24 +43,30 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericBiddingDemandProvider }),
             let provider = adapter.provider as? any GenericBiddingDemandProvider
         else {
-            logLoadingError(error: .unknownAdapter)
+            let event = BiddingDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit,
+                error: .unknownAdapter
+            )
+            observer.log(event)
+            
             finish()
             return
         }
 
+        
         let event = BiddingDemandWillLoadAuctionEvent(
             adUnit: adUnit
         )
         observer.log(event)
-        
-        setupTimeout()
         
         provider.load(
             payloadDecoder: adUnit.extras,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
             guard let self = self else { return }
-            defer { self.finish() }
+            defer {
+                self.finish()
+            }
             
             switch result {
             case .success(let ad):
@@ -82,46 +88,22 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 self.observer.log(event)
                 
             case .failure(let error):
-                logLoadingError(error: error)
+                let event = BiddingDemandLoadingErrorAucitonEvent(
+                    adUnit: adUnit,
+                    error: error
+                )
+                self.observer.log(event)
             }
         }
     }
-    
-    private func logLoadingError(error: MediationError) {
-        let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
-        observer.log(event)
-    }
 }
 
-extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
-    var timeout: TimeInterval {
-        return adUnit.timeoutInSeconds
-    }
-    
-    func setupTimeout() {
-        guard isExecuting, timeout > 0 else { return }
-        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
-            self?.operationTimeoutReached()
-        }
-    }
-    
-    func operationTimeoutReached() {
-        guard isExecuting else { return }
-        observer.log(
-            BiddingDemandLoadingErrorAucitonEvent(
-                adUnit: adUnit,
-                error: .fillTimeoutReached
-            )
-        )
-        finish()
-        cancel()
-    }
-}
 
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
-    
     func timeoutReached() {
         guard isExecuting else { return }
+                
+        finish()
         
         observer.log(
             BiddingDemandErrorAuctionEvent(
@@ -129,6 +111,5 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHand
                 error: .fillTimeoutReached
             )
         )
-        finish()
     }
 }
