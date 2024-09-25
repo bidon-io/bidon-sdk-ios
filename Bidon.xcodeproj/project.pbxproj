@@ -189,7 +189,6 @@
 		49E43B2D2C04AC5100C2EC6B /* RewardedAdaptersFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B2C2C04AC5100C2EC6B /* RewardedAdaptersFetcher.swift */; };
 		49E43B2F2C04AC7E00C2EC6B /* AdViewAdaptersFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B2E2C04AC7E00C2EC6B /* AdViewAdaptersFetcher.swift */; };
 		49FE393A2BC54EEF000865FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */; };
-		9AC7CB012CA28A5200ECED9D /* AuctionOperationRequestDemand+Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC7CB002CA28A5200ECED9D /* AuctionOperationRequestDemand+Timeout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -377,7 +376,6 @@
 		49E43B2C2C04AC5100C2EC6B /* RewardedAdaptersFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdaptersFetcher.swift; sourceTree = "<group>"; };
 		49E43B2E2C04AC7E00C2EC6B /* AdViewAdaptersFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewAdaptersFetcher.swift; sourceTree = "<group>"; };
 		49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		9AC7CB002CA28A5200ECED9D /* AuctionOperationRequestDemand+Timeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionOperationRequestDemand+Timeout.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -722,7 +720,6 @@
 			isa = PBXGroup;
 			children = (
 				428C45DA2A278538009E90EF /* AuctionOperationRequestDemand.swift */,
-				9AC7CB002CA28A5200ECED9D /* AuctionOperationRequestDemand+Timeout.swift */,
 				42A0155D29F2C84900547B37 /* AuctionOperationRequestDirectDemand.swift */,
 				428C45C42A265750009E90EF /* AuctionOperationRequestBiddingDemand.swift */,
 				494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */,
@@ -1174,7 +1171,6 @@
 				426DD7B128A681A300A1ADF5 /* AdObjectDelegate.swift in Sources */,
 				42D047EF289D6A380096A8C6 /* EnvironmentRepository.swift in Sources */,
 				422077F129B2079800A2AD26 /* AuctionResultStatus.swift in Sources */,
-				9AC7CB012CA28A5200ECED9D /* AuctionOperationRequestDemand+Timeout.swift in Sources */,
 				42D047F1289D73F80096A8C6 /* GeoManager.swift in Sources */,
 				42C4F46429E6E47200B12E15 /* SdkError.swift in Sources */,
 				4257D71829DDBF830066DE1B /* NotificationRequest.swift in Sources */,
