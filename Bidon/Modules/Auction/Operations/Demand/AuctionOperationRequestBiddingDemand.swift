@@ -93,6 +93,31 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     }
 }
 
+extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
+            self?.operationTimeoutReached()
+        }
+    }
+    
+    func operationTimeoutReached() {
+        guard isExecuting else { return }
+        observer.log(
+            BiddingDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit,
+                error: .fillTimeoutReached
+            )
+        )
+        finish()
+        cancel()
+    }
+}
+
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
     
     func timeoutReached() {
@@ -104,7 +129,6 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHand
                 error: .fillTimeoutReached
             )
         )
-        
         finish()
     }
 }

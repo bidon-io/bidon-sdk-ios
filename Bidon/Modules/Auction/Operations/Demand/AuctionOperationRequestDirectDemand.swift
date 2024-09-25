@@ -89,8 +89,33 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     }
     
     private func logLoadingError(error: MediationError) {
-        let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
+        let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
         observer.log(event)
+    }
+}
+
+extension AuctionOperationRequestDirectDemand: TimeoutOperation {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
+            self?.operationTimeoutReached()
+        }
+    }
+    
+    func operationTimeoutReached() {
+        guard isExecuting else { return }
+        observer.log(
+            DirectDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit,
+                error: .fillTimeoutReached
+            )
+        )
+        finish()
+        cancel()
     }
 }
 

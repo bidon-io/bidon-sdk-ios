@@ -19,6 +19,13 @@ struct AdUnitModel: AdUnit {
     let timeout: TimeInterval
 }
 
+extension AdUnit {
+    var timeoutInSeconds: TimeInterval {
+        return Date.MeasurementUnits.milliseconds
+            .convert(timeout, to: .seconds)
+    }
+}
+
 
 extension AdUnitModel: Decodable {
     enum CodingKeys: String, CodingKey {
