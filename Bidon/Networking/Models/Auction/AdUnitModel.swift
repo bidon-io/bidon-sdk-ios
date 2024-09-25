@@ -9,21 +9,13 @@ import Foundation
 
 
 struct AdUnitModel: AdUnit {
-    let demandId: String
-    let uid: String
-    let bidType: BidType
-    let label: String
-    let pricefloor: Price
-    let extras: Decoder
-    let extrasDictionary: [String: BidonDecodable]?
-    let timeout: TimeInterval
-}
-
-extension AdUnit {
-    var timeoutInSeconds: TimeInterval {
-        return Date.MeasurementUnits.milliseconds
-            .convert(timeout, to: .seconds)
-    }
+    var demandId: String
+    var uid: String
+    var bidType: BidType
+    var label: String
+    var pricefloor: Price
+    var extras: Decoder
+    var extrasDictionary: [String: BidonDecodable]?
 }
 
 
@@ -35,7 +27,6 @@ extension AdUnitModel: Decodable {
         case uid
         case bidType
         case extras = "ext"
-        case timeout
     }
     
     init(from decoder: Decoder) throws {
@@ -48,7 +39,6 @@ extension AdUnitModel: Decodable {
         pricefloor = try container.decodeIfPresent(Price.self, forKey: .pricefloor) ?? .unknown
         extras = try container.superDecoder(forKey: .extras)
         extrasDictionary = try? container.decode([String: BidonDecodable].self, forKey: .extras)
-        timeout = try container.decode(TimeInterval.self, forKey: .timeout)
     }
     
     func hash(into hasher: inout Hasher) {
