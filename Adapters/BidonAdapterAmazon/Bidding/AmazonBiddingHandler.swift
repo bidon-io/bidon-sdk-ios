@@ -10,14 +10,16 @@ import Bidon
 import DTBiOSSDK
 
 struct AmazonHandlersStorage {
-    private static var responses = [DTBAdResponse]() // this is evil I know
     
-    static func store(_ response: DTBAdResponse) {
-        responses.append(response)
+    @Atomic
+    private static var responses = [String: DTBAdResponse]() // this is evil I know
+    
+    static func store(_ response: DTBAdResponse, for slotUUID: String) {
+        responses[slotUUID] = response
     }
     
     static func fetch(for slotUUID: String) -> DTBAdResponse? {
-        return responses.first { $0.adSize()?.slotUUID == slotUUID }
+        return responses[slotUUID]
     }
 }
 
@@ -79,7 +81,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
     
     func onSuccess(_ adResponse: DTBAdResponse!) {
         responses.append(adResponse)
-        AmazonHandlersStorage.store(adResponse)
+        AmazonHandlersStorage.store(adResponse, for: adResponse.adSize()?.slotUUID ?? "")
         group.leave()
     }
     
@@ -89,5 +91,32 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
     
     func response(for slotUUID: String) -> DTBAdResponse? {
         return responses.first { $0.adSize()?.slotUUID == slotUUID }
+    }
+}
+
+@propertyWrapper
+fileprivate class Atomic<Value> {
+    private let queue = DispatchQueue(label: "com.bidon.atomic.queue")
+    private var value: Value
+
+    var projectedValue: Atomic<Value> { self }
+    
+    init(wrappedValue: Value) {
+        self.value = wrappedValue
+    }
+    
+    var wrappedValue: Value {
+        get {
+            return queue.sync { value }
+        }
+        set {
+            queue.sync { value = newValue }
+        }
+    }
+    
+    func mutate(_ mutation: (inout Value) -> ()) {
+        return queue.sync {
+            mutation(&value)
+        }
     }
 }
