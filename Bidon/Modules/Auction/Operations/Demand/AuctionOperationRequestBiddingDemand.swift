@@ -23,6 +23,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     
     var bid: BidModel<AdTypeContextType.DemandProviderType>?
     
+    private var timeoutTimer: Timer?
+    
     init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.observer = builder.observer
@@ -94,6 +96,17 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
         observer.log(event)
     }
+    
+    override func cancel() {
+        super.cancel()
+        invalidateTimer()
+        
+    }
+    
+    func invalidateTimer() {
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
+    }
 }
 
 extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
@@ -103,9 +116,16 @@ extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
     
     func setupTimeout() {
         guard isExecuting, timeout > 0 else { return }
-        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
+        
+        let timer = Timer(
+            timeInterval: timeout,
+            repeats: false
+        ) { [weak self] _ in
             self?.operationTimeoutReached()
         }
+        
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
     }
     
     func operationTimeoutReached() {
@@ -117,7 +137,6 @@ extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
             )
         )
         finish()
-        cancel()
     }
 }
 
@@ -125,7 +144,6 @@ extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHand
     
     func timeoutReached() {
         guard isExecuting else { return }
-        
         observer.log(
             BiddingDemandErrorAuctionEvent(
                 demandId: adUnit.demandId,

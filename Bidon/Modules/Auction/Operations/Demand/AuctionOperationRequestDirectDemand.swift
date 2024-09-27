@@ -22,6 +22,8 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     let adUnit: AdUnitModel
     
     private(set) var bid: BidType?
+    
+    private var timeoutTimer: Timer?
 
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -95,6 +97,18 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
         observer.log(event)
     }
+    
+    override func cancel() {
+        super.cancel()
+        print("cancel")
+        invalidateTimer()
+    }
+    
+    func invalidateTimer() {
+        print("timeout:invalidate_timer")
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
+    }
 }
 
 extension AuctionOperationRequestDirectDemand: TimeoutOperation {
@@ -104,14 +118,37 @@ extension AuctionOperationRequestDirectDemand: TimeoutOperation {
     
     func setupTimeout() {
         guard isExecuting, timeout > 0 else { return }
-        DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
+        print("timeout:setup_timeout \(timeout) seconds")
+        
+        let timer = Timer(
+            timeInterval: timeout,
+            repeats: false
+        ) { [weak self] _ in
+            print("timeout:fire_timer")
             self?.operationTimeoutReached()
         }
+        
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
     }
     
     func operationTimeoutReached() {
         guard isExecuting else { return }
-        
+        print("timeout:reach_timeout")
+        observer.log(
+            DirectDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit,
+                error: .fillTimeoutReached
+            )
+        )
+        finish()
+    }
+}
+
+extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
+    
+    func timeoutReached() {
+        guard isExecuting else { return }
         observer.log(
             DirectDemandLoadingErrorAucitonEvent(
                 adUnit: adUnit,

@@ -28,11 +28,11 @@ final class AuctionOperationRequestDemandBuilder<AdTypeContextType: AdTypeContex
 }
 
 
-// MARK: - Demand Request Operation Timeout
+// MARK: - Demand Request Operation Timeout.
 
 protocol TimeoutOperation: Operation {
     var timeout: TimeInterval { get }
-    
     func setupTimeout()
+    
     func operationTimeoutReached()
 }
