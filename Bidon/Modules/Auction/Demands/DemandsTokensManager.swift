@@ -14,15 +14,17 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = DemandsTokensManagerBuilder<AdTypeContextType>
 
+    private let context: AdTypeContextType
     private var adapters: [AdapterType]
     private let demands: [String]
     private let timeout: TimeInterval
     
+    @Atomic
     var tokens = [BiddingDemandToken]()
     
     private lazy var operationQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.name = "io.bidon.tokensQueue"
+        queue.name = "io.bidon.tokensQueue.\(context.adType.stringValue)"
         queue.maxConcurrentOperationCount = 1
         queue.qualityOfService = .default
         return queue
@@ -30,7 +32,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     
     private lazy var timerQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.name = "io.bidon.timerQueue"
+        queue.name = "io.bidon.timerQueue.\(context.adType.stringValue)"
         queue.maxConcurrentOperationCount = 1
         queue.qualityOfService = .default
         return queue
@@ -40,6 +42,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         self.adapters = builder.adapters
         self.demands = builder.demands
         self.timeout = builder.timeout / 1000
+        self.context = builder.context
     }
     
     func load(initializationParameters: AdaptersInitialisationParameters, completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)) {

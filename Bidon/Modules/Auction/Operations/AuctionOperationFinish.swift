@@ -59,8 +59,6 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         let completion = self.completion
         
         completion(result)
-        
-        print("weoinhwoegh FINISH CANCEL")
     }
     
     @discardableResult

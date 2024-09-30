@@ -72,4 +72,10 @@ final class AuctionOperationRoundTimeout<AdTypeContextType: AdTypeContext>: Asyn
         RunLoop.main.add(timer, forMode: .default)
         self.timer = timer
     }
+    
+    override func cancel() {
+        super.cancel()
+        
+        timer?.invalidate()
+    }
 }

@@ -21,26 +21,28 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     private let auctionObserver: AnyAuctionObserver
     private let adRevenueObserver: AdRevenueObserver
-        
+    
     private lazy var queue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
-        queue.name = "com.bidon.auction.queue"
+        queue.name = "com.bidon.auction.queue.\(context.adType.stringValue)"
         queue.qualityOfService = .default
         return queue
     }()
     
     private lazy var timeoutQueue: OperationQueue = {
         let queue = OperationQueue()
-        queue.name = "com.bidon.timeout.queue"
+        queue.name = "com.bidon.timeout.queue.\(context.adType.stringValue)"
         queue.qualityOfService = .default
         return queue
     }()
     
     var maxPrice: Price
+    @Atomic
     var pendingOperations = [any AuctionOperationRequestDemand]()
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>?
+    @Atomic
     var auctionTimeoutReached = false
     var completion: Completion?
     
@@ -208,5 +210,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         if let finishAuctionOperation = finishAuctionOperation, !finishAuctionOperation.isFinished {
             finishAuctionOperation.cancel()
         }
+        timeoutQueue.cancelAllOperations()
     }
 }
