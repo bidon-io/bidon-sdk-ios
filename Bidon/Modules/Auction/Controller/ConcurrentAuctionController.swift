@@ -38,11 +38,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }()
     
     var maxPrice: Price
-    @Atomic
     var pendingOperations = [any AuctionOperationRequestDemand]()
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>?
-    @Atomic
     var auctionTimeoutReached = false
     var completion: Completion?
     

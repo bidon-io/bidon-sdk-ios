@@ -19,7 +19,6 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private let demands: [String]
     private let timeout: TimeInterval
     
-    @Atomic
     var tokens = [BiddingDemandToken]()
     
     private lazy var operationQueue: OperationQueue = {
