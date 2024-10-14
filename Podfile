@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 3.0.1'
+  pod 'BidMachine', '3.0.1'
 end
 
 def admob
@@ -58,7 +58,7 @@ def ocmock
 end
 
 def meta_sdk
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKLoginKit', "17.0.1"
 end
 
 def amazon
@@ -70,7 +70,8 @@ def inmobi
 end
 
 def appodeal_mediation
-   pod 'Appodeal', '~> 3.4.0-beta.1'
+  pod 'StackConsentManager', '2.0.5'
+#   pod 'Appodeal', '~> 3.4.0-beta.1'
 end
 
 # Targets

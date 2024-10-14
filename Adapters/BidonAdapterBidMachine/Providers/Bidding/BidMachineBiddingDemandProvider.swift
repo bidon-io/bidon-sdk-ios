@@ -23,7 +23,7 @@ where AdObject: BidMachineAdProtocol {
     
         BidMachineSdk.shared.token(with: placementFormat) { token in
             guard let token else {
-                response(.failure(.unscpecifiedException("BidMachine has not provided bidding token")))
+                response(.failure(.unscpecifiedException))
                 return
             }
             response(.success(token))
@@ -47,7 +47,7 @@ where AdObject: BidMachineAdProtocol {
                 guard let self = self else { return }
                 
                 guard let ad = ad, error == nil else {
-                    response(.failure(.noBid(error?.localizedDescription)))
+                    response(.failure(.noBid))
                     return
                 }
                                 

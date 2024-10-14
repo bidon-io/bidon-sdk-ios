@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SwiftUI
 import Bidon
-import Appodeal
 import Combine
 import StackConsentManager
 
@@ -86,8 +85,8 @@ final class CMPViewModel: ObservableObject {
         // TODO: Real COPPA value
         let parameters = ConsentUpdateRequestParameters(
             appKey: Constants.Appodeal.appKey,
-            mediationSdkName: "Appodeal",
-            mediationSdkVersion: Appodeal.getVersion(),
+            mediationSdkName: "Bidon",
+            mediationSdkVersion: BidonSdk.sdkVersion,
             COPPA: false
         )
         ConsentManager.shared.requestConsentInfoUpdate(

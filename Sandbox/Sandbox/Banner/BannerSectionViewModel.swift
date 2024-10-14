@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import Bidon
-import AppsFlyerAdRevenue
 import SwiftUI
 
 

@@ -19,7 +19,6 @@ enum RawAdServiceError: Error {
 
 
 final class RawAdService: NSObject, AdService {
-    var mediation: Mediation { .none }
     
     var verstion: String { "-" }
     
@@ -73,7 +72,7 @@ final class RawAdService: NSObject, AdService {
         case .rewardedAd:
             try await rewardedAd.load(pricefloor: pricefloor, auctionKey: auctionKey)
         default:
-            throw AppodealAdServiceError.unsupported
+            throw AdServiceError.unsupported
         }
     }
     
@@ -95,7 +94,7 @@ final class RawAdService: NSObject, AdService {
         case .rewardedAd:
             try await rewardedAd.show()
         default:
-            throw AppodealAdServiceError.unsupported
+            throw AdServiceError.unsupported
         }
     }
     

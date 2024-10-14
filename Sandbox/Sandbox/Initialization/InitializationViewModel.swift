@@ -90,18 +90,7 @@ final class InitializationViewModel: ObservableObject, AdResponder {
             adService.bidonHTTPHeaders = ["Authorization": "Basic \(authorization)"]
         }
     }
-    
-    @Published var mediation: Mediation = .none {
-        didSet {
-            switch mediation {
-            case .none:
-                AdServiceProvider.shared.service = RawAdService()
-            case .appodeal:
-                AdServiceProvider.shared.service = AppodealAdService()
-            }
-        }
-    }
-    
+
     @Published var adapters: [Bidon.Adapter] = .default()
     
     @MainActor
