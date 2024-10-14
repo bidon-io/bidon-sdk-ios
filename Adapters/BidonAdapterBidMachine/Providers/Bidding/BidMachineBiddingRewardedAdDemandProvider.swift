@@ -8,14 +8,13 @@
 import Foundation
 import UIKit
 import BidMachine
-import BidMachineApiCore
 import Bidon
 
 
 final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {    
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    override var placementFormat: BidMachineApiCore.PlacementFormat { .rewarded }
+    override var placementFormat: PlacementFormat { .rewarded }
     
     override func didDismissAd(_ ad: BidMachineAdProtocol) {
         defer { super.didDismissAd(ad) }

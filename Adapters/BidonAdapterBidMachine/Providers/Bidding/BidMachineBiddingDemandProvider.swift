@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import BidMachine
-import BidMachineApiCore
 import Bidon
 
 class BidMachineBiddingDemandProvider<AdObject>: BidMachineBaseDemandProvider<AdObject>, BiddingDemandProvider
@@ -21,12 +20,14 @@ where AdObject: BidMachineAdProtocol {
         biddingTokenExtras: BidMachineAdUnitExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        guard let token = BidMachineSdk.shared.token else {
-            response(.failure(.unscpecifiedException))
-            return
+    
+        BidMachineSdk.shared.token(with: placementFormat) { token in
+            guard let token else {
+                response(.failure(.unscpecifiedException("BidMachine has not provided bidding token")))
+                return
+            }
+            response(.success(token))
         }
-        
-        response(.success(token))
     }
     
     func load(
@@ -46,7 +47,7 @@ where AdObject: BidMachineAdProtocol {
                 guard let self = self else { return }
                 
                 guard let ad = ad, error == nil else {
-                    response(.failure(.noBid))
+                    response(.failure(.noBid(error?.localizedDescription)))
                     return
                 }
                                 

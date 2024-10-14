@@ -44,21 +44,18 @@ DirectAdViewDemandSourceAdapter
 
 extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
     public var isInitialized: Bool {
-        return ALSdk.shared().isInitialized
+        return ALSdk.shared().isInitialized == true
     }
     
     public func initialize(
         parameters: AppLovinParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        // COPPA
-        switch context.regulations.coppaApplies {
-        case .yes:
-            ALPrivacySettings.setIsAgeRestrictedUser(true)
-        case .no:
-            ALPrivacySettings.setIsAgeRestrictedUser(false)
-        default:
-            break
+        let currentDeviceUUID = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let settings = ALSdkSettings()
+        
+        let configuration = ALSdkInitializationConfiguration(sdkKey: parameters.sdkKey) { config in
+            config.testDeviceAdvertisingIdentifiers = context.isTestMode ? [currentDeviceUUID] : []
         }
         
         // GDPR
@@ -71,14 +68,8 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
             break
         }
         
-        let configuration = ALSdkInitializationConfiguration(sdkKey: parameters.sdkKey) { builder in
-            let currentDeviceUUID = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-            builder.testDeviceAdvertisingIdentifiers = context.isTestMode ? [currentDeviceUUID] : []
-        }
-
-        ALSdk.shared().initialize(with: configuration) { configuration in
+        ALSdk.shared().initialize(with: configuration) { _ in
             completion(nil)
         }
     }
 }
-

@@ -20,6 +20,7 @@ struct AmazonAdUnitExtras: Codable {
     
     var slotUuid: String
     var format: Format
+    var isVideo: Bool?
     
     func adSize(_ format: BannerFormat? = nil) -> DTBAdSize? {
         switch (self.format, format) {

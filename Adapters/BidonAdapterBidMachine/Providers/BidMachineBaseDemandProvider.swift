@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import BidMachine
-import BidMachineApiCore
 import Bidon
 
 
@@ -18,7 +17,7 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
-    var placementFormat: BidMachineApiCore.PlacementFormat {
+    var placementFormat: PlacementFormat {
         fatalError("Base demand provider doesn't provide placement format")
     }
     

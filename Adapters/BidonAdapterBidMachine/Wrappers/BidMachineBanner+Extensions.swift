@@ -8,7 +8,6 @@
 import Foundation
 import Bidon
 import BidMachine
-import BidMachineApiCore
 
 
 extension BidMachineBanner: AdViewContainer {
@@ -16,7 +15,7 @@ extension BidMachineBanner: AdViewContainer {
 }
 
 
-extension BidMachineApiCore.PlacementFormat {
+extension PlacementFormat {
     init(format: BannerFormat) {
         switch format {
         case .banner: self = .banner320x50
