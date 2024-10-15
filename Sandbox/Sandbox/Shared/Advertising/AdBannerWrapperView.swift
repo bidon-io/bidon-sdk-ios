@@ -47,7 +47,6 @@ protocol AdBannerWrapperView: View {
 
 
 struct AnyAdBannerWrapperView: AdBannerWrapperView {
-    var mediation: Mediation = AdServiceProvider.shared.service.mediation
     var format: AdBannerWrapperFormat
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
@@ -59,28 +58,16 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     @Binding var isLoading: Bool
     
     var body: some View {
-        switch mediation {
-        case .appodeal:
-            AppodealBannerView(
-                format: format,
-                isAutorefreshing: isAutorefreshing,
-                autorefreshInterval: autorefreshInterval,
-                auctionKey: auctionKey, onEvent: onEvent,
-                ad: $ad,
-                isLoading: $isLoading
-            )
-        case .none:
-            RawBannerView(
-                format: format,
-                isAutorefreshing: isAutorefreshing,
-                autorefreshInterval: autorefreshInterval,
-                pricefloor: pricefloor,
-                auctionKey: auctionKey,
-                onEvent: onEvent,
-                ad: $ad,
-                isLoading: $isLoading
-            )
-        }
+        RawBannerView(
+            format: format,
+            isAutorefreshing: isAutorefreshing,
+            autorefreshInterval: autorefreshInterval,
+            pricefloor: pricefloor,
+            auctionKey: auctionKey,
+            onEvent: onEvent,
+            ad: $ad,
+            isLoading: $isLoading
+        )
     }
 }
 

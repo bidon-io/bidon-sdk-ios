@@ -66,13 +66,13 @@ extension RawInterstitialAdWrapper {
     override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error) {
         super.adObject(adObject, didFailToLoadAd: error)
         
-        resumeLoadingContinuation(throwing: AppodealAdServiceError.noFill)
+        resumeLoadingContinuation(throwing: AdServiceError.noFill)
     }
     
     override func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
         super.adObject(adObject, didFailToPresentAd: error)
         
-        resumeShowingContinuation(throwing: AppodealAdServiceError.invalidPresentationState)
+        resumeShowingContinuation(throwing: AdServiceError.invalidPresentationState)
     }
     
     override func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didDismissAd ad: Bidon.Ad) {
