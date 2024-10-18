@@ -19,44 +19,44 @@ PODS:
   - FBSDKLoginKit (17.0.1):
     - FBSDKCoreKit (= 17.0.1)
   - Fyber_Marketplace_SDK (8.3.2)
-  - Google-Mobile-Ads-SDK (11.8.0):
+  - Google-Mobile-Ads-SDK (11.9.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.6.0)
   - InMobiSDK (10.7.8)
-  - MintegralAdSDK (7.7.3):
-    - MintegralAdSDK/BannerAd (= 7.7.3)
-    - MintegralAdSDK/BidBannerAd (= 7.7.3)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 7.7.3)
-    - MintegralAdSDK/BidNativeAd (= 7.7.3)
-    - MintegralAdSDK/BidNewInterstitialAd (= 7.7.3)
-    - MintegralAdSDK/BidRewardVideoAd (= 7.7.3)
-    - MintegralAdSDK/InterstitialVideoAd (= 7.7.3)
-    - MintegralAdSDK/NativeAd (= 7.7.3)
-    - MintegralAdSDK/NewInterstitialAd (= 7.7.3)
-    - MintegralAdSDK/RewardVideoAd (= 7.7.3)
-  - MintegralAdSDK/BannerAd (7.7.3):
+  - MintegralAdSDK (7.7.2):
+    - MintegralAdSDK/BannerAd (= 7.7.2)
+    - MintegralAdSDK/BidBannerAd (= 7.7.2)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 7.7.2)
+    - MintegralAdSDK/BidNativeAd (= 7.7.2)
+    - MintegralAdSDK/BidNewInterstitialAd (= 7.7.2)
+    - MintegralAdSDK/BidRewardVideoAd (= 7.7.2)
+    - MintegralAdSDK/InterstitialVideoAd (= 7.7.2)
+    - MintegralAdSDK/NativeAd (= 7.7.2)
+    - MintegralAdSDK/NewInterstitialAd (= 7.7.2)
+    - MintegralAdSDK/RewardVideoAd (= 7.7.2)
+  - MintegralAdSDK/BannerAd (7.7.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (7.7.3):
+  - MintegralAdSDK/BidBannerAd (7.7.2):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (7.7.3):
+  - MintegralAdSDK/BidInterstitialVideoAd (7.7.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (7.7.3):
+  - MintegralAdSDK/BidNativeAd (7.7.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (7.7.3):
+  - MintegralAdSDK/BidNewInterstitialAd (7.7.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (7.7.3):
+  - MintegralAdSDK/BidRewardVideoAd (7.7.2):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (7.7.3):
+  - MintegralAdSDK/InterstitialVideoAd (7.7.2):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (7.7.3)
-  - MintegralAdSDK/NewInterstitialAd (7.7.3):
+  - MintegralAdSDK/NativeAd (7.7.2)
+  - MintegralAdSDK/NewInterstitialAd (7.7.2):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (7.7.3):
+  - MintegralAdSDK/RewardVideoAd (7.7.2):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.8.0)
   - OCMock (3.9.4)
@@ -86,9 +86,9 @@ DEPENDENCIES:
   - FBAudienceNetwork (~> 6.15.2)
   - FBSDKLoginKit (= 17.0.1)
   - Fyber_Marketplace_SDK (~> 8.3.2)
-  - Google-Mobile-Ads-SDK (~> 11.8.0)
+  - Google-Mobile-Ads-SDK (~> 11.9.0)
   - InMobiSDK (~> 10.7.5)
-  - MintegralAdSDK (~> 7.7.2)
+  - MintegralAdSDK (= 7.7.2)
   - MobileFuseSDK
   - OCMock (~> 3.9.1)
   - StackConsentManager (= 2.0.5)
@@ -133,10 +133,10 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 3d78e5fe00504e5c1aed1c48de0654c3a1565d15
   FBSDKLoginKit: 9a581053879a1e6fc3fab8ead341c78c6a318255
   Fyber_Marketplace_SDK: 215c2020efd507c0e97f40871e96a26918f8986e
-  Google-Mobile-Ads-SDK: c1c53687b572122c5b0bdaf354335bbf40fd81ef
+  Google-Mobile-Ads-SDK: 6a3cdd892fd87c8b2a388c1cc74d2b7df2570f0b
   GoogleUserMessagingPlatform: 0c3a08353e53ce8c2feab7addd0b652cde522450
   InMobiSDK: ee53561ba1fd21787b1eb82f02da9b93067ffc8e
-  MintegralAdSDK: 217cca20529055c8791c82985dd7a74864e49fd0
+  MintegralAdSDK: 7e05f9ab5f555b7049435a9477d457d7bf9b5473
   MobileFuseSDK: 4dae8f266ac60d346e8b2f526b1871844d6d8128
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
@@ -145,6 +145,6 @@ SPEC CHECKSUMS:
   UnityAds: 32596c2f76856d643b50d3da51c47a552b80d5a4
   VungleAds: d7cf66a6dfd390a583ea2b2cfb9af1043b686e58
 
-PODFILE CHECKSUM: abfea46134a95ac2065f33b1f0cc1378d8b6f3cf
+PODFILE CHECKSUM: edd3b02a7dc3cbcc327ec7bd8cd685775d0e9847
 
 COCOAPODS: 1.15.2

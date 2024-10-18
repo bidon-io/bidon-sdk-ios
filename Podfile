@@ -18,7 +18,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 11.8.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.9.0'
 end
 
 def appsflyer
@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.7.2'
+  pod 'MintegralAdSDK', '7.7.2'
 end
 
 def mobilefuse
