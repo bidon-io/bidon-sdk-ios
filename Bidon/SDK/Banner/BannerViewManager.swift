@@ -157,6 +157,8 @@ final internal class BannerViewManager: NSObject {
         guard let impression = impression, impression.isTrackingAllowed(.loss) else { return }
         defer { hide() }
         
+        guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
+        
         let context = BannerAdTypeContext(viewContext: viewContext)
         let request = context.notificationRequest { builder in
             builder.withRoute(.loss)
