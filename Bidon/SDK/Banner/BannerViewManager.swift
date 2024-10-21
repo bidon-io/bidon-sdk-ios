@@ -127,6 +127,7 @@ final internal class BannerViewManager: NSObject {
             _impression.markTrackedIfNeeded(.win)
             adViewContainer?.impression = _impression
         }
+        guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
