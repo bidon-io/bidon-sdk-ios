@@ -265,6 +265,8 @@ final class BannerAdManager: NSObject {
                 state = .ready(impression: impression)
             }
             
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
+            
             let context = BannerAdTypeContext(viewContext: viewContext)
             
             let request = context.notificationRequest { builder in
@@ -302,6 +304,8 @@ final class BannerAdManager: NSObject {
             // for request logic
             guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
+            
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
             
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in
