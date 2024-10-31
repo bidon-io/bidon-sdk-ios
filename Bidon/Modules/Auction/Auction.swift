@@ -49,6 +49,7 @@ struct AuctionConfiguration {
     var pricefloor: Price
     var auctionTimeout: Float
     var tokens: [BiddingDemandToken]
+    var isExternalNotificationsEnabled: Bool
 }
 
 extension AuctionConfiguration {
@@ -70,5 +71,6 @@ extension AuctionConfiguration {
         self.pricefloor = auction.pricefloor
         self.auctionTimeout = auction.auctionTimeout
         self.tokens = tokens
+        self.isExternalNotificationsEnabled = auction.externalWinNotifications
     }
 }
