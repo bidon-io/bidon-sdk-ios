@@ -119,7 +119,8 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             return
         }
         if adUnit.pricefloor < maxPrice {
-            handlePriceFloorBelowMax()
+            handlePriceFloorBelowMax(adUnit: adUnit)
+            scheduleNextOperation()
         } else {
             performDemandRequest(operation)
         }
@@ -182,7 +183,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
 
     private func finishAuction() {
         invalidateTimer()
-    
+
         pendingOperations = []
         queue.cancelAllOperations()
         
@@ -197,15 +198,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         queue.addOperation(finishAuctionOperation)
     }
     
-    private func handlePriceFloorBelowMax() {
-        pendingOperations
-            .compactMap { adUnit(from: $0) }
-            .forEach { logPriceFloorBelowMax(adUnit: $0) }
-        
-        finishAuction()
-    }
-    
-    private func logPriceFloorBelowMax(adUnit: any AdUnit) {
+    private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
         if adUnit.bidType == .direct {
             let event = DirectDemandBelowPricefloorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
             auctionObserver.log(event)
