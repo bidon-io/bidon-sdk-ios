@@ -36,8 +36,6 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     override func main() {
         super.main()
         
-        guard isExecuting else { return }
-        
         guard
             let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericDirectDemandProvider }),
             let provider = adapter.provider as? any GenericDirectDemandProvider
@@ -61,9 +59,12 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             pricefloor: auctionConfiguration.pricefloor,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
-            guard let self = self else { return }
-            defer {
-                self.finish()
+            guard let self else { return }
+            defer { self.finish() }
+            
+            guard !isCancelled else {
+                print("Operation is cancelled due Timeout or Cancel event.")
+                return
             }
             
             switch result {
@@ -81,9 +82,10 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 )
                 
                 self.bid = bid
-                
+        
                 let event = DirectDemandDidLoadAuctionEvent(bid: bid)
                 self.observer.log(event)
+                
             case .failure(let error):
                 let event = DirectDemandLoadingErrorAucitonEvent(
                     adUnit: adUnit,
@@ -99,14 +101,12 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
 extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
         guard isExecuting else { return }
-
+        
         observer.log(
             DirectDemandLoadingErrorAucitonEvent(
                 adUnit: adUnit,
                 error: .fillTimeoutReached
             )
         )
-        
-        finish()
     }
 }
