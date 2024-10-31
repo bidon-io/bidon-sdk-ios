@@ -55,7 +55,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     deinit {
-        print("deinit swag")
+        print("deinit")
     }
     
     //MARK: - Public
