@@ -58,9 +58,7 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         let result = Result<BidType, SdkError>.failure(.cancelled)
         let completion = self.completion
         
-        DispatchQueue.main.async {
-            completion(result)
-        }
+        completion(result)
     }
     
     @discardableResult

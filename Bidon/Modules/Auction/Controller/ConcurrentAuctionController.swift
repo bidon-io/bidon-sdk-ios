@@ -54,10 +54,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         self.maxPrice = builder.pricefloor
     }
     
-    deinit {
-        print("deinit")
-    }
-    
     //MARK: - Public
     
     func load(completion: @escaping Completion) {
@@ -186,15 +182,16 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
 
     private func finishAuction() {
         invalidateTimer()
+    
         pendingOperations = []
         queue.cancelAllOperations()
         
         guard let finishAuctionOperation,
                 !finishAuctionOperation.isExecuting,
                 !finishAuctionOperation.isFinished,
-                !finishAuctionOperation.isCancelled else {
-            
-            print("finish_auction : Cant finish auction. Finish is already in progress or completed.")
+                !finishAuctionOperation.isCancelled 
+        else {
+            Logger.warning("Cant finish auction. Finish is already in progress or completed.")
             return
         }
         queue.addOperation(finishAuctionOperation)
