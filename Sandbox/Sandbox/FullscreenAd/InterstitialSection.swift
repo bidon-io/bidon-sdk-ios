@@ -69,6 +69,18 @@ struct InterstitialSection: View {
                 "Events",
                 destination: AdEventsList(events: vm.events)
             )
+            
+            Button(action: cancelAuction) {
+                HStack {
+                    switch vm.state {
+                    case .ready:
+                        Text("Revoke")
+                            .disabled(false)
+                    default:
+                        Text("Cancel")
+                    }
+                }
+            }.disabled(!(vm.state == .loading || vm.state == .ready))
         }
         .foregroundColor(.primary)
     }
@@ -83,5 +95,17 @@ struct InterstitialSection: View {
         Task {
             await vm.show()
         }
+    }
+    
+    private func cancelAuction() {
+        Task {
+            await vm.cancel()
+        }
+    }
+}
+
+struct InterstitialSection_Previews: PreviewProvider {
+    static var previews: some View {
+        InterstitialSection()
     }
 }

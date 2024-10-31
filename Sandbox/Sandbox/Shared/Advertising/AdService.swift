@@ -71,9 +71,11 @@ protocol AdService: AnyObject {
     
     func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws
     
+    func cancel(adType: AdType) throws
+    
     func canShow(adType: AdType) -> Bool 
     
-    func show(adType: AdType) async throws
+    func show(adType: AdType) async throws  
     
     func notify(loss ad: Ad, adType: AdType)
     

@@ -39,6 +39,10 @@ final class RawInterstitialAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
+    func cancel() {
+        bidonInterstitial?.cancel()
+    }
+    
     override var isReady: Bool {
         return bidonInterstitial?.isReady == true
     }

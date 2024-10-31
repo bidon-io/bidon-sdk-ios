@@ -69,6 +69,18 @@ struct RewardedAdSection: View {
                 "Events",
                 destination: AdEventsList(events: vm.events)
             )
+            
+            Button(action: cancelAuction) {
+                HStack {
+                    switch vm.state {
+                    case .ready:
+                        Text("Revoke")
+                            .disabled(false)
+                    default:
+                        Text("Cancel")
+                    }
+                }
+            }.disabled(!(vm.state == .loading || vm.state == .ready))
         }
         .foregroundColor(.primary)
     }
@@ -82,6 +94,12 @@ struct RewardedAdSection: View {
     private func show() {
         Task {
             await vm.show()
+        }
+    }
+    
+    private func cancelAuction() {
+        Task {
+            await vm.cancel()
         }
     }
 }

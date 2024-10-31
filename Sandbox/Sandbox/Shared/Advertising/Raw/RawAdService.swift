@@ -77,6 +77,17 @@ final class RawAdService: NSObject, AdService {
         }
     }
     
+    func cancel(adType: AdType) throws {
+        switch adType {
+        case .interstitial:
+            interstitial.cancel()
+        case .rewardedAd:
+            rewardedAd.cancel()
+        default:
+            throw RawAdServiceError.unsupported
+        }
+    }
+    
     func canShow(adType: AdType) -> Bool {
         switch adType {
         case .interstitial:
