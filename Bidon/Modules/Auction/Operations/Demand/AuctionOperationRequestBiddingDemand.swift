@@ -62,7 +62,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             defer { self.finish() }
             
             guard !isCancelled else {
-                print("Operation is cancelled due Timeout or Cancel event.")
+                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
                 return
             }
             
