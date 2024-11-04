@@ -48,13 +48,12 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             
             return
         }
+        setupTimeout()
         
         let event = DirectDemandWillLoadAuctionEvent(
             adUnit: adUnit
         )
         observer.log(event)
-        
-        setupTimeout()
         
         provider.load(
             pricefloor: auctionConfiguration.pricefloor,
@@ -100,53 +99,35 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     
     override func cancel() {
         super.cancel()
-        print("cancel")
         invalidateTimer()
     }
     
     func invalidateTimer() {
-        print("timeout:invalidate_timer")
         timeoutTimer?.invalidate()
         timeoutTimer = nil
     }
 }
 
-extension AuctionOperationRequestDirectDemand: TimeoutOperation {
+extension AuctionOperationRequestDirectDemand: OperationTimeout {
     var timeout: TimeInterval {
         return adUnit.timeoutInSeconds
     }
     
     func setupTimeout() {
         guard isExecuting, timeout > 0 else { return }
-        print("timeout:setup_timeout \(timeout) seconds")
-        
         let timer = Timer(
             timeInterval: timeout,
             repeats: false
         ) { [weak self] _ in
-            print("timeout:fire_timer")
-            self?.operationTimeoutReached()
+            self?.timeoutReached()
         }
         
         RunLoop.main.add(timer, forMode: .default)
         timeoutTimer = timer
     }
-    
-    func operationTimeoutReached() {
-        guard isExecuting else { return }
-        print("timeout:reach_timeout")
-        observer.log(
-            DirectDemandLoadingErrorAucitonEvent(
-                adUnit: adUnit,
-                error: .fillTimeoutReached
-            )
-        )
-        finish()
-    }
 }
 
-extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandler {
-    
+extension AuctionOperationRequestDirectDemand: OperationTimeoutHandler {
     func timeoutReached() {
         guard isExecuting else { return }
         observer.log(
@@ -155,5 +136,6 @@ extension AuctionOperationRequestDirectDemand: AuctionOperationRoundTimeoutHandl
                 error: .fillTimeoutReached
             )
         )
+        cancel()
     }
 }

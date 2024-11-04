@@ -47,13 +47,12 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             finish()
             return
         }
+        setupTimeout()
 
         let event = BiddingDemandWillLoadAuctionEvent(
             adUnit: adUnit
         )
         observer.log(event)
-        
-        setupTimeout()
         
         provider.load(
             payloadDecoder: adUnit.extras,
@@ -100,7 +99,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     override func cancel() {
         super.cancel()
         invalidateTimer()
-        
     }
     
     func invalidateTimer() {
@@ -109,47 +107,37 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     }
 }
 
-extension AuctionOperationRequestBiddingDemand: TimeoutOperation {
+extension AuctionOperationRequestBiddingDemand: OperationTimeout {
     var timeout: TimeInterval {
         return adUnit.timeoutInSeconds
     }
     
     func setupTimeout() {
         guard isExecuting, timeout > 0 else { return }
-        
+
         let timer = Timer(
             timeInterval: timeout,
             repeats: false
         ) { [weak self] _ in
-            self?.operationTimeoutReached()
+            self?.timeoutReached()
         }
         
         RunLoop.main.add(timer, forMode: .default)
         timeoutTimer = timer
     }
-    
-    func operationTimeoutReached() {
-        guard isExecuting else { return }
-        observer.log(
-            BiddingDemandLoadingErrorAucitonEvent(
-                adUnit: adUnit,
-                error: .fillTimeoutReached
-            )
-        )
-        finish()
-    }
 }
 
-extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
+extension AuctionOperationRequestBiddingDemand: OperationTimeoutHandler {
     
     func timeoutReached() {
         guard isExecuting else { return }
+        
         observer.log(
-            BiddingDemandErrorAuctionEvent(
-                demandId: adUnit.demandId,
+            BiddingDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit, 
                 error: .fillTimeoutReached
             )
         )
-        finish()
+        cancel()
     }
 }
