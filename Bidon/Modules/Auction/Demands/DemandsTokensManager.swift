@@ -44,7 +44,10 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         self.context = builder.context
     }
     
-    func load(initializationParameters: AdaptersInitialisationParameters, completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)) {
+    func load(
+        initializationParameters: AdaptersInitialisationParameters,
+        completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)
+    ) {
         var operations = [Operation]()
         for demandId in demands {
             guard

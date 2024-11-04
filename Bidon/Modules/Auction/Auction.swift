@@ -52,6 +52,13 @@ struct AuctionConfiguration {
     var isExternalNotificationsEnabled: Bool
 }
 
+extension AuctionConfiguration {
+    var timeoutInSeconds: TimeInterval {
+        return Date.MeasurementUnits.milliseconds
+            .convert(Double(auctionTimeout), to: .seconds)
+    }
+}
+
 
 extension AuctionConfiguration {
     init(auction: AuctionRequest.ResponseBody, tokens: [BiddingDemandToken]) {

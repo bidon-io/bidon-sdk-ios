@@ -36,8 +36,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     
     override func main() {
         super.main()
-        
-        guard isExecuting else { return }
                 
         guard
             let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericBiddingDemandProvider }),
@@ -48,12 +46,10 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 error: .unknownAdapter
             )
             observer.log(event)
-            
             finish()
             return
         }
 
-        
         let event = BiddingDemandWillLoadAuctionEvent(
             adUnit: adUnit
         )
@@ -63,9 +59,12 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             payloadDecoder: adUnit.extras,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
-            guard let self = self else { return }
-            defer {
-                self.finish()
+            guard let self else { return }
+            defer { self.finish() }
+            
+            guard !isCancelled else {
+                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+                return
             }
             
             switch result {
@@ -102,8 +101,6 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
 extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
     func timeoutReached() {
         guard isExecuting else { return }
-                
-        finish()
         
         observer.log(
             BiddingDemandErrorAuctionEvent(
