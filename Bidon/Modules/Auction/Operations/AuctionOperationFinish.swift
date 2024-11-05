@@ -57,7 +57,6 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         
         let result = Result<BidType, SdkError>.failure(.cancelled)
         let completion = self.completion
-        
         completion(result)
     }
     

@@ -76,6 +76,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     func cancel() {
         auctionObserver.log(CancelAuctionEvent())
+        
         finishAuction()
     }
     
@@ -140,8 +141,14 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
         let finishDemandOperation = BlockOperation { [weak self] in
-            guard let self, !operation.isCancelled else { return }
-
+            guard let self else { return }
+        
+            // If single ad unit is canceled we do not process the result and start next operation.
+            guard !operation.isCancelled else {
+                self.scheduleNextOperation()
+                return
+            }
+            
             if let result = operation.bid as (any Bid)? {
                 self.maxPrice = result.price
             }

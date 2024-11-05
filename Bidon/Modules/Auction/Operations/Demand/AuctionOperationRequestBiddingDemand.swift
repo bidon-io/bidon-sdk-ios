@@ -23,6 +23,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     
     var bid: BidModel<AdTypeContextType.DemandProviderType>?
     
+    private var timeoutTimer: Timer?
+    
     init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.observer = builder.observer
@@ -41,14 +43,11 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericBiddingDemandProvider }),
             let provider = adapter.provider as? any GenericBiddingDemandProvider
         else {
-            let event = BiddingDemandLoadingErrorAucitonEvent(
-                adUnit: adUnit,
-                error: .unknownAdapter
-            )
-            observer.log(event)
+            logLoadingError(error: .unknownAdapter)
             finish()
             return
         }
+        setupTimeout()
 
         let event = BiddingDemandWillLoadAuctionEvent(
             adUnit: adUnit
@@ -87,26 +86,58 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 self.observer.log(event)
                 
             case .failure(let error):
-                let event = BiddingDemandLoadingErrorAucitonEvent(
-                    adUnit: adUnit,
-                    error: error
-                )
-                self.observer.log(event)
+                logLoadingError(error: error)
             }
         }
     }
+    
+    private func logLoadingError(error: MediationError) {
+        let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
+        observer.log(event)
+    }
+    
+    override func cancel() {
+        super.cancel()
+        invalidateTimer()
+    }
+    
+    func invalidateTimer() {
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
+    }
 }
 
+extension AuctionOperationRequestBiddingDemand: OperationTimeout {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
 
-extension AuctionOperationRequestBiddingDemand: AuctionOperationRoundTimeoutHandler {
+        let timer = Timer(
+            timeInterval: timeout,
+            repeats: false
+        ) { [weak self] _ in
+            self?.timeoutReached()
+        }
+        
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
+    }
+}
+
+extension AuctionOperationRequestBiddingDemand: OperationTimeoutHandler {
+    
     func timeoutReached() {
         guard isExecuting else { return }
         
         observer.log(
-            BiddingDemandErrorAuctionEvent(
-                demandId: adUnit.demandId,
+            BiddingDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit, 
                 error: .fillTimeoutReached
             )
         )
+        cancel()
     }
 }
