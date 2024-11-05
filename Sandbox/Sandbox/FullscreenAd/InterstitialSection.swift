@@ -85,9 +85,3 @@ struct InterstitialSection: View {
         }
     }
 }
-
-struct InterstitialSection_Previews: PreviewProvider {
-    static var previews: some View {
-        InterstitialSection()
-    }
-}

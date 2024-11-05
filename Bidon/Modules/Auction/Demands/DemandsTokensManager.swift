@@ -51,13 +51,9 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         var operations = [Operation]()
         for demandId in demands {
             guard
-                let adapter = adapters.first(
-                    where: { $0.demandId == demandId && $0.provider is any GenericBiddingDemandProvider }
-                ),
+                let adapter = adapters.first(where: { $0.demandId == demandId && $0.provider is any GenericBiddingDemandProvider }),
                 let provider = adapter.provider as? any GenericBiddingDemandProvider,
-                let parameters = initializationParameters.adapters.first(
-                    where: { $0.demandId == adapter.demandId }
-                )
+                let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId })
             else {
                 continue
             }
