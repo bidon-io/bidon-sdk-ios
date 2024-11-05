@@ -38,11 +38,6 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
         }
     }
     
-    @objc
-    public func cancel() {
-        bidonRewardedAd?.cancel()
-    }
-    
     override var isReady: Bool {
         return bidonRewardedAd?.isReady == true
     }

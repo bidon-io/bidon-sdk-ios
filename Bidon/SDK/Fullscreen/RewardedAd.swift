@@ -59,11 +59,6 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
     
-    @objc
-    public func cancel() {
-        manager.cancel()
-    }
-    
     @objc public func showAd(from rootViewController: UIViewController) {
         manager.show(from: rootViewController)
     }

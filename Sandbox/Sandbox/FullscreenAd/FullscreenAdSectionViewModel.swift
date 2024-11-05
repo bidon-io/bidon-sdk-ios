@@ -72,17 +72,6 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         }
     }
     
-    @MainActor
-    func cancel() async {
-        update(.presenting)
-        do {
-            try adService.cancel(adType: adType)
-            update(.idle)
-        } catch {
-            update(.presentationError)
-        }
-    }
-    
     private func update(
         _ state: State,
         animation: Animation = .default

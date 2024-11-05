@@ -318,15 +318,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
     
-    func cancel() {
-        switch state {
-        case .auction(let controller):
-            controller.cancel()
-        default: break
-            // print("Cant cancel auction. It is not in progress")
-        }
-    }
-    
     private func sendAuctionReport<T: AuctionReport>(_ report: T) {
         let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
