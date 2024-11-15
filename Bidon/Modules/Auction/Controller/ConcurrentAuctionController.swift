@@ -148,13 +148,16 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
                 self.scheduleNextOperation()
                 return
             }
-            
-            if let result = operation.bid as (any Bid)? {
-                self.maxPrice = result.price
-            }
+            self.rewriteMaxPriceIfNeeded(for: operation)
             self.scheduleNextOperation()
         }
         return finishDemandOperation
+    }
+    
+    private func rewriteMaxPriceIfNeeded(for operation: any AuctionOperationRequestDemand) {
+        if let result = operation.bid as (any Bid)? {
+            self.maxPrice = result.price
+        }
     }
     
     //MARK: - Auction Timeout.
