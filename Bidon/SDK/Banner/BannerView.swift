@@ -169,7 +169,7 @@ public final class BannerView: UIView, AdView {
         adCacher.pop()
         Logger.verbose("Banner \(self) will refresh ad view")
         
-        Logger.debug("[Cache] Banner \(self) will refresh ad view")
+        Logger.debug("[Cache] Banner will refresh ad view, demand: \(impression.demandId), price: \(impression.price)")
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
