@@ -41,7 +41,7 @@ protocol AdBannerWrapperView: View {
     var isAutorefreshing: Bool { get set }
     var autorefreshInterval: TimeInterval { get set }
     var pricefloor: Double { get set }
-    var auctionKey: String? { get set }
+    var auctionKey: AuctionKey? { get set }
     var onEvent: AdBannerWrapperViewEvent { get set }
 }
 
@@ -52,7 +52,7 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Double
-    var auctionKey: String?
+    var auctionKey: AuctionKey?
     var onEvent: AdBannerWrapperViewEvent
     
     @Binding var ad: Bidon.Ad?

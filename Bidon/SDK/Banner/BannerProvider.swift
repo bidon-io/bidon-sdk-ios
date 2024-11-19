@@ -56,7 +56,7 @@ public final class BannerProvider:  NSObject, AdObject {
         return bannerView
     }()
     
-    private let auctionKey: String?
+    private let auctionKey: AuctionKey?
     
     private lazy var constraintsHashTable = NSHashTable<NSLayoutConstraint>(options: .weakMemory)
     
@@ -65,7 +65,7 @@ public final class BannerProvider:  NSObject, AdObject {
         position: .fixed(.horizontalBottom)
     )
         
-    public init(auctionKey: String?) {
+    public init(auctionKey: AuctionKey?) {
         self.auctionKey = auctionKey
         
         super.init()
@@ -111,7 +111,7 @@ public final class BannerProvider:  NSObject, AdObject {
     
     @objc public func loadAd(
         with pricefloor: Price = .zero,
-        auctionKey: String?
+        auctionKey: AuctionKey?
     ) {
         if bannerView.isReady, let ad = bannerView.ad {
             #warning("FIX IT")

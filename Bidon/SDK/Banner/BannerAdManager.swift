@@ -71,7 +71,7 @@ final class BannerAdManager: NSObject {
     func loadAd(
         pricefloor: Price,
         viewContext: AdViewContext,
-        auctionKey: String?
+        auctionKey: AuctionKey?
     ) {
         guard state.isIdle else {
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
@@ -88,7 +88,7 @@ final class BannerAdManager: NSObject {
     private func fetchAuctionInfo(
         pricefloor: Price,
         viewContext: AdViewContext,
-        auctionKey: String?
+        auctionKey: AuctionKey?
     ) {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
@@ -126,7 +126,7 @@ final class BannerAdManager: NSObject {
         }
     }
     
-    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: AuctionKey?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
         
         let request = context.auctionRequest { builder in
@@ -265,6 +265,8 @@ final class BannerAdManager: NSObject {
                 state = .ready(impression: impression)
             }
             
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
+            
             let context = BannerAdTypeContext(viewContext: viewContext)
             
             let request = context.notificationRequest { builder in
@@ -302,6 +304,8 @@ final class BannerAdManager: NSObject {
             // for request logic
             guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
+            
+            guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
             
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in

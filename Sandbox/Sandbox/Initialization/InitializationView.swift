@@ -46,13 +46,6 @@ struct InitializationView: View {
                         ) {
                             AdaptersView(adapters: $vm.adapters)
                         }
-// MARK: DROP_APD_SUPPORT
-//                        Section(
-//                            header: Text("Mediation"),
-//                            footer: Text("Change of mediation will reset configuration")
-//                        ) {
-//                            SelectMediationView(mediation: $vm.mediation)
-//                        }
                         
                         Section(header: Text("Base URL")) {
                             HostView(
@@ -71,6 +64,11 @@ struct InitializationView: View {
                             Toggle("Test Mode", isOn: $vm.isTestMode)
                             NavigationLink(destination: AdServiceParametersView(vm.adService.parameters)) {
                                 Text("Advanced")
+                            }
+                            NavigationLink(destination: AdCacheConfigView(onSave: { config in
+                                BidonSdk.setAdCacheConfig(config)
+                            })) {
+                                Text("Cache Config")
                             }
                         }
                         

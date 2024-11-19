@@ -11,13 +11,18 @@ import UIKit
 
 @objc(BDNBannerView)
 public final class BannerView: UIView, AdView {
+    private enum State {
+        case idle
+        case loading
+        case showing
+    }
     @objc public var autorefreshInterval: TimeInterval = 15
     
     @objc public var isAutorefreshing: Bool = false
     
     @objc public let placement: String
     
-    @objc public let auctionKey: String?
+    @objc public let auctionKey: AuctionKey?
     
     @objc public var format: BannerFormat = .banner
     
@@ -26,13 +31,13 @@ public final class BannerView: UIView, AdView {
     @objc public weak var delegate: AdViewDelegate?
     
     @objc public var isReady: Bool {
-        adManager.impression != nil || (viewManager.impression.map { $0.showTrackedAt.isNaN } ?? false )
+        adCacher.peek() != nil || (viewManager.impression.map { $0.showTrackedAt.isNaN } ?? false )
     }
     
     @objc private(set) public
     lazy var extras: [String : AnyHashable] = [:] {
         didSet {
-            adManager.extras = extras
+            adCacher.extras = extras
             viewManager.extras = extras
         }
     }
@@ -57,7 +62,7 @@ public final class BannerView: UIView, AdView {
         observer.ads = { [weak self] in
             guard let self = self else { return [] }
             
-            let ads: [Ad] = [self.adManager.impression, self.viewManager.impression]
+            let ads: [Ad] = [self.adCacher.impressions?.first, self.viewManager.impression]
                 .compactMap { $0 }
                 .map { AdContainer(impression: $0) }
             
@@ -79,19 +84,32 @@ public final class BannerView: UIView, AdView {
         return manager
     }()
     
-    private lazy var adManager: BannerAdManager = {
-        let manager = BannerAdManager(
-            placement: .default,
+    private lazy var adCacher: BannerAdCacher = {
+        var type: CacheType
+        switch viewContext.format {
+        case .banner:
+            type = .banner(viewContext)
+        case .leaderboard:
+            type = .leaderboard(viewContext)
+        case .mrec:
+            type = .mrec(viewContext)
+        case .adaptive:
+            type = .adaptive(viewContext)
+        }
+        return AdCacherFactory.cache(
+            type: type,
+            placement: placement,
+            delegate: self,
             adRevenueObserver: adRevenueObserver
         )
-        manager.delegate = self
-        return manager
     }()
+    
+    private var state: State = .idle
         
     @objc
     public init(
         frame: CGRect,
-        auctionKey: String?,
+        auctionKey: AuctionKey?,
         placement: String = "default"
     ) {
         self.placement = placement
@@ -112,18 +130,15 @@ public final class BannerView: UIView, AdView {
     
     @objc public func loadAd(
         with pricefloor: Price = .zero,
-        auctionKey: String? = nil
+        auctionKey: AuctionKey? = nil
     ) {
-        adManager.loadAd(
-            pricefloor: pricefloor,
-            viewContext: viewContext,
-            auctionKey: auctionKey ?? self.auctionKey
-        )
+        state = .loading
+        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor)
     }
     
     @objc(notifyWin)
     public func notifyWin() {
-        adManager.notifyWin(viewContext: viewContext)
+        adCacher.notifyWin()
         viewManager.notifyWin(viewContext: viewContext)
     }
     
@@ -132,11 +147,7 @@ public final class BannerView: UIView, AdView {
         external demandId: String,
         eCPM: Price
     ) {
-        adManager.notifyLoss(
-            winner: demandId,
-            eCPM: eCPM,
-            viewContext: viewContext
-        )
+        adCacher.notifyLoss(external: demandId, eCPM: eCPM)
         
         viewManager.notifyLoss(
             winner: demandId,
@@ -147,18 +158,22 @@ public final class BannerView: UIView, AdView {
 
     private final func presentIfNeeded() {
         guard
-            let impression = adManager.impression,
-            let adView = impression.bid.provider.container(opaque: impression.bid.ad)
+            let impression = adCacher.impressions?.first,
+            let adView = impression.bid.provider.container(opaque: impression.bid.ad),
+            state == .loading
         else {
             return
         }
         
+        state = .showing
+        adCacher.pop()
         Logger.verbose("Banner \(self) will refresh ad view")
+        
+        Logger.debug("[Cache] Banner \(self) will refresh ad view")
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.adManager.prepareForReuse()
             self.viewManager.present(
                 impression: impression,
                 view: adView,
@@ -167,19 +182,6 @@ public final class BannerView: UIView, AdView {
         }
     }
 }
-
-
-extension BannerView: BannerAdManagerDelegate {
-    func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
-    }
-    
-    func adManager(_ adManager: BannerAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
-        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
-        presentIfNeeded()
-    }
-}
-
 
 extension BannerView: BannerViewManagerDelegate {
     func viewManager(_ viewManager: BannerViewManager, didRecordImpression ad: Ad) {
@@ -203,10 +205,33 @@ extension BannerView: BannerViewManagerDelegate {
     }
 }
 
+extension BannerView: AdCachingDelegate {
+    func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
+    }
+    
+    func adCacher(_ adCacher: AdCaching, didLoad ad: any Ad, auctionInfo: any AuctionInfo) {
+        if state == .loading {
+            delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
+        }
+        DispatchQueue.main.async { [weak self] in
+            self?.presentIfNeeded()
+        }
+    }
+    
+    func adCacher(_ adCacher: AdCaching, didFailToPresent ad: (any Ad)?, error: SdkError) { }
+    func adCacher(_ adCacher: AdCaching, didExpire ad: any Ad) { }
+    func adCacher(_ adCacher: AdCaching, willPresent ad: any Ad) { }
+    func adCacher(_ adCacher: AdCaching, didHide ad: any Ad) { }
+    func adCacher(_ adCacher: AdCaching, didClick ad: any Ad) { }
+    func adCacher(_ adCacher: AdCaching, didReward reward: any Reward, ad: any Ad) { }
+    func adCacher(_ adCacher: AdCaching, didPayRevenue revenue: any AdRevenue, ad: any Ad) { }
+}
+
 
 internal extension BannerView {
     var ad: Ad? {
-        return (adManager.impression ?? viewManager.impression).map {
+        return (adCacher.impressions?.first ?? viewManager.impression).map {
             AdContainer(impression: $0)
         }
     }

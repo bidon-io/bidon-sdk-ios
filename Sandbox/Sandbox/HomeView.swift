@@ -76,7 +76,7 @@ final class HomeViewModel: ObservableObject {
         var isAutorefreshing: Bool
         var autorefreshInterval: TimeInterval
         var pricefloor: Price
-        var auctionKey: String?
+        var auctionKey: AuctionKey?
     }
     
     @Published var banner = BannerSectionViewModel()
@@ -145,22 +145,5 @@ final class HomeViewModel: ObservableObject {
                 )
             }
             .store(in: &cancellables)
-//        
-//        Publishers.CombineLatest4(
-//            banner.$format,
-//            banner.$isAutorefreshing,
-//            banner.$autorefreshInterval,
-//            banner.$pricefloor
-//        )
-//        .sink { [unowned self] in
-//            self.bannerSettings = BannerSettings(
-//                format: $0.0,
-//                isAutorefreshing: $0.1,
-//                autorefreshInterval: $0.2,
-//                pricefloor: $0.3,
-//                auctionKey: $0.
-//            )
-//        }
-//        .store(in: &cancellables)
     }
 }

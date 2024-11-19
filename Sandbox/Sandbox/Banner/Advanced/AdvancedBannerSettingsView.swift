@@ -23,7 +23,7 @@ struct AdvancedBannerSettings: View {
     @Binding var autorefreshInterval: TimeInterval
     
     @State var pricefloor: Price = 0.1
-    @State var auctionKey: String = "" {
+    @State var auctionKey: AuctionKey = "" {
         didSet {
             BannerProviderReference.shared.auctionKey = auctionKey
         }

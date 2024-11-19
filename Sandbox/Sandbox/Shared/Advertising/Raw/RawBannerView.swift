@@ -19,7 +19,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Price
-    var auctionKey: String?
+    var auctionKey: AuctionKey?
     var onEvent: AdBannerWrapperViewEvent
     
     @Binding var ad: Bidon.Ad?
@@ -30,7 +30,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         isAutorefreshing: Bool,
         autorefreshInterval: TimeInterval,
         pricefloor: Price = 0.1,
-        auctionKey: String?,
+        auctionKey: AuctionKey?,
         onEvent: @escaping AdBannerWrapperViewEvent,
         ad: Binding<Bidon.Ad?>,
         isLoading: Binding<Bool>

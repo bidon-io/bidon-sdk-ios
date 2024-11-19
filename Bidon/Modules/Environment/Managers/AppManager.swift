@@ -17,6 +17,7 @@ final class AppManager: App, Environment {
     private(set) var framework: String = Framework.native.description
     private(set) var frameworkVersion: String?
     private(set) var pluginVersion: String?
+    private(set) var cacheConfig = AdCacheConfig()
     
     func updateAppKey(_ appKey: String) {
         self.key = appKey
@@ -29,6 +30,10 @@ final class AppManager: App, Environment {
     
     func updatePluginVersion(_ version: String) {
         self.pluginVersion = version
+    }
+    
+    func updateAdCacheConfig(_ cacheConfig: AdCacheConfig) {
+        self.cacheConfig = cacheConfig
     }
 }
 

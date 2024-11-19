@@ -14,9 +14,9 @@ class BaseFullscreenAdWrapper: BaseAdWrapper, FullscreenAdWrapper {
     private var showingContinuation: CheckedContinuation<Void, Error>?
     
     final private(set) var pricefloor: Double = .zero
-    final private(set) var auctionKey: String?
+    final private(set) var auctionKey: AuctionKey?
         
-    final func load(pricefloor: Double, auctionKey: String?) async throws {
+    final func load(pricefloor: Double, auctionKey: AuctionKey?) async throws {
         self.pricefloor = pricefloor
         self.auctionKey = auctionKey
         try await withCheckedThrowingContinuation { [unowned self] continuation in

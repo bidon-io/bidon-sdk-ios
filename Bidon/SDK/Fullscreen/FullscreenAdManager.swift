@@ -100,10 +100,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
-        guard state.isIdle else {
-            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
-            return
-        }
+//        guard state.isIdle else {
+//            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
+//            return
+//        }
         
         fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
     }
@@ -248,6 +248,8 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             // regardless of whether a request was sent
             guard controller.impression.isTrackingAllowed(.win) else { return }
             defer { controller.impression.markTrackedIfNeeded(.win) }
+            
+            guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
                   
             let request = context.notificationRequest { builder in
                 builder.withRoute(.win)
@@ -286,6 +288,8 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 controller.impression.markTrackedIfNeeded(.loss)
                 state = .idle
             }
+            
+            guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
             
             let request = context.notificationRequest { builder in
                 builder.withRoute(.loss)

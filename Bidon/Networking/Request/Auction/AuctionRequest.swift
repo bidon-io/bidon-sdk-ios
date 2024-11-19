@@ -18,7 +18,7 @@ struct AuctionRequest: Request {
     struct RequestBody: Encodable, Tokenized {
         struct AdObjectModel: Encodable {
             let auctionId: String
-            let auctionKey: String?
+            let auctionKey: AuctionKey?
             let pricefloor: Price
             let orientation: InterfaceOrientation = .current
             var banner: BannerAdTypeContextModel?
@@ -61,6 +61,7 @@ struct AuctionRequest: Request {
         let auctionConfigurationUid: String
         let pricefloor: Price
         let auctionTimeout: Float
+        var externalWinNotifications: Bool
         
         enum CodingKeys: String, CodingKey {
             case adUnits
@@ -72,6 +73,7 @@ struct AuctionRequest: Request {
             case auctionPricefloor
             case auctionTimeout
             case noBids
+            case externalWinNotifications
         }
         
         init(from decoder: Decoder) throws {
@@ -85,6 +87,7 @@ struct AuctionRequest: Request {
             pricefloor = try container.decode(Price.self, forKey: .auctionPricefloor)
             auctionTimeout = try container.decodeIfPresent(Float.self, forKey: .auctionTimeout) ?? Constants.Timeout.defaultAuctionTimeout
             noBids = try container.decodeIfPresent([AdUnitModel].self, forKey: .noBids)
+            externalWinNotifications = try container.decode(Bool.self, forKey: .externalWinNotifications)
         }
     }
 }

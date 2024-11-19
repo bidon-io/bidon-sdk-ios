@@ -16,7 +16,7 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
     var pricefloor: Price { get }
-    var auctionKey: String? { get }
+    var auctionKey: AuctionKey? { get }
     
     @discardableResult
     func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self
@@ -43,7 +43,7 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     private(set) var pricefloor: Price = .unknown
     private(set) var demands: EncodableBiddingDemandTokens!
     private(set) var context: Context!
-    private(set) var auctionKey: String?
+    private(set) var auctionKey: AuctionKey?
 
     var adObject: AuctionRequestAdObject { fatalError("BaseAuctionRequestBuilder doesn't provide adObject") }
     
