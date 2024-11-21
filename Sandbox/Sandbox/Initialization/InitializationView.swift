@@ -66,7 +66,23 @@ struct InitializationView: View {
                                 Text("Advanced")
                             }
                             NavigationLink(destination: AdCacheConfigView(onSave: { config in
-                                BidonSdk.setAdCacheConfig(config)
+                                let banner = Bidon.AdTypeCacheConfig(
+                                    sortStrategy: Bidon.SortingStrategy(rawValue: config.banner.sortStrategy.rawValue) ?? .timestamp,
+                                    adunitСacheSize: config.banner.adunitCacheSize,
+                                    noFillDelayMs: config.banner.noFillDelayMs
+                                )
+                                let inter = Bidon.AdTypeCacheConfig(
+                                    sortStrategy: Bidon.SortingStrategy(rawValue: config.interstitial.sortStrategy.rawValue) ?? .timestamp,
+                                    adunitСacheSize: config.interstitial.adunitCacheSize,
+                                    noFillDelayMs: config.interstitial.noFillDelayMs
+                                )
+                                let rewarded = Bidon.AdTypeCacheConfig(
+                                    sortStrategy: Bidon.SortingStrategy(rawValue: config.rewardedVideo.sortStrategy.rawValue) ?? .timestamp,
+                                    adunitСacheSize: config.rewardedVideo.adunitCacheSize,
+                                    noFillDelayMs: config.rewardedVideo.noFillDelayMs
+                                )
+                                let conf = Bidon.AdCacheConfig(banner: banner, interstitial: inter, rewardedVideo: rewarded)
+                                BidonSdk.setAdCacheConfig(conf)
                             })) {
                                 Text("Cache Config")
                             }

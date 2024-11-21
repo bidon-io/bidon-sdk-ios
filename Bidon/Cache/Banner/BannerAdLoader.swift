@@ -104,7 +104,7 @@ extension BannerAdLoader: BannerAdManagerDelegate {
             if settings.sortStrategy == .ecpm {
                 $0.cachedAd.ad.price > $1.cachedAd.ad.price
             } else {
-                $0.cachedAd.timestamp > $1.cachedAd.timestamp
+                $0.cachedAd.timestamp < $1.cachedAd.timestamp
             }
         })
         

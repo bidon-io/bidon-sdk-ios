@@ -171,7 +171,7 @@ extension FullscreenAdCacher: AdLoadingDelegate {
             if settings.config(for: type).sortStrategy == .ecpm {
                 $0.ad.price > $1.ad.price
             } else {
-                $0.timestamp > $1.timestamp
+                $0.timestamp < $1.timestamp
             }
         })
         
