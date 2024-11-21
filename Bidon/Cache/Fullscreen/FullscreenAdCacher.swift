@@ -128,6 +128,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         guard let result = results.first else { return }
         results.removeFirst()
         consumeResult(result)
+        logCurrentCachePrices()
     }
 
     private func clear() {
@@ -152,6 +153,12 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             }
         }
     }
+    
+    private func logCurrentCachePrices() {
+        if settings.config(for: type).sortStrategy == .ecpm {
+            Logger.debug("[Cache] Current cache queue: \(results.map({ String($0.ad.price) }).joined(separator: ", "))")
+        }
+    }
 }
 
 extension FullscreenAdCacher: AdLoadingDelegate {
@@ -167,6 +174,7 @@ extension FullscreenAdCacher: AdLoadingDelegate {
                 results.append(result.cachedAd)
             }
         }
+        
         results = results.sorted(by: {
             if settings.config(for: type).sortStrategy == .ecpm {
                 $0.ad.price > $1.ad.price
@@ -174,6 +182,8 @@ extension FullscreenAdCacher: AdLoadingDelegate {
                 $0.timestamp < $1.timestamp
             }
         })
+        
+        logCurrentCachePrices()
         
         if results.count == 1 {
             delegate?.adCacher(self, didLoad: ad, auctionInfo: auctionInfo)
