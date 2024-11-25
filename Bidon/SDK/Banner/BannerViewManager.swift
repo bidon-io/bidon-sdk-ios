@@ -82,7 +82,7 @@ final internal class BannerViewManager: NSObject {
         }
         NSLayoutConstraint.activate(constraints)
         
-        let useVisibilityTracker = extras["useVisibilityTracker"] as? Bool ?? true
+        let useVisibilityTracker = extras["use_visibility_tracker"] as? Bool ?? true
         UIView.animate(
             withDuration: 0.25,
             delay: 0,
