@@ -42,7 +42,9 @@ public final class BannerProvider:  NSObject, AdObject {
         }
     }
     
-    @objc public lazy var adSize: CGSize = bannerView.format.preferredSize
+    @objc public var adSize: CGSize {
+        return format.preferredSize
+    }
     
     @objc public weak var rootViewController: UIViewController? {
         didSet {
@@ -68,7 +70,7 @@ public final class BannerProvider:  NSObject, AdObject {
     )
     
     @objc
-    public init(auctionKey: String?) {
+    public init(auctionKey: String? = nil) {
         self.auctionKey = auctionKey
         
         super.init()
@@ -113,8 +115,7 @@ public final class BannerProvider:  NSObject, AdObject {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero,
-        auctionKey: String?
+        with pricefloor: Price = .zero
     ) {
         if bannerView.isReady, let ad = bannerView.ad {
             #warning("FIX IT")
