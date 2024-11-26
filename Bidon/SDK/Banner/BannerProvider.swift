@@ -42,6 +42,8 @@ public final class BannerProvider:  NSObject, AdObject {
         }
     }
     
+    @objc public lazy var adSize: CGSize = bannerView.format.preferredSize
+    
     @objc public weak var rootViewController: UIViewController? {
         didSet {
             bannerView.rootViewController = rootViewController
@@ -64,7 +66,8 @@ public final class BannerProvider:  NSObject, AdObject {
         format: .banner,
         position: .fixed(.horizontalBottom)
     )
-        
+    
+    @objc
     public init(auctionKey: String?) {
         self.auctionKey = auctionKey
         
