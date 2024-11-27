@@ -46,11 +46,9 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     
     @Published var isShown: Bool = false
     @Published var isLoaded: Bool = false
-    
-    @Published var auctionKey: String?
-    
+
     private(set) lazy var provider: BannerProvider = {
-        let provider = BannerProvider(auctionKey: auctionKey)
+        let provider = BannerProvider(auctionKey: nil)
         provider.delegate = self
         return provider
     }()

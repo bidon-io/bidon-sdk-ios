@@ -23,11 +23,6 @@ struct AdvancedBannerSettings: View {
     @Binding var autorefreshInterval: TimeInterval
     
     @State var pricefloor: Price = 0.1
-    @State var auctionKey: String = "" {
-        didSet {
-            BannerProviderReference.shared.auctionKey = auctionKey
-        }
-    }
     
     var body: some View {
         VStack {
@@ -100,7 +95,7 @@ struct AdvancedBannerSettings: View {
                     )
                     
                     Button(action: {
-                        bannerProviderReference.provider.loadAd(with: pricefloor, auctionKey: auctionKey)
+                        bannerProviderReference.provider.loadAd(with: pricefloor)
                     }) {
                         HStack {
                             Text("Load")
@@ -126,8 +121,6 @@ struct AdvancedBannerSettings: View {
                     Button(action: bannerProviderReference.provider.hide) {
                         Text("Hide")
                     }
-                    
-                    TextField("Auction Key", text: $auctionKey)
                 }
             }
             .listStyle(.automatic)
