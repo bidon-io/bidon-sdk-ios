@@ -42,13 +42,13 @@ struct AuctionRequest: Request {
             let demandId: String
             let timestamp: UInt
             let price: Price
-            let adUnitId: String?
+            let uid: String?
             
             init(cachedAd: any CachableAd) {
                 demandId = cachedAd.ad.adUnit.demandId
                 timestamp = UInt(cachedAd.timestamp.timeIntervalSince1970)
                 price = cachedAd.ad.price
-                adUnitId = cachedAd.ad.adUnit.uid
+                uid = cachedAd.ad.adUnit.uid
             }
         }
         
