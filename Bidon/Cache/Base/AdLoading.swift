@@ -9,7 +9,7 @@ import UIKit
 
 protocol AdLoadingDelegate: AnyObject {
     func adLoader(_ adManager: AdLoading, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
-    func adLoader(_ adManager: AdLoading, didLoad ad: Ad, auctionInfo: AuctionInfo)
+    func adLoader(_ adManager: AdLoading, didLoad ad: Ad, auctionInfo: AuctionInfo, replacedAd: Ad?)
     func adLoader(_ adManager: AdLoading, didFailToPresent ad: Ad?, error: SdkError)
     func adLoader(_ adManager: AdLoading, didExpire ad: Ad)
     func adLoader(_ adManager: AdLoading, willPresent ad: Ad)

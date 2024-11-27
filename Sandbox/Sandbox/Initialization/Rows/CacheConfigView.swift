@@ -28,7 +28,6 @@ final class AdCacheConfig: ObservableObject {
 }
 
 final class AdTypeCacheConfig: ObservableObject {
-    @Published var sortStrategy: SortingStrategy
     @Published var adunitCacheSize: Int
     @Published var noFillDelayMs: Int
 
@@ -38,28 +37,13 @@ final class AdTypeCacheConfig: ObservableObject {
     private let minNoFillDelay = 2000
     private let maxNoFillDelay = 64000
     
-    init(sortStrategy: SortingStrategy = .timestamp, adunitCacheSize: Int = 1, noFillDelayMs: Int = 2000) {
-        self.sortStrategy = sortStrategy
+    init(adunitCacheSize: Int = 1, noFillDelayMs: Int = 2000) {
         self.adunitCacheSize = max(minCacheSize, min(adunitCacheSize, maxCacheSize))
         self.noFillDelayMs = max(minNoFillDelay, min(noFillDelayMs, maxNoFillDelay))
     }
     
     var description: String {
-        "size - \(adunitCacheSize), sort by \(sortStrategy.stringValue), delay - \(noFillDelayMs)"
-    }
-}
-
-enum SortingStrategy: Int, Hashable, CaseIterable {
-    case timestamp = 1
-    case ecpm
-    
-    var stringValue: String {
-        switch self {
-        case .timestamp:
-            return "timestamp"
-        case .ecpm:
-            return "ecpm"
-        }
+        "size - \(adunitCacheSize), delay - \(noFillDelayMs)"
     }
 }
 
@@ -128,17 +112,9 @@ struct AdCacheConfigView: View {
 
 struct AdTypeConfigView: View {
     @ObservedObject var config: AdTypeCacheConfig
-    let sortingStrategies = SortingStrategy.allCases
 
     var body: some View {
         VStack {
-            Picker("Sort Strategy", selection: $config.sortStrategy) {
-                ForEach(sortingStrategies, id: \.self) { strategy in
-                    Text(strategy.stringValue).tag(strategy)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-
             Stepper("Ad Unit Cache Size: \(config.adunitCacheSize)", value: $config.adunitCacheSize, in: 1...10)
             
             Stepper(value: $config.noFillDelayMs, in: 2000...64000, step: 1000) {
@@ -156,32 +132,18 @@ struct SavedConfigView: View {
     var body: some View {
         Form {
             Section(header: Text("Saved Banner Configuration")) {
-                Text("Sort Strategy: \(viewModel.bannerConfig.sortStrategy.description)")
                 Text("Ad Unit Cache Size: \(viewModel.bannerConfig.adunitCacheSize)")
                 Text("No Fill Delay (ms): \(Int(viewModel.bannerConfig.noFillDelayMs))")
             }
             Section(header: Text("Saved Interstitial Configuration")) {
-                Text("Sort Strategy: \(viewModel.interstitialConfig.sortStrategy.description)")
                 Text("Ad Unit Cache Size: \(viewModel.interstitialConfig.adunitCacheSize)")
                 Text("No Fill Delay (ms): \(Int(viewModel.interstitialConfig.noFillDelayMs))")
             }
             Section(header: Text("Saved Rewarded Video Configuration")) {
-                Text("Sort Strategy: \(viewModel.rewardedVideoConfig.sortStrategy.description)")
                 Text("Ad Unit Cache Size: \(viewModel.rewardedVideoConfig.adunitCacheSize)")
                 Text("No Fill Delay (ms): \(Int(viewModel.rewardedVideoConfig.noFillDelayMs))")
             }
         }
         .navigationTitle("Saved Config")
-    }
-}
-
-extension SortingStrategy: Identifiable {
-    public var id: Int { self.rawValue }
-
-    var description: String {
-        switch self {
-        case .timestamp: return "Timestamp"
-        case .ecpm: return "eCPM"
-        }
     }
 }

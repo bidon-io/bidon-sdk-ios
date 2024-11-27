@@ -20,7 +20,7 @@ struct BannerAdSection: View {
                     "Pricefloor: \(vm.pricefloor.pretty)",
                     value: $vm.pricefloor,
                     in: (0.0...100.0),
-                    step: 0.1
+                    step: 0.01
                 )
                 
                 TextField("Auction Key", text: $vm.auctionKey)

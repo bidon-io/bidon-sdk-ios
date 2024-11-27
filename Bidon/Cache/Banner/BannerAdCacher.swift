@@ -16,6 +16,7 @@ final class BannerAdCacher: BannerAdCaching {
     private let defaultAuctionKey = "default"
     private var adLoaders = [AuctionKey: BannerAdLoader]()
     private var settings = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig
+    private var isLoading = false
     
     weak var delegate: AdCachingDelegate?
     
@@ -64,17 +65,18 @@ final class BannerAdCacher: BannerAdCaching {
             return
         }
         
-        Logger.debug("[Cache] Cache started for demandAd")
+        Logger.debug("[Cache] Cache started for with pricefloor: \(pricefloor)")
         let adLoader = getOrCreateAdLoader(key: auctionKey ?? defaultAuctionKey, viewContext: viewContext)
         
         adLoader.withSettings(settings.config(for: type))
         
-        if let ad = peek() {
+        if let ad = peek(), ad.ad.price >= pricefloor {
             Logger.debug("[Cache] There is ad in cache, immediately return it")
             delegate?.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo)
         } else {
             Logger.debug("[Cache] No ad in cache, start loading")
             adLoader.load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
+            isLoading = true
         }
     }
     
@@ -108,6 +110,11 @@ final class BannerAdCacher: BannerAdCaching {
         if let loader = loader(for: ad) {
             loader.notifyLoss(external: demandId, eCPM: eCPM)
         }
+    }
+    
+    
+    func cachedAds(for auctionKey: AuctionKey?) -> [any CachableAd] {
+        return adLoaders[auctionKey ?? defaultAuctionKey]?.results.map({ $0.cachedAd }) ?? []
     }
     
     // MARK: - Private
@@ -144,9 +151,7 @@ final class BannerAdCacher: BannerAdCaching {
     }
     
     private func logCurrentCachePrices() {
-        if settings.config(for: type).sortStrategy == .ecpm {
-            Logger.debug("[Cache] Current cache queue: \(results.map({ String($0.ad.price) }).joined(separator: ", "))")
-        }
+        Logger.debug("[Cache] Current cache queue: \(results.map({ String($0.ad.price) }).joined(separator: ", "))")
     }
 }
 
@@ -155,7 +160,7 @@ extension BannerAdCacher: AdLoadingDelegate {
         delegate?.adCacher(self, didFailToLoad: error, auctionInfo: auctionInfo)
     }
     
-    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo) {
+    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo, replacedAd: Ad?) {
         guard let adManager = adManager as? BannerAdLoader else { return }
         
         for result in adManager.results {
@@ -163,17 +168,18 @@ extension BannerAdCacher: AdLoadingDelegate {
                 results.append(result.cachedAd)
             }
         }
-        results = results.sorted(by: {
-            if settings.config(for: type).sortStrategy == .ecpm {
-                $0.ad.price > $1.ad.price
-            } else {
-                $0.timestamp < $1.timestamp
-            }
-        })
+        if let replacedAd {
+            results.removeAll(where: { $0.ad === replacedAd })
+        }
         
-        delegate?.adCacher(self, didLoad: ad, auctionInfo: auctionInfo)
+        results = results.sorted(by: { $0.ad.price > $1.ad.price })
         
         logCurrentCachePrices()
+        
+        if isLoading {
+            delegate?.adCacher(self, didLoad: ad, auctionInfo: auctionInfo)
+            isLoading = false
+        }
     }
     
     func adLoader(_ adManager: AdLoading, didFailToPresent ad: (any Ad)?, error: SdkError) {

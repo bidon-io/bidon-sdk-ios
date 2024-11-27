@@ -129,6 +129,9 @@ final class BannerAdManager: NSObject {
     private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: AuctionKey?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
         
+        let cache: BannerAdCacher? = AdCacherFactory.storedCache(type: context.cacheType)
+        let ads = cache?.cachedAds(for: auctionKey)
+        
         let request = context.auctionRequest { builder in
             builder.withAuctionKey(auctionKey)
             builder.withBiddingTokens(tokens)
@@ -138,6 +141,7 @@ final class BannerAdManager: NSObject {
             builder.withAuctionId(UUID().uuidString)
             builder.withPricefloor(pricefloor)
             builder.withExt(extras)
+            builder.withAdCache(ads ?? [])
         }
         
         Logger.verbose("Banner ad manager performs request: \(request)")

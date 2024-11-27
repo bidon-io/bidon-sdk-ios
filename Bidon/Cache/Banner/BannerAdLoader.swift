@@ -26,7 +26,6 @@ final class BannerAdLoader: BannerAdLoading {
     
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
-    #warning("FIX")
     private var managers = [Manager]()
     
     var impressions: [AdViewImpression]? {
@@ -50,7 +49,8 @@ final class BannerAdLoader: BannerAdLoading {
         
         let key = (auctionKey != nil && auctionKey?.isEmpty == false) ? auctionKey : "default"
         
-        if results.count == settings.adunitСacheSize {
+        let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
+        if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
             Logger.debug("[Cache] Cache for auctionKey \(String(describing: key)) is full")
             return
         }
@@ -60,7 +60,7 @@ final class BannerAdLoader: BannerAdLoading {
             return
         }
         
-        Logger.debug("[Cache] new cache started for auctionKey: \(String(describing: key)), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(String(describing: key)), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -98,19 +98,20 @@ extension BannerAdLoader: BannerAdManagerDelegate {
     
     func adManager(_ adManager: BannerAdManager, didLoad ad: any Ad, auctionInfo: any AuctionInfo) {
         Logger.debug("[Cache] Did load ad, price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
+        
+        var replacedAd: LoadedAd?
+        if results.count == settings.adunitСacheSize {
+            replacedAd = results.removeLast()
+            managers.removeAll(where: { $0 === replacedAd?.manager })
+        }
+        
         results.append(LoadedAd(cachedAd: BannerCachedAd(ad: ad, auctionInfo: auctionInfo, timestamp: Date(), impression: adManager.impression), manager: adManager))
         
-        results = results.sorted(by: {
-            if settings.sortStrategy == .ecpm {
-                $0.cachedAd.ad.price > $1.cachedAd.ad.price
-            } else {
-                $0.cachedAd.timestamp < $1.cachedAd.timestamp
-            }
-        })
+        results = results.sorted(by: { $0.cachedAd.ad.price > $1.cachedAd.ad.price })
         
         isLoading = false
         
-        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo)
+        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad)
         timer.reset()
         
         load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)

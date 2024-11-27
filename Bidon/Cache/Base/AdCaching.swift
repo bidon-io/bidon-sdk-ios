@@ -27,6 +27,7 @@ protocol AdCaching {
     func cache(auctionKey: AuctionKey?, pricefloor: Price)
     func notifyWin()
     func notifyLoss(external demandId: String, eCPM: Price)
+    func cachedAds(for auctionKey: AuctionKey?) -> [any CachableAd]
 }
 
 protocol FullscreenAdCaching: AdCaching {
@@ -34,6 +35,7 @@ protocol FullscreenAdCaching: AdCaching {
     
     func showAd(from rootViewController: UIViewController)
     func peek() -> CachedAd?
+    
 }
 
 protocol BannerAdCaching: AdCaching {

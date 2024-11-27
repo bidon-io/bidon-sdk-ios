@@ -30,38 +30,21 @@ public final class AdCacheConfig: NSObject {
 
 @objc(BDNAdTypeConfig)
 public final class AdTypeCacheConfig: NSObject {
-    public var sortStrategy: SortingStrategy
     public var adunitСacheSize: Int
     public var noFillDelayMs: Int
     
-    let minCacheSize = 1
-    let maxCacheSize = 10
+    private let minCacheSize = 1
+    private let maxCacheSize = 10
     
-    let minNoFillDelay = 2000
-    let maxNoFillDelay = 64000
+    private let minNoFillDelay = 2000
+    private let maxNoFillDelay = 64000
     
-    public init(sortStrategy: SortingStrategy = .timestamp, adunitСacheSize: Int = 1, noFillDelayMs: Int = 2000) {
-        self.sortStrategy = sortStrategy
+    public init(adunitСacheSize: Int = 1, noFillDelayMs: Int = 2000) {
         self.adunitСacheSize = max(minCacheSize, min(adunitСacheSize, maxCacheSize))
         self.noFillDelayMs = max(minNoFillDelay, min(noFillDelayMs, maxNoFillDelay))
     }
     
     public override var description: String {
-        return "size - \(adunitСacheSize), sort by \(sortStrategy.stringValue), delay - \(noFillDelayMs)"
-    }
-}
-
-@objc(BDNSortingStrategy)
-public enum SortingStrategy: Int {
-    case timestamp = 1
-    case ecpm
-    
-    var stringValue: String {
-        switch self {
-        case .timestamp:
-            return "timestamp"
-        case .ecpm:
-            return "ecpm"
-        }
+        return "size - \(adunitСacheSize), delay - \(noFillDelayMs)"
     }
 }

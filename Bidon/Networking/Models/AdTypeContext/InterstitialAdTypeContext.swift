@@ -18,6 +18,8 @@ struct InterstitialAdTypeContext: AdTypeContext {
     
     var adType: AdType { .interstitial }
     
+    var cacheType: CacheType { .interstitial }
+    
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
             builder.withAdTypeContext(self)

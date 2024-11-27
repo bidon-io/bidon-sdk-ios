@@ -10,10 +10,10 @@ import Foundation
 enum CacheType {
     case interstitial
     case rewarded
-    case banner(AdViewContext)
-    case leaderboard(AdViewContext)
-    case mrec(AdViewContext)
-    case adaptive(AdViewContext)
+    case banner(AdViewContext?)
+    case leaderboard(AdViewContext?)
+    case mrec(AdViewContext?)
+    case adaptive(AdViewContext?)
     
     fileprivate var stringValue: String {
         switch self {
@@ -86,6 +86,10 @@ final class AdCacherFactory {
         }
         instances[type.stringValue] = newCacher
         return newCacher as! T
+    }
+    
+    static func storedCache<T>(type: CacheType) -> T? where T: AdCaching {
+        return instances[type.stringValue] as? T
     }
     
     private init() {}

@@ -54,12 +54,13 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
         let key = (auctionKey != nil && auctionKey?.isEmpty == false) ? auctionKey : "default"
         
-        if results.count == settings.adunitСacheSize {
+        let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
+        if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
             Logger.debug("[Cache] Cache for auctionKey \(String(describing: key)) is full")
             return
         }
         
-        Logger.debug("[Cache] new cache started for auctionKey: \(String(describing: key)), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(String(describing: key)), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -105,21 +106,24 @@ extension FullscreenAdLoader {
     func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
         Logger.debug("[Cache] Did load ad, price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
         guard let manager = adManager as? Manager else { return }
+        
+        var replacedAd: LoadedAd?
+        if results.count == settings.adunitСacheSize {
+            replacedAd = results.removeLast()
+            managers.removeAll(where: { $0 === replacedAd?.manager })
+        }
+        
         results.append(LoadedAd(cachedAd: CachedAd(ad: ad, auctionInfo: auctionInfo, timestamp: Date()), manager: manager))
         
         results = results.sorted(by: {
-            if settings.sortStrategy == .ecpm {
-                $0.cachedAd.ad.price > $1.cachedAd.ad.price
-            } else {
-                $0.cachedAd.timestamp < $1.cachedAd.timestamp
-            }
+            $0.cachedAd.ad.price > $1.cachedAd.ad.price
         })
         
         isLoading = false
         
         load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)
         
-        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo)
+        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad)
         timer.reset()
     }
     
