@@ -29,7 +29,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private var settings = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig
     private var isLoading = false
     
-    private var delegates = [AdCachingLoadingDelegate]()
+    private var delegates = WeakArray()
     private var impressionDelegates = [AdCachingImpressionDelegate]()
     
     private var auctionKey: AuctionKey?
@@ -192,7 +192,9 @@ extension FullscreenAdCacher: AdLoadingDelegate {
         logCurrentCachePrices()
         
         if notify {
-            delegates.forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
+            delegates.compact()
+                .compactMap({ $0 as? AdCachingLoadingDelegate })
+                .forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
             delegates.removeAll()
             isLoading = false
         }

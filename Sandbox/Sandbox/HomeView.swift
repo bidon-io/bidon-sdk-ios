@@ -23,7 +23,6 @@ struct HomeView: View {
                 VStack(spacing: 0) {
                     List {
                         InterstitialSection()
-                        InterstitialSection()
                         RewardedAdSection()
                         BannerAdSection()
                             .environmentObject(vm.banner)

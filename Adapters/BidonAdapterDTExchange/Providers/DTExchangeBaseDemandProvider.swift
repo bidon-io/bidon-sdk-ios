@@ -50,7 +50,8 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
             return
         }
         
-        let adSpot = IAAdSpot.build { builder in
+        let adSpot = IAAdSpot.build { [weak self] builder in
+            guard let self else { return }
             builder.adRequest = adRequest
             builder.addSupportedUnitController(self.unitController())
         }

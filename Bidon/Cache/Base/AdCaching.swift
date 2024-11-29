@@ -58,17 +58,3 @@ extension Optional where Wrapped == AuctionKey {
         return key
     }
 }
-
-struct Weak<T> {
-    private weak var storage: AnyObject?
-    var value: T? {
-        get { return storage.map { $0 as! T } }
-        set {
-            storage = newValue.map { $0 as AnyObject }
-        }
-    }
-
-    init(value: T?) {
-        self.value = value
-    }
-}

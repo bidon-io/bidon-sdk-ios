@@ -175,6 +175,7 @@
 		42F265232A532CBE0081EC55 /* RewardedAdTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265222A532CBE0081EC55 /* RewardedAdTypeContext.swift */; };
 		42F265252A532CDA0081EC55 /* BannerAdTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265242A532CDA0081EC55 /* BannerAdTypeContext.swift */; };
 		42FE946E29D42D9000DF7920 /* Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FE946D29D42D9000DF7920 /* Bid.swift */; };
+		490479B82CFA135E00639FF1 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490479B72CFA135E00639FF1 /* Weak.swift */; };
 		4927F0092CDA526100EB9FAE /* CachedAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927F0082CDA526100EB9FAE /* CachedAd.swift */; };
 		4927F00B2CDCE85E00EB9FAE /* RetryTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927F00A2CDCE85E00EB9FAE /* RetryTimer.swift */; };
 		4927F00D2CDD1B3C00EB9FAE /* AdCacherFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927F00C2CDD1B3C00EB9FAE /* AdCacherFactory.swift */; };
@@ -372,6 +373,7 @@
 		42F265222A532CBE0081EC55 /* RewardedAdTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdTypeContext.swift; sourceTree = "<group>"; };
 		42F265242A532CDA0081EC55 /* BannerAdTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdTypeContext.swift; sourceTree = "<group>"; };
 		42FE946D29D42D9000DF7920 /* Bid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bid.swift; sourceTree = "<group>"; };
+		490479B72CFA135E00639FF1 /* Weak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		4927F0082CDA526100EB9FAE /* CachedAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAd.swift; sourceTree = "<group>"; };
 		4927F00A2CDCE85E00EB9FAE /* RetryTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetryTimer.swift; sourceTree = "<group>"; };
 		4927F00C2CDD1B3C00EB9FAE /* AdCacherFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCacherFactory.swift; sourceTree = "<group>"; };
@@ -1042,9 +1044,18 @@
 			path = Revenue;
 			sourceTree = "<group>";
 		};
+		490479B62CFA135100639FF1 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				490479B72CFA135E00639FF1 /* Weak.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		4927F0142CE3A25C00EB9FAE /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				490479B62CFA135100639FF1 /* Helpers */,
 				49BC04602CD0E1E000A334B1 /* AdCaching.swift */,
 				49BC046B2CD27E6100A334B1 /* AdLoading.swift */,
 				4927F0082CDA526100EB9FAE /* CachedAd.swift */,
@@ -1359,6 +1370,7 @@
 				420EFD8D2A29F05C00328FD4 /* InterstitialNotificationRequestBuilder.swift in Sources */,
 				4299A427289BCF3F0062C580 /* HTTPTask.swift in Sources */,
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
+				490479B82CFA135E00639FF1 /* Weak.swift in Sources */,
 				42D40BDA2B064BEB0008B34A /* AdaptersInitializator.swift in Sources */,
 				426DD7B328A68BF400A1ADF5 /* FullscreenAdDelegate.swift in Sources */,
 				42697DA92A3A1DBC00D6B1EB /* ExtrasManager.swift in Sources */,
