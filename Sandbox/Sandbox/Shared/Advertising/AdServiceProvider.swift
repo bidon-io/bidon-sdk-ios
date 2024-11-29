@@ -17,7 +17,7 @@ import FBSDKLoginKit
 final class AdServiceProvider: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
-    static let shared = AdServiceProvider()
+//    static let shared = AdServiceProvider()
     
     var service: AdService = RawAdService()
     

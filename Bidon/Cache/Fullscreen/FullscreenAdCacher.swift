@@ -29,7 +29,8 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private var settings = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig
     private var isLoading = false
     
-    weak var delegate: AdCachingDelegate?
+    private var delegates = [AdCachingLoadingDelegate]()
+    private var impressionDelegates = [AdCachingImpressionDelegate]()
     
     private var auctionKey: AuctionKey?
     private var pricefloor: Price?
@@ -47,56 +48,60 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     init(
         context: AdTypeContextType,
         type: CacheType,
-        placement: String,
-        delegate: AdCachingDelegate
+        placement: String
     ) {
         self.context = context
         self.type = type
         self.placement = placement
-        self.delegate = delegate
     }
 
     func withSettings(_ settings: AdCacheConfig) {
         self.settings = settings
     }
 
-    func cache(
-        auctionKey: AuctionKey?,
-        pricefloor: Price
-    ) {
+    func cache(auctionKey: AuctionKey?, pricefloor: Price, delegate: AdCachingLoadingDelegate) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
         
         Logger.debug("[Cache] Cache started with pricefloor: \(pricefloor)")
-        let adLoader = getOrCreateAdLoader(key: auctionKey ?? defaultAuctionKey)
         
+        let adLoader = getOrCreateAdLoader(key: auctionKey.wrapped)
         adLoader.withSettings(settings.config(for: type))
         
-        if let ad = peek(), ad.ad.price >= pricefloor {
-            Logger.debug("[Cache] There is ad in cache, immediately return it")
-            delegate?.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo)
+        if let ad = peek() {
+            if ad.ad.price >= pricefloor  {
+                Logger.debug("[Cache] There is ad in cache, immediately return it")
+                delegate.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo)
+                adLoaders.forEach({ key, loader in loader.load(auctionKey: key, pricefloor: pricefloor, delegate: self, force: false) })
+            } else {
+                Logger.debug("[Cache] no ad with proper price, start reloading ads for all loaders")
+                self.delegates.append(delegate)
+                adLoaders.forEach({ _, loader in loader.load(auctionKey: loader.auctionKey, pricefloor: pricefloor, delegate: self, force: true) })
+            }
         } else {
             Logger.debug("[Cache] No ad in cache, start loading")
-            adLoader.load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
+            self.delegates.append(delegate)
+            adLoader.load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self, force: true)
             isLoading = true
         }
     }
     
-    func showAd(from rootViewController: UIViewController) {
+    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate) {
         guard let ad = peek() else {
-            delegate?.adCacher(self, didFailToPresent: nil, error: .message("No cached ad to show"))
+            delegate.adCacher(self, didFailToPresent: nil, error: .message("No cached ad to show"))
             return
         }
         
         guard let loader = loader(for: ad) else {
-            delegate?.adCacher(self, didFailToPresent: nil, error: .message("No loader to show ad"))
+            delegate.adCacher(self, didFailToPresent: nil, error: .message("No loader to show ad"))
             return
         }
         
+        impressionDelegates.append(delegate)
         loader.show(from: rootViewController, ad: ad)
         pop()
         
-        loader.load(auctionKey: auctionKey, pricefloor: pricefloor ?? 0, delegate: self)
+        loader.load(auctionKey: loader.auctionKey, pricefloor: loader.pricefloor, delegate: self, force: false)
     }
     
     func peek() -> CachedAd? {
@@ -144,12 +149,11 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private func getOrCreateAdLoader(key: String) -> AdLoading {
         if let adLoader = adLoaders[key] {
             return adLoader
-        } else {
-            let newAdLoader = Loader(context: context, placement: placement)
-            newAdLoader.delegate = self
-            adLoaders[key] = newAdLoader
-            return newAdLoader
         }
+        let newAdLoader = Loader(context: context, placement: placement)
+        newAdLoader.delegate = self
+        adLoaders[key] = newAdLoader
+        return newAdLoader
     }
 
     private func consumeResult(_ result: CachedAd) {
@@ -167,10 +171,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
 extension FullscreenAdCacher: AdLoadingDelegate {
     func adLoader(_ adManager: AdLoading, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
-        delegate?.adCacher(self, didFailToLoad: error, auctionInfo: auctionInfo)
+//        delegate?.adCacher(self, didFailToLoad: error, auctionInfo: auctionInfo)
     }
     
-    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo, replacedAd: Ad?) {
+    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo, replacedAd: Ad?, notify: Bool) {
         guard let adManager = adManager as? Loader else { return }
         
         for result in adManager.results {
@@ -187,41 +191,42 @@ extension FullscreenAdCacher: AdLoadingDelegate {
         
         logCurrentCachePrices()
         
-        if isLoading {
-            delegate?.adCacher(self, didLoad: ad, auctionInfo: auctionInfo)
+        if notify {
+            delegates.forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
+            delegates.removeAll()
             isLoading = false
         }
     }
     
     func adLoader(_ adManager: AdLoading, didFailToPresent ad: (any Ad)?, error: SdkError) {
-        delegate?.adCacher(self, didFailToPresent: ad, error: error)
+        impressionDelegates.forEach({ $0.adCacher(self, didFailToPresent: ad, error: error) })
     }
     
     func adLoader(_ adManager: AdLoading, didExpire ad: any Ad) {
         if let cachedAd = results.first(where: { $0.ad.isEqual(to: ad) }) {
             consumeResult(cachedAd)
         }
-        delegate?.adCacher(self, didExpire: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didExpire: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, willPresent ad: any Ad) {
-        delegate?.adCacher(self, willPresent: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, willPresent: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didHide ad: any Ad) {
-        delegate?.adCacher(self, didHide: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didHide: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didClick ad: any Ad) {
-        delegate?.adCacher(self, didClick: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didClick: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didReward reward: any Reward, ad: any Ad) {
-        delegate?.adCacher(self, didReward: reward, ad: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didReward: reward, ad: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didPayRevenue revenue: any AdRevenue, ad: any Ad) {
-        delegate?.adCacher(self, didPayRevenue: revenue, ad: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didPayRevenue: revenue, ad: ad) })
     }
 }
 

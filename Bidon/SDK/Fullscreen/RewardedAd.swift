@@ -31,7 +31,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .rewarded, placement: placement, delegate: self)
+    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .rewarded, placement: placement)
     
     @objc public init(
         auctionKey: AuctionKey? = nil,
@@ -53,11 +53,11 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor)
+        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
-        adCacher.showAd(from: rootViewController)
+        adCacher.showAd(from: rootViewController, delegate: self)
     }
     
     @objc(notifyWin)
@@ -78,7 +78,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
 }
 
 
-extension RewardedAd: AdCachingDelegate {
+extension RewardedAd: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
     func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }

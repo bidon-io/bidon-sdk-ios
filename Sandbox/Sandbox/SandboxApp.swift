@@ -29,7 +29,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
-        AdServiceProvider.shared.application(
+        AdServiceProvider().application(
             application,
             didFinishLaunchingWithOptions: launchOptions
         )

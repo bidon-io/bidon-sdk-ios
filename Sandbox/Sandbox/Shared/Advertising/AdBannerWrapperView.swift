@@ -47,7 +47,7 @@ protocol AdBannerWrapperView: View {
 
 
 struct AnyAdBannerWrapperView: AdBannerWrapperView {
-    var mediation: Mediation = AdServiceProvider.shared.service.mediation
+    var mediation: Mediation = AdServiceProvider().service.mediation
     var format: AdBannerWrapperFormat
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval

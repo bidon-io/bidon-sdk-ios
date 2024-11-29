@@ -31,7 +31,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .interstitial, placement: placement, delegate: self)
+    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .interstitial, placement: placement)
     
     @objc public init(
         auctionKey: AuctionKey? = nil,
@@ -54,11 +54,11 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor)
+        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
-        adCacher.showAd(from: rootViewController)
+        adCacher.showAd(from: rootViewController, delegate: self)
     }
     
     @objc(notifyWin)
@@ -79,12 +79,13 @@ public final class Interstitial: NSObject, FullscreenAdObject {
 }
 
 
-extension Interstitial: AdCachingDelegate {
+extension Interstitial: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
     func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
     func adCacher(_ adCacher: AdCaching, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Cache] Public didLoad called")
         delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     

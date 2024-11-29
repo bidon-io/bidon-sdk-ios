@@ -18,7 +18,8 @@ final class BannerAdCacher: BannerAdCaching {
     private var settings = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig
     private var isLoading = false
     
-    weak var delegate: AdCachingDelegate?
+    var delegates = [AdCachingLoadingDelegate]()
+    private var impressionDelegates = [AdCachingImpressionDelegate]()
     
     private var auctionKey: AuctionKey?
     private var pricefloor: Price?
@@ -40,12 +41,10 @@ final class BannerAdCacher: BannerAdCaching {
     init(
         type: CacheType,
         placement: String,
-        delegate: AdCachingDelegate,
         adRevenueObserver: AdRevenueObserver?
     ) {
         self.type = type
         self.placement = placement
-        self.delegate = delegate
         self.adRevenueObserver = adRevenueObserver
     }
 
@@ -55,7 +54,8 @@ final class BannerAdCacher: BannerAdCaching {
 
     func cache(
         auctionKey: AuctionKey?,
-        pricefloor: Price
+        pricefloor: Price,
+        delegate: AdCachingLoadingDelegate
     ) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
@@ -70,12 +70,19 @@ final class BannerAdCacher: BannerAdCaching {
         
         adLoader.withSettings(settings.config(for: type))
         
-        if let ad = peek(), ad.ad.price >= pricefloor {
-            Logger.debug("[Cache] There is ad in cache, immediately return it")
-            delegate?.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo)
+        if let ad = peek() {
+            if ad.ad.price >= pricefloor  {
+                Logger.debug("[Cache] There is ad in cache, immediately return it")
+                delegates.forEach({ $0.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo) })
+            } else {
+                Logger.debug("[Cache] no ad with proper price, start reloading ads for all loaders")
+                self.delegates.append(delegate)
+                adLoaders.forEach({ _, loader in loader.load(auctionKey: loader.auctionKey, pricefloor: pricefloor, delegate: self, force: true) })
+            }
         } else {
             Logger.debug("[Cache] No ad in cache, start loading")
-            adLoader.load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
+            self.delegates.append(delegate)
+            adLoader.load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self, force: true)
             isLoading = true
         }
     }
@@ -90,7 +97,7 @@ final class BannerAdCacher: BannerAdCaching {
         results.removeFirst()
         consumeResult(result)
         
-        loader?.load(auctionKey: auctionKey, pricefloor: pricefloor ?? 0, delegate: self)
+        loader?.load(auctionKey: auctionKey, pricefloor: pricefloor ?? 0, delegate: self, force: false)
         
         logCurrentCachePrices()
     }
@@ -157,10 +164,11 @@ final class BannerAdCacher: BannerAdCaching {
 
 extension BannerAdCacher: AdLoadingDelegate {
     func adLoader(_ adManager: AdLoading, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
-        delegate?.adCacher(self, didFailToLoad: error, auctionInfo: auctionInfo)
+        #warning("FIX")
+//        delegate?.adCacher(self, didFailToLoad: error, auctionInfo: auctionInfo)
     }
     
-    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo, replacedAd: Ad?) {
+    func adLoader(_ adManager: AdLoading, didLoad ad: any Ad, auctionInfo: any AuctionInfo, replacedAd: Ad?, notify: Bool) {
         guard let adManager = adManager as? BannerAdLoader else { return }
         
         for result in adManager.results {
@@ -176,37 +184,37 @@ extension BannerAdCacher: AdLoadingDelegate {
         
         logCurrentCachePrices()
         
-        if isLoading {
-            delegate?.adCacher(self, didLoad: ad, auctionInfo: auctionInfo)
+        if notify {
+            delegates.forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
             isLoading = false
         }
     }
     
     func adLoader(_ adManager: AdLoading, didFailToPresent ad: (any Ad)?, error: SdkError) {
-        delegate?.adCacher(self, didFailToPresent: ad, error: error)
+        impressionDelegates.forEach({ $0.adCacher(self, didFailToPresent: ad, error: error) })
     }
     
     func adLoader(_ adManager: AdLoading, didExpire ad: any Ad) {
         if let cachedAd = results.first(where: { $0.ad.isEqual(to: ad) }) {
             consumeResult(cachedAd)
         }
-        delegate?.adCacher(self, didExpire: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didExpire: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, willPresent ad: any Ad) {
-        delegate?.adCacher(self, willPresent: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, willPresent: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didHide ad: any Ad) {
-        delegate?.adCacher(self, didHide: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didHide: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didClick ad: any Ad) {
-        delegate?.adCacher(self, didClick: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didClick: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didPayRevenue revenue: any AdRevenue, ad: any Ad) {
-        delegate?.adCacher(self, didPayRevenue: revenue, ad: ad)
+        impressionDelegates.forEach({ $0.adCacher(self, didPayRevenue: revenue, ad: ad) })
     }
     
     func adLoader(_ adManager: AdLoading, didReward reward: any Reward, ad: any Ad) { }

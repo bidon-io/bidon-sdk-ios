@@ -29,14 +29,15 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private var isLoading = false
     private var settings = AdTypeCacheConfig()
     
-    private var auctionKey: AuctionKey?
-    private var pricefloor = 0.0
+    private(set) var auctionKey: AuctionKey?
+    private(set) var pricefloor = 0.0
     
     weak var delegate: (any AdLoadingDelegate)?
     
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
     private var managers = [Manager]()
+    private var force: Bool = false
 
     init(context: AdTypeContextType, placement: String) {
         self.context = context
@@ -46,21 +47,20 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     func withSettings(_ settings: AdTypeCacheConfig) {
         self.settings = settings
     }
-
-    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?) {
+    
+    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?, force: Bool) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
+        self.force = force
         self.delegate = delegate
-        
-        let key = (auctionKey != nil && auctionKey?.isEmpty == false) ? auctionKey : "default"
         
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
         if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
-            Logger.debug("[Cache] Cache for auctionKey \(String(describing: key)) is full")
+            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.wrapped) is full")
             return
         }
         
-        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(String(describing: key)), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.wrapped), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -104,7 +104,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
 extension FullscreenAdLoader {
     func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
-        Logger.debug("[Cache] Did load ad, price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
+        Logger.debug("[Cache] Did load ad for key \(auctionKey.wrapped), price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
         guard let manager = adManager as? Manager else { return }
         
         var replacedAd: LoadedAd?
@@ -121,17 +121,17 @@ extension FullscreenAdLoader {
         
         isLoading = false
         
-        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)
-        
-        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad)
+        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: force)
         timer.reset()
+        
+        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate, force: false)
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         isLoading = false
         timer.start { [weak self] in
             guard let self else { return }
-            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate)
+            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate, force: force)
         }
         Logger.debug("[Cache] Failed to load new ad, restart cache in \(timer.currentTimeoutInterval) seconds")
     }

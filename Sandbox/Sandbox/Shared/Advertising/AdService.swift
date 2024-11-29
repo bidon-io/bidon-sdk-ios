@@ -95,9 +95,3 @@ extension AdService {
         set { BidonSdk.HTTPHeaders = newValue }
     }
 }
-
-extension AdResponder {
-    var adService: AdService {
-        AdServiceProvider.shared.service
-    }
-}

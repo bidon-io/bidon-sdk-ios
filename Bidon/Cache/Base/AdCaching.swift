@@ -7,9 +7,12 @@
 
 import UIKit
 
-protocol AdCachingDelegate: AnyObject {
+protocol AdCachingLoadingDelegate: AnyObject {
     func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
     func adCacher(_ adCacher: AdCaching, didLoad ad: Ad, auctionInfo: AuctionInfo)
+}
+
+protocol AdCachingImpressionDelegate: AnyObject {
     func adCacher(_ adCacher: AdCaching, didFailToPresent ad: Ad?, error: SdkError)
     func adCacher(_ adCacher: AdCaching, didExpire ad: Ad)
     func adCacher(_ adCacher: AdCaching, willPresent ad: Ad)
@@ -21,10 +24,9 @@ protocol AdCachingDelegate: AnyObject {
 
 protocol AdCaching {
     var extras: [String: AnyHashable] { get set }
-    var delegate: AdCachingDelegate? { get set }
     
     func withSettings(_ settings: AdCacheConfig)
-    func cache(auctionKey: AuctionKey?, pricefloor: Price)
+    func cache(auctionKey: AuctionKey?, pricefloor: Price, delegate: AdCachingLoadingDelegate)
     func notifyWin()
     func notifyLoss(external demandId: String, eCPM: Price)
     func cachedAds(for auctionKey: AuctionKey?) -> [any CachableAd]
@@ -33,7 +35,7 @@ protocol AdCaching {
 protocol FullscreenAdCaching: AdCaching {
     var results: [CachedAd] { get }
     
-    func showAd(from rootViewController: UIViewController)
+    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate)
     func peek() -> CachedAd?
     
 }
@@ -43,4 +45,30 @@ protocol BannerAdCaching: AdCaching {
     
     func peek() -> BannerCachedAd?
     func pop()
+}
+
+extension Optional where Wrapped == AuctionKey {
+    var wrapped: String {
+        var key: String
+        if let self, !self.isEmpty {
+            key = self
+        } else {
+            key = "default"
+        }
+        return key
+    }
+}
+
+struct Weak<T> {
+    private weak var storage: AnyObject?
+    var value: T? {
+        get { return storage.map { $0 as! T } }
+        set {
+            storage = newValue.map { $0 as AnyObject }
+        }
+    }
+
+    init(value: T?) {
+        self.value = value
+    }
 }

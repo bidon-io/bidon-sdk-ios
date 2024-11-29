@@ -21,6 +21,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         case presentationError
     }
     
+    lazy var adService: AdService = AdServiceProvider().service
+    
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
     @Published var pricefloor: Double = 0.0

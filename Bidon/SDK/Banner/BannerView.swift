@@ -99,7 +99,6 @@ public final class BannerView: UIView, AdView {
         return AdCacherFactory.cache(
             type: type,
             placement: placement,
-            delegate: self,
             adRevenueObserver: adRevenueObserver
         )
     }()
@@ -133,7 +132,7 @@ public final class BannerView: UIView, AdView {
         auctionKey: AuctionKey? = nil
     ) {
         state = .loading
-        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor)
+        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc(notifyWin)
@@ -205,7 +204,7 @@ extension BannerView: BannerViewManagerDelegate {
     }
 }
 
-extension BannerView: AdCachingDelegate {
+extension BannerView: AdCachingLoadingDelegate {
     func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
         delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
@@ -218,14 +217,6 @@ extension BannerView: AdCachingDelegate {
             self?.presentIfNeeded()
         }
     }
-    
-    func adCacher(_ adCacher: AdCaching, didFailToPresent ad: (any Ad)?, error: SdkError) { }
-    func adCacher(_ adCacher: AdCaching, didExpire ad: any Ad) { }
-    func adCacher(_ adCacher: AdCaching, willPresent ad: any Ad) { }
-    func adCacher(_ adCacher: AdCaching, didHide ad: any Ad) { }
-    func adCacher(_ adCacher: AdCaching, didClick ad: any Ad) { }
-    func adCacher(_ adCacher: AdCaching, didReward reward: any Reward, ad: any Ad) { }
-    func adCacher(_ adCacher: AdCaching, didPayRevenue revenue: any AdRevenue, ad: any Ad) { }
 }
 
 

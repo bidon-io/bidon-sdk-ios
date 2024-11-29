@@ -19,14 +19,15 @@ final class BannerAdLoader: BannerAdLoading {
     private var settings = AdTypeCacheConfig()
     private let adRevenueObserver: AdRevenueObserver?
     
-    private var auctionKey: AuctionKey?
-    private var pricefloor = 0.0
+    private(set) var auctionKey: AuctionKey?
+    private(set) var pricefloor = 0.0
     
     weak var delegate: (any AdLoadingDelegate)?
     
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
     private var managers = [Manager]()
+    private var force: Bool = false
     
     var impressions: [AdViewImpression]? {
         return results.compactMap({ $0.manager.impression })
@@ -42,16 +43,15 @@ final class BannerAdLoader: BannerAdLoading {
         self.settings = settings
     }
 
-    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?) {
+    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?, force: Bool) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
         self.delegate = delegate
-        
-        let key = (auctionKey != nil && auctionKey?.isEmpty == false) ? auctionKey : "default"
-        
+        self.force = force
+                
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
         if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
-            Logger.debug("[Cache] Cache for auctionKey \(String(describing: key)) is full")
+            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.wrapped) is full")
             return
         }
         
@@ -60,7 +60,7 @@ final class BannerAdLoader: BannerAdLoading {
             return
         }
         
-        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(String(describing: key)), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.wrapped), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -111,16 +111,16 @@ extension BannerAdLoader: BannerAdManagerDelegate {
         
         isLoading = false
         
-        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad)
+        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: force)
         timer.reset()
         
-        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)
+        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate, force: false)
     }
     func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
         isLoading = false
         timer.start { [weak self] in
             guard let self else { return }
-            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate)
+            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate, force: false)
         }
         Logger.debug("[Cache] Failed to load new ad, restart cache in \(timer.currentTimeoutInterval) seconds")
     }

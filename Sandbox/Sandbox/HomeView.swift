@@ -23,6 +23,7 @@ struct HomeView: View {
                 VStack(spacing: 0) {
                     List {
                         InterstitialSection()
+                        InterstitialSection()
                         RewardedAdSection()
                         BannerAdSection()
                             .environmentObject(vm.banner)
@@ -60,7 +61,7 @@ struct HomeView: View {
     private var title: Text {
         let mediation: String
         
-        switch AdServiceProvider.shared.service.mediation {
+        switch AdServiceProvider().service.mediation {
         case .appodeal: mediation = "Appodeal + "
         case .none: mediation = "Raw "
         }

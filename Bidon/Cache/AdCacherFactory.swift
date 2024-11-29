@@ -52,11 +52,10 @@ final class AdCacherFactory {
     static func cache<T>(
         type: CacheType,
         placement: String,
-        delegate: AdCachingDelegate,
         adRevenueObserver: AdRevenueObserver? = nil
     ) -> T where T: AdCaching {
         if var cacher = instances[type.stringValue] as? T {
-            cacher.delegate = delegate
+//            cacher.delegate = delegate
             return cacher
         }
         
@@ -66,21 +65,18 @@ final class AdCacherFactory {
             newCacher = InterstitialCacher(
                 context: InterstitialAdTypeContext(),
                 type: type,
-                placement: placement,
-                delegate: delegate
+                placement: placement
             )
         case .rewarded:
             newCacher = RewardedCacher(
                 context: RewardedAdTypeContext(),
                 type: type,
-                placement: placement,
-                delegate: delegate
+                placement: placement
             )
         case .banner, .leaderboard, .mrec, .adaptive:
             newCacher = BannerAdCacher(
                 type: type,
                 placement: placement, 
-                delegate: delegate,
                 adRevenueObserver: adRevenueObserver
             )
         }
