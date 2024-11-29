@@ -31,8 +31,7 @@ struct BannerAdSection: View {
                     }
                 }) {
                     HStack {
-                        Text(vm.isLoading ? "Loading...": "Load")
-                            .foregroundColor(!vm.isPresented || vm.isLoading ? .secondary : .primary)
+                        Text("Load")
                         Spacer()
                         
                         if vm.isLoading {
@@ -45,7 +44,6 @@ struct BannerAdSection: View {
                     onWin: vm.notify(win:),
                     onLoss: vm.notify(loss:)
                 )
-                .disabled(!vm.isPresented || vm.isLoading)
                 
                 Button(action: {
                     withAnimation {

@@ -66,14 +66,15 @@ final class BannerAdCacher: BannerAdCaching {
         }
         
         Logger.debug("[Cache] Cache started for with pricefloor: \(pricefloor)")
-        let adLoader = getOrCreateAdLoader(key: auctionKey ?? defaultAuctionKey, viewContext: viewContext)
         
+        let adLoader = getOrCreateAdLoader(key: auctionKey ?? defaultAuctionKey, viewContext: viewContext)
         adLoader.withSettings(settings.config(for: type))
         
         if let ad = peek() {
             if ad.ad.price >= pricefloor  {
                 Logger.debug("[Cache] There is ad in cache, immediately return it")
                 delegates.forEach({ $0.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo) })
+                adLoaders.forEach({ key, loader in loader.load(auctionKey: key, pricefloor: pricefloor, delegate: self, force: false) })
             } else {
                 Logger.debug("[Cache] no ad with proper price, start reloading ads for all loaders")
                 self.delegates.append(delegate)
@@ -97,7 +98,9 @@ final class BannerAdCacher: BannerAdCaching {
         results.removeFirst()
         consumeResult(result)
         
-        loader?.load(auctionKey: auctionKey, pricefloor: pricefloor ?? 0, delegate: self, force: false)
+        if let loader {
+            loader.load(auctionKey: loader.auctionKey, pricefloor: loader.pricefloor, delegate: self, force: false)
+        }
         
         logCurrentCachePrices()
     }
