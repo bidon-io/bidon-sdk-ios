@@ -80,7 +80,7 @@ PODS:
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
   - UnityAds (4.12.5)
-  - VungleAds (7.4.2)
+  - VungleAds (7.4.1)
   - YandexMobileAds (5.2.1):
     - YandexMobileAds/Static (= 5.2.1)
   - YandexMobileAds/Static (5.2.1):
@@ -96,7 +96,7 @@ PODS:
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 4.10.1)
-  - AppLovinSDK (= 13.0.1)
+  - AppLovinSDK (~> 13.0.1)
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (= 3.1.0)
   - BigoADS (~> 4.5.1)
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 2.0.8)
   - UnityAds (~> 4.12.5)
-  - VungleAds (~> 7.4.2)
+  - VungleAds (= 7.4.1)
   - YandexMobileAds (= 5.2.1)
 
 SPEC REPOS:
@@ -174,10 +174,10 @@ SPEC CHECKSUMS:
   StackConsentManager: b6c59a2574bbd3350e6ad2f9c8fa3884fdaff419
   StackModules: 3a8cbd3d0f48f678b9310f471c7b84877e40201e
   UnityAds: a4036ed911b4df2227d8137f4f777fcb86c4a2df
-  VungleAds: d7cf66a6dfd390a583ea2b2cfb9af1043b686e58
+  VungleAds: 97140121d0b909891eb217d1c102a194601da607
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 8a9c8c9b304a2c7e4f5054729362243c9917342a
+PODFILE CHECKSUM: 8ee1c1c8ff17cf295e1192c6277d99429dc046b1
 
 COCOAPODS: 1.15.2
