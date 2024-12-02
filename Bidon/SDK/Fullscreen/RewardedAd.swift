@@ -62,7 +62,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     @objc(notifyWin)
     public func notifyWin() {
-        adCacher.notifyWin()
+//        adCacher.notifyWin()
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -70,10 +70,10 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         external demandId: String,
         eCPM: Price
     ) {
-        adCacher.notifyLoss(
-            external: demandId,
-            eCPM: eCPM
-        )
+//        adCacher.notifyLoss(
+//            external: demandId,
+//            eCPM: eCPM
+//        )
     }
 }
 

@@ -137,8 +137,8 @@ public final class BannerView: UIView, AdView {
     
     @objc(notifyWin)
     public func notifyWin() {
-        adCacher.notifyWin()
-        viewManager.notifyWin(viewContext: viewContext)
+//        adCacher.notifyWin()
+//        viewManager.notifyWin(viewContext: viewContext)
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -146,13 +146,13 @@ public final class BannerView: UIView, AdView {
         external demandId: String,
         eCPM: Price
     ) {
-        adCacher.notifyLoss(external: demandId, eCPM: eCPM)
-        
-        viewManager.notifyLoss(
-            winner: demandId,
-            eCPM: eCPM,
-            viewContext: viewContext
-        )
+//        adCacher.notifyLoss(external: demandId, eCPM: eCPM)
+//        
+//        viewManager.notifyLoss(
+//            winner: demandId,
+//            eCPM: eCPM,
+//            viewContext: viewContext
+//        )
     }
 
     private final func presentIfNeeded() {
