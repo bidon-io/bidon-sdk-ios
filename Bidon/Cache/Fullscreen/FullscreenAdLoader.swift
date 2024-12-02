@@ -30,9 +30,16 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private var settings = AdTypeCacheConfig()
     
     private(set) var auctionKey: AuctionKey?
-    private(set) var pricefloor = 0.0
+    private(set) var pricefloor = 0.0 {
+        willSet {
+            if newValue != pricefloor {
+                timer.reset()
+            }
+        }
+    }
     
     weak var delegate: (any AdLoadingDelegate)?
+    var extras = [String: AnyHashable]()
     
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
@@ -83,6 +90,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
         Logger.debug("[Cache] Will show ad, price: \(result.cachedAd.ad.price), demand: \(result.cachedAd.ad.networkName), timestamp: \(Date())")
         
+        result.manager.extras = extras
         result.manager.show(from: rootViewController)
     }
     

@@ -86,18 +86,19 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
     
-    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate) {
+    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate, extras: [String: AnyHashable]) {
         guard let ad = peek() else {
             delegate.adCacher(self, didFailToPresent: nil, error: .message("No cached ad to show"))
             return
         }
         
-        guard let loader = loader(for: ad) else {
+        guard var loader = loader(for: ad) else {
             delegate.adCacher(self, didFailToPresent: nil, error: .message("No loader to show ad"))
             return
         }
         
         impressionDelegates.append(delegate)
+        loader.extras = extras
         loader.show(from: rootViewController, ad: ad)
         pop()
         

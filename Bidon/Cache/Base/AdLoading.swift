@@ -33,6 +33,7 @@ protocol AdLoading {
 protocol FullscreenAdLoading: AdLoading {
     associatedtype LoadedAd
     var results: [LoadedAd] { get }
+    var extras: [String: AnyHashable] { get set }
     
     func show(from rootViewController: UIViewController, ad: CachedAd)
     func consumeResult(_ result: CachedAd)

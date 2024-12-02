@@ -26,7 +26,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     @objc public var isReady: Bool { return adCacher.peek() != nil }
 
-    @objc public var extras: [String : AnyHashable] { return adCacher.extras }
+    @objc public var extras = [String: AnyHashable]()
 
     @Injected(\.sdk)
     private var sdk: Sdk
@@ -46,8 +46,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         _ value: AnyHashable?,
         for key: String
     ) {
-        #warning("FIX")
-        adCacher.extras[key] = value
+        extras[key] = value
     }
     
     @objc public func loadAd(
@@ -57,7 +56,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
-        adCacher.showAd(from: rootViewController, delegate: self)
+        adCacher.showAd(from: rootViewController, delegate: self, extras: extras)
     }
     
     @objc(notifyWin)

@@ -35,7 +35,7 @@ protocol AdCaching {
 protocol FullscreenAdCaching: AdCaching {
     var results: [CachedAd] { get }
     
-    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate)
+    func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate, extras: [String: AnyHashable])
     func peek() -> CachedAd?
     
 }

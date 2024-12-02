@@ -35,12 +35,7 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc private(set) public
-    lazy var extras: [String : AnyHashable] = [:] {
-        didSet {
-            adCacher.extras = extras
-            viewManager.extras = extras
-        }
-    }
+    lazy var extras: [String : AnyHashable] = [:]
     
     @Injected(\.sdk)
     private var sdk: Sdk
@@ -165,6 +160,10 @@ public final class BannerView: UIView, AdView {
         }
         
         state = .showing
+        
+        adCacher.extras = extras
+        viewManager.extras = extras
+        
         adCacher.pop()
         Logger.verbose("Banner \(self) will refresh ad view")
         
