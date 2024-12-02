@@ -126,7 +126,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     func cachedAds(for auctionKey: AuctionKey?) -> [any CachableAd] {
-        return adLoaders[auctionKey ?? defaultAuctionKey]?.results.map({ $0.cachedAd }) ?? []
+        return adLoaders[auctionKey.wrapped]?.results.map({ $0.cachedAd }) ?? []
     }
     
     // MARK: - Private

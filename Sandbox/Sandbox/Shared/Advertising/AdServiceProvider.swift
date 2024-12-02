@@ -36,11 +36,12 @@ final class AdServiceProvider: ObservableObject {
         AppsFlyerLib.shared().appsFlyerDevKey = Constants.AppsFlyer.devKey
         AppsFlyerLib.shared().appleAppID = Constants.AppsFlyer.appId
         
-        unowned let unownedSelf = self
         NotificationCenter
             .default
             .publisher(for: UIApplication.didBecomeActiveNotification)
-            .sink(receiveValue: unownedSelf.receiveApplicationDidBecomeActive)
+            .sink { [unowned self] in
+                self.receiveApplicationDidBecomeActive(notification: $0)
+            }
             .store(in: &cancellables)
     }
     

@@ -21,16 +21,16 @@ class BaseFullscreenAdWrapper: BaseAdWrapper, FullscreenAdWrapper {
         self.auctionKey = auctionKey
         try await withCheckedThrowingContinuation { [unowned self] continuation in
             self.loadingContinuation = continuation
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self._load()
             }
         }
     }
     
     final func show() async throws {
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { [unowned self] continuation in
             self.showingContinuation = continuation
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self._show()
             }
         }

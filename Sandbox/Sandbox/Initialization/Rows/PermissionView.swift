@@ -75,8 +75,8 @@ final class PermissionViewModel: ObservableObject {
         permission
             .requestPublisher()
             .receive(on: DispatchQueue.main)
-            .sink {
-                withAnimation { [unowned self] in
+            .sink { [unowned self] in
+                withAnimation {
                     self.state = self.permission.state
                     self.isRequesting = false
                 }

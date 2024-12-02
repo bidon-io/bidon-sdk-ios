@@ -87,8 +87,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         adService
             .adEventPublisher(adType: adType)
             .receive(on: RunLoop.main)
-            .sink { event in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] event in
+                withAnimation {
                     self.events.append(event)
                 }
             }
@@ -96,8 +96,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         adService
             .adPublisher(adType: adType)
             .receive(on: RunLoop.main)
-            .sink { ad in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] ad in
+                withAnimation {
                     self.ad = ad
                 }
             }

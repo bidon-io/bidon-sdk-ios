@@ -104,18 +104,20 @@ final class HomeViewModel: ObservableObject {
         }
         .store(in: &cancellables)
         
-        banner.$format.map { $0.preferredSize.height }.sink { height in
-            withAnimation { [unowned self] in
-                self.bannerHeight = height
+        banner.$format
+            .map { $0.preferredSize.height }
+            .sink { [unowned self] height in
+                withAnimation {
+                    self.bannerHeight = height
+                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
         
         banner
             .$isLoading
             .delay(for: .seconds(0.3), scheduler: RunLoop.main)
-            .sink { isBannerLoading in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] isBannerLoading in
+                withAnimation {
                     self.isBannerLoading = isBannerLoading
                 }
             }
