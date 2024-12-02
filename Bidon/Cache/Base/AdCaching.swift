@@ -49,6 +49,10 @@ protocol BannerAdCaching: AdCaching {
 
 extension Optional where Wrapped == AuctionKey {
     var wrapped: String {
+        return self ?? ""
+    }
+    
+    var valueOrDefault: String {
         var key: String
         if let self, !self.isEmpty {
             key = self

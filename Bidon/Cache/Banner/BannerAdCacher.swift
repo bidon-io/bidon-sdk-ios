@@ -67,7 +67,7 @@ final class BannerAdCacher: BannerAdCaching {
         
         Logger.debug("[Cache] Cache started for with pricefloor: \(pricefloor)")
         
-        let adLoader = getOrCreateAdLoader(key: auctionKey ?? defaultAuctionKey, viewContext: viewContext)
+        let adLoader = getOrCreateAdLoader(key: auctionKey.wrapped, viewContext: viewContext)
         adLoader.withSettings(settings.config(for: type))
         
         if let ad = peek() {

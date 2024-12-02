@@ -56,11 +56,11 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
         if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
-            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.wrapped) is full")
+            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.valueOrDefault) is full")
             return
         }
         
-        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.wrapped), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.valueOrDefault), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -104,7 +104,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
 extension FullscreenAdLoader {
     func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
-        Logger.debug("[Cache] Did load ad for key \(auctionKey.wrapped), price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
+        Logger.debug("[Cache] Did load ad for key \(auctionKey.valueOrDefault), price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
         guard let manager = adManager as? Manager else { return }
         
         var replacedAd: LoadedAd?

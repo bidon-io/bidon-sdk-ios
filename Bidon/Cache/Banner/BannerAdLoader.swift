@@ -51,7 +51,7 @@ final class BannerAdLoader: BannerAdLoading {
                 
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
         if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
-            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.wrapped) is full")
+            Logger.debug("[Cache] Cache for auctionKey \(auctionKey.valueOrDefault) is full")
             return
         }
         
@@ -60,7 +60,7 @@ final class BannerAdLoader: BannerAdLoading {
             return
         }
         
-        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.wrapped), current cache size: \(results.count)")
+        Logger.debug("[Cache] new cache started for pricefloor: \(pricefloor) auctionKey: \(auctionKey.valueOrDefault), current cache size: \(results.count)")
 
         if !isLoading {
             isLoading = true
@@ -97,7 +97,7 @@ final class BannerAdLoader: BannerAdLoading {
 extension BannerAdLoader: BannerAdManagerDelegate {
     
     func adManager(_ adManager: BannerAdManager, didLoad ad: any Ad, auctionInfo: any AuctionInfo) {
-        Logger.debug("[Cache] Did load ad, price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
+        Logger.debug("[Cache] Did load ad for key \(auctionKey.valueOrDefault), price: \(ad.price), demand: \(ad.networkName), timestamp: \(Date())")
         
         var replacedAd: LoadedAd?
         if results.count == settings.adunitСacheSize {
