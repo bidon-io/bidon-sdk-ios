@@ -83,6 +83,7 @@ extension RewardedAd: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
     }
     
     func adCacher(_ adCacher: AdCaching, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Cache] Rewarded Public didLoad called")
         delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     

@@ -210,6 +210,7 @@ extension BannerView: AdCachingLoadingDelegate {
     
     func adCacher(_ adCacher: AdCaching, didLoad ad: any Ad, auctionInfo: any AuctionInfo) {
         if state == .loading {
+            Logger.debug("[Cache] Banner Public didLoad called")
             delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
         }
         DispatchQueue.main.async { [weak self] in

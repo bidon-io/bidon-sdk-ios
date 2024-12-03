@@ -83,7 +83,7 @@ extension Interstitial: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
     }
     
     func adCacher(_ adCacher: AdCaching, didLoad ad: Ad, auctionInfo: AuctionInfo) {
-        Logger.debug("[Cache] Public didLoad called")
+        Logger.debug("[Cache] Interstitial Public didLoad called")
         delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     

@@ -111,7 +111,7 @@ extension BannerAdLoader: BannerAdManagerDelegate {
         
         isLoading = false
         
-        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: force)
+        delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: ad.price >= pricefloor)
         timer.reset()
         
         load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate, force: false)
