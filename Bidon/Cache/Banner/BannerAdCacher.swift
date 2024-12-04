@@ -18,7 +18,7 @@ final class BannerAdCacher: BannerAdCaching {
     private var settings = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig
     private var isLoading = false
     
-    var delegates = [AdCachingLoadingDelegate]()
+    var delegates = WeakArray()
     private var impressionDelegates = [AdCachingImpressionDelegate]()
     
     private var auctionKey: AuctionKey?
@@ -26,11 +26,7 @@ final class BannerAdCacher: BannerAdCaching {
     
     private var results = [BannerCachedAd]()
     
-    var extras: [String: AnyHashable] = BidonSdk.extras ?? [:] {
-        didSet {
-            #warning("FIX")
-        }
-    }
+    var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
     
     var impressions: [AdViewImpression]? {
         return results.compactMap { $0.impression }
@@ -73,7 +69,7 @@ final class BannerAdCacher: BannerAdCaching {
         if let ad = peek() {
             if ad.ad.price >= pricefloor  {
                 Logger.debug("[Cache] There is ad in cache, immediately return it")
-                delegates.forEach({ $0.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo) })
+                delegate.adCacher(self, didLoad: ad.ad, auctionInfo: ad.auctionInfo)
                 adLoaders.forEach({ key, loader in loader.load(auctionKey: key, pricefloor: pricefloor, delegate: self, force: false) })
             } else {
                 Logger.debug("[Cache] no ad with proper price, start reloading ads for all loaders")
@@ -188,7 +184,10 @@ extension BannerAdCacher: AdLoadingDelegate {
         logCurrentCachePrices()
         
         if notify {
-            delegates.forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
+            delegates.compact()
+                .compactMap({ $0 as? AdCachingLoadingDelegate })
+                .forEach({ $0.adCacher(self, didLoad: ad, auctionInfo: auctionInfo) })
+            delegates.removeAll()
             isLoading = false
         }
     }
