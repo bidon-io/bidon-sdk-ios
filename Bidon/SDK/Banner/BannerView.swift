@@ -149,6 +149,13 @@ public final class BannerView: UIView, AdView {
 //            viewContext: viewContext
 //        )
     }
+    
+    @objc(show)
+    public func show() {
+        DispatchQueue.main.async { [weak self] in
+            self?.presentIfNeeded()
+        }
+    }
 
     private final func presentIfNeeded() {
         guard
@@ -167,10 +174,10 @@ public final class BannerView: UIView, AdView {
         adCacher.pop()
         Logger.verbose("Banner \(self) will refresh ad view")
         
-        Logger.debug("[Cache] Banner will refresh ad view, demand: \(impression.demandId), price: \(impression.price)")
-        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            
+            Logger.debug("[Cache] Banner will refresh ad view, demand: \(impression.demandId), price: \(impression.price)")
             
             self.viewManager.present(
                 impression: impression,
@@ -212,9 +219,6 @@ extension BannerView: AdCachingLoadingDelegate {
         if state == .loading {
             Logger.debug("[Cache] Banner Public didLoad called")
             delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
-        }
-        DispatchQueue.main.async { [weak self] in
-            self?.presentIfNeeded()
         }
     }
 }
