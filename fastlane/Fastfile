@@ -21,7 +21,7 @@ $targets = [
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
   "BidonAdapterInMobi",
-  "BidonAdapterAmazon",
+  #"BidonAdapterAmazon",
   "BidonAdapterChartboost",
   "BidonAdapterYandex",
   "BidonAdapterIronSource",
