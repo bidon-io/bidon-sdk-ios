@@ -73,7 +73,7 @@ protocol AdService: AnyObject {
     
     func canShow(adType: AdType) -> Bool 
     
-    func show(adType: AdType) async throws
+    func show(adType: AdType) async throws  
     
     func notify(loss ad: Ad, adType: AdType)
     

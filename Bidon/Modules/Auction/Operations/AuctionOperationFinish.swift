@@ -41,7 +41,6 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         super.main()
         
         let result = findWinner()
-        
         let completion = self.completion
         
         DispatchQueue.main.async {
@@ -55,9 +54,9 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         observer.log(CancelAuctionEvent())
         
         findWinner()
+        
         let result = Result<BidType, SdkError>.failure(.cancelled)
         let completion = self.completion
-        
         completion(result)
     }
     
@@ -93,7 +92,6 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
             result = .success(winner as! BidType)
             observer.log(FinishAuctionEvent(winner: winner))
         }
-        
         return result
     }
     
@@ -118,3 +116,4 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         }
     }
 }
+

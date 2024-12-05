@@ -8,7 +8,7 @@
 import Foundation
 
 
-protocol AuctionOperationRequestDemand: AuctionOperation {
+protocol AuctionOperationRequestDemand: AuctionOperation, OperationTimeoutHandler {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
     associatedtype BidType: Bid where BidType.ProviderType == AdTypeContextType.DemandProviderType
 
@@ -25,4 +25,16 @@ final class AuctionOperationRequestDemandBuilder<AdTypeContextType: AdTypeContex
         self.demand = demand
         return self
     }
+}
+
+
+// MARK: - Demand Request Operation Timeout.
+
+protocol OperationTimeout: Operation {
+    var timeout: TimeInterval { get }
+    func setupTimeout()
+}
+
+protocol OperationTimeoutHandler: Operation {
+    func timeoutReached()
 }

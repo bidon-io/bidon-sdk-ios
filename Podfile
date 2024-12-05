@@ -58,7 +58,7 @@ def ocmock
 end
 
 def meta_sdk
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKLoginKit', '~> 17.1.0'
 end
 
 def amazon

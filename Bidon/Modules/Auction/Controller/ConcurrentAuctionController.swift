@@ -30,19 +30,14 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         return queue
     }()
     
-    private lazy var timeoutQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.name = "com.bidon.timeout.queue.\(context.adType.stringValue)"
-        queue.qualityOfService = .default
-        return queue
-    }()
-    
     var maxPrice: Price
     var pendingOperations = [any AuctionOperationRequestDemand]()
+    var executingOperation: (any AuctionOperationRequestDemand)?
+    
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
-    var timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType>?
-    var auctionTimeoutReached = false
     var completion: Completion?
+    
+    private var timeoutTimer: Timer?
     
     init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AdTypeContextType> {
         let builder = T()
@@ -59,123 +54,175 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         self.maxPrice = builder.pricefloor
     }
     
-    func addOperation(_ operation: any AuctionOperationRequestDemand) {
-        // if we reached timeout we need clear future operations and run finish auction operation
-        if auctionTimeoutReached, let finishAuctionOperation {
-            pendingOperations = []
-            queue.addOperation(finishAuctionOperation)
-            timeoutQueue.cancelAllOperations()
+    //MARK: - Public
+    
+    func load(completion: @escaping Completion) {
+        guard !auctionConfiguration.adUnits.isEmpty else {
+            handleEmptyAdUnits(completion: completion)
             return
         }
-        guard let adUnit = adUnit(from: operation) else {
-            return
+        self.completion = completion
+        
+        let timeout = auctionConfiguration.timeoutInSeconds
+        setupAuctionTimeout(timeoutInSeconds: timeout)
+        
+        finishAuctionOperation = operation { builder in
+            builder.withCompletion(completion)
         }
         
-        // skip all ad units if their pricefloor is lower than the filled ad price
-        if adUnit.pricefloor < maxPrice {
-            if adUnit.bidType == .direct {
-                let event = DirectDemandBelowPricefloorAucitonEvent(
-                    adUnit: adUnit,
-                    error: .belowPricefloor
-                )
-                auctionObserver.log(event)
-            } else {
-                let event = BiddingDemandBelowPricefloorAucitonEvent(
-                    adUnit: adUnit
-                )
-                auctionObserver.log(event)
-            }
-                        
-            scheduleNextOperation()
-        } else {
-            // operation for handling demand loading
-            let finishDemandOperation = BlockOperation {
-                self.queue.cancelAllOperations()
-                if let result = operation.bid as (any Bid)?, !operation.isCancelled {
-                    self.maxPrice = result.price
-                }
-                self.scheduleNextOperation()
-            }
-            
-            if let operation = operation as? AuctionOperationRoundTimeoutHandler {
-                self.timeoutOperation?.add(operation)
-            }
-            
-            finishDemandOperation.addDependency(operation)
-            finishAuctionOperation?.addDependency(operation)
-            
-            queue.addOperation(operation)
-            queue.addOperation(finishDemandOperation)
+        setupDemandRequestOperations()
+        scheduleNextOperation()
+    }
+    
+    func cancel() {
+        auctionObserver.log(CancelAuctionEvent())
+        
+        finishAuction()
+    }
+    
+    //MARK: - Create Demand Requests.
+    
+    private func setupDemandRequestOperations() {
+        auctionConfiguration.adUnits.forEach { adUnit in
+            let operation = createDemandRequestOperation(adUnit)
+            pendingOperations.append(operation)
         }
     }
     
-    func scheduleNextOperation() {
+    private func createDemandRequestOperation(_ adUnit: AdUnitModel) -> any AuctionOperationRequestDemand {
+        switch adUnit.bidType {
+        case .bidding:
+            return operation { builder in
+                builder.withDemand(adUnit.demandId)
+                builder.withAdUnit(adUnit)
+            } as AuctionOperationRequestBiddingDemand<AdTypeContextType>
+        case .direct:
+             return operation { builder in
+                 builder.withDemand(adUnit.demandId)
+                 builder.withAdUnit(adUnit)
+             } as AuctionOperationRequestDirectDemand<AdTypeContextType>
+        }
+    }
+    
+    //MARK: - Auction Processing.
+    
+    private func scheduleNextOperation() {
         guard !pendingOperations.isEmpty else {
-            if let finishAuctionOperation {
-                queue.addOperation(finishAuctionOperation)
-                timeoutQueue.cancelAllOperations()
-            }
+            finishAuction()
             return
         }
         let nextOperation = pendingOperations.removeFirst()
         addOperation(nextOperation)
     }
     
-    func load(
-        completion: @escaping Completion
-    ) {
-        guard !auctionConfiguration.adUnits.isEmpty else {
-            auctionObserver.log(FinishAuctionEvent(winner: nil))
-            completion(.failure(.cancelled))
+    private func addOperation(_ operation: any AuctionOperationRequestDemand) {
+        guard let adUnit = adUnit(from: operation) else {
             return
         }
-        self.completion = completion
-        
-        // temout restrictions
-        let timeoutOperation: AuctionOperationRoundTimeout<AdTypeContextType> = operation { builder in
-            builder.withAuctionConfiguration(self.auctionConfiguration)
+        if adUnit.pricefloor < maxPrice {
+            handlePriceFloorBelowMax(adUnit: adUnit)
+            scheduleNextOperation()
+        } else {
+            performDemandRequest(operation)
         }
-        let timeoutOperationHandler = BlockOperation { [weak self] in
+    }
+    
+    private func performDemandRequest(_ operation: any AuctionOperationRequestDemand) {
+        executingOperation = operation
+        
+        // Add dependency to fetch demand operations and calc auction result.
+        finishAuctionOperation?.addDependency(operation)
+        
+        let finishDemandOperation = createFinishDemandOperation(operation)
+        finishDemandOperation.addDependency(operation)
+        queue.addOperation(operation)
+        queue.addOperation(finishDemandOperation)
+    }
+    
+    private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
+        let finishDemandOperation = BlockOperation { [weak self] in
             guard let self else { return }
-            self.pendingOperations
-                .compactMap { self.adUnit(from: $0) }
-                .forEach { self.auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
-
-            self.pendingOperations = []
-            self.auctionTimeoutReached = true
-        }
-        timeoutOperationHandler.addDependency(timeoutOperation)
-        self.timeoutOperation = timeoutOperation
         
-        // create request operation for each ad unit
-        auctionConfiguration.adUnits.forEach { adUnit in
-            switch adUnit.bidType {
-            case .bidding:
-                let requestBiddingDemandOperation: AuctionOperationRequestBiddingDemand<AdTypeContextType> = operation { builder in
-                    builder.withDemand(adUnit.demandId)
-                    builder.withAdUnit(adUnit)
-                }
-                pendingOperations.append(requestBiddingDemandOperation)
-            case .direct:
-                let requestDirectDemandOperation: AuctionOperationRequestDirectDemand<AdTypeContextType> = operation { builder in
-                    builder.withDemand(adUnit.demandId)
-                    builder.withAdUnit(adUnit)
-                }
-                pendingOperations.append(requestDirectDemandOperation)
+            // If single ad unit is canceled we do not process the result and start next operation.
+            guard !operation.isCancelled else {
+                self.scheduleNextOperation()
+                return
             }
+            self.rewriteMaxPriceIfNeeded(for: operation)
+            self.scheduleNextOperation()
         }
-        
-        // operation for finish auction handling
-        finishAuctionOperation = operation { builder in
-            builder.withCompletion(completion)
+        return finishDemandOperation
+    }
+    
+    private func rewriteMaxPriceIfNeeded(for operation: any AuctionOperationRequestDemand) {
+        if let result = operation.bid as (any Bid)? {
+            self.maxPrice = result.price
         }
+    }
+    
+    //MARK: - Auction Timeout.
+    
+    private func setupAuctionTimeout(timeoutInSeconds: TimeInterval) {
+        guard timeoutInSeconds > 0 else { return }
         
-        timeoutQueue.addOperation(timeoutOperation)
-        timeoutQueue.addOperation(timeoutOperationHandler)
+        let timer = Timer(
+            timeInterval: timeoutInSeconds,
+            repeats: false
+        ) { [weak self] _ in
+            self?.handleTimeout()
+        }
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
+    }
+    
+    private func handleTimeout() {
+        pendingOperations
+            .compactMap { adUnit(from: $0) }
+            .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
         
-        // run first ad unit loading
-        let firstOperation = pendingOperations.removeFirst()
-        addOperation(firstOperation)
+        executingOperation?.timeoutReached()
+        finishAuction()
+    }
+    
+    private func invalidateTimer() {
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
+    }
+    
+    //MARK: - Finish Auction.
+
+    private func finishAuction() {
+        invalidateTimer()
+
+        pendingOperations = []
+        queue.cancelAllOperations()
+        
+        guard let finishAuctionOperation,
+                !finishAuctionOperation.isExecuting,
+                !finishAuctionOperation.isFinished,
+                !finishAuctionOperation.isCancelled 
+        else {
+            Logger.warning("Cant finish auction. Finish is already in progress or completed.")
+            return
+        }
+        queue.addOperation(finishAuctionOperation)
+    }
+    
+    private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
+        if adUnit.bidType == .direct {
+            let event = DirectDemandBelowPricefloorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
+            auctionObserver.log(event)
+        } else {
+            let event = BiddingDemandBelowPricefloorAucitonEvent(adUnit: adUnit)
+            auctionObserver.log(event)
+        }
+    }
+    
+    //MARK: -
+    
+    private func handleEmptyAdUnits(completion: @escaping Completion) {
+        auctionObserver.log(FinishAuctionEvent(winner: nil))
+        completion(.failure(.cancelled))
     }
     
     private func adUnit(from operation: any AuctionOperationRequestDemand) -> AnyAdUnit? {
@@ -199,15 +246,5 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             
             build?(builder)
         }
-    }
-    
-    func cancel() {
-        auctionObserver.log(CancelAuctionEvent())
-        
-        queue.cancelAllOperations()
-        if let finishAuctionOperation = finishAuctionOperation, !finishAuctionOperation.isFinished {
-            finishAuctionOperation.cancel()
-        }
-        timeoutQueue.cancelAllOperations()
     }
 }
