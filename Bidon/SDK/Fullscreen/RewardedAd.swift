@@ -116,5 +116,7 @@ extension RewardedAd: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
         delegate?.adObject?(self, didExpireAd: ad)
     }
     
-    func adCacher(_ adCacher: AdCaching, didReward reward: Reward, ad: Ad) {}
+    func adCacher(_ adCacher: AdCaching, didReward reward: Reward, ad: Ad) {
+        delegate?.rewardedAd(self, didRewardUser: reward, ad: ad)
+    }
 }
