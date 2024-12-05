@@ -40,7 +40,8 @@ struct HomeView: View {
                                 auctionKey: vm.bannerSettings.auctionKey,
                                 onEvent: vm.banner.receive,
                                 ad: $vm.banner.ad,
-                                isLoading: $vm.banner.isLoading
+                                isLoading: $vm.banner.isLoading,
+                                wasLoaded: $vm.banner.wasLoaded
                             )
                             
                             if vm.isBannerLoading {

@@ -100,7 +100,7 @@ struct AdvancedBannerSettings: View {
                     )
                     
                     Button(action: {
-                        bannerProviderReference.provider.loadAd(with: pricefloor, auctionKey: auctionKey)
+                        bannerProviderReference.provider.loadAd(with: pricefloor)
                     }) {
                         HStack {
                             Text("Load")

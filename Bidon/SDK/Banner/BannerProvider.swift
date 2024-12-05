@@ -110,14 +110,13 @@ public final class BannerProvider:  NSObject, AdObject {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero,
-        auctionKey: AuctionKey?
+        with pricefloor: Price = .zero
     ) {
         if bannerView.isReady, let ad = bannerView.ad {
             #warning("FIX IT")
             delegate?.adObject(self, didLoadAd: ad, auctionInfo: DefaultAuctionInfo())
         } else {
-            bannerView.loadAd(with: pricefloor, auctionKey: auctionKey)
+            bannerView.loadAd(with: pricefloor)
         }
     }
     
@@ -167,6 +166,8 @@ public final class BannerProvider:  NSObject, AdObject {
         constraintsHashTable.removeAllObjects()
         
         positioning.constraints.forEach(constraintsHashTable.add)
+        
+        bannerView.show()
     }
 }
 

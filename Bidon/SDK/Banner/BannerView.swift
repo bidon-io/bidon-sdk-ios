@@ -123,8 +123,7 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc public func loadAd(
-        with pricefloor: Price = .zero,
-        auctionKey: AuctionKey? = nil
+        with pricefloor: Price = .zero
     ) {
         state = .loading
         adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
