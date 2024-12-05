@@ -20,7 +20,7 @@ struct BannerAdSection: View {
                     "Pricefloor: \(vm.pricefloor.pretty)",
                     value: $vm.pricefloor,
                     in: (0.0...100.0),
-                    step: 0.1
+                    step: 0.01
                 )
                 
                 TextField("Auction Key", text: $vm.auctionKey)
@@ -31,8 +31,7 @@ struct BannerAdSection: View {
                     }
                 }) {
                     HStack {
-                        Text(vm.isLoading ? "Loading...": "Load")
-                            .foregroundColor(!vm.isPresented || vm.isLoading ? .secondary : .primary)
+                        Text("Load")
                         Spacer()
                         
                         if vm.isLoading {
@@ -45,7 +44,6 @@ struct BannerAdSection: View {
                     onWin: vm.notify(win:),
                     onLoss: vm.notify(loss:)
                 )
-                .disabled(!vm.isPresented || vm.isLoading)
                 
                 Button(action: {
                     withAnimation {

@@ -40,8 +40,8 @@ final class LocationPermission: NSObject, Permission {
     }()
     
     func request() async {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            DispatchQueue.main.async { [unowned self] in
+        await withCheckedContinuation { [unowned self] (continuation: CheckedContinuation<Void, Never>) in
+            DispatchQueue.main.async {
                 guard self.locationManager.authorizationStatus.isRequestRequired else {
                     continuation.resume()
                     return

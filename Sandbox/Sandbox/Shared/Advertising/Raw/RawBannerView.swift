@@ -19,21 +19,27 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Price
-    var auctionKey: String?
+    var auctionKey: AuctionKey?
     var onEvent: AdBannerWrapperViewEvent
+    var wasShown: Bool = false
     
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
-
+    @Binding var wasLoaded: Bool
+    
+    var banner: BannerView
+    
     init(
         format: AdBannerWrapperFormat,
         isAutorefreshing: Bool,
         autorefreshInterval: TimeInterval,
         pricefloor: Price = 0.1,
-        auctionKey: String?,
+        auctionKey: AuctionKey?,
         onEvent: @escaping AdBannerWrapperViewEvent,
         ad: Binding<Bidon.Ad?>,
-        isLoading: Binding<Bool>
+        isLoading: Binding<Bool>,
+        wasLoaded: Binding<Bool>,
+        banner: BannerView
     ) {
         self.format = format
         self.isAutorefreshing = isAutorefreshing
@@ -43,10 +49,12 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         self._ad = ad
         self._isLoading = isLoading
         self.auctionKey = auctionKey
+        self._wasLoaded = wasLoaded
+        self.banner = banner
     }
     
     func makeUIView(context: Context) -> BannerView {
-        let banner = BannerView(frame: .zero, auctionKey: auctionKey)
+//        let banner = BannerView(frame: .zero, auctionKey: auctionKey)
         
         banner.format = BannerFormat(format)
         banner.rootViewController = UIApplication.shared.bd.topViewcontroller
@@ -59,8 +67,12 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         uiView.format = BannerFormat(format)
         
         if isLoading {
-            uiView.loadAd(with: pricefloor, auctionKey: auctionKey)
+            uiView.loadAd(with: pricefloor)
         }
+    }
+    
+    func show() {
+        banner.show()
     }
     
     func makeCoordinator() -> Coordinator {

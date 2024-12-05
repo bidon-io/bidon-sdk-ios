@@ -41,23 +41,25 @@ protocol AdBannerWrapperView: View {
     var isAutorefreshing: Bool { get set }
     var autorefreshInterval: TimeInterval { get set }
     var pricefloor: Double { get set }
-    var auctionKey: String? { get set }
+    var auctionKey: AuctionKey? { get set }
     var onEvent: AdBannerWrapperViewEvent { get set }
 }
 
 
 struct AnyAdBannerWrapperView: AdBannerWrapperView {
-    var mediation: Mediation = AdServiceProvider.shared.service.mediation
+    var mediation: Mediation = AdServiceProvider().service.mediation
     var format: AdBannerWrapperFormat
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Double
-    var auctionKey: String?
+    var auctionKey: AuctionKey?
     var onEvent: AdBannerWrapperViewEvent
+    var banner: BannerView
     
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
-    
+    @Binding var wasLoaded: Bool
+        
     var body: some View {
         switch mediation {
         case .appodeal:
@@ -80,7 +82,9 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
                 auctionKey: auctionKey,
                 onEvent: onEvent,
                 ad: $ad,
-                isLoading: $isLoading
+                isLoading: $isLoading,
+                wasLoaded: $wasLoaded, 
+                banner: banner
             )
         }
     }

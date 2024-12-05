@@ -24,6 +24,7 @@ protocol AdTypeContext {
     associatedtype NotificationRequestBuilderType: NotificationRequestBuilder where NotificationRequestBuilderType.Context == Self
     
     var adType: AdType { get }
+    var cacheType: CacheType { get }
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest

@@ -36,6 +36,8 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         case initialized
     }
     
+    lazy var adService: AdService = AdServiceProvider().service
+    
     let permissions: [PermissionView.Model] = [
         AppTrackingTransparencyPermission(),
         LocationPermission()
@@ -99,7 +101,7 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         didSet {
             switch mediation {
             case .none:
-                AdServiceProvider.shared.service = RawAdService()
+                AdServiceProvider().service = RawAdService()
             case .appodeal: break
 // MARK: DROP_APD_SUPPORT
 //                AdServiceProvider.shared.service = AppodealAdService()

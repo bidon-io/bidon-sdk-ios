@@ -11,7 +11,7 @@ import UIKit
 
 @objc(BDNRewardedAd)
 public final class RewardedAd: NSObject, RewardedAdObject {
-    private typealias Manager = BaseFullscreenAdManager<
+    private typealias Cacher = FullscreenAdCacher<
         RewardedAdTypeContext,
         RewardedConcurrentAuctionControllerBuilder,
         RewardedImpressionController,
@@ -22,23 +22,19 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     @objc public let placement: String
     
-    @objc public let auctionKey: String?
+    @objc public let auctionKey: AuctionKey?
     
-    @objc public var isReady: Bool { return manager.isReady }
+    @objc public var isReady: Bool { return adCacher.peek() != nil }
 
-    @objc public var extras: [String : AnyHashable] { return manager.extras }
+    @objc public var extras = [String: AnyHashable]()
 
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private lazy var manager = Manager(
-        context: RewardedAdTypeContext(),
-        placement: placement,
-        delegate: self
-    )
+    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .rewarded, placement: placement)
     
     @objc public init(
-        auctionKey: String? = nil,
+        auctionKey: AuctionKey? = nil,
         placement: String = "default"
     ) {
         self.placement = placement
@@ -50,22 +46,22 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         _ value: AnyHashable?,
         for key: String
     ) {
-        manager.extras[key] = value
+        extras[key] = value
     }
     
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
+        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
-        manager.show(from: rootViewController)
+        adCacher.showAd(from: rootViewController, delegate: self, extras: extras)
     }
     
     @objc(notifyWin)
     public func notifyWin() {
-        manager.notifyWin()
+//        adCacher.notifyWin()
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -73,53 +69,52 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         external demandId: String,
         eCPM: Price
     ) {
-        manager.notifyLoss(
-            winner: demandId,
-            eCPM: eCPM
-        )
+//        adCacher.notifyLoss(
+//            external: demandId,
+//            eCPM: eCPM
+//        )
     }
 }
 
 
-extension RewardedAd: FullscreenAdManagerDelegate {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+extension RewardedAd: AdCachingLoadingDelegate, AdCachingImpressionDelegate {
+    func adCacher(_ adCacher: AdCaching, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+    func adCacher(_ adCacher: AdCaching, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Cache] Rewarded Public didLoad called")
         delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {
+    func adCacher(_ adCacher: AdCaching, didFailToPresent ad: Ad?, error: SdkError) {
         delegate?.adObject?(self, didFailToPresentAd: error.nserror)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, willPresent ad: Ad) {
+    func adCacher(_ adCacher: AdCaching, willPresent ad: Ad) {
         delegate?.fullscreenAd(self, willPresentAd: ad)
         delegate?.adObject?(self, didRecordImpression: ad)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didHide ad: Ad) {
+    func adCacher(_ adCacher: AdCaching, didHide ad: Ad) {
         delegate?.fullscreenAd(self, didDismissAd: ad)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didClick ad: Ad) {
+    func adCacher(_ adCacher: AdCaching, didClick ad: Ad) {
         delegate?.adObject?(self, didRecordClick: ad)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didReward reward: Reward, ad: Ad) {
-        delegate?.rewardedAd(self, didRewardUser: reward, ad: ad)
-    }
-    
-    func adManager(_ adManager: FullscreenAdManager, didExpire ad: Ad) {
-        delegate?.adObject?(self, didExpireAd: ad)
-    }
-    
-    func adManager(_ adManager: FullscreenAdManager, didPayRevenue revenue: AdRevenue, ad: Ad) {
+    func adCacher(_ adCacher: AdCaching, didPayRevenue revenue: AdRevenue, ad: Ad) {
         delegate?.adObject?(
             self,
             didPay: revenue,
             ad: ad
         )
     }
+    
+    func adCacher(_ adCacher: AdCaching, didExpire ad: Ad) {
+        delegate?.adObject?(self, didExpireAd: ad)
+    }
+    
+    func adCacher(_ adCacher: AdCaching, didReward reward: Reward, ad: Ad) {}
 }

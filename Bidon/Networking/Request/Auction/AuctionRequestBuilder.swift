@@ -16,7 +16,8 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     var adapters: AdaptersInfo { get }
     var adType: AdType { get }
     var pricefloor: Price { get }
-    var auctionKey: String? { get }
+    var auctionKey: AuctionKey? { get }
+    var cache: [AuctionRequest.RequestBody.AdCacheModel]! { get }
     
     @discardableResult
     func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self
@@ -33,6 +34,9 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     @discardableResult
     func withAuctionKey(_ key: String?) -> Self
     
+    @discardableResult
+    func withAdCache(_ cache: [any CachableAd]) -> Self
+    
     init()
 }
 
@@ -43,7 +47,8 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     private(set) var pricefloor: Price = .unknown
     private(set) var demands: EncodableBiddingDemandTokens!
     private(set) var context: Context!
-    private(set) var auctionKey: String?
+    private(set) var auctionKey: AuctionKey?
+    private(set) var cache: [AuctionRequest.RequestBody.AdCacheModel]!
 
     var adObject: AuctionRequestAdObject { fatalError("BaseAuctionRequestBuilder doesn't provide adObject") }
     
@@ -84,6 +89,12 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     @discardableResult
     func withAuctionKey(_ key: String?) -> Self {
         self.auctionKey = key
+        return self
+    }
+    
+    @discardableResult
+    func withAdCache(_ cache: [any CachableAd]) -> Self {
+        self.cache = cache.map({ AuctionRequest.RequestBody.AdCacheModel(cachedAd: $0) })
         return self
     }
     

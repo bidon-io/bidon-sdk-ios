@@ -18,6 +18,19 @@ struct BannerAdTypeContext: AdTypeContext {
 
     var adType: AdType { .banner }
     
+    var cacheType: CacheType {
+        switch format {
+        case .banner:
+            return .banner(nil)
+        case .leaderboard:
+            return .leaderboard(nil)
+        case .mrec:
+            return .mrec(nil)
+        case .adaptive:
+            return .adaptive(nil)
+        }
+    }
+    
     var format: BannerFormat
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {

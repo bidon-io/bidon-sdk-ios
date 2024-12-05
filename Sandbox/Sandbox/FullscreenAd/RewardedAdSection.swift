@@ -41,7 +41,6 @@ struct RewardedAdSection: View {
                     }
                 }
             }
-            .disabled(vm.state == .loading || vm.state == .ready)
             .adContextMenu(
                 vm.ad,
                 onWin: vm.notify(win:),

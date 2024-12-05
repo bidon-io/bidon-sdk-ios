@@ -25,8 +25,8 @@ final class ContentViewModel: ObservableObject {
             .$initializationState
             .map { $0 == .initialized } 
             .receive(on: DispatchQueue.main)
-            .sink { isInitialized in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] isInitialized in
+                withAnimation {
                     self.isInitialized = isInitialized
                 }
             }

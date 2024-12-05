@@ -74,6 +74,7 @@
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
 		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
+		4927F01A2CE603C500EB9FAE /* CacheConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927F0192CE603C500EB9FAE /* CacheConfigView.swift */; };
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
 		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
@@ -156,6 +157,7 @@
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
 		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4927F0192CE603C500EB9FAE /* CacheConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheConfigView.swift; sourceTree = "<group>"; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,6 +411,7 @@
 				42DBB0E92B307DDB00BF1C50 /* GenderPickerRow.swift */,
 				42DBB0EB2B307DF700BF1C50 /* DynamicDictionaryView.swift */,
 				42DBB0ED2B307EBC00BF1C50 /* CMPRow.swift */,
+				4927F0192CE603C500EB9FAE /* CacheConfigView.swift */,
 			);
 			path = Rows;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */,
 				4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */,
 				426CD9BC2AA8A464000A2226 /* DeviceFrame.swift in Sources */,
+				4927F01A2CE603C500EB9FAE /* CacheConfigView.swift in Sources */,
 				427B1C0A299FDE94007D4E93 /* AdBannerWrapperView.swift in Sources */,
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,

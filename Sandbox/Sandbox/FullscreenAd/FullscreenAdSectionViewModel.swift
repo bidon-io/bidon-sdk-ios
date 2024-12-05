@@ -21,10 +21,12 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         case presentationError
     }
     
+    lazy var adService: AdService = AdServiceProvider().service
+    
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
     @Published var pricefloor: Double = 0.0
-    @Published var auctionKey: String = ""
+    @Published var auctionKey: AuctionKey = ""
     @Published var ad: Bidon.Ad?
     
     private var cancellables = Set<AnyCancellable>()
@@ -85,8 +87,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         adService
             .adEventPublisher(adType: adType)
             .receive(on: RunLoop.main)
-            .sink { event in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] event in
+                withAnimation {
                     self.events.append(event)
                 }
             }
@@ -94,8 +96,8 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         adService
             .adPublisher(adType: adType)
             .receive(on: RunLoop.main)
-            .sink { ad in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] ad in
+                withAnimation {
                     self.ad = ad
                 }
             }

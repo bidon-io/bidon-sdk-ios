@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+public typealias AuctionKey = String
+
 @objc(BDNSdk)
 public final class BidonSdk: NSObject {
     lazy var adaptersRepository = AdaptersRepository()
@@ -122,6 +124,17 @@ public final class BidonSdk: NSObject {
             .environmentRepository
             .environment(AppManager.self)
             .updatePluginVersion(pluginVersion)
+    }
+    
+    @objc
+    public static func setAdCacheConfig(
+        _ cacheConfig: AdCacheConfig
+    ) {
+        shared
+            .environmentRepository
+            .environment(AppManager.self)
+            .updateAdCacheConfig(cacheConfig)
+        Logger.debug("[Cache] set cache config: \(cacheConfig)")
     }
     
     @objc

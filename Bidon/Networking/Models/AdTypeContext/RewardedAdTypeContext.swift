@@ -18,6 +18,8 @@ struct RewardedAdTypeContext: AdTypeContext {
     
     var adType: AdType { .rewarded }
     
+    var cacheType: CacheType { .rewarded }
+    
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
             builder.withAdTypeContext(self)

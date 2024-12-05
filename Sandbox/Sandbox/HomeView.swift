@@ -38,9 +38,16 @@ struct HomeView: View {
                                 autorefreshInterval: vm.bannerSettings.autorefreshInterval,
                                 pricefloor: vm.bannerSettings.pricefloor,
                                 auctionKey: vm.bannerSettings.auctionKey,
-                                onEvent: vm.banner.receive,
+                                onEvent: { event in
+                                    if event.title == "Bidon did load ad" {
+                                        $vm.bannerView.wrappedValue.show()
+                                    }
+                                    vm.banner.receive(event: event)
+                                },
+                                banner: $vm.bannerView.wrappedValue,
                                 ad: $vm.banner.ad,
-                                isLoading: $vm.banner.isLoading
+                                isLoading: $vm.banner.isLoading,
+                                wasLoaded: $vm.banner.wasLoaded
                             )
                             
                             if vm.isBannerLoading {
@@ -60,7 +67,7 @@ struct HomeView: View {
     private var title: Text {
         let mediation: String
         
-        switch AdServiceProvider.shared.service.mediation {
+        switch AdServiceProvider().service.mediation {
         case .appodeal: mediation = "Appodeal + "
         case .none: mediation = "Raw "
         }
@@ -76,9 +83,11 @@ final class HomeViewModel: ObservableObject {
         var isAutorefreshing: Bool
         var autorefreshInterval: TimeInterval
         var pricefloor: Price
-        var auctionKey: String?
+        var auctionKey: AuctionKey?
     }
     
+    lazy var bannerView = BannerView(frame: .zero, auctionKey: bannerSettings.auctionKey)
+
     @Published var banner = BannerSectionViewModel()
     
     @Published var isBannerPresented: Bool = false
@@ -104,18 +113,20 @@ final class HomeViewModel: ObservableObject {
         }
         .store(in: &cancellables)
         
-        banner.$format.map { $0.preferredSize.height }.sink { height in
-            withAnimation { [unowned self] in
-                self.bannerHeight = height
+        banner.$format
+            .map { $0.preferredSize.height }
+            .sink { [unowned self] height in
+                withAnimation {
+                    self.bannerHeight = height
+                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
         
         banner
             .$isLoading
             .delay(for: .seconds(0.3), scheduler: RunLoop.main)
-            .sink { isBannerLoading in
-                withAnimation { [unowned self] in
+            .sink { [unowned self] isBannerLoading in
+                withAnimation {
                     self.isBannerLoading = isBannerLoading
                 }
             }
@@ -145,22 +156,5 @@ final class HomeViewModel: ObservableObject {
                 )
             }
             .store(in: &cancellables)
-//        
-//        Publishers.CombineLatest4(
-//            banner.$format,
-//            banner.$isAutorefreshing,
-//            banner.$autorefreshInterval,
-//            banner.$pricefloor
-//        )
-//        .sink { [unowned self] in
-//            self.bannerSettings = BannerSettings(
-//                format: $0.0,
-//                isAutorefreshing: $0.1,
-//                autorefreshInterval: $0.2,
-//                pricefloor: $0.3,
-//                auctionKey: $0.
-//            )
-//        }
-//        .store(in: &cancellables)
     }
 }

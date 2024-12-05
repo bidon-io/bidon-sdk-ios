@@ -18,7 +18,7 @@ struct AuctionRequest: Request {
     struct RequestBody: Encodable, Tokenized {
         struct AdObjectModel: Encodable {
             let auctionId: String
-            let auctionKey: String?
+            let auctionKey: AuctionKey?
             let pricefloor: Price
             let orientation: InterfaceOrientation = .current
             var banner: BannerAdTypeContextModel?
@@ -38,6 +38,20 @@ struct AuctionRequest: Request {
             }
         }
         
+        struct AdCacheModel: Encodable {
+            let demandId: String
+            let timestamp: UInt
+            let price: Price
+            let uid: String?
+            
+            init(cachedAd: any CachableAd) {
+                demandId = cachedAd.ad.adUnit.demandId
+                timestamp = UInt(cachedAd.timestamp.timeIntervalSince1970)
+                price = cachedAd.ad.price
+                uid = cachedAd.ad.adUnit.uid
+            }
+        }
+        
         let device: DeviceModel
         let session: SessionModel
         let app: AppModel
@@ -49,6 +63,7 @@ struct AuctionRequest: Request {
         let adObject: AdObjectModel
         var token: String?
         let test: Bool
+        let adCache: [AdCacheModel]
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -110,7 +125,8 @@ extension AuctionRequest {
             ext: builder.encodedExt,
             segment: builder.segment,
             adObject: builder.adObject,
-            test: builder.testMode
+            test: builder.testMode, 
+            adCache: builder.cache
         )
     }
 }

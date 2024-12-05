@@ -23,118 +23,167 @@ struct InitializationView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(UIColor.systemGroupedBackground)
-                    .edgesIgnoringSafeArea(.all)
-                VStack {
-                    List {
-                        Section(
-                            header: HStack {
-                                Text("Demand Source Adapters")
-                                Spacer()
-                                Button(action: vm.registerDefaultAdapters) {
-                                    Text("Register all")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: 10, weight: .light))
-                                        .padding(.vertical, 2)
-                                        .padding(.horizontal, 8)
-                                        .background(
-                                            Capsule()
-                                                .fill(Color.accentColor)
-                                        )
-                                }
-                            }
-                        ) {
-                            AdaptersView(adapters: $vm.adapters)
-                        }
-// MARK: DROP_APD_SUPPORT
-//                        Section(
-//                            header: Text("Mediation"),
-//                            footer: Text("Change of mediation will reset configuration")
-//                        ) {
-//                            SelectMediationView(mediation: $vm.mediation)
-//                        }
-                        
-                        Section(header: Text("Base URL")) {
-                            HostView(
-                                hosts: $vm.hosts,
-                                selected: $vm.host
-                            )
-                        }
-                        
-                        Section(header: Text("Permissions")) {
-                            ForEach(vm.permissions) {
-                                PermissionView($0)
-                            }
-                        }
-                        
-                        Section(header: Text("Settings")) {
-                            Toggle("Test Mode", isOn: $vm.isTestMode)
-                            NavigationLink(destination: AdServiceParametersView(vm.adService.parameters)) {
-                                Text("Advanced")
-                            }
-                        }
-                        
-                    }
-                    .padding(.bottom, 200)
-                    .disabled(!vm.initializationState.isIdle)
-                    .listStyle(.insetGrouped)
-                }
-                
-                VStack(alignment: .leading) {
-                    Spacer()
-                    
-                    VStack(spacing: 20) {
-                        Button(action: initialize) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(vm.initializationState.accentColor)
-                                Text(vm.initializationState.text)
-                                    .bold()
-                                    .foregroundColor(.accentColor)
-                            }
-                            .frame(height: 44)
-                        }
-                        .padding(.horizontal)
-                        .disabled(!vm.initializationState.isIdle)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Mediation: ") + Text(AdServiceProvider.shared.service.mediation.rawValue.capitalized + " v" + AdServiceProvider.shared.service.verstion).bold()
-                            Text("Bidon SDK: ") + Text("v\(BidonSdk.sdkVersion)").bold()
-                            Text("Bundle ID: ") + Text(Bundle.main.bundleIdentifier ?? "").bold()
-                            Text("App Key: ") + Text(Constants.Bidon.appKey).bold()
-                            Text("App Version: ") + Text(appVersion).bold()
-                        }
-                        .lineLimit(1)
-                        .foregroundColor(.white)
-                        .font(.caption)
-                        .padding(.horizontal)
-                        .padding(.bottom)
-                    }
-                    .padding(.vertical)
-                    .frame(height: 200)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.accentColor)
-                            .edgesIgnoringSafeArea(.bottom)
-                    )
-                }
-                
+                background
+                content
+                footer
                 if vm.initializationState.isAnimating {
-                    Color(UIColor.systemGroupedBackground)
-                        .edgesIgnoringSafeArea(.all)
-                        .opacity(0.25)
-                        .transition(.scale.combined(with: .opacity))
-                    
-                    AppProgressView()
-                        .transition(.scale.combined(with: .opacity))
+                    overlay
                 }
             }
         }
         .navigationBarHidden(true)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("")
         .navigationViewStyle(.stack)
     }
+
+    // MARK: - Components
+    private var background: some View {
+        Color(UIColor.systemGroupedBackground)
+            .edgesIgnoringSafeArea(.all)
+    }
+
+    private var content: some View {
+        VStack {
+            List {
+                demandSourceAdaptersSection
+                baseURLSection
+                permissionsSection
+                settingsSection
+            }
+            .padding(.bottom, 200)
+            .disabled(!vm.initializationState.isIdle)
+            .listStyle(.insetGrouped)
+        }
+    }
+
+    private var footer: some View {
+        VStack(alignment: .leading) {
+            Spacer()
+            VStack(spacing: 20) {
+                initializeButton
+                footerInfo
+            }
+            .padding(.vertical)
+            .frame(height: 200)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.accentColor)
+                    .edgesIgnoringSafeArea(.bottom)
+            )
+        }
+    }
+
+    // MARK: - Sections
+    private var demandSourceAdaptersSection: some View {
+        Section(
+            header: HStack {
+                Text("Demand Source Adapters")
+                Spacer()
+                Button(action: vm.registerDefaultAdapters) {
+                    Text("Register all")
+                        .foregroundColor(.white)
+                        .font(.system(size: 10, weight: .light))
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 8)
+                        .background(
+                            Capsule()
+                                .fill(Color.accentColor)
+                        )
+                }
+            }
+        ) {
+            AdaptersView(adapters: $vm.adapters)
+        }
+    }
+
+    private var baseURLSection: some View {
+        Section(header: Text("Base URL")) {
+            HostView(
+                hosts: $vm.hosts,
+                selected: $vm.host
+            )
+        }
+    }
+
+    private var permissionsSection: some View {
+        Section(header: Text("Permissions")) {
+            ForEach(vm.permissions) {
+                PermissionView($0)
+            }
+        }
+    }
+
+    private var settingsSection: some View {
+        Section(header: Text("Settings")) {
+            Toggle("Test Mode", isOn: $vm.isTestMode)
+            NavigationLink(destination: AdServiceParametersView(vm.adService.parameters)) {
+                Text("Advanced")
+            }
+            NavigationLink(destination: AdCacheConfigView(onSave: saveCacheConfig)) {
+                Text("Cache Config")
+            }
+        }
+    }
+
+    // MARK: - Footer Components
+    private var initializeButton: some View {
+        Button(action: initialize) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(vm.initializationState.accentColor)
+                Text(vm.initializationState.text)
+                    .bold()
+                    .foregroundColor(.accentColor)
+            }
+            .frame(height: 44)
+        }
+        .padding(.horizontal)
+        .disabled(!vm.initializationState.isIdle)
+    }
+
+    private var footerInfo: some View {
+        VStack(alignment: .leading) {
+            Text("Mediation: ") + Text(AdServiceProvider().service.mediation.rawValue.capitalized + " v" + AdServiceProvider().service.verstion).bold()
+            Text("Bidon SDK: ") + Text("v\(BidonSdk.sdkVersion)").bold()
+            Text("Bundle ID: ") + Text(Bundle.main.bundleIdentifier ?? "").bold()
+            Text("App Key: ") + Text(Constants.Bidon.appKey).bold()
+            Text("App Version: ") + Text(appVersion).bold()
+        }
+        .lineLimit(1)
+        .foregroundColor(.white)
+        .font(.caption)
+        .padding(.horizontal)
+        .padding(.bottom)
+    }
+
+    private var overlay: some View {
+        ZStack {
+            Color(UIColor.systemGroupedBackground)
+                .edgesIgnoringSafeArea(.all)
+                .opacity(0.25)
+                .transition(.scale.combined(with: .opacity))
+            AppProgressView()
+                .transition(.scale.combined(with: .opacity))
+        }
+    }
+
+    // MARK: - Helper Methods
+    private func saveCacheConfig(config: AdCacheConfig) {
+        let banner = Bidon.AdTypeCacheConfig(
+            adunitСacheSize: config.banner.adunitCacheSize,
+            noFillDelayMs: config.banner.noFillDelayMs
+        )
+        let inter = Bidon.AdTypeCacheConfig(
+            adunitСacheSize: config.interstitial.adunitCacheSize,
+            noFillDelayMs: config.interstitial.noFillDelayMs
+        )
+        let rewarded = Bidon.AdTypeCacheConfig(
+            adunitСacheSize: config.rewardedVideo.adunitCacheSize,
+            noFillDelayMs: config.rewardedVideo.noFillDelayMs
+        )
+        let conf = Bidon.AdCacheConfig(banner: banner, interstitial: inter, rewardedVideo: rewarded)
+        BidonSdk.setAdCacheConfig(conf)
+    }
+
     
     private func initialize() {
         Task {

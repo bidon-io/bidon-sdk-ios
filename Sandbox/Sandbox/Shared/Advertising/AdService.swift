@@ -69,7 +69,7 @@ protocol AdService: AnyObject {
     
     func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never>
     
-    func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws
+    func load(pricefloor: Double, adType: AdType, auctionKey: AuctionKey?) async throws
     
     func canShow(adType: AdType) -> Bool 
     
@@ -93,11 +93,5 @@ extension AdService {
     var bidonHTTPHeaders: [String: String] {
         get { BidonSdk.HTTPHeaders }
         set { BidonSdk.HTTPHeaders = newValue }
-    }
-}
-
-extension AdResponder {
-    var adService: AdService {
-        AdServiceProvider.shared.service
     }
 }

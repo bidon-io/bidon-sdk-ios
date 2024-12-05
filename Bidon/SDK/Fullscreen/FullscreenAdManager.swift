@@ -34,6 +34,13 @@ ImpressionControllerType: FullscreenImpressionController,
 ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType>,
 AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
+    fileprivate typealias Cacher = FullscreenAdCacher<
+        AdTypeContextType,
+        AuctionControllerBuilderType,
+        ImpressionControllerType,
+        AdaptersFetcherType
+    >
+    
     fileprivate typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
     
@@ -100,10 +107,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
-        guard state.isIdle else {
-            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
-            return
-        }
+//        guard state.isIdle else {
+//            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
+//            return
+//        }
         
         fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
     }
@@ -145,6 +152,9 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
+        let cache: Cacher? = AdCacherFactory.storedCache(type: context.cacheType)
+        let ads = cache?.cachedAds(for: auctionKey)
+        
         let request = self.context.auctionRequest { builder in
             builder.withBiddingTokens(tokens)
             builder.withPricefloor(pricefloor)
@@ -154,6 +164,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             builder.withAuctionId(UUID().uuidString)
             builder.withExt(self.extras)
             builder.withAuctionKey(auctionKey)
+            builder.withAdCache(ads ?? [])
         }
         
         Logger.verbose("Fullscreen ad manager performs request: \(request)")
