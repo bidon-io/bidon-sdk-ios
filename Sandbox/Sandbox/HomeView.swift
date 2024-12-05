@@ -38,7 +38,13 @@ struct HomeView: View {
                                 autorefreshInterval: vm.bannerSettings.autorefreshInterval,
                                 pricefloor: vm.bannerSettings.pricefloor,
                                 auctionKey: vm.bannerSettings.auctionKey,
-                                onEvent: vm.banner.receive,
+                                onEvent: { event in
+                                    if event.title == "Bidon did load ad" {
+                                        $vm.bannerView.wrappedValue.show()
+                                    }
+                                    vm.banner.receive(event: event)
+                                },
+                                banner: $vm.bannerView.wrappedValue,
                                 ad: $vm.banner.ad,
                                 isLoading: $vm.banner.isLoading,
                                 wasLoaded: $vm.banner.wasLoaded
@@ -80,6 +86,8 @@ final class HomeViewModel: ObservableObject {
         var auctionKey: AuctionKey?
     }
     
+    lazy var bannerView = BannerView(frame: .zero, auctionKey: bannerSettings.auctionKey)
+
     @Published var banner = BannerSectionViewModel()
     
     @Published var isBannerPresented: Bool = false

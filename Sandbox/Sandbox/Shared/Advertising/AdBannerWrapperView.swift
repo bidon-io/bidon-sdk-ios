@@ -54,11 +54,12 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var pricefloor: Double
     var auctionKey: AuctionKey?
     var onEvent: AdBannerWrapperViewEvent
+    var banner: BannerView
     
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
     @Binding var wasLoaded: Bool
-    
+        
     var body: some View {
         switch mediation {
         case .appodeal:
@@ -82,7 +83,8 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
                 onEvent: onEvent,
                 ad: $ad,
                 isLoading: $isLoading,
-                wasLoaded: $wasLoaded
+                wasLoaded: $wasLoaded, 
+                banner: banner
             )
         }
     }
