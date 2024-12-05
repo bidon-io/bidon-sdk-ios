@@ -12,6 +12,7 @@ import UIKit
 protocol ViewabilityTracker {
     func startTracking(
         view: UIView,
+        useVisibilityTracker: Bool,
         impression: @escaping () -> ()
     )
     
@@ -29,8 +30,13 @@ extension Viewability {
         
         func startTracking(
             view: UIView,
+            useVisibilityTracker: Bool,
             impression: @escaping () -> ()
         ) {
+            guard useVisibilityTracker else {
+                impression()
+                return
+            }
             guard !(timer?.isValid ?? false) else { return }
             
             self.view = view
