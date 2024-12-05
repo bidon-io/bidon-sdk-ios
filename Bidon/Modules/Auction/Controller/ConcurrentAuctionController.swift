@@ -77,7 +77,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     func cancel() {
         auctionObserver.log(CancelAuctionEvent())
         
-        finishAuction()
+        finishAuction(cancel: true)
     }
     
     //MARK: - Create Demand Requests.
@@ -108,7 +108,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     private func scheduleNextOperation() {
         guard !pendingOperations.isEmpty else {
-            finishAuction()
+            finishAuction(cancel: false)
             return
         }
         let nextOperation = pendingOperations.removeFirst()
@@ -181,7 +181,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
         
         executingOperation?.timeoutReached()
-        finishAuction()
+        finishAuction(cancel: true)
     }
     
     private func invalidateTimer() {
@@ -191,7 +191,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     //MARK: - Finish Auction.
 
-    private func finishAuction() {
+    private func finishAuction(cancel: Bool) {
         invalidateTimer()
 
         pendingOperations = []
@@ -206,6 +206,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             return
         }
         queue.addOperation(finishAuctionOperation)
+        if cancel {
+            finishAuctionOperation.cancel()
+        }
     }
     
     private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
