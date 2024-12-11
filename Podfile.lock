@@ -1,15 +1,15 @@
 PODS:
-  - AmazonPublisherServicesSDK (4.9.7)
-  - AppLovinSDK (13.0.0)
+  - AmazonPublisherServicesSDK (4.10.1)
+  - AppLovinSDK (13.0.1)
   - AppsFlyerFramework (6.15.3):
     - AppsFlyerFramework/Main (= 6.15.3)
   - AppsFlyerFramework/Main (6.15.3)
-  - BidMachine (3.0.1):
-    - BidMachine/Static (= 3.0.1)
-  - BidMachine/Static (3.0.1):
-    - StackModules/Static (~> 2.2.0)
-  - BigoADS (4.4.0)
-  - ChartboostSDK (9.7.0)
+  - BidMachine (3.1.0):
+    - BidMachine/Static (= 3.1.0)
+  - BidMachine/Static (3.1.0):
+    - StackModules/Static (~> 3.0.0)
+  - BigoADS (4.5.1)
+  - ChartboostSDK (9.8.0)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
   - FBAudienceNetwork (6.15.2)
@@ -19,12 +19,12 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.3.2)
-  - Google-Mobile-Ads-SDK (11.9.0):
+  - Fyber_Marketplace_SDK (8.3.3)
+  - Google-Mobile-Ads-SDK (11.12.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
-  - InMobiSDK (10.7.8)
-  - IronSourceSDK (8.3.0.0)
+  - InMobiSDK (10.8.0)
+  - IronSourceSDK (8.5.0.0)
   - MintegralAdSDK (7.7.3):
     - MintegralAdSDK/BannerAd (= 7.7.3)
     - MintegralAdSDK/BidBannerAd (= 7.7.3)
@@ -60,7 +60,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.3):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.8.0)
+  - MobileFuseSDK (1.8.1)
   - myTargetSDK (5.21.9):
     - myTrackerSDK (~> 3.2.0)
   - myTrackerSDK (3.2.0)
@@ -68,19 +68,19 @@ PODS:
   - OMSDK_Appodeal (1.5.2)
   - StackConsentManager (2.0.8):
     - GoogleUserMessagingPlatform (~> 2.1)
-  - StackModules/Core-Static (2.2.0)
-  - StackModules/ProductPresentation-Static (2.2.0):
+  - StackModules/Core-Static (3.0.1)
+  - StackModules/ProductPresentation-Static (3.0.1):
     - StackModules/Core-Static
-  - StackModules/Rendering-Static (2.2.0):
-    - OMSDK_Appodeal (~> 1.5.0)
+  - StackModules/Rendering-Static (3.0.1):
+    - OMSDK_Appodeal (~> 1.5.2)
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
-  - StackModules/Static (2.2.0):
+  - StackModules/Static (3.0.1):
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
-  - UnityAds (4.12.4)
-  - VungleAds (7.4.2)
+  - UnityAds (4.12.5)
+  - VungleAds (7.4.1)
   - YandexMobileAds (5.2.1):
     - YandexMobileAds/Static (= 5.2.1)
   - YandexMobileAds/Static (5.2.1):
@@ -95,25 +95,25 @@ PODS:
     - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
-  - AmazonPublisherServicesSDK (~> 4.9.7)
-  - AppLovinSDK (= 13.0.0)
+  - AmazonPublisherServicesSDK (~> 4.10.1)
+  - AppLovinSDK (= 13.0.1)
   - AppsFlyerFramework (~> 6.15.2)
-  - BidMachine (~> 3.0.1)
-  - BigoADS (~> 4.4.0)
-  - ChartboostSDK (= 9.7.0)
+  - BidMachine (= 3.1.0)
+  - BigoADS (~> 4.5.1)
+  - ChartboostSDK (= 9.8.0)
   - FBAudienceNetwork (= 6.15.2)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (~> 8.3.2)
-  - Google-Mobile-Ads-SDK (~> 11.9.0)
-  - InMobiSDK (~> 10.7.5)
-  - IronSourceSDK (= 8.3.0)
-  - MintegralAdSDK (~> 7.7.2)
+  - Fyber_Marketplace_SDK (~> 8.3.3)
+  - Google-Mobile-Ads-SDK (~> 11.12.0)
+  - InMobiSDK (~> 10.8.0)
+  - IronSourceSDK (= 8.5.0)
+  - MintegralAdSDK (~> 7.7.3)
   - MobileFuseSDK
-  - myTargetSDK (~> 5.21.8)
-  - OCMock (~> 3.9.1)
-  - StackConsentManager (~> 2.0.5)
-  - UnityAds (~> 4.12.2)
-  - VungleAds (~> 7.4.1)
+  - myTargetSDK (~> 5.21.9)
+  - OCMock (~> 3.9.4)
+  - StackConsentManager (~> 2.0.8)
+  - UnityAds (~> 4.12.5)
+  - VungleAds (= 7.4.1)
   - YandexMobileAds (= 5.2.1)
 
 SPEC REPOS:
@@ -149,35 +149,35 @@ SPEC REPOS:
     - YandexMobileMetrica
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: c9e8ce9b12d9263d1635f490c1a57eaf6e595c69
-  AppLovinSDK: c0ecb434df24008b6ecdd7f1e5b8587bc45ff381
+  AmazonPublisherServicesSDK: 8e6b685c1c6fdc17a24f6723ff6f0fe7036f7326
+  AppLovinSDK: fdae6a4361c9c9b09f8d7d18ede792368221d987
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
-  BidMachine: cb15c3d1324c8864954550cddd968605a2cfb3cf
-  BigoADS: 164e32b1b7b5e78b2e99d9997e7fd1429708961c
-  ChartboostSDK: 0cd093c90a5a21c89783fe5be486e511fb2dbfc8
+  BidMachine: 0d94e91181c69ac075a7b3657d8ee753f1e02eb1
+  BigoADS: ee4a4bc66c66d9872bb8c5866cb195ac21f81d9e
+  ChartboostSDK: f8422957daa675fa4a0bb9f159144b3b59ef5c27
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 2457a89b45e2596241fd81b0c2fd8cb6f6053869
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: 215c2020efd507c0e97f40871e96a26918f8986e
-  Google-Mobile-Ads-SDK: 6a3cdd892fd87c8b2a388c1cc74d2b7df2570f0b
+  Fyber_Marketplace_SDK: a39065cbd4bb3af733f3e9691fc9a098991fd3a2
+  Google-Mobile-Ads-SDK: 3a76704456669fbed2057efc8bdb99050ad0e3fb
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
-  InMobiSDK: ee53561ba1fd21787b1eb82f02da9b93067ffc8e
-  IronSourceSDK: 2dbbc8b9d20cbc4a60901e07e0aa5f3bf6a15d9a
+  InMobiSDK: 0cfb1a1eb5112fa0236ae1fab549e31fb96c9566
+  IronSourceSDK: 9ca8fc2e59892dece8d93bf2745137d1cf16333e
   MintegralAdSDK: 217cca20529055c8791c82985dd7a74864e49fd0
-  MobileFuseSDK: 4dae8f266ac60d346e8b2f526b1871844d6d8128
+  MobileFuseSDK: 08d632562c9b2d2c3f744d1d6b9eff4033e66d02
   myTargetSDK: abed622e4308161fb23c16f9937a097332d9b4e6
   myTrackerSDK: e1d9cf32afae080a91bf46ef7e48e43e1644d884
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: b6c59a2574bbd3350e6ad2f9c8fa3884fdaff419
-  StackModules: 01456d85a6ddbaa52059e9d9d6ee7ec8812d10ca
-  UnityAds: df29459d94ca7c0676cdd9ba96ef6420670ffbfa
-  VungleAds: d7cf66a6dfd390a583ea2b2cfb9af1043b686e58
+  StackModules: 3a8cbd3d0f48f678b9310f471c7b84877e40201e
+  UnityAds: a4036ed911b4df2227d8137f4f777fcb86c4a2df
+  VungleAds: 97140121d0b909891eb217d1c102a194601da607
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 764732962d23d6f32d6fdbaa166fd1b1695d3522
+PODFILE CHECKSUM: ef56618e845f2e6e4b7d3a2ad43d53688a1c38f9
 
 COCOAPODS: 1.15.2

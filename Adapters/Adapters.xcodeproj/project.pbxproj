@@ -203,8 +203,6 @@
 		495FB5332C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */; };
 		495FB5342C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */; };
 		495FB5352C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */; };
-		49C4083B2C62443A005CB90B /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */; };
-		49C4083C2C62443A005CB90B /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49D69CA22C6CB4ED007EF1F8 /* BidonAdapterYandex.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D69CA12C6CB4ED007EF1F8 /* BidonAdapterYandex.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49D69CAF2C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CA62C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift */; };
 		49D69CB02C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CA72C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift */; };
@@ -219,6 +217,8 @@
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
 		64633AAE6A85C150106AA924 /* Pods_BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
+		9AB4B7BC2CF7373500312921 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB4B7BB2CF7373500312921 /* DTBiOSSDK.xcframework */; };
+		9AB4B7BD2CF7373500312921 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB4B7BB2CF7373500312921 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
 		A8831F4DD98CAF8F84E87612 /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
@@ -241,13 +241,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49C4083D2C62443A005CB90B /* Embed Frameworks */ = {
+		9AB4B7BE2CF7373500312921 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				49C4083C2C62443A005CB90B /* DTBiOSSDK.xcframework in Embed Frameworks */,
+				9AB4B7BD2CF7373500312921 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -524,6 +524,7 @@
 		8E97FBE0C6B88C127715A603 /* Pods-BidOnAdapterAppLovin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.release.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.release.xcconfig"; sourceTree = "<group>"; };
 		92AFA70C7A8BA2308E3FFBC8 /* Pods-BidonAdapterGoogleAdManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleAdManager.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager.release.xcconfig"; sourceTree = "<group>"; };
 		9A144A749B3052174F9B4C46 /* Pods-BidonAdapterBigoAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterBigoAds.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds.debug.xcconfig"; sourceTree = "<group>"; };
+		9AB4B7BB2CF7373500312921 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.10.1/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		9E4637603DBCDF0E22FB36B1 /* Pods-BidonAdapterAmazon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterAmazon.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterAmazon/Pods-BidonAdapterAmazon.debug.xcconfig"; sourceTree = "<group>"; };
 		A0F1605E7360A0AE763ADC9A /* Pods-BidonAdapterMobileFuse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMobileFuse.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMobileFuse/Pods-BidonAdapterMobileFuse.debug.xcconfig"; sourceTree = "<group>"; };
 		A2A14A9026F740E4B9C384B1 /* Pods-BidonAdapterGoogleMobileAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleMobileAds.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds.debug.xcconfig"; sourceTree = "<group>"; };
@@ -603,7 +604,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49C4083B2C62443A005CB90B /* DTBiOSSDK.xcframework in Frameworks */,
+				9AB4B7BC2CF7373500312921 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1452,6 +1453,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9AB4B7BB2CF7373500312921 /* DTBiOSSDK.xcframework */,
 				495CD32D2C7761C100590AAD /* Bidon.framework */,
 				49088C0D2C6A505C0024A640 /* Bidon.framework */,
 				495FB5212C637D610023E8A0 /* Pods_BidonAdapterMyTarget.framework */,
@@ -1729,7 +1731,7 @@
 				420F03582A6818AF00A4664F /* Sources */,
 				420F03592A6818AF00A4664F /* Frameworks */,
 				420F035A2A6818AF00A4664F /* Resources */,
-				EF26D567EB53F2863E0468BB /* [CP] Copy Pods Resources */,
+				7B7C2860B8C2175F5941569B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1809,7 +1811,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				49C4083D2C62443A005CB90B /* Embed Frameworks */,
+				9AB4B7BE2CF7373500312921 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2497,6 +2499,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7B7C2860B8C2175F5941569B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		8019DD383D129C20066949FE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2832,23 +2851,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EF26D567EB53F2863E0468BB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
