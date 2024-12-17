@@ -26,6 +26,8 @@ final class CollectTokenOperation<AdTypeContextType: AdTypeContext>: Asynchronou
     }
     
     override func main() {
+        super.main()
+        
         startTimestamp = Date.timestamp(.wall, units: .milliseconds)
                 
         provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { [weak self] result in
