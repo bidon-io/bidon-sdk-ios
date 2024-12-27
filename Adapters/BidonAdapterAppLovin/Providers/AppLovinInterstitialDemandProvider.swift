@@ -14,8 +14,7 @@ import UIKit
 internal final class AppLovinInterstitialDemandProvider: NSObject {
     private let sdk: ALSdk
     
-    @Injected(\.bridge)
-    var bridge: AppLovinAdServiceBridge
+    var bridge: AppLovinAdServiceBridge = AppLovinAdServiceBridge()
     
     private lazy var interstitial: ALInterstitialAd = {
         let interstitial = ALInterstitialAd(sdk: sdk)

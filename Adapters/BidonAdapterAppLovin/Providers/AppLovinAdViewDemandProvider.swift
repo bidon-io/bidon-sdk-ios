@@ -31,8 +31,7 @@ internal final class AppLovinAdViewDemandProvider: NSObject {
         return adView
     }()
     
-    @Injected(\.bridge)
-    var bridge: AppLovinAdServiceBridge
+    var bridge: AppLovinAdServiceBridge = AppLovinAdServiceBridge()
     
     private var response: DemandProviderResponse?
     
