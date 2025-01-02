@@ -180,7 +180,7 @@ struct InitializationView: View {
             adunitСacheSize: config.rewardedVideo.adunitCacheSize,
             noFillDelayMs: config.rewardedVideo.noFillDelayMs
         )
-        let conf = Bidon.AdCacheConfig(banner: banner, interstitial: inter, rewardedVideo: rewarded)
+        let conf = Bidon.AdCacheConfig(adCacheEnabled: config.adCacheEnabled, banner: banner, interstitial: inter, rewardedVideo: rewarded)
         BidonSdk.setAdCacheConfig(conf)
     }
 

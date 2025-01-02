@@ -25,7 +25,7 @@ protocol AdLoading {
     var pricefloor: Price { get }
     
     func withSettings(_ settings: AdTypeCacheConfig)
-    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?, force: Bool)
+    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?)
     func notifyWin()
     func notifyLoss(external demandId: String, eCPM: Price)
 }

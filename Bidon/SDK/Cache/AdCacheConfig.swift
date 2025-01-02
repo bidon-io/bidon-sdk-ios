@@ -9,22 +9,25 @@ import Foundation
 
 @objc(BDNAdCacheConfig)
 public final class AdCacheConfig: NSObject {
+    public var adCacheEnabled: Bool
     public var banner: AdTypeCacheConfig
     public var interstitial: AdTypeCacheConfig
     public var rewardedVideo: AdTypeCacheConfig
     
     public init(
+        adCacheEnabled: Bool = true,
         banner: AdTypeCacheConfig = AdTypeCacheConfig(),
         interstitial: AdTypeCacheConfig = AdTypeCacheConfig(),
         rewardedVideo: AdTypeCacheConfig = AdTypeCacheConfig()
     ) {
+        self.adCacheEnabled = adCacheEnabled
         self.banner = banner
         self.interstitial = interstitial
         self.rewardedVideo = rewardedVideo
     }
     
     public override var description: String {
-        return "Banner: \(banner.description), Interstitial: \(interstitial.description), Rewarded: \(rewardedVideo.description)"
+        return "Cache enabled: \(adCacheEnabled), Banner: \(banner.description), Interstitial: \(interstitial.description), Rewarded: \(rewardedVideo.description)"
     }
 }
 

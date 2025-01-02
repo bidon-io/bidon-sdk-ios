@@ -11,19 +11,22 @@ final class AdCacheConfig: ObservableObject {
     @Published var banner: AdTypeCacheConfig
     @Published var interstitial: AdTypeCacheConfig
     @Published var rewardedVideo: AdTypeCacheConfig
+    @Published var adCacheEnabled: Bool
     
     init(
         banner: AdTypeCacheConfig = AdTypeCacheConfig(),
         interstitial: AdTypeCacheConfig = AdTypeCacheConfig(),
-        rewardedVideo: AdTypeCacheConfig = AdTypeCacheConfig()
+        rewardedVideo: AdTypeCacheConfig = AdTypeCacheConfig(),
+        adCacheEnabled: Bool = true
     ) {
         self.banner = banner
         self.interstitial = interstitial
         self.rewardedVideo = rewardedVideo
+        self.adCacheEnabled = adCacheEnabled
     }
     
     var description: String {
-        "Banner: \(banner.description), Interstitial: \(interstitial.description), Rewarded: \(rewardedVideo.description)"
+        "Cache enabled: \(adCacheEnabled), Banner: \(banner.description), Interstitial: \(interstitial.description), Rewarded: \(rewardedVideo.description)"
     }
 }
 
@@ -51,15 +54,18 @@ class AdCacheConfigViewModel: ObservableObject {
     @Published var bannerConfig: AdTypeCacheConfig
     @Published var interstitialConfig: AdTypeCacheConfig
     @Published var rewardedVideoConfig: AdTypeCacheConfig
+    @Published var adCacheEnabled: Bool
 
     init(
         banner: AdTypeCacheConfig = AdTypeCacheConfig(),
         interstitial: AdTypeCacheConfig = AdTypeCacheConfig(),
-        rewardedVideo: AdTypeCacheConfig = AdTypeCacheConfig()
+        rewardedVideo: AdTypeCacheConfig = AdTypeCacheConfig(),
+        adCacheEnabled: Bool = true
     ) {
         self.bannerConfig = banner
         self.interstitialConfig = interstitial
         self.rewardedVideoConfig = rewardedVideo
+        self.adCacheEnabled = adCacheEnabled
     }
 
     // Example action to reset configurations
@@ -78,6 +84,11 @@ struct AdCacheConfigView: View {
     var body: some View {
         NavigationView {
             Form {
+                Section {
+                    Toggle(isOn: $viewModel.adCacheEnabled) {
+                        Text("Enable Ad Cache")
+                    }
+                }
                 Section(header: Text("Banner Configuration")) {
                     AdTypeConfigView(config: viewModel.bannerConfig)
                 }
@@ -98,7 +109,8 @@ struct AdCacheConfigView: View {
                         AdCacheConfig(
                             banner: viewModel.bannerConfig,
                             interstitial: viewModel.interstitialConfig,
-                            rewardedVideo: viewModel.rewardedVideoConfig
+                            rewardedVideo: viewModel.rewardedVideoConfig,
+                            adCacheEnabled: viewModel.adCacheEnabled
                         )
                     )
                     presentationMode.wrappedValue.dismiss()

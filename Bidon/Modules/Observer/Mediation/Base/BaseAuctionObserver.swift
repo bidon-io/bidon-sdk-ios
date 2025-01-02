@@ -71,7 +71,7 @@ final class BaseAuctionObserver: AuctionObserver {
                 observation.demand.didReceiveClientBid(_event.bid)
             }
             // Bidding demand
-        case let _event as BiddingDemandBidRequestAuctionEvent:
+        case _ as BiddingDemandBidRequestAuctionEvent:
             $round.mutate { observation in
                 observation.bidding.willRequestBid()
             }

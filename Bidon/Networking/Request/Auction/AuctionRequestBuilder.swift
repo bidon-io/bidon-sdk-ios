@@ -23,9 +23,6 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
     func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self
     
     @discardableResult
-    func withPlacement(_ placement: String) -> Self
-    
-    @discardableResult
     func withAuctionId(_ auctionId: String) -> Self
     
     @discardableResult
@@ -42,7 +39,6 @@ protocol AuctionRequestBuilder: AdTypeContextRequestBuilder {
 
 
 class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, AuctionRequestBuilder {
-    private(set) var placement: String!
     private(set) var auctionId: String!
     private(set) var pricefloor: Price = .unknown
     private(set) var demands: EncodableBiddingDemandTokens!
@@ -59,12 +55,6 @@ class BaseAuctionRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, Auc
     @discardableResult
     func withBiddingTokens(_ tokens: [BiddingDemandToken]) -> Self {
         self.demands = EncodableBiddingDemandTokens(tokens: tokens)
-        return self
-    }
-    
-    @discardableResult
-    func withPlacement(_ placement: String) -> Self {
-        self.placement = placement
         return self
     }
     
