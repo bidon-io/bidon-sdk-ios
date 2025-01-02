@@ -105,9 +105,11 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
-        guard state.isIdle, !adCacheEnabled else {
-            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
-            return
+        if !adCacheEnabled {
+            guard state.isIdle else {
+                Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
+                return
+            }
         }
         
         fetchAuctionInfo(pricefloor, auctionKey: auctionKey)

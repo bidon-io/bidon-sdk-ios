@@ -70,9 +70,11 @@ final class BannerAdManager: NSObject {
         viewContext: AdViewContext,
         auctionKey: AuctionKey?
     ) {
-        guard state.isIdle, !adCacheEnabled else {
-            Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
-            return
+        if !adCacheEnabled {
+            guard state.isIdle else {
+                Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
+                return
+            }
         }
         
         fetchAuctionInfo(
