@@ -25,7 +25,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     var results = [LoadedAd]()
     
     private let context: AdTypeContextType
-    private let placement: String
     private var isLoading = false
     private var settings = AdTypeCacheConfig()
     
@@ -44,21 +43,18 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
     private var managers = [Manager]()
-    private var force: Bool = false
 
-    init(context: AdTypeContextType, placement: String) {
+    init(context: AdTypeContextType) {
         self.context = context
-        self.placement = placement
     }
 
     func withSettings(_ settings: AdTypeCacheConfig) {
         self.settings = settings
     }
     
-    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?, force: Bool) {
+    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
-        self.force = force
         self.delegate = delegate
         
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
@@ -71,11 +67,12 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
         if !isLoading {
             isLoading = true
+            
             let manager = Manager(
                 context: context,
-                placement: placement,
                 delegate: self
             )
+            
             manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
             managers.append(manager)
         } else {
@@ -132,14 +129,14 @@ extension FullscreenAdLoader {
         delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: ad.price >= pricefloor)
         timer.reset()
         
-        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate, force: false)
+        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         isLoading = false
         timer.start { [weak self] in
             guard let self else { return }
-            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate, force: force)
+            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate)
         }
         Logger.debug("[Cache] Failed to load new ad, restart cache in \(timer.currentTimeoutInterval) seconds")
     }

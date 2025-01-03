@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 @objc(BDNRewardedAd)
 public final class RewardedAd: NSObject, RewardedAdObject {
     private typealias Cacher = FullscreenAdCacher<
@@ -19,25 +18,28 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     >
     
     @objc public weak var delegate: RewardedAdDelegate?
-    
-    @objc public let placement: String
-    
+        
     @objc public let auctionKey: AuctionKey?
     
-    @objc public var isReady: Bool { return adCacher.peek() != nil }
+    @objc public var isReady: Bool { return adCacher?.isReady ?? false }
 
-    @objc public var extras = [String: AnyHashable]()
+    @objc public var extras: [String: AnyHashable] {
+        return adCacher?.extras ?? [:]
+    }
 
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private lazy var adCacher: Cacher = AdCacherFactory.cache(type: .rewarded, placement: placement)
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.rewardedVideo.adCacheEnabled
+    private lazy var adCacher: FullscreenAdCaching? = {
+        return adCacheEnabled ?
+        AdCacherFactory.cache(type: .rewarded) as? FullscreenAdCaching :
+        AdCacherFactory.nonCache(type: .rewarded) as? FullscreenAdCaching
+    }()
     
     @objc public init(
-        auctionKey: AuctionKey? = nil,
-        placement: String = "default"
+        auctionKey: AuctionKey? = nil
     ) {
-        self.placement = placement
         self.auctionKey = auctionKey
         super.init()
     }
@@ -46,22 +48,22 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         _ value: AnyHashable?,
         for key: String
     ) {
-        extras[key] = value
+        adCacher?.extras[key] = value
     }
     
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
+        adCacher?.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
-        adCacher.showAd(from: rootViewController, delegate: self, extras: extras)
+        adCacher?.showAd(from: rootViewController, delegate: self, extras: extras)
     }
     
     @objc(notifyWin)
     public func notifyWin() {
-//        adCacher.notifyWin()
+        adCacher?.notifyWin()
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -69,10 +71,10 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         external demandId: String,
         eCPM: Price
     ) {
-//        adCacher.notifyLoss(
-//            external: demandId,
-//            eCPM: eCPM
-//        )
+        adCacher?.notifyLoss(
+            external: demandId,
+            eCPM: eCPM
+        )
     }
 }
 

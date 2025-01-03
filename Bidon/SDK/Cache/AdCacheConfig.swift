@@ -32,6 +32,7 @@ public final class AdCacheConfig: NSObject {
 public final class AdTypeCacheConfig: NSObject {
     public var adunitСacheSize: Int
     public var noFillDelayMs: Int
+    public var adCacheEnabled: Bool
     
     private let minCacheSize = 1
     private let maxCacheSize = 10
@@ -39,12 +40,13 @@ public final class AdTypeCacheConfig: NSObject {
     private let minNoFillDelay = 2000
     private let maxNoFillDelay = 64000
     
-    public init(adunitСacheSize: Int = 1, noFillDelayMs: Int = 2000) {
+    public init(adCacheEnabled: Bool = true, adunitСacheSize: Int = 1, noFillDelayMs: Int = 2000) {
+        self.adCacheEnabled = adCacheEnabled
         self.adunitСacheSize = max(minCacheSize, min(adunitСacheSize, maxCacheSize))
         self.noFillDelayMs = max(minNoFillDelay, min(noFillDelayMs, maxNoFillDelay))
     }
     
     public override var description: String {
-        return "size - \(adunitСacheSize), delay - \(noFillDelayMs)"
+        return "enabled - \(adCacheEnabled), size - \(adunitСacheSize), delay - \(noFillDelayMs)"
     }
 }

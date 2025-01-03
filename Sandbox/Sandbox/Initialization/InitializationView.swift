@@ -169,14 +169,17 @@ struct InitializationView: View {
     // MARK: - Helper Methods
     private func saveCacheConfig(config: AdCacheConfig) {
         let banner = Bidon.AdTypeCacheConfig(
+            adCacheEnabled: config.banner.adCacheEnabled,
             adunitСacheSize: config.banner.adunitCacheSize,
             noFillDelayMs: config.banner.noFillDelayMs
         )
         let inter = Bidon.AdTypeCacheConfig(
+            adCacheEnabled: config.interstitial.adCacheEnabled,
             adunitСacheSize: config.interstitial.adunitCacheSize,
             noFillDelayMs: config.interstitial.noFillDelayMs
         )
         let rewarded = Bidon.AdTypeCacheConfig(
+            adCacheEnabled: config.rewardedVideo.adCacheEnabled,
             adunitСacheSize: config.rewardedVideo.adunitCacheSize,
             noFillDelayMs: config.rewardedVideo.noFillDelayMs
         )

@@ -64,7 +64,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
-    private let placement: String
     private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
@@ -92,25 +91,26 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
+    private lazy var adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.config(for: context.cacheType).adCacheEnabled
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         
     init(
         context: AdTypeContextType,
-        placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
         self.context = context
-        self.placement = placement
         super.init()
     }
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
-//        guard state.isIdle else {
-//            Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
-//            return
-//        }
+        if !adCacheEnabled {
+            guard state.isIdle else {
+                Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
+                return
+            }
+        }
         
         fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
     }

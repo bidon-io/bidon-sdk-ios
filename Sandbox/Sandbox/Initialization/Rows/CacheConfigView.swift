@@ -30,6 +30,7 @@ final class AdCacheConfig: ObservableObject {
 final class AdTypeCacheConfig: ObservableObject {
     @Published var adunitCacheSize: Int
     @Published var noFillDelayMs: Int
+    @Published var adCacheEnabled: Bool
 
     private let minCacheSize = 1
     private let maxCacheSize = 10
@@ -37,13 +38,14 @@ final class AdTypeCacheConfig: ObservableObject {
     private let minNoFillDelay = 2000
     private let maxNoFillDelay = 64000
     
-    init(adunitCacheSize: Int = 1, noFillDelayMs: Int = 2000) {
+    init(adCacheEnabled: Bool = true, adunitCacheSize: Int = 1, noFillDelayMs: Int = 2000) {
+        self.adCacheEnabled = adCacheEnabled
         self.adunitCacheSize = max(minCacheSize, min(adunitCacheSize, maxCacheSize))
         self.noFillDelayMs = max(minNoFillDelay, min(noFillDelayMs, maxNoFillDelay))
     }
     
     var description: String {
-        "size - \(adunitCacheSize), delay - \(noFillDelayMs)"
+        "enabled - \(adCacheEnabled) size - \(adunitCacheSize), delay - \(noFillDelayMs)"
     }
 }
 
@@ -115,6 +117,10 @@ struct AdTypeConfigView: View {
 
     var body: some View {
         VStack {
+            Toggle(isOn: $config.adCacheEnabled) {
+                Text("Enable Ad Cache")
+            }
+            
             Stepper("Ad Unit Cache Size: \(config.adunitCacheSize)", value: $config.adunitCacheSize, in: 1...10)
             
             Stepper(value: $config.noFillDelayMs, in: 2000...64000, step: 1000) {
@@ -122,28 +128,5 @@ struct AdTypeConfigView: View {
             }
         }
         .padding()
-    }
-}
-
-
-struct SavedConfigView: View {
-    @ObservedObject var viewModel: AdCacheConfigViewModel
-
-    var body: some View {
-        Form {
-            Section(header: Text("Saved Banner Configuration")) {
-                Text("Ad Unit Cache Size: \(viewModel.bannerConfig.adunitCacheSize)")
-                Text("No Fill Delay (ms): \(Int(viewModel.bannerConfig.noFillDelayMs))")
-            }
-            Section(header: Text("Saved Interstitial Configuration")) {
-                Text("Ad Unit Cache Size: \(viewModel.interstitialConfig.adunitCacheSize)")
-                Text("No Fill Delay (ms): \(Int(viewModel.interstitialConfig.noFillDelayMs))")
-            }
-            Section(header: Text("Saved Rewarded Video Configuration")) {
-                Text("Ad Unit Cache Size: \(viewModel.rewardedVideoConfig.adunitCacheSize)")
-                Text("No Fill Delay (ms): \(Int(viewModel.rewardedVideoConfig.noFillDelayMs))")
-            }
-        }
-        .navigationTitle("Saved Config")
     }
 }

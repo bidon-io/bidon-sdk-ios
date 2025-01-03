@@ -24,8 +24,8 @@ protocol AdCachingImpressionDelegate: AnyObject {
 
 protocol AdCaching {
     var extras: [String: AnyHashable] { get set }
+    var isReady: Bool { get }
     
-    func withSettings(_ settings: AdCacheConfig)
     func cache(auctionKey: AuctionKey?, pricefloor: Price, delegate: AdCachingLoadingDelegate)
     func notifyWin()
     func notifyLoss(external demandId: String, eCPM: Price)
@@ -45,6 +45,7 @@ protocol BannerAdCaching: AdCaching {
     
     func peek() -> BannerCachedAd?
     func pop()
+    func prepareForReuse()
 }
 
 extension Optional where Wrapped == AuctionKey {

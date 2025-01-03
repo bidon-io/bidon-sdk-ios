@@ -19,9 +19,7 @@ public final class BannerView: UIView, AdView {
     @objc public var autorefreshInterval: TimeInterval = 15
     
     @objc public var isAutorefreshing: Bool = false
-    
-    @objc public let placement: String
-    
+        
     @objc public let auctionKey: AuctionKey?
     
     @objc public var format: BannerFormat = .banner
@@ -31,11 +29,16 @@ public final class BannerView: UIView, AdView {
     @objc public weak var delegate: AdViewDelegate?
     
     @objc public var isReady: Bool {
-        adCacher.peek() != nil || (viewManager.impression.map { $0.showTrackedAt.isNaN } ?? false )
+        adCacher?.peek() != nil || (viewManager.impression.map { $0.showTrackedAt.isNaN } ?? false )
     }
     
     @objc private(set) public
-    lazy var extras: [String : AnyHashable] = [:]
+    lazy var extras: [String : AnyHashable] = [:] {
+        didSet {
+            adCacher?.extras = extras
+            viewManager.extras = extras
+        }
+    }
     
     @Injected(\.sdk)
     private var sdk: Sdk
@@ -57,7 +60,7 @@ public final class BannerView: UIView, AdView {
         observer.ads = { [weak self] in
             guard let self = self else { return [] }
             
-            let ads: [Ad] = [self.adCacher.impressions?.first, self.viewManager.impression]
+            let ads: [Ad] = [self.adCacher?.impressions?.first, self.viewManager.impression]
                 .compactMap { $0 }
                 .map { AdContainer(impression: $0) }
             
@@ -79,7 +82,8 @@ public final class BannerView: UIView, AdView {
         return manager
     }()
     
-    private lazy var adCacher: BannerAdCacher = {
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.banner.adCacheEnabled
+    private lazy var adCacher: BannerAdCaching? = {
         var type: CacheType
         switch viewContext.format {
         case .banner:
@@ -91,11 +95,17 @@ public final class BannerView: UIView, AdView {
         case .adaptive:
             type = .adaptive(viewContext)
         }
-        return AdCacherFactory.cache(
+        if adCacheEnabled {
+            return AdCacherFactory.cache(
+                type: type,
+                adRevenueObserver: adRevenueObserver
+            ) as? BannerAdCaching
+        }
+        
+        return AdCacherFactory.nonCache(
             type: type,
-            placement: placement,
             adRevenueObserver: adRevenueObserver
-        )
+        ) as? BannerAdCaching
     }()
     
     private var state: State = .idle
@@ -103,10 +113,8 @@ public final class BannerView: UIView, AdView {
     @objc
     public init(
         frame: CGRect,
-        auctionKey: AuctionKey?,
-        placement: String = "default"
+        auctionKey: AuctionKey?
     ) {
-        self.placement = placement
         self.auctionKey = auctionKey
         super.init(frame: frame)
     }
@@ -126,13 +134,13 @@ public final class BannerView: UIView, AdView {
         with pricefloor: Price = .zero
     ) {
         state = .loading
-        adCacher.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
+        adCacher?.cache(auctionKey: auctionKey, pricefloor: pricefloor, delegate: self)
     }
     
     @objc(notifyWin)
     public func notifyWin() {
-//        adCacher.notifyWin()
-//        viewManager.notifyWin(viewContext: viewContext)
+        adCacher?.notifyWin()
+        viewManager.notifyWin(viewContext: viewContext)
     }
     
     @objc(notifyLossWithExternalDemandId:eCPM:)
@@ -140,13 +148,12 @@ public final class BannerView: UIView, AdView {
         external demandId: String,
         eCPM: Price
     ) {
-//        adCacher.notifyLoss(external: demandId, eCPM: eCPM)
-//        
-//        viewManager.notifyLoss(
-//            winner: demandId,
-//            eCPM: eCPM,
-//            viewContext: viewContext
-//        )
+        adCacher?.notifyLoss(external: demandId, eCPM: eCPM)
+        viewManager.notifyLoss(
+            winner: demandId,
+            eCPM: eCPM,
+            viewContext: viewContext
+        )
     }
     
     @objc(show)
@@ -158,7 +165,7 @@ public final class BannerView: UIView, AdView {
 
     private final func presentIfNeeded() {
         guard
-            let impression = adCacher.impressions?.first,
+            let impression = adCacher?.impressions?.first,
             let adView = impression.bid.provider.container(opaque: impression.bid.ad),
             state == .loading
         else {
@@ -167,14 +174,16 @@ public final class BannerView: UIView, AdView {
         
         state = .showing
         
-        adCacher.extras = extras
+        adCacher?.extras = extras
         viewManager.extras = extras
         
-        adCacher.pop()
+        adCacher?.pop()
         Logger.verbose("Banner \(self) will refresh ad view")
         
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            
+            self.adCacher?.prepareForReuse()
             
             Logger.debug("[Cache] Banner will refresh ad view, demand: \(impression.demandId), price: \(impression.price)")
             
@@ -225,7 +234,7 @@ extension BannerView: AdCachingLoadingDelegate {
 
 internal extension BannerView {
     var ad: Ad? {
-        return (adCacher.impressions?.first ?? viewManager.impression).map {
+        return (adCacher?.impressions?.first ?? viewManager.impression).map {
             AdContainer(impression: $0)
         }
     }

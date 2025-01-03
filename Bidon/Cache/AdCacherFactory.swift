@@ -49,13 +49,49 @@ final class AdCacherFactory {
         RewardedAdaptersFetcher
     >
     
-    static func cache<T>(
+    typealias InterstitialNonCacher = FullscreenAdNonCacher<
+        InterstitialAdTypeContext,
+        InterstitialConcurrentAuctionControllerBuilder,
+        InterstitialImpressionController,
+        InterstitialAdaptersFetcher
+    >
+    typealias RewardedNonCacher = FullscreenAdNonCacher<
+        RewardedAdTypeContext,
+            RewardedConcurrentAuctionControllerBuilder,
+            RewardedImpressionController,
+        RewardedAdaptersFetcher
+    >
+    
+    static func nonCache(
         type: CacheType,
-        placement: String,
         adRevenueObserver: AdRevenueObserver? = nil
-    ) -> T where T: AdCaching {
-        if var cacher = instances[type.stringValue] as? T {
-//            cacher.delegate = delegate
+    ) -> AdCaching {
+        let newCacher: AdCaching
+        switch type {
+        case .interstitial:
+            newCacher = InterstitialNonCacher(
+                context: InterstitialAdTypeContext(),
+                type: type
+            )
+        case .rewarded:
+            newCacher = RewardedNonCacher(
+                context: RewardedAdTypeContext(),
+                type: type
+            )
+        case .banner, .leaderboard, .mrec, .adaptive:
+            newCacher = BannerAdNonCacher(
+                type: type,
+                adRevenueObserver: adRevenueObserver
+            )
+        }
+        return newCacher
+    }
+    
+    static func cache(
+        type: CacheType,
+        adRevenueObserver: AdRevenueObserver? = nil
+    ) -> AdCaching {
+        if let cacher = instances[type.stringValue] as? AdCaching {
             return cacher
         }
         
@@ -64,24 +100,21 @@ final class AdCacherFactory {
         case .interstitial:
             newCacher = InterstitialCacher(
                 context: InterstitialAdTypeContext(),
-                type: type,
-                placement: placement
+                type: type
             )
         case .rewarded:
             newCacher = RewardedCacher(
                 context: RewardedAdTypeContext(),
-                type: type,
-                placement: placement
+                type: type
             )
         case .banner, .leaderboard, .mrec, .adaptive:
             newCacher = BannerAdCacher(
                 type: type,
-                placement: placement, 
                 adRevenueObserver: adRevenueObserver
             )
         }
         instances[type.stringValue] = newCacher
-        return newCacher as! T
+        return newCacher
     }
     
     static func storedCache<T>(type: CacheType) -> T? where T: AdCaching {

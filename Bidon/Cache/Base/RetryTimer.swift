@@ -11,6 +11,7 @@ final class RetryTimer {
     private var timeoutInterval: TimeInterval
     private let minTimeoutInterval: TimeInterval
     private let maxTimeoutInterval = 64.0
+    private let multiplier = 2.0
     
     var currentTimeoutInterval: TimeInterval {
         return timeoutInterval
@@ -29,11 +30,13 @@ final class RetryTimer {
     
     func start(completion: @escaping (() -> Void)) {
         timer?.invalidate()
+        
         let timer = Timer(timeInterval: timeoutInterval, repeats: false) { [weak self] _ in
             guard let self else { return }
-            self.timeoutInterval = min(self.timeoutInterval * 2, self.maxTimeoutInterval)
+            self.timeoutInterval = min(self.timeoutInterval * multiplier, self.maxTimeoutInterval)
             completion()
         }
+        
         RunLoop.main.add(timer, forMode: .default)
         self.timer = timer
     }

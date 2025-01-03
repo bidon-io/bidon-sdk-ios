@@ -36,9 +36,7 @@ final class BannerAdManager: NSObject {
     private var state: State = .idle
     
     let adRevenueObserver: AdRevenueObserver
-    
-    let placement: String
-    
+        
     weak var delegate: BannerAdManagerDelegate?
     
     var impression: AdViewImpression? {
@@ -53,13 +51,12 @@ final class BannerAdManager: NSObject {
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.banner.adCacheEnabled
     
     init(
-        placement: String,
         adRevenueObserver: AdRevenueObserver
     ) {
         
-        self.placement = placement
         self.adRevenueObserver = adRevenueObserver
         super.init()
     }
@@ -73,9 +70,11 @@ final class BannerAdManager: NSObject {
         viewContext: AdViewContext,
         auctionKey: AuctionKey?
     ) {
-        guard state.isIdle else {
-            Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
-            return
+        if !adCacheEnabled {
+            guard state.isIdle else {
+                Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
+                return
+            }
         }
         
         fetchAuctionInfo(

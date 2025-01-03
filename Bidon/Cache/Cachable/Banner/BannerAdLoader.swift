@@ -13,7 +13,6 @@ final class BannerAdLoader: BannerAdLoading {
     
     var results = [LoadedAd]()
     
-    private let placement: String
     private let viewContext: AdViewContext
     private var isLoading = false
     private var settings = AdTypeCacheConfig()
@@ -27,14 +26,12 @@ final class BannerAdLoader: BannerAdLoading {
     private lazy var timer = RetryTimer(timeoutIntervalMs: Double(settings.noFillDelayMs))
     
     private var managers = [Manager]()
-    private var force: Bool = false
     
     var impressions: [AdViewImpression]? {
         return results.compactMap({ $0.manager.impression })
     }
 
-    init(placement: String, viewContext: AdViewContext, adRevenueObserver: AdRevenueObserver?) {
-        self.placement = placement
+    init(viewContext: AdViewContext, adRevenueObserver: AdRevenueObserver?) {
         self.viewContext = viewContext
         self.adRevenueObserver = adRevenueObserver
     }
@@ -43,11 +40,10 @@ final class BannerAdLoader: BannerAdLoading {
         self.settings = settings
     }
 
-    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?, force: Bool) {
+    func load(auctionKey: AuctionKey?, pricefloor: Price, delegate: (any AdLoadingDelegate)?) {
         self.auctionKey = auctionKey
         self.pricefloor = pricefloor
         self.delegate = delegate
-        self.force = force
                 
         let containsAdForPricefloor = results.contains(where: { $0.cachedAd.ad.price < pricefloor })
         if results.count == settings.adunitСacheSize && !containsAdForPricefloor {
@@ -65,7 +61,6 @@ final class BannerAdLoader: BannerAdLoading {
         if !isLoading {
             isLoading = true
             let manager = Manager(
-                placement: placement,
                 adRevenueObserver: adRevenueObserver
             )
             manager.delegate = self
@@ -114,13 +109,13 @@ extension BannerAdLoader: BannerAdManagerDelegate {
         delegate?.adLoader(self, didLoad: ad, auctionInfo: auctionInfo, replacedAd: replacedAd?.cachedAd.ad, notify: ad.price >= pricefloor)
         timer.reset()
         
-        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate, force: false)
+        load(auctionKey: auctionKey, pricefloor: pricefloor, delegate: delegate)
     }
     func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: any AuctionInfo) {
         isLoading = false
         timer.start { [weak self] in
             guard let self else { return }
-            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate, force: false)
+            self.load(auctionKey: self.auctionKey, pricefloor: self.pricefloor, delegate: self.delegate)
         }
         Logger.debug("[Cache] Failed to load new ad, restart cache in \(timer.currentTimeoutInterval) seconds")
     }
