@@ -11,7 +11,7 @@ import Bidon
 
 
 extension MFAd: DemandAd {
-    public var id: String { instanceId() }
+    public var id: String { instanceId }
 }
 
 
