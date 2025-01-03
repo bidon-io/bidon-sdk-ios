@@ -91,7 +91,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
-    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.adCacheEnabled
+    private lazy var adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.config(for: context.cacheType).adCacheEnabled
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         

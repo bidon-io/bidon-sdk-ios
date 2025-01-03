@@ -33,7 +33,12 @@ public final class BannerView: UIView, AdView {
     }
     
     @objc private(set) public
-    lazy var extras: [String : AnyHashable] = [:]
+    lazy var extras: [String : AnyHashable] = [:] {
+        didSet {
+            adCacher?.extras = extras
+            viewManager.extras = extras
+        }
+    }
     
     @Injected(\.sdk)
     private var sdk: Sdk
@@ -77,7 +82,7 @@ public final class BannerView: UIView, AdView {
         return manager
     }()
     
-    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.adCacheEnabled
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.banner.adCacheEnabled
     private lazy var adCacher: BannerAdCaching? = {
         var type: CacheType
         switch viewContext.format {

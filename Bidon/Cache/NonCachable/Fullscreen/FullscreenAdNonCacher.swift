@@ -36,7 +36,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         return manager.isReady
     }
     
-    #warning("CHECK")
     var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
         
     // MARK: - Internal
@@ -55,6 +54,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
     
     func showAd(from rootViewController: UIViewController, delegate: AdCachingImpressionDelegate, extras: [String: AnyHashable]) {
+        extras.forEach({ manager.extras[$0.key] = $0.value })
         impressionDelegate = delegate
         manager.show(from: rootViewController)
     }

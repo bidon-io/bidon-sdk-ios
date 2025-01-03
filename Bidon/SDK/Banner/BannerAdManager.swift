@@ -51,7 +51,7 @@ final class BannerAdManager: NSObject {
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
-    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.adCacheEnabled
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.banner.adCacheEnabled
     
     init(
         adRevenueObserver: AdRevenueObserver

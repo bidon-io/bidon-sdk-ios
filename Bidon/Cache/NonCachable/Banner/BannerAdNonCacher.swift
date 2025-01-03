@@ -19,7 +19,11 @@ final class BannerAdNonCacher: BannerAdCaching {
     
     private var results = [BannerCachedAd]()
     
-    var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
+    var extras: [String: AnyHashable] = BidonSdk.extras ?? [:] {
+        didSet {
+            adManager?.extras = extras
+        }
+    }
     
     var impressions: [AdViewImpression]? {
         if let impression = adManager?.impression {

@@ -23,12 +23,14 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     @objc public var isReady: Bool { return adCacher?.isReady ?? false }
 
-    @objc public var extras = [String: AnyHashable]()
+    @objc public var extras: [String: AnyHashable] {
+        return adCacher?.extras ?? [:]
+    }
 
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.adCacheEnabled
+    private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.rewardedVideo.adCacheEnabled
     private lazy var adCacher: FullscreenAdCaching? = {
         return adCacheEnabled ?
         AdCacherFactory.cache(type: .rewarded) as? FullscreenAdCaching :
@@ -46,7 +48,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         _ value: AnyHashable?,
         for key: String
     ) {
-        extras[key] = value
+        adCacher?.extras[key] = value
     }
     
     @objc public func loadAd(
