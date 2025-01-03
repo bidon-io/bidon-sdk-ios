@@ -87,7 +87,7 @@ final class BannerAdNonCacher: BannerAdCaching {
             Logger.debug("No context found")
             return
         }
-        adManager?.notifyWin(viewContext: viewContext)
+        adManager?.notifyLoss(winner: demandId, eCPM: eCPM, viewContext: viewContext)
     }
     
     func cachedAds(for auctionKey: AuctionKey?) -> [any CachableAd] {
