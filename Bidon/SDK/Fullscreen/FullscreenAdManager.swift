@@ -101,6 +101,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
         guard state.isIdle else {
+            delegate?.adManager(self, didFailToLoad: .message("Fullscreen ad manager is not idle"), auctionInfo: auctionInfo)
             Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
             return
         }

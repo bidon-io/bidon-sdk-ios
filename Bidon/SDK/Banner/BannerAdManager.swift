@@ -74,6 +74,7 @@ final class BannerAdManager: NSObject {
         auctionKey: String?
     ) {
         guard state.isIdle else {
+            delegate?.adManager(self, didFailToLoad: .message("Banner ad manager is not idle"), auctionInfo: auctionInfo)
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
             return
         }
