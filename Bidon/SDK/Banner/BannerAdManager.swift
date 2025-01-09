@@ -74,7 +74,6 @@ final class BannerAdManager: NSObject {
         auctionKey: String?
     ) {
         guard state.isIdle else {
-            delegate?.adManager(self, didFailToLoad: .message("Banner ad manager is not idle"), auctionInfo: auctionInfo)
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
             return
         }
@@ -201,6 +200,8 @@ final class BannerAdManager: NSObject {
             builder.withAuctionConfiguration(configuration)
         }
         
+        state = .auction(controller: auction)
+        
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
 
@@ -234,8 +235,6 @@ final class BannerAdManager: NSObject {
                 }
             }
         }
-        
-        state = .auction(controller: auction)
     }
     
     private func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {

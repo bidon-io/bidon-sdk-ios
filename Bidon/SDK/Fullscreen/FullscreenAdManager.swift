@@ -101,7 +101,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     func loadAd(pricefloor: Price, auctionKey: String?) {
         guard state.isIdle else {
-            delegate?.adManager(self, didFailToLoad: .message("Fullscreen ad manager is not idle"), auctionInfo: auctionInfo)
             Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
             return
         }
@@ -206,6 +205,8 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             builder.withAuctionConfiguration(configuration)
         }
         
+        state = .auction(controller: auction)
+        
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
             
@@ -236,8 +237,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 }
             }
         }
-        
-        state = .auction(controller: auction)
     }
     
     func notifyWin() {
