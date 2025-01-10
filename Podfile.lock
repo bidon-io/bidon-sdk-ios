@@ -108,7 +108,7 @@ DEPENDENCIES:
   - InMobiSDK (~> 10.7.5)
   - IronSourceSDK (= 8.3.0)
   - MintegralAdSDK (~> 7.7.2)
-  - MobileFuseSDK
+  - MobileFuseSDK (= 1.8.2)
   - myTargetSDK (~> 5.21.8)
   - OCMock (~> 3.9.1)
   - StackConsentManager (~> 2.0.5)
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 764732962d23d6f32d6fdbaa166fd1b1695d3522
+PODFILE CHECKSUM: 2795f92e9606f883b1c40046a3575df78deed025
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

@@ -25,7 +25,8 @@ $targets = [
   "BidonAdapterChartboost",
   "BidonAdapterYandex",
   "BidonAdapterIronSource",
-  "BidonAdapterMyTarget"
+  "BidonAdapterMyTarget",
+  "BidonAdapterMobileFuse"
 ]
 
 # Defenitions ###
