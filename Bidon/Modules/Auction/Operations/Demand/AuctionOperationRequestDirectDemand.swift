@@ -59,8 +59,9 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             pricefloor: auctionConfiguration.pricefloor,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
+            defer { self?.finish() }
+            
             guard let self else { return }
-            defer { self.finish() }
             
             self.invalidateTimer()
             

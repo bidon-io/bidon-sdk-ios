@@ -55,9 +55,8 @@ struct AdaptersInitializator {
             
             DispatchQueue.main.async { [unowned self] in
                 self.adapter.initialize(from: config.decoder) { [weak self] result in
+                    defer { self?.finish() }
                     guard let self = self, self.isExecuting else { return }
-                    
-                    defer { self.finish() }
                     
                     let time = round(Date.timestamp(.wall, units: .seconds) - self.timestamp)
                     
