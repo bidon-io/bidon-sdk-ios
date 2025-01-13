@@ -58,8 +58,9 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             payloadDecoder: adUnit.extras,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
+            defer { self?.finish() }
+            
             guard let self else { return }
-            defer { self.finish() }
             
             guard !isCancelled else {
                 Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
