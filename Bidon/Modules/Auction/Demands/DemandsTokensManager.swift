@@ -22,6 +22,9 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private var startTimestamp: TimeInterval?
     private var isTimeoutReached = false
     
+    private let group = DispatchGroup()
+    private let lock = NSRecursiveLock()
+    
     
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -39,8 +42,6 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         }
         biddingDemadIds = filteredAdapters.map({$0.demandId})
         
-        let group = DispatchGroup()
-        let lock = NSRecursiveLock()
         startTimestamp = Date.timestamp(.wall, units: .milliseconds)
         for adapter in filteredAdapters {
             if let provider = adapter.provider as? any GenericBiddingDemandProvider,
@@ -50,12 +51,13 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                 getTokenFromProvider(
                     provider,
                     demandId: adapter.demandId,
-                    startTimestamp: startTimestamp!,
+                    startTimestamp: startTimestamp ?? Date.timestamp(.wall, units: .milliseconds),
                     parameters: parameters) { [weak self] demandToken in
+                        guard let self else { return }
                         lock.lock()
-                        self?.tokens.append(demandToken)
-                        lock.unlock()
+                        tokens.append(demandToken)
                         group.leave()
+                        lock.unlock()
                     }
                 
             }
