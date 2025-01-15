@@ -177,8 +177,6 @@
 		42FE946E29D42D9000DF7920 /* Bid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FE946D29D42D9000DF7920 /* Bid.swift */; };
 		493FE94A2BFF4BEC0000023E /* PlacementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FE9492BFF4BEC0000023E /* PlacementModel.swift */; };
 		494C02522C2443E5003D881D /* AuctionOperationRoundTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */; };
-		494C02542C298133003D881D /* CollectTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02532C298133003D881D /* CollectTokenOperation.swift */; };
-		494C02562C298504003D881D /* CollectTokenTimeoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02552C298504003D881D /* CollectTokenTimeoutOperation.swift */; };
 		496A77142C00C88700316B05 /* DemandsTokensManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496A77132C00C88700316B05 /* DemandsTokensManager.swift */; };
 		49BB8E3E2C369F1C00A51877 /* AuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */; };
 		49BB8E402C36A22E00A51877 /* DefaultAuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */; };
@@ -364,8 +362,6 @@
 		42FE946D29D42D9000DF7920 /* Bid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bid.swift; sourceTree = "<group>"; };
 		493FE9492BFF4BEC0000023E /* PlacementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementModel.swift; sourceTree = "<group>"; };
 		494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRoundTimeout.swift; sourceTree = "<group>"; };
-		494C02532C298133003D881D /* CollectTokenOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectTokenOperation.swift; sourceTree = "<group>"; };
-		494C02552C298504003D881D /* CollectTokenTimeoutOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectTokenTimeoutOperation.swift; sourceTree = "<group>"; };
 		496A77132C00C88700316B05 /* DemandsTokensManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandsTokensManager.swift; sourceTree = "<group>"; };
 		49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionInfo.swift; sourceTree = "<group>"; };
 		49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuctionInfo.swift; sourceTree = "<group>"; };
@@ -1025,8 +1021,6 @@
 			children = (
 				496A77132C00C88700316B05 /* DemandsTokensManager.swift */,
 				49E43B252C04A8E300C2EC6B /* DemandsTokensManagerBuilder.swift */,
-				494C02532C298133003D881D /* CollectTokenOperation.swift */,
-				494C02552C298504003D881D /* CollectTokenTimeoutOperation.swift */,
 			);
 			path = Demands;
 			sourceTree = "<group>";
@@ -1161,7 +1155,6 @@
 				4243092A28A28F46002360B0 /* Request.swift in Sources */,
 				428FFC6C28BF7BCD0090B126 /* BaseAuctionObserver.swift in Sources */,
 				42C4F46229E6E44C00B12E15 /* AdType.swift in Sources */,
-				494C02542C298133003D881D /* CollectTokenOperation.swift in Sources */,
 				42BA81F9287732F5001F1744 /* AdViewDemandProvider.swift in Sources */,
 				426DD7B828A68EC400A1ADF5 /* AdViewDelegate.swift in Sources */,
 				42F265232A532CBE0081EC55 /* RewardedAdTypeContext.swift in Sources */,
@@ -1265,7 +1258,6 @@
 				42389E1228745C6A006024BA /* InterstitialDemandProvider.swift in Sources */,
 				428DDD1629DC2B7300147ABA /* ExtrasProvider.swift in Sources */,
 				42BA81AC28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift in Sources */,
-				494C02562C298504003D881D /* CollectTokenTimeoutOperation.swift in Sources */,
 				421D48E62888423B007DE2E4 /* Logger.swift in Sources */,
 				4298902029D5822800C5FB7B /* AdRevenueObserver.swift in Sources */,
 				496A77142C00C88700316B05 /* DemandsTokensManager.swift in Sources */,
