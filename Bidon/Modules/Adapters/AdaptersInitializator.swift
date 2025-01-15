@@ -107,6 +107,10 @@ struct AdaptersInitializator {
     }
     
     func initialize(completion: @escaping () -> ()) {
+        guard !parameters.adapters.isEmpty else {
+            completion()
+            return
+        }
         let timestamp = Date.timestamp(.wall, units: .seconds)
         Logger.info("Initialize ad networks")
         

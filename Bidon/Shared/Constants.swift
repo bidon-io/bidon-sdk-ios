@@ -21,6 +21,7 @@ struct Constants {
     
     enum Adapters {
         static var classes: [String] = [
+            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
             "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
             "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",
