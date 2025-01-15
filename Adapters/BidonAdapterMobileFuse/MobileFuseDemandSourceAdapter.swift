@@ -33,6 +33,9 @@ BiddingAdViewDemandSourceAdapter
     
     var state = InitializationState.idle
     
+    @Injected(\.context)
+    var context: SdkContext
+    
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MobileFuseBiddingInterstitialDemandProvider()
     }
@@ -61,6 +64,13 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: MobileFuseParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
+        let privacyPreferences = MobileFusePrivacyPreferences()
+        privacyPreferences?.setSubjectToCoppa(context.regulations.coppaApplies == .yes)
+        privacyPreferences?.setUsPrivacyConsentString(context.regulations.usPrivacyString)
+        
+        if let privacyPreferences {
+            MobileFuse.setPrivacyPreferences(privacyPreferences)
+        }
         guard
             let appId = parameters.appKey,
             let publisherId = parameters.publisherId
