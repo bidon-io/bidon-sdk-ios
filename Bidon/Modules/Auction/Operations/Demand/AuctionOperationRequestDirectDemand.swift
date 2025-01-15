@@ -137,6 +137,7 @@ extension AuctionOperationRequestDirectDemand: OperationTimeoutHandler {
                 error: .fillTimeoutReached
             )
         )
-        cancel()
+        invalidateTimer()
+        finish()
     }
 }
