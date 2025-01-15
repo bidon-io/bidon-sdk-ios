@@ -47,15 +47,16 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId }) {
                 
                 group.enter()
-                getTokenFromProvider(provider,
-                                     demandId: adapter.demandId,
-                                     startTimestamp: startTimestamp!,
-                                     parameters: parameters) { [weak self] demandToken in
-                    lock.lock()
-                    self?.tokens.append(demandToken)
-                    lock.unlock()
-                    group.leave()
-                }
+                getTokenFromProvider(
+                    provider,
+                    demandId: adapter.demandId,
+                    startTimestamp: startTimestamp!,
+                    parameters: parameters) { [weak self] demandToken in
+                        lock.lock()
+                        self?.tokens.append(demandToken)
+                        lock.unlock()
+                        group.leave()
+                    }
                 
             }
         }
@@ -81,38 +82,39 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     
     
     // MARK: Private functions
-    private func getTokenFromProvider(_ provider: any GenericBiddingDemandProvider,
-                                      demandId: String,
-                                      startTimestamp: TimeInterval,
-                                      parameters: AdaptersInitialisationParameters.AdapterConfiguration,
-                                      completion: @escaping (BiddingDemandToken) -> Void) {
-        provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { result in
-            
-            let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            switch result {
-            case .success(let token):
-                let demandToken = BiddingDemandToken(
-                    demandId: demandId,
-                    token: token,
-                    tokenStartTs: startTimestamp.uint,
-                    tokenFinishTs: finishTimestamp.uint,
-                    status: .success
-                )
-                completion(demandToken)
+    private func getTokenFromProvider(
+        _ provider: any GenericBiddingDemandProvider,
+        demandId: String,
+        startTimestamp: TimeInterval,
+        parameters: AdaptersInitialisationParameters.AdapterConfiguration,
+        completion: @escaping (BiddingDemandToken) -> Void) {
+            provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { result in
                 
-            case .failure:
-                let demandToken = BiddingDemandToken(
-                    demandId: demandId,
-                    token: nil,
-                    tokenStartTs: startTimestamp.uint,
-                    tokenFinishTs: finishTimestamp.uint,
-                    status: .noToken
-                )
-                completion(demandToken)
-                
+                let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+                switch result {
+                case .success(let token):
+                    let demandToken = BiddingDemandToken(
+                        demandId: demandId,
+                        token: token,
+                        tokenStartTs: startTimestamp.uint,
+                        tokenFinishTs: finishTimestamp.uint,
+                        status: .success
+                    )
+                    completion(demandToken)
+                    
+                case .failure:
+                    let demandToken = BiddingDemandToken(
+                        demandId: demandId,
+                        token: nil,
+                        tokenStartTs: startTimestamp.uint,
+                        tokenFinishTs: finishTimestamp.uint,
+                        status: .noToken
+                    )
+                    completion(demandToken)
+                    
+                }
             }
         }
-    }
     
     
     private func getNotReachedDemandTokens() -> [BiddingDemandToken] {
