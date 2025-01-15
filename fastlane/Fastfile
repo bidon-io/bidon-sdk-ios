@@ -10,6 +10,7 @@ $development_podspec_dir = $root_dir
 $scheme = "Release"
 $targets = [
   "Bidon",
+  "BidonAdapterAmazon",
   "BidonAdapterBidMachine",
   "BidonAdapterGoogleAdManager",
   "BidonAdapterGoogleMobileAds",
