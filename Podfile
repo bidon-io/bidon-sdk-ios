@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.1.0'
+  pod 'BidMachine', '3.1.2'
 end
 
 def admob
@@ -30,7 +30,7 @@ def bigo_ads
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.3.3'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.4'
 end
 
 def meta_ads

@@ -4,10 +4,10 @@ PODS:
   - AppsFlyerFramework (6.15.3):
     - AppsFlyerFramework/Main (= 6.15.3)
   - AppsFlyerFramework/Main (6.15.3)
-  - BidMachine (3.1.0):
-    - BidMachine/Static (= 3.1.0)
-  - BidMachine/Static (3.1.0):
-    - StackModules/Static (~> 3.0.0)
+  - BidMachine (3.1.2):
+    - BidMachine/Static (= 3.1.2)
+  - BidMachine/Static (3.1.2):
+    - StackModules/Static (~> 3.0.1)
   - BigoADS (4.5.1)
   - ChartboostSDK (9.8.0)
   - FBAEMKit (17.1.0):
@@ -19,7 +19,7 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.3.3)
+  - Fyber_Marketplace_SDK (8.3.4)
   - Google-Mobile-Ads-SDK (11.12.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
@@ -98,12 +98,12 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 4.10.1)
   - AppLovinSDK (= 13.0.1)
   - AppsFlyerFramework (~> 6.15.2)
-  - BidMachine (= 3.1.0)
+  - BidMachine (= 3.1.2)
   - BigoADS (~> 4.5.1)
   - ChartboostSDK (= 9.8.0)
   - FBAudienceNetwork (= 6.15.2)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (~> 8.3.3)
+  - Fyber_Marketplace_SDK (~> 8.3.4)
   - Google-Mobile-Ads-SDK (~> 11.12.0)
   - InMobiSDK (~> 10.8.0)
   - IronSourceSDK (= 8.5.0)
@@ -152,7 +152,7 @@ SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 8e6b685c1c6fdc17a24f6723ff6f0fe7036f7326
   AppLovinSDK: fdae6a4361c9c9b09f8d7d18ede792368221d987
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
-  BidMachine: 0d94e91181c69ac075a7b3657d8ee753f1e02eb1
+  BidMachine: 12e02ee178a00a4573e4e3a52e580c54074488ce
   BigoADS: ee4a4bc66c66d9872bb8c5866cb195ac21f81d9e
   ChartboostSDK: f8422957daa675fa4a0bb9f159144b3b59ef5c27
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
@@ -160,7 +160,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: a39065cbd4bb3af733f3e9691fc9a098991fd3a2
+  Fyber_Marketplace_SDK: 5561bb1adaa5c84130a2c0c2347eb71b4a357604
   Google-Mobile-Ads-SDK: 3a76704456669fbed2057efc8bdb99050ad0e3fb
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   InMobiSDK: 0cfb1a1eb5112fa0236ae1fab549e31fb96c9566
@@ -178,6 +178,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 3161a534a75fb42e48a65fbab40e5bd446ece78c
+PODFILE CHECKSUM: ac78a2e6758f33c33cbac9f7de2a1cf159139f1b
 
 COCOAPODS: 1.15.2
