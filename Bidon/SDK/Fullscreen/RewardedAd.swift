@@ -20,8 +20,6 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     @objc public weak var delegate: RewardedAdDelegate?
     
-    @objc public let placement: String
-    
     @objc public let auctionKey: String?
     
     @objc public var isReady: Bool { return manager.isReady }
@@ -33,15 +31,12 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     private lazy var manager = Manager(
         context: RewardedAdTypeContext(),
-        placement: placement,
         delegate: self
     )
     
     @objc public init(
-        auctionKey: String? = nil,
-        placement: String = "default"
+        auctionKey: String? = nil
     ) {
-        self.placement = placement
         self.auctionKey = auctionKey
         super.init()
     }

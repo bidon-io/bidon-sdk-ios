@@ -57,7 +57,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
-    private let placement: String
     private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
@@ -91,12 +90,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
     init(
         context: AdTypeContextType,
-        placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
         self.context = context
-        self.placement = placement
         super.init()
     }
     
