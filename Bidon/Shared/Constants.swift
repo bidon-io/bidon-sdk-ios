@@ -15,30 +15,30 @@ struct Constants {
     static let defaultPlacement: String = "default"
     
     enum API {
-        static let host = "b.appbaqend.com"
+        static let host = "staging2-b-go.appodeal.com"
         static let baseURL = "https://" + host
     }
     
     enum Adapters {
         static var classes: [String] = [
-            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
-            "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
-            "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
+//            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
+//            "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
+//            "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",
-            "BidonAdapterDTExchange.DTExchangeDemandSourceAdapter",
-            "BidonAdapterUnityAds.UnityAdsDemandSourceAdapter",
-            "BidonAdapterMintegral.MintegralDemandSourceAdapter",
-            "BidonAdapterMobileFuse.MobileFuseDemandSourceAdapter",
-            "BidonAdapterVungle.VungleDemandSourceAdapter",
-            "BidonAdapterBigoAds.BigoAdsDemandSourceAdapter",
-            "BidonAdapterMetaAudienceNetwork.MetaAudienceNetworkDemandSourceAdapter",
-            "BidonAdapterInMobi.InMobiDemandSourceAdapter",
-            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
-            "BidonAdapterGoogleAdManager.GoogleAdManagerDemandSourceAdapter",
-            "BidonAdapterMyTarget.MyTargetDemandSourceAdapter",
-            "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
-            "BidonAdapterYandex.YandexDemandSourceAdapter",
-            "BidonAdapterChartboost.ChartboostDemandSourceAdapter"
+//            "BidonAdapterDTExchange.DTExchangeDemandSourceAdapter",
+//            "BidonAdapterUnityAds.UnityAdsDemandSourceAdapter",
+//            "BidonAdapterMintegral.MintegralDemandSourceAdapter",
+//            "BidonAdapterMobileFuse.MobileFuseDemandSourceAdapter",
+//            "BidonAdapterVungle.VungleDemandSourceAdapter",
+//            "BidonAdapterBigoAds.BigoAdsDemandSourceAdapter",
+//            "BidonAdapterMetaAudienceNetwork.MetaAudienceNetworkDemandSourceAdapter",
+//            "BidonAdapterInMobi.InMobiDemandSourceAdapter",
+//            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
+//            "BidonAdapterGoogleAdManager.GoogleAdManagerDemandSourceAdapter",
+//            "BidonAdapterMyTarget.MyTargetDemandSourceAdapter",
+//            "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
+//            "BidonAdapterYandex.YandexDemandSourceAdapter",
+//            "BidonAdapterChartboost.ChartboostDemandSourceAdapter"
         ]
     }
     
