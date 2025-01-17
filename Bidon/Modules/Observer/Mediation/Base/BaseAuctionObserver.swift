@@ -39,8 +39,8 @@ final class BaseAuctionObserver: AuctionObserver {
         
         switch event {
             // Auction level
-        case _ as StartAuctionEvent:
-            $startTimestamp.wrappedValue = Date.timestamp(.wall, units: .milliseconds)
+        case let _event as StartAuctionEvent:
+            $startTimestamp.wrappedValue = _event.startTimestamp
         case let _event as FinishAuctionEvent:
             $finishTimestamp.wrappedValue = Date.timestamp(.wall, units: .milliseconds)
             $round.mutate { round in

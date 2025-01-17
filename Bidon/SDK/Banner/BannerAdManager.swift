@@ -52,6 +52,7 @@ final class BannerAdManager: NSObject {
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
     private let adCacheEnabled = BidonSdk.shared.environmentRepository.environment(AppManager.self).cacheConfig.banner.adCacheEnabled
+    private var auctionStartTimestamp: TimeInterval?
     
     init(
         adRevenueObserver: AdRevenueObserver
@@ -91,6 +92,7 @@ final class BannerAdManager: NSObject {
     ) {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
@@ -188,6 +190,9 @@ final class BannerAdManager: NSObject {
             configuration: configuration,
             adType: .banner
         )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
