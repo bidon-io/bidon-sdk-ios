@@ -195,7 +195,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             adType: context.adType
         )
         if let auctionStartTimestamp {
-            print("!!! FullscreenAdManager > performAuction > auctionStartTimestamp: ", auctionStartTimestamp)
             observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
         }
         
