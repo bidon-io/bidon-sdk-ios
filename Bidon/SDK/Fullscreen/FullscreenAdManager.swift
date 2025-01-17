@@ -85,6 +85,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
+    private var auctionStartTimestamp: TimeInterval?
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         
@@ -112,6 +113,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         
         state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
         
         guard let configParameters = ConfigParametersStorage.adaptersInitializationParameters else {
             self.state = .idle
@@ -192,6 +194,9 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             configuration: configuration,
             adType: context.adType
         )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
         
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
 

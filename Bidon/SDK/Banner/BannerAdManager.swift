@@ -53,6 +53,7 @@ final class BannerAdManager: NSObject {
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
+    private var auctionStartTimestamp: TimeInterval?
     
     init(
         placement: String,
@@ -92,6 +93,7 @@ final class BannerAdManager: NSObject {
     ) {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
@@ -185,6 +187,9 @@ final class BannerAdManager: NSObject {
             configuration: configuration,
             adType: .banner
         )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
