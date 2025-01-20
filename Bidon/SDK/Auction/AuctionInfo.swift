@@ -10,7 +10,7 @@ import Foundation
 @objc(BDNAuctionInfo)
 public protocol AuctionInfo {
     var auctionId: String? { get set }
-    var auctionConfigurationId: String? { get set }
+    var auctionConfigurationId: NSNumber? { get set }
     var auctionConfigurationUid: String? { get set }
     var auctionPricefloor: NSNumber? { get set }
     var noBids: [AdUnitInfo]? { get set }

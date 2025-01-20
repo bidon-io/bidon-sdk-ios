@@ -9,7 +9,7 @@ import Foundation
 
 final class DefaultAuctionInfo: AuctionInfo {
     var auctionId: String?
-    var auctionConfigurationId: String?
+    var auctionConfigurationId: NSNumber?
     var auctionConfigurationUid: String?
     var auctionPricefloor: NSNumber?
     var noBids: [AdUnitInfo]?
