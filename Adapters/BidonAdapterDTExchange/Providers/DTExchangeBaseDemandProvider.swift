@@ -70,7 +70,7 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         self.adSpot = adSpot
-        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue in
+        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue, dst in
             guard
                 let self = self,
                 let adSpot = self.adSpot
@@ -81,6 +81,7 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
                 didPayRevenue: adRevenue,
                 ad: adSpot
             )
+            adSpot.dst = dst
         }
     }
     
