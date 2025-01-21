@@ -28,6 +28,7 @@ public enum ErrorCode: Int {
     case adNotReady
     case noAppropriateAdUnitId
     case expired
+    case incorrectAdUnit
 }
 
 
