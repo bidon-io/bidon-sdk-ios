@@ -8,20 +8,20 @@
 import Foundation
 
 final class DefaultAuctionInfo: AuctionInfo {
-    var auctionId: String?
+    var auctionId: String = "undefined"
     var auctionConfigurationId: NSNumber?
     var auctionConfigurationUid: String?
-    var auctionPricefloor: NSNumber?
+    var auctionPricefloor: NSNumber = 0
     var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
-    var timeout: NSNumber?
+    var timeout: NSNumber = 10
     
     var description: String? {
         let dictRepresentation: [String: Any] = [
-            "auctionId": auctionId ?? "null",
+            "auctionId": auctionId,
             "auctionConfigurationId": auctionConfigurationId ?? "null",
             "auctionConfigurationUid": auctionConfigurationUid ?? "null",
-            "auctionPricefloor": auctionPricefloor ?? "null",
+            "auctionPricefloor": auctionPricefloor,
             "noBids": noBids?.map({ $0.dictionaryRepresentation() }) ?? "null",
             "adUnits": adUnits?.map({ $0.dictionaryRepresentation() }) ?? "null",
         ]
