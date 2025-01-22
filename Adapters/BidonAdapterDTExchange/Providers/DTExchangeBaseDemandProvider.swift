@@ -18,8 +18,6 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     private var adSpot: IAAdSpot?
     private(set) var adWrapper: DTExchangeDemandAdWrapper?
     
-    private var adWrappersStore: [String: DTExchangeDemandAdWrapper] = [:]
-    
     private weak var impressionObserver: DTEXchangeImpressionObserver?
     
     open func unitController() -> Controller {
@@ -32,10 +30,8 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     }
     
     deinit {
-//        guard let spotId = adSpot?.id else { return }
-        let keys = Array(adWrappersStore.keys)
-//        impressionObserver?.removeObservation(spotId: spotId)
-        keys.forEach{impressionObserver?.removeObservation(spotId: $0)}
+        guard let spotId = adWrapper?.spotId else { return }
+        impressionObserver?.removeObservation(spotId: spotId)
     }
 }
 
@@ -78,22 +74,20 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         adWrapper.spotId = adRequest.spotID
-        self.adWrappersStore[adRequest.spotID] = adWrapper
         self.adSpot = adSpot
         self.adWrapper = adWrapper
-        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self, spotID = adRequest.spotID] adRevenue, dsp in
+        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue, dsp in
             guard
                 let self,
-                let actualAdWrapper = adWrappersStore[spotID]
+                let adWrapper = self.adWrapper
             else { return }
             
-            
-            print("!!! DTExchange > impressionObserver > adSpot id: \(adSpot.id), adWrapper id: \(actualAdWrapper.id)")
-            actualAdWrapper.dsp = dsp ?? ""
+            print("!!! DTExchange > impressionObserver > adSpot id: \(adSpot.id), adWrapper id: \(adWrapper.id)")
+            adWrapper.dsp = dsp ?? ""
             self.revenueDelegate?.provider(
                 self,
                 didPayRevenue: adRevenue,
-                ad: actualAdWrapper
+                ad: adWrapper
             )
         }
     }
