@@ -29,7 +29,6 @@ final class DTExchangeDefaultImpressionObserver: NSObject, DTEXchangeImpressionO
         spotId: String,
         impression: @escaping ImpressionClosure
     ) {
-        print("!!! DTExchange observer spotId: ", spotId)
         impressions[spotId] = impression
     }
     
