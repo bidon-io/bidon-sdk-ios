@@ -56,7 +56,6 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
             builder.addSupportedUnitController(self.unitController())
         }
         let adWrapper = DTExchangeDemandAdWrapper(id: adSpot?.id ?? String(hash))
-        print("!!! DTExchange > adSpot id: \(adSpot?.id), adWrapper id: \(adWrapper.id), adRequest id: \(adRequest.unitID)")
         
         guard let adSpot = adSpot else {
             response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
@@ -69,7 +68,6 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
                 return
             }
     
-//            response(.success(adSpot))
             response(.success(adWrapper))
         }
         
@@ -82,7 +80,6 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
                 let adWrapper = self.adWrapper
             else { return }
             
-            print("!!! DTExchange > impressionObserver > adSpot id: \(adSpot.id), adWrapper id: \(adWrapper.id)")
             adWrapper.dsp = dsp ?? ""
             self.revenueDelegate?.provider(
                 self,

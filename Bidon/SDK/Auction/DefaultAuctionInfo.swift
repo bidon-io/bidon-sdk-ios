@@ -8,13 +8,13 @@
 import Foundation
 
 final class DefaultAuctionInfo: AuctionInfo {
-    var auctionId: String = "undefined"
+    var auctionId: String = ""
     var auctionConfigurationId: NSNumber?
     var auctionConfigurationUid: String?
     var auctionPricefloor: NSNumber = 0
     var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
-    var timeout: NSNumber = 10
+    var timeout: NSNumber = NSNumber(value: Constants.Timeout.defaultAuctionTimeout)
     
     var description: String? {
         let dictRepresentation: [String: Any] = [
