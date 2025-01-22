@@ -15,7 +15,10 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
-    private(set) var adSpot: IAAdSpot?
+    private var adSpot: IAAdSpot?
+    private(set) var adWrapper: DTExchangeDemandAdWrapper?
+    
+    private var adWrappersStore: [String: DTExchangeDemandAdWrapper] = [:]
     
     private weak var impressionObserver: DTEXchangeImpressionObserver?
     
@@ -29,8 +32,10 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     }
     
     deinit {
-        guard let spotId = adSpot?.id else { return }
-        impressionObserver?.removeObservation(spotId: spotId)
+//        guard let spotId = adSpot?.id else { return }
+        let keys = Array(adWrappersStore.keys)
+//        impressionObserver?.removeObservation(spotId: spotId)
+        keys.forEach{impressionObserver?.removeObservation(spotId: $0)}
     }
 }
 
@@ -54,6 +59,8 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
             builder.adRequest = adRequest
             builder.addSupportedUnitController(self.unitController())
         }
+        let adWrapper = DTExchangeDemandAdWrapper(id: adSpot?.id ?? String(hash))
+        print("!!! DTExchange > adSpot id: \(adSpot?.id), adWrapper id: \(adWrapper.id), adRequest id: \(adRequest.unitID)")
         
         guard let adSpot = adSpot else {
             response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
@@ -66,22 +73,28 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
                 return
             }
     
-            response(.success(adSpot))
+//            response(.success(adSpot))
+            response(.success(adWrapper))
         }
         
+        adWrapper.spotId = adRequest.spotID
+        self.adWrappersStore[adRequest.spotID] = adWrapper
         self.adSpot = adSpot
-        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue, dst in
+        self.adWrapper = adWrapper
+        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self, spotID = adRequest.spotID] adRevenue, dsp in
             guard
-                let self = self,
-                let adSpot = self.adSpot
+                let self,
+                let actualAdWrapper = adWrappersStore[spotID]
             else { return }
             
+            
+            print("!!! DTExchange > impressionObserver > adSpot id: \(adSpot.id), adWrapper id: \(actualAdWrapper.id)")
+            actualAdWrapper.dsp = dsp ?? ""
             self.revenueDelegate?.provider(
                 self,
                 didPayRevenue: adRevenue,
-                ad: adSpot
+                ad: actualAdWrapper
             )
-            adSpot.dst = dst
         }
     }
     

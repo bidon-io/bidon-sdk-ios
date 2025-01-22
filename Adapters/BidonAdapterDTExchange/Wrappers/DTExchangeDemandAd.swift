@@ -15,18 +15,16 @@ protocol DTExchangeDemandAd: DemandAd {}
 
 extension IAAdSpot: DemandAd {
     public var id: String { adRequest.unitID ?? String(hash) }
+}
+
+final class DTExchangeDemandAdWrapper: NSObject, DemandAd {
+    public var id: String
     
-
-    private struct AssociatedKeys {
-        static var dst: StaticString = "dst"
-    }
-
-    var dst: String? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedKeys.dst) as? String
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.dst, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+    public var dsp: String = ""
+    
+    var spotId: String = ""
+    
+    init(id: String) {
+        self.id = id
     }
 }
