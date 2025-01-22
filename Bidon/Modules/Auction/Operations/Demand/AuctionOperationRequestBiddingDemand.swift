@@ -67,6 +67,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 return
             }
             
+            self.invalidateTimer()
+            
             switch result {
             case .success(let ad):
                 let bid = BidType(

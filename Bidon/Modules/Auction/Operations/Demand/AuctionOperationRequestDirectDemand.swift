@@ -68,6 +68,8 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 return
             }
             
+            self.invalidateTimer()
+            
             switch result {
             case .success(let ad):
                 let bid = BidType(
@@ -137,6 +139,7 @@ extension AuctionOperationRequestDirectDemand: OperationTimeoutHandler {
                 error: .fillTimeoutReached
             )
         )
+        
         invalidateTimer()
         finish()
     }

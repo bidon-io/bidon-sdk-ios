@@ -37,6 +37,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
     
+    private let finishLock = NSLock()
+    private var isFinishing = false
+    
     private var timeoutTimer: Timer?
     
     init<T>(_ build: (T) -> ()) where T: BaseConcurrentAuctionControllerBuilder<AdTypeContextType> {
@@ -192,20 +195,30 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Finish Auction.
 
     private func finishAuction() {
+        finishLock.lock()
+        
+        guard !isFinishing else {
+            return
+        }
+        isFinishing = true
+        
         invalidateTimer()
 
         pendingOperations = []
         queue.cancelAllOperations()
         
-        guard let finishAuctionOperation,
-                !finishAuctionOperation.isExecuting,
-                !finishAuctionOperation.isFinished,
-                !finishAuctionOperation.isCancelled 
+        guard 
+            let finishAuctionOperation,
+            !finishAuctionOperation.isExecuting,
+            !finishAuctionOperation.isFinished,
+            !finishAuctionOperation.isCancelled
         else {
             Logger.warning("Cant finish auction. Finish is already in progress or completed.")
             return
         }
         queue.addOperation(finishAuctionOperation)
+        
+        finishLock.unlock()
     }
     
     private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
