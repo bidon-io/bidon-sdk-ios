@@ -80,7 +80,7 @@ final class AdContainer: NSObject, Ad {
             adType: bid.adType,
             price: bid.price,
             currencyCode: bid.ad.currency,
-            networkName: bid.ad.networkName ?? bid.adUnit.demandId,
+            networkName: bid.adUnit.demandId,
             dsp: bid.ad.dsp,
             auctionId: bid.auctionConfiguration.auctionId,
             adUnit: AdNetworkUnitModel(bid.adUnit)
@@ -93,7 +93,7 @@ final class AdContainer: NSObject, Ad {
             adType: impression.adType,
             price: impression.price,
             currencyCode: impression.ad.currency,
-            networkName: impression.ad.networkName ?? impression.demandId,
+            networkName: impression.demandId,
             dsp: impression.ad.dsp,
             auctionId: impression.auctionConfiguration.auctionId,
             adUnit: AdNetworkUnitModel(
