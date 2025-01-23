@@ -54,7 +54,7 @@ struct RegulationsModel: Encodable {
         self.iab = IABModel(
             tcfV1: regulations.tcfV1,
             tcfV2: regulations.tcfV2,
-            usPrivacyString: regulations.usPrivacyStringIAB
+            usPrivacyString: regulations.usPrivacyIAB
         ) 
     }
 }

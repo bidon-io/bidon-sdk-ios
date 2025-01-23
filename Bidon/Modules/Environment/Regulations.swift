@@ -53,5 +53,5 @@ public protocol Regulations {
 protocol ExtendedRegulations: Regulations {
     var tcfV1: [String: Any] { get }
     var tcfV2: [String: Any] { get }
-    var usPrivacyStringIAB: String? { get }
+    var usPrivacyIAB: String? { get }
 }

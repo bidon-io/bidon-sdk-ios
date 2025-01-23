@@ -71,7 +71,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     var tcfV2: [String: Any] = [:]
     
     @Atomic
-    var usPrivacyStringIAB: String?
+    var usPrivacyIAB: String?
     
     init() {
         NotificationCenter.default.addObserver(
@@ -100,7 +100,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         
         $tcfV1.wrappedValue = tcfV1
         $tcfV2.wrappedValue = tcfV2
-        $usPrivacyStringIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
+        $usPrivacyIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
     }
     
     private func isSupported(
