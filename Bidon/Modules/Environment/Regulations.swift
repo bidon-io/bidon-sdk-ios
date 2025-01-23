@@ -29,25 +29,23 @@ public protocol Regulations {
     
     // GDPR
     // https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/TCFv2/IAB%20Tech%20Lab%20-%20CMP%20API%20v2.md#what-does-the-gdprapplies-value-mean
-    
-    var gdrp: GDPRConsentStatus { get set }         // gdpr: Gdpr
-    var gdprConsentString: String? { get set }      // gdprConsentString: String?
-    var gdprApplies: Bool { get }                   // gdprApplies: Boolean
-    var hasGdprConsent: Bool { get }                // hasGdprConsent: Boolean
+    var gdrp: GDPRConsentStatus { get set }
+    var gdprConsentString: String? { get set }
+    var gdprApplies: Bool { get }
+    var hasGdprConsent: Bool { get }
     
     
     
     // CCPA and US Privacy String
     // https://github.com/InteractiveAdvertisingBureau/USPrivacy/blob/master/CCPA/US%20Privacy%20String.md
+    var usPrivacyString: String? { get set }
+    var ccpaApplies: Bool { get }
+    var hasCcpaConsent: Bool { get }
     
-    var usPrivacyString: String? { get set }    // usPrivacyString: String?
-                                                // ccpaApplies: Boolean
-                                                // hasCcpaConsent: Boolean
     
     // COPPA
-    
-    var coppa: COPPAAppliesStatus { get set }    // coppa: Coppa
-                                                 // coppaApplies: Boolean
+    var coppa: COPPAAppliesStatus { get set }
+    var coppaApplies: Bool { get }
     
 }
 

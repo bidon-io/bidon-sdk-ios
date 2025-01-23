@@ -29,11 +29,27 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         set { $_usPrivacyString.wrappedValue = newValue }
     }
     
+    var ccpaApplies: Bool {
+        guard let usPrivacyString = usPrivacyString, usPrivacyString.count == 4 else {
+            return false
+        }
+        return usPrivacyString.first == "1" && usPrivacyString.dropFirst().allSatisfy { $0 != "-" }
+    }
+    
+    var hasCcpaConsent: Bool {
+        guard let usPrivacyString = usPrivacyString, usPrivacyString.count == 4 else {
+            return false
+        }
+        return usPrivacyString.first == "1" && usPrivacyString[usPrivacyString.index(usPrivacyString.startIndex, offsetBy: 2)].uppercased() == "N"
+    }
+    
     
     var coppa: COPPAAppliesStatus {
         get { _coppa ?? .unknown }
         set { $_coppa.wrappedValue = newValue }
     }
+    
+    var coppaApplies: Bool { coppa == .yes }
     
     
     @Atomic
