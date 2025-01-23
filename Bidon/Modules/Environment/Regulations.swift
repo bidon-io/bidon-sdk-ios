@@ -32,8 +32,8 @@ public protocol Regulations {
     
     var gdrp: GDPRConsentStatus { get set }         // gdpr: Gdpr
     var gdprConsentString: String? { get set }      // gdprConsentString: String?
-                                                    // gdprApplies: Boolean
-                                                    // hasGdprConsent: Boolean
+    var gdprApplies: Bool { get }                   // gdprApplies: Boolean
+    var hasGdprConsent: Bool { get }                // hasGdprConsent: Boolean
     
     
     
