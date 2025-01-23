@@ -53,9 +53,9 @@ extension InMobiDemandSourceAdapter: ParameterizedInitializableAdapter {
         var consentDictionary: [String: Any] = [:]
         
         switch context.regulations.gdrpConsent {
-        case .given:
+        case .applies:
             consentDictionary[IMCommonConstants.IM_GDPR_CONSENT_AVAILABLE] = "true"
-        case .denied:
+        case .doesNotApply:
             consentDictionary[IMCommonConstants.IM_GDPR_CONSENT_AVAILABLE] = "false"
         default:
             break

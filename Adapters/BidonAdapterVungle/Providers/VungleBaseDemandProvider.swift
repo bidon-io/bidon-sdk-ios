@@ -40,9 +40,9 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
     ) {
         // Synchronize privacy data
         switch context.regulations.gdrpConsent {
-        case .given:
+        case .applies:
             VunglePrivacySettings.setGDPRStatus(true)
-        case .denied:
+        case .doesNotApply:
             VunglePrivacySettings.setGDPRStatus(false)
         default:
             break
