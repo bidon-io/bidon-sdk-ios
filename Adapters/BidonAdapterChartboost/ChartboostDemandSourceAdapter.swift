@@ -40,7 +40,7 @@ extension ChartboostDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: ChartboostParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        switch context.regulations.gdrpConsent {
+        switch context.regulations.gdrp {
         case .doesNotApply:
             Chartboost.addDataUseConsent(CHBDataUseConsent.GDPR(CHBDataUseConsent.GDPR.Consent.nonBehavioral))
         case .applies:

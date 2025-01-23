@@ -51,10 +51,10 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: DTExchangeParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)
+        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrp)
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
-        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
+        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppa)
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in

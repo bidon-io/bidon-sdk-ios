@@ -55,7 +55,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
             FBAdSettings.setAdvertiserTrackingEnabled(ATTrackingManager.isAdvertiserTrackingEnabled)
         }
         
-        switch context.regulations.coppaApplies {
+        switch context.regulations.coppa {
         case .no:
             FBAdSettings.isMixedAudience = false
         case .yes:

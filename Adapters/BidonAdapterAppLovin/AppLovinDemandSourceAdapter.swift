@@ -59,7 +59,7 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
         }
         
         // GDPR
-        switch context.regulations.gdrpConsent {
+        switch context.regulations.gdrp {
         case .applies:
             ALPrivacySettings.setHasUserConsent(true)
         case .doesNotApply:

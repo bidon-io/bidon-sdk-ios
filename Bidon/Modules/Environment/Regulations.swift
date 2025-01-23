@@ -30,7 +30,7 @@ public protocol Regulations {
     // GDPR
     // https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/TCFv2/IAB%20Tech%20Lab%20-%20CMP%20API%20v2.md#what-does-the-gdprapplies-value-mean
     
-    var gdrpConsent: GDPRConsentStatus { get set }  // gdpr: Gdpr
+    var gdrp: GDPRConsentStatus { get set }         // gdpr: Gdpr
     var gdprConsentString: String? { get set }      // gdprConsentString: String?
                                                     // gdprApplies: Boolean
                                                     // hasGdprConsent: Boolean
@@ -46,8 +46,8 @@ public protocol Regulations {
     
     // COPPA
     
-    var coppaApplies: COPPAAppliesStatus { get set }    // coppa: Coppa
-                                                        // coppaApplies: Boolean
+    var coppa: COPPAAppliesStatus { get set }    // coppa: Coppa
+                                                 // coppaApplies: Boolean
     
 }
 

@@ -45,7 +45,7 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
             context.regulations.usPrivacyString.map(preferences.setUsPrivacyConsentString)
             context.regulations.gdprConsentString.map(preferences.setIabConsentString)
             
-            switch context.regulations.coppaApplies {
+            switch context.regulations.coppa {
             case .yes: preferences.setSubjectToCoppa(true)
             case .no: preferences.setSubjectToCoppa(false)
             default: break

@@ -44,7 +44,7 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: YandexParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        YMAMobileAds.setUserConsent(context.regulations.gdrpConsent == .applies)
+        YMAMobileAds.setUserConsent(context.regulations.gdrp == .applies)
 
         if let configuration = YMMYandexMetricaConfiguration(apiKey: parameters.metricaId) {
             YMMYandexMetrica.activate(with: configuration)

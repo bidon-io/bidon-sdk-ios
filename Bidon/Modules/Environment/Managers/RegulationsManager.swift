@@ -9,14 +9,14 @@ import Foundation
 
 
 final class RegulationsManager: ExtendedRegulations, Environment {
-    var coppaApplies: COPPAAppliesStatus {
-        get { _coppaApplies ?? .unknown }
-        set { $_coppaApplies.wrappedValue = newValue }
+    var coppa: COPPAAppliesStatus {
+        get { _coppa ?? .unknown }
+        set { $_coppa.wrappedValue = newValue }
     }
     
-    var gdrpConsent: GDPRConsentStatus {
-        get { _gdrpConsent ?? .unknown }
-        set { $_gdrpConsent.wrappedValue = newValue }
+    var gdrp: GDPRConsentStatus {
+        get { _gdrp ?? .unknown }
+        set { $_gdrp.wrappedValue = newValue }
     }
     
     var gdprConsentString: String? {
@@ -30,16 +30,16 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     }
     
     @Atomic
-    var _coppaApplies: COPPAAppliesStatus?
+    private var _coppa: COPPAAppliesStatus?
     
     @Atomic
-    var _usPrivacyString: String?
+    private var _usPrivacyString: String?
     
     @Atomic
-    var _gdprConsentString: String?
+    private var _gdprConsentString: String?
     
     @Atomic
-    var _gdrpConsent: GDPRConsentStatus?
+    private var _gdrp: GDPRConsentStatus?
     
     @Atomic
     var tcfV1: [String: Any] = [:]
