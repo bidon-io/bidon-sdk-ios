@@ -24,7 +24,7 @@ extension GADRequest {
         
         @discardableResult
         func withGDPRConsent(_ gdprConsent: GDPRConsentStatus) -> Self {
-            guard gdprConsent == .denied else { return self }
+            guard gdprConsent == .doesNotApply else { return self }
             parameters["npa"] = "1"
             return self
         }

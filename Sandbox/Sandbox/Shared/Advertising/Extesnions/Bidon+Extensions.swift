@@ -51,7 +51,7 @@ extension Bidon.GDPRConsentStatus {
             self = .unknown
             return
         }
-        self = flag ? .given : .denied
+        self = flag ? .applies : .doesNotApply
     }
 }
 
