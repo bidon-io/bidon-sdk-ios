@@ -20,8 +20,6 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     
     @objc public weak var delegate: FullscreenAdDelegate?
     
-    @objc public let placement: String
-    
     @objc public let auctionKey: String?
     
     @objc public var isReady: Bool { return manager.isReady }
@@ -33,15 +31,12 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     
     private lazy var manager = Manager(
         context: InterstitialAdTypeContext(),
-        placement: placement,
         delegate: self
     )
     
     @objc public init(
-        auctionKey: String? = nil,
-        placement: String = "default"
+        auctionKey: String? = nil
     ) {
-        self.placement = placement
         self.auctionKey = auctionKey
         super.init()
     }

@@ -39,16 +39,16 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
         // Synchronize privacy data
-        switch context.regulations.gdrpConsent {
-        case .given:
+        switch context.regulations.gdrp {
+        case .applies:
             VunglePrivacySettings.setGDPRStatus(true)
-        case .denied:
+        case .doesNotApply:
             VunglePrivacySettings.setGDPRStatus(false)
         default:
             break
         }
         
-        switch context.regulations.coppaApplies {
+        switch context.regulations.coppa {
         case .yes:
             VunglePrivacySettings.setCOPPAStatus(true)
         case .no:

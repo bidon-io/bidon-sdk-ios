@@ -152,7 +152,7 @@ final class BannerAdManager: NSObject {
             switch result {
             case .success(let response):
                 self.auctionInfo.auctionId = response.auctionId
-                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationId = NSNumber(value: response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)

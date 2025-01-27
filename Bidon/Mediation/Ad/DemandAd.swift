@@ -15,6 +15,9 @@ public protocol DemandAd {
     var networkName: String { get }
     
     @objc optional
+    var dsp: String { get }
+    
+    @objc optional
     var price: Price { get }
     
     @objc optional

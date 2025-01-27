@@ -65,7 +65,7 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         let privacyPreferences = MobileFusePrivacyPreferences()
-        privacyPreferences?.setSubjectToCoppa(context.regulations.coppaApplies == .yes)
+        privacyPreferences?.setSubjectToCoppa(context.regulations.coppa == .yes)
         privacyPreferences?.setUsPrivacyConsentString(context.regulations.usPrivacyString)
         
         if let privacyPreferences {

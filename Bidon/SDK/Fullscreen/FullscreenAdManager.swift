@@ -57,7 +57,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
-    private let placement: String
     private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
@@ -91,12 +90,10 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
     init(
         context: AdTypeContextType,
-        placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
         self.context = context
-        self.placement = placement
         super.init()
     }
     
@@ -168,7 +165,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             switch (self.state, result) {
             case (.preparing, .success(let response)):
                 self.auctionInfo.auctionId = response.auctionId
-                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationId = NSNumber(value: response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)

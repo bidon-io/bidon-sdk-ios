@@ -65,8 +65,8 @@ extension BidMachineDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {        
         BidMachineSdk.shared.regulationInfo.populate { builder in
-            builder.withCOPPA(context.regulations.coppaApplies == .yes)
-            builder.withGDPRConsent(context.regulations.gdrpConsent == .given)
+            builder.withCOPPA(context.regulations.coppa == .yes)
+            builder.withGDPRConsent(context.regulations.gdrp == .applies)
             _ = context.regulations.usPrivacyString.map(builder.withUSPrivacyString)
             _ = context.regulations.gdprConsentString.map(builder.withGDPRConsentString)
         }

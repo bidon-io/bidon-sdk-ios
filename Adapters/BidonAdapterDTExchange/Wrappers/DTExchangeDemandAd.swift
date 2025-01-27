@@ -16,3 +16,15 @@ protocol DTExchangeDemandAd: DemandAd {}
 extension IAAdSpot: DemandAd {
     public var id: String { adRequest.unitID ?? String(hash) }
 }
+
+final class DTExchangeDemandAdWrapper: NSObject, DemandAd {
+    public var id: String
+    
+    public var dsp: String = ""
+    
+    var spotId: String = ""
+    
+    init(id: String) {
+        self.id = id
+    }
+}
