@@ -15,8 +15,7 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
-    private var adSpot: IAAdSpot?
-    private(set) var adWrapper: DTExchangeDemandAdWrapper?
+    private(set) var adSpot: IAAdSpot?
     
     private weak var impressionObserver: DTEXchangeImpressionObserver?
     
@@ -30,7 +29,7 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
     }
     
     deinit {
-        guard let spotId = adWrapper?.spotId else { return }
+        guard let spotId = adSpot?.id else { return }
         impressionObserver?.removeObservation(spotId: spotId)
     }
 }
@@ -55,7 +54,6 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
             builder.adRequest = adRequest
             builder.addSupportedUnitController(self.unitController())
         }
-        let adWrapper = DTExchangeDemandAdWrapper(id: adSpot?.id ?? String(hash))
         
         guard let adSpot = adSpot else {
             response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
@@ -68,23 +66,20 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
                 return
             }
     
-            response(.success(adWrapper))
+            response(.success(adSpot))
         }
         
-        adWrapper.spotId = adRequest.spotID
         self.adSpot = adSpot
-        self.adWrapper = adWrapper
-        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue, dsp in
+        self.impressionObserver?.observe(spotId: adRequest.spotID) { [weak self] adRevenue in
             guard
-                let self,
-                let adWrapper = self.adWrapper
+                let self = self,
+                let adSpot = self.adSpot
             else { return }
             
-            adWrapper.dsp = dsp ?? ""
             self.revenueDelegate?.provider(
                 self,
                 didPayRevenue: adRevenue,
-                ad: adWrapper
+                ad: adSpot
             )
         }
     }

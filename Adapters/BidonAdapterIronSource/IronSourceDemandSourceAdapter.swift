@@ -49,7 +49,7 @@ extension IronSourceDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: IronSourceParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        api.setConsent(context.regulations.gdrp == .applies)
+        api.setConsent(context.regulations.gdpr == .applies)
         api.setChildDirected(context.regulations.coppa == .yes)
         
         api.addImpressionDataDelegate(delegate)

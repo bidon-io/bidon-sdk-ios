@@ -63,14 +63,14 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         manager.notifyWin()
     }
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         manager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM
+            eCPM: price
         )
     }
 }

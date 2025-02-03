@@ -23,7 +23,7 @@ extension GAMRequest {
         }
         
         @discardableResult
-        func withGDPRConsent(_ gdprConsent: GDPRConsentStatus) -> Self {
+        func withGDPRConsent(_ gdprConsent: BDNGDPRAppliesStatus) -> Self {
             guard gdprConsent == .doesNotApply else { return self }
             parameters["npa"] = "1"
             return self

@@ -63,14 +63,14 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         manager.notifyWin()
     }
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         manager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM
+            eCPM: price
         )
     }
 }

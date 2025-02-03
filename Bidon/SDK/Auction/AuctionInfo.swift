@@ -31,4 +31,5 @@ public protocol AdUnitInfo {
     var fillFinishTs: NSNumber? { get }
     var status: String { get }
     var ext: [String: Any]? { get }
+    var extrasJsonString: String? { get }
 }

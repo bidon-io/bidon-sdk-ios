@@ -66,7 +66,7 @@ extension BidMachineDemandSourceAdapter: ParameterizedInitializableAdapter {
     ) {        
         BidMachineSdk.shared.regulationInfo.populate { builder in
             builder.withCOPPA(context.regulations.coppa == .yes)
-            builder.withGDPRConsent(context.regulations.gdrp == .applies)
+            builder.withGDPRConsent(context.regulations.gdpr == .applies)
             _ = context.regulations.usPrivacyString.map(builder.withUSPrivacyString)
             _ = context.regulations.gdprConsentString.map(builder.withGDPRConsentString)
         }
