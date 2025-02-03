@@ -15,8 +15,6 @@ public final class BannerView: UIView, AdView {
     
     @objc public var isAutorefreshing: Bool = false
     
-    @objc public let placement: String
-    
     @objc public let auctionKey: String?
     
     @objc public var format: BannerFormat = .banner
@@ -91,10 +89,8 @@ public final class BannerView: UIView, AdView {
     @objc
     public init(
         frame: CGRect,
-        auctionKey: String?,
-        placement: String = "default"
+        auctionKey: String?
     ) {
-        self.placement = placement
         self.auctionKey = auctionKey
         super.init(frame: frame)
     }
@@ -127,20 +123,20 @@ public final class BannerView: UIView, AdView {
         viewManager.notifyWin(viewContext: viewContext)
     }
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         adManager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM,
+            eCPM: price,
             viewContext: viewContext
         )
         
         viewManager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM,
+            eCPM: price,
             viewContext: viewContext
         )
     }

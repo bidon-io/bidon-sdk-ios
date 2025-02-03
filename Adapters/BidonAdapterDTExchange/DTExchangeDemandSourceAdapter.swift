@@ -51,10 +51,10 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: DTExchangeParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)
+        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdpr)
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
-        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
+        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppa)
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in
@@ -75,11 +75,11 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
 
 
 extension IAGDPRConsentType {
-    init(_ status: Bidon.GDPRConsentStatus) {
+    init(_ status: Bidon.BDNGDPRAppliesStatus) {
         switch status {
         case .unknown: self = .unknown
-        case .denied: self = .denied
-        case .given: self = .given
+        case .doesNotApply: self = .denied
+        case .applies: self = .given
         }
     }
 }

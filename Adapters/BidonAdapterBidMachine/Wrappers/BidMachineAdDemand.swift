@@ -15,6 +15,8 @@ final class BidMachineAdDemand<Ad: BidMachineAdProtocol>: NSObject, DemandAd {
    
     var networkName: String { ad.auctionInfo.demandSource }
     
+    var dsp: String { ad.auctionInfo.demandSource }
+    
     var price: Price { ad.auctionInfo.price }
     
     let ad: Ad

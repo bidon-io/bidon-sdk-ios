@@ -43,9 +43,7 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         let result = findWinner()
         let completion = self.completion
         
-        DispatchQueue.main.async {
-            completion(result)
-        }
+        completion(result)
     }
     
     override func cancel() {

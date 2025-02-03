@@ -16,6 +16,8 @@ protocol AuctionEvent: CustomStringConvertible {}
 
 // MARK: Auction
 struct StartAuctionEvent: AuctionEvent {
+    let startTimestamp: TimeInterval
+    
     var description: String {
         return "did start auction"
     }

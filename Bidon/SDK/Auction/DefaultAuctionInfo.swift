@@ -8,20 +8,20 @@
 import Foundation
 
 final class DefaultAuctionInfo: AuctionInfo {
-    var auctionId: String?
-    var auctionConfigurationId: String?
+    var auctionId: String = ""
+    var auctionConfigurationId: NSNumber?
     var auctionConfigurationUid: String?
-    var auctionPricefloor: NSNumber?
+    var auctionPricefloor: NSNumber = 0
     var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
-    var timeout: NSNumber?
+    var timeout: NSNumber = NSNumber(value: Constants.Timeout.defaultAuctionTimeout)
     
     var description: String? {
         let dictRepresentation: [String: Any] = [
-            "auctionId": auctionId ?? "null",
+            "auctionId": auctionId,
             "auctionConfigurationId": auctionConfigurationId ?? "null",
             "auctionConfigurationUid": auctionConfigurationUid ?? "null",
-            "auctionPricefloor": auctionPricefloor ?? "null",
+            "auctionPricefloor": auctionPricefloor,
             "noBids": noBids?.map({ $0.dictionaryRepresentation() }) ?? "null",
             "adUnits": adUnits?.map({ $0.dictionaryRepresentation() }) ?? "null",
         ]
@@ -51,6 +51,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var fillFinishTs: NSNumber?
     var status: String
     var ext: [String: Any]?
+    var extrasJsonString: String?
     
     init(_ bid: any AuctionDemandReport) {
         self.demandId = bid.demandId
@@ -62,6 +63,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.fillFinishTs = NSNumber(bid.finishTimestamp)
         self.status = bid.status.stringValue
         self.ext = bid.adUnit?.extrasDictionary
+        self.extrasJsonString = bid.adUnit?.extrasDictionary?.jsonString
     }
     
     init(_ bid: AdUnitModel) {
@@ -72,6 +74,12 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.bidType.rawValue
         self.status = DemandMediationStatus(.noBid(nil)).stringValue
         self.ext = bid.extrasDictionary
+        
+        if let extrasDictionary = bid.extrasDictionary,
+           JSONSerialization.isValidJSONObject(extrasDictionary),
+            let extrasData = try? JSONSerialization.data(withJSONObject: extrasDictionary, options: []) {
+            self.extrasJsonString = String(data: extrasData, encoding: .utf8)
+        }
     }
 }
 

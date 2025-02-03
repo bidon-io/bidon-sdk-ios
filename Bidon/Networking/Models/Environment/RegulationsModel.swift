@@ -47,14 +47,14 @@ struct RegulationsModel: Encodable {
     }
     
     init(_ regulations: ExtendedRegulations) {
-        self.coppa = regulations.coppaApplies == .yes
-        self.gdpr = regulations.gdrpConsent == .given
+        self.coppa = regulations.coppa == .yes
+        self.gdpr = regulations.gdpr == .applies
         self.euPrivacy = regulations.gdprConsentString
         self.usPrivacy = regulations.usPrivacyString
         self.iab = IABModel(
             tcfV1: regulations.tcfV1,
             tcfV2: regulations.tcfV2,
-            usPrivacyString: regulations.usPrivacyStringIAB
+            usPrivacyString: regulations.usPrivacyIAB
         ) 
     }
 }

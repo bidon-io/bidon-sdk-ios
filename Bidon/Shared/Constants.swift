@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.7.0"
+    static let sdkVersion: String = "0.7.5"
     static let zeroUUID: String = "00000000-0000-0000-0000-000000000000"
     
     static let defaultPlacement: String = "default"
@@ -21,6 +21,7 @@ struct Constants {
     
     enum Adapters {
         static var classes: [String] = [
+            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
             "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
             "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",

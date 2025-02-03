@@ -62,8 +62,8 @@ extension MyTargetDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: MyTargetParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        MTRGPrivacy.setUserConsent(context.regulations.gdrpConsent == .given || context.regulations.usPrivacyString != nil)
-        MTRGPrivacy.setUserAgeRestricted(context.regulations.coppaApplies == .yes)
+        MTRGPrivacy.setUserConsent(context.regulations.gdpr == .applies || context.regulations.usPrivacyString != nil)
+        MTRGPrivacy.setUserAgeRestricted(context.regulations.coppa == .yes)
         
         isInitialized = true
         completion(nil)

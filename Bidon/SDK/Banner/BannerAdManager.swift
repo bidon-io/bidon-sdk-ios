@@ -53,6 +53,7 @@ final class BannerAdManager: NSObject {
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
+    private var auctionStartTimestamp: TimeInterval?
     
     init(
         placement: String,
@@ -92,6 +93,7 @@ final class BannerAdManager: NSObject {
     ) {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         
@@ -150,7 +152,7 @@ final class BannerAdManager: NSObject {
             switch result {
             case .success(let response):
                 self.auctionInfo.auctionId = response.auctionId
-                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationId = NSNumber(value: response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)
@@ -185,6 +187,9 @@ final class BannerAdManager: NSObject {
             configuration: configuration,
             adType: .banner
         )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
@@ -199,6 +204,8 @@ final class BannerAdManager: NSObject {
             builder.withAdRevenueObserver(self.adRevenueObserver)
             builder.withAuctionConfiguration(configuration)
         }
+        
+        state = .auction(controller: auction)
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
@@ -233,8 +240,6 @@ final class BannerAdManager: NSObject {
                 }
             }
         }
-        
-        state = .auction(controller: auction)
     }
     
     private func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {

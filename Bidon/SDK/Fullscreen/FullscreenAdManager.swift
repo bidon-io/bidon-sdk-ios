@@ -57,7 +57,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
-    private let placement: String
     private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
@@ -85,17 +84,16 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
+    private var auctionStartTimestamp: TimeInterval?
     
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
         
     init(
         context: AdTypeContextType,
-        placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
         self.context = context
-        self.placement = placement
         super.init()
     }
     
@@ -112,6 +110,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         
         state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
         
         guard let configParameters = ConfigParametersStorage.adaptersInitializationParameters else {
             self.state = .idle
@@ -166,7 +165,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             switch (self.state, result) {
             case (.preparing, .success(let response)):
                 self.auctionInfo.auctionId = response.auctionId
-                self.auctionInfo.auctionConfigurationId = String(response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationId = NSNumber(value: response.auctionConfigurationId)
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)
@@ -192,6 +191,9 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             configuration: configuration,
             adType: context.adType
         )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
         
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
 
@@ -204,6 +206,8 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             builder.withContext(context)
             builder.withAuctionConfiguration(configuration)
         }
+        
+        state = .auction(controller: auction)
         
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
@@ -235,8 +239,6 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 }
             }
         }
-        
-        state = .auction(controller: auction)
     }
     
     func notifyWin() {

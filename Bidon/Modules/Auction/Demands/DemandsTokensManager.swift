@@ -9,8 +9,6 @@ import Foundation
 
 final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     
-    typealias DemandProviderType = AdTypeContextType.DemandProviderType
-    typealias BidType = BidModel<DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = DemandsTokensManagerBuilder<AdTypeContextType>
 
@@ -19,23 +17,14 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private let demands: [String]
     private let timeout: TimeInterval
     
-    var tokens = [BiddingDemandToken]()
+    private var tokens = [BiddingDemandToken]()
+    private var biddingDemadIds = [String]()
+    private var startTimestamp: TimeInterval?
+    private var isTimeoutReached = false
     
-    private lazy var operationQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.name = "io.bidon.tokensQueue.\(context.adType.stringValue)"
-        queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = .default
-        return queue
-    }()
+    private let group = DispatchGroup()
+    private let lock = NSRecursiveLock()
     
-    private lazy var timerQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.name = "io.bidon.timerQueue.\(context.adType.stringValue)"
-        queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = .default
-        return queue
-    }()
     
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -48,48 +37,103 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         initializationParameters: AdaptersInitialisationParameters,
         completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)
     ) {
-        var operations = [Operation]()
-        for demandId in demands {
-            guard
-                let adapter = adapters.first(where: { $0.demandId == demandId && $0.provider is any GenericBiddingDemandProvider }),
-                let provider = adapter.provider as? any GenericBiddingDemandProvider,
-                let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId })
-            else {
-                continue
+        let filteredAdapters = adapters.filter { adapter in
+            demands.contains(adapter.demandId) && adapter.provider is (any GenericBiddingDemandProvider)
+        }
+        biddingDemadIds = filteredAdapters.map({$0.demandId})
+        
+        startTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        for adapter in filteredAdapters {
+            if let provider = adapter.provider as? any GenericBiddingDemandProvider,
+               let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId }) {
+                
+                group.enter()
+                getTokenFromProvider(
+                    provider,
+                    demandId: adapter.demandId,
+                    startTimestamp: startTimestamp ?? Date.timestamp(.wall, units: .milliseconds),
+                    parameters: parameters) { [weak self] demandToken in
+                        guard let self else { return }
+                        lock.lock()
+                        tokens.append(demandToken)
+                        group.leave()
+                        lock.unlock()
+                    }
+                
             }
-                        
-            let builder = CollectTokenOperationBuilder<AdTypeContextType>()
-            builder.adapter = adapter
-            builder.configuration = parameters
-            builder.provider = provider
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            guard let self, !isTimeoutReached else { return }
+            isTimeoutReached = true
             
-            let operation = CollectTokenOperation(builder: builder)
-            let postCollectOperation = BlockOperation { [weak self, weak operation] in
-                if let result = operation?.result, operation?.isCancelled == false {
-                    self?.tokens.append(result)
+            completion(.success(tokens))
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
+            guard let self, !isTimeoutReached else { return }
+            isTimeoutReached = true
+            
+            let notReachedDemandTokens = getNotReachedDemandTokens()
+            let tempDemandTokens = tokens + notReachedDemandTokens
+            
+            completion(.success(tempDemandTokens))
+        }
+        
+    }
+    
+    
+    // MARK: Private functions
+    private func getTokenFromProvider(
+        _ provider: any GenericBiddingDemandProvider,
+        demandId: String,
+        startTimestamp: TimeInterval,
+        parameters: AdaptersInitialisationParameters.AdapterConfiguration,
+        completion: @escaping (BiddingDemandToken) -> Void) {
+            provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { result in
+                
+                let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+                switch result {
+                case .success(let token):
+                    let demandToken = BiddingDemandToken(
+                        demandId: demandId,
+                        token: token,
+                        tokenStartTs: startTimestamp.uint,
+                        tokenFinishTs: finishTimestamp.uint,
+                        status: .success
+                    )
+                    completion(demandToken)
+                    
+                case .failure:
+                    let demandToken = BiddingDemandToken(
+                        demandId: demandId,
+                        token: nil,
+                        tokenStartTs: startTimestamp.uint,
+                        tokenFinishTs: finishTimestamp.uint,
+                        status: .noToken
+                    )
+                    completion(demandToken)
+                    
                 }
             }
-            postCollectOperation.addDependency(operation)
-            
-            operations.append(operation)
-            operations.append(postCollectOperation)
         }
+    
+    
+    private func getNotReachedDemandTokens() -> [BiddingDemandToken] {
+        let reachedDemandsIds = tokens.map { $0.demandId }
+        let notReachedDemandIds = biddingDemadIds.filter{ !reachedDemandsIds.contains($0) }
         
-        // post collect all tokens operation
-        let postOperation = BlockOperation { [weak self] in
-            guard let self else { return }
-            completion(.success(self.tokens))
+        let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        let emptyBiddingDemandTokens = notReachedDemandIds.compactMap { demandId in
+            BiddingDemandToken(
+                demandId: demandId,
+                token: nil,
+                tokenStartTs: startTimestamp?.uint ?? finishTimestamp.uint,
+                tokenFinishTs: finishTimestamp.uint,
+                status: .timeout
+            )
         }
-        if let last = operations.last {
-            postOperation.addDependency(last)
-        }
-        
-        // timeout
-        let timeoutOperation = CollectTokenTimeoutOperation<AdTypeContextType>(interval: timeout)
-        operations.forEach({ timeoutOperation.add($0 as? CollectTokenOperation<AdTypeContextType>) })
-        
-        timerQueue.addOperation(timeoutOperation)
-        operations.forEach({ operationQueue.addOperation($0) })
-        operationQueue.addOperation(postOperation)
+        return emptyBiddingDemandTokens
     }
+    
 }
