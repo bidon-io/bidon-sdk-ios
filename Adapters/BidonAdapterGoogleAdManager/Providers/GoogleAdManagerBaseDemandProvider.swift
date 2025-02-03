@@ -69,7 +69,7 @@ extension GoogleAdManagerBaseDemandProvider: DirectDemandProvider {
         self.response = response
         let request = GAMRequest { builder in
             builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdrp)
+            builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
         

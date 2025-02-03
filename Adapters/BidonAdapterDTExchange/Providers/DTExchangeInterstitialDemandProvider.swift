@@ -73,7 +73,7 @@ extension DTExchangeInterstitialDemandProvider: IAVideoContentDelegate {
         _ contentController: IAVideoContentController?,
         videoInterruptedWithError error: Error
     ) {
-        guard let adSpot = adWrapper else { return }
+        guard let adSpot = adSpot else { return }
         delegate?.provider(
             self,
             didFailToDisplayAd: adSpot,

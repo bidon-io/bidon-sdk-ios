@@ -28,10 +28,10 @@ protocol AdUnit: Hashable {
 }
 
 @objc
-public class BidonDecodable: NSObject, Codable {
-    public let value: Any
+public final class BidonDecodable: NSObject, Codable {
+    @objc public let value: Any
     
-    public var stringValue: String? {
+    @objc public var stringValue: String? {
         return String(describing: value)
     }
     
@@ -79,10 +79,19 @@ public class BidonDecodable: NSObject, Codable {
         }
     }
 
-    public init(value: Any) {
+    @objc public init(value: Any) {
         self.value = value
     }
 }
 
+extension Dictionary where Key == String, Value: BidonDecodable {
+    var jsonString: String? {
+        let mappedDictionary = self.compactMapValues({ $0.value })
+        if JSONSerialization.isValidJSONObject(mappedDictionary), let data = try? JSONSerialization.data(withJSONObject: mappedDictionary) {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+}
 
 typealias AnyAdUnit = any AdUnit

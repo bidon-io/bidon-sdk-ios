@@ -10,9 +10,9 @@ import Foundation
 
 final class RegulationsManager: ExtendedRegulations, Environment {
     
-    var gdrp: GDPRConsentStatus {
-        get { _gdrp ?? .unknown }
-        set { $_gdrp.wrappedValue = newValue }
+    var gdpr: BDNGDPRAppliesStatus {
+        get { _gdpr ?? .unknown }
+        set { $_gdpr.wrappedValue = newValue }
     }
     
     var gdprConsentString: String? {
@@ -20,7 +20,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         set { $_gdprConsentString.wrappedValue = newValue }
     }
     
-    var gdprApplies: Bool { gdrp == .applies }
+    var gdprApplies: Bool { gdpr == .applies }
     var hasGdprConsent: Bool { !(gdprConsentString?.isEmpty ?? true) }
     
     
@@ -62,7 +62,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     private var _gdprConsentString: String?
     
     @Atomic
-    private var _gdrp: GDPRConsentStatus?
+    private var _gdpr: BDNGDPRAppliesStatus?
     
     @Atomic
     var tcfV1: [String: Any] = [:]

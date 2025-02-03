@@ -51,6 +51,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var fillFinishTs: NSNumber?
     var status: String
     var ext: [String: Any]?
+    var extrasJsonString: String?
     
     init(_ bid: any AuctionDemandReport) {
         self.demandId = bid.demandId
@@ -62,6 +63,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.fillFinishTs = NSNumber(bid.finishTimestamp)
         self.status = bid.status.stringValue
         self.ext = bid.adUnit?.extrasDictionary
+        self.extrasJsonString = bid.adUnit?.extrasDictionary?.jsonString
     }
     
     init(_ bid: AdUnitModel) {
@@ -72,6 +74,12 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.bidType.rawValue
         self.status = DemandMediationStatus(.noBid(nil)).stringValue
         self.ext = bid.extrasDictionary
+        
+        if let extrasDictionary = bid.extrasDictionary,
+           JSONSerialization.isValidJSONObject(extrasDictionary),
+            let extrasData = try? JSONSerialization.data(withJSONObject: extrasDictionary, options: []) {
+            self.extrasJsonString = String(data: extrasData, encoding: .utf8)
+        }
     }
 }
 

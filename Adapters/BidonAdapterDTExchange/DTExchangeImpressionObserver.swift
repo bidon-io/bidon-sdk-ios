@@ -11,7 +11,7 @@ import Bidon
 
 
 protocol DTEXchangeImpressionObserver: AnyObject {
-    typealias ImpressionClosure = (_ adRevenue: Bidon.AdRevenue, _ dsp: String?) -> ()
+    typealias ImpressionClosure = (Bidon.AdRevenue) -> ()
 
     func observe(
         spotId: String,
@@ -44,12 +44,11 @@ extension DTExchangeDefaultImpressionObserver: IAGlobalAdDelegate {
         with adRequest: IAAdRequest
     ) {
         guard let impression = impressions[adRequest.spotID] else { return }
-        let dsp = impressionData.demandSourceName
         let adRevenue = AdRevenueModel(
             revenue: impressionData.pricingValue?.doubleValue ?? Price.unknown,
             precision: .precise,
             currency: impressionData.pricingCurrency ?? .default
         )
-        impression(adRevenue, dsp)
+        impression(adRevenue)
     }
 }

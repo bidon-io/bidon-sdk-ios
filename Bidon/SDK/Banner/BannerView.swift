@@ -123,20 +123,20 @@ public final class BannerView: UIView, AdView {
         viewManager.notifyWin(viewContext: viewContext)
     }
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         adManager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM,
+            eCPM: price,
             viewContext: viewContext
         )
         
         viewManager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM,
+            eCPM: price,
             viewContext: viewContext
         )
     }

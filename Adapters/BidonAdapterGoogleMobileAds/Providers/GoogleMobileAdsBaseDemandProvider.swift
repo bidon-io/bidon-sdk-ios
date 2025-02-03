@@ -69,7 +69,7 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
         self.response = response
         let request = GADRequest { builder in
             builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdrp)
+            builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
         
@@ -86,7 +86,7 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
         let request = GADRequest { builder in
             builder.withQueryType(parameters.queryInfoType)
             builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdrp)
+            builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
 
@@ -108,7 +108,7 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
         let request = GADRequest { builder in
             builder.withQueryType(parameters.queryInfoType)
             builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdrp)
+            builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
             builder.withBiddingPayload(payload.payload)
         }

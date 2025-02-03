@@ -15,6 +15,7 @@ final class AdContainer: NSObject, Ad {
         let pricefloor: Price
         let bidType: AdBidType
         let extras: [String: BidonDecodable]
+        var extrasJsonString: String?
         
         init(
             uid: String,
@@ -30,6 +31,7 @@ final class AdContainer: NSObject, Ad {
             self.label = label
             self.bidType = bidType
             self.extras = extras
+            self.extrasJsonString = extras.jsonString
             super.init()
         }
         

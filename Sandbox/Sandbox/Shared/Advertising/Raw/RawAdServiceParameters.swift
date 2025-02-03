@@ -55,7 +55,7 @@ final class RawAdServiceParameters: AdServiceParameters {
     
     var gdprApplies: Bool? {
         didSet {
-            BidonSdk.regulations.gdrp = Bidon.GDPRConsentStatus(gdprApplies)
+            BidonSdk.regulations.gdpr = Bidon.BDNGDPRAppliesStatus(gdprApplies)
         }
     }
     

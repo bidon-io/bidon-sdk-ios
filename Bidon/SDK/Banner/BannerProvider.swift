@@ -82,11 +82,11 @@ public final class BannerProvider:  NSObject, AdObject {
     
     @objc public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         bannerView.notifyLoss(
             external: demandId,
-            eCPM: eCPM
+            price: price
         )
     }
     

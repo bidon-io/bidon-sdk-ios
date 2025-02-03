@@ -23,6 +23,7 @@ public protocol AdNetworkUnit {
     var pricefloor: Price { get }
     var bidType: AdBidType { get }
     var extras: [String: BidonDecodable] { get }
+    var extrasJsonString: String? { get }
 }
 
 
@@ -33,6 +34,7 @@ public protocol Ad {
     @objc var price: Price { get }
     @objc var currencyCode: Currency? { get }
     @objc var networkName: String { get }
+    @objc var dsp: String? { get }
     @objc var auctionId: String { get }
     @objc var adUnit: AdNetworkUnit { get }
 }
