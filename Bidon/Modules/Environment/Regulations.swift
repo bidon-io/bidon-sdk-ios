@@ -16,8 +16,8 @@ public enum COPPAAppliesStatus: Int {
 }
 
 
-@objc(BDNBDNGDPRAppliesStatus)
-public enum BDNGDPRAppliesStatus: Int {
+@objc(BDNGDPRAppliesStatus)
+public enum GDPRAppliesStatus: Int {
     case unknown = -1
     case doesNotApply = 0
     case applies = 1
@@ -29,7 +29,7 @@ public protocol Regulations {
     
     // GDPR
     // https://github.com/InteractiveAdvertisingBureau/GDPR-Transparency-and-Consent-Framework/blob/master/TCFv2/IAB%20Tech%20Lab%20-%20CMP%20API%20v2.md#what-does-the-gdprapplies-value-mean
-    var gdpr: BDNGDPRAppliesStatus { get set }
+    var gdpr: GDPRAppliesStatus { get set }
     var gdprConsentString: String? { get set }
     var gdprApplies: Bool { get }
     var hasGdprConsent: Bool { get }
