@@ -23,7 +23,7 @@ extension GADRequest {
         }
         
         @discardableResult
-        func withGDPRConsent(_ gdprConsent: BDNGDPRAppliesStatus) -> Self {
+        func withGDPRConsent(_ gdprConsent: GDPRAppliesStatus) -> Self {
             guard gdprConsent == .doesNotApply else { return self }
             parameters["npa"] = "1"
             return self

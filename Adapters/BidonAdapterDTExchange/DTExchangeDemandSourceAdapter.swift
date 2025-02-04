@@ -75,7 +75,7 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
 
 
 extension IAGDPRConsentType {
-    init(_ status: Bidon.BDNGDPRAppliesStatus) {
+    init(_ status: Bidon.GDPRAppliesStatus) {
         switch status {
         case .unknown: self = .unknown
         case .doesNotApply: self = .denied

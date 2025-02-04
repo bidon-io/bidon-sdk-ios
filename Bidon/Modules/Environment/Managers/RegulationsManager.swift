@@ -10,7 +10,7 @@ import Foundation
 
 final class RegulationsManager: ExtendedRegulations, Environment {
     
-    var gdpr: BDNGDPRAppliesStatus {
+    var gdpr: GDPRAppliesStatus {
         get { _gdpr ?? .unknown }
         set { $_gdpr.wrappedValue = newValue }
     }
@@ -62,7 +62,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     private var _gdprConsentString: String?
     
     @Atomic
-    private var _gdpr: BDNGDPRAppliesStatus?
+    private var _gdpr: GDPRAppliesStatus?
     
     @Atomic
     var tcfV1: [String: Any] = [:]
