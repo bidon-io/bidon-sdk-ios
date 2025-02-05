@@ -10,27 +10,27 @@ import CoreLocation
 
 
 final class GeoManager: NSObject, Geo, Environment {
-    @Atomic
+    @BarrierAtomic
     var lat: Double = .zero
     
-    @Atomic
+    @BarrierAtomic
     var lon: Double = .zero
     
-    @Atomic
+    @BarrierAtomic
     var accuracy: UInt = .zero
     
-    @Atomic
+    @BarrierAtomic
     var country: String?
     
-    @Atomic
+    @BarrierAtomic
     var city: String?
     
-    @Atomic
+    @BarrierAtomic
     var zip: String?
     
     var utcoffset: Int { TimeZone.current.secondsFromGMT() / 3600 }
     
-    @Atomic
+    @BarrierAtomic
     private var updateTimestamp: TimeInterval = .zero
     
     var lastfix: UInt {
