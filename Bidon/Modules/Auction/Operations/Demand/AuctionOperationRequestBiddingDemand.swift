@@ -23,7 +23,25 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     
     var bid: BidModel<AdTypeContextType.DemandProviderType>?
     
-    private var timeoutTimer: Timer?
+    private let timerLock = NSLock()
+    private let cancelLock = NSLock()
+    private let finishLock = NSLock()
+
+    private var isFinishedFlag = false
+    private var _timeoutTimer: Timer?
+    private var timeoutTimer: Timer? {
+        get {
+            timerLock.lock()
+            defer { timerLock.unlock() }
+            return _timeoutTimer
+        }
+        set {
+            timerLock.lock()
+            _timeoutTimer = newValue
+            timerLock.unlock()
+        }
+    }
+    
     
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -58,12 +76,14 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             payloadDecoder: adUnit.extras,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
-            defer { self?.finish() }
-            
             guard let self else { return }
-            
-            guard !isCancelled else {
-                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+
+            cancelLock.lock()
+            let cancelled = self.isCancelled
+            cancelLock.unlock()
+
+            if cancelled {
+                Logger.warning("Demand Request is canceled due to timeout or cancel event. Break")
                 return
             }
             
@@ -91,6 +111,8 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             case .failure(let error):
                 logLoadingError(error: error)
             }
+            
+            self.safeFinish()
         }
     }
     
@@ -100,13 +122,24 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     }
     
     override func cancel() {
+        cancelLock.lock()
         super.cancel()
+        cancelLock.unlock()
         invalidateTimer()
     }
     
-    func invalidateTimer() {
+    private func invalidateTimer() {
         timeoutTimer?.invalidate()
         timeoutTimer = nil
+    }
+
+    private func safeFinish() {
+        finishLock.lock()
+        if !isFinishedFlag {
+            isFinishedFlag = true
+            finish()
+        }
+        finishLock.unlock()
     }
 }
 

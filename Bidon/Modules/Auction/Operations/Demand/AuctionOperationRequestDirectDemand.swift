@@ -21,28 +21,14 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     let context: AdTypeContextType
     let adUnit: AdUnitModel
 
-    private let bidLock = NSLock()
+    private(set) var bid: BidType?
+    
     private let timerLock = NSLock()
     private let cancelLock = NSLock()
     private let finishLock = NSLock()
 
-    private var _bid: BidType?
-    private var _timeoutTimer: Timer?
     private var isFinishedFlag = false
-
-    private(set) var bid: BidType? {
-        get {
-            bidLock.lock()
-            defer { bidLock.unlock() }
-            return _bid
-        }
-        set {
-            bidLock.lock()
-            _bid = newValue
-            bidLock.unlock()
-        }
-    }
-
+    private var _timeoutTimer: Timer?
     private var timeoutTimer: Timer? {
         get {
             timerLock.lock()
@@ -55,6 +41,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             timerLock.unlock()
         }
     }
+
 
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -87,7 +74,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             pricefloor: auctionConfiguration.pricefloor,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
 
             cancelLock.lock()
             let cancelled = self.isCancelled
@@ -140,6 +127,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     }
     
     private func invalidateTimer() {
+        timeoutTimer?.invalidate()
         timeoutTimer = nil
     }
 

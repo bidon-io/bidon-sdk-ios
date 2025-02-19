@@ -40,7 +40,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private let finishLock = NSLock()
     private var isFinishing = false
     private let operationLock = NSLock()
-    private let executingLock = NSLock()
     
     private var timeoutTimer: Timer?
     
@@ -136,9 +135,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     private func performDemandRequest(_ operation: any AuctionOperationRequestDemand) {
-        executingLock.lock()
         executingOperation = operation
-        executingLock.unlock()
         
         guard !operation.isCancelled else { return }
         
@@ -196,9 +193,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
         
-        executingLock.lock()
         executingOperation?.timeoutReached()
-        executingLock.unlock()
         
         finishAuction()
     }
