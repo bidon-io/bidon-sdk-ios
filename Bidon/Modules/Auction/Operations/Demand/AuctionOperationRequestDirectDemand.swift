@@ -13,17 +13,48 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
-    
+
     let observer: AnyAuctionObserver
     let adapters: [AdapterType]
     let demand: String
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     let adUnit: AdUnitModel
-    
-    private(set) var bid: BidType?
-    
-    private var timeoutTimer: Timer?
+
+    private let bidLock = NSLock()
+    private let timerLock = NSLock()
+    private let cancelLock = NSLock()
+    private let finishLock = NSLock()
+
+    private var _bid: BidType?
+    private var _timeoutTimer: Timer?
+    private var isFinishedFlag = false
+
+    private(set) var bid: BidType? {
+        get {
+            bidLock.lock()
+            defer { bidLock.unlock() }
+            return _bid
+        }
+        set {
+            bidLock.lock()
+            _bid = newValue
+            bidLock.unlock()
+        }
+    }
+
+    private var timeoutTimer: Timer? {
+        get {
+            timerLock.lock()
+            defer { timerLock.unlock() }
+            return _timeoutTimer
+        }
+        set {
+            timerLock.lock()
+            _timeoutTimer = newValue
+            timerLock.unlock()
+        }
+    }
 
     init(builder: BuilderType) {
         self.adapters = builder.adapters
@@ -44,40 +75,39 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             let provider = adapter.provider as? any GenericDirectDemandProvider
         else {
             logLoadingError(error: .unknownAdapter)
-            finish()
-            
+            safeFinish()
             return
         }
         setupTimeout()
-        
-        let event = DirectDemandWillLoadAuctionEvent(
-            adUnit: adUnit
-        )
+
+        let event = DirectDemandWillLoadAuctionEvent(adUnit: adUnit)
         observer.log(event)
         
         provider.load(
             pricefloor: auctionConfiguration.pricefloor,
             adUnitExtrasDecoder: adUnit.extras
         ) { [weak self] result in
-            defer { self?.finish() }
-            
-            guard let self else { return }
-            
-            guard !isCancelled else {
-                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+            guard let self = self else { return }
+
+            cancelLock.lock()
+            let cancelled = self.isCancelled
+            cancelLock.unlock()
+
+            if cancelled {
+                Logger.warning("Demand Request is canceled due to timeout or cancel event. Break")
                 return
             }
             
             self.invalidateTimer()
-            
+
             switch result {
             case .success(let ad):
                 let bid = BidType(
                     id: UUID().uuidString,
                     impressionId: UUID().uuidString,
                     adType: self.context.adType,
-                    adUnit: adUnit,
-                    price: ad.price ?? adUnit.pricefloor,
+                    adUnit: self.adUnit,
+                    price: ad.price ?? self.adUnit.pricefloor,
                     ad: ad,
                     provider: adapter.provider,
                     roundPricefloor: self.auctionConfiguration.pricefloor,
@@ -90,8 +120,10 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 self.observer.log(event)
                 
             case .failure(let error):
-                logLoadingError(error: error)
+                self.logLoadingError(error: error)
             }
+
+            self.safeFinish()
         }
     }
     
@@ -101,13 +133,23 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     }
     
     override func cancel() {
+        cancelLock.lock()
         super.cancel()
+        cancelLock.unlock()
         invalidateTimer()
     }
     
-    func invalidateTimer() {
-        timeoutTimer?.invalidate()
+    private func invalidateTimer() {
         timeoutTimer = nil
+    }
+
+    private func safeFinish() {
+        finishLock.lock()
+        if !isFinishedFlag {
+            isFinishedFlag = true
+            finish()
+        }
+        finishLock.unlock()
     }
 }
 
@@ -118,13 +160,9 @@ extension AuctionOperationRequestDirectDemand: OperationTimeout {
     
     func setupTimeout() {
         guard isExecuting, timeout > 0 else { return }
-        let timer = Timer(
-            timeInterval: timeout,
-            repeats: false
-        ) { [weak self] _ in
+        let timer = Timer(timeInterval: timeout, repeats: false) { [weak self] _ in
             self?.timeoutReached()
         }
-        
         RunLoop.main.add(timer, forMode: .default)
         timeoutTimer = timer
     }
@@ -133,14 +171,8 @@ extension AuctionOperationRequestDirectDemand: OperationTimeout {
 extension AuctionOperationRequestDirectDemand: OperationTimeoutHandler {
     func timeoutReached() {
         guard isExecuting else { return }
-        observer.log(
-            DirectDemandLoadingErrorAucitonEvent(
-                adUnit: adUnit,
-                error: .fillTimeoutReached
-            )
-        )
-        
+        observer.log(DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: .fillTimeoutReached))
         invalidateTimer()
-        finish()
+        safeFinish()
     }
 }
