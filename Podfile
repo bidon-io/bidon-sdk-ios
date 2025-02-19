@@ -78,7 +78,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.5.0"
+  pod "IronSourceSDK", "8.6.1"
 end
 
 def yandex

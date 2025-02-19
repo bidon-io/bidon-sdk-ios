@@ -54,42 +54,46 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         )
         observer.log(event)
         
-        provider.load(
-            payloadDecoder: adUnit.extras,
-            adUnitExtrasDecoder: adUnit.extras
-        ) { [weak self] result in
-            defer { self?.finish() }
-            
+        DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            guard !isCancelled else {
-                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
-                return
-            }
-            
-            self.invalidateTimer()
-            
-            switch result {
-            case .success(let ad):
-                let bid = BidType(
-                    id: UUID().uuidString,
-                    impressionId: UUID().uuidString,
-                    adType: self.context.adType,
-                    adUnit: adUnit,
-                    price: ad.price ?? adUnit.pricefloor,
-                    ad: ad,
-                    provider: adapter.provider,
-                    roundPricefloor: adUnit.pricefloor,
-                    auctionConfiguration: self.auctionConfiguration
-                )
+            provider.load(
+                payloadDecoder: adUnit.extras,
+                adUnitExtrasDecoder: adUnit.extras
+            ) { [weak self] result in
+                defer { self?.finish() }
                 
-                self.bid = bid
+                guard let self else { return }
                 
-                let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
-                self.observer.log(event)
+                guard !isCancelled else {
+                    Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+                    return
+                }
                 
-            case .failure(let error):
-                logLoadingError(error: error)
+                self.invalidateTimer()
+                
+                switch result {
+                case .success(let ad):
+                    let bid = BidType(
+                        id: UUID().uuidString,
+                        impressionId: UUID().uuidString,
+                        adType: self.context.adType,
+                        adUnit: adUnit,
+                        price: ad.price ?? adUnit.pricefloor,
+                        ad: ad,
+                        provider: adapter.provider,
+                        roundPricefloor: adUnit.pricefloor,
+                        auctionConfiguration: self.auctionConfiguration
+                    )
+                    
+                    self.bid = bid
+                    
+                    let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
+                    self.observer.log(event)
+                    
+                case .failure(let error):
+                    logLoadingError(error: error)
+                }
             }
         }
     }
