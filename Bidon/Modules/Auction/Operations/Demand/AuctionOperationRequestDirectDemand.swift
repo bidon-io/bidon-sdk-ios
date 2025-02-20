@@ -55,42 +55,46 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         )
         observer.log(event)
         
-        provider.load(
-            pricefloor: auctionConfiguration.pricefloor,
-            adUnitExtrasDecoder: adUnit.extras
-        ) { [weak self] result in
-            defer { self?.finish() }
-            
+        DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             
-            guard !isCancelled else {
-                Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
-                return
-            }
-            
-            self.invalidateTimer()
-            
-            switch result {
-            case .success(let ad):
-                let bid = BidType(
-                    id: UUID().uuidString,
-                    impressionId: UUID().uuidString,
-                    adType: self.context.adType,
-                    adUnit: adUnit,
-                    price: ad.price ?? adUnit.pricefloor,
-                    ad: ad,
-                    provider: adapter.provider,
-                    roundPricefloor: self.auctionConfiguration.pricefloor,
-                    auctionConfiguration: self.auctionConfiguration
-                )
+            provider.load(
+                pricefloor: self.auctionConfiguration.pricefloor,
+                adUnitExtrasDecoder: self.adUnit.extras
+            ) { [weak self] result in
+                defer { self?.finish() }
                 
-                self.bid = bid
-        
-                let event = DirectDemandDidLoadAuctionEvent(bid: bid)
-                self.observer.log(event)
+                guard let self else { return }
                 
-            case .failure(let error):
-                logLoadingError(error: error)
+                guard !isCancelled else {
+                    Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+                    return
+                }
+                
+                self.invalidateTimer()
+                
+                switch result {
+                case .success(let ad):
+                    let bid = BidType(
+                        id: UUID().uuidString,
+                        impressionId: UUID().uuidString,
+                        adType: self.context.adType,
+                        adUnit: adUnit,
+                        price: ad.price ?? adUnit.pricefloor,
+                        ad: ad,
+                        provider: adapter.provider,
+                        roundPricefloor: self.auctionConfiguration.pricefloor,
+                        auctionConfiguration: self.auctionConfiguration
+                    )
+                    
+                    self.bid = bid
+            
+                    let event = DirectDemandDidLoadAuctionEvent(bid: bid)
+                    self.observer.log(event)
+                    
+                case .failure(let error):
+                    logLoadingError(error: error)
+                }
             }
         }
     }
