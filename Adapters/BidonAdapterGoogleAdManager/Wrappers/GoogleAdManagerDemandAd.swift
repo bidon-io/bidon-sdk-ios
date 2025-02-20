@@ -11,14 +11,15 @@ import GoogleMobileAds
 
 
 protocol GoogleAdManagerDemandAd: DemandAd {
-    static var adFormat: GADAdFormat { get }
+    static var adFormat: AdFormat { get }
     
     var paidEventHandler: GADPaidEventHandler? { get set }
 }
 
 
-extension GAMInterstitialAd: GoogleAdManagerDemandAd {
-    static var adFormat: GADAdFormat { .interstitial }
+extension AdManagerInterstitialAd: @retroactive DemandAd {}
+extension AdManagerInterstitialAd: GoogleAdManagerDemandAd {
+    static var adFormat: AdFormat { .interstitial }
     
     public var id: String {
         responseInfo.responseIdentifier ??
@@ -32,8 +33,9 @@ extension GAMInterstitialAd: GoogleAdManagerDemandAd {
 }
 
 
-extension GADRewardedAd: GoogleAdManagerDemandAd {
-    static var adFormat: GADAdFormat { .rewarded }
+extension GoogleMobileAds.RewardedAd: @retroactive DemandAd {}
+extension GoogleMobileAds.RewardedAd: GoogleAdManagerDemandAd {
+    static var adFormat: AdFormat { .rewarded }
     
     public var id: String {
         responseInfo.responseIdentifier ??
@@ -47,8 +49,8 @@ extension GADRewardedAd: GoogleAdManagerDemandAd {
 }
 
 
-extension GAMBannerView: GoogleAdManagerDemandAd {
-    static var adFormat: GADAdFormat { .banner }
+extension AdManagerBannerView: GoogleAdManagerDemandAd {
+    static var adFormat: AdFormat { .banner }
     
     public var id: String {
         responseInfo?.responseIdentifier ??

@@ -10,10 +10,10 @@ import GoogleMobileAds
 import Bidon
 
 
-typealias GoogleAdManagerRewardWrapper = RewardWrapper<GADAdReward>
+typealias GoogleAdManagerRewardWrapper = RewardWrapper<AdReward>
 
 extension GoogleAdManagerRewardWrapper {
-    convenience init(_ reward: GADAdReward) {
+    convenience init(_ reward: AdReward) {
         self.init(
             label: reward.type,
             amount: reward.amount.intValue,

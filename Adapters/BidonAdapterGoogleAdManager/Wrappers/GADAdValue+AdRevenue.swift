@@ -1,5 +1,5 @@
 //
-//  GADAdValue+AdRevenue.swift
+//  AdValue+AdRevenue.swift
 //  BidonAdapterGoogleAdManager
 //
 //  Created by Stas Kochkin on 16.11.2023.
@@ -10,7 +10,7 @@ import GoogleMobileAds
 import Bidon
 
 
-extension GADAdValue {
+extension AdValue {
     var revenue: AdRevenue {
         AdRevenueModel(
             revenue: value.doubleValue,
@@ -22,7 +22,7 @@ extension GADAdValue {
 
 
 extension RevenuePrecision {
-    init(_ precision: GADAdValuePrecision) {
+    init(_ precision: AdValuePrecision) {
         switch precision {
         case .precise: self = .precise
         default: self = .estimated
