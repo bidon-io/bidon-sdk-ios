@@ -29,6 +29,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         queue.qualityOfService = .default
         return queue
     }()
+    private let operationsQueue = DispatchQueue(label: "com.bidon.auction.operationsQueue", attributes: .concurrent)
     
     var maxPrice: Price
     var pendingOperations = [any AuctionOperationRequestDemand]()
@@ -110,12 +111,15 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Auction Processing.
     
     private func scheduleNextOperation() {
-        guard !pendingOperations.isEmpty else {
-            finishAuction()
-            return
+        operationsQueue.async(flags: .barrier) { [weak self] in
+            guard let self else { return }
+            guard !self.pendingOperations.isEmpty else {
+                self.finishAuction()
+                return
+            }
+            let nextOperation = self.pendingOperations.removeFirst()
+            self.addOperation(nextOperation)
         }
-        let nextOperation = pendingOperations.removeFirst()
-        addOperation(nextOperation)
     }
     
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
@@ -168,13 +172,11 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private func setupAuctionTimeout(timeoutInSeconds: TimeInterval) {
         guard timeoutInSeconds > 0 else { return }
         
-        let timer = Timer(
-            timeInterval: timeoutInSeconds,
-            repeats: false
-        ) { [weak self] _ in
-            self?.handleTimeout()
+        let timer = Timer.scheduledTimer(withTimeInterval: timeoutInSeconds, repeats: false) { [weak self] _ in
+            guard let self else { return }
+            self.handleTimeout()
         }
-        RunLoop.main.add(timer, forMode: .default)
+        
         timeoutTimer = timer
     }
     
@@ -198,13 +200,14 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         finishLock.lock()
         
         guard !isFinishing else {
+            finishLock.unlock()
             return
         }
         isFinishing = true
         
         invalidateTimer()
 
-        pendingOperations = []
+        pendingOperations.removeAll()
         queue.cancelAllOperations()
         
         guard 
