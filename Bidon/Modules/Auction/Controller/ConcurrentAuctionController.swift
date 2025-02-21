@@ -40,6 +40,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     
     private let finishLock = NSLock()
     private var isFinishing = false
+    private let operationLock = NSLock()
     
     private var timeoutTimer: Timer?
     
@@ -111,15 +112,17 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Auction Processing.
     
     private func scheduleNextOperation() {
-        operationsQueue.async(flags: .barrier) { [weak self] in
-            guard let self else { return }
-            guard !self.pendingOperations.isEmpty else {
-                self.finishAuction()
-                return
-            }
-            let nextOperation = self.pendingOperations.removeFirst()
-            self.addOperation(nextOperation)
+        operationLock.lock()
+        
+        guard !self.pendingOperations.isEmpty else {
+            operationLock.unlock()
+            self.finishAuction()
+            return
         }
+        
+        let nextOperation = self.pendingOperations.removeFirst()
+        self.addOperation(nextOperation)
+        operationLock.unlock()
     }
     
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
@@ -181,7 +184,11 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     private func handleTimeout() {
-        pendingOperations
+        operationLock.lock()
+        let pendingOps = pendingOperations
+        operationLock.unlock()
+        
+        pendingOps
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
         
