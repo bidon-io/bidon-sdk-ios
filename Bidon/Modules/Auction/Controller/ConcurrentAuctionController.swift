@@ -31,16 +31,29 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }()
     private let operationsQueue = DispatchQueue(label: "com.bidon.auction.operationsQueue", attributes: .concurrent)
     
-    var maxPrice: Price
-    var pendingOperations = [any AuctionOperationRequestDemand]()
-    var executingOperation: (any AuctionOperationRequestDemand)?
+    private var executingOperation: (any AuctionOperationRequestDemand)?
+    private var maxPrice: Price
+    
+    private var _pendingOperations = [any AuctionOperationRequestDemand]()
+    private let operationLock = NSLock()
+    private var pendingOperations: [any AuctionOperationRequestDemand] {
+        get {
+            operationLock.lock()
+            defer { operationLock.unlock() }
+            return _pendingOperations
+        }
+        set {
+            operationLock.lock()
+            _pendingOperations = newValue
+            operationLock.unlock()
+        }
+    }
     
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
     
     private let finishLock = NSLock()
     private var isFinishing = false
-    private let operationLock = NSLock()
     
     private var timeoutTimer: Timer?
     
@@ -112,17 +125,13 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Auction Processing.
     
     private func scheduleNextOperation() {
-        operationLock.lock()
-        
         guard !self.pendingOperations.isEmpty else {
-            operationLock.unlock()
             self.finishAuction()
             return
         }
         
         let nextOperation = self.pendingOperations.removeFirst()
         self.addOperation(nextOperation)
-        operationLock.unlock()
     }
     
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
@@ -184,10 +193,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
     
     private func handleTimeout() {
-        operationLock.lock()
         let pendingOps = pendingOperations
-        operationLock.unlock()
-        
         pendingOps
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
@@ -205,9 +211,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
 
     private func finishAuction() {
         finishLock.lock()
-        
+        defer { finishLock.unlock() }
+            
         guard !isFinishing else {
-            finishLock.unlock()
             return
         }
         isFinishing = true
@@ -227,8 +233,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             return
         }
         queue.addOperation(finishAuctionOperation)
-        
-        finishLock.unlock()
     }
     
     private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
