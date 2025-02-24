@@ -29,10 +29,25 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         queue.qualityOfService = .default
         return queue
     }()
+    private let operationsQueue = DispatchQueue(label: "com.bidon.auction.operationsQueue", attributes: .concurrent)
     
-    var maxPrice: Price
-    var pendingOperations = [any AuctionOperationRequestDemand]()
-    var executingOperation: (any AuctionOperationRequestDemand)?
+    private var executingOperation: (any AuctionOperationRequestDemand)?
+    private var maxPrice: Price
+    
+    private var _pendingOperations = [any AuctionOperationRequestDemand]()
+    private let operationLock = NSLock()
+    private var pendingOperations: [any AuctionOperationRequestDemand] {
+        get {
+            operationLock.lock()
+            defer { operationLock.unlock() }
+            return _pendingOperations
+        }
+        set {
+            operationLock.lock()
+            _pendingOperations = newValue
+            operationLock.unlock()
+        }
+    }
     
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
@@ -110,12 +125,13 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Auction Processing.
     
     private func scheduleNextOperation() {
-        guard !pendingOperations.isEmpty else {
-            finishAuction()
+        guard !self.pendingOperations.isEmpty else {
+            self.finishAuction()
             return
         }
-        let nextOperation = pendingOperations.removeFirst()
-        addOperation(nextOperation)
+        
+        let nextOperation = self.pendingOperations.removeFirst()
+        self.addOperation(nextOperation)
     }
     
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
@@ -168,18 +184,17 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     private func setupAuctionTimeout(timeoutInSeconds: TimeInterval) {
         guard timeoutInSeconds > 0 else { return }
         
-        let timer = Timer(
-            timeInterval: timeoutInSeconds,
-            repeats: false
-        ) { [weak self] _ in
-            self?.handleTimeout()
+        let timer = Timer.scheduledTimer(withTimeInterval: timeoutInSeconds, repeats: false) { [weak self] _ in
+            guard let self else { return }
+            self.handleTimeout()
         }
-        RunLoop.main.add(timer, forMode: .default)
+        
         timeoutTimer = timer
     }
     
     private func handleTimeout() {
-        pendingOperations
+        let pendingOps = pendingOperations
+        pendingOps
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
         
@@ -196,7 +211,8 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
 
     private func finishAuction() {
         finishLock.lock()
-        
+        defer { finishLock.unlock() }
+            
         guard !isFinishing else {
             return
         }
@@ -204,7 +220,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         
         invalidateTimer()
 
-        pendingOperations = []
+        pendingOperations.removeAll()
         queue.cancelAllOperations()
         
         guard 
@@ -217,8 +233,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             return
         }
         queue.addOperation(finishAuctionOperation)
-        
-        finishLock.unlock()
     }
     
     private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
