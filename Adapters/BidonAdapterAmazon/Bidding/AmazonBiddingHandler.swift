@@ -60,7 +60,7 @@ final class AmazonBiddingHandler: NSObject, DTBAdCallback {
         
         adSizes.forEach { adSize in
             group.enter()
-            let loader = DTBAdLoader()
+            let loader = DTBAdLoader(adNetworkInfo: DTBAdNetworkInfo(networkName: DTBADNETWORK_CUSTOM_MEDIATION))
             loader.setAdSizes([adSize])
             loader.loadAd(self)
             loaders.append(loader)

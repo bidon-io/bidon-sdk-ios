@@ -10,15 +10,15 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK', "13.0.1"
+  pod 'AppLovinSDK', "13.1.0"
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.1.2'
+  pod 'BidMachine', '3.2.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 11.12.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 12.0.0'
 end
 
 def appsflyer
@@ -26,23 +26,23 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.5.1'
+  pod 'BigoADS', '~> 4.6.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.3.4'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.5'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.15.2'
+  pod 'FBAudienceNetwork', '6.16.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.12.5'
+  pod 'UnityAds', '~> 4.13.1'
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.7.3'
+  pod 'MintegralAdSDK', '~> 7.7.6'
 end
 
 def mobilefuse
@@ -50,7 +50,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.4.1'
+  pod 'VungleAds', '7.4.4'
 end
 
 def ocmock
@@ -62,7 +62,7 @@ def meta_sdk
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '~> 4.10.1'
+  pod 'AmazonPublisherServicesSDK', '~> 5.0.1'
 end
 
 def inmobi
@@ -78,7 +78,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.6.1"
+  pod "IronSourceSDK", "8.7.0.0"
 end
 
 def yandex
