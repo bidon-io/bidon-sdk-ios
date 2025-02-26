@@ -11,10 +11,10 @@ import GoogleMobileAds
 import UIKit
 
 
-final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBaseDemandProvider<AdManagerInterstitialAd> {
-    override func loadAd(_ request: AdManagerRequest, adUnitId: String) {
-        AdManagerInterstitialAd.load(
-            with: adUnitId,
+final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBaseDemandProvider<GAMInterstitialAd> {
+    override func loadAd(_ request: GAMRequest, adUnitId: String) {
+        GAMInterstitialAd.load(
+            withAdManagerAdUnitID: adUnitId,
             request: request
         ) { [weak self] interstitial, error in
             guard let self = self else { return }
@@ -34,19 +34,19 @@ final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBase
 
 
 extension GoogleAdManagerDirectInterstitialDemandProvider: InterstitialDemandProvider {
-    func show(ad: AdManagerInterstitialAd, from viewController: UIViewController) {
-        ad.present(from: viewController)
+    func show(ad: GAMInterstitialAd, from viewController: UIViewController) {
+        ad.present(fromRootViewController: viewController)
     }
 }
 
 
-extension GoogleAdManagerDirectInterstitialDemandProvider: FullScreenContentDelegate {
-    func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
+extension GoogleAdManagerDirectInterstitialDemandProvider: GADFullScreenContentDelegate {
+    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerWillPresent(self)
     }
     
-    func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        guard let ad = ad as? AdManagerInterstitialAd else { return }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        guard let ad = ad as? GAMInterstitialAd else { return }
         delegate?.provider(
             self,
             didFailToDisplayAd: ad,
@@ -54,11 +54,11 @@ extension GoogleAdManagerDirectInterstitialDemandProvider: FullScreenContentDele
         )
     }
     
-    func adDidRecordClick(_ ad: FullScreenPresentingAd) {
+    func adDidRecordClick(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
     
-    func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
+    func adWillDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerDidHide(self)
     }
 }

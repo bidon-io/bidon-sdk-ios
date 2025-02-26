@@ -27,7 +27,7 @@ class GoogleAdManagerBaseDemandProvider<AdObject: GoogleAdManagerDemandAd>: NSOb
         super.init()
     }
     
-    open func loadAd(_ request: AdManagerRequest, adUnitId: String) {
+    open func loadAd(_ request: GAMRequest, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
     }
     
@@ -67,7 +67,7 @@ extension GoogleAdManagerBaseDemandProvider: DirectDemandProvider {
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        let request = AdManagerRequest { builder in
+        let request = GAMRequest { builder in
             builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)

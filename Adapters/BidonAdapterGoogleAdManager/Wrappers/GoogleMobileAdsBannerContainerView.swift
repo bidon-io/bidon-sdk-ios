@@ -12,16 +12,16 @@ import Bidon
 
 
 internal protocol GoogleMobileAdsBannerContainerView: UIView, Bidon.AdViewContainer {
-    init(frame: CGRect, adSize: AdSize)
+    init(frame: CGRect, adSize: GADAdSize)
     
-    func layout(_ banner: GoogleMobileAds.BannerView)
+    func layout(_ banner: GADBannerView)
 }
 
 
 final class GoogleMobileAdsAdaptiveBannerContainerView: UIView, GoogleMobileAdsBannerContainerView {
     let isAdaptive: Bool = true
     
-    init(frame: CGRect, adSize: AdSize) {
+    init(frame: CGRect, adSize: GADAdSize) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
     }
@@ -30,7 +30,7 @@ final class GoogleMobileAdsAdaptiveBannerContainerView: UIView, GoogleMobileAdsB
         fatalError("init(coder:) has not been implemented")
     }
     
-    func layout(_ banner: GoogleMobileAds.BannerView) {
+    func layout(_ banner: GADBannerView) {
         addSubview(banner)
         NSLayoutConstraint.activate([
             banner.topAnchor.constraint(equalTo: topAnchor),
@@ -58,9 +58,9 @@ final class GoogleMobileAdsAdaptiveBannerContainerView: UIView, GoogleMobileAdsB
 final class GoogleMobileAdsFixedBannerContainerView: UIView, GoogleMobileAdsBannerContainerView {
     let isAdaptive: Bool = false
 
-    private let adSize: AdSize
+    private let adSize: GADAdSize
     
-    init(frame: CGRect, adSize: AdSize) {
+    init(frame: CGRect, adSize: GADAdSize) {
         self.adSize = adSize
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +70,7 @@ final class GoogleMobileAdsFixedBannerContainerView: UIView, GoogleMobileAdsBann
         fatalError("init(coder:) has not been implemented")
     }
     
-    func layout(_ banner: GoogleMobileAds.BannerView) {
+    func layout(_ banner: GADBannerView) {
         addSubview(banner)
         NSLayoutConstraint.activate([
             banner.centerXAnchor.constraint(equalTo: centerXAnchor),

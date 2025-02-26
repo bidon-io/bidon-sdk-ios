@@ -18,7 +18,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 12.0.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.13.0'
 end
 
 def appsflyer

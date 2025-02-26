@@ -23,8 +23,8 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     public let demandId: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = string(
-        for: MobileAds.shared.versionNumber
+    public let sdkVersion: String = GADGetStringFromVersionNumber(
+        GADMobileAds.sharedInstance().versionNumber
     )
     
     @Injected(\.context)
@@ -48,15 +48,8 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
         return GoogleAdManagerDirectAdViewProvider(parameters: parameters, context: context)
     }
     
-    private func configure(_ request: RequestConfiguration) {
-//        Check the console for a message that looks like this and paste it to line of code below:
-        /*
-         <Google> To get test ads on this device, set:
-         GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers =
-         @[ @"2077ef9a63d2b398840261c8221a0c9b" ];
-         */
-        
-//        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
+    private func configure(_ request: GADRequestConfiguration) {
+        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
         request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
     }
 }
@@ -72,9 +65,9 @@ extension GoogleAdManagerDemandSourceAdapter: ParameterizedInitializableAdapter 
             isInitialized = true
         }
         
-        configure(MobileAds.shared.requestConfiguration)
+        configure(GADMobileAds.sharedInstance().requestConfiguration)
         
-        MobileAds.shared.start { _ in
+        GADMobileAds.sharedInstance().start { _ in
             completion(nil)
         }
     }

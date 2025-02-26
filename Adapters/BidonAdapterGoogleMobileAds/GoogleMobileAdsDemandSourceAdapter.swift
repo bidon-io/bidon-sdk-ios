@@ -26,8 +26,8 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
     public let demandId: String = GoogleMobileAdsDemandSourceAdapter.identifier
     public let name: String = "Google Mobile Ads"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = string(
-        for: MobileAds.shared.versionNumber
+    public let sdkVersion: String = GADGetStringFromVersionNumber(
+        GADMobileAds.sharedInstance().versionNumber
     )
     
     @Injected(\.context)
@@ -69,7 +69,7 @@ public final class GoogleMobileAdsDemandSourceAdapter: NSObject, DemandSourceAda
         )
     }
     
-    private func configure(_ request: RequestConfiguration) {
+    private func configure(_ request: GADRequestConfiguration) {
         request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
     }
 }
@@ -85,10 +85,10 @@ extension GoogleMobileAdsDemandSourceAdapter: ParameterizedInitializableAdapter 
             isInitialized = true
         }
         
-        configure(MobileAds.shared.requestConfiguration)
+        configure(GADMobileAds.sharedInstance().requestConfiguration)
         
         //        GADMobileAds.sharedInstance().disableMediationInitialization()
-        MobileAds.shared.start { _ in
+        GADMobileAds.sharedInstance().start { _ in
             completion(nil)
         }
     }
