@@ -1,5 +1,5 @@
 //
-//  AdManagerRequest+Builder.swift
+//  GAMRequest+Builder.swift
 //  BidonAdapterGoogleAdManager
 //
 //  Created by Stas Kochkin on 16.11.2023.
@@ -10,14 +10,14 @@ import Bidon
 import GoogleMobileAds
 
 
-extension AdManagerRequest {
+extension GAMRequest {
     final class Builder {
         private var parameters: [String: AnyHashable] = [:]
         private(set) var adContent: String?
         private(set) var requestAgent: String?
         
-        var extras: Extras {
-            let extras = Extras()
+        var extras: GADExtras {
+            let extras = GADExtras()
             extras.additionalParameters = parameters
             return extras
         }

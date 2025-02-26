@@ -11,12 +11,12 @@ import GoogleMobileAds
 import UIKit
 
 
-final class GoogleAdManagerDirectRewardedAdDemandProvider: GoogleAdManagerBaseDemandProvider<GoogleMobileAds.RewardedAd> {
+final class GoogleAdManagerDirectRewardedAdDemandProvider: GoogleAdManagerBaseDemandProvider<GADRewardedAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
-    override func loadAd(_ request: AdManagerRequest, adUnitId: String) {
-        GoogleMobileAds.RewardedAd.load(
-            with: adUnitId,
+    override func loadAd(_ request: GAMRequest, adUnitId: String) {
+        GADRewardedAd.load(
+            withAdUnitID: adUnitId,
             request: request
         ) { [weak self] rewardedAd, error in
             guard let self = self else { return }
@@ -36,8 +36,8 @@ final class GoogleAdManagerDirectRewardedAdDemandProvider: GoogleAdManagerBaseDe
 
 
 extension GoogleAdManagerDirectRewardedAdDemandProvider: RewardedAdDemandProvider {
-    func show(ad: GoogleMobileAds.RewardedAd, from viewController: UIViewController) {
-        ad.present(from: viewController) { [weak self, weak ad] in
+    func show(ad: GADRewardedAd, from viewController: UIViewController) {
+        ad.present(fromRootViewController: viewController) { [weak self, weak ad] in
             guard let ad = ad, let self = self else { return }
             
             let rewardWrapper = GoogleAdManagerRewardWrapper(ad.adReward)
@@ -47,13 +47,13 @@ extension GoogleAdManagerDirectRewardedAdDemandProvider: RewardedAdDemandProvide
 }
 
 
-extension GoogleAdManagerDirectRewardedAdDemandProvider: FullScreenContentDelegate {
-    func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
+extension GoogleAdManagerDirectRewardedAdDemandProvider: GADFullScreenContentDelegate {
+    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerWillPresent(self)
     }
     
-    func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        guard let ad = ad as? GoogleMobileAds.RewardedAd else { return }
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        guard let ad = ad as? GADRewardedAd else { return }
         delegate?.provider(
             self,
             didFailToDisplayAd: ad,
@@ -61,11 +61,11 @@ extension GoogleAdManagerDirectRewardedAdDemandProvider: FullScreenContentDelega
         )
     }
     
-    func adDidRecordClick(_ ad: FullScreenPresentingAd) {
+    func adDidRecordClick(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
     
-    func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
+    func adWillDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         delegate?.providerDidHide(self)
     }
 }
