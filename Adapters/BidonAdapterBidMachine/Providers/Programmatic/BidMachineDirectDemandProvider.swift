@@ -42,7 +42,7 @@ class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachine
                 ad.loadAd()
             }
         } catch let error {
-            response(.failure(.unscpecifiedException(error.localizedDescription)))
+            response(.failure(.unspecifiedException(error.localizedDescription)))
         }
     }
 }

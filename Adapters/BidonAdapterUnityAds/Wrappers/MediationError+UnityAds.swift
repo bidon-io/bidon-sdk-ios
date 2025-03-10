@@ -32,7 +32,7 @@ extension MediationError {
         switch code {
         case .codeNoFillError: self = .noFill(error.localizedDescription)
         case .codeWebViewError: self = .networkError
-        default: self = .unscpecifiedException(error.localizedDescription)
+        default: self = .unspecifiedException(error.localizedDescription)
         }
     }
 }

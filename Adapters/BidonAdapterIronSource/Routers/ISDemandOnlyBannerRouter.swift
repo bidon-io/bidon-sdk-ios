@@ -33,7 +33,7 @@ final class ISDemandOnlyBannerRouter: NSObject, ISDemandOnlyBannerDelegate {
     ) {
         if let bannerView = bannerView(for: instanceId) {
             if bannerView.superview != nil {
-                let error = MediationError.unscpecifiedException("No superview has been provided")
+                let error = MediationError.unspecifiedException("No superview has been provided")
                 delegate.bannerDidFailToLoadWithError(error, instanceId: instanceId)
             } else {
                 set(delegate: delegate, for: instanceId)

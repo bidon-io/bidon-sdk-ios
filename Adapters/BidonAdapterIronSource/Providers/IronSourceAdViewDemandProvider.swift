@@ -47,7 +47,7 @@ final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSou
         response: @escaping DemandProviderResponse
     ) {
         guard let viewController = context.rootViewController else {
-            response(.failure(.unscpecifiedException("View Controller is nil")))
+            response(.failure(.unspecifiedException("View Controller is nil")))
             return
         }
         self.response = response
