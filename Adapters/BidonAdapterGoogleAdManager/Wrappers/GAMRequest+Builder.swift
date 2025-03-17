@@ -10,14 +10,14 @@ import Bidon
 import GoogleMobileAds
 
 
-extension GAMRequest {
+extension GoogleMobileAds.Request {
     final class Builder {
         private var parameters: [String: AnyHashable] = [:]
         private(set) var adContent: String?
         private(set) var requestAgent: String?
         
-        var extras: GADExtras {
-            let extras = GADExtras()
+        var extras: GoogleMobileAds.Extras {
+            let extras = GoogleMobileAds.Extras()
             extras.additionalParameters = parameters
             return extras
         }
