@@ -23,7 +23,7 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     public let demandId: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = "\(MobileAds.shared.versionNumber)"
+    public let sdkVersion: String = string(for: MobileAds.shared.versionNumber)
     
     @Injected(\.context)
     var context: Bidon.SdkContext
