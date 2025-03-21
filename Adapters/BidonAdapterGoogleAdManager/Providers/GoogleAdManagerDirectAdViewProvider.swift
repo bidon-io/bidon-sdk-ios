@@ -11,11 +11,11 @@ import GoogleMobileAds
 import UIKit
 
 
-final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvider<GAMBannerView> {
+final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvider<GoogleMobileAds.BannerView> {
     private weak var rootViewController: UIViewController?
     
-    private let adSize: GADAdSize
-    private var banner: GAMBannerView?
+    private let adSize: GoogleMobileAds.AdSize
+    private var banner: GoogleMobileAds.BannerView?
     private var container: GoogleMobileAdsBannerContainerView
     
     weak var adViewDelegate: DemandProviderAdViewDelegate?
@@ -34,10 +34,10 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
         super.init(parameters: parameters)
     }
     
-    override func loadAd(_ request: GADRequest, adUnitId: String) {
+    override func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            let banner = GAMBannerView(adSize: adSize)
+            let banner = GoogleMobileAds.BannerView(adSize: adSize)
             
             banner.delegate = self
             banner.adUnitID = adUnitId
@@ -59,47 +59,46 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
 
 
 extension GoogleAdManagerDirectAdViewProvider: AdViewDemandProvider {
-    func container(for ad: GAMBannerView) -> AdViewContainer? {
+    func container(for ad: GoogleMobileAds.BannerView) -> AdViewContainer? {
         return self.container
     }
     
-    func didTrackImpression(for ad: GAMBannerView) {
+    func didTrackImpression(for ad: GoogleMobileAds.BannerView) {
         ad.unhideSubviews()
     }
 }
 
 
-extension GoogleAdManagerDirectAdViewProvider: GADBannerViewDelegate {
-    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-        guard let bannerView = bannerView as? GAMBannerView else { return }
+extension GoogleAdManagerDirectAdViewProvider: BannerViewDelegate {
+    func bannerViewDidReceiveAd(_ bannerView: GoogleMobileAds.BannerView) {
         handleDidLoad(adObject: bannerView)
     }
     
-    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+    func bannerView(_ bannerView: GoogleMobileAds.BannerView, didFailToReceiveAdWithError error: Error) {
         handleDidFailToLoad(.noFill(error.localizedDescription))
     }
     
-    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+    func bannerViewWillPresentScreen(_ bannerView: GoogleMobileAds.BannerView) {
         adViewDelegate?.providerWillPresentModalView(self, adView: container)
     }
     
-    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+    func bannerViewDidDismissScreen(_ bannerView: GoogleMobileAds.BannerView) {
         adViewDelegate?.providerDidDismissModalView(self, adView: container)
     }
     
-    func bannerViewDidRecordClick(_ bannerView: GADBannerView) {
+    func bannerViewDidRecordClick(_ bannerView: GoogleMobileAds.BannerView) {
         delegate?.providerDidClick(self)
     }
 }
 
 
 extension AdViewContext {
-    var adSize: GADAdSize {
+    var adSize: AdSize {
         switch format {
-        case .mrec: return GADAdSizeMediumRectangle
-        case .banner: return GADAdSizeBanner
-        case .leaderboard: return GADAdSizeLeaderboard
-        default: return GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(width)
+        case .mrec: return AdSizeMediumRectangle
+        case .banner: return AdSizeBanner
+        case .leaderboard: return AdSizeLeaderboard
+        default: return currentOrientationAnchoredAdaptiveBanner(width: width)
         }
     }
     
@@ -114,7 +113,7 @@ extension AdViewContext {
 }
 
 
-extension GADBannerView {
+extension GoogleMobileAds.BannerView {
     func unhideSubviews() {
         recursiveSubviews
             .filter { $0.isHidden }
