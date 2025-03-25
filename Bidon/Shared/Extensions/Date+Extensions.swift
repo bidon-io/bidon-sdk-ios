@@ -37,17 +37,23 @@ extension Date {
     }
     
     private static var monotonicTimestamp: TimeInterval {
-        let machTime = mach_absolute_time()
-        let nanos = Double(machTime) * Double(Self.timebase.numer) / Double(Self.timebase.denom)
-        let monotonicTimestamp = nanos / 1_000_000_000
-        return monotonicTimestamp
+        var now = time_t()
+        var boottime = timeval()
+        var size = MemoryLayout<timeval>.stride
+        
+        let result = sysctlbyname("kern.boottime", &boottime, &size, nil, 0)
+        time(&now)
+        
+        guard
+            result == 0,
+            boottime.tv_sec != 0
+        else {
+            return .zero
+        }
+        
+        return TimeInterval(now - boottime.tv_sec)
     }
     
-    private static let timebase: mach_timebase_info = {
-        var info = mach_timebase_info()
-        mach_timebase_info(&info)
-        return info
-    }()
 }
 
 
