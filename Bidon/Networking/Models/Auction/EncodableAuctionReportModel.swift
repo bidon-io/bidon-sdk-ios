@@ -105,7 +105,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
                 switch mediationError {
                 case .noBid(let text), .noFill(let text):
                     self.errorMessage = text
-                case .unscpecifiedException(let text):
+                case .unspecifiedException(let text):
                     self.errorMessage = text
                 default:
                     self.errorMessage = nil

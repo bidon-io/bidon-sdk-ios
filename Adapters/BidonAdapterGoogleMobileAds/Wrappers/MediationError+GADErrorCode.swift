@@ -16,7 +16,7 @@ extension MediationError {
             let gadError = gadError as? NSError,
             let code = GADErrorCode(rawValue: gadError.code)
         else {
-            self = .unscpecifiedException("Mapping Error")
+            self = .unspecifiedException("Mapping Error")
             return
         }
         
@@ -25,7 +25,7 @@ extension MediationError {
         case .networkError: self = .networkError
         case .invalidRequest, .invalidArgument: self = .incorrectAdUnitId
         case .timeout: self = .networkError
-        default: self = .unscpecifiedException("Unknown Error")
+        default: self = .unspecifiedException("Unknown Error")
         }
     }
 }
