@@ -60,7 +60,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.6):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.8.2)
+- MobileFuseSDK (1.8.2)
   - myTargetSDK (5.25.1):
     - myTrackerSDK (~> 3.2.0)
   - myTrackerSDK (3.2.1)
@@ -149,7 +149,7 @@ SPEC REPOS:
     - YandexMobileMetrica
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 2c897ab0edf7d6f7bf2bcc6c16d63530dc7ec9c1
+AmazonPublisherServicesSDK: 2c897ab0edf7d6f7bf2bcc6c16d63530dc7ec9c1
   AppLovinSDK: 539a0178d8bef4d68b2551a93526e0c1bba06cb2
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   BidMachine: b5d8236e691a0c71fbb95a72e86f3ec189f1a8a9
