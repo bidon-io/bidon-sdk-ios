@@ -1,4 +1,4 @@
-platform :ios, '12.4'
+platform :ios, '13.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://github.com/appodeal/CocoaPods.git'
@@ -10,77 +10,84 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK'
+  pod 'AppLovinSDK', "13.1.0"
 end
 
 def bidmachine 
-  pod 'BidMachine', '~> 2.6.0'
-#  pod 'BidMachineMintegralAdapter', '~> 2.6.0'
-#  pod 'BidMachineAmazonAdapter', '~> 2.6.0'
-#  pod 'BidMachineCriteoAdapter', '~> 2.6.0'
-#  pod 'BidMachineMetaAudienceAdapter', '~> 2.6.0'
-#  pod 'BidMachineMyTargetAdapter', '~> 2.6.0'
-#  pod 'BidMachineSmaatoAdapter', '~> 2.6.0'
-#  pod 'BidMachineTapjoyAdapter', '~> 2.6.0'
-#  pod 'BidMachineVungleAdapter', '~> 2.6.0'
-#  pod 'BidMachinePangleAdapter', '~> 2.6.0'
+  pod 'BidMachine', '3.2.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 11.5.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 11.13.0'
 end
 
 def appsflyer
-  pod 'AppsFlyerFramework', '~> 6.14.0'
-  pod 'AppsFlyer-AdRevenue', '~> 6.9.0'
+  pod 'AppsFlyerFramework', '~> 6.15.2'
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.2.2'
+  pod 'BigoADS', '~> 4.6.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.2.7'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.5'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '~> 6.15.0'
+  pod 'FBAudienceNetwork', '6.16.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '~> 4.11.3'
+  pod 'UnityAds', '~> 4.13.1'
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '~> 7.6.1'
+  pod 'MintegralAdSDK', '~> 7.7.6'
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK'
+  pod 'MobileFuseSDK', '1.8.2'
 end
 
 def vungle
-  pod 'VungleAds', '~> 7.3.0'
+  pod 'VungleAds', '7.4.4'
 end
 
 def ocmock
-  pod 'OCMock', '~> 3.9.1'
+  pod 'OCMock', '~> 3.9.4'
 end
 
 def meta_sdk
-  pod 'FBSDKLoginKit'
+  pod 'FBSDKLoginKit', '~> 17.1.0'
 end
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '~> 4.9.2'
+  pod 'AmazonPublisherServicesSDK', '~> 5.0.1'
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.7.1'
+  pod 'InMobiSDK', '~> 10.8.0'
 end
 
+def my_target
+  pod "myTargetSDK", "~> 5.25.1"
+end
+
+def chartboost
+  pod 'ChartboostSDK', '9.8.0'
+end
+
+def ironsource
+  pod "IronSourceSDK", "8.7.0.0"
+end
+
+def yandex
+  pod 'YandexMobileAds', '5.2.1'
+end
+
+
 def appodeal_mediation
-  # pod 'Appodeal', '~> 3.3.0'
+  pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
@@ -97,6 +104,10 @@ def appodeal_mediation
   # pod 'APDUnityAdapter', '3.1.3.0'
   # pod 'APDVungleAdapter', '3.1.3.0'
   # pod 'APDYandexAdapter', '3.1.3.0'
+end
+
+def consent_manager
+  pod "StackConsentManager", '~> 2.0.8'
 end
 
 # Targets
@@ -166,6 +177,26 @@ target 'BidonAdapterAmazon' do
   amazon
 end
 
+target 'BidonAdapterMyTarget' do
+  project 'Adapters/Adapters.xcodeproj'
+  my_target
+end
+
+target 'BidonAdapterChartboost' do
+  project 'Adapters/Adapters.xcodeproj'
+  chartboost
+end
+
+target 'BidonAdapterIronSource' do
+  project 'Adapters/Adapters.xcodeproj'
+  ironsource
+end
+
+target 'BidonAdapterYandex' do
+  project 'Adapters/Adapters.xcodeproj'
+  yandex
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -195,6 +226,7 @@ end
 
 target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
+  consent_manager
   applovin
   appsflyer
   bidmachine
@@ -210,13 +242,17 @@ target 'Sandbox' do
   meta_sdk
   inmobi
   amazon
-  appodeal_mediation
+#  appodeal_mediation
+  my_target
+  chartboost
+  ironsource
+  yandex
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
       xcconfig_path = config.base_configuration_reference.real_path
       xcconfig = File.read(xcconfig_path)
@@ -226,7 +262,7 @@ post_install do |installer|
 
     installer.pods_project.build_configurations.each do |config|
       config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '12.0'
+      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '13.0'
     end
   end
 end

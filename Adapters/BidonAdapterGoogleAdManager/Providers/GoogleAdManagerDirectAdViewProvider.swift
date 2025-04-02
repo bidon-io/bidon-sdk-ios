@@ -21,7 +21,7 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     
     init(
-        serverData: GoogleAdManagerDemandSourceAdapter.ServerData,
+        parameters: GoogleAdManagerParameters,
         context: AdViewContext
     ) {
         let frame = CGRect(origin: .zero, size: context.format.preferredSize)
@@ -31,26 +31,29 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
         GoogleMobileAdsAdaptiveBannerContainerView(frame: frame, adSize: context.adSize) :
         GoogleMobileAdsFixedBannerContainerView(frame: frame, adSize: context.adSize)
         
-        super.init(serverData: serverData)
+        super.init(parameters: parameters)
     }
     
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        let banner = GAMBannerView(adSize: adSize)
-        
-        banner.delegate = self
-        banner.adUnitID = adUnitId
-        banner.isAutoloadEnabled = false
-        banner.rootViewController = rootViewController
-        
-        setupAdRevenueHandler(adObject: banner)
-        
-        banner.translatesAutoresizingMaskIntoConstraints = false
-        
-        container.layout(banner)
-        
-        banner.load(request)
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let banner = GAMBannerView(adSize: adSize)
+            
+            banner.delegate = self
+            banner.adUnitID = adUnitId
+            banner.isAutoloadEnabled = false
+            banner.rootViewController = self.rootViewController
+            
+            self.setupAdRevenueHandler(adObject: banner)
+            
+            banner.translatesAutoresizingMaskIntoConstraints = false
+            
+            self.container.layout(banner)
+            
+            banner.load(request)
+            
+            self.banner = banner
+        }
     }
 }
 
@@ -73,7 +76,7 @@ extension GoogleAdManagerDirectAdViewProvider: GADBannerViewDelegate {
     }
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        handleDidFailToLoad(.noFill)
+        handleDidFailToLoad(.noFill(error.localizedDescription))
     }
     
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {

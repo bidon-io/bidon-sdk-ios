@@ -9,14 +9,11 @@ import Foundation
 
 
 protocol StatisticRequestBuilder: AdTypeContextRequestBuilder {
-    var stats: MediationAttemptReportCodableModel { get }
+    var stats: EncodableAuctionReportModel { get }
     var route: Route { get }
     
     @discardableResult
-    func withMediationReport<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) -> Self
+    func withAuctionReport<T: AuctionReport>(_ report: T) -> Self
     
     init()
 }
@@ -25,28 +22,19 @@ protocol StatisticRequestBuilder: AdTypeContextRequestBuilder {
 class BaseStatisticRequestBuilder<Context: AdTypeContext>: BaseRequestBuilder, StatisticRequestBuilder {
     private(set) var context: Context!
     
-    var stats: MediationAttemptReportCodableModel { _stats }
+    var stats: EncodableAuctionReportModel { _stats }
     
-    private var _stats: MediationAttemptReportCodableModel!
+    private var _stats: EncodableAuctionReportModel!
 
     var route: Route { .complex(.adType(context.adType), .stats) }
     
-    func transform<T: MediationAttemptReport>(
-        report: T,
-        configuration: AuctionConfiguration
-    ) -> MediationAttemptReportCodableModel {
+    func transform<T: AuctionReport>(report: T) -> EncodableAuctionReportModel {
         fatalError("BaseStatisticRequestBuilder can't transform report")
     }
     
     @discardableResult
-    func withMediationReport<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) -> Self {
-        self._stats = transform(
-            report: report,
-            configuration: auctionConfiguration
-        )
+    func withAuctionReport<T: AuctionReport>(_ report: T) -> Self {
+        self._stats = transform(report: report)
         return self
     }
     

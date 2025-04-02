@@ -12,8 +12,7 @@ import Bidon
 
 protocol AppLovinDemandAd: DemandAd {}
 
+
 extension ALAd: AppLovinDemandAd {
-    public var id: String { adIdNumber.stringValue }
-    public var networkName: String { AppLovinDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
+    public var id: String { String(hash) }
 }

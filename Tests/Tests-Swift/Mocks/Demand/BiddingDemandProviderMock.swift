@@ -11,95 +11,113 @@ import XCTest
 @testable import Bidon
 
 
-struct SomeToken: Encodable, Equatable {
-    var token: String = UUID().uuidString
-}
-
 struct SomePayload: Decodable, Equatable {
     var payload: String = UUID().uuidString
 }
 
 
-final class ParameterizedBiddingDemandProviderMock<Token: Encodable, Payload: Decodable>: DemandProviderMock, ParameterizedBiddingDemandProvider {
-    typealias BiddingContext = Token
-    typealias BiddingResponse = Payload
+final class BiddingDemandProviderMock<AdUnitExtras, BiddingToken, BiddingPayload>: DemandProviderMock, BiddingDemandProvider
+where AdUnitExtras: Decodable & Equatable, BiddingToken: Encodable & Equatable, BiddingPayload: Decodable & Equatable {
     
-    var invokedFetchBiddingContext = false
-    var invokedFetchBiddingContextCount = 0
-    var stubbedFetchBiddingContext: (((Result<Token, MediationError>) -> ()) -> ())?
-
-    func fetchBiddingContext(response: @escaping (Result<Token, MediationError>) -> ()) {
-        invokedFetchBiddingContext = true
-        invokedFetchBiddingContextCount += 1
-        stubbedFetchBiddingContext?(response)
+    var invokedCollectBiddingToken = false
+    var invokedCollectBiddingTokenCount = 0
+    var invokedCollectBiddingTokenParameters: (adUnitExtras: [AdUnitExtras], Void)?
+    var invokedCollectBiddingTokenParametersList = [(adUnitExtras: [AdUnitExtras], Void)]()
+    var stubbedCollectBiddingTokenResponseResult: (Result<BiddingToken, MediationError>, Void)?
+    
+    var _collectBiddingToken: (([AdUnitExtras], @escaping (Result<BiddingToken, MediationError>) -> ()) -> ())?
+    
+    func collectBiddingToken(
+        biddingTokenExtras: [AdUnitExtras],
+        response: @escaping (Result<BiddingToken, MediationError>) -> ()
+    ) {
+        invokedCollectBiddingToken = true
+        invokedCollectBiddingTokenCount += 1
+        invokedCollectBiddingTokenParameters = (adUnitExtras, ())
+        invokedCollectBiddingTokenParametersList.append((adUnitExtras, ()))
+        
+        _collectBiddingToken?(adUnitExtras, response)
     }
-    
-    var invokedPrepareBid = false
-    var invokedPrepareBidCount = 0
-    var stubbedPrepareBid: ((Payload, DemandProviderResponse) -> ())?
 
-    func prepareBid(
-        data: Payload,
+    var invokedLoadPayload = false
+    var invokedLoadPayloadCount = 0
+    var invokedLoadPayloadParameters: (payload: BiddingPayload, adUnitExtras: AdUnitExtras?, response: DemandProviderResponse)?
+    var invokedLoadPayloadParametersList = [(payload: BiddingPayload, adUnitExtras: AdUnitExtras?, response: DemandProviderResponse)]()
+
+    var _load: ((BiddingPayload, AdUnitExtras, @escaping DemandProviderResponse) -> ())?
+    
+    func load(
+        payload: BiddingPayload,
+        adUnitExtras: AdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        invokedPrepareBid = true
-        invokedPrepareBidCount += 1
-        stubbedPrepareBid?(data, response)
+        invokedLoadPayload = true
+        invokedLoadPayloadCount += 1
+        invokedLoadPayloadParameters = (payload, adUnitExtras, response)
+        invokedLoadPayloadParametersList.append((payload, adUnitExtras, response))
+        
+        _load?(payload, adUnitExtras, response)
     }
 }
 
 
-typealias SomeParameterizedBiddingDemandProviderMock = ParameterizedBiddingDemandProviderMock<SomeToken, SomePayload>
+typealias TestBiddingDemandProviderMock = BiddingDemandProviderMock<TestAdUnitExtras, TestBiddingToken, TestBiddingPayload>
 
-extension SomeParameterizedBiddingDemandProviderMock: DemandProviderMockBuildable {
+
+extension BiddingDemandProviderMock: DemandProviderMockBuildable {
     final class Builder: DemandProviderMockBuilder {
-        var demandId: String!
-        var expectedPayload: SomePayload?
-        
-        var biddingContextResult: Result<SomeToken, MediationError>?
+        fileprivate var expectedBiddingPayload: BiddingPayload?
+        fileprivate var expectedAdUnitExtras: AdUnitExtras?
+        fileprivate var expectedAdUnitTokenExtras: [AdUnitExtras]?
+
+        var biddingContextResult: Result<BiddingToken, MediationError>?
         var prepareBidResult: Result<DemandAd, MediationError>?
         
         @discardableResult
-        func withDemandId(_ identifier: String) -> Self {
-            self.demandId = demandId
+        func withExpectedAdUnitTokenExtras(_ extras: [AdUnitExtras]) -> Self {
+            self.expectedAdUnitTokenExtras = extras
             return self
         }
         
         @discardableResult
-        func withBiddingContextSuccess(_ content: String) -> Self {
-            let token = SomeToken(token: content)
+        func withExpectedAdUnitExtras(_ extras: AdUnitExtras) -> Self {
+            self.expectedAdUnitExtras = extras
+            return self
+        }
+        
+        @discardableResult
+        func withBiddingToken(_ token: BiddingToken) -> Self {
             self.biddingContextResult = .success(token)
             return self
         }
         
         @discardableResult
-        func withBiddingContextFailure(_ error: MediationError) -> Self {
+        func withBiddingTokenError(_ error: MediationError) -> Self {
             self.biddingContextResult = .failure(error)
             return self
         }
         
         @discardableResult
-        func withExpectedPayload(_ payload: String) -> Self {
-            self.expectedPayload = SomePayload(payload: payload)
+        func withExpectedPayload(_ payload: BiddingPayload) -> Self {
+            self.expectedBiddingPayload = payload
             return self
         }
         
         @discardableResult
-        func withStubbedPrepareSuccess(
+        func withStubbedDemandAd(
             id: String = UUID().uuidString,
-            eCPM: Double
+            price: Double
         ) -> Self {
             let ad = DemandAdMock()
             ad.stubbedId = id
-            ad.stubbedNetworkName = self.demandId
-            ad.stubbedECPM = eCPM
+            ad.stubbedPrice = price
             
             self.prepareBidResult = .success(ad)
             return self
         }
         
         @discardableResult
-        func withStubbedPrepareFailure(error: MediationError) -> Self {
+        func withStubbedLoadingError(_ error: MediationError) -> Self {
             self.prepareBidResult = .failure(error)
             return self
         }
@@ -112,14 +130,21 @@ extension SomeParameterizedBiddingDemandProviderMock: DemandProviderMockBuildabl
         self.init()
         
         if let result = builder.biddingContextResult {
-            stubbedFetchBiddingContext = { response in
+            _collectBiddingToken = { extras, response in
+                if let expectedAdUnitTokenExtras = builder.expectedAdUnitTokenExtras {
+                    XCTAssertEqual(extras, expectedAdUnitTokenExtras, "Recieved ad unit extras doesn't match expected value!")
+                }
                 response(result)
             }
         }
         
         if let result = builder.prepareBidResult {
-            stubbedPrepareBid = { payload, response in
-                if let expectedPayload = builder.expectedPayload {
+            _load = { payload, extras, response in
+                if let expectedExtras = builder.expectedAdUnitExtras {
+                    XCTAssertEqual(extras, expectedExtras, "Recieved ad unit extras doesn't match expected value!")
+                }
+                
+                if let expectedPayload = builder.expectedBiddingPayload {
                     XCTAssertEqual(payload, expectedPayload, "Payloads doesn't match")
                 }
                 

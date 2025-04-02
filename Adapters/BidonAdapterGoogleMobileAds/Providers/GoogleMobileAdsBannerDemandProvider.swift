@@ -20,26 +20,29 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     
     init(
-        serverData: GoogleMobileAdsDemandSourceAdapter.ServerData,
+        parameters: GoogleMobileAdsParameters,
         context: AdViewContext
     ) {
         self.adSize = context.adSize
         self.rootViewController = context.rootViewController
-        super.init(serverData: serverData)
+        super.init(parameters: parameters)
     }
 
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        let banner = GADBannerView(adSize: adSize)
-                
-        banner.delegate = self
-        banner.adUnitID = adUnitId
-        banner.rootViewController = rootViewController
-        
-        setupAdRevenueHandler(adObject: banner)
-        
-        banner.load(request)
-        
-        self.banner = banner
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let banner = GADBannerView(adSize: adSize)
+                    
+            banner.delegate = self
+            banner.adUnitID = adUnitId
+            banner.rootViewController = rootViewController
+            
+            setupAdRevenueHandler(adObject: banner)
+            
+            banner.load(request)
+            
+            self.banner = banner
+        }
     }
 }
 
@@ -59,7 +62,7 @@ extension GoogleMobileAdsBannerDemandProvider: GADBannerViewDelegate {
     }
     
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        handleDidFailToLoad(.noFill)
+        handleDidFailToLoad(.noFill(error.localizedDescription))
     }
     
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {

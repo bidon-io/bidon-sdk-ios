@@ -60,7 +60,7 @@ extension Price {
 
 extension Ad {
     var text: String {
-        "\(bidType.title) Ad #\(id) from \(networkName), eCPM: \(eCPM.pretty)"
+        "Ad \(adUnit.label) from \(networkName), eCPM: \(price.pretty)"
     }
 }
 

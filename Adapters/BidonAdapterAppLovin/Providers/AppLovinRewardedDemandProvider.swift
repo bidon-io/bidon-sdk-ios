@@ -26,7 +26,7 @@ internal final class AppLovinRewardedDemandProvider: NSObject {
         }
         
         func adService(_ adService: ALAdService, didFailToLoadAdWithError code: Int32) {
-            response?(.failure(.noFill))
+            response?(.failure(MediationError(alErrorCode: code)))
             response = nil
         }
     }
@@ -111,11 +111,12 @@ internal final class AppLovinRewardedDemandProvider: NSObject {
 
 extension AppLovinRewardedDemandProvider: DirectDemandProvider {
     func load(
-        _ adUnitId: String,
+        pricefloor: Price,
+        adUnitExtras: AppLovinAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         let interstitial = ALIncentivizedInterstitialAd(
-            zoneIdentifier: adUnitId,
+            zoneIdentifier: adUnitExtras.zoneId,
             sdk: sdk
         )
         
@@ -128,7 +129,7 @@ extension AppLovinRewardedDemandProvider: DirectDemandProvider {
     }
     
     // MARK: Noop
-    func notify(ad: ALAd, event: AuctionEvent) {}
+    func notify(ad: ALAd, event: DemandProviderEvent) {}
 }
 
 

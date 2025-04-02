@@ -14,9 +14,9 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     private(set) var comparator: AuctionBidComparator = HigherECPMAuctionBidComparator()
     private(set) var pricefloor: Price = .unknown
     private(set) var adaptersRepository: AdaptersRepository!
-    private(set) var mediationObserver: AnyMediationObserver!
+    private(set) var auctionObserver: AnyAuctionObserver!
     private(set) var adRevenueObserver: AdRevenueObserver!
-    private(set) var elector: AuctionLineItemElector!
+    private(set) var adUnitProvider: AdUnitProvider!
     private(set) var context: AdTypeContextType!
     private(set) var auctionConfiguration: AuctionConfiguration!
 
@@ -35,26 +35,18 @@ class BaseConcurrentAuctionControllerBuilder<AdTypeContextType: AdTypeContext> {
     }
     
     @discardableResult
-    public func withRounds(
-        _ rounds: [AuctionRound]
+    public func withAdUnitProvider(
+        _ adUnitProvider: AdUnitProvider
     ) -> Self {
-        self.rounds = rounds
+        self.adUnitProvider = adUnitProvider
         return self
     }
     
     @discardableResult
-    public func withElector(
-        _ elector: AuctionLineItemElector
+    public func withAuctionObserver(
+        _ observer: AnyAuctionObserver
     ) -> Self {
-        self.elector = elector
-        return self
-    }
-    
-    @discardableResult
-    public func withMediationObserver(
-        _ observer: AnyMediationObserver
-    ) -> Self {
-        self.mediationObserver = observer
+        self.auctionObserver = observer
         return self
     }
     

@@ -22,26 +22,30 @@ struct AdaptersInfo: Encodable {
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
+            var adapterVersion: String
+            if let index = Constants.sdkVersion.firstIndex(of: "-") {
+                adapterVersion = Constants.sdkVersion
+                adapterVersion.insert(contentsOf: ".\(adapter.adapterVersion)", at: index)
+            } else {
+                adapterVersion = Constants.sdkVersion + "." + adapter.adapterVersion
+            }
+            
             try container.encode(
-                Constants.sdkVersion + "." + adapter.adapterVersion,
+                adapterVersion,
                 forKey: .version
             )
             try container.encode(
                 adapter.sdkVersion,
                 forKey: .sdkVersion
             )
-            
-//            if let encodable = adapter as? ParametersEncodableAdapter {
-//                try encodable.encodeAdapterParameters(to: encoder)
-//            }
         }
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: AdapterIdCodingKey.self)
+        var container = encoder.container(keyedBy: DemandIdCodingKey.self)
         
         try adapters.forEach { adapter in
-            let key = AdapterIdCodingKey(adapter)
+            let key = DemandIdCodingKey(adapter)
             let entity = Entity(adapter: adapter)
             try container.encode(entity, forKey: key)
         }

@@ -156,6 +156,7 @@ final internal class BannerViewManager: NSObject {
         // for request logic
         guard let impression = impression, impression.isTrackingAllowed(.loss) else { return }
         defer { hide() }
+        
         guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
         
         let context = BannerAdTypeContext(viewContext: viewContext)
@@ -165,7 +166,7 @@ final internal class BannerViewManager: NSObject {
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withImpression(impression)
-            builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+            builder.withExternalWinner(demandId: demandId, price: eCPM)
         }
         
         networkManager.perform(request: request) { result in

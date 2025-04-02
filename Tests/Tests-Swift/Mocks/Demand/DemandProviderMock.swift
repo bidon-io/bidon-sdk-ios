@@ -8,13 +8,11 @@
 import Foundation
 import XCTest
 
+
 @testable import Bidon
 
 
-protocol DemandProviderMockBuilder {
-    @discardableResult
-    func withDemandId(_ identifier: String) -> Self
-}
+protocol DemandProviderMockBuilder {}
 
 
 protocol DemandProviderMockBuildable: DemandProviderMock {
@@ -73,11 +71,11 @@ class DemandProviderMock: DemandProvider {
     
     var invokedNotify = false
     var invokedNotifyCount = 0
-    var invokedNotifyParameters: (ad: DemandAdType, event: AuctionEvent)?
-    var invokedNotifyParametersList = [(ad: DemandAdType, event: AuctionEvent)]()
-    var stubbedNotify: ((DemandAdType, AuctionEvent) -> ())?
+    var invokedNotifyParameters: (ad: DemandAdType, event: DemandProviderEvent)?
+    var invokedNotifyParametersList = [(ad: DemandAdType, event: DemandProviderEvent)]()
+    var stubbedNotify: ((DemandAdType, DemandProviderEvent) -> ())?
     
-    func notify(ad: DemandAdType, event: AuctionEvent) {
+    func notify(ad: DemandAdType, event: DemandProviderEvent) {
         invokedNotify = true
         invokedNotifyCount += 1
         invokedNotifyParameters = (ad, event)

@@ -8,33 +8,30 @@
 import Foundation
 
 
-final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
+final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
+
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
+    typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
     
-    let observer: AnyMediationObserver
-    let adapter: AdapterType
-    let roundConfiguration: AuctionRoundConfiguration
+    let observer: AnyAuctionObserver
+    let adapters: [AdapterType]
+    let demand: String
     let auctionConfiguration: AuctionConfiguration
-    let lineItem: (AdapterType, Price) -> LineItem?
     let context: AdTypeContextType
+    let adUnit: AdUnitModel
     
     private(set) var bid: BidType?
     
-    init(
-        adapter: AdapterType,
-        observer: AnyMediationObserver,
-        context: AdTypeContextType,
-        roundConfiguration: AuctionRoundConfiguration,
-        auctionConfiguration: AuctionConfiguration,
-        lineItem: @escaping (AdapterType, Price) -> LineItem?
-    ) {
-        self.context = context
-        self.observer = observer
-        self.adapter = adapter
-        self.lineItem = lineItem
-        self.roundConfiguration = roundConfiguration
-        self.auctionConfiguration = auctionConfiguration
+    private var timeoutTimer: Timer?
+
+    init(builder: BuilderType) {
+        self.adapters = builder.adapters
+        self.demand = builder.demand
+        self.observer = builder.observer
+        self.context = builder.context
+        self.auctionConfiguration = builder.auctionConfiguration
+        self.adUnit = builder.adUnit
         
         super.init()
     }
@@ -42,90 +39,112 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     override func main() {
         super.main()
         
-        guard let provider = adapter.provider as? any DirectDemandProvider else {
-            fatalError("Inconsistent provider")
-        }
-        
-        DispatchQueue.main.async { [unowned self] in
-            self.load(direct: provider)
-        }
-    }
-    
-    private func load(direct provider: any DirectDemandProvider) {
-        guard let lineItem = lineItem(adapter, pricefloor) else {
-            observer.log(
-                DirectDemandProviderLineItemNotFoundMediationEvent(
-                    roundConfiguration: roundConfiguration,
-                    adapter: adapter
-                )
-            )
+        guard
+            let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericDirectDemandProvider }),
+            let provider = adapter.provider as? any GenericDirectDemandProvider
+        else {
+            logLoadingError(error: .unknownAdapter)
             finish()
+            
             return
         }
+        setupTimeout()
         
-        observer.log(
-            DirectDemandProividerLoadRequestMediationEvent(
-                roundConfiguration: roundConfiguration,
-                adapter: adapter,
-                lineItem: lineItem
-            )
+        let event = DirectDemandWillLoadAuctionEvent(
+            adUnit: adUnit
         )
+        observer.log(event)
         
-        provider.load(lineItem.adUnitId) { [weak self] result in
-            guard let self = self, self.isExecuting else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
             
-            switch result {
-            case .failure(let error):
-                self.observer.log(
-                    DirectDemandProividerDidFailToLoadMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: self.adapter,
-                        error: error
-                    )
-                )
-                self.finish()
-            case .success(let ad):
-                let eCPM = ad.eCPM ?? lineItem.pricefloor
+            provider.load(
+                pricefloor: self.auctionConfiguration.pricefloor,
+                adUnitExtrasDecoder: self.adUnit.extras
+            ) { [weak self] result in
+                defer { self?.finish() }
                 
-                let bid = BidType(
-                    id: UUID().uuidString,
-                    adType: self.context.adType,
-                    eCPM: eCPM,
-                    demandType: .direct(lineItem),
-                    ad: ad,
-                    provider: self.adapter.provider,
-                    roundConfiguration: self.roundConfiguration,
-                    auctionConfiguration: self.auctionConfiguration
-                )
-              
-                self.observer.log(
-                    DirectDemandProividerDidLoadMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: self.adapter,
-                        bid: bid
-                    )
-                )
+                guard let self else { return }
                 
-                self.bid = bid
-                self.finish()
+                guard !isCancelled else {
+                    Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+                    return
+                }
+                
+                self.invalidateTimer()
+                
+                switch result {
+                case .success(let ad):
+                    let bid = BidType(
+                        id: UUID().uuidString,
+                        impressionId: UUID().uuidString,
+                        adType: self.context.adType,
+                        adUnit: adUnit,
+                        price: ad.price ?? adUnit.pricefloor,
+                        ad: ad,
+                        provider: adapter.provider,
+                        roundPricefloor: self.auctionConfiguration.pricefloor,
+                        auctionConfiguration: self.auctionConfiguration
+                    )
+                    
+                    self.bid = bid
+            
+                    let event = DirectDemandDidLoadAuctionEvent(bid: bid)
+                    self.observer.log(event)
+                    
+                case .failure(let error):
+                    logLoadingError(error: error)
+                }
             }
         }
     }
+    
+    private func logLoadingError(error: MediationError) {
+        let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
+        observer.log(event)
+    }
+    
+    override func cancel() {
+        super.cancel()
+        invalidateTimer()
+    }
+    
+    func invalidateTimer() {
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
+    }
 }
 
+extension AuctionOperationRequestDirectDemand: OperationTimeout {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
+        let timer = Timer(
+            timeInterval: timeout,
+            repeats: false
+        ) { [weak self] _ in
+            self?.timeoutReached()
+        }
+        
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
+    }
+}
 
-extension AuctionOperationRequestDirectDemand: AuctionOperationRequestDemand {
+extension AuctionOperationRequestDirectDemand: OperationTimeoutHandler {
     func timeoutReached() {
         guard isExecuting else { return }
-        
         observer.log(
-            DirectDemandProividerDidFailToLoadMediationEvent(
-                roundConfiguration: roundConfiguration,
-                adapter: adapter,
+            DirectDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit,
                 error: .fillTimeoutReached
             )
         )
         
+        invalidateTimer()
         finish()
     }
 }

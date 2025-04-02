@@ -37,6 +37,7 @@ struct HomeView: View {
                                 isAutorefreshing: vm.bannerSettings.isAutorefreshing,
                                 autorefreshInterval: vm.bannerSettings.autorefreshInterval,
                                 pricefloor: vm.bannerSettings.pricefloor,
+                                auctionKey: vm.bannerSettings.auctionKey,
                                 onEvent: vm.banner.receive,
                                 ad: $vm.banner.ad,
                                 isLoading: $vm.banner.isLoading
@@ -75,6 +76,7 @@ final class HomeViewModel: ObservableObject {
         var isAutorefreshing: Bool
         var autorefreshInterval: TimeInterval
         var pricefloor: Price
+        var auctionKey: String?
     }
     
     @Published var banner = BannerSectionViewModel()
@@ -86,7 +88,8 @@ final class HomeViewModel: ObservableObject {
         format: .banner,
         isAutorefreshing: false,
         autorefreshInterval: 15,
-        pricefloor: 0.1
+        pricefloor: 0.1,
+        auctionKey: ""
     )
     
     private var cancellables = Set<AnyCancellable>()
@@ -118,20 +121,46 @@ final class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        Publishers.CombineLatest4(
-            banner.$format,
-            banner.$isAutorefreshing,
-            banner.$autorefreshInterval,
-            banner.$pricefloor
-        )
-        .sink { [unowned self] in
-            self.bannerSettings = BannerSettings(
-                format: $0.0,
-                isAutorefreshing: $0.1,
-                autorefreshInterval: $0.2,
-                pricefloor: $0.3
+        let paramsOne = Publishers
+            .CombineLatest3(
+                banner.$format, 
+                banner.$isAutorefreshing,
+                banner.$autorefreshInterval
             )
-        }
-        .store(in: &cancellables)
+                
+        let paramsTwo = Publishers
+            .CombineLatest(
+                banner.$pricefloor,
+                banner.$auctionKey
+            )
+        
+        paramsOne.combineLatest(paramsTwo)
+            .sink { [unowned self] in
+                self.bannerSettings = BannerSettings(
+                    format: $0.0.0,
+                    isAutorefreshing: $0.0.1,
+                    autorefreshInterval: $0.0.2,
+                    pricefloor: $0.1.0,
+                    auctionKey: $0.1.1
+                )
+            }
+            .store(in: &cancellables)
+//        
+//        Publishers.CombineLatest4(
+//            banner.$format,
+//            banner.$isAutorefreshing,
+//            banner.$autorefreshInterval,
+//            banner.$pricefloor
+//        )
+//        .sink { [unowned self] in
+//            self.bannerSettings = BannerSettings(
+//                format: $0.0,
+//                isAutorefreshing: $0.1,
+//                autorefreshInterval: $0.2,
+//                pricefloor: $0.3,
+//                auctionKey: $0.
+//            )
+//        }
+//        .store(in: &cancellables)
     }
 }

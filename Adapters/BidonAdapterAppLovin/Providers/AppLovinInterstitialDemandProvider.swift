@@ -35,12 +35,13 @@ internal final class AppLovinInterstitialDemandProvider: NSObject {
 
 extension AppLovinInterstitialDemandProvider: DirectDemandProvider {
     func load(
-        _ adUnitId: String,
+        pricefloor: Price,
+        adUnitExtras: AppLovinAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         bridge.load(
             service: sdk.adService,
-            adUnitId: adUnitId
+            zoneId: adUnitExtras.zoneId
         ) { result in
             switch result {
             case .success(let ad):
@@ -51,7 +52,7 @@ extension AppLovinInterstitialDemandProvider: DirectDemandProvider {
         }
     }
     
-    func notify(ad: ALAd, event: AuctionEvent) {}
+    func notify(ad: ALAd, event: DemandProviderEvent) {}
 }
 
 

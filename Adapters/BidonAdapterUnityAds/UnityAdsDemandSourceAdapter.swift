@@ -21,7 +21,7 @@ DirectAdViewDemandSourceAdapter
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    public let identifier: String = UnityAdsDemandSourceAdapter.identifier
+    public let demandId: String = UnityAdsDemandSourceAdapter.identifier
     public let name: String = "Unity Ads"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = UnityAds.getVersion()
@@ -43,16 +43,12 @@ DirectAdViewDemandSourceAdapter
 
 
 extension UnityAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        public var gameId: String
-    }
-    
     public var isInitialized: Bool {
         return UnityAds.isInitialized()
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: UnityAdsParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         self.completion = completion

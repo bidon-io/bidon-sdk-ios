@@ -7,57 +7,85 @@
 
 import Foundation
 
-
 final class AdContainer: NSObject, Ad {
+    final class AdNetworkUnitModel: NSObject, AdNetworkUnit {
+        let uid: String
+        let demandId: String
+        let label: String
+        let pricefloor: Price
+        let bidType: AdBidType
+        let extras: [String: BidonDecodable]
+        var extrasJsonString: String?
+        
+        init(
+            uid: String,
+            demandId: String,
+            label: String,
+            pricefloor: Price,
+            bidType: AdBidType,
+            extras: [String: BidonDecodable]
+        ) {
+            self.uid = uid
+            self.demandId = demandId
+            self.pricefloor = pricefloor
+            self.label = label
+            self.bidType = bidType
+            self.extras = extras
+            self.extrasJsonString = extras.jsonString
+            super.init()
+        }
+        
+        convenience init(_ adUnit: AnyAdUnit) {
+            self.init(
+                uid: adUnit.uid,
+                demandId: adUnit.demandId,
+                label: adUnit.label,
+                pricefloor: adUnit.pricefloor,
+                bidType: AdBidType(bidType: adUnit.bidType),
+                extras: adUnit.extrasDictionary ?? [:]
+            )
+        }
+    }
+    
     let id: String
     let adType: AdType
-    let eCPM: Price
+    let price: Price
+    let currencyCode: Currency?
     let networkName: String
-    let bidType: AdBidType
     let dsp: String?
-    let adUnitId: String?
-    let roundId: String?
-    var auctionId: String?
-    let currencyCode: String?
+    let auctionId: String
+    let adUnit: AdNetworkUnit
     
     init(
         id: String,
         adType: AdType,
-        eCPM: Price,
+        price: Price,
+        currencyCode: Currency?,
         networkName: String,
-        bidType: AdBidType,
         dsp: String?,
-        adUnitId: String?,
-        roundId: String?,
-        auctionId: String?,
-        currencyCode: String?
+        auctionId: String,
+        adUnit: AdNetworkUnitModel
     ) {
         self.id = id
         self.adType = adType
-        self.eCPM = eCPM
-        self.networkName = networkName
-        self.bidType = bidType
-        self.dsp = dsp
-        self.adUnitId = adUnitId
-        self.roundId = roundId
-        self.auctionId = auctionId
+        self.price = price
         self.currencyCode = currencyCode
-        
-        super.init()
+        self.networkName = networkName
+        self.dsp = dsp
+        self.auctionId = auctionId
+        self.adUnit = adUnit
     }
     
-    convenience init<T: Bid>(bid: T) {
+    convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.init(
             id: bid.ad.id,
             adType: bid.adType,
-            eCPM: bid.eCPM,
-            networkName: bid.ad.networkName,
-            bidType: AdBidType(demandType: bid.demandType),
+            price: bid.price,
+            currencyCode: bid.ad.currency,
+            networkName: bid.adUnit.demandId,
             dsp: bid.ad.dsp,
-            adUnitId: bid.demandType.lineItem?.adUnitId,
-            roundId: bid.roundConfiguration.roundId,
             auctionId: bid.auctionConfiguration.auctionId,
-            currencyCode: bid.ad.currency ?? .default
+            adUnit: AdNetworkUnitModel(bid.adUnit)
         )
     }
     
@@ -65,21 +93,26 @@ final class AdContainer: NSObject, Ad {
         self.init(
             id: impression.ad.id,
             adType: impression.adType,
-            eCPM: impression.eCPM,
-            networkName: impression.ad.networkName,
-            bidType: AdBidType(demandType: impression.demandType),
+            price: impression.price,
+            currencyCode: impression.ad.currency,
+            networkName: impression.demandId,
             dsp: impression.ad.dsp,
-            adUnitId: impression.demandType.lineItem?.adUnitId,
-            roundId: impression.roundConfiguration.roundId,
             auctionId: impression.auctionConfiguration.auctionId,
-            currencyCode: impression.ad.currency ?? .default
+            adUnit: AdNetworkUnitModel(
+                uid: impression.adUnitUid,
+                demandId: impression.demandId,
+                label: impression.adUnitLabel,
+                pricefloor: impression.adUnitPricefloor,
+                bidType: AdBidType(bidType: impression.bidType), 
+                extras: impression.adUnitExtras ?? [:]
+            )
         )
     }
 }
 
 
 fileprivate extension Formatter {
-    static let eCPM: NumberFormatter = {
+    static let price: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = Locale(identifier: "en_US")
@@ -89,8 +122,8 @@ fileprivate extension Formatter {
 
 
 fileprivate extension AdBidType {
-    init(demandType: DemandType) {
-        switch demandType {
+    init(bidType: BidType) {
+        switch bidType {
         case .bidding: self = .rtb
         default: self = .cpm
         }
@@ -108,11 +141,9 @@ fileprivate extension AdBidType {
 extension AdContainer {
     override var description: String {
         let components: [String?] = [
-            "\(adType.stringValue) (\(bidType.stringValue)) ad #\(id)",
-            Formatter.eCPM.string(from: eCPM as NSNumber).map { "eCPM \($0)" },
+            "\(adType.stringValue) (\(adUnit.bidType.stringValue)) ad #\(adUnit.uid)",
+            Formatter.price.string(from: price as NSNumber).map { "price \($0)" },
             "network '\(networkName)'",
-            dsp.map { "DSP '\($0)'" },
-            adUnitId.map { "ad unit id \($0)" }
         ]
         
         return components
@@ -124,14 +155,16 @@ extension AdContainer {
     override var hash: Int {
         var hasher = Hasher()
         hasher.combine(id)
+        hasher.combine(adUnit.uid)
         hasher.combine(auctionId)
-        hasher.combine(roundId)
         return hasher.finalize()
     }
     
     override func isEqual(_ object: Any?) -> Bool {
         guard let object = object as? AdContainer else { return false }
-        return object.id == id && object.auctionId == auctionId && object.adUnitId == adUnitId
+        return object.id == id && 
+        object.adUnit.uid == object.adUnit.uid &&
+        object.auctionId == auctionId
     }
 }
 

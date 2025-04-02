@@ -1,5 +1,5 @@
 //
-//  DemandObserver.swift
+//  Roundentry.swift
 //  Bidon
 //
 //  Created by Stas Kochkin on 26.07.2023.
@@ -9,106 +9,186 @@ import Foundation
 
 
 struct DemandObservation {
-    var observations: [BidObservation] = []
-    
-    mutating func lineItemNotFound(_ adapter: Adapter) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            status: .error(.noAppropriateAdUnitId)
-        )
-        observations.append(observation)
+    struct Entry {
+        var demandId: String
+        var status: DemandMediationStatus = .unknown
+        var price: Price?
+        var adUnit: DummyAdUnit?
+        var bid: DummyBid?
+        var startTimestamp: TimeInterval?
+        var finishTimestamp: TimeInterval?
+        var tokenStartTimestamp: UInt?
+        var tokenFinishTimestamp: UInt?
     }
     
-    mutating func willLoad(_ adapter: Adapter, lineItem: LineItem) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            demandType: .direct(lineItem),
-            eCPM: lineItem.pricefloor,
-            adUnitId: lineItem.adUnitId,
-            lineItemUid: lineItem.uid,
-            fillRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-        )
-        observations.append(observation)
+    private(set) var bidRequestTimestamp: TimeInterval?
+    private(set) var bidResponseTimestamp: TimeInterval?
+    
+    private(set) var tokens: [BiddingDemandToken]
+
+    private(set) var entries: [Entry] = []
+    
+    mutating func willRequestBid() {
+        bidRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
     }
     
-    mutating func didLoadFail(_ adapter: Adapter, error: MediationError) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            observation.status = .error(error)
-            return observation
+    mutating func didReceiveServerBids(_ bids: [AnyServerBid]) {
+        bidResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        entries = bids.map { bid in
+            Entry(
+                demandId: bid.adUnit.demandId,
+                price: bid.price,
+                adUnit: DummyAdUnit(bid.adUnit)
+            )
         }
     }
     
-    mutating func didLoadSuccess(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.id = bid.id
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
+    mutating func willLoadAdUnit(_ adUnit: AnyAdUnit) {
+        if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if entry.adUnit?.uid == adUnit.uid {
+                    entry.startTimestamp = Date.timestamp(.wall, units: .milliseconds)
+                }
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: adUnit.demandId,
+                adUnit: DummyAdUnit(adUnit),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds)
+            )
+            entries.append(entry)
         }
     }
     
-    mutating func willRequestBid(_ adapter: Adapter) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            demandType: .programmatic,
-            bidRequestTimestamp: Date.timestamp(.wall, units: .milliseconds)
-        )
-        observations.append(observation)
-    }
-    
-    mutating func didRequestBidFail(_ adapter: Adapter, error: MediationError) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            observation.status = .error(error)
-            return observation
+    mutating func didReceiveClientBid(_ bid: AnyBid) {
+        if entries.contains(where: { $0.adUnit?.uid == bid.adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if entry.adUnit?.uid == bid.adUnit.uid {
+                    entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+                    entry.price = bid.price
+                    entry.bid = DummyBid(bid)
+                    entry.tokenStartTimestamp = tokenStartTs(for: bid.adUnit)
+                    entry.tokenFinishTimestamp = tokenFinishTs(for: bid.adUnit)
+                }
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: bid.adUnit.demandId,
+                adUnit: DummyAdUnit(bid.adUnit),
+                bid: DummyBid(bid),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokenStartTs(for: bid.adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: bid.adUnit)
+            )
+            entries.append(entry)
         }
     }
     
-    mutating func didReceiveBid(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.id = bid.id
-            observation.eCPM = bid.eCPM
-            observation.bidResponeTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
+    mutating func didFailDemand(
+        _ demandId: String,
+        error: MediationError
+    ) {
+        if entries.contains(where: { $0.adUnit == nil && $0.demandId == demandId }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if entry.adUnit == nil && entry.demandId == demandId {
+                    entry.status = .error(error)
+                }
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: demandId,
+                status: .error(error)
+            )
+            entries.append(entry)
         }
     }
     
-    mutating func willFillBid(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard bid.id == observation.id else { return observation }
-            var observation = observation
-            observation.fillRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
+    mutating func didFailAdUnit(
+        _ adUnit: AnyAdUnit,
+        error: MediationError
+    ) {
+        if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if entry.adUnit?.uid == adUnit.uid {
+                    entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
+                    entry.status = .error(error)
+                }
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: adUnit.demandId,
+                status: .error(error),
+                adUnit: DummyAdUnit(adUnit),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds)
+            )
+            entries.append(entry)
         }
     }
     
-    mutating func didFillBidFail(_ adapter: Adapter, error: MediationError) {
-        observations = observations.map { observation in
-            guard observation.demandId == adapter.identifier else { return observation }
-            var observation = observation
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            observation.status = .error(error)
-            return observation
+    mutating func didFailPricefloor(
+        _ adUnit: AnyAdUnit
+    ) {
+        if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
+            entries = entries.map { entry in
+                var entry = entry
+                if adUnit.bidType == .bidding {
+                    entry.status = .lose
+                } else {
+                    entry.status = .error(.belowPricefloor)
+                }
+                entry.tokenStartTimestamp = tokenStartTs(for: adUnit)
+                entry.tokenFinishTimestamp = tokenFinishTs(for: adUnit)
+                return entry
+            }
+        } else {
+            let entry = Entry(
+                demandId: adUnit.demandId,
+                status: adUnit.bidType == .bidding ? .lose : .error(.belowPricefloor),
+                adUnit: DummyAdUnit(adUnit),
+                startTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                finishTimestamp: Date.timestamp(.wall, units: .milliseconds),
+                tokenStartTimestamp: tokenStartTs(for: adUnit),
+                tokenFinishTimestamp: tokenFinishTs(for: adUnit)
+            )
+            entries.append(entry)
         }
     }
     
-    mutating func didFillBidSuccess(_ adapter: Adapter, bid: AnyBid) {
-        observations = observations.map { observation in
-            guard bid.id == observation.id else { return observation }
-            var observation = observation
-            observation.fillResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
-            return observation
+    mutating func cancel() {
+        entries = entries.map { entry in
+            var entry = entry
+            if entry.status.isUnknown {
+                entry.status = .error(.auctionCancelled)
+                entry.startTimestamp = nil
+                entry.finishTimestamp = nil
+            }
+            return entry
         }
+    }
+    
+    mutating func update(mutation: (inout Entry) -> ()) {
+        entries = entries.map { entry in
+            var entry = entry
+            mutation(&entry)
+            return entry
+        }
+    }
+    
+    private func tokenStartTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenStartTs
+    }
+    
+    private func tokenFinishTs(for adUnit: AnyAdUnit) -> UInt? {
+        return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenFinishTs
     }
 }

@@ -14,14 +14,6 @@ extension FBAdView: DemandAd {
     public var id: String {
         return placementID
     }
-    
-    public var networkName: String {
-        return MetaAudienceNetworkDemandSourceAdapter.identifier
-    }
-    
-    public var dsp: String? {
-        return nil
-    }
 }
 
 
@@ -41,12 +33,13 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
         super.init()
     }
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         let banner = FBAdView(
-            placementID: data.placementId,
+            placementID: adUnitExtras.placementId,
             adSize: format.fbAdSize,
             rootViewController: rootViewController
         )
@@ -55,7 +48,7 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
         self.banner = banner
         self.response = response
         
-        banner.loadAd(withBidPayload: data.payload)
+        banner.loadAd(withBidPayload: payload.payload)
     }
 }
 
@@ -76,7 +69,7 @@ extension MetaAudienceNetworkBiddingAdViewDemandProvider: FBAdViewDelegate {
     }
     
     func adView(_ adView: FBAdView, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

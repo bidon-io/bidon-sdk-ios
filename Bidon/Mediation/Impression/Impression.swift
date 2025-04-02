@@ -10,11 +10,16 @@ import Foundation
 
 protocol Impression {
     var impressionId: String { get }
-    var eCPM: Price { get }
-    var adType: AdType { get }
+    var demandId: String { get }
     var ad: DemandAd { get }
-    var demandType: DemandType { get }
-    var roundConfiguration: AuctionRoundConfiguration { get }
+    var adType: AdType { get }
+    var price: Price { get }
+    var bidType: BidType { get }
+    var adUnitUid: String { get }
+    var adUnitLabel: String { get }
+    var adUnitPricefloor: Price { get }
+    var adUnitExtras: [String: BidonDecodable]? { get }
+    var auctionPricefloor: Price { get }
     var auctionConfiguration: AuctionConfiguration { get }
     
     var showTrackedAt: TimeInterval { get set }

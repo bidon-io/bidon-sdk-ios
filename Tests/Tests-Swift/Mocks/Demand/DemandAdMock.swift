@@ -17,27 +17,9 @@ final class DemandAdMock: DemandAd {
         return stubbedId
     }
 
-    var stubbedNetworkName: String! = ""
+    var stubbedPrice: Price!
 
-    var networkName: String {
-        return stubbedNetworkName
-    }
-
-    var stubbedDsp: String!
-
-    var dsp: String? {
-        return stubbedDsp
-    }
-
-    var stubbedECPM: Price!
-
-    var eCPM: Price {
-        return stubbedECPM
-    }
-
-    var stubbedCurrency: Currency!
-
-    var currency: Currency {
-        return stubbedCurrency
+    var price: Price {
+        return stubbedPrice
     }
 }

@@ -13,11 +13,11 @@ import UIKit
 
 final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemandProvider<GADInterstitialAd> {
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        GADInterstitialAd.load(withAdUnitID: adUnitId, request: request) { [weak self] interstitial, _ in
+        GADInterstitialAd.load(withAdUnitID: adUnitId, request: request) { [weak self] interstitial, error in
             guard let self = self else { return }
             
             guard let interstitial = interstitial else {
-                self.handleDidFailToLoad(.noFill)
+                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
             

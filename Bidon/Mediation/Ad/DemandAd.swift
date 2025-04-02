@@ -7,15 +7,18 @@
 
 import Foundation
 
-
 @objc
 public protocol DemandAd {
     @objc var id: String { get }
-    @objc var networkName: String { get }
-    @objc var dsp: String? { get }
     
     @objc optional
-    var eCPM: Price { get }
+    var networkName: String { get }
+    
+    @objc optional
+    var dsp: String { get }
+    
+    @objc optional
+    var price: Price { get }
     
     @objc optional
     var currency: Currency { get }

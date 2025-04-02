@@ -2,119 +2,77 @@
 //  RoundObservation.swift
 //  Bidon
 //
-//  Created by Stas Kochkin on 26.07.2023.
+//  Created by Stas Kochkin on 05.11.2023.
 //
 
 import Foundation
 
 
-
-struct BidObservation {
-    var id: String
-    var demandId: String
-    var status: DemandMediationStatus = .unknown
-    var demandType: DemandType? = nil
-    var eCPM: Price? = nil
-    var adUnitId: String?
-    var lineItemUid: String?
-    var bidRequestTimestamp: TimeInterval?
-    var bidResponeTimestamp: TimeInterval?
-    var fillRequestTimestamp: TimeInterval?
-    var fillResponseTimestamp: TimeInterval?
-}
-
-
 struct RoundObservation {
-    var id: String
     var pricefloor: Price
-    var demand  = DemandObservation()
-    var bidding = BiddingObservation()
+    var tokens: [BiddingDemandToken]
     
-    var roundWinner: BidObservation?
-    var auctionWinner: BidObservation?
+    lazy var demand = DemandObservation(tokens: tokens)
+    lazy var bidding = DemandObservation(tokens: tokens)
+    
+    var roundWinner: DemandObservation.Entry?
+    var auctionWinner: DemandObservation.Entry?
     
     var isAuctionWinner: Bool {
         return auctionWinner != nil
     }
     
-    private var observations: [BidObservation] {
-        return demand.observations + bidding.observations
-    }
+    private lazy var entries: [DemandObservation.Entry] = {
+        return demand.entries + bidding.entries
+    }()
     
-    mutating func finishAuctionObservation(_ winner: AnyBid?) {
-        auctionWinner = observations.first { $0.id == winner?.id }
-        demand.observations = demand.observations.map {
-            updated(observation: $0, auctionWinner: winner)
-        }
-        bidding.observations = bidding.observations.map {
-            updated(observation: $0, auctionWinner: winner)
-        }
-    }
-    
-    mutating func finishObservation(_ winner: AnyBid?) {
-        roundWinner = observations.first { $0.id == winner?.id }
-    }
-    
-    mutating func providerNotFound(_ adapter: Adapter) {
-        let observation = BidObservation(
-            id: UUID().uuidString,
-            demandId: adapter.identifier,
-            status: .error(.unknownAdapter)
-        )
-        demand.observations.append(observation)
-    }
-    
-    mutating func cancelObservation() {
-        demand.observations = demand.observations.map(cancelled)
-        bidding.observations = bidding.observations.map(cancelled)
-    }
-    
-    private func updated(
-        observation: BidObservation,
-        auctionWinner: AnyBid?
-    ) -> BidObservation {
-        guard observation.status.isUnknown else { return observation }
-        var observation = observation
-        observation.status = observation.id == auctionWinner?.id ? .win : .lose
-        return observation
-    }
-    
-    private func cancelled(observation: BidObservation) -> BidObservation {
-        guard observation.status.isUnknown else { return observation }
-        var observation = observation
-        observation.bidRequestTimestamp = nil
-        observation.bidResponeTimestamp = nil
-        observation.fillRequestTimestamp = nil
-        observation.fillResponseTimestamp = nil
-        observation.status = .error(.auctionCancelled)
-        return observation
-    }
-}
-
-
-extension Atomic where Value == Array<RoundObservation> {
-    func mutateEach(mutation: (inout RoundObservation) -> ()) {
-        mutate { value in
-            value = value.map { observation in
-                var observation = observation
-                mutation(&observation)
-                return observation
-            }
-        }
-    }
-    
-    func mutate(
-        _ roundId: String,
-        mutation: (inout RoundObservation) -> ()
+    init(
+        pricefloor: Price,
+        tokens: [BiddingDemandToken],
+        roundWinner: DemandObservation.Entry? = nil,
+        auctionWinner: DemandObservation.Entry? = nil
     ) {
-        mutate { value in
-            value = value.map { observation in
-                var observation = observation
-                if observation.id == roundId {
-                    mutation(&observation)
-                }
-                return observation
-            }
+        self.pricefloor = pricefloor
+        self.tokens = tokens
+        self.roundWinner = roundWinner
+        self.auctionWinner = auctionWinner
+    }
+    
+    mutating func didFinishAuction(_ winner: AnyBid?) {
+        self.auctionWinner = winner.flatMap { winner in
+            entries.first { $0.adUnit?.uid == winner.adUnit.uid }
         }
+        
+        var demand = demand
+        demand.update {
+            update(entry: &$0, auctionWinner: winner)
+        }
+        self.demand = demand
+        
+        var bidding = bidding
+        bidding.update {
+            update(entry: &$0, auctionWinner: winner)
+        }
+        self.bidding = bidding
+    }
+    
+    mutating func didFinishAuctionRound(_ winner: AnyBid?) {
+        roundWinner = entries.first { $0.adUnit?.uid == winner?.adUnit.uid }
+    }
+   
+    mutating func cancel() {
+        demand.cancel()
+        bidding.cancel()
+    }
+    
+    private func update(
+        entry: inout DemandObservation.Entry,
+        auctionWinner: AnyBid?
+    ) {
+        guard
+            entry.status.isUnknown,
+            let winner = auctionWinner
+        else { return }
+        entry.status = entry.adUnit?.uid == winner.adUnit.uid ? .win : .lose
     }
 }

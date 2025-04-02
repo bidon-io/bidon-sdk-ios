@@ -41,6 +41,7 @@ protocol AdBannerWrapperView: View {
     var isAutorefreshing: Bool { get set }
     var autorefreshInterval: TimeInterval { get set }
     var pricefloor: Double { get set }
+    var auctionKey: String? { get set }
     var onEvent: AdBannerWrapperViewEvent { get set }
 }
 
@@ -51,6 +52,7 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Double
+    var auctionKey: String?
     var onEvent: AdBannerWrapperViewEvent
     
     @Binding var ad: Bidon.Ad?
@@ -59,20 +61,23 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var body: some View {
         switch mediation {
         case .appodeal:
-            AppodealBannerView(
-                format: format,
-                isAutorefreshing: isAutorefreshing,
-                autorefreshInterval: autorefreshInterval,
-                onEvent: onEvent,
-                ad: $ad,
-                isLoading: $isLoading
-            )
+            Color.black
+// MARK: DROP_APD_SUPPORT
+//            AppodealBannerView(
+//                format: format,
+//                isAutorefreshing: isAutorefreshing,
+//                autorefreshInterval: autorefreshInterval,
+//                auctionKey: auctionKey, onEvent: onEvent,
+//                ad: $ad,
+//                isLoading: $isLoading
+//            )
         case .none:
             RawBannerView(
                 format: format,
                 isAutorefreshing: isAutorefreshing,
                 autorefreshInterval: autorefreshInterval,
                 pricefloor: pricefloor,
+                auctionKey: auctionKey,
                 onEvent: onEvent,
                 ad: $ad,
                 isLoading: $isLoading

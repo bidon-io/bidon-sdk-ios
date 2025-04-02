@@ -8,20 +8,33 @@
 import Foundation
 
 
-protocol AuctionOperationRequestDemand: AuctionOperation {
+protocol AuctionOperationRequestDemand: AuctionOperation, OperationTimeoutHandler {
     associatedtype AdTypeContextType: AdTypeContext where AdTypeContextType.DemandProviderType: DemandProvider
-    associatedtype BidType: Bid where BidType.Provider == AdTypeContextType.DemandProviderType
+    associatedtype BidType: Bid where BidType.ProviderType == AdTypeContextType.DemandProviderType
 
     var bid: BidType? { get }
+}
+
+final class AuctionOperationRequestDemandBuilder<AdTypeContextType: AdTypeContext>: BaseAuctionOperationBuilder<AdTypeContextType> {
+    typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
+
+    private(set) var demand: String!
         
-    func timeoutReached()
+    @discardableResult
+    func withDemand(_ demand: String) -> Self {
+        self.demand = demand
+        return self
+    }
 }
 
 
-extension AuctionOperationRequestDemand {
-    var pricefloor: Price {
-        deps(AuctionOperationStartRound<AdTypeContextType, BidType>.self)
-            .first?
-            .pricefloor ?? .unknown
-    }
+// MARK: - Demand Request Operation Timeout.
+
+protocol OperationTimeout: Operation {
+    var timeout: TimeInterval { get }
+    func setupTimeout()
+}
+
+protocol OperationTimeoutHandler: Operation {
+    func timeoutReached()
 }

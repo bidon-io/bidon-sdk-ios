@@ -11,14 +11,13 @@ import Combine
 import SwiftUI
 
 
-
 final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
     private var bidonRewardedAd: Bidon.RewardedAd?
     
     override var adType: AdType { .rewardedAd } 
     
     override func _load() {
-        let rewardedAd = Bidon.RewardedAd()
+        let rewardedAd = Bidon.RewardedAd(auctionKey: auctionKey)
         rewardedAd.delegate = self
         rewardedAd.loadAd(with: pricefloor)
         self.bidonRewardedAd = rewardedAd
@@ -50,29 +49,29 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
     override func notify(loss ad: Ad) {
         bidonRewardedAd?.notifyLoss(
             external: "some_unknown_ad_network",
-            eCPM: ad.eCPM + 0.01
+            price: ad.price + 0.01
         )
     }
 }
 
 
 extension RawRewardedAdWrapper {
-    override func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad) {
-        super.adObject(adObject, didLoadAd: ad)
+    override func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didLoadAd: ad, auctionInfo: auctionInfo)
         
         resumeLoadingContinuation()
     }
     
-    override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error) {
-        super.adObject(adObject, didFailToLoadAd: error)
+    override func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
+        super.adObject(adObject, didFailToLoadAd: error, auctionInfo: auctionInfo)
         
-        resumeLoadingContinuation(throwing: AppodealAdServiceError.noFill)
+        resumeLoadingContinuation(throwing: RawAdServiceError.noFill)
     }
     
     override func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
         super.adObject(adObject, didFailToPresentAd: error)
         
-        resumeShowingContinuation(throwing: AppodealAdServiceError.invalidPresentationState)
+        resumeShowingContinuation(throwing: RawAdServiceError.invalidPresentationState)
     }
     
     override func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didDismissAd ad: Bidon.Ad) {

@@ -13,13 +13,17 @@ import MTGSDK
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc public final class MintegralDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "mintegral"
     
-    public let identifier: String = MintegralDemandSourceAdapter.identifier
+    public let demandId: String = MintegralDemandSourceAdapter.identifier
     public let name: String = "Mintegral"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = MTGSDKVersion
@@ -37,16 +41,24 @@ BiddingAdViewDemandSourceAdapter
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return MintegralBiddingAdViewDemandProvider(context: context)
     }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return MintegralDirectInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return MintegralDirectRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
+        return MintegralDirectAdViewDemandProvider(context: context)
+    }
 }
 
 
 extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appId, appKey: String
-    }
-        
     public func initialize(
-        parameters: Parameters,
+        parameters: MintegralParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         defer { isInitialized = true }

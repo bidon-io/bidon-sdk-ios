@@ -54,7 +54,6 @@ struct SegmentModel: Encodable {
     }
     
     init(_ segment: SegmentManager) {
-        self.id = segment.id
         self.uid = segment.uid
         self.gender = segment._gender?.description.uppercased()
         self.age = segment._age

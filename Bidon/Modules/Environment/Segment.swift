@@ -18,7 +18,7 @@ public enum Gender: Int {
 
 @objc(BDNSegment)
 public protocol Segment {
-    var id: String? { get }
+    var uid: String? { get }
     
     var gender: Gender { get set }
     
@@ -37,6 +37,5 @@ public protocol Segment {
 
 
 internal protocol SegmentResponse {
-    var id: String { get }
     var uid: String { get }
 }

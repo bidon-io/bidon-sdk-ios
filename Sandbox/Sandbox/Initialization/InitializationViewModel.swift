@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import SwiftUI
+
 import Bidon
 import BidonAdapterAppLovin
 import BidonAdapterBidMachine
@@ -21,7 +23,10 @@ import BidonAdapterBigoAds
 import BidonAdapterMetaAudienceNetwork
 import BidonAdapterInMobi
 import BidonAdapterAmazon
-import SwiftUI
+import BidonAdapterMyTarget
+import BidonAdapterChartboost
+import BidonAdapterIronSource
+import BidonAdapterYandex
 
 
 final class InitializationViewModel: ObservableObject, AdResponder {
@@ -42,6 +47,18 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         .init(
             name: "Production",
             baseURL: Constants.Bidon.baseURL
+        ),
+        .init(
+            name: "Staging 1",
+            baseURL: Constants.Bidon.stagingFirstURL,
+            user: Constants.Bidon.stagingUser,
+            password: Constants.Bidon.stagingPassword
+        ),
+        .init(
+            name: "Staging 2",
+            baseURL: Constants.Bidon.stagingSecondURL,
+            user: Constants.Bidon.stagingUser,
+            password: Constants.Bidon.stagingPassword
         )
     ]
     
@@ -59,7 +76,23 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         name: "Production",
         baseURL: Constants.Bidon.baseURL
     ) {
-        didSet { adService.bidonURL = host.baseURL }
+        didSet {
+            adService.bidonURL = host.baseURL
+            
+            let credentials = [host.user, host.password].compactMap { $0 }
+            guard
+                credentials.count == 2,
+                let authorization = credentials
+                    .joined(separator: ":")
+                    .data(using: .utf8)?
+                    .base64EncodedString()
+            else {
+                adService.bidonHTTPHeaders = [:]
+                return
+            }
+            
+            adService.bidonHTTPHeaders = ["Authorization": "Basic \(authorization)"]
+        }
     }
     
     @Published var mediation: Mediation = .none {
@@ -67,8 +100,9 @@ final class InitializationViewModel: ObservableObject, AdResponder {
             switch mediation {
             case .none:
                 AdServiceProvider.shared.service = RawAdService()
-            case .appodeal:
-                AdServiceProvider.shared.service = AppodealAdService()
+            case .appodeal: break
+// MARK: DROP_APD_SUPPORT
+//                AdServiceProvider.shared.service = AppodealAdService()
             }
         }
     }
@@ -103,6 +137,10 @@ final class InitializationViewModel: ObservableObject, AdResponder {
 fileprivate extension Array where Element == Bidon.Adapter {
     static func `default`() -> [Element] {
         return [
+            ChartboostDemandSourceAdapter(),
+            YandexDemandSourceAdapter(),
+            IronSourceDemandSourceAdapter(),
+            MyTargetDemandSourceAdapter(),
             AppLovinDemandSourceAdapter(),
             BidMachineDemandSourceAdapter(),
             GoogleMobileAdsDemandSourceAdapter(),
@@ -116,6 +154,6 @@ fileprivate extension Array where Element == Bidon.Adapter {
             InMobiDemandSourceAdapter(),
             AmazonDemandSourceAdapter(),
             GoogleAdManagerDemandSourceAdapter()
-        ].sorted { $0.identifier < $1.identifier }
+        ].sorted { $0.demandId < $1.demandId }
     }
 }

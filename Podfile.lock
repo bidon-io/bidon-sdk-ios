@@ -1,175 +1,131 @@
 PODS:
-  - AmazonPublisherServicesSDK (4.9.2)
-  - AppLovinSDK (12.4.1)
-  - AppsFlyer-AdRevenue (6.9.1):
-    - AppsFlyerFramework (~> 6)
-  - AppsFlyerFramework (6.14.0):
-    - AppsFlyerFramework/Main (= 6.14.0)
-  - AppsFlyerFramework/Main (6.14.0)
-  - BidMachine (2.6.0):
-    - BidMachine/Core (= 2.6.0)
-  - BidMachine/ApiCore (2.6.0)
-  - BidMachine/BiddingCore (2.6.0):
-    - BidMachine/ApiCore
-    - BidMachineRendering (~> 0.1.0)
-    - StackIAB (~> 2.6.0)
-    - StackModules (~> 1.7.0)
-  - BidMachine/Core (2.6.0):
-    - BidMachine/ApiCore
-    - BidMachine/BiddingCore
-    - BidMachine/ModulesCore
-  - BidMachine/ModulesCore (2.6.0):
-    - BidMachine/ApiCore
-  - BidMachineRendering (0.1.0):
-    - BidMachineRendering/RenderingKit (= 0.1.0)
-  - BidMachineRendering/RenderingKit (0.1.0):
-    - BidMachineRendering/StoreKit
-    - BidMachineRendering/UtilsKit
-    - BidMachineRendering/VideoKit
-    - BidMachineRendering/WebKit
-  - BidMachineRendering/StoreKit (0.1.0):
-    - BidMachineRendering/UtilsKit
-  - BidMachineRendering/UtilsKit (0.1.0):
-    - StackModules (~> 1.7.0)
-  - BidMachineRendering/VideoKit (0.1.0):
-    - BidMachineRendering/UtilsKit
-  - BidMachineRendering/WebKit (0.1.0):
-    - BidMachineRendering/UtilsKit
-  - BigoADS (4.2.2)
-  - FBAEMKit (17.0.0):
-    - FBSDKCoreKit_Basics (= 17.0.0)
-  - FBAudienceNetwork (6.15.0)
-  - FBSDKCoreKit (17.0.0):
-    - FBAEMKit (= 17.0.0)
-    - FBSDKCoreKit_Basics (= 17.0.0)
-  - FBSDKCoreKit_Basics (17.0.0)
-  - FBSDKLoginKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
-  - Fyber_Marketplace_SDK (8.2.7)
-  - Google-Mobile-Ads-SDK (11.5.0):
+  - AmazonPublisherServicesSDK (5.0.1)
+  - AppLovinSDK (13.1.0)
+  - AppsFlyerFramework (6.15.3):
+    - AppsFlyerFramework/Main (= 6.15.3)
+  - AppsFlyerFramework/Main (6.15.3)
+  - BidMachine (3.2.0):
+    - BidMachine/Static (= 3.2.0)
+  - BidMachine/Static (3.2.0):
+    - StackModules/Static (~> 3.1.0)
+  - BigoADS (4.6.0)
+  - ChartboostSDK (9.8.0)
+  - FBAEMKit (17.1.0):
+    - FBSDKCoreKit_Basics (= 17.1.0)
+  - FBAudienceNetwork (6.16.0)
+  - FBSDKCoreKit (17.1.0):
+    - FBAEMKit (= 17.1.0)
+    - FBSDKCoreKit_Basics (= 17.1.0)
+  - FBSDKCoreKit_Basics (17.1.0)
+  - FBSDKLoginKit (17.1.0):
+    - FBSDKCoreKit (= 17.1.0)
+  - Fyber_Marketplace_SDK (8.3.5)
+  - Google-Mobile-Ads-SDK (11.13.0):
     - GoogleUserMessagingPlatform (>= 1.1)
-  - GoogleUserMessagingPlatform (2.4.0)
-  - InMobiSDK (10.7.1)
-  - MintegralAdSDK (7.6.1):
-    - MintegralAdSDK/BannerAd (= 7.6.1)
-    - MintegralAdSDK/BidBannerAd (= 7.6.1)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 7.6.1)
-    - MintegralAdSDK/BidNativeAd (= 7.6.1)
-    - MintegralAdSDK/BidNewInterstitialAd (= 7.6.1)
-    - MintegralAdSDK/BidRewardVideoAd (= 7.6.1)
-    - MintegralAdSDK/InterstitialVideoAd (= 7.6.1)
-    - MintegralAdSDK/NativeAd (= 7.6.1)
-    - MintegralAdSDK/NewInterstitialAd (= 7.6.1)
-    - MintegralAdSDK/RewardVideoAd (= 7.6.1)
-  - MintegralAdSDK/BannerAd (7.6.1):
+  - GoogleUserMessagingPlatform (2.7.0)
+  - InMobiSDK (10.8.0)
+  - IronSourceSDK (8.7.0.0)
+  - MintegralAdSDK (7.7.6):
+    - MintegralAdSDK/BannerAd (= 7.7.6)
+    - MintegralAdSDK/BidBannerAd (= 7.7.6)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 7.7.6)
+    - MintegralAdSDK/BidNativeAd (= 7.7.6)
+    - MintegralAdSDK/BidNewInterstitialAd (= 7.7.6)
+    - MintegralAdSDK/BidRewardVideoAd (= 7.7.6)
+    - MintegralAdSDK/InterstitialVideoAd (= 7.7.6)
+    - MintegralAdSDK/NativeAd (= 7.7.6)
+    - MintegralAdSDK/NewInterstitialAd (= 7.7.6)
+    - MintegralAdSDK/RewardVideoAd (= 7.7.6)
+  - MintegralAdSDK/BannerAd (7.7.6):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (7.6.1):
+  - MintegralAdSDK/BidBannerAd (7.7.6):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (7.6.1):
+  - MintegralAdSDK/BidInterstitialVideoAd (7.7.6):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (7.6.1):
+  - MintegralAdSDK/BidNativeAd (7.7.6):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (7.6.1):
+  - MintegralAdSDK/BidNewInterstitialAd (7.7.6):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (7.6.1):
+  - MintegralAdSDK/BidRewardVideoAd (7.7.6):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (7.6.1):
+  - MintegralAdSDK/InterstitialVideoAd (7.7.6):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (7.6.1)
-  - MintegralAdSDK/NewInterstitialAd (7.6.1):
+  - MintegralAdSDK/NativeAd (7.7.6)
+  - MintegralAdSDK/NewInterstitialAd (7.7.6):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (7.6.1):
+  - MintegralAdSDK/RewardVideoAd (7.7.6):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.7.3)
-  - OCMock (3.9.3)
-  - OMSDK_Appodeal (1.4.12)
-  - StackIAB (2.6.0):
-    - StackIAB/StackIABAssets (= 2.6.0)
-    - StackIAB/StackMRAIDKit (= 2.6.0)
-    - StackIAB/StackNASTKit (= 2.6.0)
-    - StackIAB/StackOpenMeasure (= 2.6.0)
-    - StackIAB/StackRichMedia (= 2.6.0)
-    - StackIAB/StackVASTAssets (= 2.6.0)
-    - StackIAB/StackVASTKit (= 2.6.0)
-    - StackIAB/StackVideoPlayer (= 2.6.0)
-    - StackIAB/StackXML (= 2.6.0)
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackIABAssets (2.6.0):
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackMRAIDKit (2.6.0):
-    - StackIAB/StackIABAssets
-    - StackIAB/StackOpenMeasure
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackNASTKit (2.6.0):
-    - StackIAB/StackVASTKit
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackOpenMeasure (2.6.0):
-    - OMSDK_Appodeal (~> 1.4.12)
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackRichMedia (2.6.0):
-    - StackIAB/StackIABAssets
-    - StackIAB/StackVASTAssets
-    - StackIAB/StackVideoPlayer
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackVASTAssets (2.6.0):
-    - StackIAB/StackIABAssets
-    - StackIAB/StackXML
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackVASTKit (2.6.0):
-    - StackIAB/StackMRAIDKit
-    - StackIAB/StackVASTAssets
-    - StackIAB/StackVideoPlayer
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackVideoPlayer (2.6.0):
-    - StackModules (~> 1.7.0)
-  - StackIAB/StackXML (2.6.0):
-    - StackModules (~> 1.7.0)
-  - StackModules (1.7.3):
-    - StackModules/StackProductPresentation (= 1.7.3)
-  - StackModules/StackFoundation (1.7.3)
-  - StackModules/StackProductPresentation (1.7.3):
-    - StackModules/StackUIKit
-  - StackModules/StackUIKit (1.7.3):
-    - StackModules/StackFoundation
-  - UnityAds (4.11.3)
-  - VungleAds (7.3.0)
+- MobileFuseSDK (1.8.2)
+  - myTargetSDK (5.25.1):
+    - myTrackerSDK (~> 3.2.0)
+  - myTrackerSDK (3.2.1)
+  - OCMock (3.9.4)
+  - OMSDK_Appodeal (1.5.2)
+  - StackConsentManager (2.0.8):
+    - GoogleUserMessagingPlatform (~> 2.1)
+  - StackModules/Core-Static (3.1.0)
+  - StackModules/ProductPresentation-Static (3.1.0):
+    - StackModules/Core-Static
+  - StackModules/Rendering-Static (3.1.0):
+    - OMSDK_Appodeal (~> 1.5.2)
+    - StackModules/Core-Static
+    - StackModules/ProductPresentation-Static
+  - StackModules/Static (3.1.0):
+    - StackModules/Core-Static
+    - StackModules/ProductPresentation-Static
+    - StackModules/Rendering-Static
+  - UnityAds (4.13.1)
+  - VungleAds (7.4.4)
+  - YandexMobileAds (5.2.1):
+    - YandexMobileAds/Static (= 5.2.1)
+  - YandexMobileAds/Static (5.2.1):
+    - YandexMobileMetrica (< 5.0.0, >= 4.0.0)
+  - YandexMobileMetrica (4.5.2):
+    - YandexMobileMetrica/Static (= 4.5.2)
+  - YandexMobileMetrica/Static (4.5.2):
+    - YandexMobileMetrica/Static/Core (= 4.5.2)
+    - YandexMobileMetrica/Static/Crashes (= 4.5.2)
+  - YandexMobileMetrica/Static/Core (4.5.2)
+  - YandexMobileMetrica/Static/Crashes (4.5.2):
+    - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
-  - AmazonPublisherServicesSDK (~> 4.9.2)
-  - AppLovinSDK
-  - AppsFlyer-AdRevenue (~> 6.9.0)
-  - AppsFlyerFramework (~> 6.14.0)
-  - BidMachine (~> 2.6.0)
-  - BigoADS (~> 4.2.2)
-  - FBAudienceNetwork (~> 6.15.0)
-  - FBSDKLoginKit
-  - Fyber_Marketplace_SDK (~> 8.2.7)
-  - Google-Mobile-Ads-SDK (~> 11.5.0)
-  - InMobiSDK (~> 10.7.1)
-  - MintegralAdSDK (~> 7.6.1)
-  - MobileFuseSDK
-  - OCMock (~> 3.9.1)
-  - UnityAds (~> 4.11.3)
-  - VungleAds (~> 7.3.0)
+  - AmazonPublisherServicesSDK (~> 5.0.1)
+  - AppLovinSDK (= 13.1.0)
+  - AppsFlyerFramework (~> 6.15.2)
+  - BidMachine (= 3.2.0)
+  - BigoADS (~> 4.6.0)
+  - ChartboostSDK (= 9.8.0)
+  - FBAudienceNetwork (= 6.16.0)
+  - FBSDKLoginKit (~> 17.1.0)
+  - Fyber_Marketplace_SDK (~> 8.3.5)
+  - Google-Mobile-Ads-SDK (~> 11.13.0)
+  - InMobiSDK (~> 10.8.0)
+  - IronSourceSDK (= 8.7.0.0)
+  - MintegralAdSDK (~> 7.7.6)
+  - MobileFuseSDK (= 1.8.2)
+  - myTargetSDK (~> 5.25.1)
+  - OCMock (~> 3.9.4)
+  - StackConsentManager (~> 2.0.8)
+  - UnityAds (~> 4.13.1)
+  - VungleAds (= 7.4.4)
+  - YandexMobileAds (= 5.2.1)
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
-    - BidMachineRendering
-    - OMSDK_Appodeal
-    - StackIAB
-    - StackModules
+    - StackConsentManager
   trunk:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
-    - AppsFlyer-AdRevenue
     - AppsFlyerFramework
     - BidMachine
     - BigoADS
+    - ChartboostSDK
     - FBAEMKit
     - FBAudienceNetwork
     - FBSDKCoreKit
@@ -179,38 +135,49 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleUserMessagingPlatform
     - InMobiSDK
+    - IronSourceSDK
     - MintegralAdSDK
     - MobileFuseSDK
+    - myTargetSDK
+    - myTrackerSDK
     - OCMock
+    - OMSDK_Appodeal
+    - StackModules
     - UnityAds
     - VungleAds
+    - YandexMobileAds
+    - YandexMobileMetrica
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 3ccd81a70c200022af6b01838b3428bc064da035
-  AppLovinSDK: c57ad0d34625c971d2db127f8ef60570b28ff51a
-  AppsFlyer-AdRevenue: a38170b0b59f74cd07c7a9b91ee026f147b5c968
-  AppsFlyerFramework: 84e73360fc5b277da2a9322281c21cc467eaf023
-  BidMachine: e8ee7ae1c80d3a2c4abeced647d96918ec5b2a9e
-  BidMachineRendering: e8c4005b94b483315d9ded92d82ce571698b1374
-  BigoADS: 3b0ddf8dea35c0b0a93f5d6120741208b2d14752
-  FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
-  FBAudienceNetwork: 6c560e4c68823ec5da1e84868544a8a246e0e201
-  FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
-  FBSDKCoreKit_Basics: 92b7b7458d57091370b0b6cc197578874c3b4b16
-  FBSDKLoginKit: 5d5271ebfd1e39c6b071de8db5c4bd6255be3561
-  Fyber_Marketplace_SDK: 90d17e7cb04f505b00c2410679f115aefc9fd4e5
-  Google-Mobile-Ads-SDK: 7db2098033ad3bfcd72a11e7503b49700a93029e
-  GoogleUserMessagingPlatform: f131fa7978d2ba88d7426702b057c2cc318e6595
-  InMobiSDK: 8b93c1d4d8ac0d91cf9585fc8b65750b8f09e835
-  MintegralAdSDK: b9561720d5f78df3b4c84549905117b2f3789d26
-  MobileFuseSDK: faf54c2e5b6b7c2c552aa76b817ae1e13c24a58b
-  OCMock: 300b1b1b9155cb6378660b981c2557448830bdc6
-  OMSDK_Appodeal: 488b1094f7ba13129caaa1b7b6d6d08a794301af
-  StackIAB: 3127eb14106c86f5eaeaf98d2fb3de71a1dff8d4
-  StackModules: d07cef20468293452184c2ee01f93e730e6ee5ad
-  UnityAds: 4c2dbd3e82778b536b0bad23b640c16aae91dbb1
-  VungleAds: c7bf642b4a4581177b5c76042423a21d8c32ef1e
+AmazonPublisherServicesSDK: 2c897ab0edf7d6f7bf2bcc6c16d63530dc7ec9c1
+  AppLovinSDK: 539a0178d8bef4d68b2551a93526e0c1bba06cb2
+  AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
+  BidMachine: b5d8236e691a0c71fbb95a72e86f3ec189f1a8a9
+  BigoADS: c4d9ec9cf6d3346843e126cdba111647ec402d9b
+  ChartboostSDK: f8422957daa675fa4a0bb9f159144b3b59ef5c27
+  FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
+  FBAudienceNetwork: d1670939884e3a2e0ad98dca98d7e0c841417228
+  FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
+  FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
+  FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
+  Fyber_Marketplace_SDK: 8b042ecd850accf338a052ca23a4e105f71154ec
+  Google-Mobile-Ads-SDK: 14f57f2dc33532a24db288897e26494640810407
+  GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
+  InMobiSDK: 0cfb1a1eb5112fa0236ae1fab549e31fb96c9566
+  IronSourceSDK: 0b5a640179ef91acc637332608183a05db1757df
+  MintegralAdSDK: 81febc34aafe94f744f0526bfbd421eda325722e
+  MobileFuseSDK: e0b927c961317444d0140322caddf5f944912e4b
+  myTargetSDK: b4865575363e3f5b50ed2f74ed17eba5b2ffdc68
+  myTrackerSDK: 5b4e009f9f87a8febdbf2742b2a02559aeb56849
+  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
+  OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
+  StackConsentManager: b6c59a2574bbd3350e6ad2f9c8fa3884fdaff419
+  StackModules: f43fdc3fc047c0e208a6a44d604c97b2d1651bd7
+  UnityAds: 213536f6565ba7139f6ba425910edada720ceb9d
+  VungleAds: 7ceb822f20a6619d8d9ed6a616dacd8cc5b05036
+  YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
+  YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 0c51c49e3e27c540f9a82bf2559d7e1722f291e8
+PODFILE CHECKSUM: 015b6ab9cf87ebde36c769539b9989663f631096
 
 COCOAPODS: 1.15.2

@@ -213,14 +213,14 @@ final class NotificationRequestBuilderMock: BaseRequestBuilder, NotificationRequ
 
     var invokedWithExternalWinner = false
     var invokedWithExternalWinnerCount = 0
-    var invokedWithExternalWinnerParameters: (demandId: String, eCPM: Price)?
-    var invokedWithExternalWinnerParametersList = [(demandId: String, eCPM: Price)]()
+    var invokedWithExternalWinnerParameters: (demandId: String, price: Price)?
+    var invokedWithExternalWinnerParametersList = [(demandId: String, price: Price)]()
 
-    func withExternalWinner(demandId: String, eCPM: Price) -> Self {
+    func withExternalWinner(demandId: String, price: Price) -> Self {
         invokedWithExternalWinner = true
         invokedWithExternalWinnerCount += 1
-        invokedWithExternalWinnerParameters = (demandId, eCPM)
-        invokedWithExternalWinnerParametersList.append((demandId, eCPM))
+        invokedWithExternalWinnerParameters = (demandId, price)
+        invokedWithExternalWinnerParametersList.append((demandId, price))
         return self
     }
 

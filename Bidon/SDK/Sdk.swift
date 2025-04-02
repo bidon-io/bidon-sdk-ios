@@ -18,7 +18,7 @@ fileprivate struct AdTypeInjectionKey: InjectionKey {
 }
 
 
-internal extension InjectedValues {
+extension InjectedValues {
     var sdk: Sdk {
         get { Self[SdkInjectionKey.self] }
         set { Self[SdkInjectionKey.self] = newValue }

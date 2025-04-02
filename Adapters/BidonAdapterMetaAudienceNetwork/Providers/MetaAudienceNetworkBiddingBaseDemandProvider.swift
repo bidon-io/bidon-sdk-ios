@@ -10,27 +10,21 @@ import Bidon
 import FBAudienceNetwork
 
 
-class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, ParameterizedBiddingDemandProvider {
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
-    struct BiddingResponse: Codable {
-        var payload: String
-        var placementId: String
-    }
-    
+class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
-    func fetchBiddingContext(response: @escaping (Result<BiddingContext, MediationError>) -> ()) {
+    func collectBiddingToken(
+        biddingTokenExtras: MetaAudienceNetworkBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
         let token = FBAdSettings.bidderToken
-        let context = BiddingContext(token: token)
-        response(.success(context))
+        response(.success(token))
     }
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         fatalError("MetaAudienceNetworkBiddingBaseDemandProvider is not able to create ad object")
@@ -38,6 +32,6 @@ class MetaAudienceNetworkBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSOb
     
     func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
 }

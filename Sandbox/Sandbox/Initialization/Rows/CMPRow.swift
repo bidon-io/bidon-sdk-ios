@@ -9,10 +9,9 @@ import Foundation
 import UIKit
 import SwiftUI
 import Bidon
-import Appodeal
 import Combine
 import StackConsentManager
-
+// import Appodeal
 
 struct CMPRow: View {
     @ObservedObject var vm = CMPViewModel()
@@ -87,7 +86,7 @@ final class CMPViewModel: ObservableObject {
         let parameters = ConsentUpdateRequestParameters(
             appKey: Constants.Appodeal.appKey,
             mediationSdkName: "Appodeal",
-            mediationSdkVersion: Appodeal.getVersion(),
+            mediationSdkVersion: Bundle.main.appVersion,
             COPPA: false
         )
         ConsentManager.shared.requestConsentInfoUpdate(

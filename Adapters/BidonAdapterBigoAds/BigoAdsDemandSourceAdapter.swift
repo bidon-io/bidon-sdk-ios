@@ -13,13 +13,17 @@ import BigoADS
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
 BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingAdViewDemandSourceAdapter &
+DirectInterstitialDemandSourceAdapter &
+DirectRewardedAdDemandSourceAdapter &
+DirectAdViewDemandSourceAdapter
 
 
 @objc final public class BigoAdsDemandSourceAdapter: NSObject, DemandSourceAdapter {
+    
     @objc public static let identifier = "bigoads"
     
-    public let identifier: String = BigoAdsDemandSourceAdapter.identifier
+    public let demandId: String = BigoAdsDemandSourceAdapter.identifier
     public let name: String = "BigoAds"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = BigoAdSdk.sharedInstance().getVersion()
@@ -28,30 +32,38 @@ BiddingAdViewDemandSourceAdapter
     var context: SdkContext
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return BigoAdsBiddingInterstitialDemandProvider()
+        return BigoAdsInterstitialDemandProvider()
     }
     
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return BigoAdsBiddingRewardedDemandProvider()
+        return BigoAdsRewardedDemandProvider()
     }
     
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-        return BigoAdsBiddingAdViewDemandProvider(context: context)
+        return BigoAdsAdViewDemandProvider(context: context)
+    }
+    
+    public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
+        return BigoAdsInterstitialDemandProvider()
+    }
+    
+    public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
+        return BigoAdsRewardedDemandProvider()
+    }
+    
+    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
+        return BigoAdsAdViewDemandProvider(context: context)
     }
 }
 
 
-extension BigoAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appId: String
-    }
-    
+extension BigoAdsDemandSourceAdapter: ParameterizedInitializableAdapter {    
     public var isInitialized: Bool {
         return BigoAdSdk.sharedInstance().isInitialized()
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: BigoAdsParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         let adConfig = BigoAdConfig(appId: parameters.appId)
@@ -71,8 +83,8 @@ extension MediationError {
         case 1001: self = .incorrectAdUnitId
         case 1002: self = .adFormatNotSupported
         case 1003: self = .networkError
-        case 1004: self = .noFill
-        default: self = .unscpecifiedException
+        case 1004: self = .noFill(nil)
+        default: self = .unscpecifiedException(error.errorMsg)
         }
     }
 }

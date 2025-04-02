@@ -9,14 +9,10 @@ import Foundation
 
 
 final class RegulationsManager: ExtendedRegulations, Environment {
-    var coppaApplies: COPPAAppliesStatus {
-        get { _coppaApplies ?? .unknown }
-        set { $_coppaApplies.wrappedValue = newValue }
-    }
     
-    var gdrpConsent: GDPRConsentStatus {
-        get { _gdrpConsent ?? .unknown }
-        set { $_gdrpConsent.wrappedValue = newValue }
+    var gdpr: GDPRAppliesStatus {
+        get { _gdpr ?? .unknown }
+        set { $_gdpr.wrappedValue = newValue }
     }
     
     var gdprConsentString: String? {
@@ -24,22 +20,49 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         set { $_gdprConsentString.wrappedValue = newValue }
     }
     
+    var gdprApplies: Bool { gdpr == .applies }
+    var hasGdprConsent: Bool { !(gdprConsentString?.isEmpty ?? true) }
+    
+    
     var usPrivacyString: String? {
         get { _usPrivacyString }
         set { $_usPrivacyString.wrappedValue = newValue }
     }
     
-    @Atomic
-    var _coppaApplies: COPPAAppliesStatus?
+    var ccpaApplies: Bool {
+        guard let usPrivacyString = usPrivacyString, usPrivacyString.count == 4 else {
+            return false
+        }
+        return usPrivacyString.first == "1" && usPrivacyString.dropFirst().allSatisfy { $0 != "-" }
+    }
+    
+    var hasCcpaConsent: Bool {
+        guard let usPrivacyString = usPrivacyString, usPrivacyString.count == 4 else {
+            return false
+        }
+        return usPrivacyString.first == "1" && usPrivacyString[usPrivacyString.index(usPrivacyString.startIndex, offsetBy: 2)].uppercased() == "N"
+    }
+    
+    
+    var coppa: COPPAAppliesStatus {
+        get { _coppa ?? .unknown }
+        set { $_coppa.wrappedValue = newValue }
+    }
+    
+    var coppaApplies: Bool { coppa == .yes }
+    
     
     @Atomic
-    var _usPrivacyString: String?
+    private var _coppa: COPPAAppliesStatus?
     
     @Atomic
-    var _gdprConsentString: String?
+    private var _usPrivacyString: String?
     
     @Atomic
-    var _gdrpConsent: GDPRConsentStatus?
+    private var _gdprConsentString: String?
+    
+    @Atomic
+    private var _gdpr: GDPRAppliesStatus?
     
     @Atomic
     var tcfV1: [String: Any] = [:]
@@ -48,7 +71,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
     var tcfV2: [String: Any] = [:]
     
     @Atomic
-    var usPrivacyStringIAB: String?
+    var usPrivacyIAB: String?
     
     init() {
         NotificationCenter.default.addObserver(
@@ -77,7 +100,7 @@ final class RegulationsManager: ExtendedRegulations, Environment {
         
         $tcfV1.wrappedValue = tcfV1
         $tcfV2.wrappedValue = tcfV2
-        $usPrivacyStringIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
+        $usPrivacyIAB.wrappedValue = dictionary["IABUSPrivacy_String"] as? String
     }
     
     private func isSupported(

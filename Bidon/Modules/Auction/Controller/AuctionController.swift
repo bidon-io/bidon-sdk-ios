@@ -10,7 +10,7 @@ import Foundation
 
 protocol AuctionController {
     associatedtype DemandProviderType: DemandProvider
-    associatedtype BidType: Bid where BidType.Provider == DemandProviderType
+    associatedtype BidType: Bid where BidType.ProviderType == DemandProviderType
     
     typealias Completion = (Result<BidType, SdkError>) -> ()
         

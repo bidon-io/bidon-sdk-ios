@@ -14,12 +14,13 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     private typealias Manager = BaseFullscreenAdManager<
         RewardedAdTypeContext,
         RewardedConcurrentAuctionControllerBuilder,
-        RewardedImpressionController
+        RewardedImpressionController,
+        RewardedAdaptersFetcher
     >
     
     @objc public weak var delegate: RewardedAdDelegate?
     
-    @objc public let placement: String
+    @objc public let auctionKey: String?
     
     @objc public var isReady: Bool { return manager.isReady }
 
@@ -30,14 +31,13 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     
     private lazy var manager = Manager(
         context: RewardedAdTypeContext(),
-        placement: placement,
         delegate: self
     )
     
     @objc public init(
-        placement: String = "default"
+        auctionKey: String? = nil
     ) {
-        self.placement = placement
+        self.auctionKey = auctionKey
         super.init()
     }
     
@@ -51,7 +51,7 @@ public final class RewardedAd: NSObject, RewardedAdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        manager.loadAd(pricefloor: pricefloor)
+        manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
     
     @objc public func showAd(from rootViewController: UIViewController) {
@@ -63,26 +63,26 @@ public final class RewardedAd: NSObject, RewardedAdObject {
         manager.notifyWin()
     }
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     ) {
         manager.notifyLoss(
             winner: demandId,
-            eCPM: eCPM
+            eCPM: price
         )
     }
 }
 
 
 extension RewardedAd: FullscreenAdManagerDelegate {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError) {
-        delegate?.adObject(self, didFailToLoadAd: error.nserror)
+    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
     
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad) {
-        delegate?.adObject(self, didLoadAd: ad)
+    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
+        delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
     
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {

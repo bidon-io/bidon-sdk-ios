@@ -25,13 +25,12 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     
     private var ad: DemandAdType?
     
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
-        guard let placement = Int64(adUnitId) else {
-            response(.failure(.incorrectAdUnitId))
-            return
-        }
-        
-        let interstitial = IMInterstitial(placementId: placement)
+    func load(
+        pricefloor: Price,
+        adUnitExtras: InMobiAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        let interstitial = IMInterstitial(placementId: adUnitExtras.placementId)
         interstitial.delegate = self
         interstitial.load()
 
@@ -41,7 +40,7 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     
     func notify(
         ad: DemandAdType,
-        event: AuctionEvent
+        event: DemandProviderEvent
     ) {
         switch event {
         case .lose:
@@ -78,7 +77,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         _ interstitial: IMInterstitial,
         didFailToReceiveWithError error: Error
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     
@@ -86,7 +85,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         _ interstitial: IMInterstitial,
         didFailToLoadWithError error: IMRequestStatus
     ) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

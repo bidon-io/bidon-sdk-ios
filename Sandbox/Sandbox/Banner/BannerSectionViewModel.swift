@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import Bidon
-import AppsFlyerAdRevenue
 import SwiftUI
 
 
@@ -19,7 +18,8 @@ final class BannerSectionViewModel: ObservableObject {
     @Published var autorefreshInterval: TimeInterval = 15
     @Published var events: [AdEventModel] = []
     @Published var isLoading: Bool = false
-    @Published var pricefloor: Price = 0.1
+    @Published var pricefloor: Price = 0.0
+    @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
     
     func receive(event: AdEventModel) {

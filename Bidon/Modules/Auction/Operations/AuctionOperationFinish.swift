@@ -8,23 +8,31 @@
 import Foundation
 
 
-final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation
-where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == BidType.Provider {
-    let observer: AnyMediationObserver
+final class AuctionOperationFinish<AdTypeContextType: AdTypeContext, BidType: Bid>: Operation, AuctionOperation
+where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.DemandAdType: DemandAd {
+    
+    typealias BuilderType = Builder
+    
+    final class Builder: BaseAuctionOperationBuilder<AdTypeContextType> {
+        private(set) var completion: ((Result<BidType, SdkError>) -> ())!
+        
+        @discardableResult
+        func withCompletion(_ completion:  @escaping (Result<BidType, SdkError>) -> ()) -> Self {
+            self.completion = completion
+            return self
+        }
+    }
+    
+    let observer: AnyAuctionObserver
     let completion: (Result<BidType, SdkError>) -> ()
     let comparator: AuctionBidComparator
     let auctionConfiguration: AuctionConfiguration
     
-    init(
-        comparator: AuctionBidComparator,
-        observer: AnyMediationObserver,
-        auctionConfiguration: AuctionConfiguration,
-        completion: @escaping (Result<BidType, SdkError>) -> ()
-    ) {
-        self.auctionConfiguration = auctionConfiguration
-        self.observer = observer
-        self.comparator = comparator
-        self.completion = completion
+    init(builder: Builder) {
+        self.observer = builder.observer
+        self.auctionConfiguration = builder.auctionConfiguration
+        self.comparator = builder.comparator
+        self.completion = builder.completion
         
         super.init()
     }
@@ -32,49 +40,63 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
     override func main() {
         super.main()
         
-        let bids = deps(AuctionOperationFinishRound<AdTypeContextType, BidType>.self)
-            .reduce([]) { $0 + $1.bids }
-            .sorted { comparator.compare($0, $1) }
-        
-        let winner = bids.first
-        
-        observer.log(
-            AuctionFinishMediationEvent(bid: winner)
-        )
-        
-        let result = result(for: bids, winner: winner)
+        let result = findWinner()
         let completion = self.completion
         
-        DispatchQueue.main.async {
-            completion(result)
-        }
+        completion(result)
     }
     
     override func cancel() {
         super.cancel()
         
-        observer.log(CancelAuctionMediationEvent())
+        observer.log(CancelAuctionEvent())
+        
+        findWinner()
         
         let result = Result<BidType, SdkError>.failure(.cancelled)
         let completion = self.completion
-        
-        DispatchQueue.main.async {
-            completion(result)
-        }
+        completion(result)
     }
     
-    private func result(
-        for bids: [BidType],
-        winner: BidType?
-    ) -> Result<BidType, SdkError> {
-        guard let winner = winner else {
-            // TODO: Better error handling
-            return .failure(.noFill)
-        }
+    @discardableResult
+    private func findWinner() -> Result<BidType, SdkError> {
+        let directResults = deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
+            .compactMap({ $0.bid })
+            .sorted { comparator.compare($0, $1) }
         
+        let bidResults = deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
+            .compactMap({ $0.bid })
+            .sorted { comparator.compare($0, $1) }
+        
+        let directWinner = directResults.first
+        let bidWinner = bidResults.first
+        
+        var result: Result<BidType, SdkError>
+        switch (directWinner, bidWinner) {
+        case (.none, .none):
+            result = .failure(.noFill)
+            observer.log(FinishAuctionEvent(winner: nil))
+        case (.none, .some(let winner)):
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+            notifyBids(bidResults, winner: winner)
+        case (.some(let winner), .none):
+            notifyBids(directResults, winner: winner)
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+        case (.some(let directWrappedWinner), .some(let bidWrappedWinner)):
+            let winner = max(directWrappedWinner, bidWrappedWinner)
+            notifyBids(directResults + bidResults, winner: winner)
+            result = .success(winner as! BidType)
+            observer.log(FinishAuctionEvent(winner: winner))
+        }
+        return result
+    }
+    
+    private func notifyBids(_ bids: [BidModel<AdTypeContextType.DemandProviderType>], winner: BidModel<AdTypeContextType.DemandProviderType>) {
         // Notify providers on win/lose
         bids.forEach { bid in
-            if bid.ad.id == winner.ad.id {
+            if bid.adUnit.uid == winner.adUnit.uid {
                 bid.provider.notify(
                     opaque: bid.ad,
                     event: .win
@@ -82,15 +104,14 @@ where BidType.Provider: DemandProvider, AdTypeContextType.DemandProviderType == 
             } else {
                 bid.provider.notify(
                     opaque: bid.ad,
-                    event: .lose(winner.ad, winner.eCPM)
+                    event: .lose(
+                        winner.adUnit.demandId,
+                        winner.ad,
+                        winner.price
+                    )
                 )
             }
         }
-        
-        // Auction result is success
-        return .success(winner)
     }
 }
 
-
-extension AuctionOperationFinish: AuctionOperation {}

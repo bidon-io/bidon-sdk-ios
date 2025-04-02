@@ -17,13 +17,13 @@ class GoogleAdManagerBaseDemandProvider<AdObject: GoogleAdManagerDemandAd>: NSOb
     
     private var response: DemandProviderResponse?
     
-    let serverData: GoogleAdManagerDemandSourceAdapter.ServerData
+    let parameters: GoogleAdManagerParameters
     
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    init(serverData: GoogleAdManagerDemandSourceAdapter.ServerData) {
-        self.serverData = serverData
+    init(parameters: GoogleAdManagerParameters) {
+        self.parameters = parameters
         super.init()
     }
     
@@ -55,20 +55,24 @@ class GoogleAdManagerBaseDemandProvider<AdObject: GoogleAdManagerDemandAd>: NSOb
     
     func notify(
         ad: AdObject,
-        event: AuctionEvent
+        event: DemandProviderEvent
     ) {}
 }
 
 
 extension GoogleAdManagerBaseDemandProvider: DirectDemandProvider {
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: GoogleAdManagerAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         self.response = response
         let request = GAMRequest { builder in
-            builder.withRequestAgent(serverData.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdrpConsent)
+            builder.withRequestAgent(parameters.requestAgent)
+            builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
         
-        loadAd(request, adUnitId: adUnitId)
+        loadAd(request, adUnitId: adUnitExtras.adUnitId)
     }
 }

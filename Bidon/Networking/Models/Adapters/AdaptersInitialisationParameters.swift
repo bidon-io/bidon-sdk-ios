@@ -31,7 +31,7 @@ struct AdaptersInitialisationParameters: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let adaptersContainer = try container
             .nestedContainer(
-                keyedBy: AdapterIdCodingKey.self,
+                keyedBy: DemandIdCodingKey.self,
                 forKey: .adapters
             )
         self.tmax = try container.decode(TimeInterval.self, forKey: .tmax)

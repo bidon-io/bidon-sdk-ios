@@ -24,7 +24,7 @@ extension AdaptersRepository {
         if let cls = NSClassFromString(className) as? Adapter.Type {
             let adapter = cls.init()
             Logger.debug("Register \(adapter.name) adapter. Version \(BidonSdk.sdkVersion).\(adapter.adapterVersion). SDK Version: \(adapter.sdkVersion)")
-            self[adapter.identifier] = adapter
+            self[adapter.demandId] = adapter
         } else {
             Logger.error("Adapter with class: \(className) wasn't found")
         }
@@ -32,7 +32,7 @@ extension AdaptersRepository {
     
     func register(adapter: Adapter) {
         Logger.debug("Register \(adapter.name) adapter. Version \(BidonSdk.sdkVersion).\(adapter.adapterVersion). SDK Version: \(adapter.sdkVersion)")
-        self[adapter.identifier] = adapter
+        self[adapter.demandId] = adapter
     }
     
     func configure() {
@@ -40,7 +40,7 @@ extension AdaptersRepository {
             if let cls = NSClassFromString(className) as? Adapter.Type {
                 let adapter = cls.init()
                 Logger.debug("Register \(adapter.name) adapter. Version \(BidonSdk.sdkVersion).\(adapter.adapterVersion). SDK Version: \(adapter.sdkVersion)")
-                self[adapter.identifier] = adapter
+                self[adapter.demandId] = adapter
             }
         }
     }

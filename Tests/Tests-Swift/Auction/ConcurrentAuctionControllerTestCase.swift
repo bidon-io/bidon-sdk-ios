@@ -30,20 +30,20 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
     var contextMock: AdTypeContextMock!
     var networkManagerMock: NetworkManagerMockProxy!
     
+    var adaptersRepository: AdaptersRepository!
     var controller: ConcurrentAuctionController<AdTypeContextMock>!
-    var mediationObserver: BaseMediationObserver!
+    var auctionObserver: BaseAuctionObserver!
+    var adRevenueObserver: AdRevenueObserver!
+    
     var auctionConfiguration: AuctionConfiguration!
     var adType: AdType!
     var pricefloor: Price!
-    var adaptersRepository: AdaptersRepository!
-    var adRevenueObserver: AdRevenueObserver!
     
     override func setUp() {
         adType = .interstitial
         pricefloor = Double.random(in: 9.99...999.99)
         auctionConfiguration = AuctionConfiguration(
             auctionId: UUID().uuidString,
-            auctionConfigurationId: Int.random(in: 0..<Int.max),
             auctionConfigurationUid: UUID().uuidString,
             isExternalNotificationsEnabled: false
         )
@@ -56,8 +56,8 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         adaptersRepository = AdaptersRepository()
         adRevenueObserver = BaseAdRevenueObserver()
-        mediationObserver = BaseMediationObserver(
-            auctionId: auctionConfiguration.auctionId,
+        auctionObserver = BaseAuctionObserver(
+            configuration: auctionConfiguration,
             adType: .interstitial
         )
     }
@@ -69,24 +69,22 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         contextMock = nil
         adaptersRepository = nil
         adRevenueObserver = nil
-        mediationObserver = nil
+        auctionObserver = nil
         
         NetworkManagerInjectionKey.currentValue = PersistentNetworkManager.shared
     }
     
     final func controller(
         rounds: [AuctionRoundMock],
-        lineItems: [LineItem]
+        adUnits: [AdUnitModel]
     ) -> ConcurrentAuctionController<AdTypeContextMock> {
-        let elector = StrictAuctionLineItemElector(
-            lineItems: lineItems
-        )
+        let adUnitProvider = DefaultAdUnitProvider(adUnits: adUnits)
         
         return ConcurrentAuctionController { (builder: TestConcurrentAuctionControllerBuilder) in
             builder.withRounds(rounds)
             builder.withContext(contextMock)
-            builder.withElector(elector)
-            builder.withMediationObserver(mediationObserver)
+            builder.withAdUnitProvider(adUnitProvider)
+            builder.withAuctionObserver(auctionObserver)
             builder.withPricefloor(pricefloor)
             builder.withAdaptersRepository(adaptersRepository)
             builder.withAdRevenueObserver(adRevenueObserver)
@@ -139,11 +137,11 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
             )
         ]
         
-        let lineItems: [LineItem] = []
+        let adUnits: [AdUnitModel] = []
         
         controller = controller(
             rounds: rounds,
-            lineItems: lineItems
+            adUnits: adUnits
         )
         
         controller.load {
@@ -155,11 +153,14 @@ final class ConcurrentAuctionControllerTestCase: XCTestCase {
         
         XCTAssertFalse(result.isSuccess, "Auction result is expected to be failed")
     
-        let report = mediationObserver.report
+        let report = auctionObserver.report
         
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
         XCTAssertEqual(report.result.status, .fail)
+        
         XCTAssertEqual(report.rounds.count, 1)
-        XCTAssertEqual(report.rounds[0].roundId, "round_1")
+        XCTAssertEqual(report.rounds[0].configuration.roundId, "round_1")
         XCTAssertEqual(report.rounds[0].demands.count, 1)
         XCTAssertEqual(report.rounds[0].demands[0].demandId, "")
         XCTAssertEqual(report.rounds[0].demands[0].status.stringValue, "UNKNOWN_ADAPTER")
@@ -177,8 +178,8 @@ extension TestAuctionResult {
 }
 
 
-extension RoundReport {
-    var sortedDemands: [DemandReportType] {
+extension AuctionRoundReport {
+    var sortedDemands: [AuctionDemandReportType] {
         return demands.sorted { first, second in
             let firstId = first.demandId
             let secondId = second.demandId 

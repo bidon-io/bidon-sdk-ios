@@ -8,280 +8,145 @@
 import Foundation
 
 
-final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation {
-    private enum BidState {
-        case unknown
-        case prepare([AdapterType])
-        case bidding([AdapterType])
-        case filling(AdapterType, BidRequest.ResponseBody.BidModel)
-        case ready(BidType)
-    }
+final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContext>: AsynchronousOperation, AuctionOperationRequestDemand {
     
-    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
+    typealias BuilderType = AuctionOperationRequestDemandBuilder<AdTypeContextType>
+    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     
-    @Injected(\.networkManager)
-    private var networkManager: NetworkManager
-    
-    @Injected(\.sdk)
-    private var sdk: Sdk
-    
-    @Atomic private var bidState: BidState = .unknown
-    
-    let context: AdTypeContextType
-    let observer: AnyMediationObserver
+    let observer: AnyAuctionObserver
     let adapters: [AdapterType]
-    let roundConfiguration: AuctionRoundConfiguration
     let auctionConfiguration: AuctionConfiguration
+    let context: AdTypeContextType
+    let demand: String
+    let adUnit: AdUnitModel
     
-    private var encoders: BiddingContextEncoders = [:]
+    var bid: BidModel<AdTypeContextType.DemandProviderType>?
     
-    var bid: BidType? {
-        switch bidState {
-        case .ready(let bid): return bid
-        default: return nil
-        }
-    }
+    private var timeoutTimer: Timer?
     
-    init(
-        adapters: [AdapterType],
-        observer: AnyMediationObserver,
-        context: AdTypeContextType,
-        roundConfiguration: AuctionRoundConfiguration,
-        auctionConfiguration: AuctionConfiguration
-    ) {
-        self.adapters = adapters
-        self.observer = observer
-        self.context = context
-        self.roundConfiguration = roundConfiguration
-        self.auctionConfiguration = auctionConfiguration
-
+    init(builder: BuilderType) {
+        self.adapters = builder.adapters
+        self.observer = builder.observer
+        self.auctionConfiguration = builder.auctionConfiguration
+        self.context = builder.context
+        self.demand = builder.demand
+        self.adUnit = builder.adUnit
+        
         super.init()
     }
     
     override func main() {
         super.main()
+                
+        guard
+            let adapter = adapters.first(where: { $0.demandId == demand && $0.provider is any GenericBiddingDemandProvider }),
+            let provider = adapter.provider as? any GenericBiddingDemandProvider
+        else {
+            logLoadingError(error: .unknownAdapter)
+            finish()
+            return
+        }
+        setupTimeout()
+
+        let event = BiddingDemandWillLoadAuctionEvent(
+            adUnit: adUnit
+        )
+        observer.log(event)
         
-        let group = DispatchGroup()
-        
-        let bidders: [AdapterType] = adapters.compactMap { adapter in
-            guard let provider = adapter.provider as? any BiddingDemandProvider else { return nil }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
             
-            group.enter()
-            provider.fetchBiddingContextEncoder { [weak self] result in
-                defer { group.leave() }
-                guard let self = self else { return }
+            provider.load(
+                payloadDecoder: adUnit.extras,
+                adUnitExtrasDecoder: adUnit.extras
+            ) { [weak self] result in
+                defer { self?.finish() }
+                
+                guard let self else { return }
+                
+                guard !isCancelled else {
+                    Logger.warning("Demand Reqest is canceled due to timeout or cancel event. Break")
+                    return
+                }
+                
+                self.invalidateTimer()
                 
                 switch result {
-                case .success(let encoder):
-                    self.encoders[adapter.identifier] = encoder
-                default:
-                    break
+                case .success(let ad):
+                    let bid = BidType(
+                        id: UUID().uuidString,
+                        impressionId: UUID().uuidString,
+                        adType: self.context.adType,
+                        adUnit: adUnit,
+                        price: ad.price ?? adUnit.pricefloor,
+                        ad: ad,
+                        provider: adapter.provider,
+                        roundPricefloor: adUnit.pricefloor,
+                        auctionConfiguration: self.auctionConfiguration
+                    )
+                    
+                    self.bid = bid
+                    
+                    let event = BiddingDemandDidLoadAuctionEvent(bid: bid)
+                    self.observer.log(event)
+                    
+                case .failure(let error):
+                    logLoadingError(error: error)
                 }
             }
-            
-            return adapter
-        }
-        
-        $bidState.wrappedValue = .prepare(bidders)
-        
-        group.notify(queue: .main) { [weak self] in
-            self?.performBidRequest()
         }
     }
     
-    func performBidRequest() {
-        guard isExecuting else { return }
-        
-        guard !encoders.isEmpty else {
-            $bidState.wrappedValue = .unknown
-            finish()
-            return
-        }
-        
-        let bidders: [AdapterType] = encoders.keys.compactMap { key in
-            adapters.first { $0.identifier == key }
-        }
-        
-        $bidState.wrappedValue = .bidding(bidders)
-        
-        // Observe bid request start
-        observer.log(
-            BiddingDemandProviderRequestBidMediationEvent(
-                roundConfiguration: roundConfiguration,
-                adapters: bidders
-            )
-        )
-        
-        // Make bid request
-        let request = context.bidRequest { builder in
-            builder.withBidfloor(pricefloor)
-            builder.withBiddingContextEncoders(encoders)
-            builder.withTestMode(sdk.isTestMode)
-            builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withAuctionId(auctionConfiguration.auctionId)
-            builder.withAuctionConfigurationId(auctionConfiguration.auctionConfigurationId)
-            builder.withAuctionConfigurationUid(auctionConfiguration.auctionConfigurationUid)
-            builder.withRoundId(roundConfiguration.roundId)
-            builder.withAdapters(adapters)
-        }
-        
-        networkManager.perform(request: request) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let response):
-                self.observer.log(
-                    BiddingDemandProviderBidResponseMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapters: bidders,
-                        bids: response.bids
-                    )
-                )
-                self.proceedBidResponse(response, bidders: bidders)
-            case .failure:
-                self.$bidState.wrappedValue = .unknown
-                self.observer.log(
-                    BiddingDemandProviderBidErrorMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapters: bidders,
-                        error: .noBid
-                    )
-                )
-                self.finish()
-            }
-        }
+    private func logLoadingError(error: MediationError) {
+        let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: error)
+        observer.log(event)
     }
     
-    func proceedBidResponse(
-        _ response: BidRequest.ResponseBody,
-        bidders: [AdapterType],
-        previousBid: BidRequest.ResponseBody.BidModel? = nil
-    ) {
-        guard isExecuting else { return }
-        
-        guard let pendingServerBid = response.bids.next(previous: previousBid) else {
-            $bidState.wrappedValue = .unknown
-            observer.log(
-                BiddingDemandProviderBidErrorMediationEvent(
-                    roundConfiguration: self.roundConfiguration,
-                    adapters: bidders,
-                    error: .unknownAdapter
-                )
-            )
-            finish()
-            return
-        }
-        
-        guard
-            let demand = pendingServerBid.demands.decoders.first,
-            let adapter = bidders.first(where: { $0.identifier == demand.key }),
-            let provider = adapter.provider as? any BiddingDemandProvider
-        else {
-            proceedBidResponse(
-                response,
-                bidders: bidders,
-                previousBid: pendingServerBid
-            )
-            return
-        }
-        
-        $bidState.wrappedValue = .filling(adapter, pendingServerBid)
-        
-        observer.log(
-            BiddingDemandProviderFillRequestMediationEvent(
-                roundConfiguration: self.roundConfiguration,
-                adapter: adapter,
-                bid: pendingServerBid
-            )
-        )
-        
-        provider.prepareBid(from: demand.value) { [weak self] result in
-            guard let self = self, self.isExecuting else { return }
-            
-            switch result {
-            case .failure(let error):
-                self.$bidState.wrappedValue = .unknown
-                self.observer.log(
-                    BiddingDemandProviderFillErrorMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: adapter,
-                        error:error,
-                        bid: pendingServerBid
-                    )
-                )
-                self.proceedBidResponse(
-                    response,
-                    bidders: bidders,
-                    previousBid: pendingServerBid
-                )
-            case .success(let ad):
-                let eCPM = (ad.eCPM != nil && ad.eCPM != .unknown) ? ad.eCPM! : pendingServerBid.price
-                
-                let bid = BidType(
-                    id: pendingServerBid.id,
-                    adType: self.context.adType,
-                    eCPM: eCPM,
-                    demandType: .bidding,
-                    ad: ad,
-                    provider: adapter.provider,
-                    roundConfiguration: self.roundConfiguration,
-                    auctionConfiguration: self.auctionConfiguration
-                )
-                
-                self.$bidState.wrappedValue = .ready(bid)
-                self.observer.log(
-                    BiddingDemandProviderDidFillMediationEvent(
-                        roundConfiguration: self.roundConfiguration,
-                        adapter: adapter,
-                        bid: bid
-                    )
-                )
-                self.finish()
-            }
-        }
+    override func cancel() {
+        super.cancel()
+        invalidateTimer()
+    }
+    
+    func invalidateTimer() {
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
     }
 }
 
+extension AuctionOperationRequestBiddingDemand: OperationTimeout {
+    var timeout: TimeInterval {
+        return adUnit.timeoutInSeconds
+    }
+    
+    func setupTimeout() {
+        guard isExecuting, timeout > 0 else { return }
 
-extension AuctionOperationRequestBiddingDemand: AuctionOperationRequestDemand {
+        let timer = Timer(
+            timeInterval: timeout,
+            repeats: false
+        ) { [weak self] _ in
+            self?.timeoutReached()
+        }
+        
+        RunLoop.main.add(timer, forMode: .default)
+        timeoutTimer = timer
+    }
+}
+
+extension AuctionOperationRequestBiddingDemand: OperationTimeoutHandler {
+    
     func timeoutReached() {
         guard isExecuting else { return }
-        defer { finish() }
         
-        switch bidState {
-        case .prepare(let bidders), .bidding(let bidders):
-            observer.log(
-                BiddingDemandProviderBidErrorMediationEvent(
-                    roundConfiguration: self.roundConfiguration,
-                    adapters: bidders,
-                    error: .bidTimeoutReached
-                )
+        observer.log(
+            BiddingDemandLoadingErrorAucitonEvent(
+                adUnit: adUnit, 
+                error: .fillTimeoutReached
             )
-        case .filling(let bidder, let bid):
-            observer.log(
-                BiddingDemandProviderFillErrorMediationEvent(
-                    roundConfiguration: self.roundConfiguration,
-                    adapter: bidder,
-                    error: .fillTimeoutReached,
-                    bid: bid
-                )
-            )
-        default:
-            break
-        }
-    }
-}
-
-
-extension Array where Element == BidRequest.ResponseBody.BidModel {
-    func next(previous: Element?) -> Element? {
-        guard let previous = previous else { return first }
-        guard
-            let index = firstIndex(of: previous),
-            index < (count - 1)
-        else { return nil }
+        )
         
-        return self[index + 1]
+        invalidateTimer()
+        finish()
     }
 }

@@ -8,9 +8,9 @@
 import Foundation
 
 
-public enum AuctionEvent {
+public enum DemandProviderEvent {
     case win
-    case lose(DemandAd, Price)
+    case lose(String, DemandAd, Price)
 }
 
 
@@ -47,12 +47,12 @@ public protocol DemandProvider: AnyObject {
     
     var revenueDelegate: DemandProviderRevenueDelegate? { get set }
     
-    func notify(ad: DemandAdType, event: AuctionEvent)
+    func notify(ad: DemandAdType, event: DemandProviderEvent)
 }
 
 
 internal extension DemandProvider {
-    func notify(opaque ad: DemandAd, event: AuctionEvent) {
+    func notify(opaque ad: DemandAd, event: DemandProviderEvent) {
         guard let ad = ad as? DemandAdType else { return }
         notify(ad: ad, event: event)
     }

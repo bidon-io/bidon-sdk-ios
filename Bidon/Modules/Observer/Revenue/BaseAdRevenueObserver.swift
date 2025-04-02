@@ -13,7 +13,7 @@ final class BaseAdRevenueObserver: AdRevenueObserver {
     var ads: (() -> [Ad])?
     
     func observe<BidType>(_ bid: BidType)
-    where BidType : Bid, BidType.Provider : DemandProvider {
+    where BidType: Bid, BidType.ProviderType: DemandProvider {
         bid.provider.revenueDelegate = self
     }
     
@@ -38,7 +38,7 @@ extension BaseAdRevenueObserver: DemandProviderRevenueDelegate {
         didLogImpression ad: DemandAd
     ) {
         guard let container = container(for: ad) else { return }
-        let adRevenue = AdRevenueModel(eCPM: container.eCPM)
+        let adRevenue = AdRevenueModel(eCPM: container.price)
         
         onRegisterAdRevenue?(container, adRevenue)
     }

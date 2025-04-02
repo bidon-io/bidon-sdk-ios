@@ -26,21 +26,29 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
         super.init()
     }
     
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
-        let banner = UADSBannerView(
-            placementId: adUnitId,
-            size: size
-        )
-        
-        banner.delegate = self
-        
-        self.response = response
-        self.banner = banner
-        
-        banner.load()
+    func load(
+        pricefloor: Price,
+        adUnitExtras: UnityAdsAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            let banner = UADSBannerView(
+                placementId: adUnitExtras.placementId,
+                size: size
+            )
+            
+            banner.delegate = self
+            
+            self.response = response
+            self.banner = banner
+            
+            banner.load()
+        }
     }
     
-    func notify(ad: UADSBannerView, event: Bidon.AuctionEvent) {}
+    func notify(ad: UADSBannerView, event: Bidon.DemandProviderEvent) {}
 }
 
 

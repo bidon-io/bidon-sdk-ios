@@ -36,9 +36,13 @@ class DTExchangeBaseDemandProvider<Controller: IAUnitController>: NSObject {
 
 
 extension DTExchangeBaseDemandProvider: DirectDemandProvider {
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: DTExchangeAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         let adRequest = IAAdRequest.build { builder in
-            builder.spotID = adUnitId
+            builder.spotID = adUnitExtras.spotId
         }
         
         guard let adRequest = adRequest else {
@@ -52,13 +56,13 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         guard let adSpot = adSpot else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
             return
         }
         
         adSpot.fetchAd { adSpot, model, error in
             guard let adSpot = adSpot, error == nil else {
-                response(.failure(.noFill))
+                response(.failure(.noFill(error?.localizedDescription)))
                 return
             }
     
@@ -80,5 +84,5 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
     }
     
-    func notify(ad: IAAdSpot, event: AuctionEvent) {}
+    func notify(ad: IAAdSpot, event: DemandProviderEvent) {}
 }

@@ -15,18 +15,19 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
     
     private var rewarded: MFRewardedAd?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MobileFuseBiddingPayload,
+        adUnitExtras: MobileFuseAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        if let rewarded = MFRewardedAd(placementId: data.placementId) {
+        if let rewarded = MFRewardedAd(placementId: adUnitExtras.placementId) {
             self.rewarded = rewarded
             self.response = response
             
             rewarded.register(self)
-            rewarded.load(withBiddingResponseToken: data.signal)
+            rewarded.load(withBiddingResponseToken: payload.signal)
         } else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("Mapping Error")))
         }
     }
     

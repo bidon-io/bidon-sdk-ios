@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import Combine
 import AppsFlyerLib
-import AppsFlyerAdRevenue
 import Bidon
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -60,28 +59,32 @@ final class AdServiceProvider: ObservableObject {
     
     private func receiveApplicationDidBecomeActive(notification: Notification) {
         AppsFlyerLib.shared().start()
-        AppsFlyerAdRevenue.start()
     }
 }
 
-
-extension AppsFlyerAdRevenue {
+extension AppsFlyerLib {
     func log(
         adRevenue: AdRevenue,
         ad: Bidon.Ad,
         adType: Bidon.AdType,
         placement: String = ""
     ) {
-        var additionalParameters: [AnyHashable: Any] = [:]
+        
+        let adRevenueData = AFAdRevenueData(
+            monetizationNetwork: ad.networkName,
+            mediationNetwork: .appodeal,
+            currencyIso4217Code: adRevenue.currency,
+            eventRevenue: adRevenue.revenue as NSNumber
+        )
+        
+        var additionalParameters: [String: Any] = [:]
         additionalParameters[kAppsFlyerAdRevenueAdType] = adType.rawValue
-        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
+//        Should we remove this line?
+//        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
         additionalParameters[kAppsFlyerAdRevenuePlacement] = placement
         
         logAdRevenue(
-            monetizationNetwork: ad.networkName,
-            mediationNetwork: .appodeal,
-            eventRevenue: adRevenue.revenue as NSNumber,
-            revenueCurrency: adRevenue.currency,
+            adRevenueData,
             additionalParameters: additionalParameters
         )
     }

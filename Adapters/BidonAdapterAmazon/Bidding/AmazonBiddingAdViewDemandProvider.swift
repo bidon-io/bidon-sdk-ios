@@ -26,12 +26,38 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
     
     let format: BannerFormat
     
-    init(
-        adSizes: [DTBAdSize],
-        context: AdViewContext
-    ) {
+    private var handler: AmazonBiddingHandler?
+    
+    init(context: AdViewContext) {
         self.format = context.format
-        super.init(adSizes: adSizes)
+        super.init()
+    }
+    
+    override func collectBiddingToken(
+        biddingTokenExtras: AmazonBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        let adSizes = biddingTokenExtras.slots.filter({ $0.format == .banner || $0.format == .mrec }).compactMap({ $0.adSize(format) })
+        handler = AmazonBiddingHandler(adSizes: adSizes)
+        handler?.fetch(response: response)
+    }
+    
+    override func load(
+        payload: AmazonBiddingPayload,
+        adUnitExtras: AmazonAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        guard let adResponse = handler?.response(for: adUnitExtras.slotUuid) ?? AmazonHandlersStorage.fetch(for: adUnitExtras.slotUuid)
+        else {
+            response(.failure(.noAppropriateAdUnitId))
+            return
+        }
+        
+        fill(adResponse, response: response)
+    }
+    
+    override func adSize(_ extras: AmazonAdUnitExtras) -> DTBAdSize? {
+        return extras.adSize(format)
     }
     
     override func fill(
@@ -39,7 +65,9 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        dispatcher.fetchBannerAd(withParameters: data.mediationHints())
+        DispatchQueue.main.async { [weak self] in
+            self?.dispatcher.fetchBannerAd(withParameters: data.mediationHints())
+        }
     }
 }
 
@@ -61,7 +89,7 @@ extension AmazonBiddingAdViewDemandProvider: DTBAdBannerDispatcherDelegate {
     }
     
     func adFailed(toLoad banner: UIView?, errorCode: Int) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill("Code: \(errorCode)")))
         response = nil
     }
     

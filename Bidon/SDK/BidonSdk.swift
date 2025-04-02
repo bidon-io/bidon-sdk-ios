@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-
 @objc(BDNSdk)
 public final class BidonSdk: NSObject {
-    internal lazy var adaptersRepository = AdaptersRepository()
-    internal lazy var environmentRepository = EnvironmentRepository()
+    lazy var adaptersRepository = AdaptersRepository()
+    lazy var environmentRepository = EnvironmentRepository()
     
     public private(set) var isTestMode: Bool = false
     
@@ -57,6 +56,12 @@ public final class BidonSdk: NSObject {
     public static var baseURL: String {
         get { shared.networkManager.baseURL }
         set { shared.networkManager.baseURL = newValue }
+    }
+    
+    @objc
+    public static var HTTPHeaders: [String: String] {
+        get { shared.networkManager.HTTPHeaders }
+        set { shared.networkManager.HTTPHeaders = newValue } 
     }
     
     @objc
@@ -141,11 +146,15 @@ public final class BidonSdk: NSObject {
                 builder.withAdaptersRepository(self.adaptersRepository)
                 builder.withEnvironmentRepository(self.environmentRepository)
                 builder.withTestMode(self.isTestMode)
+                builder.withExt(BidonSdk.extras ?? [:])
             }
             
             self.networkManager.perform(request: request) { [unowned self] result in
                 switch result {
                 case .success(let response):
+                    ConfigParametersStorage.store(response.adaptersInitializationParameters)
+                    ConfigParametersStorage.store(response.bidding.tokenTimeoutMs)
+                    
                     AdaptersInitializator(
                         parameters: response.adaptersInitializationParameters,
                         respoitory: self.adaptersRepository
@@ -166,7 +175,6 @@ public final class BidonSdk: NSObject {
     
     func updateSegmentIfNeeded(_ segment: SegmentResponse?) {
         guard let segment = segment else { return }
-        environmentRepository.environment(SegmentManager.self).id = segment.id
         environmentRepository.environment(SegmentManager.self).uid = segment.uid
     }
 }

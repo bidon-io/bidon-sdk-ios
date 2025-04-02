@@ -19,7 +19,6 @@ protocol AdTypeContextRequestBuilder: BaseRequestBuilder {
 protocol AdTypeContext {
     associatedtype DemandProviderType: DemandProvider
     associatedtype AuctionRequestBuilderType: AuctionRequestBuilder where AuctionRequestBuilderType.Context == Self
-    associatedtype BidRequestBuilderType: BidRequestBuilder where BidRequestBuilderType.Context == Self
     associatedtype StatisticRequestBuilderType: StatisticRequestBuilder where StatisticRequestBuilderType.Context == Self
     associatedtype ImpressionRequestBuilderType: ImpressionRequestBuilder where ImpressionRequestBuilderType.Context == Self
     associatedtype NotificationRequestBuilderType: NotificationRequestBuilder where NotificationRequestBuilderType.Context == Self
@@ -27,9 +26,10 @@ protocol AdTypeContext {
     var adType: AdType { get }
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest
-    func bidRequest(build: (BidRequestBuilderType) -> ()) -> BidRequest
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest
     func statisticRequest(build: (StatisticRequestBuilderType) -> ()) -> StatisticRequest
     func notificationRequest(build: (NotificationRequestBuilderType) -> ()) -> NotificationRequest
     
+    func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>]
+    func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>]
 }

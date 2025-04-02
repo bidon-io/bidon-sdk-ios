@@ -16,11 +16,6 @@ protocol AuctionRound {
 }
 
 
-protocol AuctionOperation: Operation {
-    var auctionConfiguration: AuctionConfiguration { get }
-}
-
-
 struct Auction {
     private(set) var graph = DirectedAcyclicGraph<Operation>()
     
@@ -28,13 +23,13 @@ struct Auction {
         return graph.operations()
     }
     
-    mutating func addNode(_ operation: AuctionOperation) {
+    mutating func addNode(_ operation: AnyAuctionOperation) {
         try? graph.add(node: operation)
     }
     
     mutating func addEdge(
-        parent parentOperation: AuctionOperation,
-        child childOperation: AuctionOperation
+        parent parentOperation: AnyAuctionOperation,
+        child childOperation: AnyAuctionOperation
     ) {
         try? graph.addEdge(
             from: parentOperation,
@@ -46,25 +41,36 @@ struct Auction {
 
 struct AuctionConfiguration {
     var auctionId: String
-    var auctionConfigurationId: Int
     var auctionConfigurationUid: String
+    var auctionConfigurationId: Int
+    var adUnits: [AdUnitModel]
+    var segment: SegmentResponseModel?
+    var token: String?
+    var pricefloor: Price
+    var auctionTimeout: Float
+    var tokens: [BiddingDemandToken]
     var isExternalNotificationsEnabled: Bool
 }
 
-
 extension AuctionConfiguration {
-    init(auction: AuctionRequest.ResponseBody) {
-        self.auctionId = auction.auctionId
-        self.auctionConfigurationId = auction.auctionConfigurationId
-        self.isExternalNotificationsEnabled = auction.externalWinNotifications
-        self.auctionConfigurationUid = auction.auctionConfigurationUid
+    var timeoutInSeconds: TimeInterval {
+        return Date.MeasurementUnits.milliseconds
+            .convert(Double(auctionTimeout), to: .seconds)
     }
 }
 
 
-struct AuctionRoundConfiguration {
-    var roundId: String
-    var roundIndex: Int
-    var timeout: TimeInterval
+extension AuctionConfiguration {
+    init(auction: AuctionRequest.ResponseBody, tokens: [BiddingDemandToken]) {
+        self.auctionId = auction.auctionId
+        self.auctionConfigurationUid = auction.auctionConfigurationUid
+        self.auctionConfigurationId = auction.auctionConfigurationId
+        self.adUnits = auction.adUnits
+        self.segment = auction.segment
+        self.token = auction.token
+        self.pricefloor = auction.pricefloor
+        self.auctionTimeout = auction.auctionTimeout
+        self.tokens = tokens
+        self.isExternalNotificationsEnabled = auction.externalWinNotifications
+    }
 }
-

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-enum InterfaceOrientation: String, Encodable {
+enum InterfaceOrientation: String, Codable {
     case portrait
     case landscape
 }

@@ -19,7 +19,7 @@ class BaseAdWrapper: NSObject, AdWrapper {
 
 
 extension BaseAdWrapper: Bidon.AdObjectDelegate {
-    func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad) {
+    func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad, auctionInfo: AuctionInfo) {
         send(
             event: "Bidon did load ad",
             detail: ad.text,
@@ -27,9 +27,13 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
         adSubject.send(ad)
+        
+        Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
+        
+        Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
     }
     
-    func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error) {
+    func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         send(
             event: "Bidon did fail to load ad",
             detail: error.localizedDescription,
@@ -37,6 +41,8 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .red
         )
         adSubject.send(nil)
+        
+        Logger.debug("[Public API] [AUCTION] [LOAD] [ERROR]: \(auctionInfo.description ?? ""), error: \(error)")
     }
     
     func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
@@ -69,6 +75,8 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
         adSubject.send(nil)
+        
+        Logger.debug("[Public API] [AD] [SHOW]: \(ad.description() ?? "")")
     }
     
     func adObject(
@@ -94,5 +102,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             bage: "cart.fill",
             color: .primary
         )
+        
+        Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description(with: revenue) ?? "")")
     }
 }

@@ -34,3 +34,31 @@ class Atomic<Value> {
         }
     }
 }
+
+
+@propertyWrapper
+class BarrierAtomic<Value> {
+    private let queue = DispatchQueue(label: "com.bidon.barrierAtomic.queue", attributes: .concurrent)
+    private var value: Value
+
+    var projectedValue: BarrierAtomic<Value> { self }
+    
+    init(wrappedValue: Value) {
+        self.value = wrappedValue
+    }
+    
+    var wrappedValue: Value {
+        get {
+            return queue.sync { value }
+        }
+        set {
+            queue.sync(flags: .barrier) { value = newValue }
+        }
+    }
+    
+    func mutate(_ mutation: (inout Value) -> ()) {
+        queue.sync(flags: .barrier) {
+            mutation(&value)
+        }
+    }
+}

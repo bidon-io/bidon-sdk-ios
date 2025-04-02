@@ -21,7 +21,7 @@ DirectAdViewDemandSourceAdapter
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    public let identifier: String = DTExchangeDemandSourceAdapter.identifier
+    public let demandId: String = DTExchangeDemandSourceAdapter.identifier
     public let name: String = "DT Exchange"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = IASDKCore.sharedInstance().version()
@@ -43,22 +43,18 @@ DirectAdViewDemandSourceAdapter
 
 
 extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        public var appId: String
-    }
-    
     public var isInitialized: Bool {
         return IASDKCore.sharedInstance().isInitialised
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: DTExchangeParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdrpConsent)
+        IASDKCore.sharedInstance().gdprConsent = IAGDPRConsentType(context.regulations.gdpr)
         IASDKCore.sharedInstance().gdprConsentString = context.regulations.gdprConsentString
         IASDKCore.sharedInstance().ccpaString = context.regulations.usPrivacyString
-        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppaApplies)
+        IASDKCore.sharedInstance().coppaApplies = IACoppaAppliesType(context.regulations.coppa)
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in
@@ -79,11 +75,11 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
 
 
 extension IAGDPRConsentType {
-    init(_ status: Bidon.GDPRConsentStatus) {
+    init(_ status: Bidon.GDPRAppliesStatus) {
         switch status {
         case .unknown: self = .unknown
-        case .denied: self = .denied
-        case .given: self = .given
+        case .doesNotApply: self = .denied
+        case .applies: self = .given
         }
     }
 }

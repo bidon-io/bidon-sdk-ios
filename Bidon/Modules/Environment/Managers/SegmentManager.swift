@@ -9,9 +9,6 @@ import Foundation
 
 
 final class SegmentManager: Segment, Environment {
-    @UserDefaultOptional(Constants.UserDefaultsKey.segmentId)
-    var id: String?
-    
     @UserDefaultOptional(Constants.UserDefaultsKey.segmentUid)
     var uid: String?
     

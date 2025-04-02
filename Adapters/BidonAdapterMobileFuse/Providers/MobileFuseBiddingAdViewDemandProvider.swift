@@ -22,21 +22,22 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
         super.init()
     }
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MobileFuseBiddingPayload,
+        adUnitExtras: MobileFuseAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         if let banner = MFBannerAd(
-            placementId: data.placementId,
+            placementId: adUnitExtras.placementId,
             with: adSize
         ) {
             self.adView = banner
             self.response = response
             
             banner.register(self)
-            banner.load(withBiddingResponseToken: data.signal)
+            banner.load(withBiddingResponseToken: payload.signal)
         } else {
-            response(.failure(.unscpecifiedException))
+            response(.failure(.unscpecifiedException("Mapping Error")))
         }
     }
     

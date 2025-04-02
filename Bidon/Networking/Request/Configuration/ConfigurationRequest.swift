@@ -17,27 +17,33 @@ struct ConfigurationRequest: Request {
     var body: RequestBody?
     
     struct RequestBody: Encodable, Tokenized {
-        var test: Bool
-        var token: String?
+        let device: DeviceModel
+        let session: SessionModel
+        let app: AppModel
+        let user: UserModel
+        let regs: RegulationsModel
+        let adapters: AdaptersInfo
         var ext: String?
-        var adapters: AdaptersInfo
-        var app: AppModel
-        var regs: RegulationsModel
-        var session: SessionModel
-        var user: UserModel
-        var device: DeviceModel
-        var segment: SegmentModel
+        var token: String?
+        let test: Bool
     }
     
     struct ResponseBody: Decodable, Tokenized {
-        var adaptersInitializationParameters: AdaptersInitialisationParameters
+        struct Bidding: Decodable {
+            var tokenTimeoutMs: TimeInterval
+        }
+        let adaptersInitializationParameters: AdaptersInitialisationParameters
+        let placements: [PlacementModel]
+        let segment: SegmentResponseModel?
         var token: String?
-        var segment: SegmentResponseModel?
+        let bidding: Bidding
         
         enum CodingKeys: String, CodingKey {
             case adaptersInitializationParameters = "init"
             case token = "token"
             case segment
+            case placements
+            case bidding
         }
     }
 }
@@ -49,15 +55,14 @@ extension ConfigurationRequest {
         build(builder)
         
         self.body = RequestBody(
-            test: builder.testMode,
-            ext: builder.encodedExt,
-            adapters: builder.adapters,
-            app: builder.app,
-            regs: builder.regulations,
-            session: builder.session,
-            user: builder.user,
             device: builder.device,
-            segment: builder.segment
+            session: builder.session, 
+            app: builder.app,
+            user: builder.user,
+            regs: builder.regulations,
+            adapters: builder.adapters,
+            ext: builder.encodedExt,
+            test: builder.testMode
         )
     }
 }

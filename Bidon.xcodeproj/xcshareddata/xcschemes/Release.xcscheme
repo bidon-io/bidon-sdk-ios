@@ -188,6 +188,76 @@
                ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "495FB5132C637D080023E8A0"
+               BuildableName = "BidonAdapterMyTarget.framework"
+               BlueprintName = "BidonAdapterMyTarget"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "495CD3252C7761B700590AAD"
+               BuildableName = "BidonAdapterChartboost.framework"
+               BlueprintName = "BidonAdapterChartboost"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49088BF12C6A4E870024A640"
+               BuildableName = "BidonAdapterIronSource.framework"
+               BlueprintName = "BidonAdapterIronSource"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "426827292A5D84B20084A48D"
+               BuildableName = "BidonAdapterMobileFuse.framework"
+               BlueprintName = "BidonAdapterMobileFuse"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49D69C9E2C6CB4ED007EF1F8"
+               BuildableName = "BidonAdapterYandex.framework"
+               BlueprintName = "BidonAdapterYandex"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

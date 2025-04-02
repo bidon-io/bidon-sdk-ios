@@ -14,63 +14,66 @@ import XCTest
 extension ConcurrentAuctionControllerTestCase {
     func testAuctionSuccessWithMixedDemand() {
         var result: TestAuctionResult!
-        
+
         let pricefloor = self.pricefloor!
         let expectation = XCTestExpectation(description: "Wait for auciton complete")
         let timeout: TimeInterval = 5
-        
+
         let demandId1 = "demand_id_1"
-        let biddingToken1 = "bidding_token_1"
-        let biddingPayload1 = "bidding_payload_1"
-        let eCPM1 = pricefloor * 1.5
+        let biddingToken1: TestBiddingToken = "bidding_token_1"
+        let biddingPayload1: TestBiddingPayload = "bidding_payload_1"
+        let price1 = pricefloor * 1.5
+        let adUnit1 = TestAdUnit(
+            demandId: demandId1,
+            demandType: .bidding,
+            pricefloor: .unknown,
+            extras: "some_bidding_extras"
+        )
         
         let demandId2 = "demand_id_2"
-        let eCPM2 = pricefloor * 3
-        let eCPM3 = pricefloor * 2.7
-
+        let price2 = pricefloor * 3
+        let adUnit2 = TestAdUnit(
+            demandId: demandId2,
+            demandType: .direct,
+            pricefloor: .unknown,
+            extras: "some_pricfloor_extras"
+        )
+        
         let demandId3 = "demand_id_3"
-        let eCPM4 = pricefloor * 1.2
+        let price3 = pricefloor * 1.2
 
-        let lineItem1 = LineItemModel(
-            id: demandId2,
-            uid: UUID().uuidString,
-            pricefloor: eCPM2,
-            adUnitId: "ad_unit_id_1"
-        )
-        
-        let lineItem2 = LineItemModel(
-            id: demandId2,
-            uid: UUID().uuidString,
-            pricefloor: eCPM3,
-            adUnitId: "ad_unit_id_2"
-        )
-        
+        let adUnit3 = TestAdUnit(
+           demandId: demandId3,
+           demandType: .direct,
+           pricefloor: price3,
+           extras: "some_cpm_extras"
+       )
+
         let adapterMock1 = AdapterMock(
-            id: demandId1,
-            provider: SomeParameterizedBiddingDemandProviderMock.self
+            demandId: demandId1,
+            provider: TestBiddingDemandProviderMock.self
         ) { builder in
-            builder.withBiddingContextSuccess(biddingToken1)
+            builder.withBiddingToken(biddingToken1)
             builder.withExpectedPayload(biddingPayload1)
-            builder.withStubbedPrepareSuccess(eCPM: eCPM1)
+            builder.withStubbedDemandAd(price: price1)
         }
-        
+
         let adapterMock2 = AdapterMock(
-            id: demandId2,
-            provider: DirectDemandProviderMock.self
+            demandId: demandId2,
+            provider: TestDirectDemandProviderMock.self
         ) { builder in
-            builder.withExpectedLineItem(lineItem2)
-            builder.withStubbedLoadSuccess(eCPM: lineItem2.pricefloor)
+            builder.withExpectedAdUnitExtras(adUnit2.extras)
+            builder.withStubbedDemandAd(price: price2)
         }
-        
+
         let adapterMock3 = AdapterMock(
-            id: demandId3,
-            provider: ProgrammaticDemandProviderMock.self
+            demandId: demandId3,
+            provider: TestDirectDemandProviderMock.self
         ) { builder in
-            builder.withExpectedPricefloor(pricefloor)
-            builder.withStubbedBidSuccess(eCPM: eCPM4)
-            builder.withStubbedFillSuccess()
+            builder.withExpectedAdUnitExtras(adUnit3.extras)
+            builder.withStubbedDemandAd(price: price3)
         }
-        
+
         adaptersRepository.register(adapter: adapterMock1)
         adaptersRepository.register(adapter: adapterMock2)
         adaptersRepository.register(adapter: adapterMock3)
@@ -83,72 +86,64 @@ extension ConcurrentAuctionControllerTestCase {
                 bidding: [demandId1]
             )
         ]
-        
+
         let request = BidRequest(route: .bid)
-        let response = BidRequest.ResponseBody(raw: [
-            "bids": [
-                [
-                    "id": UUID().uuidString,
-                    "impid": UUID().uuidString,
-                    "price": eCPM1,
-                    "demands": [
-                        demandId1: [
-                            "payload": biddingPayload1
-                        ]
-                    ]
-                ] as [String : Any]
-            ]
-        ]
-        )!
-        
+        let response = BidRequest.ResponseBody(bids: [
+            TestServerBid(price: price1, adUnit: adUnit1, ext: biddingPayload1)
+        ])
+
         stubBidRequest(request) { builder in
             XCTAssertEqual(builder.biddingToken(for: demandId1), biddingToken1)
-            XCTAssertEqual(builder.demandsCount, 1)
+            XCTAssertEqual(builder.tokensCount, 1)
         }
-        
+
         stubBidResponseSuccess(
             request: request,
             response: response
         )
-        
+
         controller = controller(
             rounds: rounds,
-            lineItems: [
-                lineItem1,
-                lineItem2
-            ]
+            adUnits: [
+                adUnit1,
+                adUnit2,
+                adUnit3
+            ].map { $0.adUnit }
         )
-        
+
         controller.load {
             result = $0
             expectation.fulfill()
         }
-        
+
         wait(for: [expectation], timeout: timeout)
-        
+
         XCTAssertTrue(result.isSuccess, "Auction result is expected to be success")
-        
-        let report = mediationObserver.report
-        
+
+        let report = auctionObserver.report
+
         XCTAssertEqual(report.result.status, .success)
-        XCTAssertEqual(report.result.winnerECPM, eCPM3)
-        XCTAssertEqual(report.result.winnerDemandId, demandId2)
-        XCTAssertEqual(report.result.winnerAdUnitId, lineItem2.adUnitId)
-        XCTAssertEqual(report.result.demandType, "cpm")
+        XCTAssertEqual(report.result.winner?.price, price2)
+        XCTAssertEqual(report.result.winner?.adUnit.uid, adUnit2.uid)
+        XCTAssertEqual(report.result.winner?.adUnit.demandId, adUnit2.demandId)
+        XCTAssertEqual(report.result.winner?.adUnit.demandType, .direct)
+        XCTAssertNotZero(report.result.startTimestamp)
+        XCTAssertNotZero(report.result.finishTimestamp)
 
         XCTAssertEqual(report.rounds.count, 1)
-        XCTAssertEqual(report.rounds[0].roundId, rounds[0].id)
+        XCTAssertEqual(report.rounds[0].configuration.roundId, rounds[0].id)
         XCTAssertEqual(report.rounds[0].demands.count, 2)
-        
-        XCTAssertEqual(report.rounds[0].sortedDemands[0].demandId, demandId2)
-        XCTAssertEqual(report.rounds[0].sortedDemands[0].eCPM, eCPM3)
+
+        XCTAssertEqual(report.rounds[0].sortedDemands[0].adUnit?.uid, adUnit2.uid)
+        XCTAssertEqual(report.rounds[0].sortedDemands[0].bid?.price, price2)
         XCTAssertEqual(report.rounds[0].sortedDemands[0].status.stringValue, "WIN")
 
-        XCTAssertEqual(report.rounds[0].sortedDemands[1].demandId, demandId3)
-        XCTAssertEqual(report.rounds[0].sortedDemands[1].eCPM, eCPM4)
+        XCTAssertEqual(report.rounds[0].sortedDemands[1].adUnit?.uid, adUnit3.uid)
+        XCTAssertEqual(report.rounds[0].sortedDemands[1].adUnit?.demandId, adUnit3.demandId)
+        XCTAssertEqual(report.rounds[0].sortedDemands[1].bid?.price, price3)
         XCTAssertEqual(report.rounds[0].sortedDemands[1].status.stringValue, "LOSE")
-        
-        XCTAssertEqual(report.rounds[0].bidding?.bids[0].demandId, demandId1)
-        XCTAssertEqual(report.rounds[0].bidding?.bids[0].status.stringValue, "LOSE")
+
+        XCTAssertEqual(report.rounds[0].bidding?.demands[0].demandId, demandId1)
+        XCTAssertEqual(report.rounds[0].bidding?.demands[0].status.stringValue, "LOSE")
     }
 }

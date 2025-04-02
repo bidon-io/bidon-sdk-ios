@@ -9,13 +9,13 @@ import Foundation
 
 
 struct UnknownAdapter: Adapter, Hashable {
-    var identifier: String
+    var demandId: String
     var name: String
     var adapterVersion: String
     var sdkVersion: String
     
-    init(identifier: String) {
-        self.identifier = identifier
+    init(demandId: String) {
+        self.demandId = demandId
         self.name = "Unknown"
         self.adapterVersion = ""
         self.sdkVersion = ""

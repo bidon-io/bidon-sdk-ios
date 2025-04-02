@@ -16,11 +16,11 @@ final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBase
         GAMInterstitialAd.load(
             withAdManagerAdUnitID: adUnitId,
             request: request
-        ) { [weak self] interstitial, _ in
+        ) { [weak self] interstitial, error in
             guard let self = self else { return }
             
             guard let interstitial = interstitial else {
-                self.handleDidFailToLoad(.noFill)
+                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
             

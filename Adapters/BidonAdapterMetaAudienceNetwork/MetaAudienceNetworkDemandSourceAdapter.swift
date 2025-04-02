@@ -20,7 +20,7 @@ BiddingAdViewDemandSourceAdapter
 @objc final public class MetaAudienceNetworkDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "meta"
     
-    public let identifier: String = MetaAudienceNetworkDemandSourceAdapter.identifier
+    public let demandId: String = MetaAudienceNetworkDemandSourceAdapter.identifier
     public let name: String = "MetaAudienceNetwork"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = FB_AD_SDK_VERSION
@@ -45,13 +45,8 @@ BiddingAdViewDemandSourceAdapter
 
 
 extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var placements: [String]?
-        var mediationService: String?
-    }
-    
     public func initialize(
-        parameters: Parameters,
+        parameters: MetaAudienceNetworkParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         FBAdSettings.setLogLevel(.current)
@@ -60,7 +55,7 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
             FBAdSettings.setAdvertiserTrackingEnabled(ATTrackingManager.isAdvertiserTrackingEnabled)
         }
         
-        switch context.regulations.coppaApplies {
+        switch context.regulations.coppa {
         case .no:
             FBAdSettings.isMixedAudience = false
         case .yes:
@@ -78,14 +73,14 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
-            completion(result.isSuccess ? SdkError.message(result.message) : nil)
+            completion(result.isSuccess ? nil : SdkError.message(result.message))
         }
     }
 }
 
 
 fileprivate extension FBAdInitSettings {
-    convenience init?(parameters: MetaAudienceNetworkDemandSourceAdapter.Parameters) {
+    convenience init?(parameters: MetaAudienceNetworkParameters) {
         guard
             let mediationService = parameters.mediationService
         else { return nil }

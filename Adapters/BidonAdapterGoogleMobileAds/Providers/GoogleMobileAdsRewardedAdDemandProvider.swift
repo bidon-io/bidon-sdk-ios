@@ -15,11 +15,11 @@ final class GoogleMobileAdsRewardedAdDemandProvider: GoogleMobileAdsBaseDemandPr
     weak var rewardDelegate: DemandProviderRewardDelegate?
     
     override func loadAd(_ request: GADRequest, adUnitId: String) {
-        GADRewardedAd.load(withAdUnitID: adUnitId, request: request) { [weak self] rewardedAd, _ in
+        GADRewardedAd.load(withAdUnitID: adUnitId, request: request) { [weak self] rewardedAd, error in
             guard let self = self else { return }
             
             guard let rewardedAd = rewardedAd else {
-                self.handleDidFailToLoad(.noFill)
+                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
             

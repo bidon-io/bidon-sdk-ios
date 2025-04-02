@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import BidMachine
-import BidMachineApiCore
 import Bidon
 
 
@@ -18,12 +17,13 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
     
-    var placementFormat: BidMachineApiCore.PlacementFormat {
+    var placementFormat: PlacementFormat {
         fatalError("Base demand provider doesn't provide placement format")
     }
     
     internal var response: DemandProviderResponse?
-    
+    internal var ad: AdObject?
+
     func didLoadAd(_ ad: BidMachineAdProtocol) {
         defer { response = nil }
         
@@ -32,12 +32,12 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
             response?(.success(wrapper))
             
         } else {
-            response?(.failure(.unscpecifiedException))
+            response?(.failure(.unscpecifiedException("Mapping Error")))
         }
     }
     
     func didFailLoadAd(_ ad: BidMachineAdProtocol, _ error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
     }
     
     func didPresentAd(_ ad: BidMachineAdProtocol) {
@@ -82,14 +82,14 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     func didDismissScreen(_ ad: BidMachineAdProtocol) {}
     func didTrackInteraction(_ ad: BidMachineAdProtocol) {}
     
-    func notify(ad: AdType, event: AuctionEvent) {
+    func notify(ad: AdType, event: DemandProviderEvent) {
         switch event {
         case .win:
             BidMachineSdk.shared.notifyMediationWin(ad.ad)
-        case .lose(let winner, let eCPM):
+        case .lose(let demandId, let winner, let price):
             BidMachineSdk.shared.notifyMediationLoss(
-                winner.networkName,
-                eCPM,
+                winner.networkName ?? demandId,
+                price,
                 ad.ad
             )
         }

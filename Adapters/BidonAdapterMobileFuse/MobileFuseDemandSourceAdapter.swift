@@ -26,12 +26,15 @@ BiddingAdViewDemandSourceAdapter
         case failed
     }
     
-    public let identifier: String = MobileFuseDemandSourceAdapter.identifier
+    public let demandId: String = MobileFuseDemandSourceAdapter.identifier
     public let name: String = "MobileFuse"
     public var adapterVersion: String = "0"
     public var sdkVersion: String = MobileFuse.version()
     
     var state = InitializationState.idle
+    
+    @Injected(\.context)
+    var context: SdkContext
     
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MobileFuseBiddingInterstitialDemandProvider()
@@ -47,12 +50,7 @@ BiddingAdViewDemandSourceAdapter
 }
 
 
-extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var appKey: String?
-        var publisherId: String?
-    }
-    
+extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {    
     public var isInitialized: Bool {
         switch state {
         case .ready:
@@ -63,9 +61,16 @@ extension MobileFuseDemandSourceAdapter: ParameterizedInitializableAdapter {
     }
     
     public func initialize(
-        parameters: Parameters,
+        parameters: MobileFuseParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
+        let privacyPreferences = MobileFusePrivacyPreferences()
+        privacyPreferences?.setSubjectToCoppa(context.regulations.coppa == .yes)
+        privacyPreferences?.setUsPrivacyConsentString(context.regulations.usPrivacyString)
+        
+        if let privacyPreferences {
+            MobileFuse.setPrivacyPreferences(privacyPreferences)
+        }
         guard
             let appId = parameters.appKey,
             let publisherId = parameters.publisherId

@@ -14,14 +14,6 @@ extension FBInterstitialAd: DemandAd {
     public var id: String {
         return placementID
     }
-    
-    public var networkName: String {
-        return MetaAudienceNetworkDemandSourceAdapter.identifier
-    }
-    
-    public var dsp: String? {
-        return nil
-    }
 }
 
 
@@ -30,17 +22,18 @@ final class MetaAudienceNetworkBiddingInterstitialDemandProvider: MetaAudienceNe
     
     private var response: DemandProviderResponse?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let interstitial = FBInterstitialAd(placementID: data.placementId)
+        let interstitial = FBInterstitialAd(placementID: adUnitExtras.placementId)
         interstitial.delegate = self
         
         self.interstitial = interstitial
         self.response = response
         
-        interstitial.load(withBidPayload: data.payload)
+        interstitial.load(withBidPayload: payload.payload)
     }
 }
 
@@ -70,7 +63,7 @@ extension MetaAudienceNetworkBiddingInterstitialDemandProvider: FBInterstitialAd
     }
     
     func interstitialAd(_ interstitialAd: FBInterstitialAd, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

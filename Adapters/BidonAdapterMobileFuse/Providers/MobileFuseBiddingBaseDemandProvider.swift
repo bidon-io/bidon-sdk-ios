@@ -11,17 +11,11 @@ import Bidon
 
 
 extension MFAd: DemandAd {
-    public var id: String { instanceId() }
-    public var networkName: String { MobileFuseDemandSourceAdapter.identifier }
-    public var dsp: String? { nil }
+    public var id: String { instanceId }
 }
 
 
-class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, ParameterizedBiddingDemandProvider, IMFAdCallbackReceiver {
-    struct BiddingContext: Codable {
-        var token: String
-    }
-    
+class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, BiddingDemandProvider, IMFAdCallbackReceiver {
     struct BiddingResponse: Decodable {
         var placementId: String
         var signal: String
@@ -40,8 +34,9 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
     @Injected(\.context)
     var context: SdkContext
     
-    final func fetchBiddingContext(
-        response: @escaping (Result<BiddingContext, MediationError>) -> ()
+    func collectBiddingToken(
+        biddingTokenExtras: MobileFuseBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let request = MFBiddingTokenRequest()
         request.isTestMode = context.isTestMode
@@ -50,7 +45,7 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
             context.regulations.usPrivacyString.map(preferences.setUsPrivacyConsentString)
             context.regulations.gdprConsentString.map(preferences.setIabConsentString)
             
-            switch context.regulations.coppaApplies {
+            switch context.regulations.coppa {
             case .yes: preferences.setSubjectToCoppa(true)
             case .no: preferences.setSubjectToCoppa(false)
             default: break
@@ -60,13 +55,13 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
         }
                 
         MFBiddingTokenProvider.getTokenWith(request) { token in
-            let context = BiddingContext(token: token)
-            response(.success(context))
+            response(.success(token))
         }
     }
     
-    func prepareBid(
-        data: BiddingResponse,
+    func load(
+        payload: MobileFuseBiddingPayload,
+        adUnitExtras: MobileFuseAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         fatalError("MobileFuseBiddingBaseDemandProvider is unable to prepare bid")
@@ -74,7 +69,7 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
     
     func notify(
         ad: DemandAdType,
-        event: Bidon.AuctionEvent
+        event: Bidon.DemandProviderEvent
     ) {}
     
     final func onAdLoaded(_ ad: MFAd!) {
@@ -85,13 +80,13 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Paramet
     
     final func onAdNotFilled(_ ad: MFAd!) {
         guard let _ = ad as? DemandAdType else { return }
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(nil)))
         response = nil
     }
     
     final func onAdError(_ ad: MFAd!, withError error: MFAdError!) {
         guard let _ = ad as? DemandAdType else { return }
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

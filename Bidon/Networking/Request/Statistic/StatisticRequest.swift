@@ -16,16 +16,15 @@ struct StatisticRequest: Request {
     var body: RequestBody?
     
     struct RequestBody: Encodable, Tokenized {
-        var device: DeviceModel
-        var session: SessionModel
-        var app: AppModel
-        var user: UserModel
-        var regs: RegulationsModel
-        var segment: SegmentModel
+        let stats: EncodableAuctionReportModel
+        let device: DeviceModel
+        let session: SessionModel
+        let app: AppModel
+        let user: UserModel
+        let regs: RegulationsModel
         var ext: String?
-        var test: Bool
+        let segment: SegmentModel
         var token: String?
-        var stats: MediationAttemptReportCodableModel
     }
     
     struct ResponseBody: Decodable, Tokenized {
@@ -42,15 +41,14 @@ extension StatisticRequest {
         
         self.route = builder.route
         self.body = RequestBody(
+            stats: builder.stats,
             device: builder.device,
             session: builder.session,
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
-            segment: builder.segment,
             ext: builder.encodedExt,
-            test: builder.testMode,
-            stats: builder.stats
+            segment: builder.segment
         )
     }
 }
@@ -58,6 +56,27 @@ extension StatisticRequest {
 
 extension StatisticRequest: Equatable {
     static func == (lhs: StatisticRequest, rhs: StatisticRequest) -> Bool {
-        return lhs.body?.stats.auctionId == rhs.body?.stats.auctionId
+        return lhs.body?.stats.configuration.auctionId == rhs.body?.stats.configuration.auctionId
+    }
+}
+
+extension AuctionRoundReportModel {
+    
+    func adUnits(winner: AnyAdUnit?) -> [EncodableAuctionReportModel.EncodableAuctionAdUnit] {
+        let allDemands = self.demands + (self.bidding?.demands ?? [])
+        return allDemands.map { demand in
+            return EncodableAuctionReportModel.EncodableAuctionAdUnit(
+                price: demand.bid?.price ?? demand.adUnit?.pricefloor,
+                tokenStart: demand.tokenStartTimestamp,
+                tokenFinish: demand.tokenFinishTimestamp,
+                fillStart: demand.startTimestamp,
+                fillFinish: demand.finishTimestamp,
+                demandId: demand.demandId,
+                bidType: demand.adUnit?.bidType ?? .direct,
+                adUnitUid: demand.adUnit?.uid ?? "",
+                adUnitLabel: demand.adUnit?.label ?? "",
+                status: demand.status
+            )
+        }
     }
 }

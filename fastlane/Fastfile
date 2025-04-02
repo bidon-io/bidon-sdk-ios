@@ -6,9 +6,11 @@ fastlane_require "dotenv"
 $root_dir = File.expand_path(Dir.pwd + "/..")
 $build_dir = File.expand_path($root_dir + "/build")
 $podspecs_dir = $build_dir + "/Podspecs"
+$development_podspec_dir = $root_dir
 $scheme = "Release"
 $targets = [
   "Bidon",
+  "BidonAdapterAmazon",
   "BidonAdapterBidMachine",
   "BidonAdapterGoogleAdManager",
   "BidonAdapterGoogleMobileAds",
@@ -20,7 +22,12 @@ $targets = [
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
   "BidonAdapterInMobi",
-  "BidonAdapterAmazon"
+  "BidonAdapterAmazon",
+  "BidonAdapterChartboost",
+  "BidonAdapterYandex",
+  "BidonAdapterIronSource",
+  "BidonAdapterMyTarget",
+  "BidonAdapterMobileFuse"
 ]
 
 # Defenitions ###
@@ -133,6 +140,33 @@ platform :ios do
         path: $podspecs_dir,
         vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
         is_adapter: is_adapter,
+      )
+    end
+  end
+
+  desc "Build podspecs for development pod"
+  lane :development_podspecs do |options|
+    raise "No SDK version specified".red if options[:version].nil?
+
+    version = options[:version]
+    adapters_version = options[:adapters_version] || version + ".1"
+
+    $targets.each do |target|
+      is_adapter = target.start_with?("BidonAdapter")
+      ver = is_adapter ? adapters_version : version
+      path = is_adapter ? "/Adapters/#{target}" : ""
+
+      podspec(
+        name: target,
+        version: ver,
+        sdk_version: version,
+        podfile: $root_dir + "/Podfile",
+        s3_region: ENV["S3_REGION"],
+        s3_bucket: ENV["S3_BUCKET"],
+        path: is_adapter  ? $development_podspec_dir + "/Adapters" : $development_podspec_dir,
+        vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
+        is_adapter: is_adapter,
+        is_development_pod: true
       )
     end
   end

@@ -15,8 +15,8 @@ protocol FullscreenAdManager: AnyObject {
 
 
 protocol FullscreenAdManagerDelegate: AnyObject {
-    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError)
-    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad)
+    func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
+    func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo)
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError)
     func adManager(_ adManager: FullscreenAdManager, didExpire ad: Ad)
     func adManager(_ adManager: FullscreenAdManager, willPresent ad: Ad)
@@ -27,11 +27,12 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 }
 
 
-final class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType>: NSObject, FullscreenAdManager where
+final class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>: NSObject, FullscreenAdManager where
 AdTypeContextType: AdTypeContext,
 AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AdTypeContextType>,
 ImpressionControllerType: FullscreenImpressionController,
-ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType> {
+ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType>,
+AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     
     fileprivate typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
@@ -56,7 +57,6 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
     
     private weak var delegate: (any FullscreenAdManagerDelegate)?
     
-    private let placement: String
     private let context: AdTypeContextType
     
     private lazy var adRevenueObserver: AdRevenueObserver = {
@@ -82,26 +82,163 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         }
     }
     
-    lazy var extras: [String : AnyHashable] = [:]
+    private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    lazy var extras: [String : AnyHashable] = BidonSdk.extras ?? [:]
+    private var auctionStartTimestamp: TimeInterval?
     
+    var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
+        
     init(
         context: AdTypeContextType,
-        placement: String,
         delegate: (any FullscreenAdManagerDelegate)?
     ) {
         self.delegate = delegate
         self.context = context
-        self.placement = placement
         super.init()
     }
     
-    func loadAd(pricefloor: Price) {
+    func loadAd(pricefloor: Price, auctionKey: String?) {
         guard state.isIdle else {
             Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
             return
         }
         
-        fetchAuctionInfo(pricefloor)
+        fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
+    }
+    
+    private func fetchAuctionInfo(_ pricefloor: Price, auctionKey: String?) {
+        auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
+        
+        state = .preparing
+        auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
+        
+        guard let configParameters = ConfigParametersStorage.adaptersInitializationParameters else {
+            self.state = .idle
+            Logger.warning("No adapters were found")
+            self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"), auctionInfo: auctionInfo)
+            return
+        }
+        
+        let demands = configParameters.adapters.map({ $0.demandId })
+        
+        let builder = DemandsTokensManagerBuilder<AdTypeContextType>()
+        builder.withDemands(demands)
+        builder.withAdapters(context.fullscreenAdapters())
+        builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
+        builder.withContext(context)
+        
+        let demandsManager = DemandsTokensManager<AdTypeContextType>(builder: builder)
+        self.demandsTokensManager = demandsManager
+        
+        demandsManager.load(initializationParameters: configParameters) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let tokens):
+                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey)
+            case .failure(let error):
+                self.state = .idle
+                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+            }
+        }
+    }
+    
+    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
+        let request = self.context.auctionRequest { builder in
+            builder.withBiddingTokens(tokens)
+            builder.withPricefloor(pricefloor)
+            builder.withAdaptersRepository(self.sdk.adaptersRepository)
+            builder.withEnvironmentRepository(self.sdk.environmentRepository)
+            builder.withTestMode(self.sdk.isTestMode)
+            builder.withAuctionId(UUID().uuidString)
+            builder.withExt(self.extras)
+            builder.withAuctionKey(auctionKey)
+        }
+        
+        Logger.verbose("Fullscreen ad manager performs request: \(request)")
+        
+        networkManager.perform(
+            request: request
+        ) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch (self.state, result) {
+            case (.preparing, .success(let response)):
+                self.auctionInfo.auctionId = response.auctionId
+                self.auctionInfo.auctionConfigurationId = NSNumber(value: response.auctionConfigurationId)
+                self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
+                self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
+                self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)
+                
+                self.sdk.updateSegmentIfNeeded(response.segment)
+                self.performAuction(response, tokens: tokens)
+            case (.preparing, .failure(let error)):
+                self.state = .idle
+                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+            default:
+                break
+            }
+        }
+    }
+    
+    private func performAuction(_ auctionInfo: AuctionInfo, tokens: [BiddingDemandToken]) {
+        Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
+        
+        let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
+        
+        let observer = BaseAuctionObserver(
+            configuration: configuration,
+            adType: context.adType
+        )
+        if let auctionStartTimestamp {
+            observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+        }
+        
+        let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
+
+        let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
+            builder.withAdaptersRepository(sdk.adaptersRepository)
+            builder.withAdUnitProvider(provider)
+            builder.withAuctionObserver(observer)
+            builder.withPricefloor(auctionInfo.pricefloor)
+            builder.withAdRevenueObserver(self.adRevenueObserver)
+            builder.withContext(context)
+            builder.withAuctionConfiguration(configuration)
+        }
+        
+        state = .auction(controller: auction)
+        
+        auction.load { [unowned observer, weak self] result in
+            guard let self = self else { return }
+            
+            self.sendAuctionReport(observer.report)
+            var allDemands = observer.report.round.demands
+            if let biddingDemands = observer.report.round.bidding?.demands {
+                allDemands += biddingDemands
+            }
+            self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
+            
+            switch result {
+            case .success(let bid):
+                adRevenueObserver.observe(bid)
+                let controller = ImpressionControllerType(bid: bid)
+                controller.delegate = self
+                self.state = .ready(controller: controller)
+                let ad = AdContainer(bid: bid)
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                }
+            case .failure(let error):
+                self.state = .idle
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                }
+            }
+        }
     }
     
     func notifyWin() {
@@ -113,6 +250,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             // regardless of whether a request was sent
             guard controller.impression.isTrackingAllowed(.win) else { return }
             defer { controller.impression.markTrackedIfNeeded(.win) }
+            
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
                   
             let request = context.notificationRequest { builder in
@@ -139,7 +277,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         switch state {
         case .preparing:
             state = .idle
-            delegate?.adManager(self, didFailToLoad: .cancelled)
+            delegate?.adManager(self, didFailToLoad: .cancelled, auctionInfo: self.auctionInfo)
         case .auction(let controller):
             controller.cancel()
         case .ready(let controller):
@@ -152,6 +290,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 controller.impression.markTrackedIfNeeded(.loss)
                 state = .idle
             }
+            
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
             
             let request = context.notificationRequest { builder in
@@ -160,7 +299,7 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
                 builder.withTestMode(sdk.isTestMode)
                 builder.withExt(extras)
                 builder.withImpression(controller.impression)
-                builder.withExternalWinner(demandId: demandId, eCPM: eCPM)
+                builder.withExternalWinner(demandId: demandId, price: eCPM)
             }
 
             networkManager.perform(request: request) { result in
@@ -168,40 +307,6 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
             }
         default:
             break
-        }
-    }
-    
-    private func fetchAuctionInfo(_ pricefloor: Price) {
-        state = .preparing
-        
-        let request = context.auctionRequest { builder in
-            builder.withPlacement(placement)
-            builder.withPricefloor(pricefloor)
-            builder.withAdaptersRepository(sdk.adaptersRepository)
-            builder.withEnvironmentRepository(sdk.environmentRepository)
-            builder.withTestMode(sdk.isTestMode)
-            builder.withAuctionId(UUID().uuidString)
-            builder.withExt(extras)
-        }
-        
-        Logger.verbose("Fullscreen ad manager performs request: \(request)")
-        
-        networkManager.perform(
-            request: request
-        ) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch (self.state, result) {
-            case (.preparing, .success(let response)):
-                self.sdk.updateSegmentIfNeeded(response.segment)
-                self.performAuction(response)
-            case (.preparing, .failure(let error)):
-                self.state = .idle
-                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error))
-            default:
-                break
-            }
         }
     }
     
@@ -215,63 +320,12 @@ ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderTyp
         }
     }
     
-    private func performAuction(_ auctionInfo: AuctionInfo) {
-        Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
-        
-        let auctionConfiguration = AuctionConfiguration(auction: auctionInfo)
-        
-        let observer = BaseMediationObserver(
-            auctionId: auctionInfo.auctionId,
-            adType: context.adType
-        )
-        
-        let elector = StrictAuctionLineItemElector(lineItems: auctionInfo.lineItems)
-        
-        let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
-            builder.withAdaptersRepository(sdk.adaptersRepository)
-            builder.withRounds(auctionInfo.rounds)
-            builder.withElector(elector)
-            builder.withMediationObserver(observer)
-            builder.withPricefloor(auctionInfo.pricefloor)
-            builder.withAdRevenueObserver(self.adRevenueObserver)
-            builder.withContext(context)
-            builder.withAuctionConfiguration(auctionConfiguration)
-        }
-        
-        auction.load { [unowned observer, weak self] result in
-            guard let self = self else { return }
-            
-            self.sendAuctionStatistics(
-                observer.report,
-                auctionConfiguration: auctionConfiguration
-            )
-            
-            switch result {
-            case .success(let bid):
-                let controller = ImpressionControllerType(bid: bid)
-                controller.delegate = self
-                self.state = .ready(controller: controller)
-                let ad = AdContainer(bid: bid)
-                
-                self.delegate?.adManager(self, didLoad: ad)
-            case .failure(let error):
-                self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: error)
-            }
-        }
-        
-        state = .auction(controller: auction)
-    }
-    
-    private func sendAuctionStatistics<T: MediationAttemptReport>(
-        _ report: T,
-        auctionConfiguration: AuctionConfiguration
-    ) {
+    private func sendAuctionReport<T: AuctionReport>(_ report: T) {
         let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
-            builder.withMediationReport(report, auctionConfiguration: auctionConfiguration)
+            builder.withAuctionReport(report)
         }
         
         networkManager.perform(request: request) { result in

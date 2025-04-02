@@ -25,20 +25,21 @@ struct HTTPTask {
         case networking(Error)
     }
     
-    enum HTTPHeader: String {
-        case contentType = "Content-Type"
-        case accept = "Accept"
-        case sdkVersion = "X-Bidon-Version"
-        case retryAfter = "Retry-After"
+    enum HTTPHeader {
+        case contentType
+        case accept
+        case sdkVersion
+        case retryAfter
+        case custom(String)
     }
     
-    var baseURL: String
-    var route: Route
-    var body: Data?
-    var method: HTTPMethod
-    var timeout: TimeInterval
-    var headers: HTTPHeaders
-    var completion: (Result<Data, HTTPError>) -> ()
+    let baseURL: String
+    let route: Route
+    let body: Data?
+    let method: HTTPMethod
+    let timeout: TimeInterval
+    let headers: HTTPHeaders
+    let completion: (Result<Data, HTTPError>) -> ()
     
     func resume() {
         guard let url = URL(string: baseURL).map({ route.url($0) }) else {
@@ -54,7 +55,7 @@ struct HTTPTask {
         )
         
         headers.forEach { header, value in
-            request.addValue(value, forHTTPHeaderField: header.rawValue)
+            request.addValue(value, forHTTPHeaderField: header.stringValue)
         }
         
         request.httpMethod = method.rawValue
@@ -84,9 +85,26 @@ struct HTTPTask {
 
 private extension HTTPURLResponse {
     var retryAfterSeconds: TimeInterval? {
-        return allHeaderFields[HTTPTask.HTTPHeader.retryAfter.rawValue]
+        return allHeaderFields[HTTPTask.HTTPHeader.retryAfter.stringValue]
             .flatMap { $0 as? String }
             .flatMap { Double($0) }
             .map { Date.MeasurementUnits.milliseconds.convert($0, to: .seconds) }
+    }
+}
+
+
+extension HTTPTask.HTTPHeader: Hashable {
+    var stringValue: String {
+        switch self {
+        case .contentType: return "Content-Type"
+        case .accept: return "Accept"
+        case .sdkVersion: return "X-Bidon-Version"
+        case .retryAfter: return "Retry-After"
+        case .custom(let header): return header
+        }
+    }
+    
+    init(stringValue: String) {
+        self = .custom(stringValue)
     }
 }

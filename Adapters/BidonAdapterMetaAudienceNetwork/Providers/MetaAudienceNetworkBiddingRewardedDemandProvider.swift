@@ -14,14 +14,6 @@ extension FBRewardedVideoAd: DemandAd {
     public var id: String {
         return placementID
     }
-    
-    public var networkName: String {
-        return MetaAudienceNetworkDemandSourceAdapter.identifier
-    }
-    
-    public var dsp: String? {
-        return nil
-    }
 }
 
 
@@ -32,17 +24,18 @@ final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetwor
     
     private var response: DemandProviderResponse?
     
-    override func prepareBid(
-        data: BiddingResponse,
+    override func load(
+        payload: MetaAudienceNetworkBiddingPayload,
+        adUnitExtras: MetaAudienceNetworkAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let rewarded = FBRewardedVideoAd(placementID: data.placementId)
+        let rewarded = FBRewardedVideoAd(placementID: adUnitExtras.placementId)
         rewarded.delegate = self
         
         self.rewardedAd = rewarded
         self.response = response
         
-        rewarded.load(withBidPayload: data.payload)
+        rewarded.load(withBidPayload: payload.payload)
     }
 }
 
@@ -72,7 +65,7 @@ extension MetaAudienceNetworkBiddingRewardedDemandProvider: FBRewardedVideoAdDel
     }
     
     func rewardedVideoAd(_ rewardedVideoAd: FBRewardedVideoAd, didFailWithError error: Error) {
-        response?(.failure(.noFill))
+        response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
     

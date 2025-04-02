@@ -19,7 +19,7 @@ DirectAdViewDemandSourceAdapter
 @objc final public class InMobiDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "inmobi"
     
-    public let identifier: String = InMobiDemandSourceAdapter.identifier
+    public let demandId: String = InMobiDemandSourceAdapter.identifier
     public let name: String = "InMobi"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = IMSdk.getVersion()
@@ -44,22 +44,18 @@ DirectAdViewDemandSourceAdapter
 
 
 extension InMobiDemandSourceAdapter: ParameterizedInitializableAdapter {
-    public struct Parameters: Codable {
-        var accountId: String
-    }
-    
     public func initialize(
-        parameters: Parameters,
+        parameters: InMobiParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         IMSdk.setLogLevel(.current)
         
         var consentDictionary: [String: Any] = [:]
         
-        switch context.regulations.gdrpConsent {
-        case .given:
+        switch context.regulations.gdpr {
+        case .applies:
             consentDictionary[IMCommonConstants.IM_GDPR_CONSENT_AVAILABLE] = "true"
-        case .denied:
+        case .doesNotApply:
             consentDictionary[IMCommonConstants.IM_GDPR_CONSENT_AVAILABLE] = "false"
         default:
             break

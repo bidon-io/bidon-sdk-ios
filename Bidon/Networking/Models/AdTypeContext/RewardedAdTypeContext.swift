@@ -12,7 +12,6 @@ import Foundation
 struct RewardedAdTypeContext: AdTypeContext {
     typealias DemandProviderType = AnyRewardedAdDemandProvider
     typealias AuctionRequestBuilderType = RewardedAuctionRequestBuilder
-    typealias BidRequestBuilderType = RewardedBidRequestBuilder
     typealias StatisticRequestBuilderType = RewardedStatisticRequestBuilder
     typealias ImpressionRequestBuilderType = RewardedImpressionRequestBuilder
     typealias NotificationRequestBuilderType = RewardedNotificationRequestBuilder
@@ -21,13 +20,6 @@ struct RewardedAdTypeContext: AdTypeContext {
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
-            builder.withAdTypeContext(self)
-            build(builder)
-        }
-    }
-
-    func bidRequest(build: (BidRequestBuilderType) -> ()) -> BidRequest {
-        return BidRequest { (builder: BidRequestBuilderType) in
             builder.withAdTypeContext(self)
             build(builder)
         }
@@ -52,6 +44,18 @@ struct RewardedAdTypeContext: AdTypeContext {
             builder.withAdTypeContext(self)
             build(builder)
         }
+    }
+    
+    func adapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
+        return RewardedAdaptersFetcher().adapters()
+    }
+    
+    func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        return RewardedAdaptersFetcher().adapters()
+    }
+    
+    func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        fatalError("Rewarded Ad Type context does not has banner adapters")
     }
 }
 

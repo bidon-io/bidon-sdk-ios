@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,7 +24,6 @@
 		4253FED72ABC98340013A675 /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253FED62ABC98340013A675 /* BidonAdapterAmazon.framework */; };
 		4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4265B53E2A5FF001007AD808 /* BidonAdapterVungle.framework */; };
 		426827322A5D857B0084A48D /* BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426827312A5D857B0084A48D /* BidonAdapterMobileFuse.framework */; };
-		42697DAC2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */; };
 		42697DAF2A3B2A1900D6B1EB /* Bidon+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */; };
 		42697DB12A3B2AFF00D6B1EB /* RawAdServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DB02A3B2AFF00D6B1EB /* RawAdServiceParameters.swift */; };
 		42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */; };
@@ -41,14 +40,9 @@
 		426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */; };
 		426DD7AE28A6584600A1ADF5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DD7AD28A6584600A1ADF5 /* HomeView.swift */; };
 		427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCC299A69A1007D4E93 /* AdService.swift */; };
-		427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */; };
 		427B1BD2299A7E6E007D4E93 /* AdServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */; };
-		427B1BD5299A866F007D4E93 /* Appodeal+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BD4299A866F007D4E93 /* Appodeal+Extenstions.swift */; };
 		427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BD6299BBA83007D4E93 /* LogLevelView.swift */; };
 		427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BD8299BC585007D4E93 /* AdaptersView.swift */; };
-		427B1BDB299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BDA299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift */; };
-		427B1BDD299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BDC299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift */; };
-		427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BDE299D1237007D4E93 /* AppodealRewardedAdWrapper.swift */; };
 		427B1BE1299D2F70007D4E93 /* AdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BE0299D2F70007D4E93 /* AdWrapper.swift */; };
 		427B1BE4299E3DA7007D4E93 /* RawAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BE3299E3DA7007D4E93 /* RawAdService.swift */; };
 		427B1BE6299E403F007D4E93 /* RawInterstitialAdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1BE5299E403F007D4E93 /* RawInterstitialAdWrapper.swift */; };
@@ -57,8 +51,6 @@
 		427B1C0A299FDE94007D4E93 /* AdBannerWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1C09299FDE94007D4E93 /* AdBannerWrapperView.swift */; };
 		427B1C0D29A377AA007D4E93 /* BaseAdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1C0C29A377AA007D4E93 /* BaseAdWrapper.swift */; };
 		427B1C0F29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1C0E29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift */; };
-		427B1C1129A392ED007D4E93 /* AppodealBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427B1C1029A392ED007D4E93 /* AppodealBannerView.swift */; };
-		4298902729D5A75000C5FB7B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4298902629D5A75000C5FB7B /* GoogleService-Info.plist */; };
 		4299A411289BC8B40062C580 /* SandboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4299A410289BC8B40062C580 /* SandboxApp.swift */; };
 		4299A413289BC8B40062C580 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4299A412289BC8B40062C580 /* ContentView.swift */; };
 		4299A415289BC8B60062C580 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4299A414289BC8B60062C580 /* Assets.xcassets */; };
@@ -81,7 +73,13 @@
 		42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */; };
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
-		49921B0B2A8125E1007B2056 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49921B0A2A8125E1007B2056 /* Constants.swift */; };
+		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
+		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
+		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
+		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
+		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
+		9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18C91C2C903E07005BE4F2 /* Constants.swift */; };
+		9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,13 +99,11 @@
 		4243091B28A25E9F002360B0 /* BidOnAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4243091C28A25E9F002360B0 /* BidOnAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4243091D28A25E9F002360B0 /* BidOn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4243092728A27C46002360B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4249D5F829AFB00400BAA338 /* BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4253FED62ABC98340013A675 /* BidonAdapterAmazon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterAmazon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		425E9C4E28B76B9A00F4E4C7 /* BidOnAdapterAppLovin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterAppLovin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4265B53E2A5FF001007AD808 /* BidonAdapterVungle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterVungle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		426827312A5D857B0084A48D /* BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealAdServiceParameters.swift; sourceTree = "<group>"; };
 		42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bidon+Extensions.swift"; sourceTree = "<group>"; };
 		42697DB02A3B2AFF00D6B1EB /* RawAdServiceParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawAdServiceParameters.swift; sourceTree = "<group>"; };
 		42697DB22A3B2BE600D6B1EB /* AdServiceParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdServiceParametersView.swift; sourceTree = "<group>"; };
@@ -125,14 +121,9 @@
 		426DD7AD28A6584600A1ADF5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4273347929ACE81E0042AE52 /* BidOnAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidOnAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		427B1BCC299A69A1007D4E93 /* AdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdService.swift; sourceTree = "<group>"; };
-		427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealAdService.swift; sourceTree = "<group>"; };
 		427B1BD1299A7E6E007D4E93 /* AdServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdServiceProvider.swift; sourceTree = "<group>"; };
-		427B1BD4299A866F007D4E93 /* Appodeal+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appodeal+Extenstions.swift"; sourceTree = "<group>"; };
 		427B1BD6299BBA83007D4E93 /* LogLevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogLevelView.swift; sourceTree = "<group>"; };
 		427B1BD8299BC585007D4E93 /* AdaptersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptersView.swift; sourceTree = "<group>"; };
-		427B1BDA299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealDefaultAdInitializationWrapper.swift; sourceTree = "<group>"; };
-		427B1BDC299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealInterstitialAdWrapper.swift; sourceTree = "<group>"; };
-		427B1BDE299D1237007D4E93 /* AppodealRewardedAdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealRewardedAdWrapper.swift; sourceTree = "<group>"; };
 		427B1BE0299D2F70007D4E93 /* AdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdWrapper.swift; sourceTree = "<group>"; };
 		427B1BE3299E3DA7007D4E93 /* RawAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawAdService.swift; sourceTree = "<group>"; };
 		427B1BE5299E403F007D4E93 /* RawInterstitialAdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawInterstitialAdWrapper.swift; sourceTree = "<group>"; };
@@ -141,8 +132,6 @@
 		427B1C09299FDE94007D4E93 /* AdBannerWrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerWrapperView.swift; sourceTree = "<group>"; };
 		427B1C0C29A377AA007D4E93 /* BaseAdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAdWrapper.swift; sourceTree = "<group>"; };
 		427B1C0E29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFullscreenAdWrapper.swift; sourceTree = "<group>"; };
-		427B1C1029A392ED007D4E93 /* AppodealBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppodealBannerView.swift; sourceTree = "<group>"; };
-		4298902629D5A75000C5FB7B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4299A40D289BC8B40062C580 /* Sandbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sandbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4299A410289BC8B40062C580 /* SandboxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxApp.swift; sourceTree = "<group>"; };
 		4299A412289BC8B40062C580 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -166,8 +155,16 @@
 		42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
-		49921B0A2A8125E1007B2056 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EK7Z26L6D4:Yandex LLC"; lastKnownFileType = wrapper.xcframework; name = YandexMobileAds.xcframework; path = ../Pods/YandexMobileAds/static/YandexMobileAds.xcframework; sourceTree = "<group>"; };
 		64A1E0483C51188FF09EB928 /* Pods_Sandbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sandbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9A18C91A2C903DE1005BE4F2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A18C91C2C903E07005BE4F2 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+AppVersion.swift"; sourceTree = "<group>"; };
 		F846B990A6AF5B081BB0BD12 /* Pods-Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.debug.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +173,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */,
+				49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */,
 				426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */,
 				420F03682A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
 				426A5C7829AF7C5A0065AAD5 /* Bidon.framework in Frameworks */,
@@ -186,11 +185,13 @@
 				4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */,
 				420F03492A67DBAF00A4664F /* BidonAdapterBigoAds.framework in Frameworks */,
 				426A5C7029AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework in Frameworks */,
+				495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */,
 				4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */,
 				42CD462B2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework in Frameworks */,
 				169F7C8E91CEF4CADB6E417E /* Pods_Sandbox.framework in Frameworks */,
 				426A5C8029AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
 				4253FED72ABC98340013A675 /* BidonAdapterAmazon.framework in Frameworks */,
+				495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */,
 				42CFF1B62AAF623000AC2C24 /* BidonAdapterInMobi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,8 +226,9 @@
 				429F4D8628CF6A9C00765BD7 /* Views */,
 				429F4D8528CF6A7F00765BD7 /* Events */,
 				42BE438E28C0E79D000528E3 /* Permissions */,
-				49921B0A2A8125E1007B2056 /* Constants.swift */,
 				426CD9BB2AA8A464000A2226 /* DeviceFrame.swift */,
+				9A18C91C2C903E07005BE4F2 /* Constants.swift */,
+				9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -234,6 +236,11 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */,
+				49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */,
+				49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */,
+				49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */,
+				49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */,
 				42CD462A2B068EAD00900683 /* BidonAdapterGoogleAdManager.framework */,
 				4253FED62ABC98340013A675 /* BidonAdapterAmazon.framework */,
 				42CFF1B52AAF623000AC2C24 /* BidonAdapterInMobi.framework */,
@@ -262,7 +269,6 @@
 		42697DAD2A3B2A0500D6B1EB /* Extesnions */ = {
 			isa = PBXGroup;
 			children = (
-				427B1BD4299A866F007D4E93 /* Appodeal+Extenstions.swift */,
 				42697DAE2A3B2A1900D6B1EB /* Bidon+Extensions.swift */,
 			);
 			path = Extesnions;
@@ -282,7 +288,6 @@
 			children = (
 				42697DAD2A3B2A0500D6B1EB /* Extesnions */,
 				427B1C0B29A37799007D4E93 /* Base */,
-				427B1BD3299A8656007D4E93 /* Appodeal */,
 				427B1BE2299E3D85007D4E93 /* Raw */,
 				427B1BCC299A69A1007D4E93 /* AdService.swift */,
 				427B1BE0299D2F70007D4E93 /* AdWrapper.swift */,
@@ -291,19 +296,6 @@
 				426CD9BD2AA8D6CE000A2226 /* BannerProviderReference.swift */,
 			);
 			path = Advertising;
-			sourceTree = "<group>";
-		};
-		427B1BD3299A8656007D4E93 /* Appodeal */ = {
-			isa = PBXGroup;
-			children = (
-				427B1BCE299A7AD7007D4E93 /* AppodealAdService.swift */,
-				42697DAB2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift */,
-				427B1BDA299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift */,
-				427B1BDC299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift */,
-				427B1BDE299D1237007D4E93 /* AppodealRewardedAdWrapper.swift */,
-				427B1C1029A392ED007D4E93 /* AppodealBannerView.swift */,
-			);
-			path = Appodeal;
 			sourceTree = "<group>";
 		};
 		427B1BE2299E3D85007D4E93 /* Raw */ = {
@@ -352,11 +344,12 @@
 				42EDA0AA28C5EECA00BF74DE /* Initialization */,
 				4200679B28BCA883003B734D /* Banner */,
 				4224AA7C28B8D57E00E8D886 /* FullscreenAd */,
-				4243092728A27C46002360B0 /* Info.plist */,
-				4298902629D5A75000C5FB7B /* GoogleService-Info.plist */,
 				4299A410289BC8B40062C580 /* SandboxApp.swift */,
 				42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */,
+				4299A412289BC8B40062C580 /* ContentView.swift */,
 				426DD7AD28A6584600A1ADF5 /* HomeView.swift */,
+				9A18C91A2C903DE1005BE4F2 /* Info.plist */,
+				9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */,
 				4299A414289BC8B60062C580 /* Assets.xcassets */,
 				4299A416289BC8B60062C580 /* Preview Content */,
 			);
@@ -398,7 +391,6 @@
 		42BE438E28C0E79D000528E3 /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
-				4299A412289BC8B40062C580 /* ContentView.swift */,
 				42BE438F28C0E7B3000528E3 /* Permission.swift */,
 				42BE439128C0E7CB000528E3 /* LocationPermission.swift */,
 				42BE439328C0E936000528E3 /* AppTrackingTransparencyPermission.swift */,
@@ -504,7 +496,7 @@
 			files = (
 				4299A418289BC8B60062C580 /* Preview Assets.xcassets in Resources */,
 				4299A415289BC8B60062C580 /* Assets.xcassets in Resources */,
-				4298902729D5A75000C5FB7B /* GoogleService-Info.plist in Resources */,
+				9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,8 +567,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				42C4F45E29E6B37300B12E15 /* ActivityPlaceholder.swift in Sources */,
-				427B1BDD299BE2D3007D4E93 /* AppodealInterstitialAdWrapper.swift in Sources */,
-				42697DAC2A3B0A2800D6B1EB /* AppodealAdServiceParameters.swift in Sources */,
 				42697DB12A3B2AFF00D6B1EB /* RawAdServiceParameters.swift in Sources */,
 				427B1BE6299E403F007D4E93 /* RawInterstitialAdWrapper.swift in Sources */,
 				427B1BE1299D2F70007D4E93 /* AdWrapper.swift in Sources */,
@@ -593,27 +583,23 @@
 				427B1C0D29A377AA007D4E93 /* BaseAdWrapper.swift in Sources */,
 				4299A413289BC8B40062C580 /* ContentView.swift in Sources */,
 				427B1BEA299E43AB007D4E93 /* SelectMediationView.swift in Sources */,
-				427B1C1129A392ED007D4E93 /* AppodealBannerView.swift in Sources */,
 				42EDA0AC28C5EEE300BF74DE /* InitializationView.swift in Sources */,
 				42BE439028C0E7B3000528E3 /* Permission.swift in Sources */,
 				42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */,
 				4200679D28BCA8A3003B734D /* BannerSection.swift in Sources */,
 				426CD9BC2AA8A464000A2226 /* DeviceFrame.swift in Sources */,
-				427B1BCF299A7AD7007D4E93 /* AppodealAdService.swift in Sources */,
 				427B1C0A299FDE94007D4E93 /* AdBannerWrapperView.swift in Sources */,
-				49921B0B2A8125E1007B2056 /* Constants.swift in Sources */,
 				427B1BCD299A69A1007D4E93 /* AdService.swift in Sources */,
 				4224AA7628B8BDB500E8D886 /* FullscreenAdSectionViewModel.swift in Sources */,
 				426CD9BE2AA8D6CE000A2226 /* BannerProviderReference.swift in Sources */,
 				42DBB0EE2B307EBC00BF1C50 /* CMPRow.swift in Sources */,
-				427B1BDF299D1237007D4E93 /* AppodealRewardedAdWrapper.swift in Sources */,
 				4224AA8528B900AF00E8D886 /* AdEventView.swift in Sources */,
 				427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */,
 				42166C3229DEB5F100095691 /* AdContextMenu.swift in Sources */,
 				42A4C86C28F6E02500A7FE40 /* RawBannerView.swift in Sources */,
-				427B1BDB299BE282007D4E93 /* AppodealDefaultAdInitializationWrapper.swift in Sources */,
 				42697DAF2A3B2A1900D6B1EB /* Bidon+Extensions.swift in Sources */,
 				42C59B9E28C61F1100544EDF /* HostView.swift in Sources */,
+				9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */,
 				4224AA8328B8F92B00E8D886 /* AdEventModel.swift in Sources */,
 				42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */,
 				42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */,
@@ -621,12 +607,12 @@
 				426CD9B72AA89E88000A2226 /* BannerPositionPickerView.swift in Sources */,
 				42DBB0EA2B307DDB00BF1C50 /* GenderPickerRow.swift in Sources */,
 				42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */,
-				427B1BD5299A866F007D4E93 /* Appodeal+Extenstions.swift in Sources */,
 				4299A411289BC8B40062C580 /* SandboxApp.swift in Sources */,
 				426A5C8429AF842A0065AAD5 /* QRCodeScannerView.swift in Sources */,
 				42BE439428C0E936000528E3 /* AppTrackingTransparencyPermission.swift in Sources */,
 				429F4D8828CF6AA700765BD7 /* Wave.swift in Sources */,
 				427B1C0F29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift in Sources */,
+				9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */,
 				42BE439228C0E7CB000528E3 /* LocationPermission.swift in Sources */,
 				42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */,
 				427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */,
@@ -760,7 +746,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = 2U5G58P69F;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
@@ -781,7 +767,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
+				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -800,7 +786,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Sandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = 2U5G58P69F;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Sandbox/Info.plist;
@@ -821,7 +807,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
+				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

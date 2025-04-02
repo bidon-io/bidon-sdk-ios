@@ -12,7 +12,6 @@ import Foundation
 struct InterstitialAdTypeContext: AdTypeContext {
     typealias DemandProviderType = AnyInterstitialDemandProvider
     typealias AuctionRequestBuilderType = InterstitialAuctionRequestBuilder
-    typealias BidRequestBuilderType = InterstitialBidRequestBuilder
     typealias StatisticRequestBuilderType = InterstitialStatisticRequestBuilder
     typealias ImpressionRequestBuilderType = InterstitialImpressionRequestBuilder
     typealias NotificationRequestBuilderType = InterstitialNotificationRequestBuilder
@@ -21,13 +20,6 @@ struct InterstitialAdTypeContext: AdTypeContext {
     
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
-            builder.withAdTypeContext(self)
-            build(builder)
-        }
-    }
-
-    func bidRequest(build: (BidRequestBuilderType) -> ()) -> BidRequest {
-        return BidRequest { (builder: BidRequestBuilderType) in
             builder.withAdTypeContext(self)
             build(builder)
         }
@@ -52,6 +44,18 @@ struct InterstitialAdTypeContext: AdTypeContext {
             builder.withAdTypeContext(self)
             build(builder)
         }
+    }
+    
+    func adapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
+        return InterstitialAdaptersFetcher().adapters()
+    }
+    
+    func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        return InterstitialAdaptersFetcher().adapters()
+    }
+    
+    func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
+        fatalError("Interstitial Ad Type context does not has fullscreen adapters")
     }
 }
 

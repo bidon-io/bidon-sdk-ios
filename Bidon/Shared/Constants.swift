@@ -9,19 +9,20 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.4.8"
-    
+    static let sdkVersion: String = "0.7.12"
+  
     static let zeroUUID: String = "00000000-0000-0000-0000-000000000000"
     
     static let defaultPlacement: String = "default"
     
-    struct API {
-        static var host = "b.appbaqend.com"
-        static var baseURL = "https://" + host
+    enum API {
+        static let host = "b.appbaqend.com"
+        static let baseURL = "https://" + host
     }
     
-    struct Adapters {
+    enum Adapters {
         static var classes: [String] = [
+            "BidonAdapterAmazon.AmazonDemandSourceAdapter",
             "BidonAdapterBidMachine.BidMachineDemandSourceAdapter",
             "BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter",
             "BidonAdapterAppLovin.AppLovinDemandSourceAdapter",
@@ -34,15 +35,24 @@ struct Constants {
             "BidonAdapterMetaAudienceNetwork.MetaAudienceNetworkDemandSourceAdapter",
             "BidonAdapterInMobi.InMobiDemandSourceAdapter",
             "BidonAdapterAmazon.AmazonDemandSourceAdapter",
-            "BidonAdapterGoogleAdManager.GoogleAdManagerDemandSourceAdapter"
+            "BidonAdapterGoogleAdManager.GoogleAdManagerDemandSourceAdapter",
+            "BidonAdapterMyTarget.MyTargetDemandSourceAdapter",
+            "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
+            "BidonAdapterYandex.YandexDemandSourceAdapter",
+            "BidonAdapterChartboost.ChartboostDemandSourceAdapter"
         ]
     }
     
-    struct UserDefaultsKey {
-        static var token = "BidonToken"
-        static var idg = "BidonIdg"
-        static var coppa = "BidonCoppa"
-        static var segmentId = "BidonSegmentId"
-        static var segmentUid = "BidonSegmentUid"
+    enum UserDefaultsKey {
+        static let token = "BidonToken"
+        static let idg = "BidonIdg"
+        static let coppa = "BidonCoppa"
+        static let segmentId = "BidonSegmentId"
+        static let segmentUid = "BidonSegmentUid"
+    }
+    
+    enum Timeout {
+        static let defaultTokensTimeout: TimeInterval = 10.0
+        static let defaultAuctionTimeout: Float = 30.0
     }
 }

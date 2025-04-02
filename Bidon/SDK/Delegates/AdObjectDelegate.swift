@@ -14,10 +14,10 @@ public protocol AdObject: ExtrasProvider {
     @objc(notifyWin)
     func notifyWin()
     
-    @objc(notifyLossWithExternalDemandId:eCPM:)
+    @objc(notifyLossWithExternalDemandId:price:)
     func notifyLoss(
         external demandId: String,
-        eCPM: Price
+        price: Price
     )
 }
 
@@ -26,12 +26,14 @@ public protocol AdObject: ExtrasProvider {
 public protocol AdObjectDelegate: AnyObject {
     func adObject(
         _ adObject: AdObject,
-        didLoadAd ad: Ad
+        didLoadAd ad: Ad,
+        auctionInfo: AuctionInfo
     )
     
     func adObject(
         _ adObject: AdObject,
-        didFailToLoadAd error: Error
+        didFailToLoadAd error: Error,
+        auctionInfo: AuctionInfo
     )
     
     @objc optional

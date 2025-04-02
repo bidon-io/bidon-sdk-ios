@@ -49,13 +49,13 @@ final class RawAdServiceParameters: AdServiceParameters {
     
     var coppaApplies: Bool? {
         didSet {
-            BidonSdk.regulations.coppaApplies = Bidon.COPPAAppliesStatus(coppaApplies)
+            BidonSdk.regulations.coppa = Bidon.COPPAAppliesStatus(coppaApplies)
         }
     }
     
     var gdprApplies: Bool? {
         didSet {
-            BidonSdk.regulations.gdrpConsent = Bidon.GDPRConsentStatus(gdprApplies)
+            BidonSdk.regulations.gdpr = Bidon.GDPRAppliesStatus(gdprApplies)
         }
     }
     

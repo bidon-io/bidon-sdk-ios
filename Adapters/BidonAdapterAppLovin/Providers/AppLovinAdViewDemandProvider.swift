@@ -53,10 +53,14 @@ internal final class AppLovinAdViewDemandProvider: NSObject {
 
 
 extension AppLovinAdViewDemandProvider: DirectDemandProvider {
-    func load(_ adUnitId: String, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: AppLovinAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         bridge.load(
             service: sdk.adService,
-            adUnitId: adUnitId
+            zoneId: adUnitExtras.zoneId
         ) { [weak self] result in
             switch result {
             case .success(let ad):
@@ -68,7 +72,7 @@ extension AppLovinAdViewDemandProvider: DirectDemandProvider {
         }
     }
     
-    func notify(ad: ALAd, event: AuctionEvent) {}
+    func notify(ad: ALAd, event: DemandProviderEvent) {}
 }
 
 
@@ -83,7 +87,7 @@ extension AppLovinAdViewDemandProvider: AdViewDemandProvider {
 
 extension AppLovinAdViewDemandProvider: ALAdViewEventDelegate {
     func ad(_ ad: ALAd, didFailToDisplayIn adView: ALAdView, withError code: ALAdViewDisplayErrorCode) {
-        response?(.failure(.noFill))
+        response?(.failure(.unscpecifiedException("Code: \(code)")))
         response = nil
     }
     

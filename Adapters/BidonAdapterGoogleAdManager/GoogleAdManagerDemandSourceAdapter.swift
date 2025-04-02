@@ -18,13 +18,9 @@ DirectAdViewDemandSourceAdapter
 
 @objc
 public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAdapter {
-    public struct ServerData: Decodable {
-        var requestAgent, queryInfoType: String?
-    }
-    
     @objc public static let identifier = "gam"
     
-    public let identifier: String = GoogleAdManagerDemandSourceAdapter.identifier
+    public let demandId: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = GADGetStringFromVersionNumber(
@@ -34,38 +30,38 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     @Injected(\.context)
     var context: Bidon.SdkContext
     
-    private(set) var serverData = ServerData()
+    private(set) var parameters = GoogleAdManagerParameters()
     
     private(set) public var isInitialized: Bool = false
     
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
-        return GoogleAdManagerDirectInterstitialDemandProvider(serverData: serverData)
+        return GoogleAdManagerDirectInterstitialDemandProvider(parameters: parameters)
     }
     
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
-        return GoogleAdManagerDirectRewardedAdDemandProvider(serverData: serverData)
+        return GoogleAdManagerDirectRewardedAdDemandProvider(parameters: parameters)
     }
     
     public func directAdViewDemandProvider(
         context: AdViewContext
     ) throws -> AnyDirectAdViewDemandProvider {
-        return GoogleAdManagerDirectAdViewProvider(serverData: serverData, context: context)
+        return GoogleAdManagerDirectAdViewProvider(parameters: parameters, context: context)
     }
     
     private func configure(_ request: GADRequestConfiguration) {
         request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
-        request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppaApplies == .yes)
+        request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
     }
 }
 
 
 extension GoogleAdManagerDemandSourceAdapter: ParameterizedInitializableAdapter {
     public func initialize(
-        parameters: ServerData,
+        parameters: GoogleAdManagerParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
         defer {
-            serverData = parameters
+            self.parameters = parameters
             isInitialized = true
         }
         

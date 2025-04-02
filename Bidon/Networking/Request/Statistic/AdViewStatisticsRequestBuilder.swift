@@ -9,13 +9,9 @@ import Foundation
 
 
 final class AdViewStatisticsRequestBuilder: BaseStatisticRequestBuilder<BannerAdTypeContext> {
-    override func transform<T>(
-        report: T,
-        configuration: AuctionConfiguration
-    ) -> MediationAttemptReportCodableModel where T : MediationAttemptReport {
-        return MediationAttemptReportCodableModel(
-            report,
-            auctionConfiguration: configuration,
+    override func transform<T>(report: T) -> EncodableAuctionReportModel where T : AuctionReport {
+        return EncodableAuctionReportModel(
+            report: report,
             banner: BannerAdTypeContextModel(context)
         )
     }
