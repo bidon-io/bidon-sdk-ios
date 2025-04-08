@@ -10,7 +10,7 @@ import GoogleMobileAds
 import Bidon
 
 
-extension GADAdValue {
+extension GoogleMobileAds.AdValue {
     var revenue: AdRevenue {
         AdRevenueModel(
             revenue: value.doubleValue,
@@ -22,7 +22,7 @@ extension GADAdValue {
 
 
 extension RevenuePrecision {
-    init(_ precision: GADAdValuePrecision) {
+    init(_ precision: GoogleMobileAds.AdValuePrecision) {
         switch precision {
         case .precise: self = .precise
         default: self = .estimated

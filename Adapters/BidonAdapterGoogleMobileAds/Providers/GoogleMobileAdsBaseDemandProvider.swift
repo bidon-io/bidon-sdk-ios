@@ -27,7 +27,7 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
         super.init()
     }
     
-    open func loadAd(_ request: GADRequest, adUnitId: String) {
+    open func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
     }
     
@@ -67,7 +67,7 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        let request = GADRequest { builder in
+        let request = GoogleMobileAds.Request { builder in
             builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
@@ -83,14 +83,14 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
         biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        let request = GADRequest { builder in
+        let request = GoogleMobileAds.Request { builder in
             builder.withQueryType(parameters.queryInfoType)
             builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdpr)
             builder.withUSPrivacyString(context.regulations.usPrivacyString)
         }
 
-        GADQueryInfo.createQueryInfo(with: request, adFormat: AdObject.adFormat) { info, error in
+        QueryInfo.createQueryInfo(with: request, adFormat: AdObject.adFormat) { info, error in
             guard let token = info?.query else {
                 response(.failure(.adapterNotInitialized))
                 return
@@ -105,7 +105,7 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
         adUnitExtras: GoogleMobileAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let request = GADRequest { builder in
+        let request = GoogleMobileAds.Request { builder in
             builder.withQueryType(parameters.queryInfoType)
             builder.withRequestAgent(parameters.requestAgent)
             builder.withGDPRConsent(context.regulations.gdpr)
