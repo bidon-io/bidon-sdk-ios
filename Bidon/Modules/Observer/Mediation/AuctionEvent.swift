@@ -158,20 +158,22 @@ struct BiddingDemandBidResponseAuctionEvent: AuctionEvent {
     }
 }
 
+
+struct BiddingDemandWillLoadAuctionEvent: AuctionEvent {
+    var adUnit: any AdUnit
+    
+    var description: String {
+        return "bidding demand \(adUnit) will load"
+    }
+}
+
+
 struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
     var error: MediationError
     
     var description: String {
         return "bidding demand did fail to load \(adUnit) with error \(error)"
-    }
-}
-
-struct BiddingDemandLoseEvent: AuctionEvent {
-    var adUnit: AnyAdUnit
-    
-    var description: String {
-        return "bidding demand \(adUnit) lose"
     }
 }
 
