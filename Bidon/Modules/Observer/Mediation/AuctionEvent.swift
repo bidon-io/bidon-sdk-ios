@@ -177,6 +177,14 @@ struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
     }
 }
 
+struct BiddingDemandLoseEvent: AuctionEvent {
+    var adUnit: AnyAdUnit
+    
+    var description: String {
+        return "bidding demand \(adUnit) lose"
+    }
+}
+
 
 struct BiddingDemandDidLoadAuctionEvent: AuctionEvent {
     var bid: AnyBid
