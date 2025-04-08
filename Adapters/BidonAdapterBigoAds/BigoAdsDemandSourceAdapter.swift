@@ -84,7 +84,7 @@ extension MediationError {
         case 1002: self = .adFormatNotSupported
         case 1003: self = .networkError
         case 1004: self = .noFill(nil)
-        default: self = .unscpecifiedException(error.errorMsg)
+        default: self = .unspecifiedException(error.errorMsg)
         }
     }
 }

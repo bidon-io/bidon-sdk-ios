@@ -55,8 +55,8 @@ extension Bidon.MediationError {
         switch error {
         case NETWORK_ERROR, NETWORK_TIMEOUT: self = .networkError
         case NO_FILL: self = .noFill(nil)
-        case REQUEST_ERROR: self = .unscpecifiedException("Request Error")
-        default: self = .unscpecifiedException("Unknown error")
+        case REQUEST_ERROR: self = .unspecifiedException("Request Error")
+        default: self = .unspecifiedException("Unknown error")
         }
     }
 }
@@ -65,15 +65,15 @@ extension Bidon.MediationError {
     init(_ error: DTBAdErrorCode) {
         switch error {
         case .SampleErrorCodeBadRequest:
-            self = .unscpecifiedException("Bad Request")
+            self = .unspecifiedException("Bad Request")
         case .SampleErrorCodeUnknown:
-            self = .unscpecifiedException("Unknown Error")
+            self = .unspecifiedException("Unknown Error")
         case .SampleErrorCodeNetworkError:
             self = .networkError
         case .SampleErrorCodeNoInventory:
             self = .noFill(nil)
         @unknown default:
-            self = .unscpecifiedException("Unknown Error")
+            self = .unspecifiedException("Unknown Error")
         }
     }
 }
