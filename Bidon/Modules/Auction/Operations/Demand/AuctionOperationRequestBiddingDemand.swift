@@ -75,7 +75,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 switch result {
                 case .success(let ad):
                     guard let price = ad.price, price >= auctionConfiguration.pricefloor else {
-                        let event = BiddingDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
+                        let event = BiddingDemandBelowPricefloorAucitonEvent(adUnit: adUnit)
                         observer.log(event)
                         return
                     }
