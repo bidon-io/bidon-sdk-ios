@@ -158,16 +158,6 @@ struct BiddingDemandBidResponseAuctionEvent: AuctionEvent {
     }
 }
 
-
-struct BiddingDemandWillLoadAuctionEvent: AuctionEvent {
-    var adUnit: any AdUnit
-    
-    var description: String {
-        return "bidding demand \(adUnit) will load"
-    }
-}
-
-
 struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
     var error: MediationError
