@@ -75,7 +75,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 
                 switch result {
                 case .success(let ad):
-                    guard let price = ad.price, price >= auctionConfiguration.pricefloor else {
+                    if let price = ad.price, price < auctionConfiguration.pricefloor {
                         let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
                         observer.log(event)
                         return
