@@ -87,7 +87,7 @@ end
 
 
 def appodeal_mediation
-    pod 'Appodeal', '~> 3.3.0'
+  pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
@@ -104,6 +104,10 @@ def appodeal_mediation
 #   pod 'APDUnityAdapter', '3.1.3.0'
 #   pod 'APDVungleAdapter', '3.1.3.0'
 #   pod 'APDYandexAdapter', '3.1.3.0'
+end
+
+def consent_manager
+  pod "StackConsentManager", '~> 2.0.8'
 end
 
 def consent_manager
