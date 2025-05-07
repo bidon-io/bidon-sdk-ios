@@ -59,7 +59,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             guard let self else { return }
             
             provider.load(
-                pricefloor: self.auctionConfiguration.pricefloor,
+                pricefloor: adUnit.pricefloor,
                 adUnitExtrasDecoder: self.adUnit.extras
             ) { [weak self] result in
                 defer { self?.finish() }
