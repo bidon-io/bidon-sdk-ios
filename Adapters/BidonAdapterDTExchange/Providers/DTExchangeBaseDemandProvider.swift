@@ -56,7 +56,7 @@ extension DTExchangeBaseDemandProvider: DirectDemandProvider {
         }
         
         guard let adSpot = adSpot else {
-            response(.failure(.unscpecifiedException("Failed to build IAAdSpot")))
+            response(.failure(.unspecifiedException("Failed to build IAAdSpot")))
             return
         }
         

@@ -40,13 +40,19 @@ extension Date {
         var boottime = timeval()
         var size = MemoryLayout<timeval>.stride
         
-        sysctlbyname("kern.boottime", &boottime, &size, nil, 0)
+        let result = sysctlbyname("kern.boottime", &boottime, &size, nil, 0)
         time(&now)
         
-        guard boottime.tv_sec != 0 else { return .zero }
+        guard
+            result == 0,
+            boottime.tv_sec != 0
+        else {
+            return .zero
+        }
         
         return TimeInterval(now - boottime.tv_sec)
     }
+    
 }
 
 

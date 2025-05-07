@@ -18,7 +18,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 11.13.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 12.2.0'
 end
 
 def appsflyer
@@ -101,9 +101,17 @@ def appodeal_mediation
   # pod 'APDMetaAudienceNetworkAdapter', '3.1.3.0'
   # pod 'APDMyTargetAdapter', '3.1.3.0'
   # pod 'APDStackAnalyticsAdapter', '3.1.3.0' # Required
-  # pod 'APDUnityAdapter', '3.1.3.0'
-  # pod 'APDVungleAdapter', '3.1.3.0'
-  # pod 'APDYandexAdapter', '3.1.3.0'
+#   pod 'APDUnityAdapter', '3.1.3.0'
+#   pod 'APDVungleAdapter', '3.1.3.0'
+#   pod 'APDYandexAdapter', '3.1.3.0'
+end
+
+def consent_manager
+  pod "StackConsentManager", '~> 2.0.8'
+end
+
+def consent_manager
+  pod "StackConsentManager", '~> 2.0.8'
 end
 
 def consent_manager

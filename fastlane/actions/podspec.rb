@@ -196,11 +196,11 @@ module Fastlane
             end
           ),
           FastlaneCore::ConfigItem.new(
-              key: :is_development_pod,
-              description: "Is development pod",
-              default_value: false,
-              optional: true,
-              is_string: false
+            key: :is_development_pod,
+            description: "Is development pod",
+            default_value: false,
+            optional: true,
+            is_string: false
           )
         ]
       end

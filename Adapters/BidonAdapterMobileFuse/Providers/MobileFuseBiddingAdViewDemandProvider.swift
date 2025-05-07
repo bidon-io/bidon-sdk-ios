@@ -37,7 +37,7 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
             banner.register(self)
             banner.load(withBiddingResponseToken: payload.signal)
         } else {
-            response(.failure(.unscpecifiedException("Mapping Error")))
+            response(.failure(.unspecifiedException("Mapping Error")))
         }
     }
     

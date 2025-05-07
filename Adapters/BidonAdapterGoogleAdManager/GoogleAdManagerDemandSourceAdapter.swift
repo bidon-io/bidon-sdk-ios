@@ -23,9 +23,7 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     public let demandId: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = GADGetStringFromVersionNumber(
-        GADMobileAds.sharedInstance().versionNumber
-    )
+    public let sdkVersion: String = string(for: MobileAds.shared.versionNumber)
     
     @Injected(\.context)
     var context: Bidon.SdkContext
@@ -48,8 +46,7 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
         return GoogleAdManagerDirectAdViewProvider(parameters: parameters, context: context)
     }
     
-    private func configure(_ request: GADRequestConfiguration) {
-        request.testDeviceIdentifiers = context.isTestMode ? [GADSimulatorID] : nil
+    private func configure(_ request: GoogleMobileAds.RequestConfiguration) {
         request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
     }
 }
@@ -65,9 +62,9 @@ extension GoogleAdManagerDemandSourceAdapter: ParameterizedInitializableAdapter 
             isInitialized = true
         }
         
-        configure(GADMobileAds.sharedInstance().requestConfiguration)
+        configure(MobileAds.shared.requestConfiguration)
         
-        GADMobileAds.sharedInstance().start { _ in
+        MobileAds.shared.start { _ in
             completion(nil)
         }
     }
