@@ -27,7 +27,7 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
             rewarded.register(self)
             rewarded.load(withBiddingResponseToken: payload.signal)
         } else {
-            response(.failure(.unscpecifiedException("Mapping Error")))
+            response(.failure(.unspecifiedException("Mapping Error")))
         }
     }
     

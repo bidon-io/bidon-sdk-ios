@@ -32,7 +32,7 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
             response?(.success(wrapper))
             
         } else {
-            response?(.failure(.unscpecifiedException("Mapping Error")))
+            response?(.failure(.unspecifiedException("Mapping Error")))
         }
     }
     

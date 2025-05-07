@@ -87,12 +87,12 @@ class ChartboostBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDema
 extension Bidon.MediationError {
     init(_ error: CacheError) {
         guard let code = error.cacheCode else {
-            self = .unscpecifiedException("Unknown error")
+            self = .unspecifiedException("Unknown error")
             return
         }
         switch code {
         case .internalError:
-            self = .unscpecifiedException("Internal Error")
+            self = .unspecifiedException("Internal Error")
         case .internetUnavailable, .networkFailure:
             self = .networkError
         case .noAdFound:
@@ -102,11 +102,11 @@ extension Bidon.MediationError {
         case .assetDownloadFailure:
             self = .noFill("Asset Download Failure")
         case .publisherDisabled:
-            self = .unscpecifiedException("Publisher Disabled")
+            self = .unspecifiedException("Publisher Disabled")
         case .serverError:
-            self = .unscpecifiedException("Server Error")
+            self = .unspecifiedException("Server Error")
         @unknown default:
-            self = .unscpecifiedException("Unknown error")
+            self = .unspecifiedException("Unknown error")
         }
     }
 }

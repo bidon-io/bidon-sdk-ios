@@ -20,7 +20,7 @@ public enum MediationError: Error {
     case noAppropriateAdUnitId
     case auctionCancelled
     case adFormatNotSupported
-    case unscpecifiedException(String)
+    case unspecifiedException(String)
     case belowPricefloor
     
     var rawValue: String {
@@ -49,8 +49,8 @@ public enum MediationError: Error {
             return "adFormatNotSupported"
         case .belowPricefloor:
             return "belowPricefloor"
-        case .unscpecifiedException:
-            return "unscpecifiedException"
+        case .unspecifiedException:
+            return "unspecifiedException"
         }
     }
         
@@ -81,7 +81,7 @@ public enum MediationError: Error {
         case "belowPricefloor":
             self = .belowPricefloor
         default:
-            self = .unscpecifiedException(rawValue)
+            self = .unspecifiedException(rawValue)
         }
     }
 }

@@ -9,8 +9,7 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.7.12"
-  
+    static let sdkVersion: String = "0.7.16"
     static let zeroUUID: String = "00000000-0000-0000-0000-000000000000"
     
     static let defaultPlacement: String = "default"

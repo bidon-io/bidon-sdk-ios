@@ -23,7 +23,7 @@ where AdObject: BidMachineAdProtocol {
     
         BidMachineSdk.shared.token(with: placementFormat) { token in
             guard let token else {
-                response(.failure(.unscpecifiedException("BidMachine has not provided bidding token")))
+                response(.failure(.unspecifiedException("BidMachine has not provided bidding token")))
                 return
             }
             response(.success(token))

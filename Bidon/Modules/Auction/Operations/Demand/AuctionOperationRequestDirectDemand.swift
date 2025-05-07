@@ -59,7 +59,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             guard let self else { return }
             
             provider.load(
-                pricefloor: self.auctionConfiguration.pricefloor,
+                pricefloor: adUnit.pricefloor,
                 adUnitExtrasDecoder: self.adUnit.extras
             ) { [weak self] result in
                 defer { self?.finish() }
@@ -75,6 +75,11 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                 
                 switch result {
                 case .success(let ad):
+                    if let price = ad.price, price < auctionConfiguration.pricefloor {
+                        let event = DirectDemandLoadingErrorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
+                        observer.log(event)
+                        return
+                    }
                     let bid = BidType(
                         id: UUID().uuidString,
                         impressionId: UUID().uuidString,

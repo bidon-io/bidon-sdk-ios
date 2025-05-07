@@ -74,6 +74,11 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
                 
                 switch result {
                 case .success(let ad):
+                    if let price = ad.price, price < auctionConfiguration.pricefloor {
+                        let event = BiddingDemandBelowPricefloorAucitonEvent(adUnit: adUnit)
+                        observer.log(event)
+                        return
+                    }
                     let bid = BidType(
                         id: UUID().uuidString,
                         impressionId: UUID().uuidString,

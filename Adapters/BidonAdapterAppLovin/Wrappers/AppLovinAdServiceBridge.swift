@@ -62,7 +62,7 @@ extension MediationError {
         case kALErrorCodeNotConnectedToInternet: self = .networkError
         case kALErrorCodeInvalidZone: self = .incorrectAdUnitId
         case kALErrorCodeNoFill: self = .noFill(nil)
-        default: self = .unscpecifiedException("Code: \(alErrorCode)")
+        default: self = .unspecifiedException("Code: \(alErrorCode)")
         }
     }
 }

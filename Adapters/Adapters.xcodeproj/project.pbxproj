@@ -34,7 +34,6 @@
 		422077ED29B0B1AE00A2AD26 /* MediationError+UnityAds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422077EC29B0B1AE00A2AD26 /* MediationError+UnityAds.swift */; };
 		422077EF29B0C58600A2AD26 /* UnityAdsBannerDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422077EE29B0C58600A2AD26 /* UnityAdsBannerDemandProvider.swift */; };
 		4221022E285A3318006596DA /* BidonAdapterBidMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221022D285A3318006596DA /* BidonAdapterBidMachine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		42244DA228C89A4900E9C416 /* MediationError+GADErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42244DA128C89A4900E9C416 /* MediationError+GADErrorCode.swift */; };
 		422931AE29A7692700C9923D /* BidMachineBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931AD29A7692700C9923D /* BidMachineBaseDemandProvider.swift */; };
 		422931B029A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931AF29A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift */; };
 		422931B229A79D9C00C9923D /* GADAdValue+AdRevenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422931B129A79D9C00C9923D /* GADAdValue+AdRevenue.swift */; };
@@ -296,7 +295,6 @@
 		422077EE29B0C58600A2AD26 /* UnityAdsBannerDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnityAdsBannerDemandProvider.swift; sourceTree = "<group>"; };
 		4221022B285A3318006596DA /* BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221022D285A3318006596DA /* BidonAdapterBidMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterBidMachine.h; sourceTree = "<group>"; };
-		42244DA128C89A4900E9C416 /* MediationError+GADErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediationError+GADErrorCode.swift"; sourceTree = "<group>"; };
 		422931AD29A7692700C9923D /* BidMachineBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineBaseDemandProvider.swift; sourceTree = "<group>"; };
 		422931AF29A79B4300C9923D /* GoogleMobileAdsBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMobileAdsBaseDemandProvider.swift; sourceTree = "<group>"; };
 		422931B129A79D9C00C9923D /* GADAdValue+AdRevenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GADAdValue+AdRevenue.swift"; sourceTree = "<group>"; };
@@ -1068,7 +1066,6 @@
 				42BDF0652A8D0D8B002D4BCC /* GADRequest+Builder.swift */,
 				422931B129A79D9C00C9923D /* GADAdValue+AdRevenue.swift */,
 				42BA81E02877188E001F1744 /* GoogleMobileAdsRewardWrapper.swift */,
-				42244DA128C89A4900E9C416 /* MediationError+GADErrorCode.swift */,
 			);
 			path = Wrappers;
 			sourceTree = "<group>";
@@ -1775,7 +1772,7 @@
 				42210227285A3318006596DA /* Sources */,
 				42210228285A3318006596DA /* Frameworks */,
 				42210229285A3318006596DA /* Resources */,
-				EF0F67B2FF00703FEE3D291D /* [CP] Copy Pods Resources */,
+				CBEACA37FE006DFA1D4EEC9F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2755,6 +2752,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CBEACA37FE006DFA1D4EEC9F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D07C7E54638E26DD24BD49CB /* [CP] Copy Pods Resources */ = {
