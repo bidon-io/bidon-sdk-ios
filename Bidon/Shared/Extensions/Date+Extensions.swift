@@ -45,12 +45,14 @@ extension Date {
         
         guard
             result == 0,
-            boottime.tv_sec != 0
+            boottime.tv_sec > 0
         else {
             return .zero
         }
         
-        return TimeInterval(now - boottime.tv_sec)
+        let uptime = TimeInterval(now - boottime.tv_sec)
+        let val = uptime.isFinite && uptime >= 0 ? uptime : .zero
+        return val
     }
     
 }
@@ -72,6 +74,7 @@ extension Date.MeasurementUnits {
 
 extension TimeInterval {
     var uint: UInt {
-        UInt(self)
+        guard isFinite, self >= 0 else { return 0 }
+        return UInt(self)
     }
 }
