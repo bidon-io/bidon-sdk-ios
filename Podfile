@@ -114,10 +114,6 @@ def consent_manager
   pod "StackConsentManager", '~> 2.0.8'
 end
 
-def consent_manager
-  pod "StackConsentManager", '~> 2.0.8'
-end
-
 # Targets
 
 target 'BidonAdapterBidMachine' do

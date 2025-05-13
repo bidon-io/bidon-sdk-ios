@@ -34,8 +34,16 @@ final class GeoManager: NSObject, Geo, Environment {
     private var updateTimestamp: TimeInterval = .zero
     
     var lastfix: UInt {
-        guard !updateTimestamp.isZero else { return .zero }
-        return UInt(Date.timestamp(.monotonic, units: .seconds) - updateTimestamp)
+        let current = Date.timestamp(.monotonic, units: .seconds)
+        let previous = updateTimestamp
+        
+        let diff = current - previous
+        
+        guard previous != 0, diff.isFinite, diff >= 0 else {
+            return .zero
+        }
+        
+        return UInt(diff)
     }
     
     var completion: (() -> ())?

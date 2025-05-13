@@ -42,6 +42,7 @@ module Fastlane
           spec.license = { type: "Copyright", text: "Copyright #{Time.new.year}. Bidon Inc." }
           spec.author = { "Bidon Inc." => "https://http://bidon.org" }
           spec.platform = :ios, "12.0"
+
           if params[:is_development_pod]
             spec.source = { git: "" }
             spec.source_files = params[:name] == "Bidon" ? 'Bidon/**/*.{h,m,swift}' : params[:name] + '/**/*.{h,m,swift}'
@@ -49,6 +50,7 @@ module Fastlane
           else
             spec.source = { http: "https://s3-#{s3_region}.amazonaws.com/#{s3_bucket}/#{spec.name}/#{CGI.escape(params[:version])}/#{spec.name}.zip" }
           end
+
           spec.swift_versions = ["4.0", "4.2", "5.0"]
           unless params[:is_adapter]
             spec.resource_bundles = { "BidonPrivacyInfo" => "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
