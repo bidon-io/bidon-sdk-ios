@@ -10,7 +10,6 @@ import Bidon
 import GoogleMobileAds
 import UIKit
 
-
 final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemandProvider<InterstitialAd> {
     override func loadAd(_ request: Request, adUnitId: String) {
         InterstitialAd.load(with: adUnitId, request: request) { [weak self] interstitial, error in
