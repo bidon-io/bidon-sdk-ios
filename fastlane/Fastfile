@@ -27,7 +27,8 @@ $targets = [
   "BidonAdapterYandex",
   "BidonAdapterIronSource",
   "BidonAdapterMyTarget",
-  "BidonAdapterMobileFuse"
+  "BidonAdapterMobileFuse",
+  "AppLovinMediationBidonAdapter"
 ]
 
 # Defenitions ###
