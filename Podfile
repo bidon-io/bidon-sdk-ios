@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.2.0'
+  pod 'BidMachine', '3.2.1'
 end
 
 def admob
@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.30.0"
+  pod "myTargetSDK", "~> 5.29.1"
 end
 
 def chartboost
@@ -87,7 +87,7 @@ end
 
 
 def appodeal_mediation
-  pod 'Appodeal', '~> 3.3.0'
+  pod 'Appodeal', '~> 3.5.2'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
