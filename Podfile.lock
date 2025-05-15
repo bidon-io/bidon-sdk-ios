@@ -80,7 +80,7 @@ PODS:
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
   - UnityAds (4.14.2)
-  - VungleAds (7.5.1)
+  - VungleAds (7.5.0)
   - YandexMobileAds (5.2.1):
     - YandexMobileAds/Static (= 5.2.1)
   - YandexMobileAds/Static (5.2.1):
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
   - UnityAds (~> 4.14.2)
-  - VungleAds (= 7.5.1)
+  - VungleAds (= 7.5.0)
   - YandexMobileAds (= 5.2.1)
 
 SPEC REPOS:
@@ -174,10 +174,10 @@ SPEC CHECKSUMS:
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: f31936ffa3a8f146b141624729e11488ceeef85d
   UnityAds: eabbbb3014326e45dc221a467fba16960e7b73e3
-  VungleAds: f7143149d6160211c6d462453adce125160e4283
+  VungleAds: cb2aa4791ba4f341c6c026d44cc43eabe258890f
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: 3090c0c20812e574029d35e3db2aa5cc5f860321
+PODFILE CHECKSUM: e36f2dc422d670f2b0623db515e2d20982891a4b
 
 COCOAPODS: 1.16.2

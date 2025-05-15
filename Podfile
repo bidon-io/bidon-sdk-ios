@@ -50,7 +50,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.5.1'
+  pod 'VungleAds', '7.5.0'
 end
 
 def ocmock
