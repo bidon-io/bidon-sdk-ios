@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK', '~> 13.1'
+  pod 'AppLovinSDK', '13.1.0'
 end
 
 def bidmachine 
@@ -201,7 +201,7 @@ end
 
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  applovin
+  pod 'AppLovinSDK', '~> 13.1'
 end
 
 # Tests
