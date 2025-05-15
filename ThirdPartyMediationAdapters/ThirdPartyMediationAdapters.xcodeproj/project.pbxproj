@@ -25,6 +25,7 @@
 		498053772DD495E700ED737F /* FullscreenAdKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053662DD495E700ED737F /* FullscreenAdKeeper.m */; };
 		498053782DD495E700ED737F /* BannerAdKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053642DD495E700ED737F /* BannerAdKeeper.m */; };
 		498053792DD495E700ED737F /* BidonMediationAdapter+Interstitial.m in Sources */ = {isa = PBXBuildFile; fileRef = 4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */; };
+		498053812DD4B54C00ED737F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498053802DD4B54C00ED737F /* Bidon.framework */; };
 		FC68A62C0C650105751A8B9A /* Pods_AppLovinMediationBidonAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		498053642DD495E700ED737F /* BannerAdKeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdKeeper.m; sourceTree = "<group>"; };
 		498053652DD495E700ED737F /* FullscreenAdKeeper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FullscreenAdKeeper.h; sourceTree = "<group>"; };
 		498053662DD495E700ED737F /* FullscreenAdKeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullscreenAdKeeper.m; sourceTree = "<group>"; };
+		498053802DD4B54C00ED737F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; sourceTree = "<group>"; };
 		B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.release.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.release.xcconfig"; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				498053812DD4B54C00ED737F /* Bidon.framework in Frameworks */,
 				FC68A62C0C650105751A8B9A /* Pods_AppLovinMediationBidonAdapter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +140,7 @@
 		E1ACF9C7F3B0D16F77C7BD90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				498053802DD4B54C00ED737F /* Bidon.framework */,
 				B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */,
 			);
 			name = Frameworks;
@@ -198,6 +202,7 @@
 				};
 			};
 			buildConfigurationList = 498053202DD4958B00ED737F /* Build configuration list for PBXProject "ThirdPartyMediationAdapters" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

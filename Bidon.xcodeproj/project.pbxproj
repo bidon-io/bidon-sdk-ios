@@ -361,7 +361,6 @@
 		493FE9492BFF4BEC0000023E /* PlacementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementModel.swift; sourceTree = "<group>"; };
 		494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRoundTimeout.swift; sourceTree = "<group>"; };
 		496A77132C00C88700316B05 /* DemandsTokensManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandsTokensManager.swift; sourceTree = "<group>"; };
-		498053142DD4950400ED737F /* AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionInfo.swift; sourceTree = "<group>"; };
 		49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuctionInfo.swift; sourceTree = "<group>"; };
 		49E43B232C048EA100C2EC6B /* ConfigParametersStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigParametersStorage.swift; sourceTree = "<group>"; };
@@ -373,29 +372,12 @@
 		49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4980531A2DD4950400ED737F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				AppLovinMediationBidonAdapter.h,
-			);
-			target = 498053132DD4950400ED737F /* AppLovinMediationBidonAdapter */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		498053152DD4950400ED737F /* AppLovinMediationBidonAdapter */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4980531A2DD4950400ED737F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AppLovinMediationBidonAdapter; sourceTree = "<group>"; };
+		498053152DD4950400ED737F /* AppLovinMediationBidonAdapter */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AppLovinMediationBidonAdapter; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4221017B2859E29A006596DA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		498053112DD4950400ED737F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -430,7 +412,6 @@
 			isa = PBXGroup;
 			children = (
 				4221017E2859E29A006596DA /* Bidon.framework */,
-				498053142DD4950400ED737F /* AppLovinMediationBidonAdapter.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1077,13 +1058,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4980530F2DD4950400ED737F /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1105,29 +1079,6 @@
 			productReference = 4221017E2859E29A006596DA /* Bidon.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		498053132DD4950400ED737F /* AppLovinMediationBidonAdapter */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4980531B2DD4950400ED737F /* Build configuration list for PBXNativeTarget "AppLovinMediationBidonAdapter" */;
-			buildPhases = (
-				4980530F2DD4950400ED737F /* Headers */,
-				498053102DD4950400ED737F /* Sources */,
-				498053112DD4950400ED737F /* Frameworks */,
-				498053122DD4950400ED737F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				498053152DD4950400ED737F /* AppLovinMediationBidonAdapter */,
-			);
-			name = AppLovinMediationBidonAdapter;
-			packageProductDependencies = (
-			);
-			productName = AppLovinMediationBidonAdapter;
-			productReference = 498053142DD4950400ED737F /* AppLovinMediationBidonAdapter.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1141,9 +1092,6 @@
 					4221017D2859E29A006596DA = {
 						CreatedOnToolsVersion = 13.3.1;
 						LastSwiftMigration = 1330;
-					};
-					498053132DD4950400ED737F = {
-						CreatedOnToolsVersion = 16.0;
 					};
 				};
 			};
@@ -1161,7 +1109,6 @@
 			projectRoot = "";
 			targets = (
 				4221017D2859E29A006596DA /* Bidon */,
-				498053132DD4950400ED737F /* AppLovinMediationBidonAdapter */,
 			);
 		};
 /* End PBXProject section */
@@ -1172,13 +1119,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49FE393A2BC54EEF000865FD /* PrivacyInfo.xcprivacy in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		498053122DD4950400ED737F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1366,13 +1306,6 @@
 				429E646129F94CDD00149EEA /* ViewabilityTracker.swift in Sources */,
 				4224AA6D28B7D1F600E8D886 /* RewardedAd.swift in Sources */,
 				42C4F46629E6E49200B12E15 /* Framework.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		498053102DD4950400ED737F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,76 +1499,6 @@
 			};
 			name = Release;
 		};
-		498053182DD4950400ED737F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.AppLovinMediationBidonAdapter;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		498053192DD4950400ED737F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.AppLovinMediationBidonAdapter;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1653,15 +1516,6 @@
 			buildConfigurations = (
 				422101912859E29A006596DA /* Debug */,
 				422101922859E29A006596DA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4980531B2DD4950400ED737F /* Build configuration list for PBXNativeTarget "AppLovinMediationBidonAdapter" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				498053182DD4950400ED737F /* Debug */,
-				498053192DD4950400ED737F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
