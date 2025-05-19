@@ -199,6 +199,11 @@ target 'BidonAdapterYandex' do
   yandex
 end
 
+target 'AppLovinMediationBidonAdapter' do
+  project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
+  pod 'AppLovinSDK', '~> 13.1'
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
