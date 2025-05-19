@@ -176,8 +176,6 @@
 		49088C182C6B556A0024A640 /* ISDemandOnlyBannerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088C132C6B556A0024A640 /* ISDemandOnlyBannerRouter.swift */; };
 		49088C192C6B556A0024A640 /* IronSourceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088C142C6B556A0024A640 /* IronSourceApi.swift */; };
 		49088C1A2C6B556A0024A640 /* ISDemandOnlyInterstitialRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088C152C6B556A0024A640 /* ISDemandOnlyInterstitialRouter.swift */; };
-		4943C8D42D6779ED00397CE5 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; };
-		4943C8D52D6779ED00397CE5 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		494C02582C2EBC38003D881D /* AmazonBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02572C2EBC38003D881D /* AmazonBiddingRewardedDemandProvider.swift */; };
 		495CD3292C7761B700590AAD /* BidonAdapterChartboost.h in Headers */ = {isa = PBXBuildFile; fileRef = 495CD3282C7761B700590AAD /* BidonAdapterChartboost.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		495CD32E2C7761C100590AAD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD32D2C7761C100590AAD /* Bidon.framework */; };
@@ -213,6 +211,8 @@
 		49D69CB62C6CB588007EF1F8 /* YandexAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAD2C6CB588007EF1F8 /* YandexAdUnitExtras.swift */; };
 		49D69CB72C6CB588007EF1F8 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAE2C6CB588007EF1F8 /* YandexBaseDemandProvider.swift */; };
 		49D69CBF2C6CC93D007EF1F8 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */; };
+		49DD99DD2DD60B990047F59D /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; };
+		49DD99DE2DD60B990047F59D /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
@@ -229,17 +229,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4943C8D62D6779ED00397CE5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4943C8D52D6779ED00397CE5 /* DTBiOSSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		495CD3302C7761C100590AAD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -247,6 +236,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				495CD32F2C7761C100590AAD /* Bidon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49DD99DF2DD60B990047F59D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				49DD99DE2DD60B990047F59D /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +531,7 @@
 		A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterVungle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A956A959F899FA2A07C91C64 /* Pods-BidonAdapterAmazon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterAmazon.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterAmazon/Pods-BidonAdapterAmazon.release.xcconfig"; sourceTree = "<group>"; };
 		B29B8A59C7136BC0FDD427C8 /* Pods-BidOnAdapterDTExchange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterDTExchange.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterDTExchange/Pods-BidOnAdapterDTExchange.debug.xcconfig"; sourceTree = "<group>"; };
+		B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.2.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		BB69C86D9638891BD3D2A879 /* Pods-BidOnAdapterAppLovin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.debug.xcconfig"; sourceTree = "<group>"; };
 		BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EF50FBFE5B9D0143A1ECB5 /* Pods-BidOnAdapterBidMachine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterBidMachine.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterBidMachine/Pods-BidOnAdapterBidMachine.debug.xcconfig"; sourceTree = "<group>"; };
@@ -604,7 +605,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4943C8D42D6779ED00397CE5 /* DTBiOSSDK.xcframework in Frameworks */,
+				49DD99DD2DD60B990047F59D /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1452,6 +1453,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */,
 				4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */,
 				4901A9752D2D442F00BDE4C4 /* DTBiOSSDK.xcframework */,
 				9AB4B7BB2CF7373500312921 /* DTBiOSSDK.xcframework */,
@@ -1812,7 +1814,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				4943C8D62D6779ED00397CE5 /* Embed Frameworks */,
+				49DD99DF2DD60B990047F59D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2854,23 +2856,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EF0F67B2FF00703FEE3D291D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3056,7 +3041,6 @@
 				42BDF0662A8D0D8B002D4BCC /* GADRequest+Builder.swift in Sources */,
 				422931B229A79D9C00C9923D /* GADAdValue+AdRevenue.swift in Sources */,
 				424D295F28BE416400F6F2D6 /* GoogleMobileAdsDemandAd.swift in Sources */,
-				42244DA228C89A4900E9C416 /* MediationError+GADErrorCode.swift in Sources */,
 				42D3774C2AFA8366003DCCA2 /* GoogleMobileAdsParameters.swift in Sources */,
 				42D377482AFA81F1003DCCA2 /* GoogleMobileAdsBiddingToken.swift in Sources */,
 				42D3774A2AFA832E003DCCA2 /* GoogleMobileAdsBiddingPayload.swift in Sources */,

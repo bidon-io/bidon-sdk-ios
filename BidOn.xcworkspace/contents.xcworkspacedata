@@ -8,6 +8,9 @@
       location = "group:Adapters/Adapters.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Tests/Tests.xcodeproj">
    </FileRef>
    <FileRef

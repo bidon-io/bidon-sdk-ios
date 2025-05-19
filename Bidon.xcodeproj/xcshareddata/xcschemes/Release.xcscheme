@@ -258,6 +258,20 @@
                ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "498053482DD495D400ED737F"
+               BuildableName = "AppLovinMediationBidonAdapter.framework"
+               BlueprintName = "AppLovinMediationBidonAdapter"
+               ReferencedContainer = "container:ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
