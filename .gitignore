@@ -49,3 +49,4 @@ Pods/
 /Sandbox/**/Constants.swift
 /Sandbox/**/Info.plist
 /Sandbox/**/GoogleService-Info.plist
+/script-bidon.sh
