@@ -97,6 +97,7 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.2.0)
   - AppLovinSDK (= 13.2.0)
+  - AppLovinSDK (~> 13.1)
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (= 3.2.1)
   - BigoADS (~> 4.7.0)
@@ -178,6 +179,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: e36f2dc422d670f2b0623db515e2d20982891a4b
+PODFILE CHECKSUM: e761625adf5cf72b6ce1567a6acb190724abacdb
 
 COCOAPODS: 1.16.2
