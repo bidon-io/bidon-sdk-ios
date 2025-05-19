@@ -1,0 +1,483 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		498053682DD495E700ED737F /* BidonMediationAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053592DD495E700ED737F /* BidonMediationAdapter.h */; };
+		498053692DD495E700ED737F /* BidonMediationAdapter+Interstitial.h in Headers */ = {isa = PBXBuildFile; fileRef = 4980535D2DD495E700ED737F /* BidonMediationAdapter+Interstitial.h */; };
+		4980536A2DD495E700ED737F /* BannerAdKeeper.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053632DD495E700ED737F /* BannerAdKeeper.h */; };
+		4980536B2DD495E700ED737F /* FullscreenAdInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053562DD495E700ED737F /* FullscreenAdInstance.h */; };
+		4980536C2DD495E700ED737F /* FullscreenAdKeeper.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053652DD495E700ED737F /* FullscreenAdKeeper.h */; };
+		4980536D2DD495E700ED737F /* BannerAdInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053542DD495E700ED737F /* BannerAdInstance.h */; };
+		4980536E2DD495E700ED737F /* AdKeeperFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053612DD495E700ED737F /* AdKeeperFactory.h */; };
+		4980536F2DD495E700ED737F /* BidonMediationAdapter+Banner.h in Headers */ = {isa = PBXBuildFile; fileRef = 4980535B2DD495E700ED737F /* BidonMediationAdapter+Banner.h */; };
+		498053702DD495E700ED737F /* BidonMediationAdapter+Rewarded.h in Headers */ = {isa = PBXBuildFile; fileRef = 4980535F2DD495E700ED737F /* BidonMediationAdapter+Rewarded.h */; };
+		498053712DD495E700ED737F /* FullscreenAdInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053572DD495E700ED737F /* FullscreenAdInstance.m */; };
+		498053722DD495E700ED737F /* BidonMediationAdapter+Banner.m in Sources */ = {isa = PBXBuildFile; fileRef = 4980535C2DD495E700ED737F /* BidonMediationAdapter+Banner.m */; };
+		498053732DD495E700ED737F /* BidonMediationAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4980535A2DD495E700ED737F /* BidonMediationAdapter.m */; };
+		498053742DD495E700ED737F /* AdKeeperFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053622DD495E700ED737F /* AdKeeperFactory.m */; };
+		498053752DD495E700ED737F /* BidonMediationAdapter+Rewarded.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053602DD495E700ED737F /* BidonMediationAdapter+Rewarded.m */; };
+		498053762DD495E700ED737F /* BannerAdInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053552DD495E700ED737F /* BannerAdInstance.m */; };
+		498053772DD495E700ED737F /* FullscreenAdKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053662DD495E700ED737F /* FullscreenAdKeeper.m */; };
+		498053782DD495E700ED737F /* BannerAdKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053642DD495E700ED737F /* BannerAdKeeper.m */; };
+		498053792DD495E700ED737F /* BidonMediationAdapter+Interstitial.m in Sources */ = {isa = PBXBuildFile; fileRef = 4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */; };
+		498053812DD4B54C00ED737F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498053802DD4B54C00ED737F /* Bidon.framework */; };
+		FC68A62C0C650105751A8B9A /* Pods_AppLovinMediationBidonAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		498053542DD495E700ED737F /* BannerAdInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerAdInstance.h; sourceTree = "<group>"; };
+		498053552DD495E700ED737F /* BannerAdInstance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdInstance.m; sourceTree = "<group>"; };
+		498053562DD495E700ED737F /* FullscreenAdInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FullscreenAdInstance.h; sourceTree = "<group>"; };
+		498053572DD495E700ED737F /* FullscreenAdInstance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullscreenAdInstance.m; sourceTree = "<group>"; };
+		498053592DD495E700ED737F /* BidonMediationAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonMediationAdapter.h; sourceTree = "<group>"; };
+		4980535A2DD495E700ED737F /* BidonMediationAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BidonMediationAdapter.m; sourceTree = "<group>"; };
+		4980535B2DD495E700ED737F /* BidonMediationAdapter+Banner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BidonMediationAdapter+Banner.h"; sourceTree = "<group>"; };
+		4980535C2DD495E700ED737F /* BidonMediationAdapter+Banner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BidonMediationAdapter+Banner.m"; sourceTree = "<group>"; };
+		4980535D2DD495E700ED737F /* BidonMediationAdapter+Interstitial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BidonMediationAdapter+Interstitial.h"; sourceTree = "<group>"; };
+		4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BidonMediationAdapter+Interstitial.m"; sourceTree = "<group>"; };
+		4980535F2DD495E700ED737F /* BidonMediationAdapter+Rewarded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BidonMediationAdapter+Rewarded.h"; sourceTree = "<group>"; };
+		498053602DD495E700ED737F /* BidonMediationAdapter+Rewarded.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BidonMediationAdapter+Rewarded.m"; sourceTree = "<group>"; };
+		498053612DD495E700ED737F /* AdKeeperFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdKeeperFactory.h; sourceTree = "<group>"; };
+		498053622DD495E700ED737F /* AdKeeperFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdKeeperFactory.m; sourceTree = "<group>"; };
+		498053632DD495E700ED737F /* BannerAdKeeper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerAdKeeper.h; sourceTree = "<group>"; };
+		498053642DD495E700ED737F /* BannerAdKeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdKeeper.m; sourceTree = "<group>"; };
+		498053652DD495E700ED737F /* FullscreenAdKeeper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FullscreenAdKeeper.h; sourceTree = "<group>"; };
+		498053662DD495E700ED737F /* FullscreenAdKeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullscreenAdKeeper.m; sourceTree = "<group>"; };
+		498053802DD4B54C00ED737F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; sourceTree = "<group>"; };
+		B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.release.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		498053462DD495D400ED737F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				498053812DD4B54C00ED737F /* Bidon.framework in Frameworks */,
+				FC68A62C0C650105751A8B9A /* Pods_AppLovinMediationBidonAdapter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4980531C2DD4958B00ED737F = {
+			isa = PBXGroup;
+			children = (
+				498053522DD495DA00ED737F /* AppLovinMediationBidonAdapter */,
+				498053262DD4958B00ED737F /* Products */,
+				727ED95A7254C35385A9D1C2 /* Pods */,
+				E1ACF9C7F3B0D16F77C7BD90 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		498053262DD4958B00ED737F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		498053522DD495DA00ED737F /* AppLovinMediationBidonAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				498053582DD495E700ED737F /* AdInstance */,
+				498053592DD495E700ED737F /* BidonMediationAdapter.h */,
+				4980535A2DD495E700ED737F /* BidonMediationAdapter.m */,
+				4980535B2DD495E700ED737F /* BidonMediationAdapter+Banner.h */,
+				4980535C2DD495E700ED737F /* BidonMediationAdapter+Banner.m */,
+				4980535D2DD495E700ED737F /* BidonMediationAdapter+Interstitial.h */,
+				4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */,
+				4980535F2DD495E700ED737F /* BidonMediationAdapter+Rewarded.h */,
+				498053602DD495E700ED737F /* BidonMediationAdapter+Rewarded.m */,
+				498053672DD495E700ED737F /* Keeper */,
+			);
+			path = AppLovinMediationBidonAdapter;
+			sourceTree = "<group>";
+		};
+		498053582DD495E700ED737F /* AdInstance */ = {
+			isa = PBXGroup;
+			children = (
+				498053542DD495E700ED737F /* BannerAdInstance.h */,
+				498053552DD495E700ED737F /* BannerAdInstance.m */,
+				498053562DD495E700ED737F /* FullscreenAdInstance.h */,
+				498053572DD495E700ED737F /* FullscreenAdInstance.m */,
+			);
+			path = AdInstance;
+			sourceTree = "<group>";
+		};
+		498053672DD495E700ED737F /* Keeper */ = {
+			isa = PBXGroup;
+			children = (
+				498053612DD495E700ED737F /* AdKeeperFactory.h */,
+				498053622DD495E700ED737F /* AdKeeperFactory.m */,
+				498053632DD495E700ED737F /* BannerAdKeeper.h */,
+				498053642DD495E700ED737F /* BannerAdKeeper.m */,
+				498053652DD495E700ED737F /* FullscreenAdKeeper.h */,
+				498053662DD495E700ED737F /* FullscreenAdKeeper.m */,
+			);
+			path = Keeper;
+			sourceTree = "<group>";
+		};
+		727ED95A7254C35385A9D1C2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */,
+				B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		E1ACF9C7F3B0D16F77C7BD90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				498053802DD4B54C00ED737F /* Bidon.framework */,
+				B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		498053442DD495D400ED737F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				498053682DD495E700ED737F /* BidonMediationAdapter.h in Headers */,
+				498053692DD495E700ED737F /* BidonMediationAdapter+Interstitial.h in Headers */,
+				4980536A2DD495E700ED737F /* BannerAdKeeper.h in Headers */,
+				4980536B2DD495E700ED737F /* FullscreenAdInstance.h in Headers */,
+				4980536C2DD495E700ED737F /* FullscreenAdKeeper.h in Headers */,
+				4980536D2DD495E700ED737F /* BannerAdInstance.h in Headers */,
+				4980536E2DD495E700ED737F /* AdKeeperFactory.h in Headers */,
+				4980536F2DD495E700ED737F /* BidonMediationAdapter+Banner.h in Headers */,
+				498053702DD495E700ED737F /* BidonMediationAdapter+Rewarded.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		498053482DD495D400ED737F /* AppLovinMediationBidonAdapter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 498053502DD495D400ED737F /* Build configuration list for PBXNativeTarget "AppLovinMediationBidonAdapter" */;
+			buildPhases = (
+				1208CE98C5624BB043F79F50 /* [CP] Check Pods Manifest.lock */,
+				498053442DD495D400ED737F /* Headers */,
+				498053452DD495D400ED737F /* Sources */,
+				498053462DD495D400ED737F /* Frameworks */,
+				498053472DD495D400ED737F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppLovinMediationBidonAdapter;
+			productName = AppLovinMediationBidonAdapter;
+			productReference = 498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4980531D2DD4958B00ED737F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					498053482DD495D400ED737F = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 498053202DD4958B00ED737F /* Build configuration list for PBXProject "ThirdPartyMediationAdapters" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4980531C2DD4958B00ED737F;
+			productRefGroup = 498053262DD4958B00ED737F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				498053482DD495D400ED737F /* AppLovinMediationBidonAdapter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		498053472DD495D400ED737F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1208CE98C5624BB043F79F50 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppLovinMediationBidonAdapter-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		498053452DD495D400ED737F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				498053712DD495E700ED737F /* FullscreenAdInstance.m in Sources */,
+				498053722DD495E700ED737F /* BidonMediationAdapter+Banner.m in Sources */,
+				498053732DD495E700ED737F /* BidonMediationAdapter.m in Sources */,
+				498053742DD495E700ED737F /* AdKeeperFactory.m in Sources */,
+				498053752DD495E700ED737F /* BidonMediationAdapter+Rewarded.m in Sources */,
+				498053762DD495E700ED737F /* BannerAdInstance.m in Sources */,
+				498053772DD495E700ED737F /* FullscreenAdKeeper.m in Sources */,
+				498053782DD495E700ED737F /* BannerAdKeeper.m in Sources */,
+				498053792DD495E700ED737F /* BidonMediationAdapter+Interstitial.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		498053402DD4958C00ED737F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		498053412DD4958C00ED737F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4980534D2DD495D400ED737F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.AppLovinMediationBidonAdapter;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4980534E2DD495D400ED737F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.AppLovinMediationBidonAdapter;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		498053202DD4958B00ED737F /* Build configuration list for PBXProject "ThirdPartyMediationAdapters" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				498053402DD4958C00ED737F /* Debug */,
+				498053412DD4958C00ED737F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		498053502DD495D400ED737F /* Build configuration list for PBXNativeTarget "AppLovinMediationBidonAdapter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4980534D2DD495D400ED737F /* Debug */,
+				4980534E2DD495D400ED737F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4980531D2DD4958B00ED737F /* Project object */;
+}
