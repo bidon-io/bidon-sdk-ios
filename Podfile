@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK', "13.1.0"
+  pod 'AppLovinSDK', '13.1.0'
 end
 
 def bidmachine 
