@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BidonMediationAdapter.h"
 #import <AppLovinSDK/AppLovinSDK.h>
-#import <Bidon/Bidon.h>
+#import <Bidon/Bidon-Swift.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

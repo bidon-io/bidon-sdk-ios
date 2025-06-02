@@ -89,6 +89,7 @@
 		498053522DD495DA00ED737F /* AppLovinMediationBidonAdapter */ = {
 			isa = PBXGroup;
 			children = (
+				498053672DD495E700ED737F /* Keeper */,
 				498053582DD495E700ED737F /* AdInstance */,
 				498053592DD495E700ED737F /* BidonMediationAdapter.h */,
 				4980535A2DD495E700ED737F /* BidonMediationAdapter.m */,
@@ -98,7 +99,6 @@
 				4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */,
 				4980535F2DD495E700ED737F /* BidonMediationAdapter+Rewarded.h */,
 				498053602DD495E700ED737F /* BidonMediationAdapter+Rewarded.m */,
-				498053672DD495E700ED737F /* Keeper */,
 			);
 			path = AppLovinMediationBidonAdapter;
 			sourceTree = "<group>";
