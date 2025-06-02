@@ -8,7 +8,7 @@
 
 #import "BidonMediationAdapter.h"
 #import <AppLovinSDK/AppLovinSDK.h>
-#import <Bidon/Bidon.h>
+#import <Bidon/Bidon-Swift.h>
 #import "AdKeeperFactory.h"
 #import "FullscreenAdInstance.h"
 #import "BidonMediationAdapter+Banner.h"
@@ -124,7 +124,7 @@
         [self.bannerDelegate didFailToLoadAdViewAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.noFill mediatedNetworkErrorCode:BDNErrorCodeNoFill mediatedNetworkErrorMessage:error.localizedDescription]];
         [self onDestroyBanner];
     } else if (adObject == self.interstitialAd) {
-        NSLog(@"[BidonAdapter] Interstitial ad failed to load: No fill");
+        [self handleInterstitialFailedToLoad];
         [self.interstitialDelegate didFailToLoadInterstitialAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.noFill mediatedNetworkErrorCode:BDNErrorCodeNoFill mediatedNetworkErrorMessage:error.localizedDescription]];
         [self onDestroyInterstitial];
     } else if (adObject == self.rewardedAd) {

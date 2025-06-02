@@ -10,54 +10,84 @@
 
 @implementation AdKeeperFactory
 
-+ (FullscreenAdKeeper *)interstitial {
-    static FullscreenAdKeeper *sharedInstance = nil;
++ (FullscreenAdKeeper *)interstitial:(NSString *)key {
+    static NSMutableDictionary<NSString *, FullscreenAdKeeper *> *interstitialKeepers;
+    static dispatch_queue_t queue;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[FullscreenAdKeeper alloc] init];
+        interstitialKeepers = [NSMutableDictionary dictionary];
+        queue = dispatch_queue_create("io.bidon.bcamax.interstitial.queue", DISPATCH_QUEUE_CONCURRENT);
     });
-    return sharedInstance;
-}
 
-+ (FullscreenAdKeeper *)rewarded {
-    static FullscreenAdKeeper *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[FullscreenAdKeeper alloc] init];
+    __block FullscreenAdKeeper *keeper;
+    dispatch_sync(queue, ^{
+        keeper = interstitialKeepers[key];
     });
-    return sharedInstance;
-}
 
-+ (BannerAdKeeper *)banner:(MAAdFormat *)format {
-    static BannerAdKeeper *bannerInstance = nil;
-    static BannerAdKeeper *leaderboardInstance = nil;
-    static BannerAdKeeper *mrecInstance = nil;
-    
-    static dispatch_once_t bannerOnceToken;
-    static dispatch_once_t leaderboardOnceToken;
-    static dispatch_once_t mrecOnceToken;
-    
-    if (format == MAAdFormat.banner) {
-        dispatch_once(&bannerOnceToken, ^{
-            bannerInstance = [[BannerAdKeeper alloc] init];
+    if (!keeper) {
+        dispatch_barrier_sync(queue, ^{
+            if (!interstitialKeepers[key]) {
+                interstitialKeepers[key] = [[FullscreenAdKeeper alloc] initWithAdUnitId:key];
+            }
+            keeper = interstitialKeepers[key];
         });
-        return bannerInstance;
-    } else if (format == MAAdFormat.leader) {
-        dispatch_once(&leaderboardOnceToken, ^{
-            leaderboardInstance = [[BannerAdKeeper alloc] init];
-        });
-        return leaderboardInstance;
-    } else if (format == MAAdFormat.mrec) {
-        dispatch_once(&mrecOnceToken, ^{
-            mrecInstance = [[BannerAdKeeper alloc] init];
-        });
-        return mrecInstance;
-    } else {
-        dispatch_once(&bannerOnceToken, ^{
-            bannerInstance = [[BannerAdKeeper alloc] init];
-        });
-        return bannerInstance;
     }
+
+    return keeper;
+}
+
++ (FullscreenAdKeeper *)rewarded:(NSString *)key {
+    static NSMutableDictionary<NSString *, FullscreenAdKeeper *> *rewardedKeepers;
+    static dispatch_queue_t queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        rewardedKeepers = [NSMutableDictionary dictionary];
+        queue = dispatch_queue_create("io.bidon.bcamax.rewarded.queue", DISPATCH_QUEUE_CONCURRENT);
+    });
+
+    __block FullscreenAdKeeper *keeper;
+    dispatch_sync(queue, ^{
+        keeper = rewardedKeepers[key];
+    });
+
+    if (!keeper) {
+        dispatch_barrier_sync(queue, ^{
+            if (!rewardedKeepers[key]) {
+                rewardedKeepers[key] = [[FullscreenAdKeeper alloc] initWithAdUnitId:key];
+            }
+            keeper = rewardedKeepers[key];
+        });
+    }
+
+    return keeper;
+}
+
++ (BannerAdKeeper *)banner:(MAAdFormat *)format key:(NSString *)key {
+    static NSMutableDictionary<NSString *, BannerAdKeeper *> *bannerKeepers;
+    static dispatch_queue_t queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        bannerKeepers = [NSMutableDictionary dictionary];
+        queue = dispatch_queue_create("io.bidon.bcamax.banner.queue", DISPATCH_QUEUE_CONCURRENT);
+    });
+
+    NSString *combinedKey = [NSString stringWithFormat:@"%@_%@", format.label, key];
+
+    __block BannerAdKeeper *keeper;
+    dispatch_sync(queue, ^{
+        keeper = bannerKeepers[combinedKey];
+    });
+
+    if (!keeper) {
+        dispatch_barrier_sync(queue, ^{
+            if (!bannerKeepers[combinedKey]) {
+                bannerKeepers[combinedKey] = [[BannerAdKeeper alloc] initWithAdUnitId:key];
+            }
+            keeper = bannerKeepers[combinedKey];
+        });
+    }
+
+    return keeper;
 }
 
 @end

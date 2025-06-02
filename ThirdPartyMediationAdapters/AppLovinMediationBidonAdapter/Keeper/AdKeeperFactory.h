@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AdKeeperFactory : NSObject
 
-+ (FullscreenAdKeeper *)interstitial;
-+ (FullscreenAdKeeper *)rewarded;
-+ (BannerAdKeeper *)banner:(MAAdFormat *)format;
++ (FullscreenAdKeeper *)interstitial:(NSString *)key;
++ (FullscreenAdKeeper *)rewarded:(NSString *)key;
++ (BannerAdKeeper *)banner:(MAAdFormat *)format key:(NSString *)key;
 
 @end
 
