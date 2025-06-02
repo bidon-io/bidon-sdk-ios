@@ -19,10 +19,12 @@ class BidMachineDirectDemandProvider<AdObject: BidMachineAdProtocol>: BidMachine
     ) {
         do {
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
+            var parameters = adUnitExtras.customParameters ?? [String: String]()
+            parameters["mediation_mode"] = "bidon"
             
             configuration.populate { builder in
                 builder.appendPriceFloor(pricefloor, UUID().uuidString)
-                builder.withCustomParameters(["mediation_mode": "bidon"])
+                builder.withCustomParameters(parameters)
             }
             
             BidMachineSdk.shared.ad(AdObject.self, configuration) { [weak self] ad, error in

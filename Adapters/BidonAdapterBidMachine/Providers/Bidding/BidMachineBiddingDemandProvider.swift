@@ -37,10 +37,12 @@ where AdObject: BidMachineAdProtocol {
     ) {
         do {
             let configuration = try BidMachineSdk.shared.requestConfiguration(placementFormat)
+            var parameters = adUnitExtras.customParameters ?? [String: String]()
+            parameters["mediation_mode"] = "bidon"
             
             configuration.populate { builder in
                 builder.withPayload(payload.payload)
-                builder.withCustomParameters(["mediation_mode": "bidon"])
+                builder.withCustomParameters(parameters)
             }
             
             BidMachineSdk.shared.ad(AdObject.self, configuration) { [weak self] ad, error in
