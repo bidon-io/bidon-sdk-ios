@@ -220,6 +220,8 @@
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
 		A8831F4DD98CAF8F84E87612 /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
+		B9B34CF82DD3879B003EB330 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */; };
+		B9B34CF92DD3879B003EB330 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
 		CA23DEA1E10FEE1D3BF005F0 /* Pods_BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */; };
 		E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */; };
@@ -240,13 +242,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49DD99DF2DD60B990047F59D /* Embed Frameworks */ = {
+		B9B34CFA2DD3879B003EB330 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				49DD99DE2DD60B990047F59D /* DTBiOSSDK.xcframework in Embed Frameworks */,
+				B9B34CF92DD3879B003EB330 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -605,7 +607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49DD99DD2DD60B990047F59D /* DTBiOSSDK.xcframework in Frameworks */,
+				B9B34CF82DD3879B003EB330 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1814,7 +1816,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				49DD99DF2DD60B990047F59D /* Embed Frameworks */,
+				B9B34CFA2DD3879B003EB330 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
