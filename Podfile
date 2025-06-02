@@ -50,7 +50,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.5.1'
+  pod 'VungleAds', '7.5.0'
 end
 
 def ocmock
@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.30.0"
+  pod "myTargetSDK", "~> 5.29.1"
 end
 
 def chartboost
@@ -197,6 +197,11 @@ end
 target 'BidonAdapterYandex' do
   project 'Adapters/Adapters.xcodeproj'
   yandex
+end
+
+target 'AppLovinMediationBidonAdapter' do
+  project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
+  pod 'AppLovinSDK', '~> 13.1'
 end
 
 # Tests

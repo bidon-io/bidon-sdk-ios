@@ -211,6 +211,8 @@
 		49D69CB62C6CB588007EF1F8 /* YandexAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAD2C6CB588007EF1F8 /* YandexAdUnitExtras.swift */; };
 		49D69CB72C6CB588007EF1F8 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAE2C6CB588007EF1F8 /* YandexBaseDemandProvider.swift */; };
 		49D69CBF2C6CC93D007EF1F8 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */; };
+		49DD99DD2DD60B990047F59D /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; };
+		49DD99DE2DD60B990047F59D /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
