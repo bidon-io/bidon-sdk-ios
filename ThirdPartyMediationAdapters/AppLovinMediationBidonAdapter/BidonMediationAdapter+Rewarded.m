@@ -36,6 +36,7 @@
         
         BDNRewardedAd *rewardedAd = [[BDNRewardedAd alloc] initWithAuctionKey:auctionKey];
         [rewardedAd setExtraValue:@"max" for:@"mediator"];
+
         if (lastRegisteredEcpm) {
             [rewardedAd setExtraValue:@(lastRegisteredEcpm) for:@"previous_auction_price"];
         }
@@ -73,6 +74,12 @@
         NSLog(@"[BidonAdapter] [%@] Failed to present ad because there is no presenting view controller, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
         [delegate didFailToDisplayRewardedAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.adDisplayFailedError mediatedNetworkErrorCode:BDNErrorCodeUnspecified mediatedNetworkErrorMessage:@"Presenting view controller is nil"]];
         return;
+    }
+    
+    NSString *storedLocalExtrasKey = @"stored_local_extras";
+    id storedLocalExtras = [NSUserDefaults.standardUserDefaults valueForKey:storedLocalExtrasKey];
+    if ([storedLocalExtras isKindOfClass:[NSDictionary class]]) {
+        [self.interstitialAd setExtraValue:storedLocalExtras for:storedLocalExtrasKey];
     }
     
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
