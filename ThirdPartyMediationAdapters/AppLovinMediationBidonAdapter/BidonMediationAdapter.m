@@ -83,9 +83,7 @@
 }
 
 - (void)fullscreenAd:(id<BDNFullscreenAd>)fullscreenAd willPresentAd:(id<BDNAd>)ad {
-    if (ad.adType == 0) { // banner
-        [self.bannerDelegate didDisplayAdViewAd];
-    } else if (ad.adType == 1) { // interstitial
+    if (ad.adType == 1) { // interstitial
         [self.interstitialDelegate didDisplayInterstitialAd];
     } else if (ad.adType == 2) { // rewarded
         [self.rewardedDelegate didDisplayRewardedAd];
@@ -133,6 +131,12 @@
         [self onDestroyRewarded];
     } else {
         NSAssert(YES, @"Invalid ad type");
+    }
+}
+
+- (void)adObject:(id<BDNAdObject>)adObject didRecordImpression:(id<BDNAd>)ad {
+    if (ad.adType == 0) {
+        [self.bannerDelegate didDisplayAdViewAd];
     }
 }
 
