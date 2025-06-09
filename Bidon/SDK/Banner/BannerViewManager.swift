@@ -186,6 +186,7 @@ final internal class BannerViewManager: NSObject {
         _ impression: inout AdViewImpression,
         path: Route
     ) {
+        extras[LocalExtrasStorage.storedLocalExtrasKey] = LocalExtrasStorage.fetchLocalExtras()
         guard impression.isTrackingAllowed(path) else { return }
         
         let ctx = BannerAdTypeContext(format: impression.format)

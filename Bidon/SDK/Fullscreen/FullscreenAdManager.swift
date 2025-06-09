@@ -337,6 +337,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         _ impression: inout Impression,
         path: Route
     ) {
+        extras[LocalExtrasStorage.storedLocalExtrasKey] = LocalExtrasStorage.fetchLocalExtras()
         guard impression.isTrackingAllowed(path) else { return }
         
         let request = context.impressionRequest { builder in

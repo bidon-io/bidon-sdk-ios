@@ -75,12 +75,6 @@
         return;
     }
 
-    NSString *storedLocalExtrasKey = @"stored_local_extras";
-    id storedLocalExtras = [NSUserDefaults.standardUserDefaults valueForKey:storedLocalExtrasKey];
-    if ([storedLocalExtras isKindOfClass:[NSDictionary class]]) {
-        [self.interstitialAd setExtraValue:storedLocalExtras for:storedLocalExtrasKey];
-    }
-
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
     [self.interstitialAd showAdFrom:parameters.presentingViewController];
 }
