@@ -75,7 +75,7 @@
         [delegate didFailToDisplayRewardedAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.adDisplayFailedError mediatedNetworkErrorCode:BDNErrorCodeUnspecified mediatedNetworkErrorMessage:@"Presenting view controller is nil"]];
         return;
     }
-
+    
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
     [self.rewardedAd showAdFrom:parameters.presentingViewController];
 }
