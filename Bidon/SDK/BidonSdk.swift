@@ -195,8 +195,8 @@ public final class BidonSdk: NSObject {
     }
     
     private func flushPendingCompletions() {
-            let completions = pendingCompletions
-            pendingCompletions.removeAll()
-            completions.forEach { $0() }
-        }
+        let completions = pendingCompletions
+        pendingCompletions.removeAll()
+        completions.forEach { $0() }
+    }
 }
