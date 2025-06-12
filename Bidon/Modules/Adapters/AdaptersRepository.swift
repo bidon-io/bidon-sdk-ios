@@ -9,7 +9,7 @@ import Foundation
 
 
 internal typealias AdaptersRepository = Repository<String, Adapter>
-
+private var initializedAdaptersKey: UInt8 = 0
 
 extension AdaptersRepository {
     convenience init() {
@@ -18,6 +18,15 @@ extension AdaptersRepository {
     
     var ids: [String] {
         return Array(keys)
+    }
+    
+    var initializedIds: Set<String> {
+        get {
+            objc_getAssociatedObject(self, &initializedAdaptersKey) as? Set<String> ?? []
+        }
+        set {
+            objc_setAssociatedObject(self, &initializedAdaptersKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
     }
     
     func register(className: String) {
@@ -44,5 +53,13 @@ extension AdaptersRepository {
             }
         }
     }
+    
+    func markInitialized(adapter: Adapter) {
+        queue.async(flags: .barrier) { [weak self] in
+            guard let self else { return }
+            var ids = self.initializedIds
+            ids.insert(adapter.demandId)
+            self.initializedIds = ids
+        }
+    }
 }
-
