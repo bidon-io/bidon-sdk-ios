@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) double lastEcpm;
 
+- (instancetype)initWithAdUnitId:(NSString *)adUnitId;
+
 - (void)registerEcpm:(double)ecpm;
 - (BOOL)keepAd:(BannerAdInstance *)ad;
 - (nullable BannerAdInstance *)consumeAd:(double)ecpm;

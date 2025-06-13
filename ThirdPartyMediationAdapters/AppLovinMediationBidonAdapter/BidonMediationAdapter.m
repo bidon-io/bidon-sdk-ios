@@ -8,7 +8,7 @@
 
 #import "BidonMediationAdapter.h"
 #import <AppLovinSDK/AppLovinSDK.h>
-#import <Bidon/Bidon.h>
+#import <Bidon/Bidon-Swift.h>
 #import "AdKeeperFactory.h"
 #import "FullscreenAdInstance.h"
 #import "BidonMediationAdapter+Banner.h"
@@ -83,9 +83,7 @@
 }
 
 - (void)fullscreenAd:(id<BDNFullscreenAd>)fullscreenAd willPresentAd:(id<BDNAd>)ad {
-    if (ad.adType == 0) { // banner
-        [self.bannerDelegate didDisplayAdViewAd];
-    } else if (ad.adType == 1) { // interstitial
+    if (ad.adType == 1) { // interstitial
         [self.interstitialDelegate didDisplayInterstitialAd];
     } else if (ad.adType == 2) { // rewarded
         [self.rewardedDelegate didDisplayRewardedAd];
@@ -124,7 +122,7 @@
         [self.bannerDelegate didFailToLoadAdViewAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.noFill mediatedNetworkErrorCode:BDNErrorCodeNoFill mediatedNetworkErrorMessage:error.localizedDescription]];
         [self onDestroyBanner];
     } else if (adObject == self.interstitialAd) {
-        NSLog(@"[BidonAdapter] Interstitial ad failed to load: No fill");
+        [self handleInterstitialFailedToLoad];
         [self.interstitialDelegate didFailToLoadInterstitialAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.noFill mediatedNetworkErrorCode:BDNErrorCodeNoFill mediatedNetworkErrorMessage:error.localizedDescription]];
         [self onDestroyInterstitial];
     } else if (adObject == self.rewardedAd) {
@@ -133,6 +131,12 @@
         [self onDestroyRewarded];
     } else {
         NSAssert(YES, @"Invalid ad type");
+    }
+}
+
+- (void)adObject:(id<BDNAdObject>)adObject didRecordImpression:(id<BDNAd>)ad {
+    if (ad.adType == 0) {
+        [self.bannerDelegate didDisplayAdViewAd];
     }
 }
 

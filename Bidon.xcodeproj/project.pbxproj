@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -372,10 +372,6 @@
 		49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		498053152DD4950400ED737F /* AppLovinMediationBidonAdapter */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AppLovinMediationBidonAdapter; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		4221017B2859E29A006596DA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -402,7 +398,6 @@
 			isa = PBXGroup;
 			children = (
 				422101802859E29A006596DA /* Bidon */,
-				498053152DD4950400ED737F /* AppLovinMediationBidonAdapter */,
 				4221017F2859E29A006596DA /* Products */,
 				42A4C86828F6DF3400A7FE40 /* Frameworks */,
 			);
