@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithEcpm:(double)ecpm
                     demandId:(NSString *)demandId
-                    ad:(id<BDNAd>)ad
+                          ad:(id<BDNAd>)ad
                   adInstance:(id<BDNFullscreenAd>)adInstance;
 
 @end

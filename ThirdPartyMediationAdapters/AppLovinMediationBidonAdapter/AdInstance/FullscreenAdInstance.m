@@ -12,7 +12,7 @@
 
 - (instancetype)initWithEcpm:(double)ecpm
                     demandId:(nonnull NSString *)demandId
-                    ad:(id<BDNAd>)ad
+                          ad:(id<BDNAd>)ad
                   adInstance:(id<BDNFullscreenAd>)adInstance {
     self = [super init];
     if (self) {
