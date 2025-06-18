@@ -67,7 +67,7 @@
 
         NSLog(@"[BidonAdapter] [%@] Banner ad loaded, Placement ID: %@ ECPM: %f", self.adViewAdUnitId, self.bannerPlacementId, price);
 
-        BannerAdInstance *adInstance = [[BannerAdInstance alloc] initWithEcpm:15
+        BannerAdInstance *adInstance = [[BannerAdInstance alloc] initWithEcpm:price
                                                                      demandId:ad.adUnit.demandId
                                                                            ad:ad
                                                                    adInstance:self.banner];
