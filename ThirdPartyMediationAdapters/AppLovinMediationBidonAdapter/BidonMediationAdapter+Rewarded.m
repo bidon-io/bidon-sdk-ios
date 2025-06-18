@@ -86,7 +86,7 @@
         
         NSLog(@"[BidonAdapter] [%@] Rewarded ad loaded, Placement ID: %@ ECPM: %f", self.rewardedAdUnitId, self.rewardedPlacementId, price);
         
-        FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:100
+        FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:price
                                                                              demandId:ad.adUnit.demandId
                                                                                    ad:ad
                                                                            adInstance:self.rewardedAd];

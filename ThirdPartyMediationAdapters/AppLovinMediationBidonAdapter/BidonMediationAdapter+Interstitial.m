@@ -85,7 +85,7 @@
         double price = ad.price;
 
         NSLog(@"[BidonAdapter] [%@] Interstitial ad loaded, Placement ID: %@ ECPM: %f", self.interstitialAdUnitId, self.interstitialPlacementId, price);
-        FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:100
+        FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:price
                                                                              demandId:ad.adUnit.demandId
                                                                                    ad:ad
                                                                            adInstance:self.interstitialAd];
