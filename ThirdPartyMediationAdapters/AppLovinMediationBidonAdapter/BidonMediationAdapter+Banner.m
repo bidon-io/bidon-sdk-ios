@@ -57,7 +57,7 @@
 
         self.banner = (BDNBannerView *)cachedAd.adInstance;
         self.banner.delegate = self;
-        [delegate didLoadAdForAdView:self.banner];
+        [delegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:ecpm ad:cachedAd.ad]];
     }
 }
 
@@ -67,7 +67,7 @@
 
         NSLog(@"[BidonAdapter] [%@] Banner ad loaded, Placement ID: %@ ECPM: %f", self.adViewAdUnitId, self.bannerPlacementId, price);
 
-        BannerAdInstance *adInstance = [[BannerAdInstance alloc] initWithEcpm:price
+        BannerAdInstance *adInstance = [[BannerAdInstance alloc] initWithEcpm:15
                                                                      demandId:ad.adUnit.demandId
                                                                            ad:ad
                                                                    adInstance:self.banner];
@@ -85,7 +85,7 @@
             NSLog(@"[BidonAdapter] [%@] Banner ad loaded from cache, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
             self.banner = (BDNBannerView *)cachedAd.adInstance;
             self.banner.delegate = self;
-            [self.bannerDelegate didLoadAdForAdView:self.banner];
+            [self.bannerDelegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:self.bannerMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Banner ad failed to load from cache: No fill, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
             [self.bannerDelegate didFailToLoadAdViewAdWithError:[MAAdapterError errorWithCode:MAAdapterError.errorCodeNoFill]];
