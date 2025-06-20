@@ -13,7 +13,7 @@ public protocol Adapter {
     var name: String { get }
     var adapterVersion: String { get }
     var sdkVersion: String { get }
-    
+
     init()
 }
 

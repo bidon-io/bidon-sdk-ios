@@ -13,14 +13,14 @@ enum DemandMediationStatus: Codable {
     case win
     case lose
     case error(MediationError)
-    
+
     var isUnknown: Bool {
         switch self {
         case .unknown: return true
         default: return false
         }
     }
-    
+
     var isCancelled: Bool {
         switch self {
         case .error(let error):
@@ -34,7 +34,7 @@ enum DemandMediationStatus: Codable {
             return false
         }
     }
-    
+
     internal var stringValue: String {
         switch self {
         case .unknown:          return "UNKNOWN"
@@ -43,11 +43,11 @@ enum DemandMediationStatus: Codable {
         case .error(let error): return error.rawValue.camelCaseToSnakeCase().uppercased()
         }
     }
-    
+
     init(_ error: MediationError) {
         self = .error(error)
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let value = try container.decode(String.self)
@@ -65,7 +65,7 @@ enum DemandMediationStatus: Codable {
             self = .error(error)
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(stringValue)

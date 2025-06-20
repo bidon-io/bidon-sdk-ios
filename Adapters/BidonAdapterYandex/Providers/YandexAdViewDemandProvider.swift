@@ -11,7 +11,7 @@ import YandexMobileAds
 
 final class YandexBannerDemandAd: DemandAd {
     public var id: String
-    
+
     init(adView: YMAAdView) {
         self.id = adView.adUnitID
     }
@@ -20,21 +20,21 @@ final class YandexBannerDemandAd: DemandAd {
 final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDemandAd> {
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    
+
     let context: AdViewContext
-    
+
     private var yandexAdView: YMAAdView?
     private var isLoaded: Bool = false
-    
+
     private var adSize: YMAAdSize {
         return YMAAdSize.flexibleSize(with: context.format.preferredSize)
     }
-        
+
     init(context: AdViewContext) {
         self.context = context
         super.init()
     }
-    
+
     override func load(
         pricefloor: Price,
         adUnitExtras: YandexAdUnitExtras,
@@ -55,11 +55,11 @@ final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDem
 }
 
 extension YandexAdViewDemandProvider: AdViewDemandProvider {
-    
+
     func container(for ad: YandexBannerDemandAd) -> Bidon.AdViewContainer? {
         return yandexAdView
     }
-    
+
     func didTrackImpression(for ad: YandexBannerDemandAd) { }
 }
 
@@ -69,16 +69,16 @@ extension YandexAdViewDemandProvider: YMAAdViewDelegate {
         response?(.success(ad))
         response = nil
     }
-    
+
     func adViewDidFailLoading(_ adView: YMAAdView, error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func adViewDidClick(_ adView: YMAAdView) {
         delegate?.providerDidClick(self)
     }
-    
+
     func adView(_ adView: YMAAdView, didTrackImpressionWith impressionData: YMAImpressionData?) {
         let ad = YandexBannerDemandAd(adView: adView)
         revenueDelegate?.provider(self, didLogImpression: ad)

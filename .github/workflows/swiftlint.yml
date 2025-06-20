@@ -1,0 +1,43 @@
+name: SwiftLint
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  swiftlint:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install SwiftLint
+      run: brew install swiftlint
+
+    - name: Run SwiftLint
+      run: |
+        echo "🔍 Running SwiftLint for inline annotations..."
+        swiftlint lint --reporter github-actions-logging || true
+    
+        echo ""
+        echo "🔍 Running SwiftLint for output + blocking..."
+        swiftlint lint --reporter xcode | tee swiftlint.log
+    
+        echo ""
+        echo "📄 Violations:"
+        grep -E "warning:|error:" swiftlint.log || echo "✅ No violations found"
+    
+        WARNINGS=$(grep -c "warning:" swiftlint.log || true)
+        ERRORS=$(grep -c "error:" swiftlint.log || true)
+    
+        if [[ $WARNINGS -gt 0 || $ERRORS -gt 0 ]]; then
+          echo ""
+          echo "❌ SwiftLint found $WARNINGS warnings and $ERRORS errors"
+          echo "❌ Please fix them before merging this PR"
+          exit 1
+        else
+          echo "✅ SwiftLint passed with 0 warnings and 0 errors"
+        fi

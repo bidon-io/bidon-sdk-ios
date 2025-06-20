@@ -13,7 +13,7 @@ public struct AdViewContext {
     public var format: BannerFormat
     public var size: CGSize
     public var rootViewController: UIViewController?
-    
+
     public init(
         format: BannerFormat,
         size: CGSize,
@@ -23,7 +23,7 @@ public struct AdViewContext {
         self.size = size
         self.rootViewController = rootViewController
     }
-    
+
     public init(
         _ format: BannerFormat,
         rootViewController: UIViewController? = nil
@@ -51,9 +51,9 @@ public protocol DemandProviderAdViewDelegate: AnyObject {
 
 public protocol AdViewDemandProvider: DemandProvider {
     var adViewDelegate: DemandProviderAdViewDelegate? { get set }
-    
+
     func container(for ad: DemandAdType) -> AdViewContainer?
-    
+
     func didTrackImpression(for ad: DemandAdType)
 }
 
@@ -62,7 +62,7 @@ internal extension AdViewDemandProvider {
     func container(opaque ad: DemandAd) -> AdViewContainer? {
         return (ad as? DemandAdType).flatMap { container(for: $0) }
     }
-    
+
     func didTrackImpression(opaque ad: DemandAd) {
         guard let ad = ad as? DemandAdType else { return }
         didTrackImpression(for: ad)

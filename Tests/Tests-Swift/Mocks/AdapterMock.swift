@@ -36,9 +36,9 @@ class AdapterMock: Adapter {
     var sdkVersion: String {
         return stubbedSdkVersion
     }
-    
+
     var stubbedProvider: DemandProviderMock!
-    
+
     convenience init<T: DemandProviderMockBuildable>(
         demandId: String,
         provider: T.Type,

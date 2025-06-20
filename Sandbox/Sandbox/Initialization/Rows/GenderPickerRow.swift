@@ -11,7 +11,7 @@ import SwiftUI
 
 struct GenderPickerRow: View {
     @Binding var gender: Gender
-    
+
     var body: some View {
         ForEach(Gender.allCases, id: \.rawValue) { option in
             Button(action: {
@@ -23,17 +23,16 @@ struct GenderPickerRow: View {
                 HStack {
                     Text(option.rawValue.capitalized)
                         .foregroundColor(.primary)
-                    
+
                     Spacer()
-                    
+
                     if option == gender {
                         Image(systemName: "checkmark")
                             .foregroundColor(.accentColor)
-                        
+
                     }
                 }
             }
         }
     }
 }
-

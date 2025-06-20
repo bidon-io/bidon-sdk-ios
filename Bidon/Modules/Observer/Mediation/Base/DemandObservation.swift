@@ -20,18 +20,18 @@ struct DemandObservation {
         var tokenStartTimestamp: UInt?
         var tokenFinishTimestamp: UInt?
     }
-    
+
     private(set) var bidRequestTimestamp: TimeInterval?
     private(set) var bidResponseTimestamp: TimeInterval?
-    
+
     private(set) var tokens: [BiddingDemandToken]
 
     private(set) var entries: [Entry] = []
-    
+
     mutating func willRequestBid() {
         bidRequestTimestamp = Date.timestamp(.wall, units: .milliseconds)
     }
-    
+
     mutating func didReceiveServerBids(_ bids: [AnyServerBid]) {
         bidResponseTimestamp = Date.timestamp(.wall, units: .milliseconds)
         entries = bids.map { bid in
@@ -42,7 +42,7 @@ struct DemandObservation {
             )
         }
     }
-    
+
     mutating func willLoadAdUnit(_ adUnit: AnyAdUnit) {
         if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
             entries = entries.map { entry in
@@ -61,7 +61,7 @@ struct DemandObservation {
             entries.append(entry)
         }
     }
-    
+
     mutating func didReceiveClientBid(_ bid: AnyBid) {
         if entries.contains(where: { $0.adUnit?.uid == bid.adUnit.uid }) {
             entries = entries.map { entry in
@@ -88,7 +88,7 @@ struct DemandObservation {
             entries.append(entry)
         }
     }
-    
+
     mutating func didFailDemand(
         _ demandId: String,
         error: MediationError
@@ -109,7 +109,7 @@ struct DemandObservation {
             entries.append(entry)
         }
     }
-    
+
     mutating func didFailAdUnit(
         _ adUnit: AnyAdUnit,
         error: MediationError
@@ -134,7 +134,7 @@ struct DemandObservation {
             entries.append(entry)
         }
     }
-    
+
     mutating func didFailPricefloor(
         _ adUnit: AnyAdUnit
     ) {
@@ -163,7 +163,7 @@ struct DemandObservation {
             entries.append(entry)
         }
     }
-    
+
     mutating func cancel() {
         entries = entries.map { entry in
             var entry = entry
@@ -175,7 +175,7 @@ struct DemandObservation {
             return entry
         }
     }
-    
+
     mutating func update(mutation: (inout Entry) -> ()) {
         entries = entries.map { entry in
             var entry = entry
@@ -183,11 +183,11 @@ struct DemandObservation {
             return entry
         }
     }
-    
+
     private func tokenStartTs(for adUnit: AnyAdUnit) -> UInt? {
         return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenStartTs
     }
-    
+
     private func tokenFinishTs(for adUnit: AnyAdUnit) -> UInt? {
         return tokens.first(where: { $0.demandId == adUnit.demandId && adUnit.bidType == .bidding })?.tokenFinishTs
     }

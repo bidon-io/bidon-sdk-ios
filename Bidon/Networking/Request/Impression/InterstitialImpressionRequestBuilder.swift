@@ -9,7 +9,7 @@ import Foundation
 
 
 
-final class InterstitialImpressionRequestBuilder: BaseImpressionRequestBuilder<InterstitialAdTypeContext> {    
+final class InterstitialImpressionRequestBuilder: BaseImpressionRequestBuilder<InterstitialAdTypeContext> {
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,

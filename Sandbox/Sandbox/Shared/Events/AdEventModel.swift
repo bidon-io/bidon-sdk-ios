@@ -48,10 +48,10 @@ extension Price {
         formatter.locale = Locale.current
         formatter.numberStyle = .currency
         formatter.locale = Locale(identifier: "en_US")
-        
+
         return formatter
     }()
-    
+
     var pretty: String {
         isUnknown ? "-" : Price.formatter.string(from: self as NSNumber) ?? "-"
     }

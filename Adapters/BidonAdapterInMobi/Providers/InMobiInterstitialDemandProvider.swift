@@ -16,15 +16,15 @@ extension IMInterstitial: InMobiAd {}
 
 final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     typealias DemandAdType = InMobiDemandAd<IMInterstitial>
-    
+
     weak var delegate: DemandProviderDelegate?
     weak var rewardDelegate: DemandProviderRewardDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
-    
+
     private var response: DemandProviderResponse?
-    
+
     private var ad: DemandAdType?
-    
+
     func load(
         pricefloor: Price,
         adUnitExtras: InMobiAdUnitExtras,
@@ -37,7 +37,7 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
         self.response = response
         self.ad = DemandAdType(ad: interstitial)
     }
-    
+
     func notify(
         ad: DemandAdType,
         event: DemandProviderEvent
@@ -58,7 +58,7 @@ extension InMobiInterstitialDemandProvider: InterstitialDemandProvider {
             delegate?.provider(self, didFailToDisplayAd: ad, error: .invalidPresentationState)
             return
         }
-        
+
         ad.ad.show(from: viewController)
     }
 }
@@ -72,7 +72,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         response?(.success(DemandAdType(ad: interstitial)))
         response = nil
     }
-    
+
     func interstitial(
         _ interstitial: IMInterstitial,
         didFailToReceiveWithError error: Error
@@ -80,7 +80,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func interstitial(
         _ interstitial: IMInterstitial,
         didFailToLoadWithError error: IMRequestStatus
@@ -88,7 +88,7 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func interstitial(_ interstitial: IMInterstitial, didFailToPresentWithError error: IMRequestStatus) {
         delegate?.provider(
             self,
@@ -96,24 +96,24 @@ extension InMobiInterstitialDemandProvider: IMInterstitialDelegate {
             error: .cancelled
         )
     }
-    
+
     func interstitialDidPresent(_ interstitial: IMInterstitial) {
         delegate?.providerWillPresent(self)
     }
-    
-    func interstitial(_ interstitial: IMInterstitial, didInteractWithParams params: [String : Any]?) {
+
+    func interstitial(_ interstitial: IMInterstitial, didInteractWithParams params: [String: Any]?) {
         delegate?.providerDidClick(self)
     }
-    
+
     func interstitialDidDismiss(_ interstitial: IMInterstitial) {
         delegate?.providerDidHide(self)
     }
-    
+
     func interstitialAdImpressed(_ interstitial: IMInterstitial) {
         revenueDelegate?.provider(self, didLogImpression: DemandAdType(ad: interstitial))
     }
-    
-    func interstitial(_ interstitial: IMInterstitial, rewardActionCompletedWithRewards rewards: [String : Any]) {
+
+    func interstitial(_ interstitial: IMInterstitial, rewardActionCompletedWithRewards rewards: [String: Any]) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
 }

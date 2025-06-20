@@ -10,7 +10,7 @@ import Foundation
 
 public protocol ParameterizedInitializableAdapter: InitializableAdapter {
     associatedtype Parameters: Decodable
-    
+
     func initialize(
         parameters: Parameters,
         completion: @escaping (SdkError?) -> Void
@@ -24,15 +24,15 @@ extension ParameterizedInitializableAdapter {
         completion: @escaping (Result<Void, SdkError>) -> Void
     ) {
         var parameters: Parameters?
-        
+
         do {
             parameters = try Parameters(from: decoder)
         } catch {
             completion(.failure(SdkError(error)))
         }
-        
+
         guard let parameters = parameters else { return }
-        
+
         initialize(parameters: parameters) { error in
             if let error = error {
                 completion(.failure(error))

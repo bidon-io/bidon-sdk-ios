@@ -11,7 +11,7 @@ import Foundation
 final class ConfigurationRequestBuilder: BaseRequestBuilder {
     var adapters: AdaptersInfo {
         let adapters: [Adapter] = adaptersRepository.all()
-        
+
         return AdaptersInfo(adapters: adapters)
     }
 }

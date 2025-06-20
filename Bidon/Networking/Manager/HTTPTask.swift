@@ -10,12 +10,12 @@ import Foundation
 
 struct HTTPTask {
     typealias HTTPHeaders = [HTTPHeader: String]
-    
+
     enum HTTPMethod: String {
         case get = "GET"
         case post = "POST"
     }
-    
+
     enum HTTPError: Error {
         case unsupportedURL
         case invalidResponse
@@ -24,7 +24,7 @@ struct HTTPTask {
         case decoding(Error)
         case networking(Error)
     }
-    
+
     enum HTTPHeader {
         case contentType
         case accept
@@ -32,7 +32,7 @@ struct HTTPTask {
         case retryAfter
         case custom(String)
     }
-    
+
     let baseURL: String
     let route: Route
     let body: Data?
@@ -40,33 +40,33 @@ struct HTTPTask {
     let timeout: TimeInterval
     let headers: HTTPHeaders
     let completion: (Result<Data, HTTPError>) -> ()
-    
+
     func resume() {
         guard let url = URL(string: baseURL).map({ route.url($0) }) else {
             completion(.failure(.unsupportedURL))
             return
         }
-        
+
         let session = URLSession.shared
         var request = URLRequest(
             url: url,
             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
             timeoutInterval: timeout
         )
-        
+
         headers.forEach { header, value in
             request.addValue(value, forHTTPHeaderField: header.stringValue)
         }
-        
+
         request.httpMethod = method.rawValue
         request.httpBody = body
-        
+
         let task = session.dataTask(with: request) { data, response, error in
             guard let response = response as? HTTPURLResponse else {
                 completion(.failure(.invalidResponse))
                 return
             }
-            
+
             if response.statusCode >= 200, response.statusCode < 300, let data = data {
                 completion(.success(data))
             } else if let retryAfter = response.retryAfterSeconds, retryAfter > 0 {
@@ -77,7 +77,7 @@ struct HTTPTask {
                 completion(.failure(.invalidResponse))
             }
         }
-    
+
         task.resume()
     }
 }
@@ -103,7 +103,7 @@ extension HTTPTask.HTTPHeader: Hashable {
         case .custom(let header): return header
         }
     }
-    
+
     init(stringValue: String) {
         self = .custom(stringValue)
     }

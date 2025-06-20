@@ -8,7 +8,7 @@
 import Foundation
 
 final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
-    
+
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
     typealias BuilderType = DemandsTokensManagerBuilder<AdTypeContextType>
 
@@ -16,23 +16,23 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private var adapters: [AdapterType]
     private let demands: [String]
     private let timeout: TimeInterval
-    
+
     private var tokens = [BiddingDemandToken]()
     private var biddingDemadIds = [String]()
     private var startTimestamp: TimeInterval?
     private var isTimeoutReached = false
-    
+
     private let group = DispatchGroup()
     private let lock = NSRecursiveLock()
-    
-    
+
+
     init(builder: BuilderType) {
         self.adapters = builder.adapters
         self.demands = builder.demands
         self.timeout = builder.timeout / 1000
         self.context = builder.context
     }
-    
+
     func load(
         initializationParameters: AdaptersInitialisationParameters,
         completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)
@@ -40,13 +40,13 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         let filteredAdapters = adapters.filter { adapter in
             demands.contains(adapter.demandId) && adapter.provider is (any GenericBiddingDemandProvider)
         }
-        biddingDemadIds = filteredAdapters.map({$0.demandId})
-        
+        biddingDemadIds = filteredAdapters.map({ $0.demandId })
+
         startTimestamp = Date.timestamp(.wall, units: .milliseconds)
         for adapter in filteredAdapters {
             if let provider = adapter.provider as? any GenericBiddingDemandProvider,
                let parameters = initializationParameters.adapters.first(where: { $0.demandId == adapter.demandId }) {
-                
+
                 group.enter()
                 getTokenFromProvider(
                     provider,
@@ -59,30 +59,30 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                         group.leave()
                         lock.unlock()
                     }
-                
+
             }
         }
-        
+
         group.notify(queue: .main) { [weak self] in
             guard let self, !isTimeoutReached else { return }
             isTimeoutReached = true
-            
+
             completion(.success(tokens))
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
             guard let self, !isTimeoutReached else { return }
             isTimeoutReached = true
-            
+
             let notReachedDemandTokens = getNotReachedDemandTokens()
             let tempDemandTokens = tokens + notReachedDemandTokens
-            
+
             completion(.success(tempDemandTokens))
         }
-        
+
     }
-    
-    
+
+
     // MARK: Private functions
     private func getTokenFromProvider(
         _ provider: any GenericBiddingDemandProvider,
@@ -91,7 +91,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         parameters: AdaptersInitialisationParameters.AdapterConfiguration,
         completion: @escaping (BiddingDemandToken) -> Void) {
             provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { result in
-                
+
                 let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                 switch result {
                 case .success(let token):
@@ -103,7 +103,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                         status: .success
                     )
                     completion(demandToken)
-                    
+
                 case .failure:
                     let demandToken = BiddingDemandToken(
                         demandId: demandId,
@@ -113,16 +113,16 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                         status: .noToken
                     )
                     completion(demandToken)
-                    
+
                 }
             }
         }
-    
-    
+
+
     private func getNotReachedDemandTokens() -> [BiddingDemandToken] {
         let reachedDemandsIds = tokens.map { $0.demandId }
-        let notReachedDemandIds = biddingDemadIds.filter{ !reachedDemandsIds.contains($0) }
-        
+        let notReachedDemandIds = biddingDemadIds.filter { !reachedDemandsIds.contains($0) }
+
         let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
         let emptyBiddingDemandTokens = notReachedDemandIds.compactMap { demandId in
             BiddingDemandToken(
@@ -135,5 +135,5 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         }
         return emptyBiddingDemandTokens
     }
-    
+
 }

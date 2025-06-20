@@ -17,58 +17,58 @@ protocol BannerAdManagerDelegate: AnyObject {
 
 final class BannerAdManager: NSObject {
     private typealias AuctionInfo = AuctionRequest.ResponseBody
-    
+
     fileprivate typealias AuctionControllerType = ConcurrentAuctionController<BannerAdTypeContext>
-    
+
     fileprivate enum State {
         case idle
         case preparing
         case auction(controller: AuctionControllerType)
         case ready(impression: AdViewImpression)
     }
-    
+
     @Injected(\.networkManager)
     private var networkManager: NetworkManager
-    
+
     @Injected(\.sdk)
     private var sdk: Sdk
-    
+
     private var state: State = .idle
-    
+
     let adRevenueObserver: AdRevenueObserver
-    
+
     let placement: String
-    
+
     weak var delegate: BannerAdManagerDelegate?
-    
+
     var impression: AdViewImpression? {
         switch state {
         case .ready(let imp): return imp
         default: return nil
         }
     }
-    
+
     var extras: [String: AnyHashable] = [:]
-    
+
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     private var isCanceled = false
     private var auctionStartTimestamp: TimeInterval?
-    
+
     init(
         placement: String,
         adRevenueObserver: AdRevenueObserver
     ) {
-        
+
         self.placement = placement
         self.adRevenueObserver = adRevenueObserver
         super.init()
     }
-    
+
     func prepareForReuse() {
         state = .idle
     }
-    
+
     func loadAd(
         pricefloor: Price,
         viewContext: AdViewContext,
@@ -78,14 +78,14 @@ final class BannerAdManager: NSObject {
             Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
             return
         }
-        
+
         fetchAuctionInfo(
             pricefloor: pricefloor,
             viewContext: viewContext,
             auctionKey: auctionKey
         )
     }
-    
+
     private func fetchAuctionInfo(
         pricefloor: Price,
         viewContext: AdViewContext,
@@ -94,27 +94,27 @@ final class BannerAdManager: NSObject {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
         state = .preparing
         auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
-        
+
         let context = BannerAdTypeContext(viewContext: viewContext)
-        
+
         guard let initializationParameters = ConfigParametersStorage.adaptersInitializationParameters else {
             self.state = .idle
             Logger.warning("No adapters were found")
             self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"), auctionInfo: auctionInfo)
             return
         }
-        
+
         let demands = initializationParameters.adapters.map({ $0.demandId })
-        
+
         let builder = DemandsTokensManagerBuilder<BannerAdTypeContext>()
         builder.withDemands(demands)
         builder.withAdapters(context.adViewAdapters(viewContext: viewContext))
         builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
         builder.withContext(context)
-        
+
         let demandsManager = DemandsTokensManager<BannerAdTypeContext>(builder: builder)
         self.demandsTokensManager = demandsManager
-        
+
         demandsManager.load(initializationParameters: initializationParameters) { [weak self] result in
             guard let self else { return }
             switch result {
@@ -127,10 +127,10 @@ final class BannerAdManager: NSObject {
             }
         }
     }
-    
+
     private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
-        
+
         let request = context.auctionRequest { builder in
             builder.withAuctionKey(auctionKey)
             builder.withBiddingTokens(tokens)
@@ -141,14 +141,14 @@ final class BannerAdManager: NSObject {
             builder.withPricefloor(pricefloor)
             builder.withExt(extras)
         }
-        
+
         Logger.verbose("Banner ad manager performs request: \(request)")
-        
+
         networkManager.perform(
             request: request
         ) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let response):
                 self.auctionInfo.auctionId = response.auctionId
@@ -156,7 +156,7 @@ final class BannerAdManager: NSObject {
                 self.auctionInfo.auctionConfigurationUid = response.auctionConfigurationUid
                 self.auctionInfo.noBids = response.noBids?.compactMap({ DefaultAdUnitInfo($0) })
                 self.auctionInfo.timeout = NSNumber(value: response.auctionTimeout)
-                
+
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(
                     auctionInfo: response,
@@ -170,7 +170,7 @@ final class BannerAdManager: NSObject {
             }
         }
     }
-    
+
     private func performAuction(
         auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken],
@@ -180,9 +180,9 @@ final class BannerAdManager: NSObject {
             return
         }
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
-        
+
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
-        
+
         let observer = BaseAuctionObserver(
             configuration: configuration,
             adType: .banner
@@ -190,10 +190,10 @@ final class BannerAdManager: NSObject {
         if let auctionStartTimestamp {
             observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
         }
-        
+
         let context = BannerAdTypeContext(viewContext: viewContext)
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
-        
+
         let auction = AuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withAdUnitProvider(provider)
@@ -204,20 +204,20 @@ final class BannerAdManager: NSObject {
             builder.withAdRevenueObserver(self.adRevenueObserver)
             builder.withAuctionConfiguration(configuration)
         }
-        
+
         state = .auction(controller: auction)
-        
+
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
 
             self.sendAuctionReport(observer.report, viewContext: viewContext)
-            
+
             var allDemands = observer.report.round.demands
             if let biddingDemands = observer.report.round.bidding?.demands {
                 allDemands += biddingDemands
             }
             self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
-            
+
             switch result {
             case .success(let bid):
                 adRevenueObserver.observe(bid)
@@ -226,7 +226,7 @@ final class BannerAdManager: NSObject {
                     format: context.format
                 )
                 self.state = .ready(impression: impression)
-                
+
                 let ad = AdContainer(bid: bid)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
@@ -241,22 +241,22 @@ final class BannerAdManager: NSObject {
             }
         }
     }
-    
+
     private func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
-        
+
         let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
             builder.withExt(extras)
             builder.withAuctionReport(report)
         }
-        
+
         networkManager.perform(request: request) { result in
             Logger.debug("Sent statistics with result: \(result)")
         }
     }
-    
+
     func notifyWin(viewContext: AdViewContext) {
         switch state {
         case .ready(var impression):
@@ -269,11 +269,11 @@ final class BannerAdManager: NSObject {
                 impression.markTrackedIfNeeded(.win)
                 state = .ready(impression: impression)
             }
-            
+
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             let context = BannerAdTypeContext(viewContext: viewContext)
-            
+
             let request = context.notificationRequest { builder in
                 builder.withRoute(.win)
                 builder.withEnvironmentRepository(sdk.environmentRepository)
@@ -281,7 +281,7 @@ final class BannerAdManager: NSObject {
                 builder.withExt(extras)
                 builder.withImpression(impression)
             }
-            
+
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent win with result: \(result)")
             }
@@ -289,7 +289,7 @@ final class BannerAdManager: NSObject {
             break
         }
     }
-    
+
     func notifyLoss(
         winner demandId: String,
         eCPM: Price,
@@ -309,9 +309,9 @@ final class BannerAdManager: NSObject {
             // for request logic
             guard impression.isTrackingAllowed(.loss) else { return }
             defer { state = .idle }
-            
+
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             let context = BannerAdTypeContext(viewContext: viewContext)
             let request = context.notificationRequest { builder in
                 builder.withRoute(.loss)
@@ -321,7 +321,7 @@ final class BannerAdManager: NSObject {
                 builder.withImpression(impression)
                 builder.withExternalWinner(demandId: demandId, price: eCPM)
             }
-            
+
             networkManager.perform(request: request) { result in
                 Logger.debug("Sent loss with result: \(result)")
             }

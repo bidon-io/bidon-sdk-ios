@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class RewardedImpressionRequestBuilder: BaseImpressionRequestBuilder<RewardedAdTypeContext> {    
+final class RewardedImpressionRequestBuilder: BaseImpressionRequestBuilder<RewardedAdTypeContext> {
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,

@@ -12,8 +12,8 @@ enum TrackingAuthorizationStatus: String, Codable {
     case notDetermined
     case restricted
     case denied
-    case authorized 
-    
+    case authorized
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(rawValue.camelCaseToSnakeCase().uppercased())

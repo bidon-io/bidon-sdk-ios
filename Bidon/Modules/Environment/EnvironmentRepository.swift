@@ -27,10 +27,10 @@ extension EnvironmentRepository {
     struct Parameters {
         var appKey: String
     }
-    
+
     convenience init() {
         self.init("com.bidon.adapters-repository.queue")
-        
+
         self[.app] = AppManager()
         self[.geo] = GeoManager()
         self[.regulations] = RegulationsManager()
@@ -40,22 +40,22 @@ extension EnvironmentRepository {
         self[.segment] = SegmentManager()
         self[.extras] = ExtrasManager()
     }
-    
+
     func configure(
         _ parameters: Parameters,
         completion: @escaping () -> ()
     ) {
         environment(AppManager.self).updateAppKey(parameters.appKey)
-        
+
         guard environment(GeoManager.self).isAvailable else {
             completion()
             return
         }
-        
+
         environment(GeoManager.self).prepare(completion: completion)
     }
-    
-    
+
+
     func environment<T: Environment>(_ type: T.Type) -> T {
         guard
             let key = EnvironmentRepositoryKey(type),
@@ -82,6 +82,3 @@ private extension EnvironmentRepositoryKey {
         }
     }
 }
-
-
-

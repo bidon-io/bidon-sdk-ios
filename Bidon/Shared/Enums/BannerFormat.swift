@@ -15,7 +15,7 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
     case leaderboard
     case mrec
     case adaptive
-    
+
     public var preferredSize: CGSize {
         switch self {
         case .banner:
@@ -30,11 +30,11 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
             CGSize(width: UIScreen.main.bounds.width, height: 90)
         }
     }
-    
+
     public var description: String {
         return stringValue.capitalized
     }
-    
+
     var stringValue: String {
         switch self {
         case .banner: return "banner"
@@ -43,7 +43,7 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
         case .adaptive: return "adaptive"
         }
     }
-    
+
     init(_ stringValue: String) throws {
         switch stringValue {
         case "banner": self = .banner
@@ -53,16 +53,15 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
         default: throw SdkError("Unable to create with '\(stringValue)'")
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(stringValue.uppercased())
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let stringValue = try container.decode(String.self)
         try self.init(stringValue)
     }
 }
-

@@ -11,11 +11,11 @@ import Foundation
 protocol AuctionDemandReport {
     associatedtype BidType: Bid
     associatedtype AdUnitType: AdUnit
-    
+
     var demandId: String { get }
     var status: DemandMediationStatus { get }
     var bid: BidType? { get }
-    var adUnit: AdUnitType? { get } 
+    var adUnit: AdUnitType? { get }
     var startTimestamp: UInt? { get }
     var finishTimestamp: UInt? { get }
     var tokenStartTimestamp: UInt? { get }
@@ -25,7 +25,7 @@ protocol AuctionDemandReport {
 
 protocol AuctionRoundBiddingReport {
     associatedtype AuctionDemandReportType: AuctionDemandReport
-    
+
     var startTimestamp: UInt? { get }
     var finishTimestamp: UInt? { get }
     var demands: [AuctionDemandReportType] { get }
@@ -36,7 +36,7 @@ protocol AuctionRoundReport {
     associatedtype BidType: Bid
     associatedtype AuctionDemandReportType: AuctionDemandReport where AuctionDemandReportType.BidType == BidType
     associatedtype AuctionRoundBiddingReportType: AuctionRoundBiddingReport
-    
+
     var pricefloor: Price { get }
     var winner: BidType? { get }
     var demands: [AuctionDemandReportType] { get }
@@ -46,7 +46,7 @@ protocol AuctionRoundReport {
 
 protocol AuctionResultReport {
     associatedtype BidType: Bid
-    
+
     var status: AuctionResultStatus { get }
     var startTimestamp: UInt { get }
     var finishTimestamp: UInt { get }
@@ -56,7 +56,7 @@ protocol AuctionResultReport {
 
 protocol AuctionReport {
     associatedtype AuctionResultReportType: AuctionResultReport
-        
+
     var configuration: AuctionConfiguration { get }
     var round: AuctionRoundReportModel { get }
     var result: AuctionResultReportType { get }

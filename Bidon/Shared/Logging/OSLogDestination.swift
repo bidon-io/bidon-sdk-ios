@@ -11,7 +11,7 @@ import os.log
 
 struct OSLogDestination: LogDestination {
     let id: String = "os"
-    
+
     func send(level: Logger.Level, _ message: String) {
         if #available(iOS 12, *) {
             os_log(level.osLogType, "%{public}@", message)

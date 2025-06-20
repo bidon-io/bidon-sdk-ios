@@ -13,17 +13,17 @@ import SwiftUI
 final class ContentViewModel: ObservableObject {
     @Published var isInitialized: Bool = false
     @Published var initializationViewModel = InitializationViewModel()
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     init() {
         subscribe()
     }
-    
+
     private func subscribe() {
         initializationViewModel
             .$initializationState
-            .map { $0 == .initialized } 
+            .map { $0 == .initialized }
             .receive(on: DispatchQueue.main)
             .sink { isInitialized in
                 withAnimation { [unowned self] in

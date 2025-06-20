@@ -14,11 +14,11 @@ class Atomic<Value> {
     private var value: Value
 
     var projectedValue: Atomic<Value> { self }
-    
+
     init(wrappedValue: Value) {
         self.value = wrappedValue
     }
-    
+
     var wrappedValue: Value {
         get {
             return queue.sync { value }
@@ -27,7 +27,7 @@ class Atomic<Value> {
             queue.sync { value = newValue }
         }
     }
-    
+
     func mutate(_ mutation: (inout Value) -> ()) {
         return queue.sync {
             mutation(&value)
@@ -42,11 +42,11 @@ class BarrierAtomic<Value> {
     private var value: Value
 
     var projectedValue: BarrierAtomic<Value> { self }
-    
+
     init(wrappedValue: Value) {
         self.value = wrappedValue
     }
-    
+
     var wrappedValue: Value {
         get {
             return queue.sync { value }
@@ -55,7 +55,7 @@ class BarrierAtomic<Value> {
             queue.sync(flags: .barrier) { value = newValue }
         }
     }
-    
+
     func mutate(_ mutation: (inout Value) -> ()) {
         queue.sync(flags: .barrier) {
             mutation(&value)

@@ -15,7 +15,7 @@ struct ConfigurationRequest: Request {
     var headers: [HTTPTask.HTTPHeader: String] = .default()
     var timeout: TimeInterval = 10
     var body: RequestBody?
-    
+
     struct RequestBody: Encodable, Tokenized {
         let device: DeviceModel
         let session: SessionModel
@@ -27,7 +27,7 @@ struct ConfigurationRequest: Request {
         var token: String?
         let test: Bool
     }
-    
+
     struct ResponseBody: Decodable, Tokenized {
         struct Bidding: Decodable {
             var tokenTimeoutMs: TimeInterval
@@ -37,7 +37,7 @@ struct ConfigurationRequest: Request {
         let segment: SegmentResponseModel?
         var token: String?
         let bidding: Bidding
-        
+
         enum CodingKeys: String, CodingKey {
             case adaptersInitializationParameters = "init"
             case token = "token"
@@ -53,10 +53,10 @@ extension ConfigurationRequest {
     init(_ build: (ConfigurationRequestBuilder) -> ()) {
         let builder = ConfigurationRequestBuilder()
         build(builder)
-        
+
         self.body = RequestBody(
             device: builder.device,
-            session: builder.session, 
+            session: builder.session,
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,

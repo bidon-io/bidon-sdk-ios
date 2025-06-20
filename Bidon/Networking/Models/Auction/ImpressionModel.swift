@@ -21,7 +21,7 @@ struct ImpressionModel: Encodable {
     let banner: BannerAdTypeContextModel?
     let interstitial: InterstitialAdTypeContextModel?
     let rewarded: RewardedAdTypeContextModel?
-    
+
     enum CodingKeys: String, CodingKey {
         case auctionId = "auction_id"
         case auctionPricefloor = "auction_pricefloor"
@@ -36,7 +36,7 @@ struct ImpressionModel: Encodable {
         case interstitial = "interstitial"
         case rewarded = "rewarded"
     }
-    
+
     init(
         _ imp: Impression,
         banner: BannerAdTypeContextModel? = nil,

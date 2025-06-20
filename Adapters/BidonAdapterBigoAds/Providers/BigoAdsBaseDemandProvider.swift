@@ -18,9 +18,9 @@ extension BigoAd: DemandAd {
 class BigoAdsBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, DirectDemandProvider, BigoAdInteractionDelegate {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     typealias DemandAdType = Ad
-    
+
     func collectBiddingToken(
         biddingTokenExtras: BigoAdsBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
@@ -29,10 +29,10 @@ class BigoAdsBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, Di
             response(.failure(.adapterNotInitialized))
             return
         }
-        
+
         response(.success(token))
     }
-    
+
     func load(
         payload: BigoAdsBiddingPayload,
         adUnitExtras: BigoAdsAdUnitExtras,
@@ -40,11 +40,11 @@ class BigoAdsBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, Di
     ) {
         fatalError("BigoAdsBaseDemandProvider is not able to create ad object")
     }
-    
+
     func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
         fatalError("BigoAdsBaseDemandProvider is not able to create ad object")
     }
-    
+
     func notify(
         ad: Ad,
         event: Bidon.DemandProviderEvent
@@ -58,7 +58,7 @@ class BigoAdsBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, Di
             break
         }
     }
-    
+
     func onAd(_ ad: BigoAd, error: BigoAdError) {
         delegate?.provider(
             self,
@@ -66,19 +66,19 @@ class BigoAdsBaseDemandProvider<Ad: BigoAd>: NSObject, BiddingDemandProvider, Di
             error: .message(error.errorMsg)
         )
     }
-    
+
     func onAdImpression(_ ad: BigoAd) {
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
-    
+
     func onAdClicked(_ ad: BigoAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func onAdOpened(_ ad: BigoAd) {
         delegate?.providerWillPresent(self)
     }
-    
+
     func onAdClosed(_ ad: BigoAd) {
         delegate?.providerDidHide(self)
     }

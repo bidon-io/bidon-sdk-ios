@@ -17,7 +17,7 @@ enum ConnectionType: String, Codable {
     case cellular3G
     case cellular4G
     case cellular5G
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(rawValue.camelCaseToSnakeCase().uppercased())
@@ -28,7 +28,7 @@ enum ConnectionType: String, Codable {
 enum DeviceType: String, Codable {
     case phone
     case tablet
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(rawValue.uppercased())

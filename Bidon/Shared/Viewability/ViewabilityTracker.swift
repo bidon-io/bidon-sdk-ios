@@ -14,7 +14,7 @@ protocol ViewabilityTracker {
         view: UIView,
         impression: @escaping () -> ()
     )
-    
+
     func finishTracking()
 }
 
@@ -26,15 +26,15 @@ extension Viewability {
         private let interval: TimeInterval = 0.25
         private let minImpressionDuration = 1.0
         private var viewableInterval: TimeInterval = 0.0
-        
+
         func startTracking(
             view: UIView,
             impression: @escaping () -> ()
         ) {
             guard !(timer?.isValid ?? false) else { return }
-            
+
             self.view = view
-            
+
             let timer = Timer(
                 timeInterval: interval,
                 repeats: true
@@ -44,16 +44,16 @@ extension Viewability {
                     impression: impression
                 )
             }
-            
+
             RunLoop.main.add(timer, forMode: .default)
             self.timer = timer
         }
-        
+
         func finishTracking() {
             timer?.invalidate()
             view = nil
         }
-        
+
         private func validateViewability(
             timer: Timer,
             impression: @escaping () -> ()
@@ -62,7 +62,7 @@ extension Viewability {
                 timer.invalidate()
                 return
             }
-            
+
             guard
                 UIApplication.shared.applicationState == .active,
                 Viewability(view: view).isVisible()
@@ -70,9 +70,9 @@ extension Viewability {
                 viewableInterval = 0
                 return
             }
-            
+
             viewableInterval += interval
-            
+
             if viewableInterval >= minImpressionDuration {
                 impression()
             }

@@ -1,0 +1,26 @@
+name: Check Changelog
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  check_changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check Changelog Changes
+        id: changelog-check
+        run: |
+          files_changed=$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | xargs)
+          if echo "$files_changed" | tr ' ' '\n' | grep -q "CHANGELOG.md"; then
+            echo "Changelog has been updated."
+          else
+            echo "Error: Changelog has not been updated." && exit 1
+          fi
+
