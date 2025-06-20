@@ -1,0 +1,23 @@
+
+only_rules:
+  - colon
+  - comma
+  - trailing_comma
+  - trailing_newline
+  - trailing_whitespace
+  - unused_closure_parameter
+  - redundant_void_return
+  - closure_spacing
+  - opening_brace
+
+included:
+  - .
+
+excluded:
+  - Pods
+  - Carthage
+  - build
+  - DerivedData
+  - fastlane
+
+reporter: xcode

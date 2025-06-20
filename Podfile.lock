@@ -79,6 +79,7 @@ PODS:
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
+  - SwiftLint (0.59.1)
   - UnityAds (4.14.2)
   - VungleAds (7.5.0)
   - YandexMobileAds (5.2.1):
@@ -113,6 +114,7 @@ DEPENDENCIES:
   - myTargetSDK (~> 5.29.1)
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
+  - SwiftLint
   - UnityAds (~> 4.14.2)
   - VungleAds (= 7.5.0)
   - YandexMobileAds (= 5.2.1)
@@ -144,6 +146,7 @@ SPEC REPOS:
     - OCMock
     - OMSDK_Appodeal
     - StackModules
+    - SwiftLint
     - UnityAds
     - VungleAds
     - YandexMobileAds
@@ -174,11 +177,12 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: 9ed58fc8cabfbe31637cd267b35c1f86d227c49d
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: e2f19291e90a7f7ce502153d61936f66d18d6a35
+  SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
   UnityAds: eabbbb3014326e45dc221a467fba16960e7b73e3
   VungleAds: cb2aa4791ba4f341c6c026d44cc43eabe258890f
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: f42373a10054705e7e44afed5d34b0165f22fbff
+PODFILE CHECKSUM: 75d6f0f65f7000756df44b363a97f099b9cccd3e
 
 COCOAPODS: 1.16.2
