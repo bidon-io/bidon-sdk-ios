@@ -12,9 +12,9 @@ import VungleAdsSDK
 
 final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
     public var id: String { adObject.creativeId }
-    
+
     let adObject: AdObject
-    
+
     init(adObject: AdObject) {
         self.adObject = adObject
     }
@@ -25,15 +25,15 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
     typealias DemandAdType = VungleDemandAd<AdObject>
 
     private(set) var demandAd: VungleDemandAd<AdObject>!
-    
+
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     @Injected(\.context)
     var context: SdkContext
-    
+
     var response: DemandProviderResponse?
-    
+
     func collectBiddingToken(
         biddingTokenExtras: VungleBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
@@ -47,7 +47,7 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
         default:
             break
         }
-        
+
         switch context.regulations.coppa {
         case .yes:
             VunglePrivacySettings.setCOPPAStatus(true)
@@ -56,12 +56,12 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
         default:
             break
         }
-    
+
         let token = VungleAds.getBiddingToken()
-        
+
         response(.success(token))
     }
-    
+
     func load(
         payload: VungleBiddingPayload,
         adUnitExtras: VungleAdUnitExtras,
@@ -72,19 +72,19 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
         demandAd = VungleDemandAd(adObject: adObject)
         adObject.load(payload.payload)
     }
-    
+
     func load(pricefloor: Price, adUnitExtras: VungleAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
         let adObject = adObject(placement: adUnitExtras.placementId)
         demandAd = VungleDemandAd(adObject: adObject)
         adObject.load()
     }
-    
+
     final func notify(
         ad: DemandAdType,
         event: Bidon.DemandProviderEvent
     ) {}
-    
+
     open func adObject(placement: String) -> AdObject {
         fatalError("VungleBaseDemandProvider is not able to create ad object")
     }

@@ -20,36 +20,36 @@ DirectAdViewDemandSourceAdapter
 
 
 @objc public final class MintegralDemandSourceAdapter: NSObject, DemandSourceAdapter {
-    
+
     @objc public static let identifier = "mintegral"
-    
+
     public let demandId: String = MintegralDemandSourceAdapter.identifier
     public let name: String = "Mintegral"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = MTGSDKVersion
-    
+
     private(set) public var isInitialized: Bool = false
 
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MintegralBiddingInterstitialDemandProvider()
     }
-    
+
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
         return MintegralBiddingRewardedDemandProvider()
     }
-    
+
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return MintegralBiddingAdViewDemandProvider(context: context)
     }
-    
+
     public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
         return MintegralDirectInterstitialDemandProvider()
     }
-    
+
     public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
         return MintegralDirectRewardedDemandProvider()
     }
-    
+
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
         return MintegralDirectAdViewDemandProvider(context: context)
     }

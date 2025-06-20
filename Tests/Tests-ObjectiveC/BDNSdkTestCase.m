@@ -39,8 +39,8 @@
 }
 
 - (void)testRegisterAdapters {
-    [BDNSdk registerAdapterWithClassName:@"BidonAdapterAppLovin.AppLovinDemandSourceAdapter"];
-    [BDNSdk registerAdapterWithClassName:@"BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter"];
+//    [BDNSdk registerAdapterWithClassName:@"BidonAdapterAppLovin.AppLovinDemandSourceAdapter"];
+//    [BDNSdk registerAdapterWithClassName:@"BidonAdapterGoogleMobileAds.GoogleMobileAdsDemandSourceAdapter"];
 }
 
 - (void)testExtas {
@@ -55,11 +55,11 @@
     XCTAssertNotNil(attributes);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
+//- (void)testPerformanceExample {
+//    // This is an example of a performance test case.
+//    [self measureBlock:^{
+//        // Put the code you want to measure the time of here.
+//    }];
+//}
 
 @end

@@ -22,14 +22,14 @@ protocol AdTypeContext {
     associatedtype StatisticRequestBuilderType: StatisticRequestBuilder where StatisticRequestBuilderType.Context == Self
     associatedtype ImpressionRequestBuilderType: ImpressionRequestBuilder where ImpressionRequestBuilderType.Context == Self
     associatedtype NotificationRequestBuilderType: NotificationRequestBuilder where NotificationRequestBuilderType.Context == Self
-    
+
     var adType: AdType { get }
-    
+
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest
     func statisticRequest(build: (StatisticRequestBuilderType) -> ()) -> StatisticRequest
     func notificationRequest(build: (NotificationRequestBuilderType) -> ()) -> NotificationRequest
-    
+
     func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>]
     func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>]
 }

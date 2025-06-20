@@ -20,32 +20,32 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
         case presenting
         case presentationError
     }
-    
+
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
     @Published var pricefloor: Double = 0.0
     @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
-    
+
     private var cancellables = Set<AnyCancellable>()
     private let adType: AdType
-    
+
     init(adType: AdType) {
         self.adType = adType
-        
+
         subscribe()
     }
-    
+
     func notify(loss ad: Ad) {
         adService.notify(loss: ad, adType: adType)
         guard !adService.canShow(adType: adType) else { return }
         update(.idle)
     }
-    
+
     func notify(win ad: Ad) {
         adService.notify(win: ad, adType: adType)
     }
-    
+
     @MainActor
     func load() async {
         update(.loading)
@@ -60,7 +60,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
             update(.error)
         }
     }
-    
+
     @MainActor
     func show() async {
         update(.presenting)
@@ -71,7 +71,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
             update(.presentationError)
         }
     }
-    
+
     private func update(
         _ state: State,
         animation: Animation = .default
@@ -80,7 +80,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
             self.state = state
         }
     }
-    
+
     private func subscribe() {
         adService
             .adEventPublisher(adType: adType)

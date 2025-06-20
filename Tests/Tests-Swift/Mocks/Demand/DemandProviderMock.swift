@@ -17,14 +17,14 @@ protocol DemandProviderMockBuilder {}
 
 protocol DemandProviderMockBuildable: DemandProviderMock {
     associatedtype Builder: DemandProviderMockBuilder
-    
+
     init(build: (Builder) -> ())
 }
 
 
 class DemandProviderMock: DemandProvider {
     typealias DemandAdType = DemandAdMock
-    
+
     var invokedDelegateSetter = false
     var invokedDelegateSetterCount = 0
     var invokedDelegate: DemandProviderDelegate?
@@ -32,7 +32,7 @@ class DemandProviderMock: DemandProvider {
     var invokedDelegateGetter = false
     var invokedDelegateGetterCount = 0
     var stubbedDelegate: DemandProviderDelegate!
-    
+
     var delegate: DemandProviderDelegate? {
         set {
             invokedDelegateSetter = true
@@ -46,7 +46,7 @@ class DemandProviderMock: DemandProvider {
             return stubbedDelegate
         }
     }
-    
+
     var invokedRevenueDelegateSetter = false
     var invokedRevenueDelegateSetterCount = 0
     var invokedRevenueDelegate: DemandProviderRevenueDelegate?
@@ -54,7 +54,7 @@ class DemandProviderMock: DemandProvider {
     var invokedRevenueDelegateGetter = false
     var invokedRevenueDelegateGetterCount = 0
     var stubbedRevenueDelegate: DemandProviderRevenueDelegate!
-    
+
     var revenueDelegate: DemandProviderRevenueDelegate? {
         set {
             invokedRevenueDelegateSetter = true
@@ -68,13 +68,13 @@ class DemandProviderMock: DemandProvider {
             return stubbedRevenueDelegate
         }
     }
-    
+
     var invokedNotify = false
     var invokedNotifyCount = 0
     var invokedNotifyParameters: (ad: DemandAdType, event: DemandProviderEvent)?
     var invokedNotifyParametersList = [(ad: DemandAdType, event: DemandProviderEvent)]()
     var stubbedNotify: ((DemandAdType, DemandProviderEvent) -> ())?
-    
+
     func notify(ad: DemandAdType, event: DemandProviderEvent) {
         invokedNotify = true
         invokedNotifyCount += 1

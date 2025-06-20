@@ -26,7 +26,7 @@ struct DeviceModel: Device, Codable {
     var mccncc: String
     var conectionType: ConnectionType
     var geo: GeoModel?
-    
+
     init(
         _ device: Device,
         geo: GeoModel?
@@ -49,7 +49,7 @@ struct DeviceModel: Device, Codable {
         self.conectionType = device.conectionType
         self.geo = geo
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case userAgent = "ua"
         case make = "make"

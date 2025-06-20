@@ -15,11 +15,11 @@ extension AdaptersRepository {
     convenience init() {
         self.init("com.bidon.adapters-repository.queue")
     }
-    
+
     var ids: [String] {
         return Array(keys)
     }
-    
+
     func register(className: String) {
         if let cls = NSClassFromString(className) as? Adapter.Type {
             let adapter = cls.init()
@@ -29,12 +29,12 @@ extension AdaptersRepository {
             Logger.error("Adapter with class: \(className) wasn't found")
         }
     }
-    
+
     func register(adapter: Adapter) {
         Logger.debug("Register \(adapter.name) adapter. Version \(BidonSdk.sdkVersion).\(adapter.adapterVersion). SDK Version: \(adapter.sdkVersion)")
         self[adapter.demandId] = adapter
     }
-    
+
     func configure() {
         Constants.Adapters.classes.forEach { className in
             if let cls = NSClassFromString(className) as? Adapter.Type {
@@ -45,4 +45,3 @@ extension AdaptersRepository {
         }
     }
 }
-

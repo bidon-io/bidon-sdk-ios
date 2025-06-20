@@ -19,33 +19,33 @@ DirectAdViewDemandSourceAdapter
 @objc
 public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "gam"
-    
+
     public let demandId: String = GoogleAdManagerDemandSourceAdapter.identifier
     public let name: String = "Google Ad Manager"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = string(for: MobileAds.shared.versionNumber)
-    
+
     @Injected(\.context)
     var context: Bidon.SdkContext
-    
+
     private(set) var parameters = GoogleAdManagerParameters()
-    
+
     private(set) public var isInitialized: Bool = false
-    
+
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         return GoogleAdManagerDirectInterstitialDemandProvider(parameters: parameters)
     }
-    
+
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
         return GoogleAdManagerDirectRewardedAdDemandProvider(parameters: parameters)
     }
-    
+
     public func directAdViewDemandProvider(
         context: AdViewContext
     ) throws -> AnyDirectAdViewDemandProvider {
         return GoogleAdManagerDirectAdViewProvider(parameters: parameters, context: context)
     }
-    
+
     private func configure(_ request: GoogleMobileAds.RequestConfiguration) {
         request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
     }
@@ -61,9 +61,9 @@ extension GoogleAdManagerDemandSourceAdapter: ParameterizedInitializableAdapter 
             self.parameters = parameters
             isInitialized = true
         }
-        
+
         configure(MobileAds.shared.requestConfiguration)
-        
+
         MobileAds.shared.start { _ in
             completion(nil)
         }

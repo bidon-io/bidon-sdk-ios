@@ -21,17 +21,17 @@ final class BannerSectionViewModel: ObservableObject {
     @Published var pricefloor: Price = 0.0
     @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
-    
+
     func receive(event: AdEventModel) {
         withAnimation { [unowned self] in
             self.events.append(event)
         }
     }
-    
+
     func notify(loss ad: Ad) {
         // TODO: Make loss notification for banners
     }
-    
+
     func notify(win ad: Ad) {
         // TODO: Make win notification for banners
     }

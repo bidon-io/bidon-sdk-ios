@@ -8,15 +8,15 @@
 import Foundation
 
 
-final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdTypeContext> {    
+final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdTypeContext> {
     override var adapters: AdaptersInfo {
         let adapters: [Adapter] =
         adaptersRepository.all(of: DirectRewardedAdDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingRewardedAdDemandSourceAdapter.self)
-        
+
         return AdaptersInfo(adapters: adapters)
     }
-    
+
     override var adObject: AuctionRequestAdObject {
         return AuctionRequestAdObject(
             auctionId: auctionId,

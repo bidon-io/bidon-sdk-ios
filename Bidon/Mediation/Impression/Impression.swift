@@ -21,7 +21,7 @@ protocol Impression {
     var adUnitExtras: [String: BidonDecodable]? { get }
     var auctionPricefloor: Price { get }
     var auctionConfiguration: AuctionConfiguration { get }
-    
+
     var showTrackedAt: TimeInterval { get set }
     var clickTrackedAt: TimeInterval { get set }
     var rewardTrackedAt: TimeInterval { get set }
@@ -34,7 +34,7 @@ extension Impression {
         let keyPaths = path.readableTrackedAtKeyPaths(Self.self)
         return keyPaths.reduce(true) { $0 && self[keyPath: $1].isNaN }
     }
-    
+
     mutating func markTrackedIfNeeded(_ path: Route) {
         guard let keyPath = path.writableTrackedAtKeyPath(Self.self) else { return }
         if self[keyPath: keyPath].isNaN {
@@ -54,7 +54,7 @@ private extension Route {
         default: return []
         }
     }
-    
+
     func writableTrackedAtKeyPath<T: Impression>(_ type: T.Type) -> WritableKeyPath<T, TimeInterval>? {
         switch self {
         case .show: return \T.showTrackedAt

@@ -11,18 +11,18 @@ import UIKit
 
 public extension UIApplication {
     var bd: DSL { .init(application: self) }
-    
+
     struct DSL {
         fileprivate let application: UIApplication
-        
+
         fileprivate init(application: UIApplication) {
             self.application = application
         }
-        
+
         public var window: UIWindow? {
             return windows.first { $0.isKeyWindow }
         }
-        
+
         public var windows: [UIWindow] {
             if #available(iOS 13.0, *) {
                 return application
@@ -35,11 +35,11 @@ public extension UIApplication {
                 return application.windows
             }
         }
-        
+
         public var topViewcontroller: UIViewController? {
             return window?.topPresentedViewController()
         }
-        
+
         public var isLandscape: Bool {
             if #available(iOS 13, *) {
                 return window?.windowScene?.interfaceOrientation.isLandscape ?? false
@@ -57,7 +57,7 @@ internal extension UIWindow {
         while (true) {
             if topViewController?.presentedViewController != nil {
                 topViewController = topViewController?.presentedViewController;
-            } else if let navigationViewController = topViewController as? UINavigationController  {
+            } else if let navigationViewController = topViewController as? UINavigationController {
                 topViewController = navigationViewController.topViewController;
             } else if let tabBarViewController = topViewController as? UITabBarController {
                 topViewController = tabBarViewController.selectedViewController;

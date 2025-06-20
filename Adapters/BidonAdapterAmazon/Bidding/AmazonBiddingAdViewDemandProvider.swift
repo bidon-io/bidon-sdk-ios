@@ -13,7 +13,7 @@ import DTBiOSSDK
 final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAdBannerDispatcher> {
     weak var adViewDelegate: Bidon.DemandProviderAdViewDelegate?
     var adView: AmazonAdView?
-    
+
     private lazy var dispatcher = DTBAdBannerDispatcher(
         adFrame: CGRect(
             origin: .zero,
@@ -21,18 +21,18 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
         ),
         delegate: self
     )
-    
+
     private var response: DemandProviderResponse?
-    
+
     let format: BannerFormat
-    
+
     private var handler: AmazonBiddingHandler?
-    
+
     init(context: AdViewContext) {
         self.format = context.format
         super.init()
     }
-    
+
     override func collectBiddingToken(
         biddingTokenExtras: AmazonBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
@@ -41,7 +41,7 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
         handler = AmazonBiddingHandler(adSizes: adSizes)
         handler?.fetch(response: response)
     }
-    
+
     override func load(
         payload: AmazonBiddingPayload,
         adUnitExtras: AmazonAdUnitExtras,
@@ -52,14 +52,14 @@ final class AmazonBiddingAdViewDemandProvider: AmazonBiddingDemandProvider<DTBAd
             response(.failure(.noAppropriateAdUnitId))
             return
         }
-        
+
         fill(adResponse, response: response)
     }
-    
+
     override func adSize(_ extras: AmazonAdUnitExtras) -> DTBAdSize? {
         return extras.adSize(format)
     }
-    
+
     override func fill(
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse
@@ -76,7 +76,7 @@ extension AmazonBiddingAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: DTBAdBannerDispatcher) -> AdViewContainer? {
         return adView
     }
-    
+
     func didTrackImpression(for ad: DTBAdBannerDispatcher) {}
 }
 
@@ -87,21 +87,21 @@ extension AmazonBiddingAdViewDemandProvider: DTBAdBannerDispatcherDelegate {
         response?(.success(dispatcher))
         response = nil
     }
-    
+
     func adFailed(toLoad banner: UIView?, errorCode: Int) {
         response?(.failure(.noFill("Code: \(errorCode)")))
         response = nil
     }
-    
+
     func bannerWillLeaveApplication(_ adView: UIView) {
         guard let container = self.adView else { return }
         adViewDelegate?.providerWillLeaveApplication(self, adView: container)
     }
-    
+
     func adClicked() {
         delegate?.providerDidClick(self)
     }
-    
+
     func impressionFired() {
         revenueDelegate?.provider(self, didLogImpression: dispatcher)
     }
@@ -110,13 +110,13 @@ extension AmazonBiddingAdViewDemandProvider: DTBAdBannerDispatcherDelegate {
 
 final class AmazonAdView: UIView, AdViewContainer {
     var isAdaptive: Bool { true }
-    
+
     init(adView: UIView) {
         super.init(frame: adView.bounds)
-        
+
         adView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(adView)
-        
+
         NSLayoutConstraint.activate([
             adView.topAnchor.constraint(equalTo: self.topAnchor),
             adView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -124,7 +124,7 @@ final class AmazonAdView: UIView, AdViewContainer {
             adView.rightAnchor.constraint(equalTo: self.rightAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

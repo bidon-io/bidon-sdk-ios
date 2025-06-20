@@ -15,4 +15,3 @@ public enum Framework: UInt {
     case reactNative
     case flutter
 }
-

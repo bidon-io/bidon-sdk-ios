@@ -19,16 +19,16 @@ final class VungleAdViewContainer: UIView, AdViewContainer {
 final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBanner> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
-    
+
     let adSize: BannerSize
-    
+
     init(context: AdViewContext) {
         self.rootViewController = context.rootViewController
         self.adSize = BannerSize(format: context.format)
-        
+
         super.init()
     }
-    
+
     override func adObject(placement: String) -> VungleBanner {
         let banner = VungleBanner(
             placementId: placement,
@@ -47,25 +47,25 @@ extension VungleAdViewDemandProvider: AdViewDemandProvider {
         ad.adObject.present(on: container)
         return container
     }
-    
+
     func didTrackImpression(for ad: VungleDemandAd<VungleAdsSDK.VungleBanner>) {}
 }
 
 extension VungleAdViewDemandProvider: VungleBannerDelegate {
     func bannerAdDidLoad(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
-        
+
         response?(.success(demandAd))
         response = nil
     }
-    
+
     func bannerAdDidFailToLoad(_ banner: VungleBanner, withError: NSError) {
         guard demandAd.adObject === banner else { return }
 
         response?(.failure(.noFill(withError.localizedDescription)))
         response = nil
     }
-    
+
     func bannerAdDidFailToPresent(_ banner: VungleBanner, withError: NSError) {
         guard demandAd.adObject === banner else { return }
 
@@ -75,21 +75,21 @@ extension VungleAdViewDemandProvider: VungleBannerDelegate {
             error: .generic(error: withError)
         )
     }
-    
+
     func bannerAdDidTrackImpression(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
 
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
-    
+
     func bannerAdWillLeaveApplication(_ banner: VungleBanner) {}
-    
+
     func bannerAdDidClick(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
 
         delegate?.providerDidClick(self)
     }
-    
+
     func bannerAdDidClose(_ banner: VungleBanner) {
         guard demandAd.adObject === banner else { return }
 
@@ -109,7 +109,7 @@ extension BannerSize {
             self = .mrec
         }
     }
-    
+
     var cgSize: CGSize {
         switch self {
         case .mrec:

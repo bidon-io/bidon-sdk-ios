@@ -11,7 +11,7 @@ import SwiftUI
 
 struct LogLevelView: View {
     @Binding var logLevel: LogLevel
-    
+
     var body: some View {
         NavigationLink(
             destination: {
@@ -33,7 +33,7 @@ struct LogLevelView: View {
 
 struct SelectLogLevelView: View {
     @Binding var logLevel: LogLevel
-    
+
     var body: some View {
         List {
             ForEach(LogLevel.allCases, id: \.rawValue) { level in
@@ -46,13 +46,13 @@ struct SelectLogLevelView: View {
                     HStack {
                         Text(level.rawValue.capitalized)
                             .foregroundColor(.primary)
-                        
+
                         Spacer()
-                        
+
                         if level == logLevel {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
-                            
+
                         }
                     }
                 }

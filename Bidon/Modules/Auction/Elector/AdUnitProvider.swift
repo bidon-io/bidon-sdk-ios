@@ -13,6 +13,6 @@ protocol AdUnitProvider: AnyObject {
         for demandId: String,
         pricefloor: Price
     ) -> AdUnitModel?
-    
+
     func biddingAdUnits(for demandId: String) -> [AdUnitModel]
 }

@@ -19,25 +19,25 @@ BiddingAdViewDemandSourceAdapter
 
 @objc final public class MetaAudienceNetworkDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "meta"
-    
+
     public let demandId: String = MetaAudienceNetworkDemandSourceAdapter.identifier
     public let name: String = "MetaAudienceNetwork"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = FB_AD_SDK_VERSION
-    
+
     private(set) public var isInitialized: Bool = false
-    
+
     @Injected(\.context)
     var context: SdkContext
-    
+
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return MetaAudienceNetworkBiddingInterstitialDemandProvider()
     }
-    
+
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
         return MetaAudienceNetworkBiddingRewardedDemandProvider()
     }
-    
+
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return MetaAudienceNetworkBiddingAdViewDemandProvider(context: context)
     }
@@ -50,11 +50,11 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         completion: @escaping (SdkError?) -> Void
     ) {
         FBAdSettings.setLogLevel(.current)
-        
+
         if #available(iOS 14, *) {
             FBAdSettings.setAdvertiserTrackingEnabled(ATTrackingManager.isAdvertiserTrackingEnabled)
         }
-        
+
         switch context.regulations.coppa {
         case .no:
             FBAdSettings.isMixedAudience = false
@@ -63,14 +63,14 @@ extension MetaAudienceNetworkDemandSourceAdapter: ParameterizedInitializableAdap
         default:
             break
         }
-        
+
         if let mediations = parameters.mediationService {
             FBAdSettings.setMediationService(mediations)
         }
-        
+
         let settings = FBAdInitSettings(parameters: parameters)
-    
-        
+
+
         FBAudienceNetworkAds.initialize(with: settings) { [weak self] result in
             self?.isInitialized = result.isSuccess
             completion(result.isSuccess ? nil : SdkError.message(result.message))
@@ -84,7 +84,7 @@ fileprivate extension FBAdInitSettings {
         guard
             let mediationService = parameters.mediationService
         else { return nil }
-        
+
         self.init(
             placementIDs: parameters.placements ?? [],
             mediationService: mediationService

@@ -21,7 +21,7 @@ struct FullscreenImpression: Impression {
     var adUnitExtras: [String: BidonDecodable]?
     var auctionPricefloor: Price
     var auctionConfiguration: AuctionConfiguration
-    
+
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
@@ -42,4 +42,3 @@ struct FullscreenImpression: Impression {
         self.adUnitExtras = bid.adUnit.extrasDictionary
     }
 }
-

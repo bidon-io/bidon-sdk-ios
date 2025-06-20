@@ -11,32 +11,32 @@ import Foundation
 final class BaseAuctionObserver: AuctionObserver {
     let adType: AdType
     let configuration: AuctionConfiguration
-    
+
     @Atomic
     private var round: RoundObservation
-    
+
     @Atomic
     private var startTimestamp: TimeInterval = Date.timestamp(.wall, units: .milliseconds)
-    
+
     @Atomic
     private var finishTimestamp: TimeInterval = 0
-    
+
     @Atomic
     private var isCancelled: Bool = false
-    
+
     init(configuration: AuctionConfiguration, adType: AdType) {
         self.adType = adType
         self.configuration = configuration
-        
+
         self.round = RoundObservation(
             pricefloor: configuration.pricefloor,
             tokens: configuration.tokens
         )
     }
-    
-    func log<EventType>(_ event: EventType) where EventType : AuctionEvent {
+
+    func log<EventType>(_ event: EventType) where EventType: AuctionEvent {
         Logger.debug("[\(adType)] [Auction: \(configuration.auctionId)] " + event.description)
-        
+
         switch event {
             // Auction level
         case let _event as StartAuctionEvent:
@@ -128,22 +128,22 @@ extension BaseAuctionObserver: AuctionReportProvider {
                 winner: round.auctionWinner?.bid
             )
         }
-        
+
         return AuctionResultReportModel(
             status: .fail,
             startTimestamp: startTimestamp.uint,
             finishTimestamp: finishTimestamp.uint
         )
     }
-    
-    
+
+
     var report: AuctionReportModel {
         let rounds = AuctionRoundReportModel(
             pricefloor: round.pricefloor,
             demands: round.demand.entries.map(AuctionDemandReportModel.init),
             bidding: AuctionRoundBiddingReportModel(demands: round.bidding.entries.map(AuctionDemandReportModel.init))
         )
-        
+
         return AuctionReportModel(
             configuration: configuration,
             round: rounds,

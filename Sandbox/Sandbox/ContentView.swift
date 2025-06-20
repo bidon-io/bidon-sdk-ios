@@ -11,7 +11,7 @@ import Bidon
 
 struct ContentView: View {
     @StateObject var vm = ContentViewModel()
-    
+
     var body: some View {
         if vm.isInitialized {
             HomeView()

@@ -19,7 +19,7 @@ extension MediationError {
         default: self = .unknownAdapter
         }
     }
-    
+
     init(_ error: UADSBannerError?) {
         guard
             let error = error,
@@ -28,7 +28,7 @@ extension MediationError {
             self = .noFill(nil)
             return
         }
-        
+
         switch code {
         case .codeNoFillError: self = .noFill(error.localizedDescription)
         case .codeWebViewError: self = .networkError
@@ -36,4 +36,3 @@ extension MediationError {
         }
     }
 }
-

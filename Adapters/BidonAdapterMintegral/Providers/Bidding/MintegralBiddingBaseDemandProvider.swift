@@ -13,7 +13,7 @@ import Bidon
 class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     func collectBiddingToken(
         biddingTokenExtras: MintegralBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
@@ -24,7 +24,7 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidd
         }
         response(.success(token))
     }
-    
+
     func load(
         payload: MintegralBiddingResponse,
         adUnitExtras: MintegralAdUnitExtras,
@@ -32,7 +32,7 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidd
     ) {
         fatalError("MintegralBiddingBaseDemandProvider is unable to prepare bid")
     }
-    
+
     final func notify(
         ad: DemandAdType,
         event: Bidon.DemandProviderEvent

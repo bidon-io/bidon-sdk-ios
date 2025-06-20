@@ -110,6 +110,10 @@ def consent_manager
   pod "StackConsentManager", '~> 3.0.0'
 end
 
+def swiftlint
+  pod 'SwiftLint'
+end
+
 
 
 # Targets
@@ -234,6 +238,7 @@ end
 target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
   consent_manager
+  swiftlint
   applovin
   appsflyer
   bidmachine

@@ -13,7 +13,7 @@ enum AuctionResultStatus: Codable {
     case success
     case fail
     case cancelled
-    
+
     private var stringValue: String {
         switch self {
         case .unknown:          return "UNKNOWN"
@@ -22,7 +22,7 @@ enum AuctionResultStatus: Codable {
         case .cancelled:        return "AUCTION_CANCELLED"
         }
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let value = try container.decode(String.self)
@@ -39,7 +39,7 @@ enum AuctionResultStatus: Codable {
             throw DecodingError.dataCorrupted(ctx)
         }
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(stringValue)

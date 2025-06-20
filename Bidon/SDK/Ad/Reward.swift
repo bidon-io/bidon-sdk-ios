@@ -19,7 +19,7 @@ public final class RewardWrapper<Wrapped>: Reward {
     public let label: String
     public let amount: Int
     public let wrapped: Wrapped
-    
+
     public init(
         label: String,
         amount: Int,
@@ -35,8 +35,8 @@ public final class RewardWrapper<Wrapped>: Reward {
 public final class EmptyReward: Reward {
     public let label: String = ""
     public let amount: Int = .zero
-    
+
     public init() {
-        
+
     }
 }

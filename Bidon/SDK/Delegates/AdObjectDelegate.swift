@@ -10,10 +10,10 @@ import Foundation
 @objc(BDNAdObject)
 public protocol AdObject: ExtrasProvider {
     var isReady: Bool { get }
-    
+
     @objc(notifyWin)
     func notifyWin()
-    
+
     @objc(notifyLossWithExternalDemandId:price:)
     func notifyLoss(
         external demandId: String,
@@ -29,37 +29,37 @@ public protocol AdObjectDelegate: AnyObject {
         didLoadAd ad: Ad,
         auctionInfo: AuctionInfo
     )
-    
+
     func adObject(
         _ adObject: AdObject,
         didFailToLoadAd error: Error,
         auctionInfo: AuctionInfo
     )
-    
+
     @objc optional
     func adObject(
         _ adObject: AdObject,
         didExpireAd ad: Ad
     )
-    
+
     @objc optional
     func adObject(
         _ adObject: AdObject,
         didFailToPresentAd error: Error
     )
-    
+
     @objc optional
     func adObject(
         _ adObject: AdObject,
         didRecordImpression ad: Ad
     )
-    
+
     @objc optional
     func adObject(
         _ adObject: AdObject,
         didRecordClick ad: Ad
     )
-    
+
     @objc optional
     func adObject(
         _ adObject: AdObject,

@@ -13,13 +13,13 @@ import Combine
 
 struct HomeView: View {
     @StateObject var vm = HomeViewModel()
-    
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color(UIColor.secondarySystemBackground)
                     .edgesIgnoringSafeArea(.all)
-                
+
                 VStack(spacing: 0) {
                     List {
                         InterstitialSection()
@@ -27,10 +27,10 @@ struct HomeView: View {
                         BannerAdSection()
                             .environmentObject(vm.banner)
                     }
-                    
+
                     if vm.isBannerPresented {
                         Divider()
-                        
+
                         ZStack {
                             AnyAdBannerWrapperView(
                                 format: vm.bannerSettings.format,
@@ -42,7 +42,7 @@ struct HomeView: View {
                                 ad: $vm.banner.ad,
                                 isLoading: $vm.banner.isLoading
                             )
-                            
+
                             if vm.isBannerLoading {
                                 ActivityPlaceholder()
                             }
@@ -56,15 +56,15 @@ struct HomeView: View {
         }
         .navigationViewStyle(.stack)
     }
-    
+
     private var title: Text {
         let mediation: String
-        
+
         switch AdServiceProvider.shared.service.mediation {
         case .appodeal: mediation = "Appodeal + "
         case .none: mediation = "Raw "
         }
-        
+
         return Text(mediation + "Bidon v\(BidonSdk.sdkVersion)")
     }
 }
@@ -78,9 +78,9 @@ final class HomeViewModel: ObservableObject {
         var pricefloor: Price
         var auctionKey: String?
     }
-    
+
     @Published var banner = BannerSectionViewModel()
-    
+
     @Published var isBannerPresented: Bool = false
     @Published var isBannerLoading: Bool = false
     @Published var bannerHeight: CGFloat = 0
@@ -91,26 +91,26 @@ final class HomeViewModel: ObservableObject {
         pricefloor: 0.1,
         auctionKey: ""
     )
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     init() {
         subscribe()
     }
-    
+
     func subscribe() {
         banner.$isPresented.sink { [unowned self] in
             self.isBannerPresented = $0
         }
         .store(in: &cancellables)
-        
+
         banner.$format.map { $0.preferredSize.height }.sink { height in
             withAnimation { [unowned self] in
                 self.bannerHeight = height
             }
         }
         .store(in: &cancellables)
-        
+
         banner
             .$isLoading
             .delay(for: .seconds(0.3), scheduler: RunLoop.main)
@@ -120,20 +120,20 @@ final class HomeViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-        
+
         let paramsOne = Publishers
             .CombineLatest3(
-                banner.$format, 
+                banner.$format,
                 banner.$isAutorefreshing,
                 banner.$autorefreshInterval
             )
-                
+
         let paramsTwo = Publishers
             .CombineLatest(
                 banner.$pricefloor,
                 banner.$auctionKey
             )
-        
+
         paramsOne.combineLatest(paramsTwo)
             .sink { [unowned self] in
                 self.bannerSettings = BannerSettings(

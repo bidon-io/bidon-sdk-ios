@@ -11,14 +11,14 @@ import BidMachine
 import Bidon
 
 
-final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {    
+final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     override var placementFormat: PlacementFormat { .rewarded }
-    
+
     override func didDismissAd(_ ad: BidMachineAdProtocol) {
         defer { super.didDismissAd(ad) }
-        
+
         rewardDelegate?.provider(self, didReceiveReward: BidMachineEmptyReward())
     }
 }
@@ -37,7 +37,7 @@ extension BidMachineBiddingRewardedAdDemandProvider: RewardedAdDemandProvider {
             )
             return
         }
-        
+
         ad.ad.controller = viewController
         ad.ad.presentAd()
     }

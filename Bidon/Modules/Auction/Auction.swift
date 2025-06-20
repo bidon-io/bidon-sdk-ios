@@ -18,15 +18,15 @@ protocol AuctionRound {
 
 struct Auction {
     private(set) var graph = DirectedAcyclicGraph<Operation>()
-    
+
     func operations() -> [Operation] {
         return graph.operations()
     }
-    
+
     mutating func addNode(_ operation: AnyAuctionOperation) {
         try? graph.add(node: operation)
     }
-    
+
     mutating func addEdge(
         parent parentOperation: AnyAuctionOperation,
         child childOperation: AnyAuctionOperation
