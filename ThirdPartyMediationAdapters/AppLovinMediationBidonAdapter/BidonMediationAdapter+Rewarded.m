@@ -19,7 +19,7 @@
     self.rewardedPlacementId = parameters.thirdPartyAdPlacementIdentifier;
     NSDictionary<NSString *, id> *customParams = parameters.customParameters;
     
-    BOOL unicorn = [customParams[@"unicorn"] boolValue];
+    BOOL shouldLoad = [customParams[@"should_load"] ?: customParams[@"unicorn"] boolValue];
     
     id ecpmValue = customParams[@"ecpm"];
     double ecpm = [ecpmValue isKindOfClass:[NSNumber class]] ? [ecpmValue doubleValue] : 0.0;
@@ -28,7 +28,7 @@
     
     [[AdKeeperFactory rewarded:self.rewardedAdUnitId] registerEcpm:ecpm];
     
-    if (unicorn) {
+    if (shouldLoad) {
         NSLog(@"[BidonAdapter] [%@] Placement ID: %@, Unicorn Detected, ECPM: %f", self.rewardedAdUnitId, self.rewardedPlacementId, ecpm);
         
         NSString *auctionKey = customParams[@"auction_key"];
@@ -58,7 +58,7 @@
         
         self.rewardedAd = (BDNRewardedAd *)cachedAd.adInstance;
         self.rewardedAd.delegate = self;
-        [delegate didLoadRewardedAd];
+        [delegate didLoadRewardedAdWithExtraInfo:[self extrasDictForEcpm:ecpm ad:cachedAd.ad]];
     }
 }
 
@@ -88,6 +88,7 @@
         
         FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:price
                                                                              demandId:ad.adUnit.demandId
+                                                                                   ad:ad
                                                                            adInstance:self.rewardedAd];
         
         if ([[AdKeeperFactory rewarded:self.rewardedAdUnitId] keepAd:adInstance]) {
@@ -103,7 +104,7 @@
             NSLog(@"[BidonAdapter] [%@] Rewarded ad loaded from cache, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
             self.rewardedAd = (BDNRewardedAd *)cachedAd.adInstance;
             self.rewardedAd.delegate = self;
-            [self.rewardedDelegate didLoadRewardedAd];
+            [self.rewardedDelegate didLoadRewardedAdWithExtraInfo:[self extrasDictForEcpm:self.rewardedMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Rewarded ad failed to load from cache: No fill, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
             [self.rewardedDelegate didFailToLoadRewardedAdWithError:[MAAdapterError errorWithCode:MAAdapterError.errorCodeNoFill]];
