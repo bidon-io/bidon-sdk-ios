@@ -65,6 +65,31 @@
     BDNSdk.regulations.usPrivacyString = usPrivacyString;
 }
 
+- (NSDictionary<NSString *, id> *)extrasDictForEcpm:(double)ecpm ad:(id<BDNAd>)ad {
+    NSMutableDictionary<NSString *, id> *extras = [NSMutableDictionary dictionary];
+    extras[@"max_ecpm"] = @(ecpm);
+    switch (ad.adType) {
+        case AdTypeBanner:
+            extras[@"max_placement"] = self.bannerPlacementId ?: @"";
+            break;
+        case AdTypeInterstitial:
+            extras[@"max_placement"] = self.interstitialPlacementId ?: @"";
+            break;
+        case AdTypeRewarded:
+            extras[@"max_placement"] = self.rewardedPlacementId ?: @"";
+            break;
+    }
+    extras[@"ad_unit_uid"] = ad.adUnit.uid ?: @"";
+    extras[@"demand_id"] = ad.adUnit.demandId ?: @"";
+    extras[@"price"] = @(ad.price ?: ad.adUnit.pricefloor) ?: @"";
+    extras[@"bid_type"] = ad.adUnit.bidType == 1 ? @"CPM" : @"RTB";
+    
+    NSMutableDictionary<NSString *, id> *adValues = [NSMutableDictionary dictionary];
+    adValues[@"ad_values"] = extras;
+        
+    return adValues;
+}
+
 #pragma mark - FullscreenAdDelegate
 
 - (void)fullscreenAd:(id<BDNFullscreenAd>)fullscreenAd didDismissAd:(id<BDNAd>)ad {
