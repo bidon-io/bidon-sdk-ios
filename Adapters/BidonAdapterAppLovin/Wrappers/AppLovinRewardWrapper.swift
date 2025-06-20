@@ -12,10 +12,10 @@ import Bidon
 typealias AppLovinRewardWrapper = RewardWrapper<[AnyHashable: Any]>
 
 extension AppLovinRewardWrapper {
-    convenience init(_ response: [AnyHashable : Any]) {
+    convenience init(_ response: [AnyHashable: Any]) {
         let label = (response["currency"] as? String) ?? ""
         let amount = (response["amount"] as? Int) ?? .zero
-        
+
         self.init(
             label: label,
             amount: amount,

@@ -14,14 +14,14 @@ import Bidon
 
 struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
     typealias UIViewType = BannerView
-    
+
     var format: AdBannerWrapperFormat
     var isAutorefreshing: Bool
     var autorefreshInterval: TimeInterval
     var pricefloor: Price
     var auctionKey: String?
     var onEvent: AdBannerWrapperViewEvent
-    
+
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
 
@@ -44,25 +44,25 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
         self._isLoading = isLoading
         self.auctionKey = auctionKey
     }
-    
+
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(frame: .zero, auctionKey: auctionKey)
-        
+
         banner.format = BannerFormat(format)
         banner.rootViewController = UIApplication.shared.bd.topViewcontroller
         banner.delegate = context.coordinator
-        
+
         return banner
     }
-    
+
     func updateUIView(_ uiView: BannerView, context: Context) {
         uiView.format = BannerFormat(format)
-        
+
         if isLoading {
             uiView.loadAd(with: pricefloor, auctionKey: auctionKey)
         }
     }
-    
+
     func makeCoordinator() -> Coordinator {
         return Coordinator(
             onEvent: onEvent
@@ -71,23 +71,23 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
             self.isLoading = false
         }
     }
-    
+
     final class Coordinator: BaseAdWrapper {
         private var cancellables = Set<AnyCancellable>()
 
         override var adType: AdType { .banner }
-        
+
         init(
             onEvent: @escaping AdBannerWrapperViewEvent,
             onUpdateAd: @escaping (Bidon.Ad?) -> ()
         ) {
             super.init()
-            
+
             adEventSubject
                 .receive(on: RunLoop.main)
                 .sink(receiveValue: onEvent)
                 .store(in: &cancellables)
-            
+
             adSubject
                 .receive(on: RunLoop.main)
                 .sink(receiveValue: onUpdateAd)
@@ -106,7 +106,7 @@ extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
             color: .accentColor
         )
     }
-    
+
     func adView(_ adView: UIView & Bidon.AdView, didDismissScreen ad: Bidon.Ad) {
         send(
             event: "Bidon will dismiss screen",
@@ -115,7 +115,7 @@ extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
             color: .accentColor
         )
     }
-    
+
     func adView(_ adView: UIView & Bidon.AdView, willLeaveApplication ad: Bidon.Ad) {
         send(
             event: "Bidon will leave application",
@@ -125,4 +125,3 @@ extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
         )
     }
 }
-

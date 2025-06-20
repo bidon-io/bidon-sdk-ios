@@ -10,11 +10,11 @@ import Foundation
 
 final class DefaultAdUnitProvider: AdUnitProvider {
     private var adUnits: [AdUnitModel]
-    
+
     init(adUnits: [AdUnitModel]) {
         self.adUnits = adUnits
     }
-   
+
     func directAdUnit(
         for demandId: String,
         pricefloor: Price
@@ -25,11 +25,11 @@ final class DefaultAdUnitProvider: AdUnitProvider {
             .first ??
         adUnits
             .first { $0.bidType == .direct && $0.pricefloor.isUnknown }
-        
+
         adUnits = adUnits.filter { $0 != candidate }
         return candidate
     }
-    
+
     func biddingAdUnits(for demandId: String) -> [AdUnitModel] {
         return adUnits
             .filter { $0.bidType == .bidding && $0.demandId == demandId }

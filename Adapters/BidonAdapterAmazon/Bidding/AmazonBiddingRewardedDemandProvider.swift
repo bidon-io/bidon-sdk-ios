@@ -12,17 +12,17 @@ import DTBiOSSDK
 final class AmazonBiddingRewardedDemandProvider: AmazonBiddingDemandProvider<DTBAdInterstitialDispatcher> {
     private lazy var dispatcher = DTBAdInterstitialDispatcher(delegate: self)
     private var response: DemandProviderResponse?
-    
+
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var handler: AmazonBiddingHandler?
-    
+
     override func collectBiddingToken(biddingTokenExtras: AmazonBiddingTokenExtras, response: @escaping (Result<String, MediationError>) -> ()) {
         let adSizes = biddingTokenExtras.slots.filter({ $0.format == .rewarded }).compactMap({ $0.adSize() })
         handler = AmazonBiddingHandler(adSizes: adSizes)
         handler?.fetch(response: response)
     }
-    
+
     override func load(
         payload: AmazonBiddingPayload,
         adUnitExtras: AmazonAdUnitExtras,
@@ -33,10 +33,10 @@ final class AmazonBiddingRewardedDemandProvider: AmazonBiddingDemandProvider<DTB
             response(.failure(.noAppropriateAdUnitId))
             return
         }
-        
+
         fill(adResponse, response: response)
     }
-    
+
     override func fill(
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse
@@ -65,7 +65,7 @@ extension AmazonBiddingRewardedDemandProvider: DTBAdInterstitialDispatcherDelega
         response?(.success(interstitial))
         response = nil
     }
-    
+
     func interstitial(
         _ interstitial: DTBAdInterstitialDispatcher?,
         didFailToLoadAdWith errorCode: DTBAdErrorCode
@@ -73,11 +73,11 @@ extension AmazonBiddingRewardedDemandProvider: DTBAdInterstitialDispatcherDelega
         response?(.failure(MediationError(errorCode)))
         response = nil
     }
-    
+
     func interstitialWillPresentScreen(_ interstitial: DTBAdInterstitialDispatcher?) {
         delegate?.providerWillPresent(self)
     }
-    
+
     func interstitialDidDismissScreen(_ interstitial: DTBAdInterstitialDispatcher?) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
         delegate?.providerDidHide(self)
@@ -86,11 +86,11 @@ extension AmazonBiddingRewardedDemandProvider: DTBAdInterstitialDispatcherDelega
     func adClicked() {
         delegate?.providerDidClick(self)
     }
-    
+
     func impressionFired() {
         revenueDelegate?.provider(self, didLogImpression: dispatcher)
     }
-    
+
     // noop
     func interstitialDidPresentScreen(_ interstitial: DTBAdInterstitialDispatcher?) {}
     func interstitialWillDismissScreen(_ interstitial: DTBAdInterstitialDispatcher?) {}

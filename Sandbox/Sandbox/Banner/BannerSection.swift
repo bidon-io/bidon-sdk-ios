@@ -12,7 +12,7 @@ import Bidon
 
 struct BannerAdSection: View {
     @EnvironmentObject var vm: BannerSectionViewModel
-    
+
     var body: some View {
         Group {
             Section(header: Text("Banner")) {
@@ -22,9 +22,9 @@ struct BannerAdSection: View {
                     in: (0.0...100.0),
                     step: 0.1
                 )
-                
+
                 TextField("Auction Key", text: $vm.auctionKey)
-                
+
                 Button(action: {
                     withAnimation {
                         vm.isLoading.toggle()
@@ -34,7 +34,7 @@ struct BannerAdSection: View {
                         Text(vm.isLoading ? "Loading...": "Load")
                             .foregroundColor(!vm.isPresented || vm.isLoading ? .secondary : .primary)
                         Spacer()
-                        
+
                         if vm.isLoading {
                             ProgressView()
                         }
@@ -46,7 +46,7 @@ struct BannerAdSection: View {
                     onLoss: vm.notify(loss:)
                 )
                 .disabled(!vm.isPresented || vm.isLoading)
-                
+
                 Button(action: {
                     withAnimation {
                         vm.isPresented.toggle()
@@ -57,7 +57,7 @@ struct BannerAdSection: View {
                         Spacer()
                     }
                 }
-                
+
                 NavigationLink("Events", destination: AdEventsList(events: vm.events))
                 NavigationLink(
                     "Advanced",
@@ -76,4 +76,3 @@ struct BannerAdSection: View {
 extension BannerFormat: CaseIterable {
     public static var allCases: [BannerFormat] = [.adaptive, .banner, .leaderboard, .mrec]
 }
-

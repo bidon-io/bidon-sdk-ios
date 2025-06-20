@@ -19,7 +19,7 @@ public protocol GenericDirectDemandProvider: DemandProvider {
 
 public protocol DirectDemandProvider: GenericDirectDemandProvider {
     associatedtype AdUnitExtras: Decodable
-    
+
     func load(
         pricefloor: Price,
         adUnitExtras: AdUnitExtras,
@@ -36,7 +36,7 @@ extension DirectDemandProvider {
     ) {
         do {
             let adUnitExtas = try AdUnitExtras(from: adUnitExtrasDecoder)
-            
+
             load(
                 pricefloor: pricefloor,
                 adUnitExtras: adUnitExtas,
@@ -50,16 +50,16 @@ extension DirectDemandProvider {
 
 final class DirectDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericDirectDemandProvider {
     private let _load: (Price, Decoder, @escaping DemandProviderResponse) -> ()
-    
+
     override init(_ wrapped: W) throws {
         guard let _wrapped = wrapped as? (any GenericDirectDemandProvider)
         else { throw SdkError.internalInconsistency }
-        
+
         _load = { _wrapped.load(pricefloor: $0, adUnitExtrasDecoder: $1, response: $2) }
-        
+
         try super.init(wrapped)
     }
-    
+
     func load(
         pricefloor: Price,
         adUnitExtrasDecoder: Decoder,

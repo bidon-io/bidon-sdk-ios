@@ -11,7 +11,7 @@ import SwiftUI
 
 struct InterstitialSection: View {
     @StateObject var vm = FullscreenAdSectionViewModel(adType: .interstitial)
-    
+
     var body: some View {
         Section(header: Text("Interstitial")) {
             Stepper(
@@ -20,9 +20,9 @@ struct InterstitialSection: View {
                 in: (0.0...100.0),
                 step: 0.1
             )
-            
+
             TextField("Auction Key", text: $vm.auctionKey)
-        
+
             Button(action: load) {
                 HStack {
                     Text("Load")
@@ -47,7 +47,7 @@ struct InterstitialSection: View {
                 onWin: vm.notify(win:),
                 onLoss: vm.notify(loss:)
             )
-            
+
             Button(action: show) {
                 HStack {
                     Text("Show")
@@ -64,7 +64,7 @@ struct InterstitialSection: View {
                     }
                 }
             }
-            
+
             NavigationLink(
                 "Events",
                 destination: AdEventsList(events: vm.events)
@@ -72,13 +72,13 @@ struct InterstitialSection: View {
         }
         .foregroundColor(.primary)
     }
-    
+
     private func load() {
         Task {
             await vm.load()
         }
     }
-    
+
     private func show() {
         Task {
             await vm.show()

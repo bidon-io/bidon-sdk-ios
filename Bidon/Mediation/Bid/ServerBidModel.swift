@@ -19,7 +19,7 @@ struct ServerBidModel: Decodable, ServerBid {
         case adUnit
         case price
     }
-    
+
     var id: String
     var impressionId: String
     var winNoticeUrl: String?
@@ -28,7 +28,7 @@ struct ServerBidModel: Decodable, ServerBid {
     var adUnit: AdUnitModel
     var price: Price
     var payload: Decoder
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
@@ -39,14 +39,14 @@ struct ServerBidModel: Decodable, ServerBid {
         price = try container.decode(Price.self, forKey: .price)
         payload = try container.superDecoder(forKey: .payload)
     }
-    
+
     static func == (
         lhs: ServerBidModel,
         rhs: ServerBidModel
     ) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

@@ -14,14 +14,14 @@ final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemand
     override func loadAd(_ request: Request, adUnitId: String) {
         InterstitialAd.load(with: adUnitId, request: request) { [weak self] interstitial, error in
             guard let self = self else { return }
-            
+
             guard let interstitial = interstitial else {
                 self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
-            
+
             interstitial.fullScreenContentDelegate = self
-            
+
             self.setupAdRevenueHandler(adObject: interstitial)
             self.handleDidLoad(adObject: interstitial)
         }
@@ -40,7 +40,7 @@ extension GoogleMobileAdsInterstitialDemandProvider: FullScreenContentDelegate {
     func adWillPresentFullScreenContent(_ ad: FullScreenPresentingAd) {
         delegate?.providerWillPresent(self)
     }
-    
+
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         guard let ad = ad as? InterstitialAd else { return }
         delegate?.provider(
@@ -49,13 +49,12 @@ extension GoogleMobileAdsInterstitialDemandProvider: FullScreenContentDelegate {
             error: .generic(error: error)
         )
     }
-    
+
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidHide(self)
     }
 }
-

@@ -9,7 +9,7 @@ import Foundation
 
 
 final class InterstitialStatisticRequestBuilder: BaseStatisticRequestBuilder<InterstitialAdTypeContext> {
-    override func transform<T>(report: T) -> EncodableAuctionReportModel where T : AuctionReport {
+    override func transform<T>(report: T) -> EncodableAuctionReportModel where T: AuctionReport {
         return EncodableAuctionReportModel(
             report: report,
             interstitial: InterstitialAdTypeContextModel(context)

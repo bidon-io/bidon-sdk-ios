@@ -15,7 +15,7 @@ enum AdBannerWrapperFormat: String, CaseIterable {
     case leaderboard
     case mrec
     case adaptive
-    
+
     var preferredSize: CGSize {
         switch self {
         case .banner:
@@ -54,10 +54,10 @@ struct AnyAdBannerWrapperView: AdBannerWrapperView {
     var pricefloor: Double
     var auctionKey: String?
     var onEvent: AdBannerWrapperViewEvent
-    
+
     @Binding var ad: Bidon.Ad?
     @Binding var isLoading: Bool
-    
+
     var body: some View {
         switch mediation {
         case .appodeal:

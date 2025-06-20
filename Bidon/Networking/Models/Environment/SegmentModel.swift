@@ -23,7 +23,7 @@ struct SegmentModel: Encodable {
     var totalInAppsAmount: Double?
     var isPaying: Bool?
     var customAttributes: [String: Any]?
-    
+
     var ext: [String: Any] {
         var ext: [String: Any] = [:]
         if let age = age {
@@ -46,13 +46,13 @@ struct SegmentModel: Encodable {
         }
         return ext
     }
-    
+
     enum CodingKeys: CodingKey {
         case id
         case uid
         case ext
     }
-    
+
     init(_ segment: SegmentManager) {
         self.uid = segment.uid
         self.gender = segment._gender?.description.uppercased()
@@ -62,11 +62,11 @@ struct SegmentModel: Encodable {
         self.isPaying = segment._isPaid
         self.customAttributes = segment._customAttributes
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(id, forKey: .id)
-        
+
         if !ext.isEmpty {
             let extData = try JSONSerialization.data(withJSONObject: ext)
             let extString = String(data: extData, encoding: .utf8)

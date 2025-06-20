@@ -10,17 +10,17 @@ import Foundation
 
 struct AnyDemandSourceAdapterBidType: OptionSet {
     let rawValue: UInt
-    
+
     static let direct = AnyDemandSourceAdapterBidType(rawValue: 1 << 0)
     static let bidding = AnyDemandSourceAdapterBidType(rawValue: 1 << 1)
-    
+
     init(rawValue: UInt) {
         self.rawValue = rawValue
     }
-    
+
     fileprivate init<Provider: DemandProvider>(from provider: Provider) {
         var result: AnyDemandSourceAdapterBidType = []
-        
+
         if provider is any DirectDemandProvider {
             result.insert(.direct)
         }
@@ -28,7 +28,7 @@ struct AnyDemandSourceAdapterBidType: OptionSet {
         if provider is any BiddingDemandProvider {
             result.insert(.bidding)
         }
-        
+
         self = result
     }
 }
@@ -41,7 +41,7 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
     var sdkVersion: String
     var provider: DemandProviderType
     var supportedTypes: AnyDemandSourceAdapterBidType
-    
+
     init(
         adapter: Adapter,
         provider: DemandProviderType
@@ -53,18 +53,18 @@ struct AnyDemandSourceAdapter<DemandProviderType: DemandProvider>: Adapter, Hash
         self.provider = provider
         self.supportedTypes = AnyDemandSourceAdapterBidType(from: provider)
     }
-    
+
     init() {
         fatalError("AnyDemandSourceAdapter can't be created through default initializer")
     }
-    
+
     static func == (
         lhs: AnyDemandSourceAdapter<DemandProviderType>,
         rhs: AnyDemandSourceAdapter<DemandProviderType>
     ) -> Bool {
         return lhs.demandId == rhs.demandId && lhs.provider.self === rhs.provider.self
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(demandId)
     }

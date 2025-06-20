@@ -15,14 +15,14 @@ protocol UnityAdsDemandAd: DemandAd {}
 
 final class UADSPlacement: NSObject, UnityAdsDemandAd {
     public var id: String { placementId }
-    
+
     let placementId: String
-    
+
     init(_ placementId: String) {
         self.placementId = placementId
         super.init()
     }
-    
+
     override var hash: Int {
         var hasher = Hasher()
         hasher.combine(placementId)

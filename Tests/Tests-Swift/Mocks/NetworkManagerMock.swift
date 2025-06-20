@@ -12,27 +12,27 @@ import XCTest
 
 
 final class NetworkManagerMockProxy: NetworkManager {
-    var HTTPHeaders: [String : String] = [:]
-    
+    var HTTPHeaders: [String: String] = [:]
+
     var baseURL: String = ""
-    
+
     private var mocks: [NetworkManager] = []
-    
+
     func perform<T>(
         request: T,
         completion: @escaping Completion<T>
-    ) where T : Request {
+    ) where T: Request {
         guard let mock = mocks.compactMap({ $0 as? NetworkManagerMock<T> }).first else {
             XCTAssertTrue(false, "NetworkManagerMock for request \(request) is stubbed" )
             return
         }
-        
+
         mock.perform(
             request: request,
             completion: completion
         )
     }
-    
+
     func stub<T: Request>(
         _ request: T,
         result: Result<T.ResponseBody, HTTPTask.HTTPError>
@@ -42,7 +42,7 @@ final class NetworkManagerMockProxy: NetworkManager {
             XCTAssertEqual(request, _request, "Recieved request doesn't match expected")
             completion(result)
         }
-        
+
         mocks.append(mock)
     }
 }
@@ -56,7 +56,7 @@ final class NetworkManagerMock<RequestType: Request>: NetworkManager {
     var invokedBaseURLGetter = false
     var invokedBaseURLGetterCount = 0
     var stubbedBaseURL: String! = ""
-        
+
     var baseURL: String {
         set {
             invokedBaseURLSetter = true
@@ -70,7 +70,7 @@ final class NetworkManagerMock<RequestType: Request>: NetworkManager {
             return stubbedBaseURL
         }
     }
-    
+
     var invokedHTTPHeadersSetter = false
     var invokedHTTPHeadersSetterCount = 0
     var invokedHTTPHeaders: [String: String]?
@@ -78,8 +78,8 @@ final class NetworkManagerMock<RequestType: Request>: NetworkManager {
     var invokedHTTPHeadersGetter = false
     var invokedHTTPHeadersGetterCount = 0
     var stubbedHTTPHeaders: [String: String]! = [:]
-        
-    var HTTPHeaders: [String : String] {
+
+    var HTTPHeaders: [String: String] {
         set {
             invokedHTTPHeadersSetter = true
             invokedHTTPHeadersSetterCount += 1
@@ -110,7 +110,7 @@ final class NetworkManagerMock<RequestType: Request>: NetworkManager {
             XCTAssertTrue(false, "NetworkManagerMock received request has invalid type")
             return
         }
-        
+
         stubbedPerform?(request, completion)
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 protocol AuctionReportProvider {
     associatedtype AuctionReportType: AuctionReport
-    
+
     var report: AuctionReportType { get }
 }
 

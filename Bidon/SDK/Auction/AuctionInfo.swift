@@ -16,7 +16,7 @@ public protocol AuctionInfo {
     var noBids: [AdUnitInfo]? { get set }
     var adUnits: [AdUnitInfo]? { get set }
     var timeout: NSNumber { get set }
-    
+
     var description: String? { get }
 }
 

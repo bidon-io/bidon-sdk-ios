@@ -19,7 +19,7 @@ final class AuctionOperationRequestDemandBuilder<AdTypeContextType: AdTypeContex
     typealias AdapterType = AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>
 
     private(set) var demand: String!
-        
+
     @discardableResult
     func withDemand(_ demand: String) -> Self {
         self.demand = demand

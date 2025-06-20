@@ -19,7 +19,7 @@ struct AppTrackingTransparencyPermission: Permission {
         default: return .notDetermined
         }
     }
-    
+
     func request() async {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             DispatchQueue.main.async {

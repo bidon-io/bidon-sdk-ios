@@ -13,11 +13,11 @@ import Bidon
 class MintegralDirectBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandProvider {
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
         fatalError("MintegralDirectBaseDemandProvider cannot load ad")
     }
-    
+
     final func notify(
         ad: DemandAdType,
         event: Bidon.DemandProviderEvent

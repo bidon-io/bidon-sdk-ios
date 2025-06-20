@@ -10,9 +10,9 @@ import Bidon
 import ChartboostSDK
 
 final class ChartboostRewardedDemandProvider: ChartboostBaseDemandProvider<ChartboostDemandAd> {
-    
+
     var rewarded: CHBRewarded?
-    
+
     override func load(
         pricefloor: Price,
         adUnitExtras: ChartboostAdUnitExtras,
@@ -23,12 +23,12 @@ final class ChartboostRewardedDemandProvider: ChartboostBaseDemandProvider<Chart
             adUnitExtras: adUnitExtras,
             response: response
         )
-        
+
         var mediation: CHBMediation?
         if let serverMediation = adUnitExtras.mediation {
             mediation = CHBMediation(name: serverMediation, libraryVersion: BidonSdk.sdkVersion, adapterVersion: version)
         }
-        
+
         rewarded = CHBRewarded(location: adUnitExtras.adLocation, mediation: mediation, delegate: self)
         rewarded?.cache()
     }

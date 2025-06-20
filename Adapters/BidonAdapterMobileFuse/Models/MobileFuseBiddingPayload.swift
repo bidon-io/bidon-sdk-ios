@@ -10,7 +10,7 @@ import Foundation
 
 struct MobileFuseBiddingPayload: Decodable {
     var signal: String
-    
+
     enum CodingKeys: String, CodingKey {
         case signal = "signaldata"
     }
