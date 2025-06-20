@@ -19,7 +19,7 @@
     self.rewardedPlacementId = parameters.thirdPartyAdPlacementIdentifier;
     NSDictionary<NSString *, id> *customParams = parameters.customParameters;
     
-    BOOL unicorn = [customParams[@"unicorn"] boolValue];
+    BOOL shouldLoad = [customParams[@"should_load"] ?: customParams[@"unicorn"] boolValue];
     
     id ecpmValue = customParams[@"ecpm"];
     double ecpm = [ecpmValue isKindOfClass:[NSNumber class]] ? [ecpmValue doubleValue] : 0.0;
@@ -28,7 +28,7 @@
     
     [[AdKeeperFactory rewarded:self.rewardedAdUnitId] registerEcpm:ecpm];
     
-    if (unicorn) {
+    if (shouldLoad) {
         NSLog(@"[BidonAdapter] [%@] Placement ID: %@, Unicorn Detected, ECPM: %f", self.rewardedAdUnitId, self.rewardedPlacementId, ecpm);
         
         NSString *auctionKey = customParams[@"auction_key"];
