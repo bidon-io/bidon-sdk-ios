@@ -12,7 +12,7 @@ import MTGSDKReward
 
 final class MintegralDirectRewardedDemandProvider: MintegralDirectBaseDemandProvider<MintegralRewardedDemandAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var response: Bidon.DemandProviderResponse?
 
     override func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
@@ -26,7 +26,7 @@ final class MintegralDirectRewardedDemandProvider: MintegralDirectBaseDemandProv
                 id: adUnitExtras.unitId,
                 placement: adUnitExtras.placementId
             )
-            
+
             self.response?(.success(ad))
             self.response = nil
         } else {
@@ -49,11 +49,11 @@ extension MintegralDirectRewardedDemandProvider: RewardedAdDemandProvider {
                 id: ad.id,
                 placement: ad.placement
             )
-            
+
             delegate?.provider(self, didFailToDisplayAd: ad, error: .message("Ad is not ready to be shown"))
             return
         }
-        
+
         MTGRewardAdManager.sharedInstance().showVideo(
             withPlacementId: ad.placement,
             unitId: ad.id,
@@ -73,16 +73,16 @@ extension MintegralDirectRewardedDemandProvider: MTGRewardAdLoadDelegate {
             response = nil
             return
         }
-        
+
         let ad = MintegralRewardedDemandAd(
             id: unitId,
             placement: placementId
         )
-        
+
         response?(.success(ad))
         response = nil
     }
-    
+
     func onVideoAdLoadFailed(_ placementId: String?, unitId: String?, error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
@@ -93,7 +93,7 @@ extension MintegralDirectRewardedDemandProvider: MTGRewardAdLoadDelegate {
 extension MintegralDirectRewardedDemandProvider: MTGRewardAdShowDelegate {
     func onVideoAdShowSuccess(_ placementId: String?, unitId: String?) {
         delegate?.providerWillPresent(self)
-        
+
         if let unitId = unitId, let placementId = placementId {
             let ad = MintegralRewardedDemandAd(
                 id: unitId,
@@ -102,22 +102,22 @@ extension MintegralDirectRewardedDemandProvider: MTGRewardAdShowDelegate {
             revenueDelegate?.provider(self, didLogImpression: ad)
         }
     }
-    
+
     func onVideoAdShowFailed(_ placementId: String?, unitId: String?, withError error: Error) {
         guard let unitId = unitId else { return }
-        
+
         let ad = MintegralRewardedDemandAd(
             id: unitId,
             placement: placementId
         )
-        
+
         delegate?.provider(self, didFailToDisplayAd: ad, error: .generic(error: error))
     }
-    
+
     func onVideoAdClicked(_ placementId: String?, unitId: String?) {
         delegate?.providerDidClick(self)
     }
-    
+
     func onVideoAdDismissed(
         _ placementId: String?,
         unitId: String?,
@@ -127,7 +127,7 @@ extension MintegralDirectRewardedDemandProvider: MTGRewardAdShowDelegate {
         if let rewardInfo = rewardInfo {
             rewardDelegate?.provider(self, didReceiveReward: rewardInfo)
         }
-        
+
         delegate?.providerDidHide(self)
     }
 }

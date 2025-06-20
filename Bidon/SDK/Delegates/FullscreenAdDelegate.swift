@@ -14,6 +14,6 @@ public protocol FullscreenAdObject: AdObject {}
 @objc(BDNFullscreenAdDelegate)
 public protocol FullscreenAdDelegate: AdObjectDelegate {
     func fullscreenAd(_ fullscreenAd: FullscreenAdObject, willPresentAd ad: Ad)
-    
+
     func fullscreenAd(_ fullscreenAd: FullscreenAdObject, didDismissAd ad: Ad)
 }

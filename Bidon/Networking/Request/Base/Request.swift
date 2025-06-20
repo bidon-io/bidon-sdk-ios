@@ -25,7 +25,7 @@ indirect enum Route {
 extension HTTPTask.HTTPHeaders {
     static func `default`() -> HTTPTask.HTTPHeaders {
         return [
-            .contentType : "application/json",
+            .contentType: "application/json",
             .accept: "application/json",
             .sdkVersion: BidonSdk.sdkVersion
         ]
@@ -41,7 +41,7 @@ protocol Tokenized {
 protocol Request: Equatable {
     associatedtype RequestBody: Encodable & Tokenized
     associatedtype ResponseBody: Decodable & Tokenized
-    
+
     var route: Route { get }
     var method: HTTPTask.HTTPMethod { get }
     var headers: [HTTPTask.HTTPHeader: String] { get }
@@ -59,7 +59,7 @@ extension Route {
             return pathComponent
         }
     }
-    
+
     private var pathComponent: String {
         switch self {
         case .auction:  return "v2/auction"
@@ -74,7 +74,7 @@ extension Route {
         default: return ""
         }
     }
-    
+
     func url(_ base: URL) -> URL {
         switch self {
         case .complex(let right, let left):

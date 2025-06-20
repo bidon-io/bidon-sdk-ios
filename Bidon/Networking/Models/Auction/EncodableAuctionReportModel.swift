@@ -8,11 +8,11 @@
 import Foundation
 
 struct EncodableAuctionReportModel: AuctionReport, Encodable {
-    
+
     struct EncodableAuctionResultReportModel: AuctionResultReport, Encodable {
-        
+
         typealias BidType = DummyBid
-        
+
         var startTimestamp: UInt
         var finishTimestamp: UInt
         var status: AuctionResultStatus
@@ -20,7 +20,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         var banner: BannerAdTypeContextModel?
         var interstitial: InterstitialAdTypeContextModel?
         var rewarded: RewardedAdTypeContextModel?
-        
+
         enum CodingKeys: String, CodingKey {
             case startTimestamp = "auction_start_ts"
             case finishTimestamp = "auction_finish_ts"
@@ -34,10 +34,10 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             case interstitial
             case rewarded
         }
-        
+
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             try container.encode(startTimestamp, forKey: .startTimestamp)
             try container.encode(finishTimestamp, forKey: .finishTimestamp)
             try container.encode(status, forKey: .status)
@@ -51,7 +51,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             try container.encodeIfPresent(rewarded, forKey: .rewarded)
         }
     }
-    
+
     struct EncodableAuctionAdUnit: Encodable {
         var price: Price?
         var tokenStart: UInt?
@@ -64,7 +64,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         var adUnitLabel: String
         var status: DemandMediationStatus
         var errorMessage: String?
-        
+
         enum CodingKeys: String, CodingKey {
             case price
             case tokenStart = "token_start_ts"
@@ -78,7 +78,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             case status
             case errorMessage
         }
-        
+
         init(
             price: Price?,
             tokenStart: UInt?,
@@ -113,11 +113,11 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
             }
         }
     }
-    
+
     var configuration: AuctionConfiguration
     var result: EncodableAuctionResultReportModel
     var round: AuctionRoundReportModel
-    
+
     enum CodingKeys: String, CodingKey {
         case auctionConfigurationUid = "auction_configuration_uid"
         case auctionId = "auction_id"
@@ -126,7 +126,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         case result
         case adUnits = "ad_units"
     }
-    
+
     init<T: AuctionReport>(
         report: T,
         banner: BannerAdTypeContextModel? = nil,
@@ -142,7 +142,7 @@ struct EncodableAuctionReportModel: AuctionReport, Encodable {
         )
         self.round = report.round
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(configuration.auctionId, forKey: .auctionId)

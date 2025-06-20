@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AdViewNotificationRequestBuilder: BaseNotificationRequestBuilder<BannerAdTypeContext> {    
+final class AdViewNotificationRequestBuilder: BaseNotificationRequestBuilder<BannerAdTypeContext> {
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,

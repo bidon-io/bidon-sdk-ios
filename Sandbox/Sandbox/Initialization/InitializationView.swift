@@ -12,14 +12,14 @@ import Bidon
 
 struct InitializationView: View {
     @EnvironmentObject var vm: InitializationViewModel
-    
+
     private var appVersion: String {
         let appVersion = Bundle.main.versionString("CFBundleShortVersionString")
         let buildVersion = Bundle.main.versionString("CFBundleVersion")
-        
+
         return "\(appVersion)(\(buildVersion))"
     }
-    
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -53,36 +53,36 @@ struct InitializationView: View {
 //                        ) {
 //                            SelectMediationView(mediation: $vm.mediation)
 //                        }
-                        
+
                         Section(header: Text("Base URL")) {
                             HostView(
                                 hosts: $vm.hosts,
                                 selected: $vm.host
                             )
                         }
-                        
+
                         Section(header: Text("Permissions")) {
                             ForEach(vm.permissions) {
                                 PermissionView($0)
                             }
                         }
-                        
+
                         Section(header: Text("Settings")) {
                             Toggle("Test Mode", isOn: $vm.isTestMode)
                             NavigationLink(destination: AdServiceParametersView(vm.adService.parameters)) {
                                 Text("Advanced")
                             }
                         }
-                        
+
                     }
                     .padding(.bottom, 200)
                     .disabled(!vm.initializationState.isIdle)
                     .listStyle(.insetGrouped)
                 }
-                
+
                 VStack(alignment: .leading) {
                     Spacer()
-                    
+
                     VStack(spacing: 20) {
                         Button(action: initialize) {
                             ZStack {
@@ -96,7 +96,7 @@ struct InitializationView: View {
                         }
                         .padding(.horizontal)
                         .disabled(!vm.initializationState.isIdle)
-                        
+
                         VStack(alignment: .leading) {
                             Text("Mediation: ") + Text(AdServiceProvider.shared.service.mediation.rawValue.capitalized + " v" + AdServiceProvider.shared.service.verstion).bold()
                             Text("Bidon SDK: ") + Text("v\(BidonSdk.sdkVersion)").bold()
@@ -118,13 +118,13 @@ struct InitializationView: View {
                             .edgesIgnoringSafeArea(.bottom)
                     )
                 }
-                
+
                 if vm.initializationState.isAnimating {
                     Color(UIColor.systemGroupedBackground)
                         .edgesIgnoringSafeArea(.all)
                         .opacity(0.25)
                         .transition(.scale.combined(with: .opacity))
-                    
+
                     AppProgressView()
                         .transition(.scale.combined(with: .opacity))
                 }
@@ -135,7 +135,7 @@ struct InitializationView: View {
         .navigationTitle("")
         .navigationViewStyle(.stack)
     }
-    
+
     private func initialize() {
         Task {
             await vm.initialize()
@@ -155,11 +155,11 @@ private extension InitializationViewModel.InitializationState {
     var isAnimating: Bool {
         return self == .initializing
     }
-    
+
     var isIdle: Bool {
         return self == .idle
     }
-    
+
     var text: String {
         switch self {
         case .idle: return "Initialize"
@@ -167,7 +167,7 @@ private extension InitializationViewModel.InitializationState {
         case .initialized: return "Initialized"
         }
     }
-    
+
     var accentColor: Color {
         switch self {
         case .idle: return Color.white

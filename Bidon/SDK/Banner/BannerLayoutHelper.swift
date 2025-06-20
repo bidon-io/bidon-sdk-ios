@@ -15,15 +15,15 @@ struct BannerLayoutHelper {
         var transform: CGAffineTransform
         var anchorPoint: CGPoint
     }
-    
+
     enum Position {
         case fixed(BannerPosition)
         case custom(CGPoint, CGFloat, CGPoint)
     }
-    
+
     var format: BannerFormat
     var position: Position
-    
+
     func positioning(
         children view: UIView,
         superview: UIView
@@ -55,7 +55,7 @@ struct BannerLayoutHelper {
             )
         }
     }
-    
+
     private func fixexPositioning(
         position: BannerPosition,
         children view: UIView,
@@ -118,7 +118,7 @@ struct BannerLayoutHelper {
             )
         }
     }
-    
+
     private func sizeContraints(
         children view: UIView,
         superview: UIView
@@ -143,7 +143,7 @@ extension BannerLayoutHelper.Position {
     init(position: BannerPosition) {
         self = .fixed(position)
     }
-    
+
     init(
         point: CGPoint,
         angle: CGFloat,

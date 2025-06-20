@@ -22,7 +22,7 @@ struct SessionModel: Session, Codable {
     var RAMTotalBytes: UInt
     var batteryLevelPercentage: Float
     var CPUUsagePercentage: Float
-        
+
     init(_ session: Session) {
         self.id = session.id
         self.launchTimestamp = session.launchTimestamp
@@ -38,7 +38,7 @@ struct SessionModel: Session, Codable {
         self.batteryLevelPercentage = session.batteryLevelPercentage
         self.CPUUsagePercentage = session.CPUUsagePercentage
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case id
         case launchTimestamp = "launch_ts"

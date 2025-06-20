@@ -15,7 +15,7 @@ final class DefaultAuctionInfo: AuctionInfo {
     var noBids: [AdUnitInfo]?
     var adUnits: [AdUnitInfo]?
     var timeout: NSNumber = NSNumber(value: Constants.Timeout.defaultAuctionTimeout)
-    
+
     var description: String? {
         let dictRepresentation: [String: Any] = [
             "auctionId": auctionId,
@@ -23,7 +23,7 @@ final class DefaultAuctionInfo: AuctionInfo {
             "auctionConfigurationUid": auctionConfigurationUid ?? "null",
             "auctionPricefloor": auctionPricefloor,
             "noBids": noBids?.map({ $0.dictionaryRepresentation() }) ?? "null",
-            "adUnits": adUnits?.map({ $0.dictionaryRepresentation() }) ?? "null",
+            "adUnits": adUnits?.map({ $0.dictionaryRepresentation() }) ?? "null"
         ]
         if #available(iOS 13.0, *) {
             if let data = try? JSONSerialization.data(withJSONObject: dictRepresentation, options: .withoutEscapingSlashes) {
@@ -36,7 +36,7 @@ final class DefaultAuctionInfo: AuctionInfo {
                 return convertedString
             }
         }
-        
+
         return nil
     }
 }
@@ -52,7 +52,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
     var status: String
     var ext: [String: Any]?
     var extrasJsonString: String?
-    
+
     init(_ bid: any AuctionDemandReport) {
         self.demandId = bid.demandId
         self.label = bid.adUnit?.label
@@ -65,7 +65,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.ext = bid.adUnit?.extrasDictionary
         self.extrasJsonString = bid.adUnit?.extrasDictionary?.jsonString
     }
-    
+
     init(_ bid: AdUnitModel) {
         self.demandId = bid.demandId
         self.label = bid.label
@@ -74,7 +74,7 @@ final class DefaultAdUnitInfo: AdUnitInfo {
         self.bidType = bid.bidType.rawValue
         self.status = DemandMediationStatus(.noBid(nil)).stringValue
         self.ext = bid.extrasDictionary
-        
+
         if let extrasDictionary = bid.extrasDictionary,
            JSONSerialization.isValidJSONObject(extrasDictionary),
             let extrasData = try? JSONSerialization.data(withJSONObject: extrasDictionary, options: []) {
@@ -88,7 +88,7 @@ private extension NSNumber {
         guard let value = value else { return nil }
         self.init(value: value)
     }
-    
+
     convenience init?(_ value: UInt?) {
         guard let value = value else { return nil }
         self.init(value: value)
@@ -106,7 +106,7 @@ private extension AdUnitInfo {
             "fillStartTs": fillStartTs ?? "null",
             "fillFinishTs": fillFinishTs ?? "null",
             "status": status.description,
-            "ext": ext?.mapToStringedValues() ?? "null",
+            "ext": ext?.mapToStringedValues() ?? "null"
         ]
     }
 }

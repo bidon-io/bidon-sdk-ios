@@ -11,11 +11,11 @@ import SwiftUI
 
 struct PointPickerView: View {
     var size: CGSize
-    
+
     @Binding var point: CGPoint
-    
+
     @State var dragOffset: CGSize = .zero
-    
+
     var body: some View {
         ZStack {
             Color(.systemGray5)
@@ -53,7 +53,7 @@ struct PointPickerView: View {
 struct PointPickerView_Previews: PreviewProvider {
     struct StatefullPointPickerView: View {
         @State var point: CGPoint = .zero
-        
+
         var body: some View {
             VStack {
                 Text(String(describing: point))
@@ -64,7 +64,7 @@ struct PointPickerView_Previews: PreviewProvider {
             }
         }
     }
-    
+
     static var previews: some View {
         StatefullPointPickerView()
     }

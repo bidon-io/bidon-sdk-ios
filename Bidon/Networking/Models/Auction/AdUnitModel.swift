@@ -37,10 +37,10 @@ extension AdUnitModel: Decodable {
         case extras = "ext"
         case timeout
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         uid = try container.decode(String.self, forKey: .uid)
         demandId = try container.decode(String.self, forKey: .demandId)
         bidType = try container.decode(BidType.self, forKey: .bidType)
@@ -50,11 +50,11 @@ extension AdUnitModel: Decodable {
         extrasDictionary = try? container.decode([String: BidonDecodable].self, forKey: .extras)
         timeout = try container.decode(TimeInterval.self, forKey: .timeout)
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
     }
-    
+
     static func == (lhs: AdUnitModel, rhs: AdUnitModel) -> Bool {
         return lhs.uid == rhs.uid
     }

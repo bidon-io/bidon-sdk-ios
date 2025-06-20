@@ -14,7 +14,7 @@ struct ImpressionRequest: Request {
     var headers: [HTTPTask.HTTPHeader: String] = .default()
     var timeout: TimeInterval = 10
     var body: RequestBody?
-    
+
     struct RequestBody: Encodable, Tokenized {
         let device: DeviceModel
         let session: SessionModel
@@ -27,7 +27,7 @@ struct ImpressionRequest: Request {
         var token: String?
         let bid: ImpressionModel
     }
-    
+
     struct ResponseBody: Decodable, Tokenized {
         var token: String?
         let success: Bool
@@ -39,9 +39,9 @@ extension ImpressionRequest {
     init<T: ImpressionRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
-        
+
         self.route = builder.route
-        
+
         self.body = RequestBody(
             device: builder.device,
             session: builder.session,

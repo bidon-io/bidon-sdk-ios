@@ -15,9 +15,9 @@ struct RewardedAdTypeContext: AdTypeContext {
     typealias StatisticRequestBuilderType = RewardedStatisticRequestBuilder
     typealias ImpressionRequestBuilderType = RewardedImpressionRequestBuilder
     typealias NotificationRequestBuilderType = RewardedNotificationRequestBuilder
-    
+
     var adType: AdType { .rewarded }
-    
+
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -31,7 +31,7 @@ struct RewardedAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
         return ImpressionRequest { (builder: ImpressionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -45,15 +45,15 @@ struct RewardedAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func adapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
         return RewardedAdaptersFetcher().adapters()
     }
-    
+
     func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         return RewardedAdaptersFetcher().adapters()
     }
-    
+
     func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         fatalError("Rewarded Ad Type context does not has banner adapters")
     }

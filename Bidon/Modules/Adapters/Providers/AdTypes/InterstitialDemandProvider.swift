@@ -21,13 +21,13 @@ internal extension InterstitialDemandProvider {
             delegate?.provider(self, didFailToDisplayAd: ad, error: error)
             return
         }
-        
+
         guard let ad = ad as? DemandAdType else {
             let error = SdkError.internalInconsistency
             delegate?.provider(self, didFailToDisplayAd: ad, error: error)
             return
         }
-        
+
         show(ad: ad, from: viewController)
     }
 }

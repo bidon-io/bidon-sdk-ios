@@ -17,9 +17,9 @@ struct BannerAdTypeContext: AdTypeContext {
     typealias NotificationRequestBuilderType = AdViewNotificationRequestBuilder
 
     var adType: AdType { .banner }
-    
+
     var format: BannerFormat
-    
+
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -33,7 +33,7 @@ struct BannerAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
         return ImpressionRequest { (builder: ImpressionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -47,11 +47,11 @@ struct BannerAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         fatalError("Banner Ad Type context does not has fullscreen adapters")
     }
-    
+
     func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         let fetcher = AdViewAdaptersFetcher()
         fetcher.withViewContext(viewContext)

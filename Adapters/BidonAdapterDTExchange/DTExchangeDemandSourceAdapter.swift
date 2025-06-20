@@ -17,25 +17,25 @@ DirectAdViewDemandSourceAdapter
 
 @objc public final class DTExchangeDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "dtexchange"
-    
+
     @Injected(\.context)
     var context: Bidon.SdkContext
-    
+
     public let demandId: String = DTExchangeDemandSourceAdapter.identifier
     public let name: String = "DT Exchange"
     public let adapterVersion: String = "0"
     public let sdkVersion: String = IASDKCore.sharedInstance().version()
-    
+
     private lazy var impressionObserver = DTExchangeDefaultImpressionObserver()
-    
+
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
-    
+
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
         return DTExchangeInterstitialDemandProvider(observer: impressionObserver)
     }
-    
+
     public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
         return DTExchangeBannerDemandProvider(observer: impressionObserver)
     }
@@ -46,7 +46,7 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
     public var isInitialized: Bool {
         return IASDKCore.sharedInstance().isInitialised
     }
-    
+
     public func initialize(
         parameters: DTExchangeParameters,
         completion: @escaping (SdkError?) -> Void
@@ -59,7 +59,7 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in
                 defer { IASDKCore.sharedInstance().globalAdDelegate = self?.impressionObserver }
-                
+
                 if isSuccess {
                     completion(nil)
                 } else if let error = error {

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct SelectMediationView: View {
     @Binding var mediation: Mediation
-    
+
     var body: some View {
         ForEach(Mediation.allCases, id: \.rawValue) { mediation in
             Button(action: {
@@ -24,9 +24,9 @@ struct SelectMediationView: View {
                         Text(mediation.rawValue.capitalized)
                             .foregroundColor(.primary)
                     }
-                    
+
                     Spacer()
-                    
+
                     if self.mediation == mediation {
                         Image(systemName: "checkmark")
                             .foregroundColor(.accentColor)

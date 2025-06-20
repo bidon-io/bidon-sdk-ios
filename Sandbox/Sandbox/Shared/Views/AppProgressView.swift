@@ -12,7 +12,7 @@ import SwiftUI
 struct AppProgressView: View {
     @State private var percent: CGFloat = 0
     @State private var offset: CGFloat = 0
-    
+
     var body: some View {
         ZStack {
             Wave(
@@ -21,7 +21,7 @@ struct AppProgressView: View {
             )
             .fill(Color.accentColor.opacity(0.8))
             .frame(width: 44, height: 64)
-            
+
             Wave(
                 offset: .degrees(offset),
                 percent: percent

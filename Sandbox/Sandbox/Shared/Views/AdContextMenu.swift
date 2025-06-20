@@ -14,12 +14,12 @@ struct AdContextMenuModifier: ViewModifier {
     var ad: Bidon.Ad?
     var onWin: (Bidon.Ad) -> ()
     var onLoss: (Bidon.Ad) -> ()
-    
+
     func body(content: Content) -> some View {
         guard let ad = ad else {
             return AnyView(content)
         }
-        
+
         if #available(iOS 16, *) {
             return AnyView(
                 content.contextMenu(
@@ -40,14 +40,14 @@ struct AdContextMenuModifier: ViewModifier {
             )
         }
     }
-    
+
     @ViewBuilder
     var menuItems: some View {
-        Button(action: { ad.map { onWin($0) }}) {
+        Button(action: { ad.map { onWin($0) } }) {
             Label("Notify Win", systemImage: "paperplane.fill")
         }
-        
-        Button(action: { ad.map { onLoss($0) }}) {
+
+        Button(action: { ad.map { onLoss($0) } }) {
             Label("Notify Loss", systemImage: "paperplane")
         }
     }

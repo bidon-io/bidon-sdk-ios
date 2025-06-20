@@ -19,11 +19,11 @@ extension FBRewardedVideoAd: DemandAd {
 
 final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetworkBiddingBaseDemandProvider<FBRewardedVideoAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var rewardedAd: FBRewardedVideoAd!
-    
+
     private var response: DemandProviderResponse?
-    
+
     override func load(
         payload: MetaAudienceNetworkBiddingPayload,
         adUnitExtras: MetaAudienceNetworkAdUnitExtras,
@@ -31,10 +31,10 @@ final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetwor
     ) {
         let rewarded = FBRewardedVideoAd(placementID: adUnitExtras.placementId)
         rewarded.delegate = self
-        
+
         self.rewardedAd = rewarded
         self.response = response
-        
+
         rewarded.load(withBidPayload: payload.payload)
     }
 }
@@ -63,25 +63,25 @@ extension MetaAudienceNetworkBiddingRewardedDemandProvider: FBRewardedVideoAdDel
         response?(.success(rewardedVideoAd))
         response = nil
     }
-    
+
     func rewardedVideoAd(_ rewardedVideoAd: FBRewardedVideoAd, didFailWithError error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func rewardedVideoAdWillLogImpression(_ rewardedVideoAd: FBRewardedVideoAd) {
         revenueDelegate?.provider(self, didLogImpression: rewardedVideoAd)
         delegate?.providerWillPresent(self)
     }
-    
+
     func rewardedVideoAdDidClick(_ rewardedVideoAd: FBRewardedVideoAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func rewardedVideoAdDidClose(_ rewardedVideoAd: FBRewardedVideoAd) {
         delegate?.providerDidHide(self)
     }
-    
+
     func rewardedVideoAdVideoComplete(_ rewardedVideoAd: FBRewardedVideoAd) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }

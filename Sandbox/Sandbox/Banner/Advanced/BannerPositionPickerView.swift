@@ -12,7 +12,7 @@ import Bidon
 
 struct BannerPositionPickerView: View {
     @ObservedObject var bannerProviderReference = BannerProviderReference.shared
-    
+
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack {
@@ -22,7 +22,7 @@ struct BannerPositionPickerView: View {
                 }
                 .padding(.horizontal)
                 .pickerStyle(.segmented)
-                
+
                 switch bannerProviderReference.positioningStyle {
                 case .fixed:
                     List {
@@ -49,7 +49,7 @@ struct BannerPositionPickerView: View {
                             HStack {
                                 Text("Position is \(bannerProviderReference.customPosition.map { String(describing: $0) } ?? "-")")
                                 Spacer()
-                                
+
                                 Button(action: {
                                     withAnimation {
                                         bannerProviderReference.customPosition = nil
@@ -59,7 +59,7 @@ struct BannerPositionPickerView: View {
                                         .foregroundColor(.red)
                                 }
                             }
-                            
+
                             PointPickerView(
                                 size: DeviceFrame(scale: 0.3).size,
                                 point: Binding(
@@ -79,12 +79,12 @@ struct BannerPositionPickerView: View {
                             )
                             .frame(maxWidth: .infinity)
                         }
-                        
+
                         Section(header: Text("Anchor Point")) {
                             HStack {
                                 Text("Anchor point is " + String(describing: bannerProviderReference.customAnchorPoint))
                                 Spacer()
-                                
+
                                 Button(action: {
                                     withAnimation {
                                         bannerProviderReference.customAnchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -94,7 +94,7 @@ struct BannerPositionPickerView: View {
                                         .foregroundColor(.red)
                                 }
                             }
-                            
+
                             PointPickerView(
                                 size: CGSize(width: 150, height: 150),
                                 point: Binding(
@@ -114,7 +114,7 @@ struct BannerPositionPickerView: View {
                             )
                             .frame(maxWidth: .infinity)
                         }
-                        
+
                         Section(header: Text("Rotation Angle")) {
                             Slider(
                                 value: Binding(
@@ -140,7 +140,7 @@ extension BannerPosition: CaseIterable {
         .verticalLeft,
         .verticalRight
     ]
-    
+
     var title: String {
         switch self {
         case .horizontalTop: return "Horizontal Top"

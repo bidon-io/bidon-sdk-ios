@@ -15,7 +15,7 @@ final class UserManager: User, Environment {
     var idfa: String {
         ASIdentifierManager.shared().advertisingIdentifier.uuidString
     }
-    
+
     var trackingAuthorizationStatus: TrackingAuthorizationStatus {
         if #available(iOS 14, *) {
             return TrackingAuthorizationStatus(ATTrackingManager.trackingAuthorizationStatus)
@@ -23,10 +23,10 @@ final class UserManager: User, Environment {
             return TrackingAuthorizationStatus(ASIdentifierManager.shared().isAdvertisingTrackingEnabled)
         }
     }
-    
+
     @MainThreadComputable(UIDevice.current.identifierForVendor?.uuidString ?? Constants.zeroUUID)
     var idfv: String
-    
+
     var idg: String {
         if let idg = UserDefaults.standard.string(forKey: Constants.UserDefaultsKey.idg) {
             return idg
@@ -51,7 +51,7 @@ private extension TrackingAuthorizationStatus {
         @unknown default: self = .notDetermined
         }
     }
-    
+
     init(_ isAdvertisingTrackingEnabled: Bool) {
         self = isAdvertisingTrackingEnabled ? .authorized : .denied
     }

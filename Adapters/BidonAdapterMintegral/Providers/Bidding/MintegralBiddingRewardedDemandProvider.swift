@@ -14,7 +14,7 @@ import MTGSDKReward
 final class MintegralRewardedDemandAd: DemandAd {
     let id: String
     let placement: String?
-    
+
     init(
         id: String,
         placement: String?
@@ -27,7 +27,7 @@ final class MintegralRewardedDemandAd: DemandAd {
 
 final class MintegralBiddingRewardedDemandProvider: MintegralBiddingBaseDemandProvider<MintegralRewardedDemandAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var response: Bidon.DemandProviderResponse?
 
     override func load(
@@ -67,16 +67,16 @@ extension MintegralBiddingRewardedDemandProvider: MTGRewardAdLoadDelegate {
             response = nil
             return
         }
-        
+
         let ad = MintegralRewardedDemandAd(
             id: unitId,
             placement: placementId
         )
-        
+
         response?(.success(ad))
         response = nil
     }
-    
+
     func onVideoAdLoadFailed(_ placementId: String?, unitId: String?, error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
@@ -88,22 +88,22 @@ extension MintegralBiddingRewardedDemandProvider: MTGRewardAdShowDelegate {
     func onVideoAdShowSuccess(_ placementId: String?, unitId: String?) {
         delegate?.providerWillPresent(self)
     }
-    
+
     func onVideoAdShowFailed(_ placementId: String?, unitId: String?, withError error: Error) {
         guard let unitId = unitId else { return }
-        
+
         let ad = MintegralRewardedDemandAd(
             id: unitId,
             placement: placementId
         )
-        
+
         delegate?.provider(self, didFailToDisplayAd: ad, error: .generic(error: error))
     }
-    
+
     func onVideoAdClicked(_ placementId: String?, unitId: String?) {
         delegate?.providerDidClick(self)
     }
-    
+
     func onVideoAdDismissed(
         _ placementId: String?,
         unitId: String?,
@@ -113,7 +113,7 @@ extension MintegralBiddingRewardedDemandProvider: MTGRewardAdShowDelegate {
         if let rewardInfo = rewardInfo {
             rewardDelegate?.provider(self, didReceiveReward: rewardInfo)
         }
-        
+
         delegate?.providerDidHide(self)
     }
 }

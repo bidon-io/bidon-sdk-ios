@@ -13,10 +13,10 @@ final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<Interst
         let adapters: [Adapter] =
         adaptersRepository.all(of: DirectInterstitialDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingInterstitialDemandSourceAdapter.self)
-        
+
         return AdaptersInfo(adapters: adapters)
     }
-    
+
     override var adObject: AuctionRequestAdObject {
         return AuctionRequestAdObject(
             auctionId: auctionId,

@@ -17,7 +17,7 @@ protocol AuctionEvent: CustomStringConvertible {}
 // MARK: Auction
 struct StartAuctionEvent: AuctionEvent {
     let startTimestamp: TimeInterval
-    
+
     var description: String {
         return "did start auction"
     }
@@ -26,7 +26,7 @@ struct StartAuctionEvent: AuctionEvent {
 
 struct FinishAuctionEvent: AuctionEvent {
     var winner: AnyBid?
-    
+
     var description: String {
         return "did finish auction " + (winner.map { "with winner: \($0) " } ?? "without winner")
     }
@@ -41,7 +41,7 @@ struct CancelAuctionEvent: AuctionEvent {
 
 struct AuctionTimeoutEvent: AuctionEvent {
     var adUnit: any AdUnit
-    
+
     var description: String {
         return "auction timeout fired"
     }
@@ -52,11 +52,11 @@ struct AuctionTimeoutEvent: AuctionEvent {
 struct DirectDemandErrorAuctionEvent: AuctionEvent {
     var adapter: Adapter
     var error: MediationError
-    
+
     var description: String {
         return "direct demand \(adapter) error \(error)'"
     }
-    
+
     init(
         demandId: String,
         error: MediationError
@@ -69,7 +69,7 @@ struct DirectDemandErrorAuctionEvent: AuctionEvent {
 
 struct DirectDemandWillLoadAuctionEvent: AuctionEvent {
     var adUnit: any AdUnit
-    
+
     var description: String {
         return "direct demand \(adUnit) will load"
     }
@@ -78,7 +78,7 @@ struct DirectDemandWillLoadAuctionEvent: AuctionEvent {
 
 struct DirectDemandDidLoadAuctionEvent: AuctionEvent {
     var bid: AnyBid
-    
+
     var description: String {
         return "direct demand did load \(bid)"
     }
@@ -88,7 +88,7 @@ struct DirectDemandDidLoadAuctionEvent: AuctionEvent {
 struct DirectDemandLoadingErrorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
     var error: MediationError
-    
+
     var description: String {
         return "direct demand did fail to load \(adUnit) with error \(error)"
     }
@@ -97,7 +97,7 @@ struct DirectDemandLoadingErrorAucitonEvent: AuctionEvent {
 // MARK: Bidding Demand
 struct BiddingDemandWillCollectTokenAuctionEvent: AuctionEvent {
     var adapter: Adapter
-    
+
     var description: String {
         return "bidding demand will collect token \(adapter)"
     }
@@ -107,7 +107,7 @@ struct BiddingDemandWillCollectTokenAuctionEvent: AuctionEvent {
 struct BiddingDemandTokenErrorAuctionEvent: AuctionEvent {
     var adapter: Adapter
     var error: MediationError
-    
+
     var description: String {
         return "bidding demand collect token \(adapter) error \(error)"
     }
@@ -116,7 +116,7 @@ struct BiddingDemandTokenErrorAuctionEvent: AuctionEvent {
 
 struct BiddingDemandDidCollectTokenAuctionEvent: AuctionEvent {
     var token: BiddingDemandToken
-    
+
     var description: String {
         return "bidding demand did collect token \(token)"
     }
@@ -125,7 +125,7 @@ struct BiddingDemandDidCollectTokenAuctionEvent: AuctionEvent {
 
 struct BiddingDemandBidRequestAuctionEvent: AuctionEvent {
     var adapters: [Adapter]
-    
+
     var description: String {
         return "bidding demand will request bid for \(adapters)"
     }
@@ -135,11 +135,11 @@ struct BiddingDemandBidRequestAuctionEvent: AuctionEvent {
 struct BiddingDemandErrorAuctionEvent: AuctionEvent {
     var adapter: Adapter
     var error: MediationError
-    
+
     var description: String {
         return "bidding demand \(adapter) did fail with error \(error)"
     }
-    
+
     init(
         demandId: String,
         error: MediationError
@@ -152,7 +152,7 @@ struct BiddingDemandErrorAuctionEvent: AuctionEvent {
 
 struct BiddingDemandBidResponseAuctionEvent: AuctionEvent {
     var bids: [AnyServerBid]
-    
+
     var description: String {
         return "bidding demand did receive \(bids)"
     }
@@ -161,7 +161,7 @@ struct BiddingDemandBidResponseAuctionEvent: AuctionEvent {
 
 struct BiddingDemandWillLoadAuctionEvent: AuctionEvent {
     var adUnit: any AdUnit
-    
+
     var description: String {
         return "bidding demand \(adUnit) will load"
     }
@@ -171,7 +171,7 @@ struct BiddingDemandWillLoadAuctionEvent: AuctionEvent {
 struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
     var error: MediationError
-    
+
     var description: String {
         return "bidding demand did fail to load \(adUnit) with error \(error)"
     }
@@ -180,7 +180,7 @@ struct BiddingDemandLoadingErrorAucitonEvent: AuctionEvent {
 
 struct BiddingDemandDidLoadAuctionEvent: AuctionEvent {
     var bid: AnyBid
-    
+
     var description: String {
         return "direct demand did load \(bid)"
     }
@@ -188,7 +188,7 @@ struct BiddingDemandDidLoadAuctionEvent: AuctionEvent {
 
 struct BiddingDemandBelowPricefloorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
-    
+
     var description: String {
         return "bidding demand \(adUnit) will not be loaded because its pricefloor (\(adUnit.pricefloor)) is lower that the filled one"
     }
@@ -198,7 +198,7 @@ struct BiddingDemandBelowPricefloorAucitonEvent: AuctionEvent {
 struct DirectDemandBelowPricefloorAucitonEvent: AuctionEvent {
     var adUnit: AnyAdUnit
     var error: MediationError
-    
+
     var description: String {
         return "bidding demand \(adUnit) will not be loaded because its pricefloor (\(adUnit.pricefloor)) is lower that the filled one"
     }
