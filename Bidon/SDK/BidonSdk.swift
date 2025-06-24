@@ -11,7 +11,7 @@ import UIKit
 @objc(BDNSdk)
 public final class BidonSdk: NSObject {
     enum InitializationState: String {
-        case idle, initializing, initialized
+        case idle, initializing, initialized, failed
     }
     
     lazy var adaptersRepository = AdaptersRepository()
@@ -138,7 +138,7 @@ public final class BidonSdk: NSObject {
         completion: @escaping () -> () = {}
     ) {
         switch shared.initializationState {
-        case .idle:
+        case .idle, .failed:
             shared.pendingCompletions.append(completion)
             shared.initializationState = .initializing
             shared.initialize(appKey: appKey)
@@ -186,7 +186,7 @@ public final class BidonSdk: NSObject {
                 case .failure(let error):
                     Logger.error("Network error while initializing Bidon SDK: \(error)")
                     DispatchQueue.main.async {
-                        self.initializationState = .idle
+                        self.initializationState = .failed
                         self.flushPendingCompletions()
                     }
                 }
