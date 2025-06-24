@@ -11,7 +11,7 @@ import Foundation
 @propertyWrapper
 public struct MainThreadComputable<T> {
     private let block: () -> T
-    
+
     public var wrappedValue: T {
         get {
             guard !Thread.isMainThread else { return block() }
@@ -25,7 +25,7 @@ public struct MainThreadComputable<T> {
             return result
         }
     }
-    
+
     public init(_ block: @escaping @autoclosure () -> T) {
         self.block = block
     }

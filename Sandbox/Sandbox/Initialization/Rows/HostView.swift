@@ -12,16 +12,16 @@ import SwiftUI
 struct HostView: View {
     struct Model: Identifiable, Codable, Equatable {
         var id: String { name }
-        
+
         var name: String
         var baseURL: String
         var user: String?
         var password: String?
     }
-    
+
     @Binding var hosts: [Model]
     @Binding var selected: Model
-    
+
     var body: some View {
         NavigationLink(
             destination: {
@@ -43,9 +43,9 @@ struct HostView: View {
 struct SelectHostView: View {
     @Binding var hosts: [HostView.Model]
     @Binding var selected: HostView.Model
-    
+
     @State var isScannerPresented: Bool = false
-    
+
     var body: some View {
         List {
             ForEach(hosts) { host in
@@ -61,13 +61,13 @@ struct SelectHostView: View {
                             Text(host.baseURL)
                                 .foregroundColor(.secondary)
                         }
-                        
+
                         Spacer()
-                        
+
                         if selected == host {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
-                            
+
                         }
                     }
                 }
@@ -102,23 +102,23 @@ struct CreateHostView: View {
     @Binding var isPresented: Bool
     @Binding var hosts: [HostView.Model]
     @Binding var selected: HostView.Model
-    
+
     @State private var text: String = ""
-    
+
     private var model: HostView.Model {
         HostView.Model(
             name: URL(string: text).flatMap { $0.host }.map { $0.prefix(5) + "..." } ?? "Custom",
             baseURL: text
         )
     }
-    
+
     var body: some View {
         ZStack {
             QRCodeScannerView(
                 codeTypes: [.qr],
                 completion: handleScannerResult
             )
-            
+
 #if !targetEnvironment(simulator)
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.accentColor, lineWidth: 1.5)
@@ -127,21 +127,21 @@ struct CreateHostView: View {
 #endif
             VStack {
                 Spacer()
-                
+
                 VStack {
                     Text("Scan ") +
                     Text("QR Code").bold() +
                     Text(" with server URL or enter it ") +
                     Text("manually.").bold()
-                    
+
                     TextField(model.name, text: $text)
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.URL)
                         .autocorrectionDisabled(true)
                         .autocapitalization(.none)
                         .padding()
-                    
-                    
+
+
                     Button(action: {
                         withAnimation {
                             hosts.append(model)
@@ -167,7 +167,7 @@ struct CreateHostView: View {
             }
         }
     }
-    
+
     private func handleScannerResult(_ result: Result<String, QRCodeScannerView.ScanError>) {
         switch result {
         case .success(let url):

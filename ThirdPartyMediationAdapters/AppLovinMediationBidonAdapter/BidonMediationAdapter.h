@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *rewardedAdUnitId;
 
 - (void)updateBidonPrivacySettings:(id<MAAdapterParameters>)parameters;
+- (NSDictionary<NSString *, id> *)extrasDictForEcpm:(double)ecpm ad:(id<BDNAd>)ad;
 
 @end
 

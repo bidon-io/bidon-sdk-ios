@@ -12,7 +12,7 @@ import Bidon
 
 struct AdaptersView: View {
     @Binding var adapters: [Bidon.Adapter]
-    
+
     var body: some View {
         ForEach($adapters, id: \.demandId) { $adapter in
             Button(action: {
@@ -29,9 +29,9 @@ struct AdaptersView: View {
                             .foregroundColor(.secondary)
                             .lineLimit(1)
                     }
-                    
+
                     Spacer()
-                    
+
                     if adapter.isEnabled {
                         Image(systemName: "checkmark")
                             .foregroundColor(.accentColor)
@@ -44,7 +44,7 @@ struct AdaptersView: View {
 }
 
 
-extension Bidon.Adapter {    
+extension Bidon.Adapter {
     var isEnabled: Bool {
         get { BidonSdk.registeredAdapters().contains { $0.demandId == self.demandId } }
         set {

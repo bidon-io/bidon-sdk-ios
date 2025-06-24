@@ -11,15 +11,15 @@ import SwiftUI
 
 struct DynamicDictionaryView: View {
     @Binding var dictionary: [String: AnyHashable]
-    
+
     @State var isAddingEntry: Bool = false
-    
+
     private var data: [(key: String, value: String)] {
         dictionary
             .compactMapValues { String(describing: $0) }
             .sorted(by: >)
     }
-    
+
     var body: some View {
         VStack {
             List {
@@ -37,7 +37,7 @@ struct DynamicDictionaryView: View {
                 }
             }
             .toolbar { EditButton() }
-            
+
             Button(action: {
                 isAddingEntry.toggle()
             }) {
@@ -63,42 +63,42 @@ struct DynamicDictionaryView: View {
             )
         }
     }
-    
+
     private struct AddEntryView: View {
         enum ValueType: String {
             case string
             case bool
             case int
         }
-    
+
         @Binding var isPresented: Bool
         @Binding var dictionary: [String: AnyHashable]
-        
+
         @State var key: String = ""
         @State var rawValue: String = ""
         @State var valueType: ValueType = .string {
             didSet { rawValue = "" }
         }
-        
+
         var body: some View {
             VStack {
                 VStack(alignment: .leading) {
                     Text("Key".uppercased())
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    
+
                     TextField("Key", text: $key)
                         .keyboardType(.asciiCapable)
                 }
                 .padding(.top, 32)
-                
+
                 Divider()
-                
+
                 VStack(alignment: .leading) {
                     Text("Value type".uppercased())
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    
+
                     Picker("Value type", selection: $valueType.animation()) {
                         Text("String").tag(ValueType.string)
                         Text("Integer").tag(ValueType.int)
@@ -106,9 +106,9 @@ struct DynamicDictionaryView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                
+
                 Divider()
-                
+
                 VStack(alignment: .leading) {
                     Text("Value".uppercased())
                         .font(.caption)
@@ -131,7 +131,7 @@ struct DynamicDictionaryView: View {
                     }
                 }
                 .transition(.slide)
-                
+
                 Spacer()
                 Button(action: addEntry) {
                     ZStack {
@@ -158,10 +158,10 @@ struct DynamicDictionaryView: View {
                     .edgesIgnoringSafeArea(.all)
             )
         }
-        
+
         func addEntry() {
             let value: AnyHashable
-            
+
             switch valueType {
             case .string:
                 value = rawValue
@@ -170,7 +170,7 @@ struct DynamicDictionaryView: View {
             case .bool:
                 value = rawValue == "1"
             }
-            
+
             dictionary[key] = value
             isPresented = false
         }

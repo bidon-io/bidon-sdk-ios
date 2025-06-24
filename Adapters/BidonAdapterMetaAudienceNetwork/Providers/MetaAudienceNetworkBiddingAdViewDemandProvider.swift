@@ -19,20 +19,20 @@ extension FBAdView: DemandAd {
 
 final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkBiddingBaseDemandProvider<FBAdView> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    
+
     private let format: BannerFormat
     private weak var rootViewController: UIViewController?
-    
+
     private var response: DemandProviderResponse?
-    
+
     private var banner: FBAdView?
-    
+
     init(context: AdViewContext) {
         self.format = context.format
         self.rootViewController = context.rootViewController
         super.init()
     }
-    
+
     override func load(
         payload: MetaAudienceNetworkBiddingPayload,
         adUnitExtras: MetaAudienceNetworkAdUnitExtras,
@@ -44,10 +44,10 @@ final class MetaAudienceNetworkBiddingAdViewDemandProvider: MetaAudienceNetworkB
             rootViewController: rootViewController
         )
         banner.delegate = self
-            
+
         self.banner = banner
         self.response = response
-        
+
         banner.loadAd(withBidPayload: payload.payload)
     }
 }
@@ -57,7 +57,7 @@ extension MetaAudienceNetworkBiddingAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: FBAdView) -> AdViewContainer? {
         return ad.isAdValid ? ad : nil
     }
-    
+
     func didTrackImpression(for ad: FBAdView) {}
 }
 
@@ -67,17 +67,17 @@ extension MetaAudienceNetworkBiddingAdViewDemandProvider: FBAdViewDelegate {
         response?(.success(adView))
         response = nil
     }
-    
+
     func adView(_ adView: FBAdView, didFailWithError error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func adViewWillLogImpression(_ adView: FBAdView) {
         revenueDelegate?.provider(self, didLogImpression: adView)
         delegate?.providerWillPresent(self)
     }
-    
+
     func adViewDidClick(_ adView: FBAdView) {
         delegate?.providerDidClick(self)
     }

@@ -17,17 +17,17 @@ extension DTBAdDispatcher: DemandAd {
 
 class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, BiddingDemandProvider {
     typealias DemandAdType = Dispatcher
-   
+
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     func collectBiddingToken(
         biddingTokenExtras: AmazonBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
         fatalError("AmazonBiddingDemandProvider does not implement collectBiddingToken")
     }
-    
+
     func load(
         payload: AmazonBiddingPayload,
         adUnitExtras: AmazonAdUnitExtras,
@@ -35,13 +35,13 @@ class AmazonBiddingDemandProvider<Dispatcher: DTBAdDispatcher>: NSObject, Biddin
     ) {
         fatalError("AmazonBiddingDemandProvider does not implement method load")
     }
-    
+
     final func notify(ad: Dispatcher, event: DemandProviderEvent) {}
-    
+
     open func adSize(_ extras: AmazonAdUnitExtras) -> DTBAdSize? {
         return extras.adSize()
     }
-    
+
     open func fill(
         _ data: DTBAdResponse,
         response: @escaping DemandProviderResponse

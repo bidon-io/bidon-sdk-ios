@@ -22,7 +22,7 @@ protocol AdWrapper {
 
 protocol FullscreenAdWrapper: AdWrapper {
     var isReady: Bool { get }
-    
+
     func show() async throws
     func load(pricefloor: Double, auctionKey: String?) async throws
     func notify(win ad: Ad)
@@ -45,7 +45,7 @@ extension AdWrapper {
             bage: bage,
             color: color
         )
-        
+
         adEventSubject.send(adEvent)
     }
 }

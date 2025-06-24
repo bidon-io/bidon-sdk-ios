@@ -12,13 +12,13 @@ public enum SdkError: Error, CustomStringConvertible {
     case generic(error: Error)
     case message(String)
     case unknown
-    
+
     case noFill
     case cancelled
     case internalInconsistency
     case invalidPresentationState
     case unableToFindRootViewController
-    
+
     public var description: String {
         switch self {
         case .noFill:
@@ -39,11 +39,11 @@ public enum SdkError: Error, CustomStringConvertible {
             return message
         }
     }
-    
+
     public init(_ message: String) {
         self = .message(message)
     }
-    
+
     public init(_ error: Error?) {
         if let error = error as? SdkError {
             self = error

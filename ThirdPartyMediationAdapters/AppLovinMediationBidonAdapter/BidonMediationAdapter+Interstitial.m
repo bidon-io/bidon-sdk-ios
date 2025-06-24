@@ -19,7 +19,7 @@
     self.interstitialPlacementId = parameters.thirdPartyAdPlacementIdentifier;
     NSDictionary<NSString *, id> *customParams = parameters.customParameters;
 
-    BOOL unicorn = [customParams[@"unicorn"] boolValue];
+    BOOL shouldLoad = [customParams[@"should_load"] ?: customParams[@"unicorn"] boolValue];
 
     id ecpmValue = customParams[@"ecpm"];
     double ecpm = [ecpmValue isKindOfClass:[NSNumber class]] ? [ecpmValue doubleValue] : 0.0;
@@ -28,7 +28,7 @@
 
     [[AdKeeperFactory interstitial:self.interstitialAdUnitId] registerEcpm:ecpm];
 
-    if (unicorn) {
+    if (shouldLoad) {
         NSLog(@"[BidonAdapter] [%@] Placement ID: %@, Unicorn Detected, ECPM: %f", self.interstitialAdUnitId, self.interstitialPlacementId, ecpm);
 
         NSString *auctionKey = customParams[@"auction_key"];
@@ -57,7 +57,8 @@
 
         self.interstitialAd = (BDNInterstitial *)cachedAd.adInstance;
         self.interstitialAd.delegate = self;
-        [delegate didLoadInterstitialAd];
+        
+        [delegate didLoadInterstitialAdWithExtraInfo:[self extrasDictForEcpm:ecpm ad:cachedAd.ad]];
     }
 }
 
@@ -86,6 +87,7 @@
         NSLog(@"[BidonAdapter] [%@] Interstitial ad loaded, Placement ID: %@ ECPM: %f", self.interstitialAdUnitId, self.interstitialPlacementId, price);
         FullscreenAdInstance *adInstance = [[FullscreenAdInstance alloc] initWithEcpm:price
                                                                              demandId:ad.adUnit.demandId
+                                                                                   ad:ad
                                                                            adInstance:self.interstitialAd];
 
         if ([[AdKeeperFactory interstitial:self.interstitialAdUnitId] keepAd:adInstance]) {
@@ -101,7 +103,7 @@
             NSLog(@"[BidonAdapter] [%@] Interstitial ad loaded from cache, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
             self.interstitialAd = (BDNInterstitial *)cachedAd.adInstance;
             self.interstitialAd.delegate = self;
-            [self.interstitialDelegate didLoadInterstitialAd];
+            [self.interstitialDelegate didLoadInterstitialAdWithExtraInfo:[self extrasDictForEcpm:self.interstitialMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Interstitial ad failed to load from cache: No fill, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
             [self.interstitialDelegate didFailToLoadInterstitialAdWithError:[MAAdapterError errorWithCode:MAAdapterError.errorCodeNoFill]];

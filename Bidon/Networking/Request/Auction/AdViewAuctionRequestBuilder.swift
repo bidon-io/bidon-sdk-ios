@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeContext> {    
+final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeContext> {
     override var adapters: AdaptersInfo {
         let adapters: [Adapter] =
         adaptersRepository.all(of: DirectAdViewDemandSourceAdapter.self) +
@@ -18,7 +18,7 @@ final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeC
         
         return AdaptersInfo(adapters: filteredAdapters)
     }
-        
+
     override var adObject: AuctionRequestAdObject {
         return AuctionRequestAdObject(
             auctionId: auctionId,

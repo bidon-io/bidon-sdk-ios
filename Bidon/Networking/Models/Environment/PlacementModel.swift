@@ -12,12 +12,12 @@ struct PlacementModel: Codable {
         let title: String
         let value: Price
     }
-    
+
     struct Capping: Codable {
         let setting: String
         let value: Price
     }
-    
+
     let id: String
     let reward: Reward
     let capping: Capping

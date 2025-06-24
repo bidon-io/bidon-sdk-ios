@@ -12,7 +12,7 @@ import UIKit
 struct Viewability {
     var view: UIView
     var minVisiblePercentage: CGFloat = 0.8
-    
+
     func isVisible() -> Bool {
         return ![
             !view.isHidden,
@@ -36,7 +36,7 @@ private extension Viewability {
         }
         return false
     }
-    
+
     func parentWindow() -> UIWindow? {
         var targetView = view
         while let superview = targetView.superview {
@@ -47,54 +47,54 @@ private extension Viewability {
         }
         return nil
     }
-    
+
     func isIntersectsParentWindow() -> Bool {
         guard
             let window = parentWindow(),
             let superview = view.superview
         else { return false }
-        
+
         let viewableRect = window.frame.intersection(window.screen.bounds)
         let windowArea = window.frame.width * window.frame.height
         let viewableArea = viewableRect.width * viewableRect.height
         let frameToParentWindow = superview.convert(view.frame, to: window)
-        
+
         let isWindowViewable = viewableArea >= (windowArea * minVisiblePercentage)
         let isIntersectsWindowBounds = frameToParentWindow.intersects(window.bounds)
-        
+
         return isWindowViewable && isIntersectsWindowBounds
     }
-    
+
     func isIntersectsSuperview() -> Bool {
         guard let superview = view.superview else { return false }
-        
+
         let intersection = view.frame.intersection(superview.bounds)
         let intersectionArea = intersection.width * intersection.height
         let viewArea = view.frame.width * view.frame.height
-        
+
         return intersectionArea >= (viewArea * minVisiblePercentage)
     }
-    
+
     func isExistsInTopViewControllerHierarchy() -> Bool {
         guard let controller = UIApplication.shared.bd.topViewcontroller else { return false }
         let isSameWindows = Viewability(view: controller.view).parentWindow() == parentWindow()
         return !isSameWindows || isExistsInHierarchy(of: controller.view)
     }
-    
+
     func isExistsInHierarchy(of view: UIView) -> Bool {
         guard self.view != view else { return true }
         guard !view.subviews.isEmpty else { return false }
-        
+
         return view.subviews.reduce(false) { $0 || isExistsInHierarchy(of: $1) }
     }
-    
+
     func isHiddenByAnotherView() -> Bool {
         guard let window = UIApplication.shared.bd.window else { return true }
-        
+
         let frameToKeyWindow = view.convert(view.frame, to: window)
         let originalArea = frameToKeyWindow.width * frameToKeyWindow.height
         let subviews = allViewsHigherOnScreen(of: view)
-        
+
         return subviews.contains { subview in
             let subviewFrameToKeyWindow = subview.convert(subview.frame, to: window)
             let hiddenRect = frameToKeyWindow.intersection(subviewFrameToKeyWindow)
@@ -103,14 +103,14 @@ private extension Viewability {
             return visiblePercent < minVisiblePercentage
         }
     }
-    
+
     func isHiddenByAnotherWindow() -> Bool {
         guard let window = UIApplication.shared.bd.window else { return true }
-        
+
         let frameToKeyWindow = view.convert(view.frame, to: window)
         let originalArea = frameToKeyWindow.width * frameToKeyWindow.height
         let windows = UIApplication.shared.bd.windows
-        
+
         return windows
             .filter { $0.isOpaque && $0.windowLevel > window.windowLevel }
             .contains { subwindow in
@@ -121,13 +121,13 @@ private extension Viewability {
                 return visiblePercent < minVisiblePercentage
             }
     }
-    
+
     func allViewsHigherOnScreen(of view: UIView) -> [UIView] {
         guard
             let superview = view.superview,
             let currentIndex = superview.subviews.firstIndex(of: view)
         else { return [] }
-        
+
         return superview
             .subviews
             .enumerated()

@@ -16,21 +16,21 @@ import Network
 final class DeviceManager: Device, Environment {
     @MainThreadComputable(DeviceManager.userAgent)
     var userAgent: String
-    
+
     let make: String = "Apple"
-    
+
     @MainThreadComputable(UIDevice.current.model)
     var model: String
-    
+
     @MainThreadComputable(DeviceType.current)
     var type: DeviceType
-    
+
     @MainThreadComputable(UIDevice.current.systemName)
     var os: String
-    
+
     @MainThreadComputable(UIDevice.current.systemVersion)
     var osVersion: String
-    
+
     var hardwareVersion: String {
         var system = utsname()
         uname(&system)
@@ -40,41 +40,41 @@ final class DeviceManager: Device, Environment {
             return id + String(UnicodeScalar(UInt8(value)))
         }
     }
-    
+
     @MainThreadComputable(Int(UIScreen.main.bounds.height * UIScreen.main.scale))
     var pixelHeight: Int
-    
+
     @MainThreadComputable(Int(UIScreen.main.bounds.width * UIScreen.main.scale))
     var pixelWidth: Int
-    
+
     @MainThreadComputable(Int(UIScreen.main.scale * DeviceManager.scaleFactor))
     var ppi: Int
-    
+
     @MainThreadComputable(Float(UIScreen.main.scale))
     var pixelRatio: Float
-    
+
     let javaScript: Int = 1
-    
+
     var language: String {
         Locale.preferredLanguages.first ?? ""
     }
-    
+
     var carrier: String {
         currentCarrier?.carrierName ?? ""
     }
-    
+
     var mccncc: String {
         guard let carrier = currentCarrier else { return "" }
         let codes = [
             carrier.mobileCountryCode,
             carrier.mobileNetworkCode
         ]
-        
+
         return codes
             .compactMap { $0 }
             .joined(separator: "-")
     }
-    
+
     var currentCarrier: CTCarrier? {
         if #available(iOS 12, *) {
             let carriers = CTTelephonyNetworkInfo().serviceSubscriberCellularProviders
@@ -83,7 +83,7 @@ final class DeviceManager: Device, Environment {
             return CTTelephonyNetworkInfo().subscriberCellularProvider
         }
     }
-    
+
     var conectionType: ConnectionType {
         Reachability().connectionType
     }
@@ -94,7 +94,7 @@ private extension DeviceManager {
     static let userAgent: String = {
         return (WKWebView().value(forKey: "userAgent") as? String) ?? ""
     }()
-    
+
     static let scaleFactor: CGFloat = {
         switch UIDevice.current.userInterfaceIdiom {
         case .pad: return 132
@@ -116,35 +116,35 @@ fileprivate extension DeviceType {
 
 struct Reachability {
     var host: String = Constants.API.host
-    
+
     var isReachable: Bool { flags.map { $0.contains(.reachable) } ?? false }
-    
+
     private var flags: SCNetworkReachabilityFlags? {
         guard let reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, Constants.API.host) else { return nil }
-        
+
         var flags = SCNetworkReachabilityFlags()
         SCNetworkReachabilityGetFlags(reachability, &flags)
         return flags
     }
-    
+
     var connectionType: ConnectionType {
         guard
             let flags = flags,
             flags.contains(.reachable)
         else { return .unknown }
-        
+
         guard !flags.contains(.isWWAN) else {
             return .wifi
         }
-        
+
         let technology: String?
-        
+
         if #available(iOS 12, *) {
             technology = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology?.values.first
         } else {
             technology = CTTelephonyNetworkInfo().currentRadioAccessTechnology
         }
-        
+
         if #available(iOS 14.1, *) {
             switch technology {
             case CTRadioAccessTechnologyGPRS, CTRadioAccessTechnologyEdge:

@@ -11,7 +11,7 @@ import UIKit
 
 public extension UIDevice {
     static var bd: DSL = DSL()
-    
+
     struct DSL {
         @MainThreadComputable(UIDevice.current.userInterfaceIdiom == .phone)
         public var isPhone: Bool

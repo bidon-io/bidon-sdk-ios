@@ -16,7 +16,7 @@ enum BidType: String, Codable {
 
 protocol AdUnit: Hashable {
     associatedtype ExtrasType
-                           
+
     var demandId: String { get }
     var pricefloor: Price { get }
     var label: String { get }
@@ -30,11 +30,11 @@ protocol AdUnit: Hashable {
 @objc
 public final class BidonDecodable: NSObject, Codable {
     @objc public let value: Any
-    
+
     @objc public var stringValue: String? {
         return String(describing: value)
     }
-    
+
     required public init(from decoder: Decoder) throws {
         if let container = try? decoder.singleValueContainer(), !container.decodeNil() {
             if let boolValue = try? container.decode(Bool.self) {
@@ -56,10 +56,10 @@ public final class BidonDecodable: NSObject, Codable {
             throw DecodingError.typeMismatch(BidonDecodable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Nil value"))
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
+
         if let boolValue = value as? Bool {
             try container.encode(boolValue)
         } else if let intValue = value as? Int {

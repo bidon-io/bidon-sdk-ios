@@ -12,14 +12,14 @@ import MyTargetSDK
 final class MintegralInterstitialDemandAd: DemandAd {
     var interstitial: MTRGInterstitialAd
     public var id: String { return String(interstitial.hash) }
-    
+
     init(interstitial: MTRGInterstitialAd) {
         self.interstitial = interstitial
     }
 }
 
 final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<MintegralInterstitialDemandAd> {
-    
+
     private var interstitial: MTRGInterstitialAd?
     private var response: DemandProviderResponse?
 
@@ -33,15 +33,15 @@ final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<Minte
             return
         }
         self.response = response
-        
+
         let interstitial = MTRGInterstitialAd(slotId: slotId)
         synchronise(ad: interstitial, adUnitExtras: adUnitExtras)
         interstitial.delegate = self
         interstitial.load(fromBid: payload.bidId)
-        
+
         self.interstitial = interstitial
     }
-    
+
     override func load(
         pricefloor: Price,
         adUnitExtras: MyTargetAdUnitExtras,
@@ -51,14 +51,14 @@ final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<Minte
             response(.failure(.incorrectAdUnitId))
             return
         }
-        
+
         self.response = response
-        
+
         let interstitial = MTRGInterstitialAd(slotId: slotId)
         synchronise(ad: interstitial, adUnitExtras: adUnitExtras)
         interstitial.delegate = self
         interstitial.load()
-        
+
         self.interstitial = interstitial
     }
 }
@@ -78,23 +78,23 @@ extension MyTargetInterstitialDemandProvider: MTRGInterstitialAdDelegate {
         response?(.success(ad))
         response = nil
     }
-    
+
     func onLoadFailed(error: Error, interstitialAd: MTRGInterstitialAd) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func onDisplay(with interstitialAd: MTRGInterstitialAd) {
         delegate?.providerWillPresent(self)
-        
+
         let ad = MintegralInterstitialDemandAd(interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
-    
+
     func onClick(with interstitialAd: MTRGInterstitialAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func onClose(with interstitialAd: MTRGInterstitialAd) {
         delegate?.providerDidHide(self)
     }

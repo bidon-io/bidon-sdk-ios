@@ -18,12 +18,12 @@ extension MTGNewInterstitialAdManager: DemandAd {
 
 final class MintegralDirectInterstitialDemandProvider: MintegralDirectBaseDemandProvider<MTGNewInterstitialAdManager> {
     private var response: Bidon.DemandProviderResponse?
-    
+
     private var interstitial: MTGNewInterstitialAdManager?
-    
+
     override func load(pricefloor: Price, adUnitExtras: MintegralAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
-        
+
         interstitial = MTGNewInterstitialAdManager(
             placementId: adUnitExtras.placementId,
             unitId: adUnitExtras.unitId,
@@ -50,26 +50,26 @@ extension MintegralDirectInterstitialDemandProvider: MTGNewInterstitialAdDelegat
         response?(.success(adManager))
         response = nil
     }
-    
+
     func newInterstitialAdLoadFail(_ error: Error, adManager: MTGNewInterstitialAdManager) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func newInterstitialAdShowSuccess(_ adManager: MTGNewInterstitialAdManager) {
         delegate?.providerWillPresent(self)
-        
+
         revenueDelegate?.provider(self, didLogImpression: adManager)
     }
-    
+
     func newInterstitialAdShowFail(_ error: Error, adManager: MTGNewInterstitialAdManager) {
         delegate?.provider(self, didFailToDisplayAd: adManager, error: .generic(error: error))
     }
-    
+
     func newInterstitialAdClicked(_ adManager: MTGNewInterstitialAdManager) {
         delegate?.providerDidClick(self)
     }
-    
+
     func newInterstitialAdDismissed(withConverted converted: Bool, adManager: MTGNewInterstitialAdManager) {
         delegate?.providerDidHide(self)
     }

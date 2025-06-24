@@ -12,18 +12,18 @@ import Bidon
 
 struct AdvancedBannerSettings: View {
     @ObservedObject var bannerProviderReference = BannerProviderReference.shared
-    
+
     @Binding var format: AdBannerWrapperFormat {
         didSet {
             BannerProviderReference.shared.format = Bidon.BannerFormat(format)
         }
     }
-    
+
     @Binding var isAutorefreshing: Bool
     @Binding var autorefreshInterval: TimeInterval
-    
+
     @State var pricefloor: Price = 0.1
-    
+
     var body: some View {
         VStack {
             List {
@@ -45,7 +45,7 @@ struct AdvancedBannerSettings: View {
                         }
                     }
                 }
-                
+
                 Section(header: Text("Banner Settings")) {
                     Toggle("Autorefreshing", isOn: $isAutorefreshing)
                     HStack {
@@ -71,7 +71,7 @@ struct AdvancedBannerSettings: View {
                     }
                 }
                 .disabled(true)
-                
+
                 Section(header: Text("Banner Provider")) {
                     NavigationLink(
                         destination: {
@@ -86,14 +86,14 @@ struct AdvancedBannerSettings: View {
                             }
                         }
                     )
-                    
+
                     Stepper(
                         "Pricefloor: \(pricefloor.pretty)",
                         value: $pricefloor,
                         in: (0.0...100.0),
                         step: 0.1
                     )
-                    
+
                     Button(action: {
                         bannerProviderReference.provider.loadAd(with: pricefloor)
                     }) {
@@ -106,7 +106,7 @@ struct AdvancedBannerSettings: View {
                             }
                         }
                     }
-                    
+
                     Button(action: bannerProviderReference.provider.show) {
                         HStack {
                             Text("Show")

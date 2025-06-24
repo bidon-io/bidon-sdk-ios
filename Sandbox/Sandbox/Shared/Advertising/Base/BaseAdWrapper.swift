@@ -27,12 +27,12 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
         adSubject.send(ad)
-        
+
         Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
-        
+
         Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
     }
-    
+
     func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
         send(
             event: "Bidon did fail to load ad",
@@ -41,10 +41,10 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .red
         )
         adSubject.send(nil)
-        
+
         Logger.debug("[Public API] [AUCTION] [LOAD] [ERROR]: \(auctionInfo.description ?? ""), error: \(error)")
     }
-    
+
     func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
         send(
             event: "Bidon did fail to present ad",
@@ -53,7 +53,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .red
         )
     }
-    
+
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
         send(
             event: "Bidon expire ad",
@@ -63,7 +63,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         )
         adSubject.send(nil)
     }
-    
+
     func adObject(
         _ adObject: AdObject,
         didRecordImpression ad: Ad
@@ -75,10 +75,10 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
         adSubject.send(nil)
-        
+
         Logger.debug("[Public API] [AD] [SHOW]: \(ad.description() ?? "")")
     }
-    
+
     func adObject(
         _ adObject: AdObject,
         didRecordClick ad: Ad
@@ -90,7 +90,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             color: .accentColor
         )
     }
-    
+
     func adObject(
         _ adObject: AdObject,
         didPay revenue: AdRevenue,
@@ -102,7 +102,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
             bage: "cart.fill",
             color: .primary
         )
-        
+
         Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description(with: revenue) ?? "")")
     }
 }

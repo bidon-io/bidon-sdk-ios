@@ -11,7 +11,7 @@ import Foundation
 protocol Bid: Hashable {
     associatedtype ProviderType
     associatedtype DemandAdType
-    
+
     var id: String { get }
     var impressionId: String { get }
     var adUnit: AnyAdUnit { get }

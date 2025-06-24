@@ -35,14 +35,14 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         case initializing
         case initialized
     }
-    
+
     let permissions: [PermissionView.Model] = [
         AppTrackingTransparencyPermission(),
         LocationPermission()
     ].map { (permission: Permission) -> PermissionView.Model in
         PermissionView.Model(permission: permission)
     }
-    
+
     @Published var hosts: [HostView.Model] = [
         .init(
             name: "Production",
@@ -61,24 +61,24 @@ final class InitializationViewModel: ObservableObject, AdResponder {
             password: Constants.Bidon.stagingPassword
         )
     ]
-    
+
     @Published var initializationState: InitializationState = .idle
-    
+
     @Published var logLevel: LogLevel = .debug {
         didSet { adService.parameters.logLevel = logLevel }
     }
-    
+
     @Published var isTestMode: Bool = false {
         didSet { adService.parameters.isTestMode = isTestMode }
     }
-    
+
     @Published var host = HostView.Model(
         name: "Production",
         baseURL: Constants.Bidon.baseURL
     ) {
         didSet {
             adService.bidonURL = host.baseURL
-            
+
             let credentials = [host.user, host.password].compactMap { $0 }
             guard
                 credentials.count == 2,
@@ -90,11 +90,11 @@ final class InitializationViewModel: ObservableObject, AdResponder {
                 adService.bidonHTTPHeaders = [:]
                 return
             }
-            
+
             adService.bidonHTTPHeaders = ["Authorization": "Basic \(authorization)"]
         }
     }
-    
+
     @Published var mediation: Mediation = .none {
         didSet {
             switch mediation {
@@ -106,23 +106,23 @@ final class InitializationViewModel: ObservableObject, AdResponder {
             }
         }
     }
-    
+
     @Published var adapters: [Bidon.Adapter] = .default()
-    
+
     @MainActor
     func initialize() async {
         update(.initializing)
         await adService.initialize()
         update(.initialized)
     }
-    
+
     func registerDefaultAdapters() {
         BidonSdk.registerDefaultAdapters()
         withAnimation { [unowned self] in
             self.adapters = .default()
         }
     }
-    
+
     private func update(
         _ state: InitializationState,
         animation: Animation = .default

@@ -16,7 +16,7 @@ final class AdContainer: NSObject, Ad {
         let bidType: AdBidType
         let extras: [String: BidonDecodable]
         var extrasJsonString: String?
-        
+
         init(
             uid: String,
             demandId: String,
@@ -34,7 +34,7 @@ final class AdContainer: NSObject, Ad {
             self.extrasJsonString = extras.jsonString
             super.init()
         }
-        
+
         convenience init(_ adUnit: AnyAdUnit) {
             self.init(
                 uid: adUnit.uid,
@@ -46,7 +46,7 @@ final class AdContainer: NSObject, Ad {
             )
         }
     }
-    
+
     let id: String
     let adType: AdType
     let price: Price
@@ -55,7 +55,7 @@ final class AdContainer: NSObject, Ad {
     let dsp: String?
     let auctionId: String
     let adUnit: AdNetworkUnit
-    
+
     init(
         id: String,
         adType: AdType,
@@ -75,7 +75,7 @@ final class AdContainer: NSObject, Ad {
         self.auctionId = auctionId
         self.adUnit = adUnit
     }
-    
+
     convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
         self.init(
             id: bid.ad.id,
@@ -88,7 +88,7 @@ final class AdContainer: NSObject, Ad {
             adUnit: AdNetworkUnitModel(bid.adUnit)
         )
     }
-    
+
     convenience init(impression: Impression) {
         self.init(
             id: impression.ad.id,
@@ -103,7 +103,7 @@ final class AdContainer: NSObject, Ad {
                 demandId: impression.demandId,
                 label: impression.adUnitLabel,
                 pricefloor: impression.adUnitPricefloor,
-                bidType: AdBidType(bidType: impression.bidType), 
+                bidType: AdBidType(bidType: impression.bidType),
                 extras: impression.adUnitExtras ?? [:]
             )
         )
@@ -128,7 +128,7 @@ fileprivate extension AdBidType {
         default: self = .cpm
         }
     }
-    
+
     var stringValue: String {
         switch self {
         case .cpm: return "CPM"
@@ -143,15 +143,15 @@ extension AdContainer {
         let components: [String?] = [
             "\(adType.stringValue) (\(adUnit.bidType.stringValue)) ad #\(adUnit.uid)",
             Formatter.price.string(from: price as NSNumber).map { "price \($0)" },
-            "network '\(networkName)'",
+            "network '\(networkName)'"
         ]
-        
+
         return components
             .compactMap { $0 }
             .joined(separator: ", ")
             .capitalized
     }
-    
+
     override var hash: Int {
         var hasher = Hasher()
         hasher.combine(id)
@@ -159,13 +159,11 @@ extension AdContainer {
         hasher.combine(auctionId)
         return hasher.finalize()
     }
-    
+
     override func isEqual(_ object: Any?) -> Bool {
         guard let object = object as? AdContainer else { return false }
-        return object.id == id && 
+        return object.id == id &&
         object.adUnit.uid == object.adUnit.uid &&
         object.auctionId == auctionId
     }
 }
-
-

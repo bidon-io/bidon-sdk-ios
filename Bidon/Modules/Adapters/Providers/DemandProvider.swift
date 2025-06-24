@@ -32,21 +32,21 @@ public protocol DemandProviderRevenueDelegate: AnyObject {
         didPayRevenue revenue: AdRevenue,
         ad: DemandAd
     )
-    
+
     func provider(
         _ provider: any DemandProvider,
         didLogImpression ad: DemandAd
     )
 }
-    
+
 
 public protocol DemandProvider: AnyObject {
     associatedtype DemandAdType: DemandAd
-    
+
     var delegate: DemandProviderDelegate? { get set }
-    
+
     var revenueDelegate: DemandProviderRevenueDelegate? { get set }
-    
+
     func notify(ad: DemandAdType, event: DemandProviderEvent)
 }
 

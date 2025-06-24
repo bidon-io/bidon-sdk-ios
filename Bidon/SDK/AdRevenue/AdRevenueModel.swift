@@ -23,7 +23,7 @@ public final class AdRevenueModel: AdRevenue {
         self.precision = precision
         self.currency = currency
     }
-    
+
     public convenience init(
         eCPM: Price,
         precision: RevenuePrecision = .estimated

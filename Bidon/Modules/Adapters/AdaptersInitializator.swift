@@ -14,10 +14,9 @@ struct AdaptersInitializator {
         let adapter: InitializableAdapter
         let config: AdaptersInitialisationParameters.AdapterConfiguration
         let adaptersRepository: AdaptersRepository
-        
         var timestamp: TimeInterval = 0
         var timer: Timer?
-        
+
         init(
             timeout: TimeInterval,
             adapter: InitializableAdapter,
@@ -29,10 +28,10 @@ struct AdaptersInitializator {
             self.config = config
             self.adaptersRepository = adaptersRepository
         }
-        
+
         override func main() {
             super.main()
-            
+
             Logger.info("Initialize \(adapter.name) ad network, order: \(config.order)")
 
             if timeout > 0 {
@@ -40,31 +39,31 @@ struct AdaptersInitializator {
                     timeout,
                     to: .seconds
                 )
-                
+
                 let timer = Timer(
                     timeInterval: timeout,
                     repeats: true
-                ) { [weak self] timer in
+                ) { [weak self] _ in
                     guard let self = self, self.isExecuting else { return }
                     Logger.warning("\(self.adapter.name) adapter has reached timeout \(timeout)s during initialization")
                     self.finish()
                 }
-                
+
                 RunLoop.main.add(timer, forMode: .default)
                 self.timer = timer
             }
-            
+
             timestamp = Date.timestamp(.wall, units: .seconds)
-            
+
             DispatchQueue.main.async { [unowned self] in
                 self.adapter.initialize(from: config.decoder) { [weak self] result in
                     defer { self?.finish() }
                     guard let self = self, self.isExecuting else { return }
-                    
+
                     let time = round(Date.timestamp(.wall, units: .seconds) - self.timestamp)
-                    
+
                     self.timer?.invalidate()
-                    
+
                     switch result {
                     case .success:
                         self.adaptersRepository.markInitialized(adapter: self.adapter)
@@ -76,7 +75,7 @@ struct AdaptersInitializator {
             }
         }
     }
-    
+
     var parameters: AdaptersInitialisationParameters
     var repository: AdaptersRepository
     
@@ -86,14 +85,14 @@ struct AdaptersInitializator {
         queue.qualityOfService = .default
         return queue
     }()
-    
+
     private var operations: [InitializeAdapterTimeoutGuardOperation] {
         parameters.adapters.compactMap { config in
             guard
                 let adapter: InitializableAdapter = repository[config.demandId],
                 !adapter.isInitialized
             else { return nil }
-            
+
             return InitializeAdapterTimeoutGuardOperation(
                 timeout: parameters.tmax,
                 adapter: adapter,
@@ -102,7 +101,7 @@ struct AdaptersInitializator {
             )
         }
     }
-    
+
     init(
         parameters: AdaptersInitialisationParameters,
         repository: AdaptersRepository
@@ -110,7 +109,7 @@ struct AdaptersInitializator {
         self.parameters = parameters
         self.repository = repository
     }
-    
+
     func initialize(completion: @escaping () -> ()) {
         guard !parameters.adapters.isEmpty else {
             completion()
@@ -118,26 +117,26 @@ struct AdaptersInitializator {
         }
         let timestamp = Date.timestamp(.wall, units: .seconds)
         Logger.info("Initialize ad networks")
-        
+
         let completionOperation = BlockOperation {
             Logger.info("Finish initialize ad networks in \(round(Date.timestamp(.wall, units: .seconds) - timestamp))s")
             DispatchQueue.main.async {
                 completion()
             }
         }
-        
+
         var graph = DirectedAcyclicGraph<Operation>()
-        
+
         let operations = self.operations
-        
+
         try? graph.add(node: completionOperation)
         operations.forEach {
             try? graph.add(node: $0)
             try? graph.addEdge(from: $0, to: completionOperation)
         }
-        
+
         let count = operations.map { $0.config.order }.max() ?? 0
-        
+
         if count > 0 {
             for order in 1...count {
                 for parent in operations where parent.config.order == order - 1 {
@@ -147,7 +146,7 @@ struct AdaptersInitializator {
                 }
             }
         }
-        
+
         queue.maxConcurrentOperationCount = parameters.adapters.count
         queue.addOperations(
             graph.operations(),

@@ -11,25 +11,25 @@ import Bidon
 
 struct AmazonBiddingToken: Codable {
     let token: String
-    
+
     init?(slots: [AmazonBiddingSlot]) {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        
+
         guard
             !slots.isEmpty,
             let data = try? encoder.encode(slots),
             let token = String(data: data, encoding: .utf8)
         else { return nil }
-        
+
         self.token = token
     }
 }
 
 struct AmazonBiddingTokenExtras: Codable {
-    
+
     var slots: [AdUnitExtra]
-    
+
     struct AdUnitExtra: Codable {
         enum Format: String, Codable {
             case interstitial = "INTERSTITIAL"
@@ -38,10 +38,10 @@ struct AmazonBiddingTokenExtras: Codable {
             case mrec = "MREC"
             case rewarded = "REWARDED"
         }
-        
+
         var slotUuid: String
         var format: Format
-        
+
         func adSize(_ format: BannerFormat? = nil) -> DTBAdSize? {
             switch (self.format, format) {
             case (.interstitial, _):

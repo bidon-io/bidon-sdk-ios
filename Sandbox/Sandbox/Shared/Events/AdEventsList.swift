@@ -11,11 +11,11 @@ import SwiftUI
 
 struct AdEventsList: View {
     var events: [AdEventModel]
-    
+
     var body: some View {
         ZStack {
             Color(UIColor.secondarySystemBackground).edgesIgnoringSafeArea(.all)
-            
+
             ScrollView {
                 LazyVStack(spacing: 5) {
                     ForEach(events) { model in
@@ -28,6 +28,6 @@ struct AdEventsList: View {
             }
             .navigationTitle("Ad Events")
         }
-       
+
     }
 }

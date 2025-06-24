@@ -56,7 +56,7 @@ extension Bidon.GDPRAppliesStatus {
 }
 
 extension Bidon.Ad {
-    
+
     func description(with revenue: AdRevenue? = nil) -> String? {
         let dictRepresentation: [String: Any] = [
             "unit_name": adUnit.label,
@@ -74,7 +74,7 @@ extension Bidon.Ad {
                 "credentials": adUnit.extras
             ]
         ]
-        
+
         return String(describing: dictRepresentation)
     }
 }

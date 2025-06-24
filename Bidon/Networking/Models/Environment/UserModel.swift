@@ -13,7 +13,7 @@ struct UserModel: User, Codable {
     var idfv: String
     var idg: String
     var idfa: String
-    
+
     init(_ user: User) {
         self.idfa = user.idfa
         self.idfv = user.idfv

@@ -14,7 +14,7 @@ struct StatisticRequest: Request {
     var headers: [HTTPTask.HTTPHeader: String] = .default()
     var timeout: TimeInterval = 10
     var body: RequestBody?
-    
+
     struct RequestBody: Encodable, Tokenized {
         let stats: EncodableAuctionReportModel
         let device: DeviceModel
@@ -26,7 +26,7 @@ struct StatisticRequest: Request {
         let segment: SegmentModel
         var token: String?
     }
-    
+
     struct ResponseBody: Decodable, Tokenized {
         var token: String?
         var success: Bool
@@ -38,7 +38,7 @@ extension StatisticRequest {
     init<T: StatisticRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
-        
+
         self.route = builder.route
         self.body = RequestBody(
             stats: builder.stats,
@@ -61,7 +61,7 @@ extension StatisticRequest: Equatable {
 }
 
 extension AuctionRoundReportModel {
-    
+
     func adUnits(winner: AnyAdUnit?) -> [EncodableAuctionReportModel.EncodableAuctionAdUnit] {
         let allDemands = self.demands + (self.bidding?.demands ?? [])
         return allDemands.map { demand in
