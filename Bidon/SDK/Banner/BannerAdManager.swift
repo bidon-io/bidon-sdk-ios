@@ -75,7 +75,7 @@ final class BannerAdManager: NSObject {
         auctionKey: String?
     ) {
         guard BidonSdk.isInitialized else {
-            Logger.warning("Bidon SDK is not initialized. Initialize SDK first")
+            Logger.warning("Bidon SDK is not initialized or failed initialization. Initialize SDK first")
             delegate?.adManager(self, didFailToLoad: .message("SDK is not initialized"), auctionInfo: auctionInfo)
             return
         }
