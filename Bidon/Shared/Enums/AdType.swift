@@ -13,7 +13,7 @@ public enum AdType: Int, Codable {
     case banner = 0
     case interstitial = 1
     case rewarded = 2
-    
+
     var stringValue: String {
         switch self {
         case .banner: return "banner"
@@ -21,16 +21,16 @@ public enum AdType: Int, Codable {
         case .rewarded: return "rewarded"
         }
     }
-    
+
     enum Key: CodingKey {
         case rawValue
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: Key.self)
         try container.encode(stringValue, forKey: .rawValue)
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Key.self)
         let raw = try container.decode(String.self, forKey: .rawValue)
@@ -58,4 +58,3 @@ extension AdType: CustomStringConvertible {
         }
     }
 }
-

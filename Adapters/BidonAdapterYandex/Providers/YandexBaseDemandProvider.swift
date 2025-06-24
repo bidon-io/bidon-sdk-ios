@@ -9,10 +9,10 @@ import Foundation
 import Bidon
 
 class YandexBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandProvider {
-    
+
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
-    
+
     func load(
         pricefloor: Bidon.Price,
         adUnitExtras: YandexAdUnitExtras,
@@ -20,7 +20,7 @@ class YandexBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandPr
     ) {
         fatalError("YandexBiddingBaseDemandProvider is unable to prepare bid")
     }
-    
+
     final func notify(
         ad: DemandAdType,
         event: Bidon.DemandProviderEvent

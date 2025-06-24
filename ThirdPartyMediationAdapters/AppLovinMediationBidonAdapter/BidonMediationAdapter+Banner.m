@@ -19,7 +19,7 @@
     self.bannerPlacementId = parameters.thirdPartyAdPlacementIdentifier;
     NSDictionary<NSString *, id> *customParams = parameters.customParameters;
 
-    BOOL unicorn = [customParams[@"unicorn"] boolValue];
+    BOOL shouldLoad = [customParams[@"should_load"] ?: customParams[@"unicorn"] boolValue];
 
     id ecpmValue = customParams[@"ecpm"];
     double ecpm = [ecpmValue isKindOfClass:[NSNumber class]] ? [ecpmValue doubleValue] : 0.0;
@@ -28,7 +28,7 @@
 
     [[AdKeeperFactory banner:adFormat key:self.adViewAdUnitId] registerEcpm:ecpm];
 
-    if (unicorn) {
+    if (shouldLoad) {
         NSLog(@"[BidonAdapter] [%@] Placement ID: %@, Unicorn Detected, ECPM: %f", self.adViewAdUnitId, self.bannerPlacementId, ecpm);
 
         NSString *auctionKey = customParams[@"auction_key"];
@@ -57,7 +57,7 @@
 
         self.banner = (BDNBannerView *)cachedAd.adInstance;
         self.banner.delegate = self;
-        [delegate didLoadAdForAdView:self.banner];
+        [delegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:ecpm ad:cachedAd.ad]];
     }
 }
 
@@ -69,6 +69,7 @@
 
         BannerAdInstance *adInstance = [[BannerAdInstance alloc] initWithEcpm:price
                                                                      demandId:ad.adUnit.demandId
+                                                                           ad:ad
                                                                    adInstance:self.banner];
 
         if ([[AdKeeperFactory banner:self.adFormat key:self.adViewAdUnitId] keepAd:adInstance]) {
@@ -84,7 +85,7 @@
             NSLog(@"[BidonAdapter] [%@] Banner ad loaded from cache, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
             self.banner = (BDNBannerView *)cachedAd.adInstance;
             self.banner.delegate = self;
-            [self.bannerDelegate didLoadAdForAdView:self.banner];
+            [self.bannerDelegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:self.bannerMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Banner ad failed to load from cache: No fill, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
             [self.bannerDelegate didFailToLoadAdViewAdWithError:[MAAdapterError errorWithCode:MAAdapterError.errorCodeNoFill]];

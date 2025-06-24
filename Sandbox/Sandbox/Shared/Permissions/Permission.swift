@@ -19,7 +19,7 @@ enum PermissionState {
 protocol Permission {
     var name: String { get }
     var state: PermissionState { get }
-    
+
     func request() async
 }
 

@@ -17,52 +17,52 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         InterstitialImpressionController,
         InterstitialAdaptersFetcher
     >
-    
+
     @objc public weak var delegate: FullscreenAdDelegate?
-    
+
     @objc public let auctionKey: String?
-    
+
     @objc public var isReady: Bool { return manager.isReady }
-    
-    @objc public var extras: [String : AnyHashable] { return manager.extras }
-    
+
+    @objc public var extras: [String: AnyHashable] { return manager.extras }
+
     @Injected(\.sdk)
     private var sdk: Sdk
-    
+
     private lazy var manager = Manager(
         context: InterstitialAdTypeContext(),
         delegate: self
     )
-    
+
     @objc public init(
         auctionKey: String? = nil
     ) {
         self.auctionKey = auctionKey
         super.init()
     }
-    
+
     @objc public func setExtraValue(
         _ value: AnyHashable?,
         for key: String
     ) {
         manager.extras[key] = value
     }
-    
+
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
         manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
-    
+
     @objc public func showAd(from rootViewController: UIViewController) {
         manager.show(from: rootViewController)
     }
-    
+
     @objc(notifyWin)
     public func notifyWin() {
         manager.notifyWin()
     }
-    
+
     @objc(notifyLossWithExternalDemandId:price:)
     public func notifyLoss(
         external demandId: String,
@@ -80,28 +80,28 @@ extension Interstitial: FullscreenAdManagerDelegate {
     func adManager(_ adManager: FullscreenAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo) {
         delegate?.adObject(self, didFailToLoadAd: error.nserror, auctionInfo: auctionInfo)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo) {
         delegate?.adObject(self, didLoadAd: ad, auctionInfo: auctionInfo)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didFailToPresent ad: Ad?, error: SdkError) {
         delegate?.adObject?(self, didFailToPresentAd: error.nserror)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, willPresent ad: Ad) {
         delegate?.fullscreenAd(self, willPresentAd: ad)
         delegate?.adObject?(self, didRecordImpression: ad)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didHide ad: Ad) {
         delegate?.fullscreenAd(self, didDismissAd: ad)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didClick ad: Ad) {
         delegate?.adObject?(self, didRecordClick: ad)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didPayRevenue revenue: AdRevenue, ad: Ad) {
         delegate?.adObject?(
             self,
@@ -109,11 +109,10 @@ extension Interstitial: FullscreenAdManagerDelegate {
             ad: ad
         )
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didExpire ad: Ad) {
         delegate?.adObject?(self, didExpireAd: ad)
     }
-    
+
     func adManager(_ adManager: FullscreenAdManager, didReward reward: Reward, ad: Ad) {}
 }
-

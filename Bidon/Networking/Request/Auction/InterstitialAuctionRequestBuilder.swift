@@ -18,7 +18,7 @@ final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<Interst
         
         return AdaptersInfo(adapters: filteredAdapters)
     }
-    
+
     override var adObject: AuctionRequestAdObject {
         return AuctionRequestAdObject(
             auctionId: auctionId,

@@ -8,7 +8,7 @@
 import Foundation
 
 class AdaptersFetcher<AdTypeContextType: AdTypeContext> {
-    
+
     func adapters() -> [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>] {
         fatalError("Base AdaptersFetcher can't return adapters")
     }

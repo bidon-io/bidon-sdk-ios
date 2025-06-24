@@ -10,11 +10,11 @@ import Bidon
 import MobileFuseSDK
 
 
-final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemandProvider<MFRewardedAd> {    
+final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemandProvider<MFRewardedAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var rewarded: MFRewardedAd?
-    
+
     override func load(
         payload: MobileFuseBiddingPayload,
         adUnitExtras: MobileFuseAdUnitExtras,
@@ -23,17 +23,17 @@ final class MobileFuseBiddingRewardedDemandProvider: MobileFuseBiddingBaseDemand
         if let rewarded = MFRewardedAd(placementId: adUnitExtras.placementId) {
             self.rewarded = rewarded
             self.response = response
-            
+
             rewarded.register(self)
             rewarded.load(withBiddingResponseToken: payload.signal)
         } else {
             response(.failure(.unspecifiedException("Mapping Error")))
         }
     }
-    
+
     override func onUserEarnedReward(_ ad: MFAd!) {
         guard let _ = ad as? MFRewardedAd else { return }
-        
+
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
 }

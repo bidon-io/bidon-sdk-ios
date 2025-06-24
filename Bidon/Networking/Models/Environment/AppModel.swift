@@ -16,7 +16,7 @@ struct AppModel: App, Codable {
     var frameworkVersion: String?
     var pluginVersion: String?
     var skadn: [String]
-    
+
     init(_ app: App) {
         self.bundle = app.bundle
         self.version = app.version

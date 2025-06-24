@@ -21,7 +21,7 @@ struct AdViewImpression: Impression {
     var adUnitPricefloor: Price { bid.adUnit.pricefloor }
     var auctionConfiguration: AuctionConfiguration { bid.auctionConfiguration }
     var adUnitExtras: [String: BidonDecodable]? { bid.adUnit.extrasDictionary }
-    
+
     var showTrackedAt: TimeInterval = .nan
     var clickTrackedAt: TimeInterval = .nan
     var rewardTrackedAt: TimeInterval = .nan
@@ -29,7 +29,7 @@ struct AdViewImpression: Impression {
 
     var format: BannerFormat
     var bid: AdViewBid
-    
+
     init(
         bid: AdViewBid,
         format: BannerFormat

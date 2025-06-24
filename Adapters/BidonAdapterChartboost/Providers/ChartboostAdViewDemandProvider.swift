@@ -13,15 +13,15 @@ final class ChartboostAdViewDemandProvider: ChartboostBaseDemandProvider<Chartbo
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
-    
+
     var banner: CHBBanner?
-    
+
     let adSize: CHBBannerSize
-        
+
     init(context: AdViewContext, version: String) {
         self.rootViewController = context.rootViewController
         self.adSize = context.format.chartboostAdSize
-        
+
         super.init(version: version)
     }
 
@@ -35,12 +35,12 @@ final class ChartboostAdViewDemandProvider: ChartboostBaseDemandProvider<Chartbo
             adUnitExtras: adUnitExtras,
             response: response
         )
-        
+
         var mediation: CHBMediation?
         if let serverMediation = adUnitExtras.mediation {
             mediation = CHBMediation(name: serverMediation, libraryVersion: BidonSdk.sdkVersion, adapterVersion: version)
         }
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.banner = CHBBanner(
@@ -55,14 +55,14 @@ final class ChartboostAdViewDemandProvider: ChartboostBaseDemandProvider<Chartbo
 }
 
 extension ChartboostAdViewDemandProvider: AdViewDemandProvider {
-    
+
     func container(for ad: ChartboostDemandAd) -> Bidon.AdViewContainer? {
         if let rootViewController {
             banner?.show(from: rootViewController)
         }
         return banner
     }
-    
+
     func didTrackImpression(for ad: ChartboostDemandAd) { }
 }
 

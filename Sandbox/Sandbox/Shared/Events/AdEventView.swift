@@ -11,13 +11,13 @@ import SwiftUI
 
 struct AdEventView: View {
     var model: AdEventModel
-    
+
     static let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm:ss"
         return formatter
     }()
-    
+
     var body: some View {
         if #available(iOS 16, *) {
             content
@@ -37,7 +37,7 @@ struct AdEventView: View {
             content
         }
     }
-    
+
     var content: some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -46,22 +46,22 @@ struct AdEventView: View {
                         .font(.system(size: 14, weight: .black, design: .monospaced))
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)
-                    
+
                     Image(systemName: model.bage)
                         .foregroundColor(model.color)
-                    
+
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
-                
+
                 Text(model.title)
                     .foregroundColor(.primary)
-                
+
                 Text(model.subtitle)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
-            
+
             Spacer()
             VStack(alignment: .trailing, spacing: 10) {
                 Spacer()

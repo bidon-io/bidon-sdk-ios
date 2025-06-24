@@ -22,7 +22,7 @@ public enum MediationError: Error {
     case adFormatNotSupported
     case unspecifiedException(String)
     case belowPricefloor
-    
+
     var rawValue: String {
         switch self {
         case .noBid:
@@ -53,7 +53,7 @@ public enum MediationError: Error {
             return "unspecifiedException"
         }
     }
-        
+
     init?(rawValue: String) {
         switch rawValue {
         case "noBid":
@@ -85,4 +85,3 @@ public enum MediationError: Error {
         }
     }
 }
-

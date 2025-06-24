@@ -12,20 +12,20 @@ import BidMachine
 
 final class BidMachineAdDemand<Ad: BidMachineAdProtocol>: NSObject, DemandAd {
     var id: String { ad.auctionInfo.bidId }
-   
+
     var networkName: String { ad.auctionInfo.demandSource }
-    
+
     var dsp: String { ad.auctionInfo.demandSource }
-    
+
     var price: Price { ad.auctionInfo.price }
-    
+
     let ad: Ad
-    
+
     init(_ ad: Ad) {
         self.ad = ad
         super.init()
     }
-    
+
     override var hash: Int {
         var hasher = Hasher()
         hasher.combine(id)

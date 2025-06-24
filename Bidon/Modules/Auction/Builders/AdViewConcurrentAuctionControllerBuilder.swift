@@ -10,26 +10,26 @@ import Foundation
 
 final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionControllerBuilder<BannerAdTypeContext> {
     private var viewContext: AdViewContext!
-    
+
     @discardableResult
     public func withViewContext(_ viewContext: AdViewContext) -> Self {
         self.viewContext = viewContext
         return self
     }
-    
+
     override func adapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
         return directDemandWrappedAdapters() +
         biddingDemandWrappedAdapters()
     }
-    
+
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
         let direct: [DirectAdViewDemandSourceAdapter] = adaptersRepository.all()
-        
+
         return direct.compactMap { adapter in
             do {
                 let provider = try adapter.directAdViewDemandProvider(context: viewContext)
                 let wrappedProvider: AnyAdViewDemandProvider = try DirectDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider
@@ -40,14 +40,14 @@ final class AdViewConcurrentAuctionControllerBuilder: BaseConcurrentAuctionContr
             }
         }
     }
-    
+
     private func biddingDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyAdViewDemandProvider>] {
         let bidding: [BiddingAdViewDemandSourceAdapter] = adaptersRepository.all()
         return bidding.compactMap { adapter in
             do {
                 let provider = try adapter.biddingAdViewDemandProvider(context: viewContext)
                 let wrappedProvider: AnyAdViewDemandProvider = try BiddingDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider

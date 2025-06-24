@@ -10,7 +10,7 @@ import Foundation
 
 extension DispatchQueue {
     static var bd: DSL { DSL() }
-    
+
     struct DSL {
         @discardableResult
         func blocking<T>(_ block: @escaping () -> T) -> T {
@@ -18,18 +18,17 @@ extension DispatchQueue {
                 return block()
             } else {
                 let semaphore = DispatchSemaphore(value: 0)
-                
+
                 var _result: T!
-                
+
                 DispatchQueue.main.async {
                     _result = block()
                     semaphore.signal()
                 }
                 semaphore.wait()
-                                
+
                 return _result
             }
         }
     }
 }
-

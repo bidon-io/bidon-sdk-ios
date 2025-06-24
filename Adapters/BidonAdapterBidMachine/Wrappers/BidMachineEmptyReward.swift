@@ -11,7 +11,7 @@ import Bidon
 
 internal typealias BidMachineEmptyReward = RewardWrapper<NSNull>
 
- 
+
 extension BidMachineEmptyReward {
     convenience init() {
         self.init(

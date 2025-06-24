@@ -16,7 +16,7 @@ public protocol GenericBiddingDemandProvider: DemandProvider {
         adUnitExtrasDecoder: Decoder,
         response: @escaping BiddingContextEncoderResponse
     )
-    
+
     func load(
         payloadDecoder: Decoder,
         adUnitExtrasDecoder: Decoder,
@@ -29,12 +29,12 @@ public protocol BiddingDemandProvider: GenericBiddingDemandProvider {
     associatedtype BiddingPayload: Decodable
     associatedtype BiddingTokenExtras: Decodable
     associatedtype AdUnitExtras: Decodable
-    
+
     func collectBiddingToken(
         biddingTokenExtras: BiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     )
-    
+
     func load(
         payload: BiddingPayload,
         adUnitExtras: AdUnitExtras,
@@ -61,7 +61,7 @@ extension BiddingDemandProvider {
             response(.failure(.incorrectAdUnitId))
         }
     }
-    
+
     public func load(
         payloadDecoder: Decoder,
         adUnitExtrasDecoder: Decoder,
@@ -70,7 +70,7 @@ extension BiddingDemandProvider {
         do {
             let payload = try BiddingPayload(from: payloadDecoder)
             let adUnitExtas = try AdUnitExtras(from: adUnitExtrasDecoder)
-            
+
             load(
                 payload: payload,
                 adUnitExtras: adUnitExtas,
@@ -86,24 +86,24 @@ extension BiddingDemandProvider {
 final class BiddingDemandProviderWrapper<W>: DemandProviderWrapper<W>, GenericBiddingDemandProvider {
     private let _collectBiddingTokenEncoder: (Decoder, @escaping BiddingContextEncoderResponse) -> ()
     private let _load: (Decoder, Decoder, @escaping DemandProviderResponse) -> ()
-    
+
     override init(_ wrapped: W) throws {
         guard let _wrapped = wrapped as? (any GenericBiddingDemandProvider)
         else { throw SdkError.internalInconsistency }
-        
+
         _collectBiddingTokenEncoder = { _wrapped.collectBiddingTokenEncoder(adUnitExtrasDecoder: $0, response: $1) }
         _load = { _wrapped.load(payloadDecoder: $0, adUnitExtrasDecoder: $1, response: $2) }
-        
+
         try super.init(wrapped)
     }
-    
+
     func collectBiddingTokenEncoder(
         adUnitExtrasDecoder: Decoder,
         response: @escaping BiddingContextEncoderResponse
     ) {
         _collectBiddingTokenEncoder(adUnitExtrasDecoder, response)
     }
-    
+
     func load(
         payloadDecoder: Decoder,
         adUnitExtrasDecoder: Decoder,

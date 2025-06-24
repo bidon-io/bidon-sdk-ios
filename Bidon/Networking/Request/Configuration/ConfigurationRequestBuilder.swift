@@ -13,7 +13,6 @@ final class ConfigurationRequestBuilder: BaseRequestBuilder {
         let adapters: [Adapter] = adaptersRepository.ids.compactMap { key in
             adaptersRepository[key] as Adapter?
         }
-        
         return AdaptersInfo(adapters: adapters)
     }
 }

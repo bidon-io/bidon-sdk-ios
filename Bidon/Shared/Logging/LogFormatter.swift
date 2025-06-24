@@ -16,8 +16,8 @@ struct LogFormatter {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         return formatter
     }()
-    
-    
+
+
     var format: Logger.Format
     var level: Logger.Level
     var message: Any
@@ -25,7 +25,7 @@ struct LogFormatter {
     var function: String
     var line: Int
     var date: String = dateFormatter.string(from: Date())
-    
+
     func formatted() -> String {
         switch format {
         case .full:

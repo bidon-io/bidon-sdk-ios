@@ -10,7 +10,7 @@ import Foundation
 
 struct DummyAdUnit: AdUnit {
     typealias ExtrasType = Void
-    
+
     var uid: String
     var demandId: String
     var bidType: BidType
@@ -19,15 +19,15 @@ struct DummyAdUnit: AdUnit {
     var extras: ExtrasType
     var extrasDictionary: [String: BidonDecodable]?
     let timeout: TimeInterval
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(uid)
     }
-    
+
     static func == (lhs: DummyAdUnit, rhs: DummyAdUnit) -> Bool {
         return lhs.uid == rhs.uid
     }
-    
+
     init<T: AdUnit>(_ adUnit: T) {
         self.uid = adUnit.uid
         self.demandId = adUnit.demandId
@@ -38,7 +38,7 @@ struct DummyAdUnit: AdUnit {
         self.extrasDictionary = adUnit.extrasDictionary
         self.timeout = adUnit.timeout
     }
-    
+
     init(_ adUnit: AnyAdUnit) {
         self.uid = adUnit.uid
         self.demandId = adUnit.demandId
@@ -50,4 +50,3 @@ struct DummyAdUnit: AdUnit {
         self.timeout = adUnit.timeout
     }
 }
-

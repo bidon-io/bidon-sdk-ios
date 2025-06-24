@@ -13,19 +13,19 @@ import UIKit
 
 internal final class AppLovinInterstitialDemandProvider: NSObject {
     private let sdk: ALSdk
-    
+
     @Injected(\.bridge)
     var bridge: AppLovinAdServiceBridge
-    
+
     private lazy var interstitial: ALInterstitialAd = {
         let interstitial = ALInterstitialAd(sdk: sdk)
         interstitial.adDisplayDelegate = self
         return interstitial
     }()
-    
+
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
-    
+
     init(sdk: ALSdk) {
         self.sdk = sdk
         super.init()
@@ -51,7 +51,7 @@ extension AppLovinInterstitialDemandProvider: DirectDemandProvider {
             }
         }
     }
-    
+
     func notify(ad: ALAd, event: DemandProviderEvent) {}
 }
 
@@ -66,14 +66,14 @@ extension AppLovinInterstitialDemandProvider: InterstitialDemandProvider {
 extension AppLovinInterstitialDemandProvider: ALAdDisplayDelegate {
     func ad(_ ad: ALAd, wasDisplayedIn view: UIView) {
         delegate?.providerWillPresent(self)
-        
+
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
-    
+
     func ad(_ ad: ALAd, wasHiddenIn view: UIView) {
         delegate?.providerDidHide(self)
     }
-    
+
     func ad(_ ad: ALAd, wasClickedIn view: UIView) {
         delegate?.providerDidClick(self)
     }

@@ -19,26 +19,26 @@ public class Logger: NSObject {
         case error = 4
         case off = 5
     }
-    
+
     @objc(BDNLoggerFormat)
     public enum Format: Int {
         case short = 0
         case full = 1
     }
-    
+
     private static var destinations: Set<AnyLogDestination> = {
         let oslog = OSLogDestination()
         let any = AnyLogDestination(oslog)
         return Set([any])
     }()
-    
+
     private static let queue = DispatchQueue(label: "com.bidon.logger.queue")
-    
+
     static func add(_ destination: LogDestination) {
         let any = AnyLogDestination(destination)
         destinations.insert(any)
     }
-    
+
     @objc public static var level: Level = .off
     @objc public static var format: Format = .short
 
@@ -56,7 +56,7 @@ public class Logger: NSObject {
             line: line
         )
     }
-    
+
     public static func debug(
         _ message: @autoclosure () -> Any,
         file: String = #file,
@@ -71,7 +71,7 @@ public class Logger: NSObject {
             line: line
         )
     }
-    
+
     public static func info(
         _ message: @autoclosure () -> Any,
         file: String = #file,
@@ -86,7 +86,7 @@ public class Logger: NSObject {
             line: line
         )
     }
-    
+
     public static func warning(
         _ message: @autoclosure () -> Any,
         file: String = #file,
@@ -101,7 +101,7 @@ public class Logger: NSObject {
             line: line
         )
     }
-    
+
     public static func error(
         _ message: @autoclosure () -> Any,
         file: String = #file,
@@ -116,7 +116,7 @@ public class Logger: NSObject {
             line: line
         )
     }
-    
+
     private static func send(
         level: Logger.Level,
         message: @autoclosure () -> Any,
@@ -126,7 +126,7 @@ public class Logger: NSObject {
     ) {
         guard self.level.rawValue <= level.rawValue else { return }
         let resolved = message()
-        
+
         queue.async {
             _send(
                 level: level,
@@ -137,7 +137,7 @@ public class Logger: NSObject {
             )
         }
     }
-    
+
     private static func _send(
         level: Logger.Level,
         message: Any,
@@ -153,7 +153,7 @@ public class Logger: NSObject {
             function: function,
             line: line
         ).formatted()
-        
+
         destinations.forEach { $0.send(level: level, message) }
     }
 }

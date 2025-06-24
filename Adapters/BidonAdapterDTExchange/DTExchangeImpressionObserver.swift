@@ -17,7 +17,7 @@ protocol DTEXchangeImpressionObserver: AnyObject {
         spotId: String,
         impression: @escaping ImpressionClosure
     )
-    
+
     func removeObservation(spotId: String)
 }
 
@@ -31,7 +31,7 @@ final class DTExchangeDefaultImpressionObserver: NSObject, DTEXchangeImpressionO
     ) {
         impressions[spotId] = impression
     }
-    
+
     func removeObservation(spotId: String) {
         impressions.removeValue(forKey: spotId)
     }

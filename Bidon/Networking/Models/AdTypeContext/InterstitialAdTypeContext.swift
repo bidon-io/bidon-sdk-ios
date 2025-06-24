@@ -15,9 +15,9 @@ struct InterstitialAdTypeContext: AdTypeContext {
     typealias StatisticRequestBuilderType = InterstitialStatisticRequestBuilder
     typealias ImpressionRequestBuilderType = InterstitialImpressionRequestBuilder
     typealias NotificationRequestBuilderType = InterstitialNotificationRequestBuilder
-    
+
     var adType: AdType { .interstitial }
-    
+
     func auctionRequest(build: (AuctionRequestBuilderType) -> ()) -> AuctionRequest {
         return AuctionRequest { (builder: AuctionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -31,7 +31,7 @@ struct InterstitialAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func impressionRequest(build: (ImpressionRequestBuilderType) -> ()) -> ImpressionRequest {
         return ImpressionRequest { (builder: ImpressionRequestBuilderType) in
             builder.withAdTypeContext(self)
@@ -45,15 +45,15 @@ struct InterstitialAdTypeContext: AdTypeContext {
             build(builder)
         }
     }
-    
+
     func adapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
         return InterstitialAdaptersFetcher().adapters()
     }
-    
+
     func fullscreenAdapters() -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         return InterstitialAdaptersFetcher().adapters()
     }
-    
+
     func adViewAdapters(viewContext: AdViewContext) -> [AnyDemandSourceAdapter<Self.DemandProviderType>] {
         fatalError("Interstitial Ad Type context does not has fullscreen adapters")
     }
@@ -65,4 +65,3 @@ struct InterstitialAdTypeContextModel: Codable {
         // TODO: Add interstitial specific properties
     }
 }
-

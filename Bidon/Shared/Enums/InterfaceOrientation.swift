@@ -19,7 +19,7 @@ extension InterfaceOrientation {
     init(_ isLandscape: Bool) {
         self = isLandscape ? .landscape : .portrait
     }
-    
+
     static var current: InterfaceOrientation {
         let isLandscape = DispatchQueue.bd.blocking { UIApplication.shared.bd.isLandscape }
         return InterfaceOrientation(isLandscape)

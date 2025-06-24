@@ -18,14 +18,14 @@ final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBase
             request: request
         ) { [weak self] interstitial, error in
             guard let self = self else { return }
-            
+
             guard let interstitial = interstitial else {
                 self.handleDidFailToLoad(.noFill(error?.localizedDescription))
                 return
             }
-            
+
             interstitial.fullScreenContentDelegate = self
-            
+
             self.setupAdRevenueHandler(adObject: interstitial)
             self.handleDidLoad(adObject: interstitial)
         }
@@ -44,7 +44,7 @@ extension GoogleAdManagerDirectInterstitialDemandProvider: GoogleMobileAds.FullS
     func adWillPresentFullScreenContent(_ ad: GoogleMobileAds.FullScreenPresentingAd) {
         delegate?.providerWillPresent(self)
     }
-    
+
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         guard let ad = ad as? AdManagerInterstitialAd else { return }
         delegate?.provider(
@@ -53,13 +53,12 @@ extension GoogleAdManagerDirectInterstitialDemandProvider: GoogleMobileAds.FullS
             error: .generic(error: error)
         )
     }
-    
+
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func adWillDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidHide(self)
     }
 }
-

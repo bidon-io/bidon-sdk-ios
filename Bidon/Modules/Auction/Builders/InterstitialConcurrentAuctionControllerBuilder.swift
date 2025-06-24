@@ -12,15 +12,15 @@ final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctio
     override func adapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
         return directDemandWrappedAdapters() + biddingDemandWrappedAdapters()
     }
-    
+
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
         let direct: [DirectInterstitialDemandSourceAdapter] = adaptersRepository.all()
-        
+
         return direct.compactMap { adapter in
             do {
                 let provider = try adapter.directInterstitialDemandProvider()
                 let wrappedProvider: AnyInterstitialDemandProvider = try DirectDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider
@@ -31,14 +31,14 @@ final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctio
             }
         }
     }
-    
+
     private func biddingDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyInterstitialDemandProvider>] {
         let bidding: [BiddingInterstitialDemandSourceAdapter] = adaptersRepository.all()
         return bidding.compactMap { adapter in
             do {
                 let provider = try adapter.biddingInterstitialDemandProvider()
                 let wrappedProvider: AnyInterstitialDemandProvider = try BiddingDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider
@@ -50,4 +50,3 @@ final class InterstitialConcurrentAuctionControllerBuilder: BaseConcurrentAuctio
         }
     }
 }
-

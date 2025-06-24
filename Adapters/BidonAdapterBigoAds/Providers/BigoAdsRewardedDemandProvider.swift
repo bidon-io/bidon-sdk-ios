@@ -14,9 +14,9 @@ final class BigoAdsRewardedDemandProvider: BigoAdsBaseDemandProvider<BigoRewardV
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     private lazy var loader = BigoRewardVideoAdLoader(rewardVideoAdLoaderDelegate: self)
-    
+
     private var response: DemandProviderResponse?
-    
+
     override func load(
         payload: BigoAdsBiddingPayload,
         adUnitExtras: BigoAdsAdUnitExtras,
@@ -26,15 +26,15 @@ final class BigoAdsRewardedDemandProvider: BigoAdsBaseDemandProvider<BigoRewardV
 
         let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
         request.setServerBidPayload(payload.payload)
-        
+
         loader.loadAd(request)
     }
-    
+
     override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
 
         let request = BigoRewardVideoAdRequest(slotId: adUnitExtras.slotId)
-        
+
         loader.loadAd(request)
     }
 }
@@ -58,11 +58,11 @@ extension BigoAdsRewardedDemandProvider: RewardedAdDemandProvider {
 extension BigoAdsRewardedDemandProvider: BigoRewardVideoAdLoaderDelegate {
     func onRewardVideoAdLoaded(_ ad: BigoRewardVideoAd) {
         ad.setRewardVideoAdInteractionDelegate(self)
-        
+
         response?(.success(ad))
         response = nil
     }
-    
+
     func onRewardVideoAdLoadError(_ error: BigoAdError) {
         response?(.failure(MediationError(error: error)))
         response = nil
