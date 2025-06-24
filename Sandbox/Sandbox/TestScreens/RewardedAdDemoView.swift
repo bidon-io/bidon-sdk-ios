@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 import Bidon
-import Combine
 
 final class RewardedAdController: NSObject, ObservableObject, FullscreenAdDelegate, RewardedAdDelegate {
     @Published var logs: [String] = []

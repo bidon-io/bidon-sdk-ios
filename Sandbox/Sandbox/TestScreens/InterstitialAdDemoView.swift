@@ -9,7 +9,6 @@
 import SwiftUI
 import UIKit
 import Bidon
-import Combine
 
 final class InterstitialAdController: NSObject, ObservableObject, FullscreenAdDelegate {
     @Published var logs: [String] = []
