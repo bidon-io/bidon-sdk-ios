@@ -11,7 +11,7 @@ import Bidon
 struct SdkInitializationView: View {
     @State private var status: String = "Idle"
     @State private var logs: [String] = []
-    
+
     private let interstitial = Interstitial()
 
     var body: some View {
@@ -29,6 +29,20 @@ struct SdkInitializationView: View {
             Section(header: Text("Main Screen")) {
                 NavigationLink(destination: HomeView()) {
                     Text("Show main screen")
+                }
+            }
+
+            Section(header: Text("Test Main Screen for muliple load")) {
+                NavigationLink(destination: InterstitialAdDemoView()) {
+                    Text("Interstitial")
+                }
+
+                NavigationLink(destination: RewardedAdDemoView()) {
+                    Text("Rewarded")
+                }
+
+                NavigationLink(destination: BannerAdDemoView()) {
+                    Text("Banner")
                 }
             }
 
