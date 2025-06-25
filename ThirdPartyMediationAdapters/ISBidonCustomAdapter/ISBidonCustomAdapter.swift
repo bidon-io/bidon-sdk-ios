@@ -10,6 +10,7 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
     public override func networkSDKVersion() -> String {
        return BidonSdk.sdkVersion
     }
+    
     public override func adapterVersion() -> String {
        return "\(BidonSdk.sdkVersion).0.0"
     }
