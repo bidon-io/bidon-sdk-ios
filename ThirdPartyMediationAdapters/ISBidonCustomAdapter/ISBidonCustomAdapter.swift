@@ -34,6 +34,8 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
 
         BidonSdk.initialize(appKey: appKey) {
             print("[ISBidonCustomAdapter] ISBidonCustomAdapter init successed")
+            BidonSdk.registerDefaultAdapters()
+            
             delegate.onInitDidSucceed()
         }
     }
