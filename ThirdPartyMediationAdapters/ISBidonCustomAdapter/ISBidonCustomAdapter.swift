@@ -4,6 +4,7 @@ import IronSource
 import Bidon
 
 @objc(ISBidonCustomAdapter)
+@objcMembers
 public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
 
     public override func networkSDKVersion() -> String {

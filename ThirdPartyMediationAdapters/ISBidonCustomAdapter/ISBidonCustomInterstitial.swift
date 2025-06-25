@@ -3,6 +3,7 @@ import IronSource
 import Bidon
 
 @objc(ISBidonCustomInterstitial)
+@objcMembers
 public final class ISBidonCustomInterstitial: ISBaseInterstitial {
 
     private weak var interstitialDelegate: ISInterstitialAdDelegate?
