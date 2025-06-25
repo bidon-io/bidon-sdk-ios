@@ -31,10 +31,10 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
 
         BidonSdk.logLevel = .verbose
         BidonSdk.baseURL = "https://b.appbaqend.com"
+        BidonSdk.registerDefaultAdapters()
 
         BidonSdk.initialize(appKey: appKey) {
             print("[ISBidonCustomAdapter] ISBidonCustomAdapter init successed")
-            BidonSdk.registerDefaultAdapters()
             
             delegate.onInitDidSucceed()
         }
