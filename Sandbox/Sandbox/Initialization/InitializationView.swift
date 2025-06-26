@@ -73,6 +73,12 @@ struct InitializationView: View {
                                 Text("Advanced")
                             }
                         }
+                        
+                        Section(header: Text("Debug Tools")) {
+                            NavigationLink(destination: SdkInitializationView()) {
+                                Text("Manual SDK Initialization")
+                            }
+                        }
 
                     }
                     .padding(.bottom, 200)
