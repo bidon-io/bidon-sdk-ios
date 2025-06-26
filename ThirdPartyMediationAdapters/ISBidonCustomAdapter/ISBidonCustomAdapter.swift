@@ -10,7 +10,7 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
     public override func networkSDKVersion() -> String {
        return BidonSdk.sdkVersion
     }
-    
+
     public override func adapterVersion() -> String {
        return "\(BidonSdk.sdkVersion).0.0"
     }
@@ -35,7 +35,7 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
 
         BidonSdk.initialize(appKey: appKey) {
             print("[ISBidonCustomAdapter] ISBidonCustomAdapter init successed")
-            
+
             delegate.onInitDidSucceed()
         }
     }
@@ -72,4 +72,3 @@ public final class ISBidonCustomAdapter: ISBaseNetworkAdapter {
     }
 
 }
-
