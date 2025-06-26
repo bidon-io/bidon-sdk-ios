@@ -79,7 +79,6 @@ struct InitializationView: View {
                                 Text("Manual SDK Initialization")
                             }
                         }
-
                     }
                     .padding(.bottom, 200)
                     .disabled(!vm.initializationState.isIdle)

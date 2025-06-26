@@ -28,7 +28,7 @@ extension AdaptersRepository {
             objc_setAssociatedObject(self, &initializedAdaptersKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-
+  
     func register(className: String) {
         if let cls = NSClassFromString(className) as? Adapter.Type {
             let adapter = cls.init()
