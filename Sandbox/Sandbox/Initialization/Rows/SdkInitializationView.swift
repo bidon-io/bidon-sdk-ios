@@ -11,7 +11,7 @@ import Bidon
 struct SdkInitializationView: View {
     @State private var status: String = "Idle"
     @State private var logs: [String] = []
-    
+
     private let interstitial = Interstitial()
 
     var body: some View {
