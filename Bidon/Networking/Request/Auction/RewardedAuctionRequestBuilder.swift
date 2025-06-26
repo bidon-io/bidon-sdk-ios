@@ -15,7 +15,7 @@ final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdT
         adaptersRepository.all(of: BiddingRewardedAdDemandSourceAdapter.self)
 
         let filteredAdapters = adapters.filter({ adapter in adaptersRepository.initializedIds.contains(where: { $0 == adapter.demandId }) })
-        
+
         return AdaptersInfo(adapters: filteredAdapters)
     }
 

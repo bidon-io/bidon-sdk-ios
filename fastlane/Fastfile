@@ -28,7 +28,8 @@ $targets = [
   "BidonAdapterIronSource",
   "BidonAdapterMyTarget",
   "BidonAdapterMobileFuse",
-  "AppLovinMediationBidonAdapter"
+  "AppLovinMediationBidonAdapter",
+  "ISBidonCustomAdapter"
 ]
 
 # Defenitions ###
@@ -107,7 +108,8 @@ platform :ios do
     build_universal($scheme)
 
     $targets.each do |target|
-      is_adapter = target.include?("BidonAdapter")
+      adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
+      is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
       ver = is_adapter ? adapters_version : version
 
       xcframework($scheme, target, target, ver)
@@ -153,7 +155,8 @@ platform :ios do
     adapters_version = options[:adapters_version] || version + ".1"
 
     $targets.each do |target|
-      is_adapter = target.include?("BidonAdapter")
+      adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
+      is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
       ver = is_adapter ? adapters_version : version
       path = is_adapter ? "/Adapters/#{target}" : ""
 

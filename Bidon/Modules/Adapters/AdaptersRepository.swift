@@ -19,7 +19,7 @@ extension AdaptersRepository {
     var ids: [String] {
         return Array(keys)
     }
-    
+
     var initializedIds: Set<String> {
         get {
             objc_getAssociatedObject(self, &initializedAdaptersKey) as? Set<String> ?? []
@@ -28,7 +28,7 @@ extension AdaptersRepository {
             objc_setAssociatedObject(self, &initializedAdaptersKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
     func register(className: String) {
         if let cls = NSClassFromString(className) as? Adapter.Type {
             let adapter = cls.init()
@@ -53,7 +53,7 @@ extension AdaptersRepository {
             }
         }
     }
-    
+
     func markInitialized(adapter: Adapter) {
         queue.async(flags: .barrier) { [weak self] in
             guard let self else { return }

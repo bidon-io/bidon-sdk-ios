@@ -103,7 +103,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             delegate?.adManager(self, didFailToLoad: .message("SDK is not initialized"), auctionInfo: auctionInfo)
             return
         }
-        
+
         guard state.isIdle else {
             Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
             return

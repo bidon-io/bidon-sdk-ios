@@ -13,7 +13,7 @@ public final class BidonSdk: NSObject {
     enum InitializationState: String {
         case idle, initializing, initialized, failed
     }
-    
+
     lazy var adaptersRepository = AdaptersRepository()
     lazy var environmentRepository = EnvironmentRepository()
 
@@ -38,7 +38,7 @@ public final class BidonSdk: NSObject {
 
     private var initializationState = InitializationState.idle
     private var pendingCompletions: [() -> Void] = []
-    
+
 
     private var isInitialized: Bool = false
 
@@ -150,7 +150,7 @@ public final class BidonSdk: NSObject {
 
         case .initialized:
             Logger.warning("Bidon SDK has already been initialized")
-            
+
             completion()
         }
     }
@@ -198,7 +198,7 @@ public final class BidonSdk: NSObject {
         guard let segment = segment else { return }
         environmentRepository.environment(SegmentManager.self).uid = segment.uid
     }
-    
+
     private func flushPendingCompletions() {
         let completions = pendingCompletions
         pendingCompletions.removeAll()

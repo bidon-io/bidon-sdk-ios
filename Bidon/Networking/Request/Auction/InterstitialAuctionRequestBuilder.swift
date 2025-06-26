@@ -13,9 +13,9 @@ final class InterstitialAuctionRequestBuilder: BaseAuctionRequestBuilder<Interst
         let adapters: [Adapter] =
         adaptersRepository.all(of: DirectInterstitialDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingInterstitialDemandSourceAdapter.self)
-        
+
         let filteredAdapters = adapters.filter({ adapter in adaptersRepository.initializedIds.contains(where: { $0 == adapter.demandId }) })
-        
+
         return AdaptersInfo(adapters: filteredAdapters)
     }
 

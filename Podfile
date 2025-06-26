@@ -208,6 +208,11 @@ target 'AppLovinMediationBidonAdapter' do
   pod 'AppLovinSDK', '~> 13.1'
 end
 
+target 'ISBidonCustomAdapter' do
+  project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
+  pod 'IronSourceSDK', '~> 8.8'
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do

@@ -78,7 +78,7 @@ struct AdaptersInitializator {
 
     var parameters: AdaptersInitialisationParameters
     var repository: AdaptersRepository
-    
+
     private let queue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "com.bidon.initialization.queue"
