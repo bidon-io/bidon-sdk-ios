@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192904CC306F9DCF03A2EFC8 /* Pods_ISBidonCustomAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F36F2740E993A60E1ED1596C /* Pods_ISBidonCustomAdapter.framework */; };
 		498053682DD495E700ED737F /* BidonMediationAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053592DD495E700ED737F /* BidonMediationAdapter.h */; };
 		498053692DD495E700ED737F /* BidonMediationAdapter+Interstitial.h in Headers */ = {isa = PBXBuildFile; fileRef = 4980535D2DD495E700ED737F /* BidonMediationAdapter+Interstitial.h */; };
 		4980536A2DD495E700ED737F /* BannerAdKeeper.h in Headers */ = {isa = PBXBuildFile; fileRef = 498053632DD495E700ED737F /* BannerAdKeeper.h */; };
@@ -26,10 +27,36 @@
 		498053782DD495E700ED737F /* BannerAdKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 498053642DD495E700ED737F /* BannerAdKeeper.m */; };
 		498053792DD495E700ED737F /* BidonMediationAdapter+Interstitial.m in Sources */ = {isa = PBXBuildFile; fileRef = 4980535E2DD495E700ED737F /* BidonMediationAdapter+Interstitial.m */; };
 		498053812DD4B54C00ED737F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498053802DD4B54C00ED737F /* Bidon.framework */; };
+		49D847EE2E0C0AFF000214FD /* IronSource.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9A4904C2E0ADC7F0067F6D8 /* IronSource.xcframework */; };
+		49D847EF2E0C0AFF000214FD /* IronSource.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9A4904C2E0ADC7F0067F6D8 /* IronSource.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B94D02832E0AE8E0004D118C /* ISBidonCustomAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B94D02812E0AE8E0004D118C /* ISBidonCustomAdapter.swift */; };
+		B98EDDB72E0AF0C5004BDBAD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B98EDDB62E0AF0C5004BDBAD /* Bidon.framework */; };
+		B98EDDC02E0AF489004BDBAD /* ISBidonCustomAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = B98EDDBF2E0AF489004BDBAD /* ISBidonCustomAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B98EDDC92E0BD83A004BDBAD /* ISFullscreenAdInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC22E0BD83A004BDBAD /* ISFullscreenAdInstance.swift */; };
+		B98EDDCA2E0BD83A004BDBAD /* ISBidonCustomInterstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC42E0BD83A004BDBAD /* ISBidonCustomInterstitial.swift */; };
+		B98EDDCB2E0BD83A004BDBAD /* ISFullscreenAdKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC72E0BD83A004BDBAD /* ISFullscreenAdKeeper.swift */; };
+		B98EDDCC2E0BD83A004BDBAD /* ISAdKeeperFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC52E0BD83A004BDBAD /* ISAdKeeperFactory.swift */; };
+		B98EDDCD2E0BD83A004BDBAD /* ISBannerAdKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC62E0BD83A004BDBAD /* ISBannerAdKeeper.swift */; };
+		B98EDDCE2E0BD83A004BDBAD /* ISBannerAdInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B98EDDC12E0BD83A004BDBAD /* ISBannerAdInstance.swift */; };
 		FC68A62C0C650105751A8B9A /* Pods_AppLovinMediationBidonAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		49D847F02E0C0AFF000214FD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				49D847EF2E0C0AFF000214FD /* IronSource.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		08A68DC6895E05EFA81196D9 /* Pods-ISBidonCustomAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ISBidonCustomAdapter.release.xcconfig"; path = "Target Support Files/Pods-ISBidonCustomAdapter/Pods-ISBidonCustomAdapter.release.xcconfig"; sourceTree = "<group>"; };
 		498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		498053542DD495E700ED737F /* BannerAdInstance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerAdInstance.h; sourceTree = "<group>"; };
 		498053552DD495E700ED737F /* BannerAdInstance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BannerAdInstance.m; sourceTree = "<group>"; };
@@ -51,8 +78,22 @@
 		498053662DD495E700ED737F /* FullscreenAdKeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FullscreenAdKeeper.m; sourceTree = "<group>"; };
 		498053802DD4B54C00ED737F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.debug.xcconfig"; sourceTree = "<group>"; };
+		A2C54BACC61508AD3E832538 /* Pods-ISBidonCustomAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ISBidonCustomAdapter.debug.xcconfig"; path = "Target Support Files/Pods-ISBidonCustomAdapter/Pods-ISBidonCustomAdapter.debug.xcconfig"; sourceTree = "<group>"; };
 		B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AppLovinMediationBidonAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppLovinMediationBidonAdapter.release.xcconfig"; path = "Target Support Files/Pods-AppLovinMediationBidonAdapter/Pods-AppLovinMediationBidonAdapter.release.xcconfig"; sourceTree = "<group>"; };
+		B94D027A2E0AE886004D118C /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B94D02812E0AE8E0004D118C /* ISBidonCustomAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISBidonCustomAdapter.swift; sourceTree = "<group>"; };
+		B958EC2E2E0AA7F8007D13B8 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98EDDB62E0AF0C5004BDBAD /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B98EDDBF2E0AF489004BDBAD /* ISBidonCustomAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ISBidonCustomAdapter.h; sourceTree = "<group>"; };
+		B98EDDC12E0BD83A004BDBAD /* ISBannerAdInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISBannerAdInstance.swift; sourceTree = "<group>"; };
+		B98EDDC22E0BD83A004BDBAD /* ISFullscreenAdInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISFullscreenAdInstance.swift; sourceTree = "<group>"; };
+		B98EDDC42E0BD83A004BDBAD /* ISBidonCustomInterstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISBidonCustomInterstitial.swift; sourceTree = "<group>"; };
+		B98EDDC52E0BD83A004BDBAD /* ISAdKeeperFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISAdKeeperFactory.swift; sourceTree = "<group>"; };
+		B98EDDC62E0BD83A004BDBAD /* ISBannerAdKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISBannerAdKeeper.swift; sourceTree = "<group>"; };
+		B98EDDC72E0BD83A004BDBAD /* ISFullscreenAdKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISFullscreenAdKeeper.swift; sourceTree = "<group>"; };
+		B9A4904C2E0ADC7F0067F6D8 /* IronSource.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = IronSource.xcframework; path = ../Pods/IronSourceSDK/IronSource/IronSource.xcframework; sourceTree = "<group>"; };
+		F36F2740E993A60E1ED1596C /* Pods_ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,12 +106,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B94D02772E0AE886004D118C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98EDDB72E0AF0C5004BDBAD /* Bidon.framework in Frameworks */,
+				49D847EE2E0C0AFF000214FD /* IronSource.xcframework in Frameworks */,
+				192904CC306F9DCF03A2EFC8 /* Pods_ISBidonCustomAdapter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		4980531C2DD4958B00ED737F = {
 			isa = PBXGroup;
 			children = (
+				B94D02822E0AE8E0004D118C /* ISBidonCustomAdapter */,
 				498053522DD495DA00ED737F /* AppLovinMediationBidonAdapter */,
 				498053262DD4958B00ED737F /* Products */,
 				727ED95A7254C35385A9D1C2 /* Pods */,
@@ -82,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */,
+				B94D027A2E0AE886004D118C /* ISBidonCustomAdapter.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,16 +185,53 @@
 			children = (
 				9A9FAEDFBA665B89EAC791A3 /* Pods-AppLovinMediationBidonAdapter.debug.xcconfig */,
 				B288D56E6706E718EE673939 /* Pods-AppLovinMediationBidonAdapter.release.xcconfig */,
+				A2C54BACC61508AD3E832538 /* Pods-ISBidonCustomAdapter.debug.xcconfig */,
+				08A68DC6895E05EFA81196D9 /* Pods-ISBidonCustomAdapter.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		B94D02822E0AE8E0004D118C /* ISBidonCustomAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				B98EDDC32E0BD83A004BDBAD /* AdInstances */,
+				B98EDDC82E0BD83A004BDBAD /* Keeper */,
+				B98EDDBF2E0AF489004BDBAD /* ISBidonCustomAdapter.h */,
+				B94D02812E0AE8E0004D118C /* ISBidonCustomAdapter.swift */,
+				B98EDDC42E0BD83A004BDBAD /* ISBidonCustomInterstitial.swift */,
+			);
+			path = ISBidonCustomAdapter;
+			sourceTree = "<group>";
+		};
+		B98EDDC32E0BD83A004BDBAD /* AdInstances */ = {
+			isa = PBXGroup;
+			children = (
+				B98EDDC12E0BD83A004BDBAD /* ISBannerAdInstance.swift */,
+				B98EDDC22E0BD83A004BDBAD /* ISFullscreenAdInstance.swift */,
+			);
+			path = AdInstances;
+			sourceTree = "<group>";
+		};
+		B98EDDC82E0BD83A004BDBAD /* Keeper */ = {
+			isa = PBXGroup;
+			children = (
+				B98EDDC52E0BD83A004BDBAD /* ISAdKeeperFactory.swift */,
+				B98EDDC62E0BD83A004BDBAD /* ISBannerAdKeeper.swift */,
+				B98EDDC72E0BD83A004BDBAD /* ISFullscreenAdKeeper.swift */,
+			);
+			path = Keeper;
+			sourceTree = "<group>";
+		};
 		E1ACF9C7F3B0D16F77C7BD90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B98EDDB62E0AF0C5004BDBAD /* Bidon.framework */,
+				B9A4904C2E0ADC7F0067F6D8 /* IronSource.xcframework */,
+				B958EC2E2E0AA7F8007D13B8 /* Bidon.framework */,
 				498053802DD4B54C00ED737F /* Bidon.framework */,
 				B10D0183D7620A5240001B73 /* Pods_AppLovinMediationBidonAdapter.framework */,
+				F36F2740E993A60E1ED1596C /* Pods_ISBidonCustomAdapter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,6 +252,14 @@
 				4980536E2DD495E700ED737F /* AdKeeperFactory.h in Headers */,
 				4980536F2DD495E700ED737F /* BidonMediationAdapter+Banner.h in Headers */,
 				498053702DD495E700ED737F /* BidonMediationAdapter+Rewarded.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B94D02752E0AE886004D118C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98EDDC02E0AF489004BDBAD /* ISBidonCustomAdapter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +285,27 @@
 			productReference = 498053492DD495D400ED737F /* AppLovinMediationBidonAdapter.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B94D02792E0AE886004D118C /* ISBidonCustomAdapter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B94D027E2E0AE886004D118C /* Build configuration list for PBXNativeTarget "ISBidonCustomAdapter" */;
+			buildPhases = (
+				A9870B561E70086AC4567B4F /* [CP] Check Pods Manifest.lock */,
+				B94D02752E0AE886004D118C /* Headers */,
+				B94D02762E0AE886004D118C /* Sources */,
+				B94D02772E0AE886004D118C /* Frameworks */,
+				B94D02782E0AE886004D118C /* Resources */,
+				A4F0015AAD96F7DFE9D1D00E /* [CP] Copy Pods Resources */,
+				49D847F02E0C0AFF000214FD /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ISBidonCustomAdapter;
+			productName = ISBidonCustomAdapter;
+			productReference = B94D027A2E0AE886004D118C /* ISBidonCustomAdapter.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,10 +313,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					498053482DD495D400ED737F = {
 						CreatedOnToolsVersion = 16.0;
+					};
+					B94D02792E0AE886004D118C = {
+						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
@@ -215,12 +338,20 @@
 			projectRoot = "";
 			targets = (
 				498053482DD495D400ED737F /* AppLovinMediationBidonAdapter */,
+				B94D02792E0AE886004D118C /* ISBidonCustomAdapter */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		498053472DD495D400ED737F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B94D02782E0AE886004D118C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -252,6 +383,45 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A4F0015AAD96F7DFE9D1D00E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ISBidonCustomAdapter/Pods-ISBidonCustomAdapter-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ISBidonCustomAdapter/Pods-ISBidonCustomAdapter-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ISBidonCustomAdapter/Pods-ISBidonCustomAdapter-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A9870B561E70086AC4567B4F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ISBidonCustomAdapter-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -268,6 +438,20 @@
 				498053772DD495E700ED737F /* FullscreenAdKeeper.m in Sources */,
 				498053782DD495E700ED737F /* BannerAdKeeper.m in Sources */,
 				498053792DD495E700ED737F /* BidonMediationAdapter+Interstitial.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B94D02762E0AE886004D118C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B98EDDC92E0BD83A004BDBAD /* ISFullscreenAdInstance.swift in Sources */,
+				B98EDDCA2E0BD83A004BDBAD /* ISBidonCustomInterstitial.swift in Sources */,
+				B98EDDCB2E0BD83A004BDBAD /* ISFullscreenAdKeeper.swift in Sources */,
+				B98EDDCC2E0BD83A004BDBAD /* ISAdKeeperFactory.swift in Sources */,
+				B98EDDCD2E0BD83A004BDBAD /* ISBannerAdKeeper.swift in Sources */,
+				B98EDDCE2E0BD83A004BDBAD /* ISBannerAdInstance.swift in Sources */,
+				B94D02832E0AE8E0004D118C /* ISBidonCustomAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,6 +640,91 @@
 			};
 			name = Release;
 		};
+		B94D027F2E0AE886004D118C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A2C54BACC61508AD3E832538 /* Pods-ISBidonCustomAdapter.debug.xcconfig */;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -no-verify-emitted-module-interface";
+				PRODUCT_BUNDLE_IDENTIFIER = appodeal.ISBidonCustomAdapter;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B94D02802E0AE886004D118C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 08A68DC6895E05EFA81196D9 /* Pods-ISBidonCustomAdapter.release.xcconfig */;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -no-verify-emitted-module-interface";
+				PRODUCT_BUNDLE_IDENTIFIER = appodeal.ISBidonCustomAdapter;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -473,6 +742,15 @@
 			buildConfigurations = (
 				4980534D2DD495D400ED737F /* Debug */,
 				4980534E2DD495D400ED737F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B94D027E2E0AE886004D118C /* Build configuration list for PBXNativeTarget "ISBidonCustomAdapter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B94D027F2E0AE886004D118C /* Debug */,
+				B94D02802E0AE886004D118C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

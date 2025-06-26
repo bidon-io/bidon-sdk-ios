@@ -16,9 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) double ecpm;
 @property (nonatomic, copy) NSString *demandId;
 @property (nonatomic, strong) id<BDNFullscreenAd> adInstance;
+@property (nonatomic, strong) id<BDNAd> ad;
 
 - (instancetype)initWithEcpm:(double)ecpm
                     demandId:(NSString *)demandId
+                          ad:(id<BDNAd>)ad
                   adInstance:(id<BDNFullscreenAd>)adInstance;
 
 @end

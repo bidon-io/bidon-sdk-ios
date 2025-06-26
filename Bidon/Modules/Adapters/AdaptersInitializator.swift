@@ -13,18 +13,20 @@ struct AdaptersInitializator {
         let timeout: TimeInterval
         let adapter: InitializableAdapter
         let config: AdaptersInitialisationParameters.AdapterConfiguration
-
+        let adaptersRepository: AdaptersRepository
         var timestamp: TimeInterval = 0
         var timer: Timer?
 
         init(
             timeout: TimeInterval,
             adapter: InitializableAdapter,
-            config: AdaptersInitialisationParameters.AdapterConfiguration
+            config: AdaptersInitialisationParameters.AdapterConfiguration,
+            adaptersRepository: AdaptersRepository
         ) {
             self.timeout = timeout
             self.adapter = adapter
             self.config = config
+            self.adaptersRepository = adaptersRepository
         }
 
         override func main() {
@@ -64,6 +66,7 @@ struct AdaptersInitializator {
 
                     switch result {
                     case .success:
+                        self.adaptersRepository.markInitialized(adapter: self.adapter)
                         Logger.info("\(self.adapter.name) adapter was initilized in \(time)s")
                     case .failure(let error):
                         Logger.warning("\(self.adapter.name) adapter returned initialization error \(error) in \(time)s")
@@ -74,7 +77,7 @@ struct AdaptersInitializator {
     }
 
     var parameters: AdaptersInitialisationParameters
-    var respoitory: AdaptersRepository
+    var repository: AdaptersRepository
 
     private let queue: OperationQueue = {
         let queue = OperationQueue()
@@ -86,24 +89,25 @@ struct AdaptersInitializator {
     private var operations: [InitializeAdapterTimeoutGuardOperation] {
         parameters.adapters.compactMap { config in
             guard
-                let adapter: InitializableAdapter = respoitory[config.demandId],
+                let adapter: InitializableAdapter = repository[config.demandId],
                 !adapter.isInitialized
             else { return nil }
 
             return InitializeAdapterTimeoutGuardOperation(
                 timeout: parameters.tmax,
                 adapter: adapter,
-                config: config
+                config: config,
+                adaptersRepository: repository
             )
         }
     }
 
     init(
         parameters: AdaptersInitialisationParameters,
-        respoitory: AdaptersRepository
+        repository: AdaptersRepository
     ) {
         self.parameters = parameters
-        self.respoitory = respoitory
+        self.repository = repository
     }
 
     func initialize(completion: @escaping () -> ()) {

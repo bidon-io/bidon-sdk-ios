@@ -14,7 +14,9 @@ final class RewardedAuctionRequestBuilder: BaseAuctionRequestBuilder<RewardedAdT
         adaptersRepository.all(of: DirectRewardedAdDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingRewardedAdDemandSourceAdapter.self)
 
-        return AdaptersInfo(adapters: adapters)
+        let filteredAdapters = adapters.filter({ adapter in adaptersRepository.initializedIds.contains(where: { $0 == adapter.demandId }) })
+
+        return AdaptersInfo(adapters: filteredAdapters)
     }
 
     override var adObject: AuctionRequestAdObject {

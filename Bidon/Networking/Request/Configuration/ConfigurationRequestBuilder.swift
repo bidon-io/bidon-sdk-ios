@@ -10,8 +10,9 @@ import Foundation
 
 final class ConfigurationRequestBuilder: BaseRequestBuilder {
     var adapters: AdaptersInfo {
-        let adapters: [Adapter] = adaptersRepository.all()
-
+        let adapters: [Adapter] = adaptersRepository.ids.compactMap { key in
+            adaptersRepository[key] as Adapter?
+        }
         return AdaptersInfo(adapters: adapters)
     }
 }

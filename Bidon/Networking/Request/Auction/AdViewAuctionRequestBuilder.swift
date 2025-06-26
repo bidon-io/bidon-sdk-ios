@@ -14,7 +14,9 @@ final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeC
         adaptersRepository.all(of: DirectAdViewDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingAdViewDemandSourceAdapter.self)
 
-        return AdaptersInfo(adapters: adapters)
+        let filteredAdapters = adapters.filter({ adapter in adaptersRepository.initializedIds.contains(where: { $0 == adapter.demandId }) })
+
+        return AdaptersInfo(adapters: filteredAdapters)
     }
 
     override var adObject: AuctionRequestAdObject {
