@@ -38,7 +38,7 @@ public final class BidonSdk: NSObject {
 
     private var initializationState = InitializationState.idle
     private var pendingCompletions: [() -> Void] = []
-  
+
     private var isInitialized: Bool = false
 
     static let shared: BidonSdk = BidonSdk()
