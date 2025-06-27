@@ -20,22 +20,22 @@ enum RawAdServiceError: Error {
 
 final class RawAdService: NSObject, AdService {
     var mediation: Mediation { .none }
-    
+
     var verstion: String { "-" }
-    
+
     var segmentId: String?
-    
+
     var parameters: AdServiceParameters = RawAdServiceParameters()
-    
+
     private lazy var interstitial = RawInterstitialAdWrapper()
     private lazy var rewardedAd = RawRewardedAdWrapper()
-    
+
     override init() {
         super.init()
-        
+
         BidonSdk.logLevel = Bidon.Logger.Level(.debug)
     }
-    
+
     func initialize() async {
         await withCheckedContinuation { continuation in
             BidonSdk.initialize(appKey: Constants.Bidon.appKey) {
@@ -43,7 +43,7 @@ final class RawAdService: NSObject, AdService {
             }
         }
     }
-    
+
     func adEventPublisher(adType: AdType) -> AnyPublisher<AdEventModel, Never> {
         switch adType {
         case .interstitial:
@@ -54,7 +54,7 @@ final class RawAdService: NSObject, AdService {
             fatalError("Not implemented")
         }
     }
-    
+
     func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never> {
         switch adType {
         case .interstitial:
@@ -65,7 +65,7 @@ final class RawAdService: NSObject, AdService {
             fatalError("Not implemented")
         }
     }
-    
+
     func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws {
         switch adType {
         case .interstitial:
@@ -76,7 +76,7 @@ final class RawAdService: NSObject, AdService {
             throw RawAdServiceError.unsupported
         }
     }
-    
+
     func canShow(adType: AdType) -> Bool {
         switch adType {
         case .interstitial:
@@ -87,7 +87,7 @@ final class RawAdService: NSObject, AdService {
             return false
         }
     }
-    
+
     func show(adType: AdType) async throws {
         switch adType {
         case .interstitial:
@@ -98,7 +98,7 @@ final class RawAdService: NSObject, AdService {
             throw RawAdServiceError.unsupported
         }
     }
-    
+
     func notify(
         loss ad: Ad,
         adType: AdType
@@ -112,7 +112,7 @@ final class RawAdService: NSObject, AdService {
             break
         }
     }
-    
+
     func notify(
         win ad: Ad,
         adType: AdType
@@ -127,4 +127,3 @@ final class RawAdService: NSObject, AdService {
         }
     }
 }
-

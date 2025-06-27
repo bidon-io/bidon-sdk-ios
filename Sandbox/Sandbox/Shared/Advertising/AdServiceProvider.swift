@@ -18,12 +18,12 @@ final class AdServiceProvider: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     static let shared = AdServiceProvider()
-    
+
     var service: AdService = RawAdService()
-    
+
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) {
         setupAppsFlyer()
         setupMeta(
@@ -31,11 +31,11 @@ final class AdServiceProvider: ObservableObject {
             launchOptions: launchOptions
         )
     }
-    
+
     private func setupAppsFlyer() {
         AppsFlyerLib.shared().appsFlyerDevKey = Constants.AppsFlyer.devKey
         AppsFlyerLib.shared().appleAppID = Constants.AppsFlyer.appId
-        
+
         unowned let unownedSelf = self
         NotificationCenter
             .default
@@ -43,20 +43,20 @@ final class AdServiceProvider: ObservableObject {
             .sink(receiveValue: unownedSelf.receiveApplicationDidBecomeActive)
             .store(in: &cancellables)
     }
-    
+
     private func setupMeta(
         application: UIApplication,
-        launchOptions: [UIApplication.LaunchOptionsKey : Any]?
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) {
         Settings.shared.appID = Constants.Facebook.appId
         Settings.shared.clientToken = Constants.Facebook.clientToken
-        
+
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
     }
-    
+
     private func receiveApplicationDidBecomeActive(notification: Notification) {
         AppsFlyerLib.shared().start()
     }
@@ -69,20 +69,20 @@ extension AppsFlyerLib {
         adType: Bidon.AdType,
         placement: String = ""
     ) {
-        
+
         let adRevenueData = AFAdRevenueData(
             monetizationNetwork: ad.networkName,
             mediationNetwork: .appodeal,
             currencyIso4217Code: adRevenue.currency,
             eventRevenue: adRevenue.revenue as NSNumber
         )
-        
+
         var additionalParameters: [String: Any] = [:]
         additionalParameters[kAppsFlyerAdRevenueAdType] = adType.rawValue
 //        Should we remove this line?
 //        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
         additionalParameters[kAppsFlyerAdRevenuePlacement] = placement
-        
+
         logAdRevenue(
             adRevenueData,
             additionalParameters: additionalParameters

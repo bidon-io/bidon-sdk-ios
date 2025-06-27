@@ -26,7 +26,7 @@ extension BidMachineDirectInterstitialDemandProvider: InterstitialDemandProvider
             )
             return
         }
-        
+
         ad.ad.controller = viewController
         ad.ad.presentAd()
     }

@@ -27,7 +27,7 @@ struct Wave: Shape {
         let yOffset = CGFloat(1 - percent) * (rect.height - 4 * waveHeight) + 2 * waveHeight
         let startAngle = offset
         let endAngle = offset + Angle(degrees: 360)
-        
+
         p.move(
             to: CGPoint(
                 x: 0,

@@ -19,12 +19,12 @@ public protocol AdViewDelegate: AdObjectDelegate {
         _ adView: AdView & UIView,
         willPresentScreen ad: Ad
     )
-    
+
     func adView(
         _ adView: AdView & UIView,
         didDismissScreen ad: Ad
     )
-    
+
     func adView(
         _ adView: AdView & UIView,
         willLeaveApplication ad: Ad

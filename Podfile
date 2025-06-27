@@ -110,6 +110,10 @@ def consent_manager
   pod "StackConsentManager", '~> 3.0.0'
 end
 
+def swiftlint
+  pod 'SwiftLint'
+end
+
 
 
 # Targets
@@ -204,6 +208,11 @@ target 'AppLovinMediationBidonAdapter' do
   pod 'AppLovinSDK', '~> 13.1'
 end
 
+target 'ISBidonCustomAdapter' do
+  project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
+  pod 'IronSourceSDK', '~> 8.8'
+end
+
 # Tests
 
 target 'Tests-ObjectiveC' do
@@ -234,6 +243,7 @@ end
 target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
   consent_manager
+  swiftlint
   applovin
   appsflyer
   bidmachine

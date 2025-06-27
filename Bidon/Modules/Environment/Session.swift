@@ -23,5 +23,3 @@ protocol Session {
     var batteryLevelPercentage: Float { get }
     var CPUUsagePercentage: Float { get }
 }
-
-

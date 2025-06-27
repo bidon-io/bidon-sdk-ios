@@ -19,9 +19,9 @@ extension FBInterstitialAd: DemandAd {
 
 final class MetaAudienceNetworkBiddingInterstitialDemandProvider: MetaAudienceNetworkBiddingBaseDemandProvider<FBInterstitialAd> {
     private var interstitial: FBInterstitialAd!
-    
+
     private var response: DemandProviderResponse?
-    
+
     override func load(
         payload: MetaAudienceNetworkBiddingPayload,
         adUnitExtras: MetaAudienceNetworkAdUnitExtras,
@@ -29,10 +29,10 @@ final class MetaAudienceNetworkBiddingInterstitialDemandProvider: MetaAudienceNe
     ) {
         let interstitial = FBInterstitialAd(placementID: adUnitExtras.placementId)
         interstitial.delegate = self
-        
+
         self.interstitial = interstitial
         self.response = response
-        
+
         interstitial.load(withBidPayload: payload.payload)
     }
 }
@@ -61,21 +61,21 @@ extension MetaAudienceNetworkBiddingInterstitialDemandProvider: FBInterstitialAd
         response?(.success(interstitialAd))
         response = nil
     }
-    
+
     func interstitialAd(_ interstitialAd: FBInterstitialAd, didFailWithError error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func interstitialAdWillLogImpression(_ interstitialAd: FBInterstitialAd) {
         revenueDelegate?.provider(self, didLogImpression: interstitialAd)
         delegate?.providerWillPresent(self)
     }
-    
+
     func interstitialAdDidClick(_ interstitialAd: FBInterstitialAd) {
         delegate?.providerDidClick(self)
     }
-    
+
     func interstitialAdDidClose(_ interstitialAd: FBInterstitialAd) {
         delegate?.providerDidHide(self)
     }

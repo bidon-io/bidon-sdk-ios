@@ -14,7 +14,7 @@ struct AuctionRequest: Request {
     var headers: [HTTPTask.HTTPHeader: String] = .default()
     var timeout: TimeInterval = 10
     var body: RequestBody?
-    
+
     struct RequestBody: Encodable, Tokenized {
         struct AdObjectModel: Encodable {
             let auctionId: String
@@ -25,7 +25,7 @@ struct AuctionRequest: Request {
             var interstitial: InterstitialAdTypeContextModel?
             var rewarded: RewardedAdTypeContextModel?
             let demands: EncodableBiddingDemandTokens
-            
+
             enum CodingKeys: String, CodingKey {
                 case auctionId = "auction_id"
                 case auctionKey = "auction_key"
@@ -37,7 +37,7 @@ struct AuctionRequest: Request {
                 case demands
             }
         }
-        
+
         let device: DeviceModel
         let session: SessionModel
         let app: AppModel
@@ -50,7 +50,7 @@ struct AuctionRequest: Request {
         var token: String?
         let test: Bool
     }
-    
+
     struct ResponseBody: Decodable, Tokenized {
         let adUnits: [AdUnitModel]
         let noBids: [AdUnitModel]?
@@ -62,7 +62,7 @@ struct AuctionRequest: Request {
         let pricefloor: Price
         let auctionTimeout: Float
         var externalWinNotifications: Bool
-        
+
         enum CodingKeys: String, CodingKey {
             case adUnits
             case segment
@@ -75,7 +75,7 @@ struct AuctionRequest: Request {
             case noBids
             case externalWinNotifications
         }
-        
+
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             adUnits = try container.decode([AdUnitModel].self, forKey: .adUnits)
@@ -97,16 +97,16 @@ extension AuctionRequest {
     init<T: AuctionRequestBuilder>(_ build: (T) -> ()) {
         let builder = T()
         build(builder)
-        
+
         self.route = .complex(.adType(builder.adType), .auction)
-        
+
         self.body = RequestBody(
             device: builder.device,
             session: builder.session,
             app: builder.app,
             user: builder.user,
             regs: builder.regulations,
-            adapters: builder.adapters, 
+            adapters: builder.adapters,
             ext: builder.encodedExt,
             segment: builder.segment,
             adObject: builder.adObject,
@@ -119,5 +119,5 @@ extension AuctionRequest {
 extension AuctionRequest: Equatable {
     static func == (lhs: AuctionRequest, rhs: AuctionRequest) -> Bool {
         return lhs.body?.adObject.auctionId == rhs.body?.adObject.auctionId
-    }    
+    }
 }

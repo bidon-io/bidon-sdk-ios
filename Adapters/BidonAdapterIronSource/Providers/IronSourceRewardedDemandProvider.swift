@@ -11,18 +11,18 @@ import IronSource
 
 final class IronSourceRewardedDemandAd: DemandAd {
     public var id: String
-    
+
     init(id: String) {
         self.id = id
     }
 }
 
 final class IronSourceRewardedDemandProvider: IronSourceBaseDemandProvider<IronSourceRewardedDemandAd> {
-    
+
     private var response: DemandProviderResponse?
     private var adUnitExtras: IronSourceAdUnitExtras?
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     override func load(
         pricefloor: Price,
         adUnitExtras: IronSourceAdUnitExtras,
@@ -30,7 +30,7 @@ final class IronSourceRewardedDemandProvider: IronSourceBaseDemandProvider<IronS
     ) {
         self.response = response
         self.adUnitExtras = adUnitExtras
-        
+
         api.loadVideo(
             instance: adUnitExtras.instanceId,
             delegate: self
@@ -56,31 +56,31 @@ extension IronSourceRewardedDemandProvider: ISDemandOnlyRewardedVideoDelegate {
         response?(.success(ad))
         response = nil
     }
-    
+
     func rewardedVideoDidFailToLoadWithError(_ error: Error!, instanceId: String!) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func rewardedVideoDidOpen(_ instanceId: String!) {
         delegate?.providerWillPresent(self)
-        
+
         let ad = IronSourceRewardedDemandAd(id: instanceId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
-    
+
     func rewardedVideoDidClick(_ instanceId: String!) {
         delegate?.providerDidClick(self)
     }
-    
+
     func rewardedVideoAdRewarded(_ instanceId: String!) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
-    
+
     func rewardedVideoDidClose(_ instanceId: String!) {
         delegate?.providerDidHide(self)
     }
-    
+
     func rewardedVideoDidFailToShowWithError(_ error: Error!, instanceId: String!) {
         let ad = IronSourceInterstitialDemandAd(id: instanceId)
         delegate?.provider(

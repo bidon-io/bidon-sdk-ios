@@ -13,7 +13,7 @@ import Bidon
 @main
 struct SandboxApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -24,16 +24,16 @@ struct SandboxApp: App {
 
 final class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
-    
+
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         AdServiceProvider.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
-        
+
         return true
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 
 
 final class AdViewStatisticsRequestBuilder: BaseStatisticRequestBuilder<BannerAdTypeContext> {
-    override func transform<T>(report: T) -> EncodableAuctionReportModel where T : AuctionReport {
+    override func transform<T>(report: T) -> EncodableAuctionReportModel where T: AuctionReport {
         return EncodableAuctionReportModel(
             report: report,
             banner: BannerAdTypeContextModel(context)

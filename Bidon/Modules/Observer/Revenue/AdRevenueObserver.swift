@@ -13,7 +13,7 @@ typealias RegisterAdRevenue = (Ad, AdRevenue) -> ()
 
 protocol AdRevenueObserver: AnyObject {
     var onRegisterAdRevenue: RegisterAdRevenue? { get set }
-    
+
     func observe<BidType>(_ bid: BidType)
     where BidType: Bid, BidType.ProviderType: DemandProvider
 }

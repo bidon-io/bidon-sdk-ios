@@ -17,7 +17,7 @@ struct GeoModel: Geo, Codable {
     var city: String?
     var zip: String?
     var utcoffset: Int
-    
+
     init(_ geo: Geo) {
         self.lat = geo.lat
         self.lon = geo.lon

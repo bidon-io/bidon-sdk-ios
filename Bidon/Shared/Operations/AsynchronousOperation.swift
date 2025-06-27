@@ -15,22 +15,22 @@ internal class AsynchronousOperation: Operation {
         case finished = "Finished"
         fileprivate var keyPath: String { return "is" + self.rawValue }
     }
-    
+
     @Atomic
     private var _state: State = .ready
-    
+
     override var isAsynchronous: Bool {
         return true
     }
-    
+
     override var isExecuting: Bool {
         return state == .executing
     }
-    
+
     override var isFinished: Bool {
         return state == .finished
     }
-    
+
     final override func start() {
         if self.isCancelled {
             state = .finished
@@ -39,7 +39,7 @@ internal class AsynchronousOperation: Operation {
             main()
         }
     }
-    
+
     open override func main() {
         if self.isCancelled {
             state = .finished
@@ -47,11 +47,11 @@ internal class AsynchronousOperation: Operation {
             state = .executing
         }
     }
-    
+
     final func finish() {
         state = .finished
     }
-    
+
     /// Thread-safe computed state value
     var state: State {
         get { _state }
@@ -59,7 +59,7 @@ internal class AsynchronousOperation: Operation {
             let oldValue = state
             willChangeValue(forKey: state.keyPath)
             willChangeValue(forKey: newValue.keyPath)
-            $_state.wrappedValue = newValue 
+            $_state.wrappedValue = newValue
             didChangeValue(forKey: state.keyPath)
             didChangeValue(forKey: oldValue.keyPath)
         }

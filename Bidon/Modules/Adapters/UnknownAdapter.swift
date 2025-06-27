@@ -13,14 +13,14 @@ struct UnknownAdapter: Adapter, Hashable {
     var name: String
     var adapterVersion: String
     var sdkVersion: String
-    
+
     init(demandId: String) {
         self.demandId = demandId
         self.name = "Unknown"
         self.adapterVersion = ""
         self.sdkVersion = ""
     }
-    
+
     init() {
         fatalError("UnknownAdapter can't be created through default initializer")
     }

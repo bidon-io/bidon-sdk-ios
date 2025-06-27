@@ -13,15 +13,15 @@ final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionCon
         return directDemandWrappedAdapters() +
         biddingDemandWrappedAdapters()
     }
-    
+
     private func directDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
         let direct: [DirectRewardedAdDemandSourceAdapter] = adaptersRepository.all()
-        
+
         return direct.compactMap { adapter in
             do {
                 let provider = try adapter.directRewardedAdDemandProvider()
                 let wrappedProvider: AnyRewardedAdDemandProvider = try DirectDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider
@@ -32,14 +32,14 @@ final class RewardedConcurrentAuctionControllerBuilder: BaseConcurrentAuctionCon
             }
         }
     }
-    
+
     private func biddingDemandWrappedAdapters() -> [AnyDemandSourceAdapter<AnyRewardedAdDemandProvider>] {
         let bidding: [BiddingRewardedAdDemandSourceAdapter] = adaptersRepository.all()
         return bidding.compactMap { adapter in
             do {
                 let provider = try adapter.biddingRewardedAdDemandProvider()
                 let wrappedProvider: AnyRewardedAdDemandProvider = try BiddingDemandProviderWrapper(provider)
-                
+
                 return AnyDemandSourceAdapter(
                     adapter: adapter,
                     provider: wrappedProvider

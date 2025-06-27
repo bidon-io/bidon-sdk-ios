@@ -13,7 +13,7 @@ extension Date {
         case milliseconds
         case seconds
     }
-    
+
     enum MeasurementType {
         case monotonic
         case wall
@@ -30,31 +30,31 @@ extension Date {
             return MeasurementUnits.seconds.convert(wallTimestamp, to: units)
         }
     }
-    
+
     private static var wallTimestamp: TimeInterval {
         Date().timeIntervalSince1970
     }
-    
+
     private static var monotonicTimestamp: TimeInterval {
         var now = time_t()
         var boottime = timeval()
         var size = MemoryLayout<timeval>.stride
-        
+
         let result = sysctlbyname("kern.boottime", &boottime, &size, nil, 0)
         time(&now)
-        
+
         guard
             result == 0,
             boottime.tv_sec > 0
         else {
             return .zero
         }
-        
+
         let uptime = TimeInterval(now - boottime.tv_sec)
         let val = uptime.isFinite && uptime >= 0 ? uptime : .zero
         return val
     }
-    
+
 }
 
 

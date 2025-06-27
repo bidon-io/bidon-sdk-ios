@@ -17,14 +17,14 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             BidonSdk.logLevel = Bidon.Logger.Level(logLevel)
         }
     }
-    
+
     var isTestMode: Bool = false {
         didSet {
             Appodeal.setTestingEnabled(isTestMode)
             BidonSdk.isTestMode = isTestMode
         }
     }
-    
+
     var gameLevel: Int? {
         didSet {
             Appodeal.setCustomStateValue(
@@ -34,7 +34,7 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             BidonSdk.segment.level = gameLevel ?? 0
         }
     }
-    
+
     var userAge: Int? {
         didSet {
             Appodeal.setCustomStateValue(
@@ -44,7 +44,7 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             BidonSdk.segment.age = userAge ?? .zero
         }
     }
-    
+
     var userGender: Gender? {
         didSet {
             Appodeal.setCustomStateValue(
@@ -54,13 +54,13 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             BidonSdk.segment.gender = userGender.map(Bidon.Gender.init) ?? .other
         }
     }
-    
+
     var isPaidApp: Bool = false {
         didSet {
             BidonSdk.segment.isPaid = true
         }
     }
-    
+
     var coppaApplies: Bool? {
         didSet {
             BidonSdk.regulations.coppaApplies = Bidon.COPPAAppliesStatus(coppaApplies)
@@ -69,37 +69,37 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             }
         }
     }
-    
+
     var gdprApplies: Bool? {
         didSet {
             BidonSdk.regulations.gdrpConsent = Bidon.GDPRConsentStatus(gdprApplies)
         }
     }
-    
+
     var usPrivacyString: String? {
         didSet {
             BidonSdk.regulations.usPrivacyString = usPrivacyString
         }
     }
-    
+
     var gdprConsentString: String? {
         didSet {
             BidonSdk.regulations.gdprConsentString = gdprConsentString
         }
     }
-    
+
     var inAppAmount: Double = .zero {
         didSet {
             Appodeal.track(
                 inAppPurchase: inAppAmount as NSNumber,
                 currency: "USD"
             )
-            
+
             BidonSdk.segment.inAppAmount = inAppAmount
         }
     }
-    
-    var extras: [String : AnyHashable] = [:] {
+
+    var extras: [String: AnyHashable] = [:] {
         didSet {
             extras.forEach { key, value in
                 Appodeal.setExtrasValue(value, forKey: key)
@@ -107,8 +107,8 @@ final class AppodealAdServiceParameters: AdServiceParameters {
             }
         }
     }
-    
-    var customAttributes: [String : AnyHashable] = [:] {
+
+    var customAttributes: [String: AnyHashable] = [:] {
         didSet {
             customAttributes.forEach { key, value in
                 Appodeal.setCustomStateValue(value, forKey: key)

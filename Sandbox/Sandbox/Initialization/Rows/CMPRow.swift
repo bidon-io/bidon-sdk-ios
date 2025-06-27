@@ -15,18 +15,18 @@ import StackConsentManager
 
 struct CMPRow: View {
     @ObservedObject var vm = CMPViewModel()
-    
+
     var body: some View {
-        Button(action:vm.updateStatusIfNeeded) {
+        Button(action: vm.updateStatusIfNeeded) {
             HStack(spacing: 10) {
                 Text("Consent Status")
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 Text(vm.status.stringValue)
                     .foregroundColor(.secondary)
-                
+
                 if vm.isLoading {
                     ProgressView()
                 } else {
@@ -48,11 +48,11 @@ struct CMPRow: View {
             Button(action: vm.revoke) {
                 Label("Revoke", systemImage: "xmark.circle.fill")
             }
-            
+
             Button(action: vm.appear) {
                 Label("Request", systemImage: "arrow.clockwise.circle.fill")
             }
-            
+
             Button(action: vm.present) {
                 Label("Present", systemImage: "arrow.up.right.circle.fill")
             }
@@ -64,9 +64,9 @@ struct CMPRow: View {
 final class CMPViewModel: ObservableObject {
     @Published var status: ConsentStatus = .unknown
     @Published var isLoading: Bool = false
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     init() {
         ConsentManager
             .shared
@@ -77,10 +77,10 @@ final class CMPViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
+
     func appear() {
         guard status == .unknown else { return }
-        
+
         isLoading = true
         // TODO: Real COPPA value
         let parameters = ConsentUpdateRequestParameters(
@@ -95,7 +95,7 @@ final class CMPViewModel: ObservableObject {
             self?.isLoading = false
         }
     }
-    
+
     func updateStatusIfNeeded() {
         guard let vc = UIApplication.shared.bd.topViewcontroller else { return }
         isLoading = true
@@ -103,11 +103,11 @@ final class CMPViewModel: ObservableObject {
             self?.isLoading = false
         }
     }
-    
+
     func revoke() {
         ConsentManager.shared.revoke()
     }
-    
+
     func present() {
         isLoading = true
         ConsentManager.shared.load { [weak self] dialog, _ in

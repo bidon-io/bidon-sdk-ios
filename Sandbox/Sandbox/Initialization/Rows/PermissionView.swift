@@ -16,21 +16,21 @@ struct PermissionView: View {
         var permission: Permission
     }
 
-    
+
     @ObservedObject var vm: PermissionViewModel
-    
+
     init(_ model: Model) {
         self.vm = PermissionViewModel(model.permission)
     }
-    
+
     var body: some View {
         Button(action: vm.request) {
             HStack {
                 Text(vm.name)
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 if vm.isRequesting {
                     ProgressView()
                 } else {
@@ -56,22 +56,22 @@ final class PermissionViewModel: ObservableObject {
     @Published var state: PermissionState
     @Published var isRequesting: Bool = false
     @Published var name: String
-    
+
     private let permission: Permission
-    
+
     private var cancellables = Set<AnyCancellable>()
-    
+
     init(_ permission: Permission) {
         self.permission = permission
         self.state = permission.state
         self.name = permission.name
     }
-    
+
     func request() {
         withAnimation { [unowned self] in
             self.isRequesting = true
         }
-        
+
         permission
             .requestPublisher()
             .receive(on: DispatchQueue.main)

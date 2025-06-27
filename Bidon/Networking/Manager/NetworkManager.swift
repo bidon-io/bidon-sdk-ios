@@ -10,11 +10,11 @@ import Foundation
 
 protocol NetworkManager {
     typealias Completion<W: Request> = (Result<W.ResponseBody, HTTPTask.HTTPError>) -> ()
-    
+
     var baseURL: String { get set }
-    
+
     var HTTPHeaders: [String: String] { get set }
-    
+
     func perform<T: Request>(
         request: T,
         completion: @escaping Completion<T>
@@ -37,41 +37,41 @@ extension InjectedValues {
 
 final class PersistentNetworkManager: NetworkManager {
     static let shared = PersistentNetworkManager()
-    
+
     @UserDefaultOptional(Constants.UserDefaultsKey.token)
     private var token: String?
-        
+
     var baseURL: String = Constants.API.baseURL
-    
-    var HTTPHeaders: [String : String] = [:]
-    
+
+    var HTTPHeaders: [String: String] = [:]
+
     func perform<T: Request>(
         request: T,
         completion: @escaping (Result<T.ResponseBody, HTTPTask.HTTPError>) -> ()
     ) {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
-        
+
         var body = request.body
         body?.token = token
-        
+
         var data: Data?
-        
+
         do {
             data = try encoder.encode(body)
         } catch {
             completion(.failure(.encoding(error)))
         }
-        
+
         guard let data = data else { return }
-        
+
         let headers = HTTPHeaders.reduce(into: HTTPTask.HTTPHeaders()) { result, pair in
             let key = HTTPTask.HTTPHeader(stringValue: pair.key)
             result[key] = pair.value
         }.merging(request.headers) { _, second in
             return second
         }
-        
+
         HTTPTask(
             baseURL: baseURL,
             route: request.route,
@@ -87,7 +87,7 @@ final class PersistentNetworkManager: NetworkManager {
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
                     let response = try decoder.decode(T.ResponseBody.self, from: raw)
-                    
+
                     DispatchQueue.main.async { [unowned self] in
                         self.token = response.token
                         completion(.success(response))

@@ -11,7 +11,7 @@ import IronSource
 
 final class IronSourceBannerDemandAd: DemandAd {
     public var id: String
-    
+
     init(id: String) {
         self.id = id
     }
@@ -20,9 +20,9 @@ final class IronSourceBannerDemandAd: DemandAd {
 final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSourceBannerDemandAd> {
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    
+
     let context: AdViewContext
-    
+
     var size: ISBannerSize {
         switch context.format {
         case .banner:
@@ -35,12 +35,12 @@ final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSou
             return ISBannerSize(description: kSizeSmart, width: Int(context.format.preferredSize.width), height: Int(context.format.preferredSize.height))
         }
     }
-        
+
     init(context: AdViewContext, api: IronSourceApi) {
         self.context = context
         super.init(api: api)
     }
-    
+
     override func load(
         pricefloor: Price,
         adUnitExtras: IronSourceAdUnitExtras,
@@ -51,7 +51,7 @@ final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSou
             return
         }
         self.response = response
-        
+
         api.loadBanner(
             instanceId: adUnitExtras.instanceId,
             viewController: viewController,
@@ -62,35 +62,35 @@ final class IronSourceAdViewDemandProvider: IronSourceBaseDemandProvider<IronSou
 }
 
 extension IronSourceAdViewDemandProvider: AdViewDemandProvider {
-    
+
     func container(for ad: IronSourceBannerDemandAd) -> Bidon.AdViewContainer? {
         return api.bannerView(for: ad.id)
     }
-    
+
     func didTrackImpression(for ad: IronSourceBannerDemandAd) { }
 }
 
 extension IronSourceAdViewDemandProvider: ISDemandOnlyBannerDelegate {
-    
+
     func bannerDidLoad(_ bannerView: ISDemandOnlyBannerView!, instanceId: String!) {
         let ad = IronSourceBannerDemandAd(id: instanceId)
         response?(.success(ad))
         response = nil
     }
-    
+
     func bannerDidFailToLoadWithError(_ error: Error!, instanceId: String!) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func didClickBanner(_ instanceId: String!) {
         delegate?.providerDidClick(self)
     }
-    
+
     func bannerWillLeaveApplication(_ instanceId: String!) {}
     func bannerDidShow(_ instanceId: String!) {
         delegate?.providerWillPresent(self)
-        
+
         let ad = IronSourceBannerDemandAd(id: instanceId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

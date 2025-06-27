@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class InterstitialNotificationRequestBuilder: BaseNotificationRequestBuilder<InterstitialAdTypeContext> {    
+final class InterstitialNotificationRequestBuilder: BaseNotificationRequestBuilder<InterstitialAdTypeContext> {
     override var imp: ImpressionModel {
         ImpressionModel(
             impression,

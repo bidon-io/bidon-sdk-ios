@@ -12,27 +12,27 @@ import BigoADS
 
 final class BigoAdsInterstitialDemandProvider: BigoAdsBaseDemandProvider<BigoInterstitialAd> {
     private lazy var loader = BigoInterstitialAdLoader(interstitialAdLoaderDelegate: self)
-    
+
     private var response: DemandProviderResponse?
-    
+
     override func load(
         payload: BigoAdsBiddingPayload,
         adUnitExtras: BigoAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        
+
         let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
         request.setServerBidPayload(payload.payload)
-        
+
         loader.loadAd(request)
     }
-    
+
     override func load(pricefloor: Price, adUnitExtras: BigoAdsAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
-        
+
         let request = BigoInterstitialAdRequest(slotId: adUnitExtras.slotId)
-        
+
         loader.loadAd(request)
     }
 }
@@ -59,7 +59,7 @@ extension BigoAdsInterstitialDemandProvider: BigoInterstitialAdLoaderDelegate {
         response?(.success(ad))
         response = nil
     }
-    
+
     func onInterstitialAdLoadError(_ error: BigoAdError) {
         response?(.failure(MediationError(error: error)))
         response = nil

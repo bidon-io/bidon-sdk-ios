@@ -14,7 +14,7 @@ public typealias Price = Double
 
 public extension Price {
     static let unknown: Price = 0.0
-    
+
     var isUnknown: Bool {
         return isNaN || isZero || isInfinite
     }
@@ -27,10 +27,10 @@ internal extension Price {
         formatter.locale = Locale.current
         formatter.numberStyle = .currency
         formatter.locale = Locale(identifier: "en_US")
-        
+
         return formatter
     }()
-    
+
     var pretty: String {
         isUnknown ? "-" : Price.formatter.string(from: self as NSNumber) ?? "-"
     }

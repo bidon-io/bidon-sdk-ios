@@ -13,7 +13,7 @@ import MobileFuseSDK
 
 final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDemandProvider<MFInterstitialAd> {
     private var interstitial: MFInterstitialAd?
-    
+
     override func load(
         payload: MobileFuseBiddingPayload,
         adUnitExtras: MobileFuseAdUnitExtras,
@@ -22,7 +22,7 @@ final class MobileFuseBiddingInterstitialDemandProvider: MobileFuseBiddingBaseDe
         if let interstitial = MFInterstitialAd(placementId: adUnitExtras.placementId) {
             self.response = response
             self.interstitial = interstitial
-            
+
             interstitial.register(self)
             interstitial.load(withBiddingResponseToken: payload.signal)
         } else {

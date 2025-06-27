@@ -14,14 +14,14 @@ import Bidon
 final class AppodealDefaultAdInitializationWrapper: NSObject, AppodealAdInitializationWrapper {
     private var appKey: String!
     private var adTypes: AppodealAdType!
-    
+
     private var continuation: CheckedContinuation<Void, Never>!
-    
+
     override init() {
         super.init()
         Appodeal.setInitializationDelegate(self)
     }
-    
+
     func initialize(
         appKey: String,
         adTypes: AppodealAdType
@@ -35,7 +35,7 @@ final class AppodealDefaultAdInitializationWrapper: NSObject, AppodealAdInitiali
             }
         }
     }
-    
+
     private func initializeAppodealMediation() {
         // We need to cache advertisement manually
         // to properly control ad lifecycle
@@ -45,7 +45,7 @@ final class AppodealDefaultAdInitializationWrapper: NSObject, AppodealAdInitiali
         Appodeal.setTriggerPrecacheCallbacks(false, types: adTypes)
         Appodeal.initialize(withApiKey: appKey, types: adTypes)
     }
-    
+
     private func initializeBidon() {
         BidonSdk.setExtraValue(Appodeal.segmentId(), for: "appodeal_segment_id")
         BidonSdk.initialize(appKey: appKey) { [unowned self] in
@@ -61,7 +61,3 @@ extension AppodealDefaultAdInitializationWrapper: AppodealInitializationDelegate
         initializeBidon()
     }
 }
-
-
-
-

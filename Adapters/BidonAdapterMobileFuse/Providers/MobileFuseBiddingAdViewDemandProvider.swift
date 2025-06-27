@@ -12,16 +12,16 @@ import MobileFuseSDK
 
 final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandProvider<MFBannerAd> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    
+
     private let adSize: MFBannerAdSize
-    
+
     private var adView: MFBannerAd?
-    
+
     init(context: AdViewContext) {
         self.adSize = context.format.mobileFuse
         super.init()
     }
-    
+
     override func load(
         payload: MobileFuseBiddingPayload,
         adUnitExtras: MobileFuseAdUnitExtras,
@@ -33,19 +33,19 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
         ) {
             self.adView = banner
             self.response = response
-            
+
             banner.register(self)
             banner.load(withBiddingResponseToken: payload.signal)
         } else {
             response(.failure(.unspecifiedException("Mapping Error")))
         }
     }
-    
+
     func onAdExpanded(_ ad: MFAd!) {
         guard let ad = ad as? MFBannerAd else { return }
         adViewDelegate?.providerWillPresentModalView(self, adView: ad)
     }
-    
+
     func onAdCollapsed(_ ad: MFAd!) {
         guard let ad = ad as? MFBannerAd else { return }
         adViewDelegate?.providerDidDismissModalView(self, adView: ad)
@@ -58,7 +58,7 @@ extension MobileFuseBiddingAdViewDemandProvider: AdViewDemandProvider {
         ad.show()
         return ad
     }
-    
+
     func didTrackImpression(for ad: MFBannerAd) {}
 }
 
