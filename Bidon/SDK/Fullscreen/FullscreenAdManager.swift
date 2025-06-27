@@ -98,6 +98,12 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
 
     func loadAd(pricefloor: Price, auctionKey: String?) {
+        guard BidonSdk.isInitialized else {
+            Logger.warning("Bidon SDK is not initialized or failed initialization. Initialize SDK first")
+            delegate?.adManager(self, didFailToLoad: .message("SDK is not initialized"), auctionInfo: auctionInfo)
+            return
+        }
+
         guard state.isIdle else {
             Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
             return

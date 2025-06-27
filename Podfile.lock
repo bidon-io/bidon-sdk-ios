@@ -109,6 +109,7 @@ DEPENDENCIES:
   - Google-Mobile-Ads-SDK (= 12.4.0)
   - InMobiSDK (= 10.8.3)
   - IronSourceSDK (= 8.8.0.0)
+  - IronSourceSDK (~> 8.8)
   - MintegralAdSDK (= 7.7.7)
   - MobileFuseSDK (= 1.9.0)
   - myTargetSDK (= 5.29.1)
@@ -183,6 +184,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: a8a7af92ff9456f1313bbba8b176157a27d27dbd
+PODFILE CHECKSUM: c06b55f482bf0b58940a629e9a47a42dbe9b79d3
 
 COCOAPODS: 1.15.2

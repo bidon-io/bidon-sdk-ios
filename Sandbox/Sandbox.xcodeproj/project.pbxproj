@@ -74,8 +74,10 @@
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
 		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
+		490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */; };
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
+		49BCF9782DF9C23E008EC8E3 /* SdkInitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */; };
 		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
 		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
 		9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18C91C2C903E07005BE4F2 /* Constants.swift */; };
@@ -156,7 +158,9 @@
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
 		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkInitializationView.swift; sourceTree = "<group>"; };
 		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:EK7Z26L6D4:Yandex LLC"; lastKnownFileType = wrapper.xcframework; name = YandexMobileAds.xcframework; path = ../Pods/YandexMobileAds/static/YandexMobileAds.xcframework; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */,
 				4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */,
 				420F03492A67DBAF00A4664F /* BidonAdapterBigoAds.framework in Frameworks */,
+				490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */,
 				426A5C7029AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework in Frameworks */,
 				495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */,
 				4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */,
@@ -236,6 +241,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */,
 				495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */,
 				49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */,
 				49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */,
@@ -401,6 +407,7 @@
 		42C59B9C28C61EF600544EDF /* Rows */ = {
 			isa = PBXGroup;
 			children = (
+				49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */,
 				42EDA0B328C6178600BF74DE /* PermissionView.swift */,
 				427B1BD6299BBA83007D4E93 /* LogLevelView.swift */,
 				427B1BE9299E43AB007D4E93 /* SelectMediationView.swift */,
@@ -583,6 +590,7 @@
 				427B1C0D29A377AA007D4E93 /* BaseAdWrapper.swift in Sources */,
 				4299A413289BC8B40062C580 /* ContentView.swift in Sources */,
 				427B1BEA299E43AB007D4E93 /* SelectMediationView.swift in Sources */,
+				49BCF9782DF9C23E008EC8E3 /* SdkInitializationView.swift in Sources */,
 				42EDA0AC28C5EEE300BF74DE /* InitializationView.swift in Sources */,
 				42BE439028C0E7B3000528E3 /* Permission.swift in Sources */,
 				42EDA0AE28C5EF6000BF74DE /* InitializationViewModel.swift in Sources */,

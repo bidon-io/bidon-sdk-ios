@@ -10,6 +10,10 @@ import UIKit
 
 @objc(BDNSdk)
 public final class BidonSdk: NSObject {
+    enum InitializationState: String {
+        case idle, initializing, initialized, failed
+    }
+
     lazy var adaptersRepository = AdaptersRepository()
     lazy var environmentRepository = EnvironmentRepository()
 
@@ -21,7 +25,7 @@ public final class BidonSdk: NSObject {
     @objc public static let sdkVersion = Constants.sdkVersion
 
     @objc public static var isInitialized: Bool {
-        shared.isInitialized
+        shared.initializationState == .initialized
     }
 
     @objc public static var segment: Segment {
@@ -31,6 +35,9 @@ public final class BidonSdk: NSObject {
     @objc public static var regulations: Regulations {
         shared.regulations
     }
+
+    private var initializationState = InitializationState.idle
+    private var pendingCompletions: [() -> Void] = []
 
     private var isInitialized: Bool = false
 
@@ -129,15 +136,26 @@ public final class BidonSdk: NSObject {
         appKey: String,
         completion: @escaping () -> () = {}
     ) {
-        shared.initialize(
-            appKey: appKey,
-            completion: completion
-        )
+        switch shared.initializationState {
+        case .idle, .failed:
+            shared.pendingCompletions.append(completion)
+            shared.initializationState = .initializing
+            shared.initialize(appKey: appKey)
+
+        case .initializing:
+            Logger.warning("Bidon SDK is being initializing")
+
+            shared.pendingCompletions.append(completion)
+
+        case .initialized:
+            Logger.warning("Bidon SDK has already been initialized")
+
+            completion()
+        }
     }
 
     private func initialize(
-        appKey: String,
-        completion: (() -> ())?
+        appKey: String
     ) {
         let parameters = EnvironmentRepository.Parameters(appKey: appKey)
 
@@ -157,16 +175,18 @@ public final class BidonSdk: NSObject {
 
                     AdaptersInitializator(
                         parameters: response.adaptersInitializationParameters,
-                        respoitory: self.adaptersRepository
+                        repository: self.adaptersRepository
                     )
                     .initialize { [unowned self] in
-                        self.isInitialized = true
-                        completion?()
+                        self.initializationState = .initialized
+                        self.flushPendingCompletions()
                     }
+
                 case .failure(let error):
-                    Logger.error("Network error while initilizing Bidon SDK: \(error)")
+                    Logger.error("Network error while initializing Bidon SDK: \(error)")
                     DispatchQueue.main.async {
-                        completion?()
+                        self.initializationState = .failed
+                        self.flushPendingCompletions()
                     }
                 }
             }
@@ -176,5 +196,11 @@ public final class BidonSdk: NSObject {
     func updateSegmentIfNeeded(_ segment: SegmentResponse?) {
         guard let segment = segment else { return }
         environmentRepository.environment(SegmentManager.self).uid = segment.uid
+    }
+
+    private func flushPendingCompletions() {
+        let completions = pendingCompletions
+        pendingCompletions.removeAll()
+        completions.forEach { $0() }
     }
 }
