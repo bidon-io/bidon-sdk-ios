@@ -7,6 +7,7 @@
 - BDN-975 GitHub Actions
 
 ## Fixes
+- APDM-1357 SKAdNetworks duplication fix
 
 ## Network updates
 
