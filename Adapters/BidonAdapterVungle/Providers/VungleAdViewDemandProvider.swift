@@ -17,10 +17,10 @@ final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBannerVie
 
     let adSize: VungleAdSize
     private weak var banner: VungleBannerView?
-    
+
     private var hasAdLoaded = false
 
-    
+
     init(context: AdViewContext) {
         self.rootViewController = context.rootViewController
         self.adSize = context.format.vungleAdSize
@@ -52,10 +52,10 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
     @objc func bannerAdDidLoad(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
         banner?.didMoveToSuperview()
-        
+
         response?(.success(demandAd))
         response = nil
-        
+
         hasAdLoaded = true
     }
 
@@ -65,7 +65,7 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
 
     @objc func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
         guard demandAd.adObject === banner else { return }
-        
+
         if hasAdLoaded {
             delegate?.provider(
                 self,
@@ -76,26 +76,26 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
             response?(.failure(.noFill(withError.localizedDescription)))
             response = nil
         }
-        
+
     }
 
     @objc func bannerAdWillClose(_ bannerView: VungleAdsSDK.VungleBannerView) {}
 
     @objc func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-        
+
         delegate?.providerDidHide(self)
     }
 
     @objc func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-        
+
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
 
     @objc func bannerAdDidClick(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-        
+
         delegate?.providerDidClick(self)
     }
 
@@ -124,5 +124,3 @@ extension Bidon.BannerFormat {
         }
     }
 }
-
-
