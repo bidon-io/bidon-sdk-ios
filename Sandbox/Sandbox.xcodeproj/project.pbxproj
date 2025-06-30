@@ -74,6 +74,9 @@
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
 		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
+		490F04722E0AC19B009C2592 /* InterstitialAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */; };
+		490F04742E0AC4FA009C2592 /* RewardedAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */; };
+		490F04762E0AC6AD009C2592 /* BannerAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */; };
 		490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */; };
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
@@ -158,6 +161,9 @@
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
 		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdDemoView.swift; sourceTree = "<group>"; };
+		490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdDemoView.swift; sourceTree = "<group>"; };
+		490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdDemoView.swift; sourceTree = "<group>"; };
 		490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkInitializationView.swift; sourceTree = "<group>"; };
@@ -346,6 +352,7 @@
 		4299A40F289BC8B40062C580 /* Sandbox */ = {
 			isa = PBXGroup;
 			children = (
+				490F04702E0AC18A009C2592 /* TestScreens */,
 				4224AA8128B8F92000E8D886 /* Shared */,
 				42EDA0AA28C5EECA00BF74DE /* Initialization */,
 				4200679B28BCA883003B734D /* Banner */,
@@ -428,6 +435,16 @@
 				42EDA0AD28C5EF6000BF74DE /* InitializationViewModel.swift */,
 			);
 			path = Initialization;
+			sourceTree = "<group>";
+		};
+		490F04702E0AC18A009C2592 /* TestScreens */ = {
+			isa = PBXGroup;
+			children = (
+				490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */,
+				490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */,
+				490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */,
+			);
+			path = TestScreens;
 			sourceTree = "<group>";
 		};
 		F0B2D09956E1F0C8C9B7BECA /* Pods */ = {
@@ -575,6 +592,7 @@
 			files = (
 				42C4F45E29E6B37300B12E15 /* ActivityPlaceholder.swift in Sources */,
 				42697DB12A3B2AFF00D6B1EB /* RawAdServiceParameters.swift in Sources */,
+				490F04762E0AC6AD009C2592 /* BannerAdDemoView.swift in Sources */,
 				427B1BE6299E403F007D4E93 /* RawInterstitialAdWrapper.swift in Sources */,
 				427B1BE1299D2F70007D4E93 /* AdWrapper.swift in Sources */,
 				427B1BD2299A7E6E007D4E93 /* AdServiceProvider.swift in Sources */,
@@ -605,6 +623,7 @@
 				427B1BD7299BBA83007D4E93 /* LogLevelView.swift in Sources */,
 				42166C3229DEB5F100095691 /* AdContextMenu.swift in Sources */,
 				42A4C86C28F6E02500A7FE40 /* RawBannerView.swift in Sources */,
+				490F04722E0AC19B009C2592 /* InterstitialAdDemoView.swift in Sources */,
 				42697DAF2A3B2A1900D6B1EB /* Bidon+Extensions.swift in Sources */,
 				42C59B9E28C61F1100544EDF /* HostView.swift in Sources */,
 				9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */,
@@ -621,6 +640,7 @@
 				429F4D8828CF6AA700765BD7 /* Wave.swift in Sources */,
 				427B1C0F29A377D4007D4E93 /* BaseFullscreenAdWrapper.swift in Sources */,
 				9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */,
+				490F04742E0AC4FA009C2592 /* RewardedAdDemoView.swift in Sources */,
 				42BE439228C0E7CB000528E3 /* LocationPermission.swift in Sources */,
 				42697DB32A3B2BE600D6B1EB /* AdServiceParametersView.swift in Sources */,
 				427B1BD9299BC585007D4E93 /* AdaptersView.swift in Sources */,
