@@ -49,9 +49,8 @@ extension VungleAdViewDemandProvider: AdViewDemandProvider {
 }
 
 extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
-    @objc func bannerAdDidLoad(_ bannerView: VungleAdsSDK.VungleBannerView) {
+    func bannerAdDidLoad(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-        banner?.didMoveToSuperview()
 
         response?(.success(demandAd))
         response = nil
@@ -59,11 +58,7 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
         hasAdLoaded = true
     }
 
-    @objc func bannerAdWillPresent(_ bannerView: VungleAdsSDK.VungleBannerView) {}
-
-    @objc func bannerAdDidPresent(_ bannerView: VungleAdsSDK.VungleBannerView) {}
-
-    @objc func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
+    func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
         guard demandAd.adObject === banner else { return }
 
         if hasAdLoaded {
@@ -79,27 +74,23 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
 
     }
 
-    @objc func bannerAdWillClose(_ bannerView: VungleAdsSDK.VungleBannerView) {}
-
-    @objc func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
+    func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
 
         delegate?.providerDidHide(self)
     }
 
-    @objc func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
+    func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
 
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
 
-    @objc func bannerAdDidClick(_ bannerView: VungleAdsSDK.VungleBannerView) {
+    func bannerAdDidClick(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
 
         delegate?.providerDidClick(self)
     }
-
-    @objc func bannerAdWillLeaveApplication(_ bannerView: VungleAdsSDK.VungleBannerView) {}
 }
 
 
