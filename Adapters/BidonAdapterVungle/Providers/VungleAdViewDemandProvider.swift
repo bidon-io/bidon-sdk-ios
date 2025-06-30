@@ -11,117 +11,118 @@ import Bidon
 import VungleAdsSDK
 
 
-final class VungleAdViewContainer: UIView, AdViewContainer {
-    var isAdaptive: Bool { false }
-}
-
-
-final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBanner> {
+final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBannerView> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
 
-    let adSize: BannerSize
+    let adSize: VungleAdSize
+    private weak var banner: VungleBannerView?
+    
+    private var hasAdLoaded = false
 
+    
     init(context: AdViewContext) {
         self.rootViewController = context.rootViewController
-        self.adSize = BannerSize(format: context.format)
+        self.adSize = context.format.vungleAdSize
 
         super.init()
     }
 
-    override func adObject(placement: String) -> VungleBanner {
-        let banner = VungleBanner(
+    override func adObject(placement: String) -> VungleBannerView {
+        let banner = VungleBannerView(
             placementId: placement,
-            size: adSize
+            vungleAdSize: adSize
         )
         banner.delegate = self
+        self.banner = banner
         return banner
     }
 }
 
 
 extension VungleAdViewDemandProvider: AdViewDemandProvider {
-    func container(for ad: VungleDemandAd<VungleBanner>) -> AdViewContainer? {
-        let rect = CGRect(origin: .zero, size: adSize.cgSize)
-        let container = VungleAdViewContainer(frame: rect)
-        ad.adObject.present(on: container)
-        return container
+    func container(for ad: VungleDemandAd<VungleBannerView>) -> AdViewContainer? {
+        return banner
     }
 
-    func didTrackImpression(for ad: VungleDemandAd<VungleAdsSDK.VungleBanner>) {}
+    func didTrackImpression(for ad: VungleDemandAd<VungleAdsSDK.VungleBannerView>) {}
 }
 
-extension VungleAdViewDemandProvider: VungleBannerDelegate {
-    func bannerAdDidLoad(_ banner: VungleBanner) {
+extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
+    @objc func bannerAdDidLoad(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-
+        banner?.didMoveToSuperview()
+        
         response?(.success(demandAd))
         response = nil
+        
+        hasAdLoaded = true
     }
 
-    func bannerAdDidFailToLoad(_ banner: VungleBanner, withError: NSError) {
-        guard demandAd.adObject === banner else { return }
+    @objc func bannerAdWillPresent(_ bannerView: VungleAdsSDK.VungleBannerView) {}
 
-        response?(.failure(.noFill(withError.localizedDescription)))
-        response = nil
+    @objc func bannerAdDidPresent(_ bannerView: VungleAdsSDK.VungleBannerView) {}
+
+    @objc func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
+        guard demandAd.adObject === banner else { return }
+        
+        if hasAdLoaded {
+            delegate?.provider(
+                self,
+                didFailToDisplayAd: demandAd,
+                error: .generic(error: withError)
+            )
+        } else {
+            response?(.failure(.noFill(withError.localizedDescription)))
+            response = nil
+        }
+        
     }
 
-    func bannerAdDidFailToPresent(_ banner: VungleBanner, withError: NSError) {
-        guard demandAd.adObject === banner else { return }
+    @objc func bannerAdWillClose(_ bannerView: VungleAdsSDK.VungleBannerView) {}
 
-        delegate?.provider(
-            self,
-            didFailToDisplayAd: demandAd,
-            error: .generic(error: withError)
-        )
+    @objc func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
+        guard demandAd.adObject === banner else { return }
+        
+        delegate?.providerDidHide(self)
     }
 
-    func bannerAdDidTrackImpression(_ banner: VungleBanner) {
+    @objc func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-
+        
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
 
-    func bannerAdWillLeaveApplication(_ banner: VungleBanner) {}
-
-    func bannerAdDidClick(_ banner: VungleBanner) {
+    @objc func bannerAdDidClick(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-
+        
         delegate?.providerDidClick(self)
     }
 
-    func bannerAdDidClose(_ banner: VungleBanner) {
-        guard demandAd.adObject === banner else { return }
-
-        delegate?.providerDidHide(self)
-    }
+    @objc func bannerAdWillLeaveApplication(_ bannerView: VungleAdsSDK.VungleBannerView) {}
 }
 
 
-extension BannerSize {
-    init(format: Bidon.BannerFormat) {
-        switch format {
-        case .banner, .adaptive:
-            self = .regular
-        case .leaderboard:
-            self = .leaderboard
-        case .mrec:
-            self = .mrec
-        }
-    }
+extension VungleBannerView: @retroactive AdViewContainer {
+    public var isAdaptive: Bool { false }
+}
 
-    var cgSize: CGSize {
+extension VungleBannerView: VungleLoadableAd {}
+
+
+extension Bidon.BannerFormat {
+    var vungleAdSize: VungleAdSize {
         switch self {
-        case .mrec:
-            return CGSize(width: 300, height: 250)
+        case .banner, .adaptive:
+            return .VungleAdSizeBannerRegular
         case .leaderboard:
-            return CGSize(width: 728, height: 90)
-        case .regular:
-            return CGSize(width: 320, height: 50)
-        case .short:
-            return CGSize(width: 300, height: 50)
+            return .VungleAdSizeLeaderboard
+        case .mrec:
+            return .VungleAdSizeMREC
         @unknown default:
-            return .zero
+            return .VungleAdSizeBannerRegular
         }
     }
 }
+
+
