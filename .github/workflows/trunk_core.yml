@@ -1,0 +1,101 @@
+name: Trunk Core
+
+on:
+  workflow_dispatch:
+    inputs:
+      sdk_version:
+        description: 'SDK version (e.g. 3.0.1)'
+        required: true
+        type: string
+      adapters_version:
+        description: 'Adapters version (optional)'
+        required: false
+        type: string
+      validate:
+        description: 'Perform full CocoaPods validations (tests, imports)?'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  trunk_core:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.4'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Generate podspec(s)
+        run: |
+          if [[ -z "${{ inputs.adapters_version }}" ]]; then
+            bundle exec fastlane generate_specs version:${{ inputs.sdk_version }}
+          else
+            bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }}
+          fi
+
+      - name: Push all podspecs to trunk (continue on failure)
+        id: push_specs
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          echo "Pushing all podspecs in build/Podspecs/..."
+          mkdir -p build/logs
+          FAILED=()
+
+          for spec in build/Podspecs/*.podspec.json; do
+            echo "🟡 Pushing $spec..."
+            CMD="pod trunk push \"$spec\" --allow-warnings"
+
+            if [ "${{ inputs.validate }}" = "false" ]; then
+              CMD="$CMD --skip-tests --skip-import-validation"
+            fi
+
+            if ! eval $CMD; then
+              echo "❌ Failed to push $spec"
+              FAILED+=("$spec")
+            else
+              echo "✅ Successfully pushed $spec"
+            fi
+          done
+
+          if [ ${#FAILED[@]} -ne 0 ]; then
+            echo "FAILED_SPECS<<EOF" >> $GITHUB_ENV
+            printf "%s\n" "${FAILED[@]}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            echo "At least one podspec failed to push"
+            exit 1
+          else
+            echo "FAILED_SPECS=" >> $GITHUB_ENV
+            echo "All podspecs pushed successfully"
+          fi
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ <!here> *Bidon Podspecs Pushed to Trunk!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ <!here> *Podspec Push Failed!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>\n${{ env.FAILED_SPECS != '' && format('• ❗ Failed specs:\n```{0}```', env.FAILED_SPECS) || '' }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
