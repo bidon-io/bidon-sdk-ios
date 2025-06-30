@@ -77,6 +77,7 @@
 		490F04722E0AC19B009C2592 /* InterstitialAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */; };
 		490F04742E0AC4FA009C2592 /* RewardedAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */; };
 		490F04762E0AC6AD009C2592 /* BannerAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */; };
+		490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */; };
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
 		49BCF9782DF9C23E008EC8E3 /* SdkInitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */; };
@@ -163,6 +164,7 @@
 		490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdDemoView.swift; sourceTree = "<group>"; };
 		490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdDemoView.swift; sourceTree = "<group>"; };
 		490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdDemoView.swift; sourceTree = "<group>"; };
+		490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkInitializationView.swift; sourceTree = "<group>"; };
 		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +194,7 @@
 				4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */,
 				4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */,
 				420F03492A67DBAF00A4664F /* BidonAdapterBigoAds.framework in Frameworks */,
+				490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */,
 				426A5C7029AF7C5A0065AAD5 /* BidonAdapterAppLovin.framework in Frameworks */,
 				495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */,
 				4249D5F929AFB00400BAA338 /* BidonAdapterUnityAds.framework in Frameworks */,
@@ -244,6 +247,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */,
 				495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */,
 				49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */,
 				49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */,
