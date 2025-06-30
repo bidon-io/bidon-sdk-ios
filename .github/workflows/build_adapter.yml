@@ -1,0 +1,102 @@
+name: Build Adapter
+
+on:
+  workflow_dispatch:
+    inputs:
+      adapter_name:
+        description: 'Adapter name (e.g. BidonAdapterIronSource)'
+        required: true
+        type: string
+      adapter_version:
+        description: 'Adapter version (e.g. 3.0.1.0)'
+        required: true
+        type: string
+      sdk_version:
+        description: 'SDK version (e.g. 3.0.1)'
+        required: true
+        type: string
+      upload:
+        description: 'Upload to AWS?'
+        required: true
+        type: boolean
+        default: false
+      push_specs:
+        description: 'Push generated podspec to repo?'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  build-adapter:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 16.0
+        run: sudo xcode-select -s /Applications/Xcode_16.0.app
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.4'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run Fastlane lane :adapter
+        run: >
+          bundle exec fastlane adapter
+          name:"${{ inputs.adapter_name }}"
+          version:"${{ inputs.adapter_version }}"
+          sdk_version:"${{ inputs.sdk_version }}"
+          upload:${{ inputs.upload }}
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Setup SSH for podspec repo
+        if: ${{ inputs.push_specs }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Register CocoaPods repo
+        if: ${{ inputs.push_specs }}
+        run: |
+          pod repo remove bidon || true
+          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+
+      - name: Push adapter podspec to podspec repo
+        if: ${{ inputs.push_specs }}
+        run: |
+          spec=build/Podspecs/${{ inputs.adapter_name }}.podspec.json
+          echo "Pushing $spec..."
+          pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
