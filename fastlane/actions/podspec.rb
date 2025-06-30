@@ -12,12 +12,18 @@ module Fastlane
     class PodspecAction < Action
       Dependency = Struct.new("PodspecDependency", :name, :version, keyword_init: true)
 
+      IOS_MIN_VERSIONS = {
+        "BidonAdapterIronSource" => "13.0",
+        "ISBidonCustomAdapter" => "13.0",
+        "BidonAdapterMyTarget" => "12.4"
+      }
+
       def self.run(params)
         podfile = Pod::Podfile.from_file(params[:podfile])
 
         s3_region = params[:s3_region]
         s3_bucket = params[:s3_bucket]
-         
+
         dependencies = podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep|
           Dependency.new(
             name: dep.name.split("/").first,
@@ -40,8 +46,10 @@ module Fastlane
           spec.description = "Makes the top mobile mediation SDKs more transparent"
           spec.homepage = "https://bidon.org"
           spec.license = { type: "Copyright", text: "Copyright #{Time.new.year}. Bidon Inc." }
-          spec.author = { "Bidon Inc." => "https://http://bidon.org" }
-          spec.platform = :ios, "12.0"
+          spec.author = { "Bidon Inc." => "https://bidon.org" }
+
+          ios_version = IOS_MIN_VERSIONS.fetch(params[:name], "12.0")
+          spec.platform = :ios, ios_version
 
           if params[:is_development_pod]
             spec.source = { git: "" }
@@ -52,6 +60,7 @@ module Fastlane
           end
 
           spec.swift_versions = ["4.0", "4.2", "5.0"]
+
           unless params[:is_adapter]
             spec.resource_bundles = { "BidonPrivacyInfo" => "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
           end
@@ -70,7 +79,7 @@ module Fastlane
 
           pod_target_xcconfig = {
             "OTHER_LDFLAGS" => "-lObjC",
-            "VALID_ARCHS[sdk=iphoneos*]" => "arm64 armv7",
+            "VALID_ARCHS[sdk=iphoneos*]" => "arm64 armv7"
           }
 
           user_target_xcconfig = {
@@ -91,7 +100,6 @@ module Fastlane
           spec.user_target_xcconfig = user_target_xcconfig
         end
 
-
         # Convert podspec to hash and debug print
         podspec_hash = podspec.to_hash
         UI.message("Podspec hash: #{podspec_hash}")
@@ -107,7 +115,7 @@ module Fastlane
       end
 
       def self.is_apple_silicon_compatible(dependencies, root)
-        return dependencies.inject(true) do |result, dep|
+        dependencies.inject(true) do |result, dep|
           Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
             components = path.split('/')
             if components[-1] == 'Info.plist' && components[-2].end_with?(".xcframework")
@@ -126,7 +134,7 @@ module Fastlane
       end
 
       def self.is_legacy_framework(dependencies, root)
-        return dependencies.inject(true) do |result, dep|
+        dependencies.inject(true) do |result, dep|
           Dir.glob(root + "/" + dep.name + "/**/*").inject(result) do |result, path|
             components = path.split('/')
             result && components[-1].end_with?(".framework") && !path.include?("xcframework")
@@ -140,7 +148,7 @@ module Fastlane
             key: :version,
             description: "Version",
             verify_block: proc do |value|
-              UI.user_error!("No version for Podspec given, pass using `version: 'x.y.z`") unless (value and not value.empty?)
+              UI.user_error!("No version for Podspec given, pass using `version: 'x.y.z'`") unless (value and not value.empty?)
             end
           ),
           FastlaneCore::ConfigItem.new(
@@ -153,7 +161,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(
             key: :sdk_version,
             description: "SDK version",
-            optional: true,
+            optional: true
           ),
           FastlaneCore::ConfigItem.new(
             key: :podfile,
@@ -166,7 +174,7 @@ module Fastlane
             key: :s3_region,
             description: "AWS S3 region where file is located",
             verify_block: proc do |value|
-              UI.user_error!("No AWS S3 region given, pass using `s3_region: us-east-1`") unless (value and not value.empty?)
+              UI.user_error!("No AWS S3 region given, pass using `s3_region: 'us-east-1'`") unless (value and not value.empty?)
             end
           ),
           FastlaneCore::ConfigItem.new(

@@ -2,6 +2,7 @@
 
 ## New features
 - BDN-975 Removed pessimistic version constraint from Podfile
+- BDN-979 GitHub Actions for CI-CD
 - APDM-1305 BCALP Adapter to Bidon - Interstitial 
 - BDN-978 Initialization failure state
 - BDN-942 New Bidon SDK init logic

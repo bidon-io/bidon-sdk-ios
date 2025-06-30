@@ -1,0 +1,82 @@
+name: Trunk Adapters
+
+on:
+  workflow_dispatch:
+    inputs:
+      sdk_version:
+        description: 'SDK version (e.g. 3.0.1)'
+        required: true
+        type: string
+      adapters_version:
+        description: 'Adapters version (e.g. 3.0.1.0)'
+        required: true
+        type: string
+      validate:
+        description: 'Perform full CocoaPods validations (tests, imports)?'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  trunk_adapters:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.4'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Generate all podspecs (core + adapters)
+        run: |
+          bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }}
+
+      - name: Push adapter podspecs to trunk
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          echo "Pushing adapter podspecs (excluding Bidon) to trunk..."
+
+          for spec in build/Podspecs/*.podspec.json; do
+            if [[ "$spec" != *"Bidon.podspec.json" ]]; then
+              CMD="pod trunk push \"$spec\""
+
+              if [ "${{ inputs.validate }}" = "false" ]; then
+                CMD="$CMD --skip-tests --skip-import-validation"
+              fi
+
+              CMD="$CMD --allow-warnings"
+
+              echo "Running: $CMD"
+              eval "$CMD"
+            fi
+          done
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ <!here> *Adapters Podspecs Pushed to Trunk!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Adapters Podspecs Push Failed!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
