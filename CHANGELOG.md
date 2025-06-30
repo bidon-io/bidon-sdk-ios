@@ -1,9 +1,16 @@
 # develop
 
 ## New features
+
+# Release 0.8.1
+
+## New features
 - BDN-976 Refactor Ad Loading Logic Based on SDK Initialization State
-- BDN-975 Removed pessimistic version constraint from Podfile
 - BDN-979 GitHub Actions for CI-CD
+
+# Release 0.8.0
+
+## New features
 - APDM-1305 BCALP Adapter to Bidon - Interstitial 
 - BDN-978 Initialization failure state
 - BDN-942 New Bidon SDK init logic
