@@ -61,16 +61,8 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
     func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
         guard demandAd.adObject === banner else { return }
 
-        if hasAdLoaded {
-            delegate?.provider(
-                self,
-                didFailToDisplayAd: demandAd,
-                error: .generic(error: withError)
-            )
-        } else {
-            response?(.failure(.noFill(withError.localizedDescription)))
-            response = nil
-        }
+        response?(.failure(MediationError(error: withError)))
+        response = nil
 
     }
 
@@ -98,6 +90,7 @@ extension VungleBannerView: @retroactive AdViewContainer {
     public var isAdaptive: Bool { false }
 }
 
+
 extension VungleBannerView: VungleLoadableAd {}
 
 
@@ -112,6 +105,24 @@ extension Bidon.BannerFormat {
             return .VungleAdSizeMREC
         @unknown default:
             return .VungleAdSizeBannerRegular
+        }
+    }
+}
+
+
+extension MediationError {
+    init(error: NSError) {
+        switch error.code {
+        case 101, 102, 103, 104, 105, 106, 110, 111, 118, 119, 122, 124, 125, 134, 135, 138, 20001:
+            self = .networkError
+        case 208, 209, 214:
+            self = .noBid(error.localizedDescription)
+        case 213:
+            self = .incorrectAdUnitId
+        case 10001:
+            self = .noFill(error.localizedDescription)
+        default:
+            self = .unspecifiedException("Code: \(error.code), \(error.localizedDescription)")
         }
     }
 }
