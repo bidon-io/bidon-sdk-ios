@@ -9,16 +9,16 @@ import Foundation
 
 
 extension Bundle {
-   var shortVersion: String {
-       let result = object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-       return result ?? ""
-   }
+    var shortVersion: String {
+        let result = object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        return result ?? ""
+    }
 
-   var skAdNetworkItems: [String] {
-       guard let items = object(forInfoDictionaryKey: "SKAdNetworkItems") as? [Any] else { return [] }
-       return items.compactMap { item in
-           guard let item = item as? [String: Any] else { return nil }
-           return item["SKAdNetworkIdentifier"] as? String
-       }
-   }
+    var skAdNetworkItems: [String] {
+        guard let items = object(forInfoDictionaryKey: "SKAdNetworkItems") as? [Any] else { return [] }
+        let identifiers = items.compactMap { item in
+            (item as? [String: Any])?["SKAdNetworkIdentifier"] as? String
+        }
+        return Array(Set(identifiers))
+    }
 }

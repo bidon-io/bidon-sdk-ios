@@ -32,6 +32,20 @@ struct SdkInitializationView: View {
                 }
             }
 
+            Section(header: Text("Test Main Screen for muliple load")) {
+                NavigationLink(destination: InterstitialAdDemoView()) {
+                    Text("Interstitial")
+                }
+
+                NavigationLink(destination: RewardedAdDemoView()) {
+                    Text("Rewarded")
+                }
+
+                NavigationLink(destination: BannerAdDemoView()) {
+                    Text("Banner")
+                }
+            }
+          
             Section(header: Text("Status")) {
                 Text(status)
             }
