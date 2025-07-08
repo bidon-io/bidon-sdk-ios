@@ -165,4 +165,8 @@
     }
 }
 
+- (void)rewardedAd:(id<BDNRewardedAd>)rewardedAd didRewardUser:(id<BDNReward>)reward ad:(id<BDNAd>)ad {
+    [self.rewardedDelegate didRewardUserWithReward:[MAReward rewardWithAmount:reward.amount label:reward.label]];
+}
+
 @end
