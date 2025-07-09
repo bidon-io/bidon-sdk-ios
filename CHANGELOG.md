@@ -1,4 +1,4 @@
-# develop
+# Release 0.8.2
 
 ## New features
 - APDM-1396 Update BCA MAX callbacks
