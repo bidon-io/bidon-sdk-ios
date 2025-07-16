@@ -210,7 +210,7 @@ end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.8'
+  pod 'IronSourceSDK', '~> 8.10'
 end
 
 # Tests
