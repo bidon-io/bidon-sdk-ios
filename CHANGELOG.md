@@ -2,6 +2,7 @@
 
 ## New features
 - APDM-1396 Update BCA MAX callbacks
+- APDM-1411 Update IronSource
 
 # Release 0.8.1
 
