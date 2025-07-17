@@ -154,6 +154,15 @@ public final class BidonSdk: NSObject {
         }
     }
 
+    static func addInitializationHandler(completion: @escaping () -> Void) {
+        switch shared.initializationState {
+        case .idle, .initializing:
+            shared.pendingCompletions.append(completion)
+        case .initialized, .failed:
+            completion()
+        }
+    }
+
     private func initialize(
         appKey: String
     ) {

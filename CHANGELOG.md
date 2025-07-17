@@ -2,9 +2,19 @@
 
 ## New features
 - BDN-987 VungleSDK Banner API - updated
+- APDM-1396 Update BCA MAX callbacks
+- APDM-1411 Update IronSource network
+- APDM-853 Update Yandex network
 
-# 0.8.0
-- BDN-975 Removed pessimistic version constraint from Podfile
+# Release 0.8.1
+
+## New features
+- BDN-976 Refactor Ad Loading Logic Based on SDK Initialization State
+- BDN-979 GitHub Actions for CI-CD
+
+# Release 0.8.0
+
+## New features
 - APDM-1305 BCALP Adapter to Bidon - Interstitial 
 - BDN-978 Initialization failure state
 - BDN-942 New Bidon SDK init logic
