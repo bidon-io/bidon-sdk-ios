@@ -2,7 +2,8 @@
 
 ## New features
 - APDM-1396 Update BCA MAX callbacks
-- APDM-1411 Update IronSource
+- APDM-1411 Update IronSource network
+- APDM-853 Update Yandex network
 
 # Release 0.8.1
 
