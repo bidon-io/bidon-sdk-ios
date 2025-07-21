@@ -17,7 +17,7 @@ final class BidMachineDirectAdViewDemandProvider: BidMachineBaseDemandProvider<B
     weak var adViewDelegate: DemandProviderAdViewDelegate?
 
     override var placementFormat: PlacementFormat { .init(format: format) }
-    
+
     func load(
         pricefloor: Price,
         adUnitExtras: BidMachineAdUnitExtras,
@@ -25,19 +25,19 @@ final class BidMachineDirectAdViewDemandProvider: BidMachineBaseDemandProvider<B
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
-        
+
         let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
             if let placementId = adUnitExtras.placement {
                 $0.withPlacementId(placementId)
             }
             $0.withCustomParameters(parameters)
         }
-        
+
         guard let placement else {
             response(.failure(.unspecifiedException("No placement")))
             return
         }
-        
+
         let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
             builder.appendPriceFloor(pricefloor, UUID().uuidString)
         }

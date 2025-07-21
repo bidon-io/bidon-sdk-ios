@@ -40,7 +40,7 @@ final class DemandsTokensManagerBuilder<AdTypeContextType: AdTypeContext> {
         self.context = context
         return self
     }
-    
+
     @discardableResult
     public func withAuctionKey(_ key: String?) -> Self {
         self.auctionKey = key

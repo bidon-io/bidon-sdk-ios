@@ -13,7 +13,7 @@ import Bidon
 
 final class BidMachineDirectInterstitialDemandProvider: BidMachineBaseDemandProvider<BidMachineInterstitial>, DirectDemandProvider {
     override var placementFormat: PlacementFormat { .interstitial }
-    
+
     func load(
         pricefloor: Price,
         adUnitExtras: BidMachineAdUnitExtras,
@@ -21,19 +21,19 @@ final class BidMachineDirectInterstitialDemandProvider: BidMachineBaseDemandProv
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
-        
+
         let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
             if let placementId = adUnitExtras.placement {
                 $0.withPlacementId(placementId)
             }
             $0.withCustomParameters(parameters)
         }
-        
+
         guard let placement else {
             response(.failure(.unspecifiedException("No placement")))
             return
         }
-        
+
         let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
             builder.appendPriceFloor(pricefloor, UUID().uuidString)
         }

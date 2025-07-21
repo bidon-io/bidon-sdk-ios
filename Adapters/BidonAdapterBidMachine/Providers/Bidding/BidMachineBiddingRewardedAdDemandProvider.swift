@@ -15,7 +15,7 @@ final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandPr
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     override var placementFormat: PlacementFormat { .rewarded }
-    
+
     override func load(
         payload: BidMachineBiddingPayload,
         adUnitExtras: BidMachineAdUnitExtras,
@@ -23,20 +23,20 @@ final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandPr
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
-        
+
         let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
             $0.withCustomParameters(parameters)
         }
-        
+
         guard let placement else {
             response(.failure(.unspecifiedException("No placement")))
             return
         }
-        
+
         let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
             builder.withPayload(payload.payload)
         }
-        
+
         BidMachineSdk.shared.rewarded(request: request) { [weak self] ad, error in
             guard let self = self else { return }
 

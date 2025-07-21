@@ -27,7 +27,7 @@ where AdObject: BidMachineAdProtocol {
             if let placementId {
                 $0.withPlacementId(placementId)
             }
-            $0.withCustomParameters([String:Any]())
+            $0.withCustomParameters([String: Any]())
         }
         guard let placement else {
             response(.failure(.unspecifiedException("No placement to generate bidding token")))
@@ -41,11 +41,11 @@ where AdObject: BidMachineAdProtocol {
             response(.success(token))
         }
     }
-    
+
     func collectBiddingToken(biddingTokenExtras: BidMachineAdUnitExtras, response: @escaping (Result<String, MediationError>) -> ()) {
-        
+
     }
-    
+
     func load(
         payload: BidMachineBiddingPayload,
         adUnitExtras: BidMachineAdUnitExtras,
