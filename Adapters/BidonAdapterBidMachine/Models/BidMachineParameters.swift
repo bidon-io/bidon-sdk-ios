@@ -10,5 +10,4 @@ import Foundation
 
 public struct BidMachineParameters: Codable {
     var sellerId: String
-    var placements: [String: String]?
 }
