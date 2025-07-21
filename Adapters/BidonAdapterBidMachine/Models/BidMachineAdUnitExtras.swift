@@ -10,4 +10,6 @@ import Foundation
 
 struct BidMachineAdUnitExtras: Codable {
     let customParameters: [String: String]?
+    let placements: [String: String]?
+    let placement: String?
 }

@@ -43,11 +43,11 @@ extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
     func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
         rewardedAd.delegate = self
         self.rewardedAd = rewardedAd
-        
+
         response?(.success(YandexRewardedDemandAd(rewarded: rewardedAd)))
         response = nil
     }
-    
+
     func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didFailToLoadWithError error: YandexMobileAds.AdRequestError) {
         response?(.failure(.noFill(error.description)))
         response = nil
@@ -73,7 +73,7 @@ extension YandexRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
             error: .cancelled
         )
     }
-    
+
     func rewardedAdDidShow(_ rewardedAd: YandexMobileAds.RewardedAd) {
         delegate?.providerWillPresent(self)
     }
@@ -89,7 +89,7 @@ extension YandexRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
     func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didReward reward: any YandexMobileAds.Reward) {
         rewardDelegate?.provider(self, didReceiveReward: RewardWrapper(label: reward.type, amount: reward.amount, wrapped: reward))
     }
-    
+
     func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didTrackImpressionWith impressionData: (any ImpressionData)?) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         revenueDelegate?.provider(self, didLogImpression: ad)

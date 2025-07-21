@@ -2,6 +2,7 @@
 
 ## New features
 - APDM-1396 Update BCA MAX callbacks
+- BDN-966 Updated Bidmachine to 3.3.0. Added BM placements logic
 - APDM-1411 Update IronSource network
 - APDM-853 Update Yandex network
 
