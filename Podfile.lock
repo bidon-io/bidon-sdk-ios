@@ -1,6 +1,77 @@
 PODS:
   - AmazonPublisherServicesSDK (5.2.0)
   - AppLovinSDK (13.2.0)
+  - AppMetricaAdSupport (5.11.1):
+    - AppMetricaCore (= 5.11.1)
+    - AppMetricaCoreExtension (= 5.11.1)
+  - AppMetricaCore (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaEncodingUtils (= 5.11.1)
+    - AppMetricaFMDB (= 5.11.1)
+    - AppMetricaHostState (= 5.11.1)
+    - AppMetricaIdentifiers (= 5.11.1)
+    - AppMetricaKeychain (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+    - AppMetricaNetwork (= 5.11.1)
+    - AppMetricaPlatform (= 5.11.1)
+    - AppMetricaProtobuf (= 5.11.1)
+    - AppMetricaProtobufUtils (= 5.11.1)
+    - AppMetricaStorageUtils (= 5.11.1)
+  - AppMetricaCoreExtension (5.11.1):
+    - AppMetricaCore (= 5.11.1)
+    - AppMetricaStorageUtils (= 5.11.1)
+  - AppMetricaCoreUtils (5.11.1):
+    - AppMetricaLog (= 5.11.1)
+  - AppMetricaCrashes (5.11.1):
+    - AppMetricaCore (= 5.11.1)
+    - AppMetricaCoreExtension (= 5.11.1)
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaEncodingUtils (= 5.11.1)
+    - AppMetricaHostState (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+    - AppMetricaPlatform (= 5.11.1)
+    - AppMetricaProtobufUtils (= 5.11.1)
+    - AppMetricaStorageUtils (= 5.11.1)
+    - KSCrash/Recording (< 2.1.0, >= 2.0.0)
+  - AppMetricaEncodingUtils (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+    - AppMetricaPlatform (= 5.11.1)
+  - AppMetricaFMDB (5.11.1)
+  - AppMetricaHostState (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+  - AppMetricaIdentifiers (5.11.1):
+    - AppMetricaKeychain (= 5.11.1)
+    - AppMetricaLogSwift (= 5.11.1)
+    - AppMetricaPlatform (= 5.11.1)
+    - AppMetricaStorageUtils (= 5.11.1)
+    - AppMetricaSynchronization (= 5.11.1)
+  - AppMetricaKeychain (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+    - AppMetricaStorageUtils (= 5.11.1)
+  - AppMetricaLibraryAdapter (5.11.1):
+    - AppMetricaCore (= 5.11.1)
+    - AppMetricaCoreExtension (= 5.11.1)
+  - AppMetricaLog (5.11.1)
+  - AppMetricaLogSwift (5.11.1):
+    - AppMetricaLog (= 5.11.1)
+  - AppMetricaNetwork (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+    - AppMetricaPlatform (= 5.11.1)
+  - AppMetricaPlatform (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+  - AppMetricaProtobuf (5.11.1)
+  - AppMetricaProtobufUtils (5.11.1):
+    - AppMetricaProtobuf (= 5.11.1)
+  - AppMetricaStorageUtils (5.11.1):
+    - AppMetricaCoreUtils (= 5.11.1)
+    - AppMetricaLog (= 5.11.1)
+  - AppMetricaSynchronization (5.11.1):
+    - AppMetricaLogSwift (= 5.11.1)
   - AppsFlyerFramework (6.15.3):
     - AppsFlyerFramework/Main (= 6.15.3)
   - AppsFlyerFramework/Main (6.15.3)
@@ -10,6 +81,19 @@ PODS:
     - StackModules/Static (~> 3.2.1)
   - BigoADS (4.7.0)
   - ChartboostSDK (9.8.1)
+  - DivKit (32.7.1):
+    - DivKit_LayoutKit (= 32.7.1)
+    - DivKit_Serialization (= 32.7.1)
+    - VGSL (~> 7.3)
+  - DivKit_LayoutKit (32.7.1):
+    - DivKit_LayoutKitInterface (= 32.7.1)
+    - VGSL (~> 7.3)
+  - DivKit_LayoutKitInterface (32.7.1):
+    - VGSL (~> 7.3)
+  - DivKit_Serialization (32.7.1):
+    - VGSL (~> 7.3)
+  - DivKitBinaryCompatibilityFacade (5.0.0):
+    - DivKit (~> 32.2)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
   - FBAudienceNetwork (6.17.1)
@@ -24,7 +108,18 @@ PODS:
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
   - InMobiSDK (10.8.3)
-  - IronSourceSDK (8.8.0.0)
+  - IronSourceAdQualitySDK (7.25.2)
+  - IronSourceSDK (8.10.0.0):
+    - IronSourceSDK/AdQuality (= 8.10.0.0)
+    - IronSourceSDK/Ads (= 8.10.0.0)
+  - IronSourceSDK/AdQuality (8.10.0.0):
+    - IronSourceAdQualitySDK (~> 7.25.2)
+  - IronSourceSDK/Ads (8.10.0.0)
+  - KSCrash/Core (2.0.0)
+  - KSCrash/Recording (2.0.0):
+    - KSCrash/RecordingCore
+  - KSCrash/RecordingCore (2.0.0):
+    - KSCrash/Core
   - MintegralAdSDK (7.7.8):
     - MintegralAdSDK/BannerAd (= 7.7.8)
     - MintegralAdSDK/BidBannerAd (= 7.7.8)
@@ -81,19 +176,23 @@ PODS:
     - StackModules/Rendering-Static
   - SwiftLint (0.59.1)
   - UnityAds (4.14.2)
+  - VGSL (7.6.0):
+    - VGSLFundamentals (= 7.6.0)
+    - VGSLNetworking (= 7.6.0)
+    - VGSLUI (= 7.6.0)
+  - VGSLFundamentals (7.6.0)
+  - VGSLNetworking (7.6.0):
+    - VGSLFundamentals (= 7.6.0)
+    - VGSLUI (= 7.6.0)
+  - VGSLUI (7.6.0):
+    - VGSLFundamentals (= 7.6.0)
   - VungleAds (7.5.0)
-  - YandexMobileAds (5.2.1):
-    - YandexMobileAds/Static (= 5.2.1)
-  - YandexMobileAds/Static (5.2.1):
-    - YandexMobileMetrica (< 5.0.0, >= 4.0.0)
-  - YandexMobileMetrica (4.5.2):
-    - YandexMobileMetrica/Static (= 4.5.2)
-  - YandexMobileMetrica/Static (4.5.2):
-    - YandexMobileMetrica/Static/Core (= 4.5.2)
-    - YandexMobileMetrica/Static/Crashes (= 4.5.2)
-  - YandexMobileMetrica/Static/Core (4.5.2)
-  - YandexMobileMetrica/Static/Crashes (4.5.2):
-    - YandexMobileMetrica/Static/Core
+  - YandexMobileAds (7.14.1):
+    - AppMetricaAdSupport (< 6.0.0, >= 5.11.0)
+    - AppMetricaCore (< 6.0.0, >= 5.11.0)
+    - AppMetricaCrashes (< 6.0.0, >= 5.11.0)
+    - AppMetricaLibraryAdapter (< 6.0.0, >= 5.11.0)
+    - DivKitBinaryCompatibilityFacade (= 5.0.0)
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.2.0)
@@ -108,8 +207,8 @@ DEPENDENCIES:
   - Fyber_Marketplace_SDK (~> 8.3.6)
   - Google-Mobile-Ads-SDK (~> 12.4.0)
   - InMobiSDK (~> 10.8.3)
-  - IronSourceSDK (= 8.8.0.0)
-  - IronSourceSDK (~> 8.8)
+  - IronSourceSDK (= 8.10.0.0)
+  - IronSourceSDK (~> 8.10)
   - MintegralAdSDK (~> 7.7.7)
   - MobileFuseSDK (= 1.9.0)
   - myTargetSDK (~> 5.29.1)
@@ -118,7 +217,7 @@ DEPENDENCIES:
   - SwiftLint
   - UnityAds (~> 4.14.2)
   - VungleAds (= 7.5.0)
-  - YandexMobileAds (= 5.2.1)
+  - YandexMobileAds (~> 7.14)
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
@@ -126,10 +225,34 @@ SPEC REPOS:
   trunk:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
+    - AppMetricaAdSupport
+    - AppMetricaCore
+    - AppMetricaCoreExtension
+    - AppMetricaCoreUtils
+    - AppMetricaCrashes
+    - AppMetricaEncodingUtils
+    - AppMetricaFMDB
+    - AppMetricaHostState
+    - AppMetricaIdentifiers
+    - AppMetricaKeychain
+    - AppMetricaLibraryAdapter
+    - AppMetricaLog
+    - AppMetricaLogSwift
+    - AppMetricaNetwork
+    - AppMetricaPlatform
+    - AppMetricaProtobuf
+    - AppMetricaProtobufUtils
+    - AppMetricaStorageUtils
+    - AppMetricaSynchronization
     - AppsFlyerFramework
     - BidMachine
     - BigoADS
     - ChartboostSDK
+    - DivKit
+    - DivKit_LayoutKit
+    - DivKit_LayoutKitInterface
+    - DivKit_Serialization
+    - DivKitBinaryCompatibilityFacade
     - FBAEMKit
     - FBAudienceNetwork
     - FBSDKCoreKit
@@ -139,7 +262,9 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleUserMessagingPlatform
     - InMobiSDK
+    - IronSourceAdQualitySDK
     - IronSourceSDK
+    - KSCrash
     - MintegralAdSDK
     - MobileFuseSDK
     - myTargetSDK
@@ -149,17 +274,44 @@ SPEC REPOS:
     - StackModules
     - SwiftLint
     - UnityAds
+    - VGSL
+    - VGSLFundamentals
+    - VGSLNetworking
+    - VGSLUI
     - VungleAds
     - YandexMobileAds
-    - YandexMobileMetrica
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: e77cc63fa091b3c5d578ffff57fa2583a83de972
   AppLovinSDK: 1eb88a82b4feea9f3696ce9cc1e3343c4997ee12
+  AppMetricaAdSupport: 8ad292b97690a181f3172396110a655522b91881
+  AppMetricaCore: 6ad500da8cf891cf1ae4dadb8593dc127cd28c95
+  AppMetricaCoreExtension: 376d3c84742f90901b44b78988f9ca5f57272f6e
+  AppMetricaCoreUtils: ad4c88c5338e3aa6668f1f0de282d97306487c79
+  AppMetricaCrashes: 527e0bae11138491f7a698ab5784383056f65983
+  AppMetricaEncodingUtils: f282281e52824b5584a9994946b6f6f9725970c3
+  AppMetricaFMDB: 7f13f0ddc2203ac593db96baa807783956904efc
+  AppMetricaHostState: 0638b8433d70d001b47a44fade6b51e465fc9626
+  AppMetricaIdentifiers: e75d45cbb3b422531aa15a01e34fa8b7a0a1ec37
+  AppMetricaKeychain: 260ca4557d917a4b238b753ec7e07a82946eedbf
+  AppMetricaLibraryAdapter: 124fd62cccdba9decdf0d408690a9f4c604c79ab
+  AppMetricaLog: bd20a91993f0faa4f506c71e77df941225ae2114
+  AppMetricaLogSwift: 778a1d0d50b9230393d2224cf923d6171dcfc1ba
+  AppMetricaNetwork: 74d5c233a26a5938f25f074103b781599535be7e
+  AppMetricaPlatform: a55be9f074688addfdbea57f64287286651e6158
+  AppMetricaProtobuf: c3d320e26751c1d324009a93d7fd6336e5125e08
+  AppMetricaProtobufUtils: f02b5e26d31b20407b5a9834f00502e65e6bee20
+  AppMetricaStorageUtils: d9402ed21182a084b7904e30e5ced73214fe6780
+  AppMetricaSynchronization: 032608cc112d218c249835f6555879797e9f8381
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   BidMachine: 1a2d9124c5a508ac9a6931b1ced06a240dad2a39
   BigoADS: 8f0cee203e50095cc4d43dc5067695fc32eb094f
   ChartboostSDK: 5d387aeccf2748cd71c0b033e6c2cad4a558b308
+  DivKit: 2b481bbc686191a1d91706b0138240af31a25de4
+  DivKit_LayoutKit: f50e54afce8c41ad09f9a7b3c98725f85230ebfc
+  DivKit_LayoutKitInterface: 8c3dbd7095628a42bd72baa67d44f47d5852bf2d
+  DivKit_Serialization: 1bf6a80f135deca0350464bb451dc10a11931d7a
+  DivKitBinaryCompatibilityFacade: d89b02d3d3fb710461c30b09e292d3595472620e
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: eb3ffbf2b35df25e21e163657044ffef66616a40
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
@@ -169,7 +321,9 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: db00a3836f288f94e52114f312b56fe066699d82
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   InMobiSDK: 174c7910f27fb860e4f2204d621ef724efefc819
-  IronSourceSDK: ff0b14630899756847f7608a75182f10f022e5ef
+  IronSourceAdQualitySDK: 639d5a93e15e823538f87b75f3809c4905afc30b
+  IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
+  KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 07e018290689b906499d8285654bba42681cafcf
   MobileFuseSDK: e5ea2384bc85fe8c1ae13748659d2799829a8de3
   myTargetSDK: a3b862a94f48ab4eff90b63cb38eeb9d1e719101
@@ -180,9 +334,12 @@ SPEC CHECKSUMS:
   StackModules: e2f19291e90a7f7ce502153d61936f66d18d6a35
   SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
   UnityAds: eabbbb3014326e45dc221a467fba16960e7b73e3
+  VGSL: ffd90b7ab462da2f27c4babb50e708f317ddf1d2
+  VGSLFundamentals: abbaec4ac7dc410a664d0bf95d9cd2868ca8ac27
+  VGSLNetworking: 440fa6110b589862cc3edcf2a2f3fb6711a6b26c
+  VGSLUI: b42e004ac048ea482527b859dd661aaf31fa10a9
   VungleAds: cb2aa4791ba4f341c6c026d44cc43eabe258890f
-  YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
-  YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
+  YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
 PODFILE CHECKSUM: b91f764a6cb2d827ca7b8aa88ddb79dbda982a3b
 

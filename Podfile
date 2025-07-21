@@ -78,11 +78,11 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.8.0.0"
+  pod "IronSourceSDK", "8.10.0.0"
 end
 
 def yandex
-  pod 'YandexMobileAds', '5.2.1'
+  pod 'YandexMobileAds', "~> 7.14"
 end
 
 
@@ -210,7 +210,7 @@ end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.8'
+  pod 'IronSourceSDK', '~> 8.10'
 end
 
 # Tests
