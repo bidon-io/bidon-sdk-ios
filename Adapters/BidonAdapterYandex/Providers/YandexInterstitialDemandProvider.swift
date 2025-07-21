@@ -51,21 +51,21 @@ extension YandexInterstitialDemandProvider: InterstitialAdLoaderDelegate {
     func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didLoad interstitialAd: YandexMobileAds.InterstitialAd) {
         interstitialAd.delegate = self
         self.interstitialAd = interstitialAd
-        
+
         response?(.success(YandexInterstitialDemandAd(interstitial: interstitialAd)))
         response = nil
     }
-    
+
     func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didFailToLoadWithError error: YandexMobileAds.AdRequestError) {
         response?(.failure(.noFill(error.description)))
         response = nil
     }
-    
-    
+
+
 }
 
 extension YandexInterstitialDemandProvider: InterstitialAdDelegate {
-   
+
     func interstitialAdDidShow(_ interstitialAd: InterstitialAd) {
         delegate?.providerWillPresent(self)
     }
@@ -81,13 +81,13 @@ extension YandexInterstitialDemandProvider: InterstitialAdDelegate {
             error: .generic(error: error)
         )
     }
-    
+
     func interstitialAdDidDismiss(
         _ interstitialAd: InterstitialAd
     ) {
         delegate?.providerDidHide(self)
     }
-    
+
     func interstitialAdDidClick(
         _ interstitialAd: InterstitialAd
     ) {
