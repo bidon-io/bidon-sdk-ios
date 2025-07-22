@@ -1,6 +1,7 @@
 import Foundation
 import Bidon
 import YandexMobileAds
+import YandexMobileMetrica
 
 typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
@@ -43,16 +44,16 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: YandexParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        if context.regulations.gdprApplies {
-            MobileAds.setUserConsent(context.regulations.hasGdprConsent)
-        }
-        if context.regulations.coppaApplies {
-            MobileAds.setAgeRestrictedUser(true)
-        }
+        YMAMobileAds.setUserConsent(context.regulations.gdpr == .applies)
 
-        MobileAds.initializeSDK { [weak self] in
-            self?.isInitialized = true
+        if let configuration = YMMYandexMetricaConfiguration(apiKey: parameters.metricaId) {
+            YMMYandexMetrica.activate(with: configuration)
+            isInitialized = true
+
             completion(nil)
+        } else {
+            let error = SdkError.message("Unable create sdk with sdk metrica: \(parameters.metricaId)")
+            completion(error)
         }
     }
 }

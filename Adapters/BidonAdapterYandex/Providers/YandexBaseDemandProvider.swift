@@ -7,7 +7,6 @@
 
 import Foundation
 import Bidon
-import YandexMobileAds
 
 class YandexBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandProvider {
 

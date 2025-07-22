@@ -12,7 +12,7 @@ import YandexMobileAds
 final class YandexBannerDemandAd: DemandAd {
     public var id: String
 
-    init(adView: YandexMobileAds.AdView) {
+    init(adView: YMAAdView) {
         self.id = adView.adUnitID
     }
 }
@@ -23,11 +23,11 @@ final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDem
 
     let context: AdViewContext
 
-    private var yandexAdView: YandexMobileAds.AdView?
+    private var yandexAdView: YMAAdView?
     private var isLoaded: Bool = false
 
-    private var adSize: BannerAdSize {
-        return BannerAdSize.inlineSize(withWidth: context.format.preferredSize.width, maxHeight: context.format.preferredSize.height)
+    private var adSize: YMAAdSize {
+        return YMAAdSize.flexibleSize(with: context.format.preferredSize)
     }
 
     init(context: AdViewContext) {
@@ -41,10 +41,10 @@ final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDem
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        let request = MutableAdRequest()
+        let request = YMAMutableAdRequest()
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.yandexAdView = AdView(
+            self.yandexAdView = YMAAdView(
                 adUnitID: adUnitExtras.adUnitId,
                 adSize: adSize
             )
@@ -63,23 +63,23 @@ extension YandexAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: YandexBannerDemandAd) { }
 }
 
-extension YandexAdViewDemandProvider: YandexMobileAds.AdViewDelegate {
-    func adViewDidLoad(_ adView: YandexMobileAds.AdView) {
+extension YandexAdViewDemandProvider: YMAAdViewDelegate {
+    func adViewDidLoad(_ adView: YMAAdView) {
         let ad = YandexBannerDemandAd(adView: adView)
         response?(.success(ad))
         response = nil
     }
 
-    func adViewDidFailLoading(_ adView: YandexMobileAds.AdView, error: any Error) {
+    func adViewDidFailLoading(_ adView: YMAAdView, error: Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
 
-    func adViewDidClick(_ adView: YandexMobileAds.AdView) {
+    func adViewDidClick(_ adView: YMAAdView) {
         delegate?.providerDidClick(self)
     }
 
-    func adView(_ adView: YandexMobileAds.AdView, didTrackImpression impressionData: (any ImpressionData)?) {
+    func adView(_ adView: YMAAdView, didTrackImpressionWith impressionData: YMAImpressionData?) {
         let ad = YandexBannerDemandAd(adView: adView)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
@@ -91,4 +91,4 @@ extension AdViewContainer {
     }
 }
 
-extension YandexMobileAds.AdView: AdViewContainer { }
+extension YMAAdView: AdViewContainer { }
