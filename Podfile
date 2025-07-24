@@ -50,7 +50,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.5.0'
+  pod 'VungleAds', '7.5.1'
 end
 
 def ocmock
@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.29.1"
+  pod "myTargetSDK", "~> 5.32.1"
 end
 
 def chartboost
