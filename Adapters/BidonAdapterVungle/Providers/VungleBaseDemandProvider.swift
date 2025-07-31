@@ -9,8 +9,15 @@ import Foundation
 import Bidon
 import VungleAdsSDK
 
+protocol VungleLoadableAd: AnyObject {
+    var creativeId: String { get }
+    func load(_ bidPayload: String?)
+}
 
-final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
+extension VungleAdsSDK.BasePublicAd: VungleLoadableAd {}
+
+
+final class VungleDemandAd<AdObject: VungleLoadableAd>: DemandAd {
     public var id: String { adObject.creativeId }
 
     let adObject: AdObject
@@ -21,7 +28,7 @@ final class VungleDemandAd<AdObject: VungleAdsSDK.BasePublicAd>: DemandAd {
 }
 
 
-class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
+class VungleBaseDemandProvider<AdObject: VungleLoadableAd>: NSObject, BiddingDemandProvider, DirectDemandProvider {
     typealias DemandAdType = VungleDemandAd<AdObject>
 
     private(set) var demandAd: VungleDemandAd<AdObject>!
@@ -73,11 +80,15 @@ class VungleBaseDemandProvider<AdObject: VungleAdsSDK.BasePublicAd>: NSObject, B
         adObject.load(payload.payload)
     }
 
-    func load(pricefloor: Price, adUnitExtras: VungleAdUnitExtras, response: @escaping DemandProviderResponse) {
+    func load(
+        pricefloor: Price,
+        adUnitExtras: VungleAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
         self.response = response
         let adObject = adObject(placement: adUnitExtras.placementId)
         demandAd = VungleDemandAd(adObject: adObject)
-        adObject.load()
+        adObject.load(nil)
     }
 
     final func notify(

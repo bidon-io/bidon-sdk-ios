@@ -14,7 +14,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.2.1'
+  pod 'BidMachine', '3.3.0'
 end
 
 def admob
@@ -50,7 +50,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.5.0'
+  pod 'VungleAds', '7.5.1'
 end
 
 def ocmock
@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.29.1"
+  pod "myTargetSDK", "~> 5.32.1"
 end
 
 def chartboost
@@ -78,7 +78,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.8.0.0"
+  pod "IronSourceSDK", "8.10.0.0"
 end
 
 def yandex
@@ -210,7 +210,7 @@ end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.8'
+  pod 'IronSourceSDK', '~> 8.10'
 end
 
 # Tests
