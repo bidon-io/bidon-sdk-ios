@@ -70,12 +70,27 @@ final class GeoManager: NSObject, Geo, Environment {
 extension GeoManager {
     func prepare(completion: @escaping () -> ()) {
         self.completion = completion
-        locationManager.startUpdatingLocation()
+
+        if isAvailable {
+            locationManager.requestLocation()
+        } else {
+            self.completion?()
+            self.completion = nil
+        }
     }
 }
 
 
 extension GeoManager: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if isAvailable {
+            manager.requestLocation()
+        } else if status != .notDetermined {
+            completion?()
+            completion = nil
+        }
+    }
+
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.completion?()
         self.completion = nil

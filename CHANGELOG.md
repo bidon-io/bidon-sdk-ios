@@ -1,5 +1,8 @@
 # develop
 
+## Fixes
+- BDN-1007 CLGeocoder multiple processing - fix
+
 # Release 0.9.0
 
 ## New features
