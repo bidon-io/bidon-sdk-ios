@@ -82,6 +82,7 @@ def ironsource
 end
 
 def yandex
+  pod 'DivKit', '32.6.0'
   pod 'YandexMobileAds', "~> 7.14"
 end
 
