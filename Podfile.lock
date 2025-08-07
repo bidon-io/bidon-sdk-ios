@@ -211,7 +211,7 @@ DEPENDENCIES:
   - SwiftLint
   - UnityAds (~> 4.14.2)
   - VungleAds (= 7.5.0)
-  - YandexMobileAds (~> 7.14)
+  - YandexMobileAds (~> 7.14.0)
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
@@ -333,6 +333,6 @@ SPEC CHECKSUMS:
   VungleAds: cb2aa4791ba4f341c6c026d44cc43eabe258890f
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: a6bf83bc753b0008399f03d55b64ef032dd44695
+PODFILE CHECKSUM: 0d293676ac15cb6bb0439118cfaeed52ac9b4534
 
 COCOAPODS: 1.15.2
