@@ -192,6 +192,7 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.2.0)
   - AppLovinSDK (= 13.2.0)
   - AppLovinSDK (~> 13.1)
+  - AppMetricaLibraryAdapter
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (= 3.2.1)
   - BigoADS (~> 4.7.0)
@@ -333,6 +334,6 @@ SPEC CHECKSUMS:
   VungleAds: cb2aa4791ba4f341c6c026d44cc43eabe258890f
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 811a562ad4127a91bbfb291e1eaa325ab06cf5a9
+PODFILE CHECKSUM: 3eea15ad92be8174c6e47bf902d1e748ddc9b73e
 
 COCOAPODS: 1.15.2

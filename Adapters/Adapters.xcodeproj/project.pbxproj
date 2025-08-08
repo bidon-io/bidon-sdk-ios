@@ -210,6 +210,7 @@
 		499682B02E44B26E003DE568 /* YandexAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A22E44B26E003DE568 /* YandexAdUnitExtras.swift */; };
 		499682B12E44B26E003DE568 /* YandexParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A32E44B26E003DE568 /* YandexParameters.swift */; };
 		499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B22E44B5C5003DE568 /* Bidon.framework */; };
+		499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
@@ -510,6 +511,7 @@
 		499682A82E44B26E003DE568 /* YandexRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		499682B22E44B5C5003DE568 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppMetricaLibraryAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BB8E412C3D683A00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E452C3D685100A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E492C3D688C00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */,
 				499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */,
 				6DF14586318869FA72F054CD /* Pods_BidonAdapterYandex.framework in Frameworks */,
 			);
@@ -1462,6 +1465,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */,
 				499682B22E44B5C5003DE568 /* Bidon.framework */,
 				B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */,
 				4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */,
@@ -5873,6 +5877,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -5943,6 +5948,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

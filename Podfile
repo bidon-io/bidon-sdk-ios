@@ -83,6 +83,7 @@ end
 
 def yandex
   pod 'YandexMobileAds', "~> 7.14.0"
+  pod 'AppMetricaLibraryAdapter'
 end
 
 
@@ -267,7 +268,7 @@ target 'Sandbox' do
 end
 
 post_install do |installer|
-  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL']
+  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter']
   
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
