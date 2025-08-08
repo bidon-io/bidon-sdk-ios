@@ -10,15 +10,15 @@ use_frameworks!
 # Defenitions
 
 def applovin
-  pod 'AppLovinSDK', "13.2.0"
+  pod 'AppLovinSDK', '~> 13.2.0'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.3.0'
+  pod 'BidMachine', '~> 3.3.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 12.4.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 12.4'
 end
 
 def appsflyer
@@ -34,7 +34,11 @@ def dtexchange
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.17.1'
+  pod 'FBAudienceNetwork', '~> 6.17.1'
+end
+
+def meta_sdk
+  pod 'FBSDKLoginKit', '~> 17.1.0'
 end
 
 def unity_ads
@@ -46,19 +50,15 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.9.0'
+  pod 'MobileFuseSDK', '~> 1.9.0'
 end
 
 def vungle
-  pod 'VungleAds', '7.5.1'
+  pod 'VungleAds', '~> 7.5.1'
 end
 
 def ocmock
   pod 'OCMock', '~> 3.9.4'
-end
-
-def meta_sdk
-  pod 'FBSDKLoginKit', '~> 17.1.0'
 end
 
 def amazon
@@ -70,15 +70,15 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.32.1"
+  pod "myTargetSDK", '~> 5.32.1'
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.8.1'
+  pod 'ChartboostSDK', '~> 9.8.1'
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.10.0.0"
+  pod "IronSourceSDK", "~> 8.10.0"
 end
 
 def yandex
