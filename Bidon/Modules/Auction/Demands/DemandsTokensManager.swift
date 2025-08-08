@@ -16,6 +16,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private var adapters: [AdapterType]
     private let demands: [String]
     private let timeout: TimeInterval
+    private let auctionKey: String?
 
     private var tokens = [BiddingDemandToken]()
     private var biddingDemadIds = [String]()
@@ -31,6 +32,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         self.demands = builder.demands
         self.timeout = builder.timeout / 1000
         self.context = builder.context
+        self.auctionKey = builder.auctionKey
     }
 
     func load(
@@ -51,6 +53,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
                 getTokenFromProvider(
                     provider,
                     demandId: adapter.demandId,
+                    auctionKey: auctionKey,
                     startTimestamp: startTimestamp ?? Date.timestamp(.wall, units: .milliseconds),
                     parameters: parameters) { [weak self] demandToken in
                         guard let self else { return }
@@ -87,10 +90,11 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private func getTokenFromProvider(
         _ provider: any GenericBiddingDemandProvider,
         demandId: String,
+        auctionKey: String?,
         startTimestamp: TimeInterval,
         parameters: AdaptersInitialisationParameters.AdapterConfiguration,
         completion: @escaping (BiddingDemandToken) -> Void) {
-            provider.collectBiddingTokenEncoder(adUnitExtrasDecoder: parameters.decoder) { result in
+            provider.collectBiddingTokenEncoder(auctionKey: auctionKey, adUnitExtrasDecoder: parameters.decoder) { result in
 
                 let finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                 switch result {

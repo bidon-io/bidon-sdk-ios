@@ -37,6 +37,15 @@ $targets = [
 def build_universal(scheme)
   is_yandex = scheme == "BidonAdapterYandex"
 
+  min_versions = {
+    "BidonAdapterIronSource" => "13.0",
+    "ISBidonCustomAdapter" => "13.0",
+    "BidonAdapterMyTarget" => "12.4",
+    "BidonAdapterYandex" => "13.0"
+  }
+
+  deployment_target = min_versions.fetch(scheme, "12.0")
+  
   xcargs = [
     "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
     "STRIP_INSTALLED_PRODUCT=YES",
@@ -46,7 +55,8 @@ def build_universal(scheme)
     "OTHER_CFLAGS=\"-Qunused-arguments\"",
     "ONLY_ACTIVE_ARCH=NO",
     "DEPLOYMENT_POSTPROCESSING=YES",
-    "IPHONEOS_DEPLOYMENT_TARGET=13.0",
+    "MACH_O_TYPE=staticlib",
+    "IPHONEOS_DEPLOYMENT_TARGET=#{deployment_target}",
     "DEBUG_INFORMATION_FORMAT=\"dwarf\"",
     "SKIP_INSTALL=NO",
     "CODE_SIGN_IDENTITY=\"\"",
