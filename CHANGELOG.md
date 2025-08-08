@@ -1,5 +1,8 @@
 # develop
 
+- BDN-1006 AdNetworks updated
+- BDN-971 AdNetworks operators updated
+
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
 
