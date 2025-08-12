@@ -183,42 +183,42 @@ platform :ios do
       )
     end
 
-    build_universal("BidonAdapterYandex")
-    xcframework("BidonAdapterYandex","BidonAdapterYandex","BidonAdapterYandex", adapters_version)
+build_universal("BidonAdapterYandex")
+xcframework("BidonAdapterYandex","BidonAdapterYandex","BidonAdapterYandex", adapters_version)
 
-# Create ZIP archive for the adapter
-  zip(
-        path: "#{$build_dir}/#{$scheme}/BidonAdapterYandex-#{adapters_version}",
-        output_path: "#{$build_dir}/#{$scheme}/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip",
-  )
+$production_dir = "#{$build_dir}/BidonAdapterYandex"
 
-  # Generate podspec for the adapter only
-  podspec(
-    name: BidonAdapterYandex,
-    version: adapters_version,
-    sdk_version: sdk_version,
-    podfile: $root_dir + "/Podfile",
-    s3_region: ENV["S3_REGION"],
-    s3_bucket: ENV["S3_BUCKET"],
-    path: $podspecs_dir,
-    vendored_frameworks: "BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.xcframework",
-    is_adapter: true
-  )
+# ZIP рядом с xcframework в той же папке (Production)
+zip(
+  path: "#{$production_dir}/BidonAdapterYandex-#{adapters_version}",
+  output_path: "#{$production_dir}/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip",
+)
 
-  # Upload only the adapter archive to S3
-  if upload
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "BidonAdapterYandex/#{adapters_version}",
-      files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"]
-    )
-  end
-    
-  end
+# Podspec
+podspec(
+  name: "BidonAdapterYandex",
+  version: adapters_version,
+  sdk_version: version,
+  podfile: $root_dir + "/Podfile",
+  s3_region: ENV["S3_REGION"],
+  s3_bucket: ENV["S3_BUCKET"],
+  path: $podspecs_dir,
+  vendored_frameworks: "BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.xcframework",
+  is_adapter: true
+)
+
+if upload
+  aws_s3(
+    access_key: ENV["S3_ACCESS_KEY"],
+    secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+    bucket: ENV["S3_BUCKET"],
+    region: ENV["S3_REGION"],
+    acl: "bucket-owner-full-control",
+    path: "BidonAdapterYandex/#{adapters_version}",
+    files: ["#{$production_dir}/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"]
+  )    
+end
+end
 
 desc "Build a specific Bidon adapter"
 lane :adapter do |options|
