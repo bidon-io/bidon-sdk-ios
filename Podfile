@@ -9,16 +9,20 @@ use_frameworks!
 
 # Defenitions
 
+def amazon
+  pod 'AmazonPublisherServicesSDK', '~> 5.3.0'
+end
+
 def applovin
-  pod 'AppLovinSDK', "13.2.0"
+  pod 'AppLovinSDK', '~> 13.3.1'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.3.0'
+  pod 'BidMachine', '~> 3.4.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '~> 12.4.0'
+  pod 'Google-Mobile-Ads-SDK', '~> 12.8'
 end
 
 def appsflyer
@@ -26,59 +30,51 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '~> 4.7.0'
+  pod 'BigoADS', '~> 4.9.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '~> 8.3.6'
+  pod 'Fyber_Marketplace_SDK', '~> 8.3.8'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.17.1'
-end
-
-def unity_ads
-  pod 'UnityAds', '~> 4.14.2'
-end
-
-def mintegral
-  pod 'MintegralAdSDK', '~> 7.7.7'
-end
-
-def mobilefuse
-  pod 'MobileFuseSDK', '1.9.0'
-end
-
-def vungle
-  pod 'VungleAds', '7.5.1'
-end
-
-def ocmock
-  pod 'OCMock', '~> 3.9.4'
+  pod 'FBAudienceNetwork', '~> 6.20.1'
 end
 
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
 end
 
-def amazon
-  pod 'AmazonPublisherServicesSDK', '~> 5.2.0'
+def unity_ads
+  pod 'UnityAds', '~> 4.16.0'
+end
+
+def mintegral
+  pod 'MintegralAdSDK', '~> 7.7.9'
+end
+
+def mobilefuse
+  pod 'MobileFuseSDK', '~> 1.9.2'
+end
+
+def vungle
+  pod 'VungleAds', '~> 7.5.2'
 end
 
 def inmobi
-  pod 'InMobiSDK', '~> 10.8.3'
+  pod 'InMobiSDK', '~> 10.8.6'
 end
 
 def my_target
-  pod "myTargetSDK", "~> 5.32.1"
+  pod "myTargetSDK", '~> 5.33.0'
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.8.1'
+  pod 'ChartboostSDK', '~> 9.9.2'
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.10.0.0"
+  pod "IronSourceSDK", "~> 8.10.0"
 end
 
 def yandex
@@ -88,7 +84,7 @@ end
 
 
 def appodeal_mediation
-  pod 'Appodeal', '~> 3.3.0'
+  # pod 'Appodeal', '~> 3.3.0'
   # pod 'APDAdColonyAdapter', '3.1.3.0'
   # pod 'APDAdjustAdapter', '3.1.3.0'
   # pod 'APDAppLovinAdapter', '3.1.3.0'
@@ -115,6 +111,9 @@ def swiftlint
   pod 'SwiftLint'
 end
 
+def ocmock
+  pod 'OCMock', '~> 3.9.4'
+end
 
 
 # Targets

@@ -96,7 +96,7 @@ PODS:
     - DivKit (~> 32.2)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
-  - FBAudienceNetwork (6.17.1)
+  - FBAudienceNetwork (6.20.1)
   - FBSDKCoreKit (17.1.0):
     - FBAEMKit (= 17.1.0)
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -104,7 +104,7 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.3.8)
-  - Google-Mobile-Ads-SDK (12.4.0):
+  - Google-Mobile-Ads-SDK (12.8.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
   - InMobiSDK (10.8.6)
@@ -155,27 +155,27 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.9):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.9.0)
-  - myTargetSDK (5.32.1):
+  - MobileFuseSDK (1.9.2)
+  - myTargetSDK (5.33.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
   - OCMock (3.9.4)
-  - OMSDK_Appodeal (1.5.4)
+  - OMSDK_Appodeal (1.5.2)
   - StackConsentManager (3.0.0):
     - GoogleUserMessagingPlatform (~> 2.1)
-  - StackModules/Core-Static (3.2.1)
-  - StackModules/ProductPresentation-Static (3.2.1):
+  - StackModules/Core-Static (3.3.0)
+  - StackModules/ProductPresentation-Static (3.3.0):
     - StackModules/Core-Static
-  - StackModules/Rendering-Static (3.2.1):
-    - OMSDK_Appodeal (~> 1.5.4)
+  - StackModules/Rendering-Static (3.3.0):
+    - OMSDK_Appodeal (= 1.5.2)
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
-  - StackModules/Static (3.2.1):
+  - StackModules/Static (3.3.0):
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
   - SwiftLint (0.59.1)
-  - UnityAds (4.14.2)
+ - UnityAds (4.14.2)
   - VGSL (7.7.1):
     - VGSLFundamentals (= 7.7.1)
     - VGSLNetworking (= 7.7.1)
@@ -195,9 +195,9 @@ PODS:
     - DivKitBinaryCompatibilityFacade (= 5.0.0)
 
 DEPENDENCIES:
-  - AmazonPublisherServicesSDK (~> 5.2.0)
-  - AppLovinSDK (= 13.2.0)
+  - AmazonPublisherServicesSDK (~> 5.3.0)
   - AppLovinSDK (~> 13.1)
+  - AppLovinSDK (~> 13.3.1)
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (= 3.3.0)
   - BigoADS (~> 4.7.0)
@@ -205,14 +205,14 @@ DEPENDENCIES:
   - DivKit (= 32.6.0)
   - FBAudienceNetwork (= 6.17.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (~> 8.3.6)
-  - Google-Mobile-Ads-SDK (~> 12.4.0)
-  - InMobiSDK (~> 10.8.3)
-  - IronSourceSDK (= 8.10.0.0)
+  - Fyber_Marketplace_SDK (~> 8.3.8)
+  - Google-Mobile-Ads-SDK (~> 12.8)
+  - InMobiSDK (~> 10.8.6)
   - IronSourceSDK (~> 8.10)
-  - MintegralAdSDK (~> 7.7.7)
-  - MobileFuseSDK (= 1.9.0)
-  - myTargetSDK (~> 5.32.1)
+  - IronSourceSDK (~> 8.10.0)
+  - MintegralAdSDK (~> 7.7.9)
+  - MobileFuseSDK (~> 1.9.2)
+  - myTargetSDK (~> 5.33.0)
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
   - SwiftLint
@@ -314,12 +314,12 @@ SPEC CHECKSUMS:
   DivKit_Serialization: a6ca735ccec5f378b28a2d1285350568b58c5767
   DivKitBinaryCompatibilityFacade: d89b02d3d3fb710461c30b09e292d3595472620e
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
-  FBAudienceNetwork: eb3ffbf2b35df25e21e163657044ffef66616a40
+  FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: 078ce5d06cee765bc822ace5c231af7a17e8dcd1
-  Google-Mobile-Ads-SDK: db00a3836f288f94e52114f312b56fe066699d82
+  Google-Mobile-Ads-SDK: ece122bc89b38cab319543bc464a9ceabfe1d307
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   InMobiSDK: a6e7bfbecb698c83183f42c5a3cfa1ac52f16bff
   IronSourceAdQualitySDK: 639d5a93e15e823538f87b75f3809c4905afc30b
@@ -330,9 +330,9 @@ SPEC CHECKSUMS:
   myTargetSDK: 81d1622cb5a05fbea2ae1bc661407b4ff117e19f
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
-  OMSDK_Appodeal: 9ed58fc8cabfbe31637cd267b35c1f86d227c49d
+  OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
-  StackModules: e2f19291e90a7f7ce502153d61936f66d18d6a35
+  StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
   SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
   UnityAds: eabbbb3014326e45dc221a467fba16960e7b73e3
   VGSL: 0b95033d99a391877abf6106f15784343eafdaa8
