@@ -161,7 +161,6 @@
 
 - (void)adObject:(id<BDNAdObject>)adObject didRecordImpression:(id<BDNAd>)ad {
     if (ad.adType == 0) {
-        [self.banner notifyWin];
         [self.bannerDelegate didDisplayAdViewAd];
     }
 }

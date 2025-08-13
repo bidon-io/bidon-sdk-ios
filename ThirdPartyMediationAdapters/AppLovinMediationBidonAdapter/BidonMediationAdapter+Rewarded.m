@@ -76,8 +76,6 @@
         return;
     }
     
-    [self.rewardedAd notifyWin];
-    
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
     [self.rewardedAd showAdFrom:parameters.presentingViewController];
 }
@@ -106,6 +104,7 @@
             NSLog(@"[BidonAdapter] [%@] Rewarded ad loaded from cache, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
             self.rewardedAd = (BDNRewardedAd *)cachedAd.adInstance;
             self.rewardedAd.delegate = self;
+            [self.rewardedAd notifyWin];
             [self.rewardedDelegate didLoadRewardedAdWithExtraInfo:[self extrasDictForEcpm:self.rewardedMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Rewarded ad failed to load from cache: No fill, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);

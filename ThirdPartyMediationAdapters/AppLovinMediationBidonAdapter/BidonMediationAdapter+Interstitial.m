@@ -75,8 +75,6 @@
         [delegate didFailToDisplayInterstitialAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.adDisplayFailedError mediatedNetworkErrorCode:BDNErrorCodeUnspecified mediatedNetworkErrorMessage:@"Presenting view controller is nil"]];
         return;
     }
-    
-    [self.interstitialAd notifyWin];
 
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
     [self.interstitialAd showAdFrom:parameters.presentingViewController];
@@ -105,6 +103,7 @@
             NSLog(@"[BidonAdapter] [%@] Interstitial ad loaded from cache, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
             self.interstitialAd = (BDNInterstitial *)cachedAd.adInstance;
             self.interstitialAd.delegate = self;
+            [self.interstitialAd notifyWin];
             [self.interstitialDelegate didLoadInterstitialAdWithExtraInfo:[self extrasDictForEcpm:self.interstitialMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Interstitial ad failed to load from cache: No fill, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
