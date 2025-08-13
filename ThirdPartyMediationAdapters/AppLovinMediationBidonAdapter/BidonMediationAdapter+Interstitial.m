@@ -103,6 +103,7 @@
             NSLog(@"[BidonAdapter] [%@] Interstitial ad loaded from cache, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
             self.interstitialAd = (BDNInterstitial *)cachedAd.adInstance;
             self.interstitialAd.delegate = self;
+            [self.interstitialAd notifyWin];
             [self.interstitialDelegate didLoadInterstitialAdWithExtraInfo:[self extrasDictForEcpm:self.interstitialMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Interstitial ad failed to load from cache: No fill, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
