@@ -15,8 +15,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49D69C9E2C6CB4ED007EF1F8"
-               BuildableName = "BidonAdapterYandex.framework"
+               BlueprintIdentifier = "499682942E44B1C7003DE568"
+               BuildableName = "libBidonAdapterYandex.a"
                BlueprintName = "BidonAdapterYandex"
                ReferencedContainer = "container:Adapters.xcodeproj">
             </BuildableReference>
@@ -50,8 +50,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "49D69C9E2C6CB4ED007EF1F8"
-            BuildableName = "BidonAdapterYandex.framework"
+            BlueprintIdentifier = "499682942E44B1C7003DE568"
+            BuildableName = "libBidonAdapterYandex.a"
             BlueprintName = "BidonAdapterYandex"
             ReferencedContainer = "container:Adapters.xcodeproj">
          </BuildableReference>

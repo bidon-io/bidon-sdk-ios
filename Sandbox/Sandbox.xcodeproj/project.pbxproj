@@ -81,7 +81,6 @@
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
 		49BCF9782DF9C23E008EC8E3 /* SdkInitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */; };
-		49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */; };
 		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
 		9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18C91C2C903E07005BE4F2 /* Constants.swift */; };
 		9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */; };
@@ -166,6 +165,8 @@
 		490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdDemoView.swift; sourceTree = "<group>"; };
 		490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4996829F2E44B1F0003DE568 /* libNewAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libNewAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		499682B62E44B855003DE568 /* libBidonAdapterYandex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBidonAdapterYandex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkInitializationView.swift; sourceTree = "<group>"; };
 		49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D69CBA2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,7 +184,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49D69CBB2C6CC1B5007EF1F8 /* BidonAdapterYandex.framework in Frameworks */,
 				49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */,
 				426A5C7429AF7C5A0065AAD5 /* BidonAdapterDTExchange.framework in Frameworks */,
 				420F03682A681F1000A4664F /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
@@ -247,6 +247,8 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				499682B62E44B855003DE568 /* libBidonAdapterYandex.a */,
+				4996829F2E44B1F0003DE568 /* libNewAdapter.a */,
 				490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */,
 				495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */,
 				49D69CC22C6CCE64007EF1F8 /* YandexMobileAds.xcframework */,
@@ -795,7 +797,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -835,7 +837,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newpubco.merge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

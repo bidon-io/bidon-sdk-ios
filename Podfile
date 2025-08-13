@@ -78,7 +78,8 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '5.2.1'
+  pod 'DivKit', '32.6.0'
+  pod 'YandexMobileAds', "~> 7.14.1"
 end
 
 
@@ -266,20 +267,27 @@ target 'Sandbox' do
 end
 
 post_install do |installer|
+  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter']
+  
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
+      if problematic_targets.include?(target.name)
+        config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
+      else
+        config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+      end
+      
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       
       xcconfig_path = config.base_configuration_reference.real_path
       xcconfig = File.read(xcconfig_path)
       xcconfig_mod = xcconfig.gsub(/DT_TOOLCHAIN_DIR/, "TOOLCHAIN_DIR")
-      File.open(xcconfig_path, "w") { |file| file << xcconfig_mod }
-    end
-
-    installer.pods_project.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['IOS_DEPLOYMENT_TARGET'] = '13.0'
+      File.open(xcconfig_path, "w") { |file| file.write(xcconfig_mod) }
     end
   end
+  
+  installer.pods_project.build_configurations.each do |config|
+    config.build_settings['SWIFT_VERSION'] = '5.0'
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+  end
 end
-

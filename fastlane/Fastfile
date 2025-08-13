@@ -24,7 +24,6 @@ $targets = [
   "BidonAdapterInMobi",
   "BidonAdapterAmazon",
   "BidonAdapterChartboost",
-  "BidonAdapterYandex",
   "BidonAdapterIronSource",
   "BidonAdapterMyTarget",
   "BidonAdapterMobileFuse",
@@ -34,31 +33,43 @@ $targets = [
 
 # Defenitions ###
 def build_universal(scheme)
+  is_yandex = scheme == "BidonAdapterYandex"
+
+  min_versions = {
+    "BidonAdapterIronSource" => "13.0",
+    "ISBidonCustomAdapter" => "13.0",
+    "BidonAdapterMyTarget" => "12.4",
+    "BidonAdapterYandex" => "13.0"
+  }
+
+  deployment_target = min_versions.fetch(scheme, "12.0")
+  
   xcargs = [
     "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
     "STRIP_INSTALLED_PRODUCT=YES",
     "LINK_FRAMEWORKS_AUTOMATICALLY=NO",
-    "BUILD_LIBRARY_FOR_DISTRIBUTION=YES",
+    ("BUILD_LIBRARY_FOR_DISTRIBUTION=YES" unless is_yandex),
+    ("MACH_O_TYPE=staticlib" if is_yandex),
     "OTHER_CFLAGS=\"-Qunused-arguments\"",
     "ONLY_ACTIVE_ARCH=NO",
     "DEPLOYMENT_POSTPROCESSING=YES",
     "MACH_O_TYPE=staticlib",
-    "IPHONEOS_DEPLOYMENT_TARGET=11.0",
+    "IPHONEOS_DEPLOYMENT_TARGET=#{deployment_target}",
     "DEBUG_INFORMATION_FORMAT=\"dwarf\"",
-    "SKIP_INSTALL=NO",
     "SKIP_INSTALL=NO",
     "CODE_SIGN_IDENTITY=\"\"",
     "CODE_SIGNING_REQUIRED=NO",
     "CODE_SIGN_ENTITLEMENTS=\"\"",
-  ]
+  ].compact
 
   xcodebuild(
     archive: true,
     archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
     scheme: scheme,
     workspace: "Bidon.xcworkspace",
+    configuration: $scheme,
     sdk: "iphoneos",
-    xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" "),
+    xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" ")
   )
 
   xcodebuild(
@@ -66,19 +77,34 @@ def build_universal(scheme)
     archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
     scheme: scheme,
     workspace: "Bidon.xcworkspace",
+    configuration: $scheme,
     sdk: "iphonesimulator",
-    xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" "),
+    xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" ")
   )
 end
 
 def xcframework(scheme, target, framework, version)
-  create_xcframework(
-    frameworks: [
-      "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/Library/Frameworks/#{framework}.framework",
-      "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework",
-    ],
-    output: "#{$build_dir}/#{scheme}/#{target}-#{version}/#{framework}.xcframework",
-  )
+  is_yandex = scheme == "BidonAdapterYandex"
+  output_path = "#{$build_dir}/#{scheme}/#{target}-#{version}/#{framework}.xcframework"
+  FileUtils.mkdir_p(File.dirname(output_path))
+
+  if is_yandex
+    create_xcframework(
+      libraries: [
+        "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/usr/local/lib/lib#{framework}.a",
+        "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/usr/local/lib/lib#{framework}.a",
+      ],
+      output: output_path
+    )
+  else
+    create_xcframework(
+      frameworks: [
+        "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework",
+        "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/Library/Frameworks/#{framework}.framework",
+      ],
+      output: output_path
+    )
+  end
 end
 
 def xclibrary(scheme, target, library, version)
@@ -156,7 +182,43 @@ platform :ios do
         is_adapter: is_adapter,
       )
     end
-  end
+
+build_universal("BidonAdapterYandex")
+xcframework("BidonAdapterYandex","BidonAdapterYandex","BidonAdapterYandex", adapters_version)
+
+$production_dir = "#{$build_dir}/BidonAdapterYandex"
+
+# ZIP рядом с xcframework в той же папке (Production)
+zip(
+  path: "#{$production_dir}/BidonAdapterYandex-#{adapters_version}",
+  output_path: "#{$production_dir}/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip",
+)
+
+# Podspec
+podspec(
+  name: "BidonAdapterYandex",
+  version: adapters_version,
+  sdk_version: version,
+  podfile: $root_dir + "/Podfile",
+  s3_region: ENV["S3_REGION"],
+  s3_bucket: ENV["S3_BUCKET"],
+  path: $podspecs_dir,
+  vendored_frameworks: "BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.xcframework",
+  is_adapter: true
+)
+
+if upload
+  aws_s3(
+    access_key: ENV["S3_ACCESS_KEY"],
+    secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+    bucket: ENV["S3_BUCKET"],
+    region: ENV["S3_REGION"],
+    acl: "bucket-owner-full-control",
+    path: "BidonAdapterYandex/#{adapters_version}",
+    files: ["#{$production_dir}/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"]
+  )    
+end
+end
 
 desc "Build a specific Bidon adapter"
 lane :adapter do |options|
