@@ -75,6 +75,8 @@
         [delegate didFailToDisplayInterstitialAdWithError:[MAAdapterError errorWithAdapterError:MAAdapterError.adDisplayFailedError mediatedNetworkErrorCode:BDNErrorCodeUnspecified mediatedNetworkErrorMessage:@"Presenting view controller is nil"]];
         return;
     }
+    
+    [self.interstitialAd notifyWin];
 
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.interstitialAdUnitId, self.interstitialPlacementId);
     [self.interstitialAd showAdFrom:parameters.presentingViewController];

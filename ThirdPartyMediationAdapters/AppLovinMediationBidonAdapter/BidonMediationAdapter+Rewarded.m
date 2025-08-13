@@ -76,6 +76,8 @@
         return;
     }
     
+    [self.rewardedAd notifyWin];
+    
     NSLog(@"[BidonAdapter] [%@] Presenting ad, Placement ID: %@", self.rewardedAdUnitId, self.rewardedPlacementId);
     [self.rewardedAd showAdFrom:parameters.presentingViewController];
 }
