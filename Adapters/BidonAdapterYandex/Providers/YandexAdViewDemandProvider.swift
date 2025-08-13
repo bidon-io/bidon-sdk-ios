@@ -69,16 +69,16 @@ extension YandexAdViewDemandProvider: YandexMobileAds.AdViewDelegate {
         response?(.success(ad))
         response = nil
     }
-    
+
     func adViewDidFailLoading(_ adView: YandexMobileAds.AdView, error: any Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
-    
+
     func adViewDidClick(_ adView: YandexMobileAds.AdView) {
         delegate?.providerDidClick(self)
     }
-    
+
     func adView(_ adView: YandexMobileAds.AdView, didTrackImpression impressionData: (any ImpressionData)?) {
         let ad = YandexBannerDemandAd(adView: adView)
         revenueDelegate?.provider(self, didLogImpression: ad)
