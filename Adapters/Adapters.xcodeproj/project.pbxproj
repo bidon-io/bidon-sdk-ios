@@ -210,6 +210,8 @@
 		499682B12E44B26E003DE568 /* YandexParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A32E44B26E003DE568 /* YandexParameters.swift */; };
 		499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B22E44B5C5003DE568 /* Bidon.framework */; };
 		499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */; };
+		49C05E192E4CE45400EE0D1D /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; };
+		49C05E1A2E4CE45400EE0D1D /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
@@ -244,6 +246,17 @@
 			dstSubfolderSpec = 16;
 			files = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C05E1B2E4CE45400EE0D1D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				49C05E1A2E4CE45400EE0D1D /* DTBiOSSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -500,6 +513,7 @@
 		49BB8E412C3D683A00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E452C3D685100A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E492C3D688C00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
+		49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.3.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49C4081E2C60C8ED005CB90B /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.7/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -602,6 +616,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C05E192E4CE45400EE0D1D /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1448,6 +1463,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */,
 				499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */,
 				499682B22E44B5C5003DE568 /* Bidon.framework */,
 				B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */,
@@ -1805,6 +1821,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
+				49C05E1B2E4CE45400EE0D1D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
