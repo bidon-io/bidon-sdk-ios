@@ -128,11 +128,16 @@ struct AdaptersInitializator {
         var graph = DirectedAcyclicGraph<Operation>()
 
         let operations = self.operations
-
+        let minOrder = operations.map { $0.config.order}.min() ?? 0
+        Logger.info("Initialize ad networks > minOrder: \(minOrder)")
+        
         try? graph.add(node: completionOperation)
         operations.forEach {
             try? graph.add(node: $0)
-            try? graph.addEdge(from: $0, to: completionOperation)
+//            try? graph.addEdge(from: $0, to: completionOperation)
+            if $0.config.order == minOrder {
+                try? graph.addEdge(from: $0, to: completionOperation)
+            }
         }
 
         let count = operations.map { $0.config.order }.max() ?? 0
