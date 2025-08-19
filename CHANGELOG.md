@@ -2,6 +2,7 @@
 
 ## New features
 - BDN-1033 Bidon request params
+- BDN-1009 Bidon init by order
 
 # Release 0.10.0
 
