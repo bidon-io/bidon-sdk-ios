@@ -7,6 +7,7 @@
 - BDN-1006 AdNetworks updated
 - BDN-971 AdNetworks operators updated
 - APDM-1474 Fixed adapters init
+- APDM-1475 AppMetricaAnalytics version fix
 
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
