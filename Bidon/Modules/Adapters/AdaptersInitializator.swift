@@ -129,7 +129,7 @@ struct AdaptersInitializator {
 
         let operations = self.operations
         let minOrder = operations.map { $0.config.order }.min() ?? 0
-        
+
         try? graph.add(node: completionOperation)
         operations.forEach {
             try? graph.add(node: $0)
