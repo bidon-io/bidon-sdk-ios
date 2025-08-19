@@ -6,6 +6,7 @@
 - BDN-1021 Fix Win/Loss Notification Logic Based on external_win_notifications
 - BDN-1006 AdNetworks updated
 - BDN-971 AdNetworks operators updated
+- APDM-1474 Fixed adapters init
 
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
