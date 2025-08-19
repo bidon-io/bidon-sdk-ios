@@ -42,14 +42,14 @@ struct AdaptersInitializator {
 
                 let timer = Timer(
                     timeInterval: timeout,
-                    repeats: true
+                    repeats: false
                 ) { [weak self] _ in
                     guard let self = self, self.isExecuting else { return }
                     Logger.warning("\(self.adapter.name) adapter has reached timeout \(timeout)s during initialization")
                     self.finish()
                 }
 
-                RunLoop.main.add(timer, forMode: .default)
+                RunLoop.main.add(timer, forMode: .common)
                 self.timer = timer
             }
 
@@ -132,27 +132,15 @@ struct AdaptersInitializator {
         var graph = DirectedAcyclicGraph<Operation>()
 
         let operations = self.operations
-        let minOrder = operations.map { $0.config.order}.min() ?? 0
-        Logger.info("Initialize ad networks > minOrder: \(minOrder)")
+        let minOrder = operations.map { $0.config.order }.min() ?? 0
         
         try? graph.add(node: completionOperation)
         operations.forEach {
             try? graph.add(node: $0)
-//            try? graph.addEdge(from: $0, to: completionOperation)
             if $0.config.order == minOrder {
                 try? graph.addEdge(from: $0, to: completionOperation)
-            }
-        }
-
-        let count = operations.map { $0.config.order }.max() ?? 0
-
-        if count > 0 {
-            for order in 1...count {
-                for parent in operations where parent.config.order == order - 1 {
-                    for children in operations where children.config.order == order {
-                        try? graph.addEdge(from: parent, to: children)
-                    }
-                }
+            } else {
+                try? graph.addEdge(from: completionOperation, to: $0)
             }
         }
 
