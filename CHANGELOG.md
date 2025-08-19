@@ -1,5 +1,8 @@
 # develop
 
+## New features
+- BDN-1009 Bidon init by order
+
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
 
