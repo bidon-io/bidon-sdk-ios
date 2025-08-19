@@ -135,8 +135,18 @@ struct AdaptersInitializator {
             try? graph.add(node: $0)
             if $0.config.order == minOrder {
                 try? graph.addEdge(from: $0, to: completionOperation)
-            } else {
-                try? graph.addEdge(from: completionOperation, to: $0)
+            }
+        }
+
+        let count = operations.map { $0.config.order }.max() ?? 0
+
+        if count > 0 {
+            for order in 1...count {
+                for parent in operations where parent.config.order == order - 1 {
+                    for children in operations where children.config.order == order {
+                        try? graph.addEdge(from: parent, to: children)
+                    }
+                }
             }
         }
 
