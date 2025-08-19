@@ -4,6 +4,12 @@ PODS:
   - AppMetricaAdSupport (5.11.2):
     - AppMetricaCore (= 5.11.2)
     - AppMetricaCoreExtension (= 5.11.2)
+  - AppMetricaAnalytics (5.11.2):
+    - AppMetricaAdSupport (= 5.11.2)
+    - AppMetricaCore (= 5.11.2)
+    - AppMetricaCrashes (= 5.11.2)
+    - AppMetricaScreenshot (= 5.11.2)
+    - AppMetricaWebKit (= 5.11.2)
   - AppMetricaCore (5.11.2):
     - AppMetricaCoreUtils (= 5.11.2)
     - AppMetricaEncodingUtils (= 5.11.2)
@@ -67,11 +73,18 @@ PODS:
   - AppMetricaProtobuf (5.11.2)
   - AppMetricaProtobufUtils (5.11.2):
     - AppMetricaProtobuf (= 5.11.2)
+  - AppMetricaScreenshot (5.11.2):
+    - AppMetricaCore (= 5.11.2)
+    - AppMetricaCoreExtension (= 5.11.2)
   - AppMetricaStorageUtils (5.11.2):
     - AppMetricaCoreUtils (= 5.11.2)
     - AppMetricaLog (= 5.11.2)
   - AppMetricaSynchronization (5.11.2):
     - AppMetricaLogSwift (= 5.11.2)
+  - AppMetricaWebKit (5.11.2):
+    - AppMetricaCore (= 5.11.2)
+    - AppMetricaCoreUtils (= 5.11.2)
+    - AppMetricaLog (= 5.11.2)
   - AppsFlyerFramework (6.15.3):
     - AppsFlyerFramework/Main (= 6.15.3)
   - AppsFlyerFramework/Main (6.15.3)
@@ -198,6 +211,7 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.3.0)
   - AppLovinSDK (~> 13.1)
   - AppLovinSDK (~> 13.3.1)
+  - AppMetricaAnalytics (~> 5.11.2)
   - AppsFlyerFramework (~> 6.15.2)
   - BidMachine (~> 3.4.0)
   - BigoADS (~> 4.9.0)
@@ -227,6 +241,7 @@ SPEC REPOS:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
     - AppMetricaAdSupport
+    - AppMetricaAnalytics
     - AppMetricaCore
     - AppMetricaCoreExtension
     - AppMetricaCoreUtils
@@ -243,8 +258,10 @@ SPEC REPOS:
     - AppMetricaPlatform
     - AppMetricaProtobuf
     - AppMetricaProtobufUtils
+    - AppMetricaScreenshot
     - AppMetricaStorageUtils
     - AppMetricaSynchronization
+    - AppMetricaWebKit
     - AppsFlyerFramework
     - BidMachine
     - BigoADS
@@ -286,6 +303,7 @@ SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 351eb855ee50b7dfb15f7e2569c1bf31a5fa9fe7
   AppLovinSDK: 5075837afdee4fb429121799b8cbcc5918ef3a23
   AppMetricaAdSupport: 66c7a050698610774cc359f694ccb2f6a3bf83fb
+  AppMetricaAnalytics: 945af25ba5098bfb2e411074c5eb03defa34e920
   AppMetricaCore: 36c64a0b520c0d1aaa84c4b8ba71a137887df982
   AppMetricaCoreExtension: a1f28ee520a114300b8a5a768c23f24f6cc1ad8b
   AppMetricaCoreUtils: 5511f449086ea69c83c682360b5294f64cbd130a
@@ -302,8 +320,10 @@ SPEC CHECKSUMS:
   AppMetricaPlatform: 8c8defe67db8084f29cb477e28c09c8c0ede7e40
   AppMetricaProtobuf: 0e9735bd77870f6eb6d30ef257e21141aad5c117
   AppMetricaProtobufUtils: a7c741f060e987957d9afcdef951776b486a5ab3
+  AppMetricaScreenshot: 5b7533f0f9824d1e9ec85646f0f85d3b6fc12a9e
   AppMetricaStorageUtils: 884d6545aba72ab7f835ba369fd919b5162f40c4
   AppMetricaSynchronization: eb488695c4ef154bb0f3c54b56c48f50f2364107
+  AppMetricaWebKit: 0dcd6fc9405995c9c437643520edf08f15aacce0
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   BidMachine: aae28c0331dbcec42d63a71b25b0470990b87fe7
   BigoADS: b15dd89a2f8ce5230843940deae011e5192e1686
@@ -342,6 +362,6 @@ SPEC CHECKSUMS:
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: d79bf644d16f3481e88d8a33a3ad088fee94d7ad
+PODFILE CHECKSUM: f3261ee0568255051b8ce93b5ff12c0b30cbba0f
 
 COCOAPODS: 1.15.2
