@@ -2,6 +2,7 @@
 
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
+- BDN-992 VK Ads debug mode support
 
 # Release 0.9.0
 
