@@ -14,7 +14,7 @@ final class AdViewAuctionRequestBuilder: BaseAuctionRequestBuilder<BannerAdTypeC
         adaptersRepository.all(of: DirectAdViewDemandSourceAdapter.self) +
         adaptersRepository.all(of: BiddingAdViewDemandSourceAdapter.self)
 
-        let ids = adapters.map{$0.demandId}
+        let ids = adapters.map { $0.demandId }
         Logger.info("AdViewAuctionRequest: \(ids)")
         let filteredAdapters = adapters.filter({ adapter in adaptersRepository.initializedIds.contains(where: { $0 == adapter.demandId }) })
 
