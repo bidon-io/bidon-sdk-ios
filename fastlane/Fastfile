@@ -64,6 +64,7 @@ def build_universal(scheme)
     "CODE_SIGN_ENTITLEMENTS=\"\"",
   ].compact
 
+  # Archive for device
   xcodebuild(
     archive: true,
     archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
@@ -71,9 +72,11 @@ def build_universal(scheme)
     workspace: "Bidon.xcworkspace",
     configuration: $scheme,
     sdk: "iphoneos",
+    destination: "generic/platform=iOS",
     xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" ")
   )
 
+  # Archive for simulator
   xcodebuild(
     archive: true,
     archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
@@ -81,9 +84,11 @@ def build_universal(scheme)
     workspace: "Bidon.xcworkspace",
     configuration: $scheme,
     sdk: "iphonesimulator",
+    destination: "platform=iOS Simulator,name=iPhone 14",
     xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" ")
   )
 end
+
 
 def xcframework(scheme, target, framework, version)
   is_yandex = scheme == "BidonAdapterYandex"
