@@ -238,6 +238,10 @@ target 'Tests-Swift' do
   project 'Tests/Tests.xcodeproj'
 end
 
+target 'Bidon' do
+  project 'Bidon.xcodeproj'
+end
+
 
 # Demo
 
