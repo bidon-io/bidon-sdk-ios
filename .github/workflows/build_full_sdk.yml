@@ -32,8 +32,8 @@ jobs:
         with:
           fetch-depth: 0  # убедись, что git подтягивает всё, включая схемы
 
-      - name: Select Xcode 16.1
-        run: sudo xcode-select -s /Applications/Xcode_16.1.app
+      - name: Select Xcode 16.0
+        run: sudo xcode-select -s /Applications/Xcode_16.0.app
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -43,14 +43,6 @@ jobs:
 
       - name: Install dependencies
         run: bundle install
-        
-        # 🧪 Отладка: какие схемы видны в воркспейсе
-      - name: Show available schemes
-        run: xcodebuild -list -workspace Bidon.xcworkspace
-
-      # 🧪 Отладка: какие destination доступны для схемы Release
-      - name: Show destinations for 'Release' scheme
-        run: xcodebuild -showdestinations -scheme Release -workspace Bidon.xcworkspace
 
       - name: Build SDK via Fastlane
         run: |
