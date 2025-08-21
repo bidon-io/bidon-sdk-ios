@@ -72,7 +72,6 @@ def build_universal(scheme)
     workspace: "Bidon.xcworkspace",
     configuration: $scheme,
     sdk: "iphoneos",
-    destination: "generic/platform=iOS",
     xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" ")
   )
 
@@ -84,7 +83,6 @@ def build_universal(scheme)
     workspace: "Bidon.xcworkspace",
     configuration: $scheme,
     sdk: "iphonesimulator",
-    destination: "platform=iOS Simulator,name=iPhone 14",
     xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" ")
   )
 end
