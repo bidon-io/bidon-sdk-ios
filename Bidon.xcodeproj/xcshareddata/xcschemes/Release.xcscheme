@@ -286,6 +286,20 @@
                ReferencedContainer = "container:ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B93BC1F82E54C7A600C99DBE"
+               BuildableName = "BidonAdapterMoloco.framework"
+               BlueprintName = "BidonAdapterMoloco"
+               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

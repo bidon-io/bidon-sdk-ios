@@ -67,6 +67,7 @@ PODS:
   - MintegralAdSDK/RewardVideoAd (7.7.8):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.9.0)
+  - MolocoSDKiOS (3.12.1)
   - myTargetSDK (5.32.1):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
@@ -118,6 +119,7 @@ DEPENDENCIES:
   - IronSourceSDK (~> 8.10)
   - MintegralAdSDK (~> 7.7.7)
   - MobileFuseSDK (= 1.9.0)
+  - MolocoSDKiOS (~> 3.12.0)
   - myTargetSDK (~> 5.32.1)
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
@@ -149,6 +151,7 @@ SPEC REPOS:
     - IronSourceSDK
     - MintegralAdSDK
     - MobileFuseSDK
+    - MolocoSDKiOS
     - myTargetSDK
     - myTrackerSDK
     - OCMock
@@ -180,6 +183,7 @@ SPEC CHECKSUMS:
   IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
   MintegralAdSDK: 07e018290689b906499d8285654bba42681cafcf
   MobileFuseSDK: e5ea2384bc85fe8c1ae13748659d2799829a8de3
+  MolocoSDKiOS: 0383b7b2f825c2244b9e7e14d5c0b63c30467b7f
   myTargetSDK: 81d1622cb5a05fbea2ae1bc661407b4ff117e19f
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
@@ -192,6 +196,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 3d7708df615f92815a3acedf9869da46d0b4d65e
   YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
-PODFILE CHECKSUM: a310fd62cbe47deb43b73d29328d7e1ef79e10b7
+PODFILE CHECKSUM: f2ec023c6f8f7ceead19037981b15586d55a536f
 
 COCOAPODS: 1.16.2
