@@ -35,10 +35,10 @@ final class MolocoBiddingRewardedDemandProvider: MolocoBiddingBaseDemandProvider
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.unitId
+        self.unitId = adUnitExtras.adUnitId
 
         Task { @MainActor in
-            let ad = Moloco.shared.createRewarded(for: adUnitExtras.unitId, delegate: self)
+            let ad = Moloco.shared.createRewarded(for: adUnitExtras.adUnitId, delegate: self)
             ad?.load(bidResponse: payload.payload)
             self.rewarded = ad
         }

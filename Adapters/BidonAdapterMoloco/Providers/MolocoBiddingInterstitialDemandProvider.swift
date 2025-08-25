@@ -33,10 +33,11 @@ final class MolocoBiddingInterstitialDemandProvider: MolocoBiddingBaseDemandProv
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.unitId
-
+//        self.unitId = "DgnN0Gew7IXnwyvc"
+        self.unitId = adUnitExtras.adUnitId
+        print("[Bidon] [Info] >>> Interstitial load unitId: ", adUnitExtras.adUnitId)
         Task { @MainActor in
-            let ad = Moloco.shared.createInterstitial(for: adUnitExtras.unitId, delegate: self)
+            let ad = Moloco.shared.createInterstitial(for: adUnitExtras.adUnitId, delegate: self)
             ad?.load(bidResponse: payload.payload)
             self.interstitial = ad
         }

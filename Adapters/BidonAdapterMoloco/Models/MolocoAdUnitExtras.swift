@@ -9,8 +9,7 @@ import Foundation
 
 
 struct MolocoAdUnitExtras: Codable {
-    var unitId: String
-    var placementId: String
+    var adUnitId: String
 }
 
 struct MolocoBiddingTokenExtras: Codable { }
