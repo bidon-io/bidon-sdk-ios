@@ -7,7 +7,6 @@
 
 import Foundation
 
-public struct MolocoParameters: Decodable {
-    var appId: String
+public struct MolocoParameters: Codable {
     var appKey: String
 }

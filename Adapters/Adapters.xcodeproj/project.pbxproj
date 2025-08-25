@@ -226,7 +226,6 @@
 		B93BC2092E54CE0900C99DBE /* MolocoParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2082E54CE0900C99DBE /* MolocoParameters.swift */; };
 		B93BC20C2E55C4D100C99DBE /* MolocoBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC20B2E55C4D100C99DBE /* MolocoBiddingBaseDemandProvider.swift */; };
 		B93BC20E2E55C57400C99DBE /* MolocoAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC20D2E55C57400C99DBE /* MolocoAdUnitExtras.swift */; };
-		B93BC2102E55C5A500C99DBE /* MolocoBiddingToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC20F2E55C5A500C99DBE /* MolocoBiddingToken.swift */; };
 		B93BC2122E55C5CB00C99DBE /* MolocoBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2112E55C5CB00C99DBE /* MolocoBiddingResponse.swift */; };
 		B93BC2142E55C8D200C99DBE /* MolocoBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2132E55C8D200C99DBE /* MolocoBiddingInterstitialDemandProvider.swift */; };
 		B93BC2172E55D93900C99DBE /* MediationError+MolocoBidTokenError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2162E55D93900C99DBE /* MediationError+MolocoBidTokenError.swift */; };
@@ -566,7 +565,6 @@
 		B93BC2082E54CE0900C99DBE /* MolocoParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoParameters.swift; sourceTree = "<group>"; };
 		B93BC20B2E55C4D100C99DBE /* MolocoBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
 		B93BC20D2E55C57400C99DBE /* MolocoAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoAdUnitExtras.swift; sourceTree = "<group>"; };
-		B93BC20F2E55C5A500C99DBE /* MolocoBiddingToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingToken.swift; sourceTree = "<group>"; };
 		B93BC2112E55C5CB00C99DBE /* MolocoBiddingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingResponse.swift; sourceTree = "<group>"; };
 		B93BC2132E55C8D200C99DBE /* MolocoBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		B93BC2162E55D93900C99DBE /* MediationError+MolocoBidTokenError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediationError+MolocoBidTokenError.swift"; sourceTree = "<group>"; };
@@ -1642,7 +1640,6 @@
 			children = (
 				B93BC2082E54CE0900C99DBE /* MolocoParameters.swift */,
 				B93BC20D2E55C57400C99DBE /* MolocoAdUnitExtras.swift */,
-				B93BC20F2E55C5A500C99DBE /* MolocoBiddingToken.swift */,
 				B93BC2112E55C5CB00C99DBE /* MolocoBiddingResponse.swift */,
 			);
 			path = Models;
@@ -3408,7 +3405,6 @@
 				B93BC2172E55D93900C99DBE /* MediationError+MolocoBidTokenError.swift in Sources */,
 				B93BC21D2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift in Sources */,
 				B93BC2062E54CC8E00C99DBE /* MolocoDemandSourceAdapter.swift in Sources */,
-				B93BC2102E55C5A500C99DBE /* MolocoBiddingToken.swift in Sources */,
 				B93BC2142E55C8D200C99DBE /* MolocoBiddingInterstitialDemandProvider.swift in Sources */,
 				B93BC20C2E55C4D100C99DBE /* MolocoBiddingBaseDemandProvider.swift in Sources */,
 			);

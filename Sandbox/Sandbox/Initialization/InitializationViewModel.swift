@@ -26,6 +26,7 @@ import BidonAdapterAmazon
 import BidonAdapterMyTarget
 import BidonAdapterChartboost
 import BidonAdapterIronSource
+import BidonAdapterMoloco
 
 
 final class InitializationViewModel: ObservableObject, AdResponder {
@@ -151,7 +152,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             MetaAudienceNetworkDemandSourceAdapter(),
             InMobiDemandSourceAdapter(),
             AmazonDemandSourceAdapter(),
-            GoogleAdManagerDemandSourceAdapter()
+            GoogleAdManagerDemandSourceAdapter(),
+            MolocoDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }

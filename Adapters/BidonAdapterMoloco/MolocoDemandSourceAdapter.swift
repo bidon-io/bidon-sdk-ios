@@ -12,8 +12,8 @@ import MolocoSDK
 
 internal typealias DemandSourceAdapter = Adapter &
 BiddingInterstitialDemandSourceAdapter &
-BiddingRewardedAdDemandSourceAdapter //&
-//BiddingAdViewDemandSourceAdapter
+BiddingRewardedAdDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter
 
 
 @objc public final class MolocoDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -36,9 +36,9 @@ BiddingRewardedAdDemandSourceAdapter //&
         return MolocoBiddingRewardedDemandProvider()
     }
 
-//    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-//        return MobileFuseBiddingAdViewDemandProvider(context: context)
-//    }
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return MolocoBiddingAdViewDemandProvider(context: context)
+    }
 }
 
 
@@ -51,6 +51,7 @@ extension MolocoDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: MolocoParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
+        print("[Bidon] [Info] >>> Moloco init")
         let initParams = MolocoInitParams(appKey: parameters.appKey)
         Moloco.shared.initialize(initParams: initParams) { success, error in
             if let error {

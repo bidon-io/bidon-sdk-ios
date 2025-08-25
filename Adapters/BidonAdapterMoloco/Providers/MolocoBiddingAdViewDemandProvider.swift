@@ -44,11 +44,11 @@ final class MolocoBiddingAdViewDemandProvider: MolocoBiddingBaseDemandProvider<M
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.unitId
+        self.unitId = adUnitExtras.adUnitId
 
         if let rootViewController {
             Task { @MainActor in
-                let ad = Moloco.shared.createBanner(for: adUnitExtras.unitId, viewController: rootViewController, delegate: self)
+                let ad = Moloco.shared.createBanner(for: adUnitExtras.adUnitId, viewController: rootViewController, delegate: self)
                 ad?.load(bidResponse: payload.payload)
                 self.adView = ad
             }
