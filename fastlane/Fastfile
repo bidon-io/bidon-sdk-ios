@@ -67,6 +67,7 @@ def build_universal(scheme)
   # Archive for device
   xcodebuild(
     archive: true,
+destination: "generic/platform=iOS",
     archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
     scheme: scheme,
     workspace: "BidOn.xcworkspace",
@@ -78,6 +79,7 @@ def build_universal(scheme)
   # Archive for simulator
   xcodebuild(
     archive: true,
+destination: "generic/platform=iOS Simulator",
     archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
     scheme: scheme,
     workspace: "BidOn.xcworkspace",
