@@ -69,10 +69,10 @@ def build_universal(scheme)
     archive: true,
     archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
     scheme: scheme,
-    workspace: "Bidon.xcworkspace",
+    workspace: "BidOn.xcworkspace",
     configuration: $scheme,
     sdk: "iphoneos",
-    xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" ")
+    xcargs: (xcargs + ["VALID_ARCHS=\"arm64\""]).join(" ")
   )
 
   # Archive for simulator
@@ -80,7 +80,7 @@ def build_universal(scheme)
     archive: true,
     archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
     scheme: scheme,
-    workspace: "Bidon.xcworkspace",
+    workspace: "BidOn.xcworkspace",
     configuration: $scheme,
     sdk: "iphonesimulator",
     xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" ")
