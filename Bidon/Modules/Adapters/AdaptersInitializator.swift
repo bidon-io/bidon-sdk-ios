@@ -87,11 +87,15 @@ struct AdaptersInitializator {
     }()
 
     private var operations: [InitializeAdapterTimeoutGuardOperation] {
-        parameters.adapters.compactMap { config in
-            guard
-                let adapter: InitializableAdapter = repository[config.demandId],
-                !adapter.isInitialized
-            else { return nil }
+        parameters.adapters.compactMap { config -> InitializeAdapterTimeoutGuardOperation? in
+            guard let adapter: InitializableAdapter = repository[config.demandId] else {
+                return nil
+            }
+            
+            guard !adapter.isInitialized else {
+                self.repository.markInitialized(adapter: adapter)
+                return nil
+            }
 
             return InitializeAdapterTimeoutGuardOperation(
                 timeout: parameters.tmax,

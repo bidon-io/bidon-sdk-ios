@@ -32,6 +32,9 @@ protocol FullscreenImpressionController: AnyObject {
     init(bid: BidType)
 
     func show(from rootViewController: UIViewController)
+    
+    func notifyWin()
+    func notifyLose(winner demandId: String, eCPM: Price)
 
     var delegate: FullscreenImpressionControllerDelegate? { get set }
 }
