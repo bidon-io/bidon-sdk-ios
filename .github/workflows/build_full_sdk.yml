@@ -31,6 +31,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - name: gitconfig
+        run: |
+            git config --global user.name "bidon-runner"
+            git config --global user.email "runner@bidon.org"
 
       - name: Select Xcode 16.1
         run: sudo xcode-select -s /Applications/Xcode_16.1.app
