@@ -26,7 +26,6 @@ import BidonAdapterAmazon
 import BidonAdapterMyTarget
 import BidonAdapterChartboost
 import BidonAdapterIronSource
-import BidonAdapterYandex
 import BidonAdapterMoloco
 
 
@@ -139,7 +138,6 @@ fileprivate extension Array where Element == Bidon.Adapter {
     static func `default`() -> [Element] {
         return [
             ChartboostDemandSourceAdapter(),
-            YandexDemandSourceAdapter(),
             IronSourceDemandSourceAdapter(),
             MyTargetDemandSourceAdapter(),
             AppLovinDemandSourceAdapter(),

@@ -85,6 +85,7 @@
             NSLog(@"[BidonAdapter] [%@] Banner ad loaded from cache, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
             self.banner = (BDNBannerView *)cachedAd.adInstance;
             self.banner.delegate = self;
+            [self.banner notifyWin];
             [self.bannerDelegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:self.bannerMaxEcpm ad:cachedAd.ad]];
         } else {
             NSLog(@"[BidonAdapter] [%@] Banner ad failed to load from cache: No fill, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
