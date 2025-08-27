@@ -11,12 +11,9 @@ import MolocoSDK
 
 
 extension SdkError {
-    /// Точный маппинг кодов Moloco на ваши доменные ошибки.
-    /// При необходимости меняй соответствия под свою аналитику.
     static func from(_ e: MolocoError, underlying: Error? = nil) -> SdkError {
         switch e {
         case .unknown:
-            // оставим как generic, чтобы не терять исходный error в userInfo/логах
             return .generic(error: underlying ?? e)
 
         case .sdkInit, .sdkInvalidConfiguration:
@@ -29,7 +26,6 @@ extension SdkError {
             return .internalInconsistency
 
         case .adLoadTimeoutError:
-            // у тебя нет отдельного таймаута; лучше дать понятное сообщение
             return .message("Ad load timed out")
 
         case .adShowFailed:
@@ -46,6 +42,8 @@ extension SdkError {
 
         case .adSignalCollectionFailed:
             return .message("Signal collection failed")
+        @unknown default:
+            return .unknown
         }
     }
 }
@@ -61,7 +59,6 @@ extension SdkError {
             self = SdkError.from(moloco, underlying: moloco)
 
         case let some?:
-            // Попробуем вытащить MolocoError из NSError-домена
             let ns = some as NSError
             if ns.domain == MolocoError._nsErrorDomain,
                let moloco = MolocoError(rawValue: ns.code) {

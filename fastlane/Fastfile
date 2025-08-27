@@ -32,7 +32,8 @@ $targets = [
   "BidonAdapterMyTarget",
   "BidonAdapterMobileFuse",
   "AppLovinMediationBidonAdapter",
-  "ISBidonCustomAdapter"
+  "ISBidonCustomAdapter",
+  "BidonAdapterMoloco"
 ]
 
 # ---------- Helpers ----------
@@ -44,7 +45,8 @@ def build_universal(scheme)
     "BidonAdapterMyTarget"   => "12.4",
     "BidonAdapterYandex"     => "13.0",
     "BidonAdapterDTExchange" => "13.0",
-    "BidonAdapterUnityAds"   => "13.0"
+    "BidonAdapterUnityAds"   => "13.0",
+    "BidonAdapterMoloco"     => "13.0"
   }
   deployment_target = min_versions.fetch(scheme, "12.0")
   is_yandex = (scheme == "BidonAdapterYandex")

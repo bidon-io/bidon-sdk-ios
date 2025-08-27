@@ -42,16 +42,19 @@ final class MolocoBiddingAdViewDemandProvider: MolocoBiddingBaseDemandProvider<M
         adUnitExtras: MolocoAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
+        guard let rootViewController else {
+            response(.failure(.unspecifiedException("View Controller is nil")))
+            return
+        }
         self.response = response
         self.unitId = adUnitExtras.adUnitId
 
-        if let rootViewController {
-            Task { @MainActor in
-                let ad = Moloco.shared.createBanner(for: adUnitExtras.adUnitId, viewController: rootViewController, delegate: self)
-                ad?.load(bidResponse: payload.payload)
-                self.adView = ad
-            }
+        Task { @MainActor in
+            let ad = Moloco.shared.createBanner(for: adUnitExtras.adUnitId, viewController: rootViewController, delegate: self)
+            ad?.load(bidResponse: payload.payload)
+            self.adView = ad
         }
+
     }
 }
 
