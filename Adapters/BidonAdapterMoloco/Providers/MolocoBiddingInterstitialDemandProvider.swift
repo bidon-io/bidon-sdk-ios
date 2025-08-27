@@ -33,9 +33,7 @@ final class MolocoBiddingInterstitialDemandProvider: MolocoBiddingBaseDemandProv
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-//        self.unitId = "DgnN0Gew7IXnwyvc"
         self.unitId = adUnitExtras.adUnitId
-        print("[Bidon] [Info] >>> Interstitial load unitId: ", adUnitExtras.adUnitId)
         Task { @MainActor in
             let ad = Moloco.shared.createInterstitial(for: adUnitExtras.adUnitId, delegate: self)
             ad?.load(bidResponse: payload.payload)
@@ -64,26 +62,26 @@ extension MolocoBiddingInterstitialDemandProvider: MolocoInterstitialDelegate {
             response?(.failure(.adFormatNotSupported))
             return
         }
-        
+
         let wrappedAd = MolocoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
         response?(.success(wrappedAd))
         response = nil
     }
-    
+
     func failToLoad(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         response?(.failure(.noFill(error?.localizedDescription)))
         response = nil
     }
-    
+
     func didShow(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerWillPresent(self)
-        
+
         if let interstitial = ad as? any MolocoSDK.MolocoInterstitial {
             let wrappedAd = MolocoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
         }
     }
-    
+
     func failToShow(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         guard let interstitial = ad as? any MolocoSDK.MolocoInterstitial else {
             return
@@ -91,13 +89,13 @@ extension MolocoBiddingInterstitialDemandProvider: MolocoInterstitialDelegate {
         let wrappedAd = MolocoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
         delegate?.provider(self, didFailToDisplayAd: wrappedAd, error: SdkError(error))
     }
-    
+
     func didHide(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidHide(self)
     }
-    
+
     func didClick(on ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidClick(self)
     }
-    
+
 }

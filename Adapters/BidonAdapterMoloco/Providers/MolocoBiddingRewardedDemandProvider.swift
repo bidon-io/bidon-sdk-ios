@@ -24,7 +24,7 @@ final class MolocoRewardedDemandAd: DemandAd {
 
 final class MolocoBiddingRewardedDemandProvider: MolocoBiddingBaseDemandProvider<MolocoRewardedDemandAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
-    
+
     private var response: Bidon.DemandProviderResponse?
     private var rewarded: (any MolocoSDK.MolocoRewardedInterstitial)?
     private var unitId: String = ""
@@ -56,7 +56,7 @@ extension MolocoBiddingRewardedDemandProvider: RewardedAdDemandProvider {
             }
         }
     }
-    
+
 }
 
 
@@ -64,9 +64,9 @@ extension MolocoBiddingRewardedDemandProvider: MolocoRewardedDelegate {
     func userRewarded(ad: any MolocoSDK.MolocoAd) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
-    
+
     func rewardedVideoStarted(ad: any MolocoSDK.MolocoAd) {}
-    
+
     func rewardedVideoCompleted(ad: any MolocoSDK.MolocoAd) {}
 
     func didLoad(ad: any MolocoSDK.MolocoAd) {
@@ -74,26 +74,26 @@ extension MolocoBiddingRewardedDemandProvider: MolocoRewardedDelegate {
             response?(.failure(.adFormatNotSupported))
             return
         }
-        
+
         let wrappedAd = MolocoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
         response?(.success(wrappedAd))
         response = nil
     }
-    
+
     func failToLoad(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         response?(.failure(.noFill(error?.localizedDescription)))
         response = nil
     }
-    
+
     func didShow(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerWillPresent(self)
-        
+
         if let rewarded = ad as? any MolocoSDK.MolocoRewardedInterstitial {
             let wrappedAd = MolocoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
         }
     }
-    
+
     func failToShow(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         guard let rewarded = ad as? any MolocoSDK.MolocoRewardedInterstitial else {
             return
@@ -101,13 +101,13 @@ extension MolocoBiddingRewardedDemandProvider: MolocoRewardedDelegate {
         let wrappedAd = MolocoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
         delegate?.provider(self, didFailToDisplayAd: wrappedAd, error: SdkError(error))
     }
-    
+
     func didHide(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidHide(self)
     }
-    
+
     func didClick(on ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidClick(self)
     }
-    
+
 }
