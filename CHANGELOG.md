@@ -1,9 +1,13 @@
 # develop
 
-## Fixes
-- BDN-1007 CLGeocoder multiple processing - fix
+## New features
+
+- BDN-1031 Moloco RTB adapter - implemented
 
 # Release 0.9.0
+
+## Fixes
+- BDN-1007 CLGeocoder multiple processing - fix
 
 ## New features
 - BDN-987 VungleSDK Banner API - updated
