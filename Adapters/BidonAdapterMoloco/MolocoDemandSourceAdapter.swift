@@ -51,7 +51,6 @@ extension MolocoDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: MolocoParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        print("[Bidon] [Info] >>> Moloco init")
         let initParams = MolocoInitParams(appKey: parameters.appKey)
         Moloco.shared.initialize(initParams: initParams) { success, error in
             if let error {
