@@ -19,6 +19,9 @@
 
 # Release 0.9.0
 
+## Fixes
+- BDN-1007 CLGeocoder multiple processing - fix
+
 ## New features
 - BDN-987 VungleSDK Banner API - updated
 - APDM-1396 Update BCA MAX callbacks
