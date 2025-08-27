@@ -49,6 +49,3 @@ class MolocoBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidding
         event: Bidon.DemandProviderEvent
     ) {}
 }
-
-
-

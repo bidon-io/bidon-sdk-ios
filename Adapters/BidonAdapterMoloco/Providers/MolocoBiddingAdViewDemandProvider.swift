@@ -25,7 +25,7 @@ final class MolocoAdViewDemandAd: DemandAd {
 final class MolocoBiddingAdViewDemandProvider: MolocoBiddingBaseDemandProvider<MolocoAdViewDemandAd> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
-    
+
     private var response: Bidon.DemandProviderResponse?
     private var adView: MolocoSDK.MolocoBannerAdView?
     private var unitId: String = ""
@@ -34,10 +34,9 @@ final class MolocoBiddingAdViewDemandProvider: MolocoBiddingBaseDemandProvider<M
         context: AdViewContext
     ) {
         self.rootViewController = context.rootViewController
-//        self.adType = context.format.mtg
         super.init()
     }
-    
+
     override func load(
         payload: MolocoBiddingResponse,
         adUnitExtras: MolocoAdUnitExtras,
@@ -61,7 +60,7 @@ extension MolocoBiddingAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: MolocoAdViewDemandAd) -> Bidon.AdViewContainer? {
         return ad.adView
     }
-    
+
     func didTrackImpression(for ad: MolocoAdViewDemandAd) {}
 }
 
@@ -73,26 +72,26 @@ extension MolocoBiddingAdViewDemandProvider: MolocoBannerDelegate {
             response?(.failure(.adFormatNotSupported))
             return
         }
-        
+
         let wrappedAd = MolocoAdViewDemandAd(unitId: unitId, adView: adView)
         response?(.success(wrappedAd))
         response = nil
     }
-    
+
     func failToLoad(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         response?(.failure(.noFill(error?.localizedDescription)))
         response = nil
     }
-    
+
     func didShow(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerWillPresent(self)
-        
+
         if let adView = ad as? MolocoSDK.MolocoBannerAdView {
             let wrappedAd = MolocoAdViewDemandAd(unitId: unitId, adView: adView)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
         }
     }
-    
+
     func failToShow(ad: any MolocoSDK.MolocoAd, with error: (any Error)?) {
         guard let adView = ad as? MolocoSDK.MolocoBannerAdView else {
             return
@@ -100,15 +99,15 @@ extension MolocoBiddingAdViewDemandProvider: MolocoBannerDelegate {
         let wrappedAd = MolocoAdViewDemandAd(unitId: unitId, adView: adView)
         delegate?.provider(self, didFailToDisplayAd: wrappedAd, error: SdkError(error))
     }
-    
+
     func didHide(ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidHide(self)
     }
-    
+
     func didClick(on ad: any MolocoSDK.MolocoAd) {
         delegate?.providerDidClick(self)
     }
-    
+
 }
 
 
