@@ -19,8 +19,9 @@ final class DeviceManager: Device, Environment {
 
     let make: String = "Apple"
 
-    @MainThreadComputable(UIDevice.current.model)
-    var model: String
+    var model: String {
+        return DeviceManager.sysctlString("hw.machine") ?? UIDevice.current.model
+    }
 
     @MainThreadComputable(DeviceType.current)
     var type: DeviceType
@@ -32,13 +33,7 @@ final class DeviceManager: Device, Environment {
     var osVersion: String
 
     var hardwareVersion: String {
-        var system = utsname()
-        uname(&system)
-        let mirror = Mirror(reflecting: system.machine)
-        return mirror.children.reduce("") { id, element in
-            guard let value = element.value as? Int8, value != 0 else { return id }
-            return id + String(UnicodeScalar(UInt8(value)))
-        }
+        return DeviceManager.sysctlString("kern.version") ?? "Unknown"
     }
 
     @MainThreadComputable(Int(UIScreen.main.bounds.height * UIScreen.main.scale))
@@ -101,6 +96,14 @@ private extension DeviceManager {
         default: return 163
         }
     }()
+
+    static func sysctlString(_ name: String) -> String? {
+        var size: size_t = 0
+        guard sysctlbyname(name, nil, &size, nil, 0) == 0, size > 0 else { return nil }
+        var buf = [CChar](repeating: 0, count: Int(size))
+        guard sysctlbyname(name, &buf, &size, nil, 0) == 0 else { return nil }
+        return String(cString: buf)
+    }
 }
 
 
