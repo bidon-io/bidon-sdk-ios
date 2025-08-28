@@ -117,7 +117,7 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
             } else if isWinner {
                 Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) win. Notifications enabled - \(auctionConfiguration.isExternalNotificationsEnabled), bid type - \(bid.adUnit.bidType.rawValue)")
             }
-            
+
             if shouldNotifyLose {
                 bid.provider.notify(opaque: bid.ad, event: losingEvent)
                 Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) lose")
