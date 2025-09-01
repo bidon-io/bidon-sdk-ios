@@ -33,7 +33,7 @@ final class RewardedImpressionController: NSObject, FullscreenImpressionControll
     func show(from context: UIViewController) {
         provider.show(opaque: impression.ad, from: context)
     }
-    
+
     func notifyWin() {
         guard bid.adUnit.bidType == .direct else {
             Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) win because it's bid type is RTB")
@@ -42,7 +42,7 @@ final class RewardedImpressionController: NSObject, FullscreenImpressionControll
         Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) win")
         provider.notify(opaque: bid.ad, event: .win)
     }
-    
+
     func notifyLose(winner demandId: String, eCPM: Price) {
         guard bid.adUnit.bidType == .direct else {
             Logger.info("[Win/Loss] Do not notify \(demandId) lose because it's bid type is RTB")

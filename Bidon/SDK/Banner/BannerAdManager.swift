@@ -282,7 +282,7 @@ final class BannerAdManager: NSObject {
             }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .win)
             }
@@ -326,7 +326,7 @@ final class BannerAdManager: NSObject {
             defer { state = .idle }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .lose(demandId, impression.ad, eCPM))
             }

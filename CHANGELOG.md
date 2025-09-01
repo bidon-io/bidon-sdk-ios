@@ -1,5 +1,8 @@
 # develop
 
+## New features
+- BDN-1033 Bidon request params
+
 # Release 0.10.0
 
 ## New features
