@@ -29,9 +29,30 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: gitconfig
+        run: |
+            git config --global user.name "bidon-runner"
+            git config --global user.email "runner@bidon.org"
 
-      - name: Select Xcode 16.0
-        run: sudo xcode-select -s /Applications/Xcode_16.0.app
+      - name: Select Xcode 16.1
+        run: sudo xcode-select -s /Applications/Xcode_16.1.app
+        
+      - name: Prepare Xcode iOS platform
+        run: |
+          sudo xcodebuild -runFirstLaunch || true
+          sudo xcodebuild -license accept || true
+          sudo xcodebuild -downloadPlatform iOS
+          rm -rf ~/Library/Developer/Xcode/DerivedData || true
+
+      - name: Show SDKs & destinations (diagnostics)
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
+          xcrun simctl list runtimes
+          xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme Bidon
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1

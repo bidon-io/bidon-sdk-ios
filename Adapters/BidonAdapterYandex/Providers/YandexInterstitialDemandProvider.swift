@@ -12,8 +12,8 @@ import YandexMobileAds
 final class YandexInterstitialDemandAd: DemandAd {
     public var id: String
 
-    init(interstitial: YMAInterstitialAd) {
-        self.id = interstitial.adUnitID
+    init(interstitial: InterstitialAd) {
+        self.id = interstitial.adInfo?.adUnitId ?? String(interstitial.hash)
     }
 }
 
@@ -21,7 +21,8 @@ final class YandexInterstitialDemandProvider: YandexBaseDemandProvider<YandexInt
 
     private var response: DemandProviderResponse?
 
-    private var interstitial: YMAInterstitialAd?
+    private var interstitialLoader: InterstitialAdLoader?
+    private var interstitialAd: InterstitialAd?
 
     override func load(
         pricefloor: Price,
@@ -30,10 +31,10 @@ final class YandexInterstitialDemandProvider: YandexBaseDemandProvider<YandexInt
     ) {
         self.response = response
 
-        let request = YMAMutableAdRequest()
-        interstitial = YMAInterstitialAd(adUnitID: adUnitExtras.adUnitId)
-        interstitial?.delegate = self
-        interstitial?.load(with: request)
+        let request = AdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
+        interstitialLoader = InterstitialAdLoader()
+        interstitialLoader?.delegate = self
+        interstitialLoader?.loadAd(with: request)
     }
 }
 
@@ -42,45 +43,62 @@ extension YandexInterstitialDemandProvider: InterstitialDemandProvider {
         ad: YandexInterstitialDemandAd,
         from viewController: UIViewController
     ) {
-        interstitial?.present(from: viewController)
+        interstitialAd?.show(from: viewController)
     }
 }
 
-extension YandexInterstitialDemandProvider: YMAInterstitialAdDelegate {
-    func interstitialAdDidLoad(_ interstitialAd: YMAInterstitialAd) {
-        let ad = YandexInterstitialDemandAd(interstitial: interstitialAd)
-        response?(.success(ad))
+extension YandexInterstitialDemandProvider: InterstitialAdLoaderDelegate {
+    func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didLoad interstitialAd: YandexMobileAds.InterstitialAd) {
+        interstitialAd.delegate = self
+        self.interstitialAd = interstitialAd
+
+        response?(.success(YandexInterstitialDemandAd(interstitial: interstitialAd)))
         response = nil
     }
 
-    func interstitialAdDidFail(toLoad interstitialAd: YMAInterstitialAd, error: Error) {
-        response?(.failure(.noFill(error.localizedDescription)))
+    func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didFailToLoadWithError error: YandexMobileAds.AdRequestError) {
+        response?(.failure(.noFill(error.description)))
         response = nil
     }
 
-    func interstitialAdWillAppear(_ interstitialAd: YMAInterstitialAd) {
+
+}
+
+extension YandexInterstitialDemandProvider: InterstitialAdDelegate {
+
+    func interstitialAdDidShow(_ interstitialAd: InterstitialAd) {
         delegate?.providerWillPresent(self)
     }
 
-    func interstitialAdDidDisappear(_ interstitialAd: YMAInterstitialAd) {
+    func interstitialAd(
+        _ interstitialAd: InterstitialAd,
+        didFailToShowWithError
+        error: any Error
+    ) {
+        delegate?.provider(
+            self,
+            didFailToDisplayAd: YandexInterstitialDemandAd(interstitial: interstitialAd),
+            error: .generic(error: error)
+        )
+    }
+
+    func interstitialAdDidDismiss(
+        _ interstitialAd: InterstitialAd
+    ) {
         delegate?.providerDidHide(self)
     }
 
-    func interstitialAdDidClick(_ interstitialAd: YMAInterstitialAd) {
+    func interstitialAdDidClick(
+        _ interstitialAd: InterstitialAd
+    ) {
         delegate?.providerDidClick(self)
     }
 
-    func interstitialAd(_ interstitialAd: YMAInterstitialAd, didTrackImpressionWith impressionData: YMAImpressionData?) {
+    func interstitialAd(
+        _ interstitialAd: InterstitialAd,
+        didTrackImpressionWith impressionData: ImpressionData?
+    ) {
         let ad = YandexInterstitialDemandAd(interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
-    }
-
-    func interstitialAdDidFail(toPresent interstitialAd: YMAInterstitialAd, error: Error) {
-        let ad = YandexInterstitialDemandAd(interstitial: interstitialAd)
-        delegate?.provider(
-            self,
-            didFailToDisplayAd: ad,
-            error: .cancelled
-        )
     }
 }

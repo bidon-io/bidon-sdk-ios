@@ -161,6 +161,8 @@
 		42F71CFA29967AEE002FC80D /* BidMachineAdDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */; };
 		42F71CFC29969E3B002FC80D /* BidMachineDirectRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineDirectRewardedAdDemandProvider.swift */; };
 		42F71D002996B0B5002FC80D /* BidMachineDirectAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFF2996B0B5002FC80D /* BidMachineDirectAdViewDemandProvider.swift */; };
+		4900BD4A2E65A320006E6B19 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; };
+		4900BD4B2E65A320006E6B19 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49088BF52C6A4E870024A640 /* BidonAdapterIronSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 49088BF42C6A4E870024A640 /* BidonAdapterIronSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49088C022C6A4E920024A640 /* IronSourceInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088BF92C6A4E920024A640 /* IronSourceInterstitialDemandProvider.swift */; };
 		49088C032C6A4E920024A640 /* IronSourceRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088BFA2C6A4E920024A640 /* IronSourceRewardedDemandProvider.swift */; };
@@ -201,24 +203,22 @@
 		495FB5332C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */; };
 		495FB5342C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */; };
 		495FB5352C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */; };
-		49D69CA22C6CB4ED007EF1F8 /* BidonAdapterYandex.h in Headers */ = {isa = PBXBuildFile; fileRef = 49D69CA12C6CB4ED007EF1F8 /* BidonAdapterYandex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49D69CAF2C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CA62C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift */; };
-		49D69CB02C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CA72C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift */; };
-		49D69CB22C6CB588007EF1F8 /* YandexAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CA92C6CB588007EF1F8 /* YandexAdViewDemandProvider.swift */; };
-		49D69CB42C6CB588007EF1F8 /* YandexDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAB2C6CB588007EF1F8 /* YandexDemandSourceAdapter.swift */; };
-		49D69CB52C6CB588007EF1F8 /* YandexParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAC2C6CB588007EF1F8 /* YandexParameters.swift */; };
-		49D69CB62C6CB588007EF1F8 /* YandexAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAD2C6CB588007EF1F8 /* YandexAdUnitExtras.swift */; };
-		49D69CB72C6CB588007EF1F8 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D69CAE2C6CB588007EF1F8 /* YandexBaseDemandProvider.swift */; };
-		49D69CBF2C6CC93D007EF1F8 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */; };
+		499682AB2E44B26E003DE568 /* YandexAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A52E44B26E003DE568 /* YandexAdViewDemandProvider.swift */; };
+		499682AC2E44B26E003DE568 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A62E44B26E003DE568 /* YandexBaseDemandProvider.swift */; };
+		499682AD2E44B26E003DE568 /* YandexDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */; };
+		499682AE2E44B26E003DE568 /* YandexInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A72E44B26E003DE568 /* YandexInterstitialDemandProvider.swift */; };
+		499682AF2E44B26E003DE568 /* YandexRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A82E44B26E003DE568 /* YandexRewardedDemandProvider.swift */; };
+		499682B02E44B26E003DE568 /* YandexAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A22E44B26E003DE568 /* YandexAdUnitExtras.swift */; };
+		499682B12E44B26E003DE568 /* YandexParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A32E44B26E003DE568 /* YandexParameters.swift */; };
+		499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B22E44B5C5003DE568 /* Bidon.framework */; };
+		499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
 		64633AAE6A85C150106AA924 /* Pods_BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */; };
+		6DF14586318869FA72F054CD /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
-		A8831F4DD98CAF8F84E87612 /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
-		B9B34CF82DD3879B003EB330 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */; };
-		B9B34CF92DD3879B003EB330 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
 		CA23DEA1E10FEE1D3BF005F0 /* Pods_BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */; };
 		E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */; };
@@ -228,6 +228,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4900BD4C2E65A320006E6B19 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4900BD4B2E65A320006E6B19 /* DTBiOSSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		495CD3302C7761C100590AAD /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,15 +250,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B9B34CFA2DD3879B003EB330 /* Embed Frameworks */ = {
+		499682932E44B1C7003DE568 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
 			files = (
-				B9B34CF92DD3879B003EB330 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -442,7 +451,9 @@
 		42F71CFB29969E3B002FC80D /* BidMachineDirectRewardedAdDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineDirectRewardedAdDemandProvider.swift; sourceTree = "<group>"; };
 		42F71CFF2996B0B5002FC80D /* BidMachineDirectAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineDirectAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		485BCB9C6A1173CDC5BD3082 /* Pods-NewAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewAdapter.debug.xcconfig"; path = "Target Support Files/Pods-NewAdapter/Pods-NewAdapter.debug.xcconfig"; sourceTree = "<group>"; };
 		4900278EEAEDF82D74C48F6D /* Pods-BidonAdapterMobileFuse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMobileFuse.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMobileFuse/Pods-BidonAdapterMobileFuse.release.xcconfig"; sourceTree = "<group>"; };
+		4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.3.1/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		4901A9752D2D442F00BDE4C4 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.10.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49088BF22C6A4E870024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49088BF42C6A4E870024A640 /* BidonAdapterIronSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterIronSource.h; sourceTree = "<group>"; };
@@ -490,20 +501,22 @@
 		495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTargetDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		497A8D6E2BC00E2500AAEDD4 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
+		499682952E44B1C7003DE568 /* libBidonAdapterYandex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBidonAdapterYandex.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		499682A22E44B26E003DE568 /* YandexAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexAdUnitExtras.swift; sourceTree = "<group>"; };
+		499682A32E44B26E003DE568 /* YandexParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexParameters.swift; sourceTree = "<group>"; };
+		499682A52E44B26E003DE568 /* YandexAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		499682A62E44B26E003DE568 /* YandexBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexBaseDemandProvider.swift; sourceTree = "<group>"; };
+		499682A72E44B26E003DE568 /* YandexInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		499682A82E44B26E003DE568 /* YandexRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexDemandSourceAdapter.swift; sourceTree = "<group>"; };
+		499682B22E44B5C5003DE568 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppMetricaLibraryAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BB8E412C3D683A00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E452C3D685100A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E492C3D688C00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
+		49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.3.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49C4081E2C60C8ED005CB90B /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.7/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
-		49D69C9F2C6CB4ED007EF1F8 /* BidonAdapterYandex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterYandex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		49D69CA12C6CB4ED007EF1F8 /* BidonAdapterYandex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterYandex.h; sourceTree = "<group>"; };
-		49D69CA62C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexInterstitialDemandProvider.swift; sourceTree = "<group>"; };
-		49D69CA72C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexRewardedDemandProvider.swift; sourceTree = "<group>"; };
-		49D69CA92C6CB588007EF1F8 /* YandexAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexAdViewDemandProvider.swift; sourceTree = "<group>"; };
-		49D69CAB2C6CB588007EF1F8 /* YandexDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexDemandSourceAdapter.swift; sourceTree = "<group>"; };
-		49D69CAC2C6CB588007EF1F8 /* YandexParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexParameters.swift; sourceTree = "<group>"; };
-		49D69CAD2C6CB588007EF1F8 /* YandexAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexAdUnitExtras.swift; sourceTree = "<group>"; };
-		49D69CAE2C6CB588007EF1F8 /* YandexBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexBaseDemandProvider.swift; sourceTree = "<group>"; };
 		49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		541F1EE757A50972CB6F2B53 /* Pods-BidonAdapterMyTarget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMyTarget.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMyTarget/Pods-BidonAdapterMyTarget.release.xcconfig"; sourceTree = "<group>"; };
 		590DCEB56042CAE4CC28A8F1 /* Pods_BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -549,6 +562,7 @@
 		EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9780BE17A31A1B99EDE82C /* Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork.release.xcconfig"; sourceTree = "<group>"; };
 		EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F19A4AA675F95C1540058B41 /* Pods-NewAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewAdapter.release.xcconfig"; path = "Target Support Files/Pods-NewAdapter/Pods-NewAdapter.release.xcconfig"; sourceTree = "<group>"; };
 		F32255FA9E728788BD5A8450 /* Pods-BidonAdapterGoogleAdManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleAdManager.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager.debug.xcconfig"; sourceTree = "<group>"; };
 		F3E503CEEDFAB45182620120 /* Pods-BidonAdapterDTExchange.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterDTExchange.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -603,7 +617,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9B34CF82DD3879B003EB330 /* DTBiOSSDK.xcframework in Frameworks */,
+				4900BD4A2E65A320006E6B19 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -699,12 +713,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49D69C9C2C6CB4ED007EF1F8 /* Frameworks */ = {
+		499682922E44B1C7003DE568 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8831F4DD98CAF8F84E87612 /* Pods_BidonAdapterYandex.framework in Frameworks */,
-				49D69CBF2C6CC93D007EF1F8 /* Bidon.framework in Frameworks */,
+				499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */,
+				499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */,
+				6DF14586318869FA72F054CD /* Pods_BidonAdapterYandex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,7 +809,7 @@
 				495FB5152C637D090023E8A0 /* BidonAdapterMyTarget */,
 				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
 				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
-				49D69CA02C6CB4ED007EF1F8 /* BidonAdapterYandex */,
+				4996829D2E44B1CD003DE568 /* BidonAdapterYandex */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
 				8462A3B50D72D26B685AAD18 /* Pods */,
 				42210211285A32ED006596DA /* Products */,
@@ -820,8 +835,8 @@
 				42CD460B2B06772900900683 /* BidonAdapterGoogleAdManager.framework */,
 				495FB5142C637D080023E8A0 /* BidonAdapterMyTarget.framework */,
 				49088BF22C6A4E870024A640 /* BidonAdapterIronSource.framework */,
-				49D69C9F2C6CB4ED007EF1F8 /* BidonAdapterYandex.framework */,
 				495CD3262C7761B700590AAD /* BidonAdapterChartboost.framework */,
+				499682952E44B1C7003DE568 /* libBidonAdapterYandex.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1416,33 +1431,32 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
-		49D69CA02C6CB4ED007EF1F8 /* BidonAdapterYandex */ = {
+		4996829D2E44B1CD003DE568 /* BidonAdapterYandex */ = {
 			isa = PBXGroup;
 			children = (
-				49D69CB92C6CB59B007EF1F8 /* Providers */,
-				49D69CB82C6CB597007EF1F8 /* Models */,
-				49D69CA12C6CB4ED007EF1F8 /* BidonAdapterYandex.h */,
-				49D69CAB2C6CB588007EF1F8 /* YandexDemandSourceAdapter.swift */,
+				499682A42E44B26E003DE568 /* Models */,
+				499682A92E44B26E003DE568 /* Providers */,
+				499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */,
 			);
 			path = BidonAdapterYandex;
 			sourceTree = "<group>";
 		};
-		49D69CB82C6CB597007EF1F8 /* Models */ = {
+		499682A42E44B26E003DE568 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				49D69CAC2C6CB588007EF1F8 /* YandexParameters.swift */,
-				49D69CAD2C6CB588007EF1F8 /* YandexAdUnitExtras.swift */,
+				499682A22E44B26E003DE568 /* YandexAdUnitExtras.swift */,
+				499682A32E44B26E003DE568 /* YandexParameters.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		49D69CB92C6CB59B007EF1F8 /* Providers */ = {
+		499682A92E44B26E003DE568 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				49D69CA62C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift */,
-				49D69CA72C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift */,
-				49D69CA92C6CB588007EF1F8 /* YandexAdViewDemandProvider.swift */,
-				49D69CAE2C6CB588007EF1F8 /* YandexBaseDemandProvider.swift */,
+				499682A52E44B26E003DE568 /* YandexAdViewDemandProvider.swift */,
+				499682A62E44B26E003DE568 /* YandexBaseDemandProvider.swift */,
+				499682A72E44B26E003DE568 /* YandexInterstitialDemandProvider.swift */,
+				499682A82E44B26E003DE568 /* YandexRewardedDemandProvider.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -1450,6 +1464,10 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */,
+				49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */,
+				499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */,
+				499682B22E44B5C5003DE568 /* Bidon.framework */,
 				B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */,
 				4943C8D32D6779ED00397CE5 /* DTBiOSSDK.xcframework */,
 				4901A9752D2D442F00BDE4C4 /* DTBiOSSDK.xcframework */,
@@ -1555,6 +1573,8 @@
 				30D060C951158D38537626AF /* Pods-BidonAdapterYandex.release.xcconfig */,
 				62C402451EA9D2A9BD6E2C20 /* Pods-BidonAdapterChartboost.debug.xcconfig */,
 				140F558CEBE2EAC03F5657A6 /* Pods-BidonAdapterChartboost.release.xcconfig */,
+				485BCB9C6A1173CDC5BD3082 /* Pods-NewAdapter.debug.xcconfig */,
+				F19A4AA675F95C1540058B41 /* Pods-NewAdapter.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -1691,14 +1711,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49D69C9A2C6CB4ED007EF1F8 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				49D69CA22C6CB4ED007EF1F8 /* BidonAdapterYandex.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1811,7 +1823,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				B9B34CFA2DD3879B003EB330 /* Embed Frameworks */,
+				4900BD4C2E65A320006E6B19 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1989,7 +2001,6 @@
 				495CD3232C7761B700590AAD /* Frameworks */,
 				495CD3242C7761B700590AAD /* Resources */,
 				495CD3302C7761C100590AAD /* Embed Frameworks */,
-				77580335298FA2D8BDAEB306 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2019,25 +2030,23 @@
 			productReference = 495FB5142C637D080023E8A0 /* BidonAdapterMyTarget.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		49D69C9E2C6CB4ED007EF1F8 /* BidonAdapterYandex */ = {
+		499682942E44B1C7003DE568 /* BidonAdapterYandex */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 49D69CA52C6CB4EE007EF1F8 /* Build configuration list for PBXNativeTarget "BidonAdapterYandex" */;
+			buildConfigurationList = 4996829B2E44B1C7003DE568 /* Build configuration list for PBXNativeTarget "BidonAdapterYandex" */;
 			buildPhases = (
-				EEA4EAD260F2BF3DDC95C55B /* [CP] Check Pods Manifest.lock */,
-				49D69C9A2C6CB4ED007EF1F8 /* Headers */,
-				49D69C9B2C6CB4ED007EF1F8 /* Sources */,
-				49D69C9C2C6CB4ED007EF1F8 /* Frameworks */,
-				49D69C9D2C6CB4ED007EF1F8 /* Resources */,
-				0B54B655C421722BAA6DC6E8 /* [CP] Copy Pods Resources */,
+				C5C3AEA6AE805F202D9121D0 /* [CP] Check Pods Manifest.lock */,
+				499682912E44B1C7003DE568 /* Sources */,
+				499682922E44B1C7003DE568 /* Frameworks */,
+				499682932E44B1C7003DE568 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = BidonAdapterYandex;
-			productName = BidonAdapterYandex;
-			productReference = 49D69C9F2C6CB4ED007EF1F8 /* BidonAdapterYandex.framework */;
-			productType = "com.apple.product-type.framework";
+			productName = NewAdapter;
+			productReference = 499682952E44B1C7003DE568 /* libBidonAdapterYandex.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -2046,6 +2055,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					420F033C2A67DB4300A4664F = {
@@ -2112,9 +2122,8 @@
 						CreatedOnToolsVersion = 15.2;
 						LastSwiftMigration = 1520;
 					};
-					49D69C9E2C6CB4ED007EF1F8 = {
-						CreatedOnToolsVersion = 15.2;
-						LastSwiftMigration = 1520;
+					499682942E44B1C7003DE568 = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -2146,8 +2155,8 @@
 				42CD460A2B06772900900683 /* BidonAdapterGoogleAdManager */,
 				495FB5132C637D080023E8A0 /* BidonAdapterMyTarget */,
 				49088BF12C6A4E870024A640 /* BidonAdapterIronSource */,
-				49D69C9E2C6CB4ED007EF1F8 /* BidonAdapterYandex */,
 				495CD3252C7761B700590AAD /* BidonAdapterChartboost */,
+				499682942E44B1C7003DE568 /* BidonAdapterYandex */,
 			);
 		};
 /* End PBXProject section */
@@ -2265,13 +2274,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49D69C9D2C6CB4ED007EF1F8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -2295,23 +2297,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		0B54B655C421722BAA6DC6E8 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterYandex/Pods-BidonAdapterYandex-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		10F2244DF770FA96A6FA95D2 /* [CP] Copy Pods Resources */ = {
@@ -2463,23 +2448,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		77580335298FA2D8BDAEB306 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterChartboost/Pods-BidonAdapterChartboost-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterChartboost/Pods-BidonAdapterChartboost-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterChartboost/Pods-BidonAdapterChartboost-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		79F4F5DA4E055A4E4C1EF1C5 /* [CP] Copy Pods Resources */ = {
@@ -2709,6 +2677,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C5C3AEA6AE805F202D9121D0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterYandex-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C6C8E64B9C7F6C21BF2C4703 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2825,28 +2815,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterBidMachine-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EEA4EAD260F2BF3DDC95C55B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterYandex-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3125,17 +3093,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49D69C9B2C6CB4ED007EF1F8 /* Sources */ = {
+		499682912E44B1C7003DE568 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49D69CB72C6CB588007EF1F8 /* YandexBaseDemandProvider.swift in Sources */,
-				49D69CB62C6CB588007EF1F8 /* YandexAdUnitExtras.swift in Sources */,
-				49D69CB42C6CB588007EF1F8 /* YandexDemandSourceAdapter.swift in Sources */,
-				49D69CB22C6CB588007EF1F8 /* YandexAdViewDemandProvider.swift in Sources */,
-				49D69CB52C6CB588007EF1F8 /* YandexParameters.swift in Sources */,
-				49D69CB02C6CB588007EF1F8 /* YandexRewardedDemandProvider.swift in Sources */,
-				49D69CAF2C6CB588007EF1F8 /* YandexInterstitialDemandProvider.swift in Sources */,
+				499682AB2E44B26E003DE568 /* YandexAdViewDemandProvider.swift in Sources */,
+				499682AC2E44B26E003DE568 /* YandexBaseDemandProvider.swift in Sources */,
+				499682AD2E44B26E003DE568 /* YandexDemandSourceAdapter.swift in Sources */,
+				499682AE2E44B26E003DE568 /* YandexInterstitialDemandProvider.swift in Sources */,
+				499682AF2E44B26E003DE568 /* YandexRewardedDemandProvider.swift in Sources */,
+				499682B02E44B26E003DE568 /* YandexAdUnitExtras.swift in Sources */,
+				499682B12E44B26E003DE568 /* YandexParameters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5885,12 +5853,13 @@
 			};
 			name = Release;
 		};
-		49D69CA32C6CB4EE007EF1F8 /* Debug */ = {
+		499682992E44B1C7003DE568 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 066DAED9AFA5D38DDE5B3EE6 /* Pods-BidonAdapterYandex.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -5921,16 +5890,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5945,43 +5908,29 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACH_O_TYPE = staticlib;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.BidonAdapterYandex;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		49D69CA42C6CB4EE007EF1F8 /* Release */ = {
+		4996829A2E44B1C7003DE568 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 30D060C951158D38537626AF /* Pods-BidonAdapterYandex.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -6012,16 +5961,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -6030,33 +5973,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACH_O_TYPE = staticlib;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.bidon.BidonAdapterYandex;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -6216,11 +6144,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49D69CA52C6CB4EE007EF1F8 /* Build configuration list for PBXNativeTarget "BidonAdapterYandex" */ = {
+		4996829B2E44B1C7003DE568 /* Build configuration list for PBXNativeTarget "BidonAdapterYandex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				49D69CA32C6CB4EE007EF1F8 /* Debug */,
-				49D69CA42C6CB4EE007EF1F8 /* Release */,
+				499682992E44B1C7003DE568 /* Debug */,
+				4996829A2E44B1C7003DE568 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

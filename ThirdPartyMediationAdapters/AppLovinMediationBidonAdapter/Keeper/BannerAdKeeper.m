@@ -94,6 +94,7 @@
     if (currentEcpm >= lowerBound.doubleValue && currentEcpm <= upperBound.doubleValue) {
         NSLog(@"[BidonAdapter] [%@] Ad with eCPM: %f consumed and removed", self.adUnitId, currentEcpm);
         BannerAdInstance *consumedAd = self.bannerAdInstance;
+        [consumedAd.adInstance notifyWin];
         self.bannerAdInstance = nil;
         return consumedAd;
     }

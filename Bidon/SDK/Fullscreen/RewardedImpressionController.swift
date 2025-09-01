@@ -13,12 +13,14 @@ final class RewardedImpressionController: NSObject, FullscreenImpressionControll
     weak var delegate: FullscreenImpressionControllerDelegate?
 
     private let provider: any RewardedAdDemandProvider
+    private let bid: RewardedAdBid
 
     var impression: Impression
 
     required init(bid: AnyRewardedAdBid) {
         let bid = bid.unwrapped()
 
+        self.bid = bid
         self.provider = bid.provider
         self.impression = FullscreenImpression(bid: bid)
 
@@ -30,6 +32,24 @@ final class RewardedImpressionController: NSObject, FullscreenImpressionControll
 
     func show(from context: UIViewController) {
         provider.show(opaque: impression.ad, from: context)
+    }
+    
+    func notifyWin() {
+        guard bid.adUnit.bidType == .direct else {
+            Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) win because it's bid type is RTB")
+            return
+        }
+        Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) win")
+        provider.notify(opaque: bid.ad, event: .win)
+    }
+    
+    func notifyLose(winner demandId: String, eCPM: Price) {
+        guard bid.adUnit.bidType == .direct else {
+            Logger.info("[Win/Loss] Do not notify \(demandId) lose because it's bid type is RTB")
+            return
+        }
+        Logger.info("[Win/Loss] Notify \(demandId) lose")
+        provider.notify(opaque: bid.ad, event: .lose(demandId, bid.ad, eCPM))
     }
 }
 

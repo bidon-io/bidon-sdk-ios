@@ -2,136 +2,271 @@ default_platform :ios
 
 fastlane_require "dotenv"
 
-# Global variables
-$root_dir = File.expand_path(Dir.pwd + "/..")
-$build_dir = File.expand_path($root_dir + "/build")
-$podspecs_dir = $build_dir + "/Podspecs"
-$development_podspec_dir = $root_dir
-$scheme = "Release"
-$targets = [
-  "Bidon",
-  "BidonAdapterAmazon",
-  "BidonAdapterBidMachine",
-  "BidonAdapterGoogleAdManager",
-  "BidonAdapterGoogleMobileAds",
-  "BidonAdapterAppLovin",
-  "BidonAdapterDTExchange",
-  "BidonAdapterUnityAds",
-  "BidonAdapterMintegral",
-  "BidonAdapterBigoAds",
-  "BidonAdapterMetaAudienceNetwork",
-  "BidonAdapterVungle",
-  "BidonAdapterInMobi",
-  "BidonAdapterAmazon",
-  "BidonAdapterChartboost",
-  "BidonAdapterYandex",
-  "BidonAdapterIronSource",
-  "BidonAdapterMyTarget",
-  "BidonAdapterMobileFuse",
-  "AppLovinMediationBidonAdapter",
-  "ISBidonCustomAdapter"
+# -------- Globals --------
+$root_dir                 = File.expand_path(Dir.pwd + "/..")
+$build_dir                = File.expand_path($root_dir + "/build")
+$podspecs_dir             = "#{$build_dir}/Podspecs"
+$development_podspec_dir  = $root_dir
+
+$workspace         = "BidOn.xcworkspace"
+$configuration     = "Release"
+$aggregate_scheme  = "Release"  # схема, где перечислены все таргеты
+$jobs              = (ENV["XCODE_JOBS"] || "8")
+
+# Продукты (имена фреймворков/библ., совпадают с таргетами)
+$targets = %w[
+  Bidon
+  BidonAdapterAmazon
+  BidonAdapterBidMachine
+  BidonAdapterGoogleAdManager
+  BidonAdapterGoogleMobileAds
+  BidonAdapterAppLovin
+  BidonAdapterDTExchange
+  BidonAdapterUnityAds
+  BidonAdapterMintegral
+  BidonAdapterBigoAds
+  BidonAdapterMetaAudienceNetwork
+  BidonAdapterVungle
+  BidonAdapterInMobi
+  BidonAdapterAmazon
+  BidonAdapterChartboost
+  BidonAdapterIronSource
+  BidonAdapterMyTarget
+  BidonAdapterMobileFuse
+  AppLovinMediationBidonAdapter
+  ISBidonCustomAdapter
 ]
 
-# Defenitions ###
-def build_universal(scheme)
-  xcargs = [
+# -------- Helpers --------
+
+def dep_target_for(name)
+  {
+    "BidonAdapterIronSource" => "13.0",
+    "ISBidonCustomAdapter"   => "13.0",
+    "BidonAdapterMyTarget"   => "12.4",
+    "BidonAdapterYandex"     => "13.0",
+    "BidonAdapterDTExchange" => "13.0",
+    "BidonAdapterUnityAds"   => "13.0"
+  }[name] || "12.0"
+end
+
+def base_xcargs(for_target)
+  args = [
     "GCC_GENERATE_DEBUGGING_SYMBOLS=NO",
     "STRIP_INSTALLED_PRODUCT=YES",
     "LINK_FRAMEWORKS_AUTOMATICALLY=NO",
-    "BUILD_LIBRARY_FOR_DISTRIBUTION=YES",
-    "OTHER_CFLAGS=\"-Qunused-arguments\"",
+    "OTHER_CFLAGS=-Qunused-arguments",
     "ONLY_ACTIVE_ARCH=NO",
     "DEPLOYMENT_POSTPROCESSING=YES",
-    "MACH_O_TYPE=staticlib",
-    "IPHONEOS_DEPLOYMENT_TARGET=11.0",
-    "DEBUG_INFORMATION_FORMAT=\"dwarf\"",
+    "DEBUG_INFORMATION_FORMAT=dwarf",
     "SKIP_INSTALL=NO",
-    "SKIP_INSTALL=NO",
-    "CODE_SIGN_IDENTITY=\"\"",
-    "CODE_SIGNING_REQUIRED=NO",
-    "CODE_SIGN_ENTITLEMENTS=\"\"",
+    "CODE_SIGNING_ALLOWED=NO",
+    "SWIFT_VERSION=5.0",
+    "SWIFT_STRICT_CONCURRENCY=minimal",
+    "IPHONEOS_DEPLOYMENT_TARGET=#{dep_target_for(for_target)}"
   ]
+  # swiftinterface нужны всем, кроме statlib-кейсов
+  args << "BUILD_LIBRARY_FOR_DISTRIBUTION=YES" unless for_target == "BidonAdapterYandex"
+  # Статическая только Яндекс
+  args << "MACH_O_TYPE=staticlib" if for_target == "BidonAdapterYandex"
+  # Параллель
+  args << "-parallelizeTargets"
+  args << "-jobs #{$jobs}"
+  args.join(" ")
+end
+
+# Сборка одного таргета (если нужно локально пересобрать отдельно)
+def build_universal(scheme)
+  xcargs = base_xcargs(scheme)
 
   xcodebuild(
     archive: true,
+    destination: "generic/platform=iOS",
     archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
     scheme: scheme,
-    workspace: "Bidon.xcworkspace",
+    workspace: $workspace,
+    configuration: $configuration,
     sdk: "iphoneos",
-    xcargs: (xcargs + ["VALID_ARCHS=\"arm64 armv7\""]).join(" "),
+    xcargs: xcargs
   )
 
   xcodebuild(
     archive: true,
+    destination: "generic/platform=iOS Simulator",
     archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
     scheme: scheme,
-    workspace: "Bidon.xcworkspace",
+    workspace: $workspace,
+    configuration: $configuration,
     sdk: "iphonesimulator",
-    xcargs: (xcargs + ["VALID_ARCHS=\"x86_64 arm64\""]).join(" "),
+    xcargs: xcargs
   )
 end
 
+# Быстрая сборка всей агрегатной схемы в DerivedData (без archive)
+def build_aggregate
+  derived = "#{$build_dir}/Aggregate/derived"
+  settings = base_xcargs("Aggregate")
+
+  # iphoneos
+  xcodebuild(
+    build: true,
+    workspace: $workspace,
+    scheme: $aggregate_scheme,
+    configuration: $configuration,
+    sdk: "iphoneos",
+    derived_data_path: derived,
+    xcargs: settings
+  )
+
+  # iphonesimulator
+  xcodebuild(
+    build: true,
+    workspace: $workspace,
+    scheme: $aggregate_scheme,
+    configuration: $configuration,
+    sdk: "iphonesimulator",
+    derived_data_path: derived,
+    xcargs: settings
+  )
+end
+
+# Пути к .framework из Aggregate Build/Products, с fallback на per-target archives
+def framework_paths(framework:, scheme:)
+  dd = "#{$build_dir}/Aggregate/derived/Build/Products"
+  dev = "#{dd}/#{$configuration}-iphoneos/#{framework}.framework"
+  sim = "#{dd}/#{$configuration}-iphonesimulator/#{framework}.framework"
+  return [dev, sim] if File.exist?(dev) && File.exist?(sim)
+
+  # fallback: per-target archives
+  dev_a = "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework"
+  sim_a = "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/Library/Frameworks/#{framework}.framework"
+  [dev_a, sim_a]
+end
+
+# Пути к .a из Aggregate Build/Products, с fallback на per-target archives
+def library_paths(library:, scheme:)
+  dd = "#{$build_dir}/Aggregate/derived/Build/Products"
+  dev = "#{dd}/#{$configuration}-iphoneos/lib#{library}.a"
+  sim = "#{dd}/#{$configuration}-iphonesimulator/lib#{library}.a"
+  return [sim, dev] if File.exist?(dev) && File.exist?(sim) # порядок sim, device
+
+  # fallback: per-target archives
+  dev_a = "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/usr/local/lib/lib#{library}.a"
+  sim_a = "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/usr/local/lib/lib#{library}.a"
+  [sim_a, dev_a]
+end
+
 def xcframework(scheme, target, framework, version)
+  out_dir = "#{$build_dir}/#{target}/#{target}-#{version}"
+  output  = "#{out_dir}/#{framework}.xcframework"
+  FileUtils.mkdir_p(out_dir)
+
+  device_fw, sim_fw = framework_paths(framework: framework, scheme: scheme)
+  UI.user_error!("Missing device framework: #{device_fw}") unless File.exist?(device_fw)
+  UI.user_error!("Missing sim framework: #{sim_fw}")       unless File.exist?(sim_fw)
+
   create_xcframework(
-    frameworks: [
-      "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/Library/Frameworks/#{framework}.framework",
-      "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/Library/Frameworks/#{framework}.framework",
-    ],
-    output: "#{$build_dir}/#{scheme}/#{target}-#{version}/#{framework}.xcframework",
+    frameworks: [device_fw, sim_fw],
+    output: output
   )
 end
 
 def xclibrary(scheme, target, library, version)
+  out_dir = "#{$build_dir}/#{target}/#{target}-#{version}"
+  output  = "#{out_dir}/#{library}.xcframework"
+  FileUtils.mkdir_p(out_dir)
+
+  sim_a, device_a = library_paths(library: library, scheme: scheme)
+  UI.user_error!("Missing device library: #{device_a}") unless File.exist?(device_a)
+  UI.user_error!("Missing sim library: #{sim_a}")       unless File.exist?(sim_a)
+
   create_xcframework(
-    libraries: [
-      "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive/Products/usr/local/lib/lib#{library}.a",
-      "#{$build_dir}/#{scheme}/archives/ios.xcarchive/Products/usr/local/lib/lib#{library}.a",
-    ],
-    output: "#{$build_dir}/#{scheme}/#{target}-#{version}/#{library}.xcframework"
+    libraries: [sim_a, device_a],
+    output: output
   )
 end
-
 
 def copy_resources(path, name)
   FileUtils.cp_r($root_dir + "/Bidon/" + name, path)
 end
 
+# -------- Lanes --------
+
 platform :ios do
   before_all do
     Dotenv.load ".env.default"
-
     clean_build_artifacts
-
     FileUtils.rm_rf($build_dir)
-    FileUtils.mkdir($build_dir)
-    FileUtils.mkdir($podspecs_dir)
+    FileUtils.mkdir_p($build_dir)
+    FileUtils.mkdir_p($podspecs_dir)
   end
 
-  desc "Build all modules into xcframeworks"
+  desc "Build all modules into xcframeworks (fast aggregate build)"
   lane :sdk do |options|
     raise "No SDK version specified".red if options[:version].nil?
 
-    upload = options[:upload] || false
-    version = options[:version]
-    adapters_version = options[:adapters_version] || version + ".1"
+    upload           = options[:upload] || false
+    version          = options[:version]
+    adapters_version = options[:adapters_version] || "#{version}.1"
 
     cocoapods(use_bundle_exec: true)
-    build_universal($scheme)
 
+    # 1) Быстрый общий билд всех таргетов
+    build_aggregate
+
+    # 2) Ядро Bidon
+    xcframework("Bidon", "Bidon", "Bidon", version)
+
+    # PrivacyInfo.xcprivacy в обе срезы
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+
+    zip(
+      path: "#{$build_dir}/Bidon/Bidon-#{version}",
+      output_path: "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"
+    )
+
+    aws_s3(
+      access_key: ENV["S3_ACCESS_KEY"],
+      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+      bucket: ENV["S3_BUCKET"],
+      region: ENV["S3_REGION"],
+      acl: "bucket-owner-full-control",
+      path: "Bidon/#{version}",
+      files: ["#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"]
+    ) if upload
+
+    podspec(
+      name: "Bidon",
+      version: version,
+      sdk_version: version,
+      podfile: $root_dir + "/Podfile",
+      s3_region: ENV["S3_REGION"],
+      s3_bucket: ENV["S3_BUCKET"],
+      path: $podspecs_dir,
+      vendored_frameworks: "Bidon-#{version}/Bidon.xcframework",
+      is_adapter: false
+    )
+
+    # 3) Адаптеры: упаковка из Aggregate DerivedData
+    adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
     $targets.each do |target|
-      adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
+      next if target == "Bidon" || target == "BidonAdapterYandex"
+
       is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
       ver = is_adapter ? adapters_version : version
 
-      xcframework($scheme, target, target, ver)
-
-    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework", "PrivacyInfo.xcprivacy")
-
-    copy_resources(Dir.pwd() + "/../build/Release/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework", "PrivacyInfo.xcprivacy")
+      xcframework(target, target, target, ver)
 
       zip(
-        path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}",
-        output_path: "#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip",
+        path: "#{$build_dir}/#{target}/#{target}-#{ver}",
+        output_path: "#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"
       )
 
       aws_s3(
@@ -141,7 +276,7 @@ platform :ios do
         region: ENV["S3_REGION"],
         acl: "bucket-owner-full-control",
         path: "#{target}/#{ver}",
-        files: ["#{$build_dir}/#{$scheme}/#{target}-#{ver}/#{target}.zip"],
+        files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
       ) if upload
 
       podspec(
@@ -153,87 +288,128 @@ platform :ios do
         s3_bucket: ENV["S3_BUCKET"],
         path: $podspecs_dir,
         vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
-        is_adapter: is_adapter,
+        is_adapter: is_adapter
+      )
+    end
+
+    # 4) Яндекс: статическая библиотека (.a)
+    # сначала пробуем взять из Aggregate DerivedData
+    yandex_sim_a, yandex_dev_a = library_paths(library: "BidonAdapterYandex", scheme: "BidonAdapterYandex")
+    if File.exist?(yandex_sim_a) && File.exist?(yandex_dev_a)
+      xclibrary("BidonAdapterYandex", "BidonAdapterYandex", "BidonAdapterYandex", adapters_version)
+
+      zip(
+        path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}",
+        output_path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"
+      )
+
+      podspec(
+        name: "BidonAdapterYandex",
+        version: adapters_version,
+        sdk_version: version,
+        podfile: $root_dir + "/Podfile",
+        s3_region: ENV["S3_REGION"],
+        s3_bucket: ENV["S3_BUCKET"],
+        path: $podspecs_dir,
+        vendored_frameworks: "BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.xcframework",
+        is_adapter: true
+      )
+
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "BidonAdapterYandex/#{adapters_version}",
+        files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"]
+      ) if upload
+    else
+      # fallback: отдельная сборка только Яндекса
+      adapter(
+        name: "BidonAdapterYandex",
+        version: adapters_version,
+        sdk_version: version,
+        upload: upload,
+        skip_build: false,
+        skip_core: true,
+        pods: true
       )
     end
   end
 
-desc "Build a specific Bidon adapter"
-lane :adapter do |options|
-  raise "No adapter specified".red if options[:name].nil?
-  raise "No adapter version specified".red if options[:version].nil?
-  raise "No SDK version specified".red if options[:sdk_version].nil?
+  desc "Build a specific Bidon adapter"
+  lane :adapter do |options|
+    raise "No adapter specified".red if options[:name].nil?
+    raise "No adapter version specified".red if options[:version].nil?
+    raise "No SDK version specified".red if options[:sdk_version].nil?
 
-  adapter_name = options[:name]
-  adapter_version = options[:version]
-  sdk_version = options[:sdk_version]
-  upload = options[:upload] || false
-  skip_build = options[:skip_build].nil? ? false : options[:skip_build]
-  should_install_pods = options[:pods].nil? ? false : options[:pods]
+    adapter_name     = options[:name]
+    adapter_version  = options[:version]
+    sdk_version      = options[:sdk_version]
+    upload           = options[:upload] || false
+    skip_build       = options[:skip_build].nil? ? false : options[:skip_build]
+    should_install_pods = options[:pods].nil? ? false : options[:pods]
+    skip_core        = options[:skip_core].nil? ? false : options[:skip_core]
 
-  # Install pods if requested
-  cocoapods(use_bundle_exec: true) if should_install_pods
+    cocoapods(use_bundle_exec: true) if should_install_pods
 
-  # Build Bidon core framework
-  unless skip_build
-    UI.message("📦 Building Bidon SDK...")
-    build_universal("Bidon")
-    xcframework("Bidon", "Bidon", "Bidon", sdk_version)
-  end
+    unless skip_core
+      UI.message("📦 Building Bidon core…")
+      build_universal("Bidon")
+      xcframework("Bidon", "Bidon", "Bidon", sdk_version)
+    end
 
-  # Build the adapter framework
-  unless skip_build
-    UI.message("📦 Building Adapter #{adapter_name}...")
-    build_universal(adapter_name)
-    xcframework(adapter_name, adapter_name, adapter_name, adapter_version)
-  end
+    unless skip_build
+      UI.message("📦 Building Adapter #{adapter_name}…")
+      build_universal(adapter_name)
+      if adapter_name == "BidonAdapterYandex"
+        xclibrary(adapter_name, adapter_name, adapter_name, adapter_version)
+      else
+        xcframework(adapter_name, adapter_name, adapter_name, adapter_version)
+      end
+    end
 
-  # Create ZIP archive for the adapter
-  zip(
-    path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}",
-    output_path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"
-  )
-
-  # Generate podspec for the adapter only
-  podspec(
-    name: adapter_name,
-    version: adapter_version,
-    sdk_version: sdk_version,
-    podfile: $root_dir + "/Podfile",
-    s3_region: ENV["S3_REGION"],
-    s3_bucket: ENV["S3_BUCKET"],
-    path: $podspecs_dir,
-    vendored_frameworks: "#{adapter_name}-#{adapter_version}/#{adapter_name}.xcframework",
-    is_adapter: true
-  )
-
-  # Upload only the adapter archive to S3
-  if upload
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "#{adapter_name}/#{adapter_version}",
-      files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+    zip(
+      path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}",
+      output_path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"
     )
-  end
-end
 
+    podspec(
+      name: adapter_name,
+      version: adapter_version,
+      sdk_version: sdk_version,
+      podfile: $root_dir + "/Podfile",
+      s3_region: ENV["S3_REGION"],
+      s3_bucket: ENV["S3_BUCKET"],
+      path: $podspecs_dir,
+      vendored_frameworks: "#{adapter_name}-#{adapter_version}/#{adapter_name}.xcframework",
+      is_adapter: true
+    )
+
+    if upload
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "#{adapter_name}/#{adapter_version}",
+        files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+      )
+    end
+  end
 
   desc "Build podspecs for development pod"
   lane :development_podspecs do |options|
     raise "No SDK version specified".red if options[:version].nil?
 
-    version = options[:version]
-    adapters_version = options[:adapters_version] || version + ".1"
+    version          = options[:version]
+    adapters_version = options[:adapters_version] || "#{version}.1"
 
     $targets.each do |target|
-      adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
-      is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
+      is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
       ver = is_adapter ? adapters_version : version
-      path = is_adapter ? "/Adapters/#{target}" : ""
 
       podspec(
         name: target,
@@ -242,7 +418,7 @@ end
         podfile: $root_dir + "/Podfile",
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
-        path: is_adapter  ? $development_podspec_dir + "/Adapters" : $development_podspec_dir,
+        path: is_adapter ? ($development_podspec_dir + "/Adapters") : $development_podspec_dir,
         vendored_frameworks: "#{target}-#{ver}/#{target}.xcframework",
         is_adapter: is_adapter,
         is_development_pod: true
@@ -254,14 +430,12 @@ end
   lane :generate_specs do |options|
     raise "No SDK version specified".red if options[:version].nil?
 
-    version = options[:version]
-    adapters_version = options[:adapters_version] || version + ".1"
+    version          = options[:version]
+    adapters_version = options[:adapters_version] || "#{version}.1"
 
     $targets.each do |target|
-      adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
-      is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
+      is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
       ver = is_adapter ? adapters_version : version
-      path = is_adapter ? "/Adapters/#{target}" : ""
 
       podspec(
         name: target,
@@ -278,16 +452,12 @@ end
     end
   end
 
-  lane :sandbox_env do |options|
-    generate_sandbox_constants(
-      path: $root_dir + "/Sandbox/Sandbox",
-    )
+  lane :sandbox_env do |_|
+    generate_sandbox_constants(path: $root_dir + "/Sandbox/Sandbox")
   end
 
-  lane :setup do |options|
+  lane :setup do |_|
     cocoapods(use_bundle_exec: true)
-    generate_sandbox_constants(
-      path: $root_dir + "/Sandbox/Sandbox",
-    )
+    generate_sandbox_constants(path: $root_dir + "/Sandbox/Sandbox")
   end
 end
