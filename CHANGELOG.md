@@ -1,8 +1,22 @@
-# develop
+
+# develop (0.11.0)
+
+## New features
+- BDN-1033 Bidon request params
+- BDN-1009 Bidon init by order
+- BDN-1031 Moloco RTB adapters - implemented
+- BDN-1038 InMobi RTB adapters - implemented
+
+## Fixes
+- BDN-992 VK Ads debug mode support
 
 # Release 0.10.0
 
+## Network updates
+- BDN-1040 YandexSDK updated to v7.15.1
+
 ## New features
+
 - BDN-1025 Support External Win/Loss Notification for BCAMAX
 - BDN-1023 Exclude BM SDK-Win/Loss Notification in RTB-mode
 - BDN-1021 Fix Win/Loss Notification Logic Based on external_win_notifications
@@ -15,6 +29,9 @@
 - BDN-1007 CLGeocoder multiple processing - fix
 
 # Release 0.9.0
+
+## Fixes
+- BDN-1007 CLGeocoder multiple processing - fix
 
 ## New features
 - BDN-987 VungleSDK Banner API - updated

@@ -13,7 +13,10 @@ import InMobiSDK
 internal typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
-DirectAdViewDemandSourceAdapter
+DirectAdViewDemandSourceAdapter &
+BiddingInterstitialDemandSourceAdapter &
+BiddingRewardedAdDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter
 
 
 @objc final public class InMobiDemandSourceAdapter: NSObject, DemandSourceAdapter {
@@ -39,6 +42,18 @@ DirectAdViewDemandSourceAdapter
 
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
         return InMobiAdViewDemandProvider(context: context)
+    }
+
+    public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
+        return InMobiBiddingInterstitialDemandProvider()
+    }
+
+    public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
+        return InMobiBiddingInterstitialDemandProvider()
+    }
+
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return InMobiBiddingAdViewDemandProvider(context: context)
     }
 }
 

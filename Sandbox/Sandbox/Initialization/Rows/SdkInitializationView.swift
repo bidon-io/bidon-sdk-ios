@@ -45,7 +45,7 @@ struct SdkInitializationView: View {
                     Text("Banner")
                 }
             }
-            
+
             Section(header: Text("Status")) {
                 Text(status)
             }

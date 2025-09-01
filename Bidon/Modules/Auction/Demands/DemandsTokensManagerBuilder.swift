@@ -14,6 +14,7 @@ final class DemandsTokensManagerBuilder<AdTypeContextType: AdTypeContext> {
     private(set) var timeout: TimeInterval!
     private(set) var context: AdTypeContextType!
     private(set) var auctionKey: String?
+    private(set) var adaptersRepository: AdaptersRepository!
 
     required init() {}
 
@@ -44,6 +45,12 @@ final class DemandsTokensManagerBuilder<AdTypeContextType: AdTypeContext> {
     @discardableResult
     public func withAuctionKey(_ key: String?) -> Self {
         self.auctionKey = key
+        return self
+    }
+
+    @discardableResult
+    public func withAdaptersRepository(_ repository: AdaptersRepository) -> Self {
+        self.adaptersRepository = repository
         return self
     }
 }

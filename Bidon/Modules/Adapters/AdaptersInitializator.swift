@@ -42,14 +42,14 @@ struct AdaptersInitializator {
 
                 let timer = Timer(
                     timeInterval: timeout,
-                    repeats: true
+                    repeats: false
                 ) { [weak self] _ in
                     guard let self = self, self.isExecuting else { return }
                     Logger.warning("\(self.adapter.name) adapter has reached timeout \(timeout)s during initialization")
                     self.finish()
                 }
 
-                RunLoop.main.add(timer, forMode: .default)
+                RunLoop.main.add(timer, forMode: .common)
                 self.timer = timer
             }
 
@@ -91,7 +91,7 @@ struct AdaptersInitializator {
             guard let adapter: InitializableAdapter = repository[config.demandId] else {
                 return nil
             }
-            
+
             guard !adapter.isInitialized else {
                 self.repository.markInitialized(adapter: adapter)
                 return nil
@@ -132,11 +132,14 @@ struct AdaptersInitializator {
         var graph = DirectedAcyclicGraph<Operation>()
 
         let operations = self.operations
+        let minOrder = operations.map { $0.config.order }.min() ?? 0
 
         try? graph.add(node: completionOperation)
         operations.forEach {
             try? graph.add(node: $0)
-            try? graph.addEdge(from: $0, to: completionOperation)
+            if $0.config.order == minOrder {
+                try? graph.addEdge(from: $0, to: completionOperation)
+            }
         }
 
         let count = operations.map { $0.config.order }.max() ?? 0

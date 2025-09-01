@@ -53,6 +53,10 @@ def mobilefuse
   pod 'MobileFuseSDK', '1.9.0'
 end
 
+def moloco
+  pod 'MolocoSDKiOS', '~> 3.12.0'
+end
+
 def vungle
   pod 'VungleAds', '7.5.1'
 end
@@ -194,6 +198,11 @@ target 'BidonAdapterMobileFuse' do
   mobilefuse
 end
 
+target 'BidonAdapterMoloco' do
+  project 'Adapters/Adapters.xcodeproj'
+  moloco
+end
+
 target 'BidonAdapterVungle' do
   project 'Adapters/Adapters.xcodeproj'
   vungle
@@ -247,6 +256,7 @@ target 'Tests-ObjectiveC' do
   unity_ads
   mintegral
   mobilefuse
+  moloco
   vungle
   bigo_ads
   meta_ads
@@ -273,6 +283,7 @@ target 'Sandbox' do
   unity_ads
   mintegral
   mobilefuse
+  moloco
   vungle
   bigo_ads
   meta_ads

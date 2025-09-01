@@ -1,87 +1,70 @@
 //
-//  InMobiAdViewDemandProvider.swift
+//  InMobiBiddingAdViewDemandProvider.swift
 //  BidonAdapterInMobi
 //
-//  Created by Stas Kochkin on 12.09.2023.
+//  Created by Andrei Rudyk on 03/09/2025.
 //
 
 import Foundation
-import InMobiSDK
+import UIKit
 import Bidon
+import InMobiSDK
 
 
-extension IMBanner: InMobiAd {}
-
-
-extension IMBanner: AdViewContainer {
-    public var isAdaptive: Bool {
-        return false
-    }
-}
-
-
-final class InMobiAdViewDemandProvider: NSObject, DirectDemandProvider {
-    typealias DemandAdType = InMobiDemandAd<IMBanner>
-
-    weak var delegate: DemandProviderDelegate?
+final class InMobiBiddingAdViewDemandProvider: InMobiBiddingBaseDemandProvider<InMobiBiddingDemandAd<IMBanner>> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    weak var revenueDelegate: DemandProviderRevenueDelegate?
 
-    let format: BannerFormat
-
-    private var banner: DemandAdType?
     private var response: DemandProviderResponse?
+    private var banner: IMBanner?
+    private let format: BannerFormat
 
     init(context: AdViewContext) {
         self.format = context.format
         super.init()
     }
 
-    func load(
-        pricefloor: Price,
-        adUnitExtras: InMobiAdUnitExtras,
+    override func load(
+        payload: InMobiBiddingResponse,
+        adUnitExtras: InMobiBiddingAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
+        self.response = response
+
+        guard let tokenData = payload.payload.data(using: .utf8) else {
+            response(.failure(.unspecifiedException("InMobi has not provided correct bidding token")))
+            return
+        }
+
         let frame = CGRect(
             origin: .zero,
             size: format.preferredSize
         )
+        guard let placementId = Int64(adUnitExtras.placementId) else {
+            response(.failure(.incorrectAdUnitId))
+            return
+        }
         let banner = IMBanner(
             frame: frame,
-            placementId: adUnitExtras.placementId
+            placementId: placementId
         )
         banner.delegate = self
         banner.shouldAutoRefresh(false)
-        banner.load()
-
-        self.response = response
-        self.banner = DemandAdType(ad: banner)
-    }
-
-    func notify(
-        ad: InMobiDemandAd<IMBanner>,
-        event: DemandProviderEvent
-    ) {
-        switch event {
-        case .lose:
-            ad.ad.cancel()
-        default:
-            break
-        }
+        self.banner = banner
+        banner.load(tokenData)
     }
 }
 
 
-extension InMobiAdViewDemandProvider: AdViewDemandProvider {
-    func container(for ad: InMobiDemandAd<InMobiSDK.IMBanner>) -> Bidon.AdViewContainer? {
+extension InMobiBiddingAdViewDemandProvider: AdViewDemandProvider {
+    func container(for ad: InMobiBiddingDemandAd<IMBanner>) -> AdViewContainer? {
         return ad.ad
     }
 
-    func didTrackImpression(for ad: InMobiDemandAd<InMobiSDK.IMBanner>) {}
+    func didTrackImpression(for ad: InMobiBiddingDemandAd<IMBanner>) {}
 }
 
 
-extension InMobiAdViewDemandProvider: IMBannerDelegate {
+extension InMobiBiddingAdViewDemandProvider: IMBannerDelegate {
     func bannerDidFinishLoading(_ banner: IMBanner) {
         response?(.success(DemandAdType(ad: banner)))
         response = nil

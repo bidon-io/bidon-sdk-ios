@@ -137,6 +137,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
         builder.withContext(context)
         builder.withAuctionKey(auctionKey)
+        builder.withAdaptersRepository(self.sdk.adaptersRepository)
 
         let demandsManager = DemandsTokensManager<AdTypeContextType>(builder: builder)
         self.demandsTokensManager = demandsManager
@@ -145,7 +146,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             guard let self else { return }
             switch result {
             case .success(let tokens):
-                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey)
+                self.performAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey)
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
@@ -154,7 +155,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
+    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
         let request = self.context.auctionRequest { builder in
             builder.withBiddingTokens(tokens)
             builder.withPricefloor(pricefloor)
@@ -263,7 +264,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             defer { controller.impression.markTrackedIfNeeded(.win) }
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             controller.notifyWin()
 
             let request = context.notificationRequest { builder in
@@ -305,7 +306,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             }
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             controller.notifyLose(winner: demandId, eCPM: eCPM)
 
             let request = context.notificationRequest { builder in

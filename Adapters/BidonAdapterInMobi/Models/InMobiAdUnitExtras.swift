@@ -10,7 +10,7 @@ import Bidon
 
 
 struct InMobiAdUnitExtras: Codable {
-    var placementId: Int64
+    var placementId: String
 
     enum CodingKeys: String, CodingKey {
         case placementId = "placement_id"
@@ -18,12 +18,8 @@ struct InMobiAdUnitExtras: Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let placementId = try container.decode(String.self, forKey: .placementId)
-
-        guard let placementId = Int64(placementId) else {
-            throw MediationError.incorrectAdUnitId
-        }
-
-        self.placementId = placementId
+        self.placementId = try container.decode(String.self, forKey: .placementId)
     }
 }
+
+struct InMobiBiddingTokenExtras: Codable { }

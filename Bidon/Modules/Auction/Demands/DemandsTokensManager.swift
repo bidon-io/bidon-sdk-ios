@@ -17,6 +17,7 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
     private let demands: [String]
     private let timeout: TimeInterval
     private let auctionKey: String?
+    private let adaptersRepository: AdaptersRepository
 
     private var tokens = [BiddingDemandToken]()
     private var biddingDemadIds = [String]()
@@ -33,14 +34,18 @@ final class DemandsTokensManager<AdTypeContextType: AdTypeContext> {
         self.timeout = builder.timeout / 1000
         self.context = builder.context
         self.auctionKey = builder.auctionKey
+        self.adaptersRepository = builder.adaptersRepository
     }
 
     func load(
         initializationParameters: AdaptersInitialisationParameters,
         completion: @escaping ((Result<[BiddingDemandToken], Error>) -> Void)
     ) {
+        let initializedIds = adaptersRepository.initializedIds
         let filteredAdapters = adapters.filter { adapter in
-            demands.contains(adapter.demandId) && adapter.provider is (any GenericBiddingDemandProvider)
+            demands.contains(adapter.demandId)
+            && adapter.provider is (any GenericBiddingDemandProvider)
+            && initializedIds.contains(adapter.demandId)
         }
         biddingDemadIds = filteredAdapters.map({ $0.demandId })
 

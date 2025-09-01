@@ -122,6 +122,7 @@ final class BannerAdManager: NSObject {
         builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
         builder.withContext(context)
         builder.withAuctionKey(auctionKey)
+        builder.withAdaptersRepository(sdk.adaptersRepository)
 
         let demandsManager = DemandsTokensManager<BannerAdTypeContext>(builder: builder)
         self.demandsTokensManager = demandsManager
@@ -130,7 +131,7 @@ final class BannerAdManager: NSObject {
             guard let self else { return }
             switch result {
             case .success(let tokens):
-                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
+                self.performAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
@@ -139,7 +140,7 @@ final class BannerAdManager: NSObject {
         }
     }
 
-    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.auctionRequest { builder in
@@ -282,7 +283,7 @@ final class BannerAdManager: NSObject {
             }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .win)
             }
@@ -326,7 +327,7 @@ final class BannerAdManager: NSObject {
             defer { state = .idle }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .lose(demandId, impression.ad, eCPM))
             }
