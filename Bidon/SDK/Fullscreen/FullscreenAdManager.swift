@@ -263,7 +263,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             defer { controller.impression.markTrackedIfNeeded(.win) }
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             controller.notifyWin()
 
             let request = context.notificationRequest { builder in
@@ -305,7 +305,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             }
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
-            
+
             controller.notifyLose(winner: demandId, eCPM: eCPM)
 
             let request = context.notificationRequest { builder in

@@ -91,7 +91,7 @@ struct AdaptersInitializator {
             guard let adapter: InitializableAdapter = repository[config.demandId] else {
                 return nil
             }
-            
+
             guard !adapter.isInitialized else {
                 self.repository.markInitialized(adapter: adapter)
                 return nil
