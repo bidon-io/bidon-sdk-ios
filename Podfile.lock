@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (5.3.0)
+  - AmazonPublisherServicesSDK (5.3.1)
   - AppLovinSDK (13.3.1)
   - AppMetricaAdSupport (5.11.2):
     - AppMetricaCore (= 5.11.2)
@@ -92,7 +92,7 @@ PODS:
     - BidMachine/Static (= 3.4.0)
   - BidMachine/Static (3.4.0):
     - StackModules/Static (~> 3.3.0)
-  - BigoADS (4.9.1)
+  - BigoADS (4.9.3)
   - ChartboostSDK (9.9.2)
   - DivKit (32.6.0):
     - DivKit_LayoutKit (= 32.6.0)
@@ -168,7 +168,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.9):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.9.2)
+  - MobileFuseSDK (1.9.3)
   - myTargetSDK (5.33.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
@@ -189,16 +189,16 @@ PODS:
     - StackModules/Rendering-Static
   - SwiftLint (0.59.1)
   - UnityAds (4.16.1)
-  - VGSL (7.7.1):
-    - VGSLFundamentals (= 7.7.1)
-    - VGSLNetworking (= 7.7.1)
-    - VGSLUI (= 7.7.1)
-  - VGSLFundamentals (7.7.1)
-  - VGSLNetworking (7.7.1):
-    - VGSLFundamentals (= 7.7.1)
-    - VGSLUI (= 7.7.1)
-  - VGSLUI (7.7.1):
-    - VGSLFundamentals (= 7.7.1)
+  - VGSL (7.9.1):
+    - VGSLFundamentals (= 7.9.1)
+    - VGSLNetworking (= 7.9.1)
+    - VGSLUI (= 7.9.1)
+  - VGSLFundamentals (7.9.1)
+  - VGSLNetworking (7.9.1):
+    - VGSLFundamentals (= 7.9.1)
+    - VGSLUI (= 7.9.1)
+  - VGSLUI (7.9.1):
+    - VGSLFundamentals (= 7.9.1)
   - VungleAds (7.5.3)
   - YandexMobileAds (7.14.1):
     - AppMetricaAdSupport (< 6.0.0, >= 5.11.0)
@@ -300,7 +300,7 @@ SPEC REPOS:
     - YandexMobileAds
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 351eb855ee50b7dfb15f7e2569c1bf31a5fa9fe7
+  AmazonPublisherServicesSDK: 6dbf6736815e2d70925a475bb1ed5a2c8b824599
   AppLovinSDK: 5075837afdee4fb429121799b8cbcc5918ef3a23
   AppMetricaAdSupport: 66c7a050698610774cc359f694ccb2f6a3bf83fb
   AppMetricaAnalytics: 945af25ba5098bfb2e411074c5eb03defa34e920
@@ -326,7 +326,7 @@ SPEC CHECKSUMS:
   AppMetricaWebKit: 0dcd6fc9405995c9c437643520edf08f15aacce0
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   BidMachine: aae28c0331dbcec42d63a71b25b0470990b87fe7
-  BigoADS: b15dd89a2f8ce5230843940deae011e5192e1686
+  BigoADS: 42cdec736eb8084a6658f3efd34345cc3f753ab8
   ChartboostSDK: 9298ec2ea9ae6c5881877f87ca6bc3f68449fe0f
   DivKit: f0566bfbfd82e226c3236346d2deed8d8232d20d
   DivKit_LayoutKit: 01b88abf719a1362cf8d6eb63f6fdf7a9a1be0f9
@@ -346,7 +346,7 @@ SPEC CHECKSUMS:
   IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
   KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 054814f99bb7e967b8974fe635d9005b225cbe42
-  MobileFuseSDK: 62fce789df80d28d9bf90ebf72bb18f468dd60ca
+  MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
   myTargetSDK: d5cc071911c6ce89331d0eb92ac973dcc4934d6b
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
@@ -355,13 +355,13 @@ SPEC CHECKSUMS:
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
   SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
   UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
-  VGSL: 0b95033d99a391877abf6106f15784343eafdaa8
-  VGSLFundamentals: 0dd050319bbdcaa3ee4152216b78aef9c0a5b36e
-  VGSLNetworking: f5569e14a60390842d4aa69dfa0cfab20bb82710
-  VGSLUI: ca0d7513c35e0c2db984e082930c783f31c84aef
+  VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
+  VGSLFundamentals: b754240ae1927d90aa2bceea9191b9ce330e9c94
+  VGSLNetworking: 724adba87e38d351f81b7c4b67586512d9c8fa32
+  VGSLUI: 7e7763e2ab91c13a49f954d62f1996db051ec0ce
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: e7b42c4fd510e42384a142d710c1c7f86a7b1f06
+PODFILE CHECKSUM: 27abe8ad13582253cfd4baaccc3ee5d13627ed57
 
 COCOAPODS: 1.15.2

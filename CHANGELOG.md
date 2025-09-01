@@ -1,5 +1,7 @@
 # develop
 
+# Release 0.10.0
+
 ## New features
 - BDN-1025 Support External Win/Loss Notification for BCAMAX
 - BDN-1023 Exclude BM SDK-Win/Loss Notification in RTB-mode

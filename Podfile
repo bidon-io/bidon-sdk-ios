@@ -41,6 +41,26 @@ def meta_ads
   pod 'FBAudienceNetwork', '~> 6.20.1'
 end
 
+def unity_ads
+  pod 'UnityAds', '~> 4.14.2'
+end
+
+def mintegral
+  pod 'MintegralAdSDK', '~> 7.7.7'
+end
+
+def mobilefuse
+  pod 'MobileFuseSDK', '1.9.0'
+end
+
+def vungle
+  pod 'VungleAds', '7.5.1'
+end
+
+def ocmock
+  pod 'OCMock', '~> 3.9.4'
+end
+
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
 end
