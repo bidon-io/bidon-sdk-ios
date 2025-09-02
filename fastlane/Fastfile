@@ -2,38 +2,39 @@ default_platform :ios
 
 fastlane_require "dotenv"
 
-# Global variables
-$root_dir = File.expand_path(Dir.pwd + "/..")
-$build_dir = File.expand_path($root_dir + "/build")
-$podspecs_dir = $build_dir + "/Podspecs"
-$development_podspec_dir = $root_dir
+# -------- Globals --------
+$root_dir                 = File.expand_path(Dir.pwd + "/..")
+$build_dir                = File.expand_path($root_dir + "/build")
+$podspecs_dir             = "#{$build_dir}/Podspecs"
+$development_podspec_dir  = $root_dir
 
-# Build configuration (NOT a scheme)
-$configuration = "Release"
+$workspace         = "BidOn.xcworkspace"
+$configuration     = "Release"
+$aggregate_scheme  = "Release"  # схема, где перечислены все таргеты
+$jobs              = (ENV["XCODE_JOBS"] || "8")
 
-# Product schemes/targets
-$targets = [
-  "Bidon",
-  "BidonAdapterAmazon",
-  "BidonAdapterBidMachine",
-  "BidonAdapterGoogleAdManager",
-  "BidonAdapterGoogleMobileAds",
-  "BidonAdapterAppLovin",
-  "BidonAdapterDTExchange",
-  "BidonAdapterUnityAds",
-  "BidonAdapterMintegral",
-  "BidonAdapterBigoAds",
-  "BidonAdapterMetaAudienceNetwork",
-  "BidonAdapterVungle",
-  "BidonAdapterInMobi",
-  "BidonAdapterAmazon",
-  "BidonAdapterChartboost",
-  "BidonAdapterIronSource",
-  "BidonAdapterMyTarget",
-  "BidonAdapterMobileFuse",
-  "AppLovinMediationBidonAdapter",
-  "ISBidonCustomAdapter",
-  "BidonAdapterMoloco"
+# Продукты (имена фреймворков/библ., совпадают с таргетами)
+$targets = %w[
+  Bidon
+  BidonAdapterAmazon
+  BidonAdapterBidMachine
+  BidonAdapterGoogleAdManager
+  BidonAdapterGoogleMobileAds
+  BidonAdapterAppLovin
+  BidonAdapterDTExchange
+  BidonAdapterUnityAds
+  BidonAdapterMintegral
+  BidonAdapterBigoAds
+  BidonAdapterMetaAudienceNetwork
+  BidonAdapterVungle
+  BidonAdapterInMobi
+  BidonAdapterAmazon
+  BidonAdapterChartboost
+  BidonAdapterIronSource
+  BidonAdapterMyTarget
+  BidonAdapterMobileFuse
+  AppLovinMediationBidonAdapter
+  ISBidonCustomAdapter
 ]
 
 # -------- Helpers --------
@@ -45,11 +46,9 @@ def dep_target_for(name)
     "BidonAdapterMyTarget"   => "12.4",
     "BidonAdapterYandex"     => "13.0",
     "BidonAdapterDTExchange" => "13.0",
-    "BidonAdapterUnityAds"   => "13.0",
-    "BidonAdapterMoloco"     => "13.0"
-  }
-  deployment_target = min_versions.fetch(scheme, "12.0")
-  is_yandex = (scheme == "BidonAdapterYandex")
+    "BidonAdapterUnityAds"   => "13.0"
+  }[name] || "12.0"
+end
 
 def base_xcargs(for_target)
   args = [

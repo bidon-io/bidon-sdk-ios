@@ -252,20 +252,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "499682942E44B1C7003DE568"
-               BuildableName = "libBidonAdapterYandex.a"
-               BlueprintName = "BidonAdapterYandex"
-               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "498053482DD495D400ED737F"
                BuildableName = "AppLovinMediationBidonAdapter.framework"
                BlueprintName = "AppLovinMediationBidonAdapter"
@@ -284,20 +270,6 @@
                BuildableName = "ISBidonCustomAdapter.framework"
                BlueprintName = "ISBidonCustomAdapter"
                ReferencedContainer = "container:ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B93BC1F82E54C7A600C99DBE"
-               BuildableName = "BidonAdapterMoloco.framework"
-               BlueprintName = "BidonAdapterMoloco"
-               ReferencedContainer = "container:Adapters/Adapters.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
