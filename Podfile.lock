@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (5.3.1)
+  - AmazonPublisherServicesSDK (5.3.0)
   - AppLovinSDK (13.3.1)
   - AppMetricaAdSupport (5.11.2):
     - AppMetricaCore (= 5.11.2)
@@ -168,7 +168,8 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.9):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.9.3)
+  - MobileFuseSDK (1.9.2)
+  - MolocoSDKiOS (3.12.1)
   - myTargetSDK (5.33.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
@@ -189,16 +190,16 @@ PODS:
     - StackModules/Rendering-Static
   - SwiftLint (0.59.1)
   - UnityAds (4.16.1)
-  - VGSL (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
-    - VGSLNetworking (= 7.9.1)
-    - VGSLUI (= 7.9.1)
-  - VGSLFundamentals (7.9.1)
-  - VGSLNetworking (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
-    - VGSLUI (= 7.9.1)
-  - VGSLUI (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
+  - VGSL (7.7.1):
+    - VGSLFundamentals (= 7.7.1)
+    - VGSLNetworking (= 7.7.1)
+    - VGSLUI (= 7.7.1)
+  - VGSLFundamentals (7.7.1)
+  - VGSLNetworking (7.7.1):
+    - VGSLFundamentals (= 7.7.1)
+    - VGSLUI (= 7.7.1)
+  - VGSLUI (7.7.1):
+    - VGSLFundamentals (= 7.7.1)
   - VungleAds (7.5.3)
   - YandexMobileAds (7.14.1):
     - AppMetricaAdSupport (< 6.0.0, >= 5.11.0)
@@ -226,6 +227,7 @@ DEPENDENCIES:
   - IronSourceSDK (~> 8.10.0)
   - MintegralAdSDK (~> 7.7.9)
   - MobileFuseSDK (~> 1.9.2)
+  - MolocoSDKiOS (~> 3.12.0)
   - myTargetSDK (~> 5.33.0)
   - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
@@ -285,6 +287,7 @@ SPEC REPOS:
     - KSCrash
     - MintegralAdSDK
     - MobileFuseSDK
+    - MolocoSDKiOS
     - myTargetSDK
     - myTrackerSDK
     - OCMock
@@ -300,7 +303,7 @@ SPEC REPOS:
     - YandexMobileAds
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 6dbf6736815e2d70925a475bb1ed5a2c8b824599
+  AmazonPublisherServicesSDK: 351eb855ee50b7dfb15f7e2569c1bf31a5fa9fe7
   AppLovinSDK: 5075837afdee4fb429121799b8cbcc5918ef3a23
   AppMetricaAdSupport: 66c7a050698610774cc359f694ccb2f6a3bf83fb
   AppMetricaAnalytics: 945af25ba5098bfb2e411074c5eb03defa34e920
@@ -346,7 +349,8 @@ SPEC CHECKSUMS:
   IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
   KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 054814f99bb7e967b8974fe635d9005b225cbe42
-  MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
+  MobileFuseSDK: 62fce789df80d28d9bf90ebf72bb18f468dd60ca
+  MolocoSDKiOS: 0383b7b2f825c2244b9e7e14d5c0b63c30467b7f
   myTargetSDK: d5cc071911c6ce89331d0eb92ac973dcc4934d6b
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
@@ -355,13 +359,13 @@ SPEC CHECKSUMS:
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
   SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
   UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
-  VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
-  VGSLFundamentals: b754240ae1927d90aa2bceea9191b9ce330e9c94
-  VGSLNetworking: 724adba87e38d351f81b7c4b67586512d9c8fa32
-  VGSLUI: 7e7763e2ab91c13a49f954d62f1996db051ec0ce
+  VGSL: 0b95033d99a391877abf6106f15784343eafdaa8
+  VGSLFundamentals: 0dd050319bbdcaa3ee4152216b78aef9c0a5b36e
+  VGSLNetworking: f5569e14a60390842d4aa69dfa0cfab20bb82710
+  VGSLUI: ca0d7513c35e0c2db984e082930c783f31c84aef
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 27abe8ad13582253cfd4baaccc3ee5d13627ed57
+PODFILE CHECKSUM: 6af80988e305789ebee289288371209b29d8ae30
 
 COCOAPODS: 1.16.2

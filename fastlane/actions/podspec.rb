@@ -18,7 +18,8 @@ module Fastlane
           "BidonAdapterMyTarget"   => "12.4",
           "BidonAdapterYandex"     => "13.0",
           "BidonAdapterDTExchange" => "13.0",
-          "BidonAdapterUnityAds"   => "13.0"
+          "BidonAdapterUnityAds"   => "13.0",
+          "BidonAdapterMoloco"     => "13.0"
       }
 
       def self.run(params)
