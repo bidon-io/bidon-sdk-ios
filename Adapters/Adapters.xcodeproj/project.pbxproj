@@ -232,6 +232,12 @@
 		B93BC21D2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */; };
 		B93BDD642E5F415B0001B4DD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93BDD632E5F415B0001B4DD /* Bidon.framework */; };
 		B97D6A9D2E65E73600A052E2 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; };
+		B9B0B95F2E673DBD00286D44 /* InMobiBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */; };
+		B9B0B9612E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */; };
+		B9B0B9632E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */; };
+		B9B0B9672E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9662E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift */; };
+		B9B0B9692E687C7800286D44 /* InMobiBiddingDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9682E687C7800286D44 /* InMobiBiddingDemandAd.swift */; };
+		B9B0B96B2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B96A2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift */; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
 		CA23DEA1E10FEE1D3BF005F0 /* Pods_BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */; };
 		E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */; };
@@ -570,6 +576,12 @@
 		B93BC21A2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		B93BDD632E5F415B0001B4DD /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingResponse.swift; sourceTree = "<group>"; };
+		B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
+		B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		B9B0B9662E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingAdUnitExtras.swift; sourceTree = "<group>"; };
+		B9B0B9682E687C7800286D44 /* InMobiBiddingDemandAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingDemandAd.swift; sourceTree = "<group>"; };
+		B9B0B96A2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMobiBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		B9B34CF72DD3879B003EB330 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.2.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		BB69C86D9638891BD3D2A879 /* Pods-BidOnAdapterAppLovin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterAppLovin.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterAppLovin/Pods-BidOnAdapterAppLovin.debug.xcconfig"; sourceTree = "<group>"; };
 		BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1173,8 +1185,8 @@
 		42CFF1BD2AAF668800AC2C24 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
-				42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */,
-				42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */,
+				B9B0B95D2E673D9700286D44 /* Bidding */,
+				B9B0B95C2E673D8900286D44 /* Direct */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -1182,6 +1194,7 @@
 		42CFF1C02AAF6A1C00AC2C24 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
+				B9B0B9682E687C7800286D44 /* InMobiBiddingDemandAd.swift */,
 				42CFF1C12AAF6A3800AC2C24 /* InMobiDemandAd.swift */,
 			);
 			path = Wrappers;
@@ -1296,6 +1309,8 @@
 			children = (
 				42D377902AFAAEAF003DCCA2 /* InMobiParameters.swift */,
 				42D377922AFAAEE8003DCCA2 /* InMobiAdUnitExtras.swift */,
+				B9B0B9662E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift */,
+				B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1664,6 +1679,25 @@
 				B93BC2182E5601E900C99DBE /* SdkError+MolocoError.swift */,
 			);
 			path = Wrappers;
+			sourceTree = "<group>";
+		};
+		B9B0B95C2E673D8900286D44 /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				42CFF1BE2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift */,
+				42E5457B2AB0640100AA909F /* InMobiAdViewDemandProvider.swift */,
+			);
+			path = Direct;
+			sourceTree = "<group>";
+		};
+		B9B0B95D2E673D9700286D44 /* Bidding */ = {
+			isa = PBXGroup;
+			children = (
+				B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */,
+				B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */,
+				B9B0B96A2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift */,
+			);
+			path = Bidding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2432,9 +2466,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2471,9 +2509,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2510,9 +2552,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2549,9 +2595,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2566,9 +2616,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2583,9 +2637,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2600,9 +2658,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2661,9 +2723,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMoloco/Pods-BidonAdapterMoloco-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMoloco/Pods-BidonAdapterMoloco-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2788,9 +2854,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2893,9 +2963,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2910,9 +2984,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3202,9 +3280,15 @@
 			files = (
 				42CFF1BC2AAF633200AC2C24 /* InMobiDemandSourceAdapter.swift in Sources */,
 				42D377912AFAAEAF003DCCA2 /* InMobiParameters.swift in Sources */,
+				B9B0B95F2E673DBD00286D44 /* InMobiBiddingResponse.swift in Sources */,
 				42CFF1BF2AAF66B300AC2C24 /* InMobiInterstitialDemandProvider.swift in Sources */,
 				42D377932AFAAEE8003DCCA2 /* InMobiAdUnitExtras.swift in Sources */,
+				B9B0B9632E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift in Sources */,
 				42E5457C2AB0640100AA909F /* InMobiAdViewDemandProvider.swift in Sources */,
+				B9B0B9672E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift in Sources */,
+				B9B0B9612E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift in Sources */,
+				B9B0B96B2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift in Sources */,
+				B9B0B9692E687C7800286D44 /* InMobiBiddingDemandAd.swift in Sources */,
 				42CFF1C22AAF6A3800AC2C24 /* InMobiDemandAd.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

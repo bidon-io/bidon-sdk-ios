@@ -5,6 +5,7 @@
 - BDN-1033 Bidon request params
 - BDN-1009 Bidon init by order
 - BDN-1031 Moloco RTB adapters - implemented
+- BDN-1038 InMobi RTB adapters - implemented
 
 # Release 0.10.0
 

@@ -27,3 +27,5 @@ struct InMobiAdUnitExtras: Codable {
         self.placementId = placementId
     }
 }
+
+struct InMobiBiddingTokenExtras: Codable { }
