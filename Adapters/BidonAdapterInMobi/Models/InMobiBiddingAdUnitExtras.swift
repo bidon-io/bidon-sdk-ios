@@ -18,16 +18,13 @@ struct InMobiBiddingAdUnitExtras: Decodable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let placementId = try container.decode(String.self, forKey: .placementId)
 
-        if let idString = try? container.decode(String.self, forKey: .placementId), let id = Int64(idString) {
-            placementId = id
-            return
-        }
-        if let id = try? container.decode(Int64.self, forKey: .placementId) {
-            placementId = id
-            return
+        guard let placementId = Int64(placementId) else {
+            throw MediationError.incorrectAdUnitId
         }
 
-        throw MediationError.incorrectAdUnitId
+        self.placementId = placementId
     }
 }
+
