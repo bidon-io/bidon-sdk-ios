@@ -39,9 +39,13 @@ final class InMobiBiddingAdViewDemandProvider: InMobiBiddingBaseDemandProvider<I
             origin: .zero,
             size: format.preferredSize
         )
+        guard let placementId = Int64(adUnitExtras.placementId) else {
+            response(.failure(.incorrectAdUnitId))
+            return
+        }
         let banner = IMBanner(
             frame: frame,
-            placementId: adUnitExtras.placementId
+            placementId: placementId
         )
         banner.delegate = self
         banner.shouldAutoRefresh(false)

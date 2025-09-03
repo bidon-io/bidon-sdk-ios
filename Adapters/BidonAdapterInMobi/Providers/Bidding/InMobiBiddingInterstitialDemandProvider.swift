@@ -28,7 +28,11 @@ final class InMobiBiddingInterstitialDemandProvider: InMobiBiddingBaseDemandProv
             return
         }
 
-        let interstitial = IMInterstitial(placementId: adUnitExtras.placementId)
+        guard let placementId = Int64(adUnitExtras.placementId) else {
+            response(.failure(.incorrectAdUnitId))
+            return
+        }
+        let interstitial = IMInterstitial(placementId: placementId)
         interstitial.delegate = self
         self.interstitial = interstitial
         interstitial.load(tokenData)
