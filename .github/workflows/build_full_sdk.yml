@@ -65,7 +65,7 @@ jobs:
 
       - name: Build SDK via Fastlane
         run: |
-          bundle exec fastlane sdk \
+          bundle exec fastlane sdkTest \
             version:${{ inputs.sdk_version }} \
             adapters_version:${{ inputs.adapters_version }} \
             upload:${{ inputs.upload }}
