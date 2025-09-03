@@ -265,15 +265,7 @@ lane :sdkTest do |options|
   adapters_version = options[:adapters_version] || "#{version}.1"
 
   cocoapods(use_bundle_exec: true)
-
-  #
-  # 1) ОДИН общий билд для всех фреймворков (iphoneos + iphonesimulator)
-  #
   build_all_products_via_release!
-
-  #
-  # 2) Упаковка ядра Bidon
-  #
   package_framework_xcframework("Bidon", version)
 
   # PrivacyInfo.xcprivacy в оба среза
@@ -315,14 +307,11 @@ lane :sdkTest do |options|
     is_adapter: false
   )
 
-  #
-  # 3) Адаптеры, кроме Яндекса — ТОЛЬКО упаковка из уже собранных продуктов
-  #
   adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
 
   $targets.each do |target|
     next if target == "Bidon"
-    next if target == "BidonAdapterYandex" # отдельно ниже
+    next if target == "BidonAdapterYandex"
 
     is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
     ver = is_adapter ? adapters_version : version
@@ -359,9 +348,6 @@ lane :sdkTest do |options|
     )
   end
 
-  #
-  # 4) Яндекс — отдельный точечный билд (без BLD=YES), упаковка .a
-  #
   build_yandex_only!
   package_staticlib_xcframework("BidonAdapterYandex", adapters_version)
 
@@ -557,6 +543,116 @@ end
       )
     end
   end
+
+desc "CI-safe build for a single Bidon adapter (pods, scheme validation, packaging)"
+lane :adapter_ci do |options|
+  UI.user_error!("No adapter specified")        if options[:name].to_s.empty?
+  UI.user_error!("No adapter version specified") if options[:version].to_s.empty?
+  UI.user_error!("No SDK version specified")     if options[:sdk_version].to_s.empty?
+
+  adapter_name    = options[:name]
+  adapter_version = options[:version]
+  sdk_version     = options[:sdk_version]
+  upload          = options[:upload] || false
+  skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
+
+  # На CI по умолчанию ставим Pods (можно переопределить pods:true/false)
+  should_install_pods = if options.key?(:pods)
+    !!options[:pods]
+  else
+    ENV["CI"].to_s.downcase == "true"
+  end
+
+  cocoapods(use_bundle_exec: true) if should_install_pods
+
+  # Проверяем workspace
+  unless File.exist?("BidOn.xcworkspace") || File.exist?("BidOn.xcworkspace/contents.xcworkspacedata")
+    UI.user_error!("Workspace 'BidOn.xcworkspace' not found. Did you run `pod install`?")
+  end
+
+  # Валидируем наличие схемы (точное совпадение регистра)
+  begin
+    schemes_json = sh("xcodebuild -list -json -workspace BidOn.xcworkspace")
+  rescue => e
+    UI.user_error!("Failed to list schemes: #{e}")
+  end
+  unless schemes_json.include?("\"#{adapter_name}\"")
+    UI.user_error!("Scheme '#{adapter_name}' not found in 'BidOn.xcworkspace'. Check exact casing in Xcode.")
+  end
+
+  # Чистим артефакты для повторяемости
+  clean_build_artifacts
+  FileUtils.mkdir_p($podspecs_dir)
+
+  # 1) Core Bidon (если нужно)
+  unless skip_build
+    UI.message("📦 Building Bidon SDK…")
+    build_universal("Bidon")
+    xcframework("Bidon", "Bidon", "Bidon", sdk_version)
+
+    # Вкладываем PrivacyInfo.xcprivacy в оба среза core SDK
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.xcframework/ios-arm64/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+
+    zip(
+      path: "#{$build_dir}/Bidon/Bidon-#{sdk_version}",
+      output_path: "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.zip"
+    )
+  end
+
+  # 2) Adapter build
+  UI.message("🧩 Building Adapter #{adapter_name}…") unless skip_build
+  is_yandex = (adapter_name == "BidonAdapterYandex")
+
+  unless skip_build
+    build_universal(adapter_name)
+    if is_yandex
+      xclibrary(adapter_name, adapter_name, adapter_name, adapter_version)
+    else
+      xcframework(adapter_name, adapter_name, adapter_name, adapter_version)
+    end
+  end
+
+  # 3) Package & podspec
+  zip(
+    path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}",
+    output_path: "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"
+  )
+
+  podspec(
+    name: adapter_name,
+    version: adapter_version,
+    sdk_version: sdk_version,
+    podfile: $root_dir + "/Podfile",
+    s3_region: ENV["S3_REGION"],
+    s3_bucket: ENV["S3_BUCKET"],
+    path: $podspecs_dir,
+    vendored_frameworks: "#{adapter_name}-#{adapter_version}/#{adapter_name}.xcframework",
+    is_adapter: true
+  )
+
+  # 4) Optional upload to S3
+  if upload
+    aws_s3(
+      access_key: ENV["S3_ACCESS_KEY"],
+      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+      bucket: ENV["S3_BUCKET"],
+      region: ENV["S3_REGION"],
+      acl: "bucket-owner-full-control",
+      path: "#{adapter_name}/#{adapter_version}",
+      files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+    )
+  end
+
+  UI.success("✅ adapter_ci finished: #{adapter_name} #{adapter_version} (SDK #{sdk_version})")
+end
+
 
   desc "Build podspecs for development pod"
   lane :development_podspecs do |options|

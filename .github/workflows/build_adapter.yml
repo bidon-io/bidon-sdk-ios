@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Fastlane lane :adapter
         run: >
-          bundle exec fastlane adapter
+          bundle exec fastlane adapter_ci
           name:"${{ inputs.adapter_name }}"
           version:"${{ inputs.adapter_version }}"
           sdk_version:"${{ inputs.sdk_version }}"
