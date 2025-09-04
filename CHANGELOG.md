@@ -7,6 +7,9 @@
 - BDN-1031 Moloco RTB adapters - implemented
 - BDN-1038 InMobi RTB adapters - implemented
 
+## Fixes
+- BDN-992 VK Ads debug mode support
+
 # Release 0.10.0
 
 ## New features
