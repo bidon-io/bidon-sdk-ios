@@ -1,0 +1,19 @@
+//
+//  InMobiBiddingAdUnitExtras.swift
+//  BidonAdapterInMobi
+//
+//  Created by Andrei Rudyk on 02/09/2025.
+//
+
+import Foundation
+import Bidon
+
+
+struct InMobiBiddingAdUnitExtras: Decodable {
+    let placementId: String
+
+    enum CodingKeys: String, CodingKey {
+        case placementId
+    }
+}
+

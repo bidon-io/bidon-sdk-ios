@@ -30,7 +30,11 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
         adUnitExtras: InMobiAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let interstitial = IMInterstitial(placementId: adUnitExtras.placementId)
+        guard let placementId = Int64(adUnitExtras.placementId) else {
+            response(.failure(.incorrectAdUnitId))
+            return
+        }
+        let interstitial = IMInterstitial(placementId: placementId)
         interstitial.delegate = self
         interstitial.load()
 
