@@ -146,7 +146,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
             guard let self else { return }
             switch result {
             case .success(let tokens):
-                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey)
+                self.performAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey)
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
@@ -155,7 +155,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
+    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
         let request = self.context.auctionRequest { builder in
             builder.withBiddingTokens(tokens)
             builder.withPricefloor(pricefloor)

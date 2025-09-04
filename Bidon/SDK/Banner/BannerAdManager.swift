@@ -131,7 +131,7 @@ final class BannerAdManager: NSObject {
             guard let self else { return }
             switch result {
             case .success(let tokens):
-                self.perfornAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
+                self.performAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
             case .failure(let error):
                 self.state = .idle
                 Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
@@ -140,7 +140,7 @@ final class BannerAdManager: NSObject {
         }
     }
 
-    private func perfornAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.auctionRequest { builder in
