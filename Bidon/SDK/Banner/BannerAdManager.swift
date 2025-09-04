@@ -122,6 +122,7 @@ final class BannerAdManager: NSObject {
         builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
         builder.withContext(context)
         builder.withAuctionKey(auctionKey)
+        builder.withAdaptersRepository(sdk.adaptersRepository)
 
         let demandsManager = DemandsTokensManager<BannerAdTypeContext>(builder: builder)
         self.demandsTokensManager = demandsManager

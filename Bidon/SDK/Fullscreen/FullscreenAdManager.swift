@@ -137,6 +137,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         builder.withTimeout(ConfigParametersStorage.tokenTimeout ?? Constants.Timeout.defaultTokensTimeout)
         builder.withContext(context)
         builder.withAuctionKey(auctionKey)
+        builder.withAdaptersRepository(self.sdk.adaptersRepository)
 
         let demandsManager = DemandsTokensManager<AdTypeContextType>(builder: builder)
         self.demandsTokensManager = demandsManager
