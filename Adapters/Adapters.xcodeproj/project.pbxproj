@@ -218,7 +218,8 @@
 		77CEB42F0160C1D1D1FBFC78 /* Pods_BidonAdapterMoloco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5458F138EF1375B12B5BD86 /* Pods_BidonAdapterMoloco.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
-		B91E60392E65DEA6001B3578 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; };
+		B90A2D5E2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B93BC2042E54C9B700C99DBE /* BidonAdapterMoloco.h in Headers */ = {isa = PBXBuildFile; fileRef = B93BC2032E54C9B700C99DBE /* BidonAdapterMoloco.h */; };
 		B93BC2062E54CC8E00C99DBE /* MolocoDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2052E54CC8E00C99DBE /* MolocoDemandSourceAdapter.swift */; };
 		B93BC2092E54CE0900C99DBE /* MolocoParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2082E54CE0900C99DBE /* MolocoParameters.swift */; };
@@ -231,7 +232,6 @@
 		B93BC21B2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21A2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift */; };
 		B93BC21D2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */; };
 		B93BDD642E5F415B0001B4DD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93BDD632E5F415B0001B4DD /* Bidon.framework */; };
-		B97D6A9D2E65E73600A052E2 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; };
 		B9B0B95F2E673DBD00286D44 /* InMobiBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */; };
 		B9B0B9612E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */; };
 		B9B0B9632E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */; };
@@ -267,13 +267,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B97D6A9F2E65E73700A052E2 /* Embed Frameworks */ = {
+		B90A2D5F2E6AEF3A007D942B /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B91E60392E65DEA6001B3578 /* DTBiOSSDK.xcframework in Embed Frameworks */,
+				B90A2D5E2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -658,7 +658,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B97D6A9D2E65E73600A052E2 /* DTBiOSSDK.xcframework in Frameworks */,
+				B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1951,7 +1951,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				B97D6A9F2E65E73700A052E2 /* Embed Frameworks */,
+				B90A2D5F2E6AEF3A007D942B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -309,7 +309,7 @@ def read_lock_versions(lock_path)
 end
 
 def parse_adapters_revision_option(opt)
-  return { default: 0, map: {} } if opt.nil?
+  return { default: nil, map: {} } if opt.nil?
   s = opt.to_s
   if s.match(/^\d+$/)
     return { default: s.to_i, map: {} }
@@ -320,11 +320,14 @@ def parse_adapters_revision_option(opt)
     next unless key && val
     map[key.strip] = val.to_i
   end
-  { default: 0, map: map }
+  { default: nil, map: map }
 end
 
 def resolve_revision_for(target, rev_spec)
-  rev_spec[:map].fetch(target, rev_spec[:default])
+  return rev_spec[:map][target] if rev_spec[:map].key?(target)
+  return rev_spec[:default] unless rev_spec[:default].nil?
+  # Fallback: read from adapter source (public let/var adapterVersion: String = "<n>")
+  read_adapter_revision_from_source(target)
 end
 
 def adapter_version_for(target, lock_versions, revision, prerelease)
@@ -338,6 +341,20 @@ end
 
 def core_version_with_pre(version, prerelease)
   prerelease.to_s.empty? ? version : "#{version}-#{prerelease}"
+end
+
+def read_adapter_revision_from_source(target)
+  dir = File.join($root_dir, "Adapters", target)
+  candidates = Dir.glob(File.join(dir, "**", "*DemandSourceAdapter.swift"))
+  return 0 if candidates.empty?
+  begin
+    content = File.read(candidates.first)
+    m = content.match(/adapterVersion\s*:\s*String\s*=\s*"(\d+)"/)
+    return m[1].to_i if m
+  rescue => e
+    UI.message("Could not read adapterVersion from #{candidates.first}: #{e}")
+  end
+  0
 end
 
 # ---------- Lanes ----------
@@ -878,5 +895,70 @@ end
     generate_sandbox_constants(
       path: $root_dir + "/Sandbox/Sandbox"
     )
+  end
+
+  desc "Build a specific adapter with temporary override of network SDK version(s) via Podfile/Podfile.lock"
+  lane :adapter_with_network_versions do |options|
+    UI.user_error!("No adapter specified")        if options[:name].to_s.empty?
+    UI.user_error!("No SDK version specified")     if options[:sdk_version].to_s.empty?
+    UI.user_error!("No network_sdk_versions mapping specified (e.g. 'MolocoSDKiOS=3.12.1')") if options[:network_sdk_versions].to_s.empty?
+
+    adapter_name = options[:name]
+    sdk_version  = options[:sdk_version]
+    prerelease   = options[:pre]
+    mapping_str  = options[:network_sdk_versions]
+    upload       = options[:upload] || false
+
+    # Parse mapping like "MolocoSDKiOS=3.12.1,Google-Mobile-Ads-SDK=12.9.0"
+    overrides = {}
+    mapping_str.split(',').each do |pair|
+      pod_name, pod_ver = pair.split('=', 2)
+      UI.user_error!("Invalid mapping entry: #{pair}") if pod_name.to_s.strip.empty? || pod_ver.to_s.strip.empty?
+      overrides[pod_name.strip] = pod_ver.strip
+    end
+
+    podfile_path = File.join($root_dir, "Podfile")
+    lock_path    = File.join($root_dir, "Podfile.lock")
+    original_podfile = File.exist?(podfile_path) ? File.read(podfile_path) : nil
+    original_lock    = File.exist?(lock_path)    ? File.read(lock_path)    : nil
+
+    begin
+      UI.message("🔧 Applying temporary network SDK overrides in Podfile…")
+      content = original_podfile.dup
+      overrides.each do |name, ver|
+        # 1) Replace lines with explicit version: pod 'Name', '...'
+        re_with_ver = /(pod\s+["']#{Regexp.escape(name)}["']\s*,\s*["'])([^"']+)(["'])/
+        content = content.gsub(re_with_ver) { "#{$1}#{ver}#{$3}" }
+        # 2) Ensure lines without version get one: pod 'Name'
+        re_no_ver = /(pod\s+["']#{Regexp.escape(name)}["'])(\s*\n|\s*#|\s*$)/
+        content = content.gsub(re_no_ver) { |m| "pod '#{name}', '#{ver}'#{$2}" }
+      end
+
+      File.open(podfile_path, 'w') { |f| f.write(content) }
+
+      UI.message("📦 Installing pods with overrides…")
+      cocoapods(use_bundle_exec: true)
+
+      # Build adapter using computed version from Podfile.lock
+      adapter(
+        name: adapter_name,
+        sdk_version: sdk_version,
+        pre: prerelease,
+        upload: upload,
+        skip_build: false,
+        pods: false, # already installed
+        use_network_versions: true
+      )
+    ensure
+      # Restore Podfile and Podfile.lock
+      if original_podfile
+        UI.message("🧹 Restoring original Podfile…")
+        File.open(podfile_path, 'w') { |f| f.write(original_podfile) }
+      end
+      if original_lock
+        UI.message("🧹 Restoring original Podfile.lock…")
+        File.open(lock_path, 'w') { |f| f.write(original_lock) }
+      end
+    end
   end
 end
