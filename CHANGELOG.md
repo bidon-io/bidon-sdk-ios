@@ -12,6 +12,9 @@
 
 # Release 0.10.0
 
+## Network updates
+- BDN-1040 YandexSDK updated to v7.15.1
+
 ## New features
 
 - BDN-1025 Support External Win/Loss Notification for BCAMAX
