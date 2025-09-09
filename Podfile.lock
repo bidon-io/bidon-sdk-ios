@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (5.3.0)
+  - AmazonPublisherServicesSDK (5.3.1)
   - AppLovinSDK (13.3.1)
   - AppMetricaAdSupport (5.11.2):
     - AppMetricaCore (= 5.11.2)
@@ -93,20 +93,20 @@ PODS:
   - BidMachine/Static (3.4.0):
     - StackModules/Static (~> 3.3.0)
   - BigoADS (4.9.3)
-  - ChartboostSDK (9.9.2)
-  - DivKit (32.15.0):
-    - DivKit_LayoutKit (= 32.15.0)
-    - DivKit_Serialization (= 32.15.0)
-    - VGSL (~> 7.7)
-  - DivKit_LayoutKit (32.15.0):
-    - DivKit_LayoutKitInterface (= 32.15.0)
-    - VGSL (~> 7.7)
-  - DivKit_LayoutKitInterface (32.15.0):
-    - VGSL (~> 7.7)
-  - DivKit_Serialization (32.15.0):
-    - VGSL (~> 7.7)
-  - DivKitBinaryCompatibilityFacade (5.0.2):
-    - DivKit (~> 32.9)
+  - ChartboostSDK (9.9.3)
+  - DivKit (32.6.0):
+    - DivKit_LayoutKit (= 32.6.0)
+    - DivKit_Serialization (= 32.6.0)
+    - VGSL (~> 7.3)
+  - DivKit_LayoutKit (32.6.0):
+    - DivKit_LayoutKitInterface (= 32.6.0)
+    - VGSL (~> 7.3)
+  - DivKit_LayoutKitInterface (32.6.0):
+    - VGSL (~> 7.3)
+  - DivKit_Serialization (32.6.0):
+    - VGSL (~> 7.3)
+  - DivKitBinaryCompatibilityFacade (5.0.0):
+    - DivKit (~> 32.2)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
   - FBAudienceNetwork (6.20.1)
@@ -117,7 +117,7 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.3.8)
-  - Google-Mobile-Ads-SDK (12.9.0):
+  - Google-Mobile-Ads-SDK (12.10.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
   - InMobiSDK (10.8.6)
@@ -168,7 +168,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MintegralAdSDK/RewardVideoAd (7.7.9):
     - MintegralAdSDK/NativeAd
-  - MobileFuseSDK (1.9.2)
+  - MobileFuseSDK (1.9.3)
   - MolocoSDKiOS (3.12.1)
   - myTargetSDK (5.33.0):
     - myTrackerSDK (~> 3.3.0)
@@ -188,7 +188,7 @@ PODS:
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
-  - SwiftLint (0.59.1)
+  - SwiftLint (0.61.0)
   - UnityAds (4.16.1)
   - VGSL (7.9.1):
     - VGSLFundamentals (= 7.9.1)
@@ -201,12 +201,12 @@ PODS:
   - VGSLUI (7.9.1):
     - VGSLFundamentals (= 7.9.1)
   - VungleAds (7.5.3)
-  - YandexMobileAds (7.15.1):
+  - YandexMobileAds (7.14.1):
     - AppMetricaAdSupport (< 6.0.0, >= 5.11.0)
     - AppMetricaCore (< 6.0.0, >= 5.11.0)
     - AppMetricaCrashes (< 6.0.0, >= 5.11.0)
     - AppMetricaLibraryAdapter (< 6.0.0, >= 5.11.0)
-    - DivKitBinaryCompatibilityFacade (~> 5.0.2)
+    - DivKitBinaryCompatibilityFacade (= 5.0.0)
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.3.0)
@@ -217,6 +217,7 @@ DEPENDENCIES:
   - BidMachine (~> 3.4.0)
   - BigoADS (~> 4.9.0)
   - ChartboostSDK (~> 9.9.2)
+  - DivKit (= 32.6.0)
   - FBAudienceNetwork (~> 6.20.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (~> 8.3.8)
@@ -233,7 +234,7 @@ DEPENDENCIES:
   - SwiftLint
   - UnityAds (~> 4.16.0)
   - VungleAds (~> 7.5.2)
-  - YandexMobileAds (~> 7.15.1)
+  - YandexMobileAds (~> 7.14.1)
 
 SPEC REPOS:
   https://github.com/appodeal/CocoaPods.git:
@@ -302,7 +303,7 @@ SPEC REPOS:
     - YandexMobileAds
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 351eb855ee50b7dfb15f7e2569c1bf31a5fa9fe7
+  AmazonPublisherServicesSDK: 6dbf6736815e2d70925a475bb1ed5a2c8b824599
   AppLovinSDK: 5075837afdee4fb429121799b8cbcc5918ef3a23
   AppMetricaAdSupport: 66c7a050698610774cc359f694ccb2f6a3bf83fb
   AppMetricaAnalytics: 945af25ba5098bfb2e411074c5eb03defa34e920
@@ -329,26 +330,26 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: ad7ff0d22aa36c7f8cc4f71a5424e19b89ccb8ae
   BidMachine: aae28c0331dbcec42d63a71b25b0470990b87fe7
   BigoADS: 42cdec736eb8084a6658f3efd34345cc3f753ab8
-  ChartboostSDK: 9298ec2ea9ae6c5881877f87ca6bc3f68449fe0f
-  DivKit: 3de9bd08e70918d93b4dbced626e5c1394540092
-  DivKit_LayoutKit: 0d9059ecc9f1c5233b05e71f805e80ab63d346df
-  DivKit_LayoutKitInterface: 1091bdefeea2cfc19824cdb78c169dc6d4b01ec7
-  DivKit_Serialization: 304fcd5a53b00b565dc5db966eb72ab1727661dc
-  DivKitBinaryCompatibilityFacade: 4318328a024c2e98c06640aa79395c07dbb8a027
+  ChartboostSDK: b145b4671df894755be0f7811b3e69a912cecbdc
+  DivKit: f0566bfbfd82e226c3236346d2deed8d8232d20d
+  DivKit_LayoutKit: 01b88abf719a1362cf8d6eb63f6fdf7a9a1be0f9
+  DivKit_LayoutKitInterface: 037936eea06d5c945a1d409b1ce5d7f6c718ab58
+  DivKit_Serialization: a6ca735ccec5f378b28a2d1285350568b58c5767
+  DivKitBinaryCompatibilityFacade: d89b02d3d3fb710461c30b09e292d3595472620e
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: 078ce5d06cee765bc822ace5c231af7a17e8dcd1
-  Google-Mobile-Ads-SDK: 36cce7d8dc1b615145d02491c8bf5640ef854e7c
+  Google-Mobile-Ads-SDK: 08194bf203dc13f4422de827a4b254f27cd4a3a5
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   InMobiSDK: a6e7bfbecb698c83183f42c5a3cfa1ac52f16bff
   IronSourceAdQualitySDK: 639d5a93e15e823538f87b75f3809c4905afc30b
   IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
   KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 054814f99bb7e967b8974fe635d9005b225cbe42
-  MobileFuseSDK: 62fce789df80d28d9bf90ebf72bb18f468dd60ca
+  MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
   MolocoSDKiOS: 0383b7b2f825c2244b9e7e14d5c0b63c30467b7f
   myTargetSDK: d5cc071911c6ce89331d0eb92ac973dcc4934d6b
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
@@ -356,15 +357,15 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
-  SwiftLint: 3d48e2fb2a3468fdaccf049e5e755df22fb40c2c
+  SwiftLint: bf6da11a31c6644a0bbb27f4fa15fd9636db00b3
   UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
   VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
   VGSLFundamentals: b754240ae1927d90aa2bceea9191b9ce330e9c94
   VGSLNetworking: 724adba87e38d351f81b7c4b67586512d9c8fa32
   VGSLUI: 7e7763e2ab91c13a49f954d62f1996db051ec0ce
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
-  YandexMobileAds: 8dcb47fcef796dc566cf550d0dd7098520044c5d
+  YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: e48db1575b638d642042138629d2b7879429a9dc
+PODFILE CHECKSUM: 6af80988e305789ebee289288371209b29d8ae30
 
 COCOAPODS: 1.16.2
