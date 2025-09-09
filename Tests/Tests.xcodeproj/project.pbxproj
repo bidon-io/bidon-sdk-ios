@@ -20,17 +20,8 @@
 		42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */; };
 		42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42540AC42A44926800C7F7B6 /* AdapterMock.swift */; };
 		4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425672292A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift */; };
-		42ABAF7C2A49D71F00B1DF65 /* BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF7B2A49D71F00B1DF65 /* BidonAdapterAppLovin.framework */; };
-		42ABAF7E2A49D71F00B1DF65 /* BidonAdapterBidMachine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF7D2A49D71F00B1DF65 /* BidonAdapterBidMachine.framework */; };
-		42ABAF802A49D71F00B1DF65 /* BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF7F2A49D71F00B1DF65 /* BidonAdapterDTExchange.framework */; };
-		42ABAF822A49D71F00B1DF65 /* BidonAdapterGoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF812A49D71F00B1DF65 /* BidonAdapterGoogleMobileAds.framework */; };
-		42ABAF842A49D71F00B1DF65 /* BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF832A49D71F00B1DF65 /* BidonAdapterUnityAds.framework */; };
 		42ABAF902A49D73400B1DF65 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42ABAF8F2A49D73400B1DF65 /* Bidon.framework */; };
 		42ABAF942A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42ABAF932A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift */; };
-		42BF0F9D2993EA3100088648 /* BDNSdkTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0F9C2993EA3100088648 /* BDNSdkTestCase.m */; };
-		42BF0F9F2993F4A400088648 /* BDNBannerTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */; };
-		42BF0FA12993F4CD00088648 /* BDNInterstitialTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */; };
-		42BF0FA32993FBAF00088648 /* BDNRewardedAdTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BF0FA22993FBAF00088648 /* BDNRewardedAdTestCase.m */; };
 		42D377372AF9347B003DCCA2 /* TestBiddingToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D377362AF9347B003DCCA2 /* TestBiddingToken.swift */; };
 		42D3773A2AF934A9003DCCA2 /* TestAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D377392AF934A9003DCCA2 /* TestAdUnitExtras.swift */; };
 		42D3773C2AF936F2003DCCA2 /* TestBiddingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D3773B2AF936F2003DCCA2 /* TestBiddingPayload.swift */; };
@@ -40,14 +31,12 @@
 		42F2651A2A52DEF70081EC55 /* BiddingDemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */; };
 		42F2651C2A531F290081EC55 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */; };
 		42F2651E2A5320110081EC55 /* NetworkManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */; };
-		45ED0C68C33A074815BB07ED /* Pods_Tests_ObjectiveC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */; };
 		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidRequest+Extensions.swift"; sourceTree = "<group>"; };
-		422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests-ObjectiveC.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+MixedDemand.swift"; sourceTree = "<group>"; };
 		4250FD602B21D03300654558 /* XCTest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+Extensions.swift"; sourceTree = "<group>"; };
 		4250FD622B21D2E600654558 /* ConcurrentAuctionControllerTestCase+CornerCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+CornerCases.swift"; sourceTree = "<group>"; };
@@ -73,10 +62,6 @@
 		42ABAF8D2A49D73400B1DF65 /* BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42ABAF8F2A49D73400B1DF65 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42ABAF932A49EE2900B1DF65 /* ConcurentAuctionControllerTestCase+DirectDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurentAuctionControllerTestCase+DirectDemand.swift"; sourceTree = "<group>"; };
-		42BF0F9C2993EA3100088648 /* BDNSdkTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNSdkTestCase.m; sourceTree = "<group>"; };
-		42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNBannerTestCase.m; sourceTree = "<group>"; };
-		42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNInterstitialTestCase.m; sourceTree = "<group>"; };
-		42BF0FA22993FBAF00088648 /* BDNRewardedAdTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNRewardedAdTestCase.m; sourceTree = "<group>"; };
 		42D377362AF9347B003DCCA2 /* TestBiddingToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBiddingToken.swift; sourceTree = "<group>"; };
 		42D377392AF934A9003DCCA2 /* TestAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAdUnitExtras.swift; sourceTree = "<group>"; };
 		42D3773B2AF936F2003DCCA2 /* TestBiddingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBiddingPayload.swift; sourceTree = "<group>"; };
@@ -97,19 +82,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		422101F1285A004C006596DA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42ABAF802A49D71F00B1DF65 /* BidonAdapterDTExchange.framework in Frameworks */,
-				42ABAF7C2A49D71F00B1DF65 /* BidonAdapterAppLovin.framework in Frameworks */,
-				42ABAF822A49D71F00B1DF65 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
-				45ED0C68C33A074815BB07ED /* Pods_Tests_ObjectiveC.framework in Frameworks */,
-				42ABAF842A49D71F00B1DF65 /* BidonAdapterUnityAds.framework in Frameworks */,
-				42ABAF7E2A49D71F00B1DF65 /* BidonAdapterBidMachine.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		425672242A444EB6007AEE23 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,7 +106,6 @@
 		422101E6285A0007006596DA = {
 			isa = PBXGroup;
 			children = (
-				422101F6285A004C006596DA /* Tests-ObjectiveC */,
 				425672282A444EB6007AEE23 /* Tests-Swift */,
 				422101F5285A004C006596DA /* Products */,
 				422101FC285A006C006596DA /* Frameworks */,
@@ -145,21 +116,9 @@
 		422101F5285A004C006596DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */,
 				425672272A444EB6007AEE23 /* Tests-Swift.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		422101F6285A004C006596DA /* Tests-ObjectiveC */ = {
-			isa = PBXGroup;
-			children = (
-				42BF0F9C2993EA3100088648 /* BDNSdkTestCase.m */,
-				42BF0FA02993F4CD00088648 /* BDNInterstitialTestCase.m */,
-				42BF0FA22993FBAF00088648 /* BDNRewardedAdTestCase.m */,
-				42BF0F9E2993F4A400088648 /* BDNBannerTestCase.m */,
-			);
-			path = "Tests-ObjectiveC";
 			sourceTree = "<group>";
 		};
 		422101FC285A006C006596DA /* Frameworks */ = {
@@ -269,26 +228,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		422101F3285A004C006596DA /* Tests-ObjectiveC */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 422101FB285A004C006596DA /* Build configuration list for PBXNativeTarget "Tests-ObjectiveC" */;
-			buildPhases = (
-				39B03AB21BD566DABF3E5440 /* [CP] Check Pods Manifest.lock */,
-				422101F0285A004C006596DA /* Sources */,
-				422101F1285A004C006596DA /* Frameworks */,
-				422101F2285A004C006596DA /* Resources */,
-				51492EFDEBA05C63BC6F0044 /* [CP] Embed Pods Frameworks */,
-				BCF33B6EAB0794A7D5207A26 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Tests-ObjectiveC";
-			productName = "Tests-ObjectiveC";
-			productReference = 422101F4285A004C006596DA /* Tests-ObjectiveC.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		425672262A444EB6007AEE23 /* Tests-Swift */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4256722D2A444EB6007AEE23 /* Build configuration list for PBXNativeTarget "Tests-Swift" */;
@@ -317,9 +256,6 @@
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
-					422101F3285A004C006596DA = {
-						CreatedOnToolsVersion = 13.3.1;
-					};
 					425672262A444EB6007AEE23 = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -338,20 +274,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				422101F3285A004C006596DA /* Tests-ObjectiveC */,
 				425672262A444EB6007AEE23 /* Tests-Swift */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		422101F2285A004C006596DA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		425672252A444EB6007AEE23 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,62 +290,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		39B03AB21BD566DABF3E5440 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-ObjectiveC-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		51492EFDEBA05C63BC6F0044 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BCF33B6EAB0794A7D5207A26 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CAC5059F0708489F601BBD7D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -443,17 +315,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		422101F0285A004C006596DA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42BF0F9F2993F4A400088648 /* BDNBannerTestCase.m in Sources */,
-				42BF0FA32993FBAF00088648 /* BDNRewardedAdTestCase.m in Sources */,
-				42BF0FA12993F4CD00088648 /* BDNInterstitialTestCase.m in Sources */,
-				42BF0F9D2993EA3100088648 /* BDNSdkTestCase.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		425672232A444EB6007AEE23 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -496,136 +357,6 @@
 		422101EC285A0007006596DA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-			};
-			name = Release;
-		};
-		422101F9285A004C006596DA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD68D69E88BAECD14AC5F688 /* Pods-Tests-ObjectiveC.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = WG4VFF78ZM;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.bidon.tests-objc";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		422101FA285A004C006596DA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WG4VFF78ZM;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.bidon.tests-objc";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -771,15 +502,6 @@
 			buildConfigurations = (
 				422101EB285A0007006596DA /* Debug */,
 				422101EC285A0007006596DA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		422101FB285A004C006596DA /* Build configuration list for PBXNativeTarget "Tests-ObjectiveC" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				422101F9285A004C006596DA /* Debug */,
-				422101FA285A004C006596DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

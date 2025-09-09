@@ -61,10 +61,6 @@ def vungle
   pod 'VungleAds', '7.5.1'
 end
 
-def ocmock
-  pod 'OCMock', '~> 3.9.4'
-end
-
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
 end
@@ -133,10 +129,6 @@ end
 
 def swiftlint
   pod 'SwiftLint'
-end
-
-def ocmock
-  pod 'OCMock', '~> 3.9.4'
 end
 
 
@@ -234,34 +226,15 @@ end
 
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'AppLovinSDK', '~> 13.1'
+  pod 'AppLovinSDK', '~> 13.3.1'
 end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.10'
+  pod 'IronSourceSDK', '~> 8.10.0'
 end
 
 # Tests
-
-target 'Tests-ObjectiveC' do
-  project 'Tests/Tests.xcodeproj'
-  ocmock
-  applovin
-  bidmachine
-  admob
-  applovin
-  dtexchange
-  unity_ads
-  mintegral
-  mobilefuse
-  moloco
-  vungle
-  bigo_ads
-  meta_ads
-  inmobi
-  amazon
-end
 
 target 'Tests-Swift' do
   project 'Tests/Tests.xcodeproj'
