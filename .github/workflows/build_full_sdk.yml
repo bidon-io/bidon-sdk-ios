@@ -7,10 +7,21 @@ on:
         description: 'SDK version (e.g. 1.1.0)'
         required: true
         type: string
-      adapters_version:
-        description: 'Adapters version (e.g. 1.1.0.0)'
-        required: true
+      pre:
+        description: 'Prerelease tag (e.g. alpha.1, ver.1)'
+        required: false
         type: string
+        default: ''
+      adapters_revision:
+        description: 'Adapters revision (number or mapping, e.g. 0 or BidonAdapterMoloco=2)'
+        required: false
+        type: string
+        default: '0'
+      use_network_versions:
+        description: 'Use network SDK versions for adapters'
+        required: false
+        type: boolean
+        default: true
       upload:
         description: 'Upload to AWS?'
         required: true
@@ -67,7 +78,9 @@ jobs:
         run: |
           bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
-            adapters_version:${{ inputs.adapters_version }} \
+            pre:"${{ inputs.pre }}" \
+            adapters_revision:"${{ inputs.adapters_revision }}" \
+            use_network_versions:${{ inputs.use_network_versions }} \
             upload:${{ inputs.upload }}
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
@@ -111,7 +124,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Adapters revision: `${{ inputs.adapters_revision }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -122,7 +135,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *[Bidon] SDK Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *[Bidon] SDK Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Adapters revision: `${{ inputs.adapters_revision }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
