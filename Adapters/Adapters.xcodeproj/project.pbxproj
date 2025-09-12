@@ -302,8 +302,6 @@
 		B9A14B382E70246600DFAF8D /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253FECF2ABC97A60013A675 /* BidonAdapterAmazon.framework */; };
 		B9A14B3F2E70249D00DFAF8D /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9A14B3E2E70249D00DFAF8D /* Bidon.framework */; };
 		B9A14B502E7027D000DFAF8D /* BidonAdapterAmazonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A14B4E2E7027D000DFAF8D /* BidonAdapterAmazonTests.swift */; };
-		B97EE6592E70473300531E92 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; };
-		B97EE65A2E70473300531E92 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B9B0B95F2E673DBD00286D44 /* InMobiBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */; };
 		B9B0B9612E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */; };
 		B9B0B9632E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */; };
@@ -512,13 +510,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B9A14B162E70215E00DFAF8D /* Bidon.framework in Embed Frameworks */,
-		B97EE65B2E70473300531E92 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				B97EE65A2E70473300531E92 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1010,7 +1001,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B97EE6592E70473300531E92 /* DTBiOSSDK.xcframework in Frameworks */,
+				B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -2733,7 +2724,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				B97EE65B2E70473300531E92 /* Embed Frameworks */,
+				B90A2D5F2E6AEF3A007D942B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3832,13 +3823,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBigoAds/Pods-BidonAdapterBigoAds-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4019,13 +4006,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMintegral/Pods-BidonAdapterMintegral-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4101,13 +4084,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterUnityAds/Pods-BidonAdapterUnityAds-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4212,13 +4191,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4233,13 +4208,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4359,13 +4330,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4380,13 +4347,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMetaAudienceNetwork/Pods-BidonAdapterMetaAudienceNetwork-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4552,13 +4515,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMoloco/Pods-BidonAdapterMoloco-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterMoloco/Pods-BidonAdapterMoloco-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4761,13 +4720,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterDTExchange/Pods-BidonAdapterDTExchange-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4904,13 +4859,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterBidMachine/Pods-BidonAdapterBidMachine-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4925,13 +4876,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterVungle/Pods-BidonAdapterVungle-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -173,7 +173,6 @@ PODS:
   - myTargetSDK (5.33.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
-  - OCMock (3.9.4)
   - OMSDK_Appodeal (1.5.2)
   - StackConsentManager (3.0.0):
     - GoogleUserMessagingPlatform (~> 2.1)
@@ -210,7 +209,6 @@ PODS:
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (~> 5.3.0)
-  - AppLovinSDK (~> 13.1)
   - AppLovinSDK (~> 13.3.1)
   - AppMetricaAnalytics (~> 5.11.2)
   - AppsFlyerFramework (~> 6.15.2)
@@ -223,13 +221,11 @@ DEPENDENCIES:
   - Fyber_Marketplace_SDK (~> 8.3.8)
   - Google-Mobile-Ads-SDK (~> 12.8)
   - InMobiSDK (~> 10.8.6)
-  - IronSourceSDK (~> 8.10)
   - IronSourceSDK (~> 8.10.0)
   - MintegralAdSDK (~> 7.7.9)
   - MobileFuseSDK (~> 1.9.2)
   - MolocoSDKiOS (~> 3.12.0)
   - myTargetSDK (~> 5.33.0)
-  - OCMock (~> 3.9.4)
   - StackConsentManager (~> 3.0.0)
   - SwiftLint
   - UnityAds (~> 4.16.0)
@@ -290,7 +286,6 @@ SPEC REPOS:
     - MolocoSDKiOS
     - myTargetSDK
     - myTrackerSDK
-    - OCMock
     - OMSDK_Appodeal
     - StackModules
     - SwiftLint
@@ -353,7 +348,6 @@ SPEC CHECKSUMS:
   MolocoSDKiOS: 0383b7b2f825c2244b9e7e14d5c0b63c30467b7f
   myTargetSDK: d5cc071911c6ce89331d0eb92ac973dcc4934d6b
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
-  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
@@ -366,6 +360,6 @@ SPEC CHECKSUMS:
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 6af80988e305789ebee289288371209b29d8ae30
+PODFILE CHECKSUM: ea28d108122e3fe2e35ccf27c05b4e2c52910eb9
 
 COCOAPODS: 1.16.2
