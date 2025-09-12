@@ -13,7 +13,7 @@ DirectAdViewDemandSourceAdapter
 
     public let demandId: String = YandexDemandSourceAdapter.identifier
     public let name: String = "Yandex"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = String(
         format: "%d.%d.%d",
         YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH
