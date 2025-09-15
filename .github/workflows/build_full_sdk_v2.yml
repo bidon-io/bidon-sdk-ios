@@ -1,4 +1,4 @@
-name: Build Bidon SDK
+name: Build Bidon SDK v2
 
 on:
   workflow_dispatch:

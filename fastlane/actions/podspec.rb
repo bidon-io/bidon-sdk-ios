@@ -25,6 +25,10 @@ module Fastlane
       def self.run(params)
         podfile = Pod::Podfile.from_file(params[:podfile])
 
+        # Read resolved versions from Podfile.lock to pin adapter SDK deps exactly
+        lock_path = params[:podfile].split('/')[0...-1].join('/') + "/Podfile.lock"
+        resolved_versions = self.read_lock_versions(lock_path)
+
         s3_region = params[:s3_region]
         s3_bucket = params[:s3_bucket]
 
@@ -37,9 +41,22 @@ module Fastlane
 
         # Remove Stack dependencies from adapters and BidMachine bidding adapters
         if params[:is_adapter]
+          # Pin non-Bidon dependencies to exact resolved versions
+          dependencies = dependencies.map do |d|
+            next d if d.name == "Bidon"
+            resolved = resolved_versions[d.name]
+            if resolved && !resolved.to_s.empty?
+              Dependency.new(name: d.name, version: "= #{resolved}")
+            else
+              d
+            end
+          end
+
+          sdk_ver = params[:sdk_version]
+          dep_version = sdk_ver.nil? || sdk_ver.empty? ? nil : ">= #{sdk_ver}"
           dependencies.append(Dependency.new(
             name: "Bidon",
-            version: params[:sdk_version]
+            version: dep_version
           ))
         end
 
@@ -235,6 +252,34 @@ module Fastlane
 
       def self.is_supported?(platform)
         platform == :ios
+      end
+
+      # Parse Podfile.lock and extract resolved versions from PODS section
+      def self.read_lock_versions(lock_path)
+        versions = {}
+        return versions unless File.exist?(lock_path)
+        in_pods = false
+        File.foreach(lock_path) do |line|
+          if line.start_with?("PODS:")
+            in_pods = true
+            next
+          end
+          if in_pods && line.match?(/^[A-Z][A-Z ]+:/)
+            in_pods = false
+          end
+          if in_pods && line.strip.start_with?("- ")
+            entry = line.strip.sub("- ", "")
+            name, ver = entry.split(" (", 2)
+            if name && ver
+              v = ver.to_s.delete(")").strip
+              # sanitize: drop common operators and any non [0-9A-Za-z.-]
+              v = v.sub(/^~>\s*/, "").sub(/^>=\s*/, "").sub(/^<=\s*/, "").sub(/^==\s*/, "").sub(/^=\s*/, "")
+              v = v.gsub(/[^0-9A-Za-z\.-]/, "")
+              versions[name] = v
+            end
+          end
+        end
+        versions
       end
     end
   end

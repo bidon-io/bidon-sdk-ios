@@ -36,6 +36,30 @@ $targets = [
   "BidonAdapterMoloco"
 ]
 
+# Primary pod per adapter (to derive adapter version from Podfile.lock)
+$adapter_primary_pod = {
+  "BidonAdapterMoloco" => "MolocoSDKiOS",
+  "BidonAdapterBidMachine" => "BidMachine",
+  "BidonAdapterAppLovin" => "AppLovinSDK",
+  "BidonAdapterGoogleMobileAds" => "Google-Mobile-Ads-SDK",
+  "BidonAdapterGoogleAdManager" => "Google-Mobile-Ads-SDK",
+  "BidonAdapterDTExchange" => "Fyber_Marketplace_SDK",
+  "BidonAdapterUnityAds" => "UnityAds",
+  "BidonAdapterMintegral" => "MintegralAdSDK",
+  "BidonAdapterBigoAds" => "BigoADS",
+  "BidonAdapterMetaAudienceNetwork" => "FBAudienceNetwork",
+  "BidonAdapterVungle" => "VungleAds",
+  "BidonAdapterInMobi" => "InMobiSDK",
+  "BidonAdapterAmazon" => "AmazonPublisherServicesSDK",
+  "BidonAdapterMyTarget" => "myTargetSDK",
+  "BidonAdapterChartboost" => "ChartboostSDK",
+  "BidonAdapterIronSource" => "IronSourceSDK",
+  "BidonAdapterMobileFuse" => "MobileFuseSDK",
+  "BidonAdapterYandex" => "YandexMobileAds",
+  "AppLovinMediationBidonAdapter" => "AppLovinSDK",
+  "ISBidonCustomAdapter" => "IronSourceSDK"
+}
+
 # ---------- Helpers ----------
 
 def build_universal(scheme)
@@ -245,6 +269,94 @@ def package_staticlib_xcframework(target, version)
   create_xcframework(libraries: [sim_a, device_a], output: "#{out_dir}/#{target}.xcframework")
 end
 
+# ---------- Versioning helpers ----------
+
+def read_lock_versions(lock_path)
+  versions = {}
+  return versions unless File.exist?(lock_path)
+  in_pods = false
+  sanitize = proc do |raw|
+    v = raw.to_s.strip
+    # drop common operators if somehow present
+    v = v.sub(/^~>\s*/, "").sub(/^>=\s*/, "").sub(/^<=\s*/, "").sub(/^==\s*/, "").sub(/^=\s*/, "")
+    # allow only digits, letters, dot and hyphen
+    v = v.gsub(/[^0-9A-Za-z\.-]/, "")
+    v
+  end
+  File.foreach(lock_path) do |line|
+    if line.start_with?("PODS:")
+      in_pods = true
+      next
+    end
+    # leave PODS section when next top-level section appears (e.g., DEPENDENCIES:, SPEC REPOS:)
+    if in_pods && line.match?(/^[A-Z][A-Z ]+:/)
+      in_pods = false
+    end
+    if in_pods
+      if line.strip.start_with?("- ")
+        entry = line.strip.sub("- ", "")
+        name, ver = entry.split(" (", 2)
+        if name && ver
+          v = ver.to_s.delete(")").strip
+          v = sanitize.call(v)
+          # ensure looks like a version (start with digit)
+          versions[name] = v if v.match(/^\d/)
+        end
+      end
+    end
+  end
+  versions
+end
+
+def parse_adapters_revision_option(opt)
+  return { default: nil, map: {} } if opt.nil?
+  s = opt.to_s
+  if s.match(/^\d+$/)
+    return { default: s.to_i, map: {} }
+  end
+  map = {}
+  s.split(',').each do |pair|
+    key, val = pair.split('=', 2)
+    next unless key && val
+    map[key.strip] = val.to_i
+  end
+  { default: nil, map: map }
+end
+
+def resolve_revision_for(target, rev_spec)
+  return rev_spec[:map][target] if rev_spec[:map].key?(target)
+  return rev_spec[:default] unless rev_spec[:default].nil?
+  # Fallback: read from adapter source (public let/var adapterVersion: String = "<n>")
+  read_adapter_revision_from_source(target)
+end
+
+def adapter_version_for(target, lock_versions, revision, prerelease)
+  primary = $adapter_primary_pod.fetch(target)
+  base = lock_versions.fetch(primary) do
+    UI.user_error!("Primary pod '#{primary}' for #{target} not found in Podfile.lock")
+  end
+  v = "#{base}.#{revision}"
+  prerelease.to_s.empty? ? v : "#{v}-#{prerelease}"
+end
+
+def core_version_with_pre(version, prerelease)
+  prerelease.to_s.empty? ? version : "#{version}-#{prerelease}"
+end
+
+def read_adapter_revision_from_source(target)
+  dir = File.join($root_dir, "Adapters", target)
+  candidates = Dir.glob(File.join(dir, "**", "*DemandSourceAdapter.swift"))
+  return 0 if candidates.empty?
+  begin
+    content = File.read(candidates.first)
+    m = content.match(/adapterVersion\s*:\s*String\s*=\s*"(\d+)"/)
+    return m[1].to_i if m
+  rescue => e
+    UI.message("Could not read adapterVersion from #{candidates.first}: #{e}")
+  end
+  0
+end
+
 # ---------- Lanes ----------
 
 platform :ios do
@@ -263,26 +375,29 @@ lane :sdkTest do |options|
   raise "No SDK version specified".red if options[:version].nil?
 
   upload = options[:upload] || false
-  version = options[:version]
-  adapters_version = options[:adapters_version] || "#{version}.1"
+  base_version = options[:version]
+  use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+  prerelease = options[:pre]
+  rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+  core_ver = core_version_with_pre(base_version, prerelease)
 
   cocoapods(use_bundle_exec: true)
   build_all_products_via_release!
-  package_framework_xcframework("Bidon", version)
+  package_framework_xcframework("Bidon", core_ver)
 
   # PrivacyInfo.xcprivacy в оба среза
   copy_resources(
-    "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework",
+    "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
     "PrivacyInfo.xcprivacy"
   )
   copy_resources(
-    "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+    "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
     "PrivacyInfo.xcprivacy"
   )
 
   zip(
-    path: "#{$build_dir}/Bidon/Bidon-#{version}",
-    output_path: "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"
+    path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
+    output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
   )
 
   if upload
@@ -292,23 +407,24 @@ lane :sdkTest do |options|
       bucket: ENV["S3_BUCKET"],
       region: ENV["S3_REGION"],
       acl: "bucket-owner-full-control",
-      path: "Bidon/#{version}",
-      files: ["#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"]
+      path: "Bidon/#{core_ver}",
+      files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
     )
   end
 
   podspec(
     name: "Bidon",
-    version: version,
-    sdk_version: version,
+    version: core_ver,
+    sdk_version: core_ver,
     podfile: $root_dir + "/Podfile",
     s3_region: ENV["S3_REGION"],
     s3_bucket: ENV["S3_BUCKET"],
     path: $podspecs_dir,
-    vendored_frameworks: "Bidon-#{version}/Bidon.xcframework",
+    vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
     is_adapter: false
   )
 
+  lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
   adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
 
   $targets.each do |target|
@@ -316,7 +432,11 @@ lane :sdkTest do |options|
     next if target == "BidonAdapterYandex"
 
     is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
-    ver = is_adapter ? adapters_version : version
+    ver = if is_adapter && use_network_versions
+      adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
+    else
+      (options[:adapters_version] || "#{base_version}.1")
+    end
 
     package_framework_xcframework(target, ver)
 
@@ -340,7 +460,7 @@ lane :sdkTest do |options|
     podspec(
       name: target,
       version: ver,
-      sdk_version: version,
+      sdk_version: core_ver,
       podfile: $root_dir + "/Podfile",
       s3_region: ENV["S3_REGION"],
       s3_bucket: ENV["S3_BUCKET"],
@@ -351,22 +471,27 @@ lane :sdkTest do |options|
   end
 
   build_yandex_only!
-  package_staticlib_xcframework("BidonAdapterYandex", adapters_version)
+  yandex_ver = if use_network_versions
+    adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+  else
+    (options[:adapters_version] || "#{base_version}.1")
+  end
+  package_staticlib_xcframework("BidonAdapterYandex", yandex_ver)
 
   zip(
-    path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}",
-    output_path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"
+    path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}",
+    output_path: "#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"
   )
 
   podspec(
     name: "BidonAdapterYandex",
-    version: adapters_version,
-    sdk_version: version,
+    version: yandex_ver,
+    sdk_version: core_ver,
     podfile: $root_dir + "/Podfile",
     s3_region: ENV["S3_REGION"],
     s3_bucket: ENV["S3_BUCKET"],
     path: $podspecs_dir,
-    vendored_frameworks: "BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.xcframework",
+    vendored_frameworks: "BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.xcframework",
     is_adapter: true
   )
 
@@ -377,8 +502,8 @@ lane :sdkTest do |options|
       bucket: ENV["S3_BUCKET"],
       region: ENV["S3_REGION"],
       acl: "bucket-owner-full-control",
-      path: "BidonAdapterYandex/#{adapters_version}",
-      files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{adapters_version}/BidonAdapterYandex.zip"]
+      path: "BidonAdapterYandex/#{yandex_ver}",
+      files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"]
     )
   end
 end
@@ -387,29 +512,32 @@ end
     raise "No SDK version specified".red if options[:version].nil?
 
     upload = options[:upload] || false
-    version = options[:version]
-    adapters_version = options[:adapters_version] || "#{version}.1"
+    base_version = options[:version]
+    use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+    prerelease = options[:pre]
+    rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+    core_ver = core_version_with_pre(base_version, prerelease)
 
     cocoapods(use_bundle_exec: true)
 
     # 1) Core Bidon
     build_universal("Bidon")
-    xcframework("Bidon", "Bidon", "Bidon", version)
+    xcframework("Bidon", "Bidon", "Bidon", core_ver)
 
     # Copy PrivacyInfo.xcprivacy into both slices of the produced XCFramework
     copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64/Bidon.framework",
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
       "PrivacyInfo.xcprivacy"
     )
     copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
       "PrivacyInfo.xcprivacy"
     )
 
     # Zip/upload core
     zip(
-      path: "#{$build_dir}/Bidon/Bidon-#{version}",
-      output_path: "#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"
+      path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
+      output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
     )
 
     aws_s3(
@@ -418,30 +546,35 @@ end
       bucket: ENV["S3_BUCKET"],
       region: ENV["S3_REGION"],
       acl: "bucket-owner-full-control",
-      path: "Bidon/#{version}",
-      files: ["#{$build_dir}/Bidon/Bidon-#{version}/Bidon.zip"]
+      path: "Bidon/#{core_ver}",
+      files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
     ) if upload
 
     podspec(
       name: "Bidon",
-      version: version,
-      sdk_version: version,
+      version: core_ver,
+      sdk_version: core_ver,
       podfile: $root_dir + "/Podfile",
       s3_region: ENV["S3_REGION"],
       s3_bucket: ENV["S3_BUCKET"],
       path: $podspecs_dir,
-      vendored_frameworks: "Bidon-#{version}/Bidon.xcframework",
+      vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
       is_adapter: false
     )
 
     # 2) Adapters
+    lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
     adapter_identifiers = ["BidonAdapter", "BidonCustomAdapter"]
 
     $targets.each do |target|
       next if target == "Bidon" || target == "BidonAdapterYandex" # core already built; Yandex builds via :adapter
 
       is_adapter = adapter_identifiers.any? { |id| target.include?(id) }
-      ver = is_adapter ? adapters_version : version
+      ver = if is_adapter && use_network_versions
+        adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
+      else
+        (options[:adapters_version] || "#{base_version}.1")
+      end
 
       build_universal(target)
       xcframework(target, target, target, ver)
@@ -464,7 +597,7 @@ end
       podspec(
         name: target,
         version: ver,
-        sdk_version: version,
+        sdk_version: core_ver,
         podfile: $root_dir + "/Podfile",
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
@@ -474,10 +607,15 @@ end
       )
     end
     # Build Yandex adapter via dedicated lane (pods, .a)
+    yandex_ver = if use_network_versions
+      adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+    else
+      (options[:adapters_version] || "#{base_version}.1")
+    end
     adapter(
       name: "BidonAdapterYandex",
-      version: adapters_version,
-      sdk_version: version,
+      version: yandex_ver,
+      sdk_version: core_ver,
       upload: upload,
       skip_build: false,
       pods: true
@@ -488,12 +626,22 @@ end
   desc "Build a specific Bidon adapter"
   lane :adapter do |options|
     raise "No adapter specified".red if options[:name].nil?
-    raise "No adapter version specified".red if options[:version].nil?
     raise "No SDK version specified".red if options[:sdk_version].nil?
 
     adapter_name = options[:name]
-    adapter_version = options[:version]
-    sdk_version = options[:sdk_version]
+    sdk_base_version = options[:sdk_version]
+    use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+    prerelease = options[:pre]
+    rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+    core_ver = core_version_with_pre(sdk_base_version, prerelease)
+    adapter_version = if options[:version]
+      options[:version]
+    elsif use_network_versions
+      lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
+      adapter_version_for(adapter_name, lock_versions, resolve_revision_for(adapter_name, rev_spec), prerelease)
+    else
+      UI.user_error!("No adapter version specified and use_network_versions is false")
+    end
     upload = options[:upload] || false
     skip_build = options[:skip_build].nil? ? false : options[:skip_build]
     should_install_pods = options[:pods].nil? ? false : options[:pods]
@@ -503,7 +651,7 @@ end
     unless skip_build
       UI.message("📦 Building Bidon SDK…")
       build_universal("Bidon")
-      xcframework("Bidon", "Bidon", "Bidon", sdk_version)
+      xcframework("Bidon", "Bidon", "Bidon", core_ver)
     end
 
     unless skip_build
@@ -524,7 +672,7 @@ end
     podspec(
       name: adapter_name,
       version: adapter_version,
-      sdk_version: sdk_version,
+      sdk_version: core_ver,
       podfile: $root_dir + "/Podfile",
       s3_region: ENV["S3_REGION"],
       s3_bucket: ENV["S3_BUCKET"],
@@ -549,12 +697,24 @@ end
 desc "CI-safe build for a single Bidon adapter (pods, scheme validation, packaging)"
 lane :adapter_ci do |options|
   UI.user_error!("No adapter specified")        if options[:name].to_s.empty?
-  UI.user_error!("No adapter version specified") if options[:version].to_s.empty?
   UI.user_error!("No SDK version specified")     if options[:sdk_version].to_s.empty?
 
   adapter_name    = options[:name]
-  adapter_version = options[:version]
-  sdk_version     = options[:sdk_version]
+  sdk_base_version     = options[:sdk_version]
+  use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+  prerelease = options[:pre]
+  rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+  core_ver = core_version_with_pre(sdk_base_version, prerelease)
+  adapter_version = if options[:version].to_s.empty?
+    if use_network_versions
+      lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
+      adapter_version_for(adapter_name, lock_versions, resolve_revision_for(adapter_name, rev_spec), prerelease)
+    else
+      UI.user_error!("No adapter version specified and use_network_versions is false")
+    end
+  else
+    options[:version]
+  end
   upload          = options[:upload] || false
   skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
 
@@ -590,21 +750,21 @@ lane :adapter_ci do |options|
   unless skip_build
     UI.message("📦 Building Bidon SDK…")
     build_universal("Bidon")
-    xcframework("Bidon", "Bidon", "Bidon", sdk_version)
+    xcframework("Bidon", "Bidon", "Bidon", core_ver)
 
     # Вкладываем PrivacyInfo.xcprivacy в оба среза core SDK
     copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.xcframework/ios-arm64/Bidon.framework",
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
       "PrivacyInfo.xcprivacy"
     )
     copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
       "PrivacyInfo.xcprivacy"
     )
 
     zip(
-      path: "#{$build_dir}/Bidon/Bidon-#{sdk_version}",
-      output_path: "#{$build_dir}/Bidon/Bidon-#{sdk_version}/Bidon.zip"
+      path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
+      output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
     )
   end
 
@@ -630,7 +790,7 @@ lane :adapter_ci do |options|
   podspec(
     name: adapter_name,
     version: adapter_version,
-    sdk_version: sdk_version,
+    sdk_version: core_ver,
     podfile: $root_dir + "/Podfile",
     s3_region: ENV["S3_REGION"],
     s3_bucket: ENV["S3_BUCKET"],
@@ -652,7 +812,7 @@ lane :adapter_ci do |options|
     )
   end
 
-  UI.success("✅ adapter_ci finished: #{adapter_name} #{adapter_version} (SDK #{sdk_version})")
+  UI.success("✅ adapter_ci finished: #{adapter_name} #{adapter_version} (SDK #{core_ver})")
 end
 
 
@@ -660,17 +820,25 @@ end
   lane :development_podspecs do |options|
     raise "No SDK version specified".red if options[:version].nil?
 
-    version = options[:version]
-    adapters_version = options[:adapters_version] || "#{version}.1"
+    base_version = options[:version]
+    use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+    prerelease = options[:pre]
+    rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+    core_ver = core_version_with_pre(base_version, prerelease)
+    lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = is_adapter ? adapters_version : version
+      ver = if is_adapter && use_network_versions
+        adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
+      else
+        (options[:adapters_version] || "#{base_version}.1")
+      end
 
       podspec(
         name: target,
         version: ver,
-        sdk_version: version,
+        sdk_version: core_ver,
         podfile: $root_dir + "/Podfile",
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
@@ -686,17 +854,25 @@ end
   lane :generate_specs do |options|
     raise "No SDK version specified".red if options[:version].nil?
 
-    version = options[:version]
-    adapters_version = options[:adapters_version] || "#{version}.1"
+    base_version = options[:version]
+    use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
+    prerelease = options[:pre]
+    rev_spec = parse_adapters_revision_option(options[:adapters_revision])
+    core_ver = core_version_with_pre(base_version, prerelease)
+    lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = is_adapter ? adapters_version : version
+      ver = if is_adapter && use_network_versions
+        adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
+      else
+        (options[:adapters_version] || "#{base_version}.1")
+      end
 
       podspec(
         name: target,
         version: ver,
-        sdk_version: version,
+        sdk_version: core_ver,
         podfile: $root_dir + "/Podfile",
         s3_region: ENV["S3_REGION"],
         s3_bucket: ENV["S3_BUCKET"],
@@ -719,5 +895,70 @@ end
     generate_sandbox_constants(
       path: $root_dir + "/Sandbox/Sandbox"
     )
+  end
+
+  desc "Build a specific adapter with temporary override of network SDK version(s) via Podfile/Podfile.lock"
+  lane :adapter_with_network_versions do |options|
+    UI.user_error!("No adapter specified")        if options[:name].to_s.empty?
+    UI.user_error!("No SDK version specified")     if options[:sdk_version].to_s.empty?
+    UI.user_error!("No network_sdk_versions mapping specified (e.g. 'MolocoSDKiOS=3.12.1')") if options[:network_sdk_versions].to_s.empty?
+
+    adapter_name = options[:name]
+    sdk_version  = options[:sdk_version]
+    prerelease   = options[:pre]
+    mapping_str  = options[:network_sdk_versions]
+    upload       = options[:upload] || false
+
+    # Parse mapping like "MolocoSDKiOS=3.12.1,Google-Mobile-Ads-SDK=12.9.0"
+    overrides = {}
+    mapping_str.split(',').each do |pair|
+      pod_name, pod_ver = pair.split('=', 2)
+      UI.user_error!("Invalid mapping entry: #{pair}") if pod_name.to_s.strip.empty? || pod_ver.to_s.strip.empty?
+      overrides[pod_name.strip] = pod_ver.strip
+    end
+
+    podfile_path = File.join($root_dir, "Podfile")
+    lock_path    = File.join($root_dir, "Podfile.lock")
+    original_podfile = File.exist?(podfile_path) ? File.read(podfile_path) : nil
+    original_lock    = File.exist?(lock_path)    ? File.read(lock_path)    : nil
+
+    begin
+      UI.message("🔧 Applying temporary network SDK overrides in Podfile…")
+      content = original_podfile.dup
+      overrides.each do |name, ver|
+        # 1) Replace lines with explicit version: pod 'Name', '...'
+        re_with_ver = /(pod\s+["']#{Regexp.escape(name)}["']\s*,\s*["'])([^"']+)(["'])/
+        content = content.gsub(re_with_ver) { "#{$1}#{ver}#{$3}" }
+        # 2) Ensure lines without version get one: pod 'Name'
+        re_no_ver = /(pod\s+["']#{Regexp.escape(name)}["'])(\s*\n|\s*#|\s*$)/
+        content = content.gsub(re_no_ver) { |m| "pod '#{name}', '#{ver}'#{$2}" }
+      end
+
+      File.open(podfile_path, 'w') { |f| f.write(content) }
+
+      UI.message("📦 Installing pods with overrides…")
+      cocoapods(use_bundle_exec: true)
+
+      # Build adapter using computed version from Podfile.lock
+      adapter(
+        name: adapter_name,
+        sdk_version: sdk_version,
+        pre: prerelease,
+        upload: upload,
+        skip_build: false,
+        pods: false, # already installed
+        use_network_versions: true
+      )
+    ensure
+      # Restore Podfile and Podfile.lock
+      if original_podfile
+        UI.message("🧹 Restoring original Podfile…")
+        File.open(podfile_path, 'w') { |f| f.write(original_podfile) }
+      end
+      if original_lock
+        UI.message("🧹 Restoring original Podfile.lock…")
+        File.open(lock_path, 'w') { |f| f.write(original_lock) }
+      end
+    end
   end
 end
