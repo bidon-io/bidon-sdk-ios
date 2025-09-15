@@ -61,10 +61,6 @@ def vungle
   pod 'VungleAds', '7.5.1'
 end
 
-def ocmock
-  pod 'OCMock', '~> 3.9.4'
-end
-
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
 end
@@ -134,10 +130,6 @@ end
 
 def swiftlint
   pod 'SwiftLint'
-end
-
-def ocmock
-  pod 'OCMock', '~> 3.9.4'
 end
 
 
@@ -235,37 +227,109 @@ end
 
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'AppLovinSDK', '~> 13.1'
+  pod 'AppLovinSDK', '~> 13.3.1'
 end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.10'
+  pod 'IronSourceSDK', '~> 8.10.0'
 end
 
 # Tests
 
-target 'Tests-ObjectiveC' do
-  project 'Tests/Tests.xcodeproj'
-  ocmock
-  applovin
-  bidmachine
-  admob
-  applovin
-  dtexchange
-  unity_ads
-  mintegral
-  mobilefuse
-  moloco
-  vungle
-  bigo_ads
-  meta_ads
-  inmobi
-  amazon
-end
-
 target 'Tests-Swift' do
   project 'Tests/Tests.xcodeproj'
+end
+
+target 'BidonAdapterMolocoTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  moloco
+end
+
+target 'BidonAdapterYandexTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  yandex
+end
+
+# Vungle adapter tests
+target 'BidonAdapterVungleTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  vungle
+end
+
+target 'BidonAdapterUnityAdsTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  unity_ads
+end
+
+target 'BidonAdapterMyTargetTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  my_target
+end
+
+target 'BidonAdapterMobileFuseTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  mobilefuse
+end
+
+target 'BidonAdapterMintegralTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  mintegral
+end
+
+target 'BidonAdapterMetaAudienceNetworkTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  meta_ads
+end
+
+target 'BidonAdapterIronSourceTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  ironsource
+end
+
+target 'BidonAdapterInMobiTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  inmobi
+end
+
+target 'BidonAdapterGoogleMobileAdsTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  admob
+end
+
+target 'BidonAdapterGoogleAdManagerTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  admob
+end
+
+target 'BidonAdapterDTExchangeTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  dtexchange
+end
+
+target 'BidonAdapterChartboostTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  chartboost
+end
+
+target 'BidonAdapterBigoAdsTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  bigo_ads
+end
+
+target 'BidonAdapterBidMachineTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  bidmachine
+end
+
+target 'BidonAdapterAppLovinTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  applovin
+end
+
+target 'BidonAdapterAmazonTests' do
+  project 'Adapters/Adapters.xcodeproj'
+  amazon
 end
 
 # Demo
