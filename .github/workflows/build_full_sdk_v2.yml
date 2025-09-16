@@ -27,6 +27,16 @@ on:
         required: true
         type: boolean
         default: false
+      check_deprecations:
+        description: 'Scan adapters for deprecated API usage'
+        required: false
+        type: boolean
+        default: true
+      deprecations_as_errors:
+        description: 'Fail adapter on deprecated API findings'
+        required: false
+        type: boolean
+        default: false
       push_specs:
         description: 'Push generated podspecs to repo?'
         required: true
@@ -114,7 +124,7 @@ jobs:
           ALL=( ${{ steps.adapters.outputs.names }} )
           for NAME in ${{ steps.adapters.outputs.names }}; do
             echo "===== Running adapter_ci for $NAME ====="
-            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:true pods:false; then
+            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:true pods:false skip_build:true check_deprecations:${{ inputs.check_deprecations }} deprecations_as_errors:${{ inputs.deprecations_as_errors }}; then
               echo "OK: $NAME"
             else
               echo "FAILED: $NAME"

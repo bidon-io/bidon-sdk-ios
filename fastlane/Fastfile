@@ -718,6 +718,8 @@ lane :adapter_ci do |options|
   upload          = options[:upload] || false
   skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
   sim_destination = options[:sim_destination]
+  check_deprecations    = options.key?(:check_deprecations) ? !!options[:check_deprecations] : false
+  deprecations_as_errors = options.key?(:deprecations_as_errors) ? !!options[:deprecations_as_errors] : false
   run_tests       = options.key?(:run_tests) ? !!options[:run_tests] : true
 
   # На CI по умолчанию ставим Pods (можно переопределить pods:true/false)
@@ -793,10 +795,15 @@ lane :adapter_ci do |options|
     UI.message("🧪 Running tests for #{adapter_name}…")
     test_bundle = "#{adapter_name}Tests"
     # Prefer dedicated test scheme if present, otherwise run tests via adapter scheme
-    test_scheme = schemes_json && schemes_json.include?("\"#{adapter_name}Tests\"") ? "#{adapter_name}Tests" : adapter_name
+    has_tests_scheme = schemes_json && schemes_json.include?("\"#{adapter_name}Tests\"")
+    test_scheme = has_tests_scheme ? "#{adapter_name}Tests" : adapter_name
+    unless has_tests_scheme
+      UI.message("No dedicated test scheme found for #{adapter_name}. Skipping tests.")
+      goto_after_tests = true
+    end
     # Detect a valid simulator destination if not provided
     destination_to_use = sim_destination
-    if destination_to_use.to_s.strip.empty?
+    if !defined?(goto_after_tests) && destination_to_use.to_s.strip.empty?
       begin
         show = sh("xcodebuild -showdestinations -workspace '#{$root_dir}/BidOn.xcworkspace' -scheme '#{test_scheme}' | cat")
         line = show.lines.map { |l| l.strip }.find { |l| l.include?("platform:iOS Simulator") && l.include?("id:") }
@@ -809,32 +816,94 @@ lane :adapter_ci do |options|
       end
       destination_to_use ||= "platform=iOS Simulator,OS=17.4,name=iPad (10th generation)"
     end
-    begin
-      if test_scheme == adapter_name
-        xcodebuild(
-          test: true,
-          destination: destination_to_use,
-          scheme: adapter_name,
-          workspace: "#{$root_dir}/BidOn.xcworkspace",
-          configuration: "Debug",
-          sdk: "iphonesimulator",
-          xcargs: "-only-testing:#{test_bundle}"
-        )
-      else
-        xcodebuild(
-          test: true,
-          destination: destination_to_use,
-          scheme: test_scheme,
-          workspace: "#{$root_dir}/BidOn.xcworkspace",
-          configuration: "Debug",
-          sdk: "iphonesimulator"
-        )
+    unless defined?(goto_after_tests)
+      begin
+        if test_scheme == adapter_name
+          xcodebuild(
+            test: true,
+            destination: destination_to_use,
+            scheme: adapter_name,
+            workspace: "#{$root_dir}/BidOn.xcworkspace",
+            configuration: "Debug",
+            sdk: "iphonesimulator",
+            xcargs: "-only-testing:#{test_bundle}"
+          )
+        else
+          xcodebuild(
+            test: true,
+            destination: destination_to_use,
+            scheme: test_scheme,
+            workspace: "#{$root_dir}/BidOn.xcworkspace",
+            configuration: "Debug",
+            sdk: "iphonesimulator"
+          )
+        end
+      rescue => e
+        UI.user_error!("Tests failed for #{adapter_name}: #{e}")
       end
-    rescue => e
-      UI.user_error!("Tests failed for #{adapter_name}: #{e}")
     end
   else
     UI.message("Skipping tests for #{adapter_name} (run_tests=false)")
+  end
+
+  # 2.6) Deprecation scan (optional)
+  if check_deprecations
+    UI.message("🔎 Scanning deprecated API usage in #{adapter_name}…")
+    # Detect a valid simulator destination if not provided
+    dep_destination = sim_destination
+    if dep_destination.to_s.strip.empty?
+      begin
+        show = sh("xcodebuild -showdestinations -workspace '#{$root_dir}/BidOn.xcworkspace' -scheme '#{adapter_name}' | cat")
+        line = show.lines.map { |l| l.strip }.find { |l| l.include?("platform:iOS Simulator") && l.include?("id:") }
+        if line
+          m = line.match(/id:\s*([A-F0-9\-]+)/)
+          dep_destination = "platform=iOS Simulator,id=#{m[1]}" if m
+        end
+      rescue => e
+        UI.message("Could not detect simulator destination for deprecations: #{e}")
+      end
+      dep_destination ||= "platform=iOS Simulator,OS=17.4,name=iPad (10th generation)"
+    end
+
+    # Build for simulator (Debug) and capture log
+    logs_dir = "#{$build_dir}/reports/deprecations"
+    FileUtils.mkdir_p(logs_dir)
+    log_file = File.join(logs_dir, "#{adapter_name}_build.log")
+    sh("set -o pipefail && xcodebuild build -destination '#{dep_destination}' -scheme '#{adapter_name}' -workspace '#{$root_dir}/BidOn.xcworkspace' -configuration Debug -sdk iphonesimulator | tee '#{log_file}' | xcpretty --color --simple | cat")
+
+    # Parse log for 'deprecated' within this adapter's sources only
+    raw = File.exist?(log_file) ? File.read(log_file) : ""
+    adapter_path_fragment = "/Adapters/#{adapter_name}/"
+    matches = raw.lines.select { |l| l.downcase.include?("deprecated") && l.include?(adapter_path_fragment) }.map(&:rstrip)
+
+    # Write reports
+    require 'json'
+    report_json = File.join(logs_dir, "#{adapter_name}_deprecations.json")
+    report_md   = File.join(logs_dir, "#{adapter_name}_deprecations.md")
+    File.write(report_json, { adapter: adapter_name, deprecated_count: matches.length, lines: matches }.to_json)
+    File.open(report_md, 'w') do |f|
+      f.puts "# #{adapter_name} Deprecations"
+      f.puts
+      f.puts "- Count: #{matches.length}"
+      f.puts
+      if matches.any?
+        f.puts "## Findings"
+        matches.each { |m| f.puts "- #{m}" }
+      else
+        f.puts "No deprecated API usage found in adapter sources."
+      end
+    end
+
+    if matches.any?
+      msg = "Found #{matches.length} deprecated warnings in #{adapter_name}. See #{report_md}"
+      if deprecations_as_errors
+        UI.user_error!(msg)
+      else
+        UI.important(msg)
+      end
+    else
+      UI.message("No deprecated API usage found in #{adapter_name}.")
+    end
   end
 
   # 3) Package & podspec
