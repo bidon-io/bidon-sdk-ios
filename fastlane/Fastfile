@@ -15,24 +15,24 @@ $configuration = "Release"
 $targets = [
   "Bidon",
   "BidonAdapterAmazon",
-  "BidonAdapterBidMachine",
-  "BidonAdapterGoogleAdManager",
-  "BidonAdapterGoogleMobileAds",
-  "BidonAdapterAppLovin",
-  "BidonAdapterDTExchange",
-  "BidonAdapterUnityAds",
-  "BidonAdapterMintegral",
-  "BidonAdapterBigoAds",
-  "BidonAdapterMetaAudienceNetwork",
-  "BidonAdapterVungle",
-  "BidonAdapterInMobi",
-  "BidonAdapterAmazon",
-  "BidonAdapterChartboost",
+  # "BidonAdapterBidMachine",
+  # "BidonAdapterGoogleAdManager",
+  # "BidonAdapterGoogleMobileAds",
+  # "BidonAdapterAppLovin",
+  # "BidonAdapterDTExchange",
+  # "BidonAdapterUnityAds",
+  # "BidonAdapterMintegral",
+  # "BidonAdapterBigoAds",
+  # "BidonAdapterMetaAudienceNetwork",
+  # "BidonAdapterVungle",
+  # "BidonAdapterInMobi",
+  # "BidonAdapterAmazon",
+  # "BidonAdapterChartboost",
   "BidonAdapterIronSource",
   "BidonAdapterMyTarget",
-  "BidonAdapterMobileFuse",
-  "AppLovinMediationBidonAdapter",
-  "ISBidonCustomAdapter",
+  # "BidonAdapterMobileFuse",
+  # "AppLovinMediationBidonAdapter",
+  # "ISBidonCustomAdapter",
   "BidonAdapterMoloco"
 ]
 
@@ -607,19 +607,20 @@ end
       )
     end
     # Build Yandex adapter via dedicated lane (pods, .a)
-    yandex_ver = if use_network_versions
-      adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
-    else
-      (options[:adapters_version] || "#{base_version}.1")
-    end
-    adapter(
-      name: "BidonAdapterYandex",
-      version: yandex_ver,
-      sdk_version: core_ver,
-      upload: upload,
-      skip_build: false,
-      pods: true
-    )
+    # Disabled temporarily per request
+    # yandex_ver = if use_network_versions
+    #   adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+    # else
+    #   (options[:adapters_version] || "#{base_version}.1")
+    # end
+    # adapter(
+    #   name: "BidonAdapterYandex",
+    #   version: yandex_ver,
+    #   sdk_version: core_ver,
+    #   upload: upload,
+    #   skip_build: false,
+    #   pods: true
+    # )
 
   end
 
