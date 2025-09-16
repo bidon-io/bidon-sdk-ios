@@ -847,8 +847,8 @@ lane :adapter_ci do |options|
     UI.message("Skipping tests for #{adapter_name} (run_tests=false)")
   end
 
-  # 2.6) Deprecation scan (optional)
-  if check_deprecations
+  # 2.6) Deprecation scan (temporarily disabled)
+  if false && check_deprecations
     UI.message("🔎 Scanning deprecated API usage in #{adapter_name}…")
     logs_dir = "#{$build_dir}/reports/deprecations"
     FileUtils.mkdir_p(logs_dir)

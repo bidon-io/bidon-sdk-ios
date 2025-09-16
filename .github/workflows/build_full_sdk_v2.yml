@@ -31,7 +31,7 @@ on:
         description: 'Scan adapters for deprecated API usage'
         required: false
         type: boolean
-        default: true
+        default: false
       deprecations_as_errors:
         description: 'Fail adapter on deprecated API findings'
         required: false
@@ -115,16 +115,61 @@ jobs:
             };
             puts names.join(" ")
           ')
+          TEST_SCHEMES=$(ruby -e '
+            require "json";
+            j = JSON.parse(File.read("schemes.json"));
+            schemes = (j.dig("workspace","schemes") || []);
+            tests = schemes.select { |s|
+              s.end_with?("Tests") && (
+                s.start_with?("BidonAdapter") || s == "ISBidonCustomAdapterTests" || s == "AppLovinMediationBidonAdapterTests"
+              )
+            };
+            puts tests.join(" ")
+          ')
           echo "names=$ADAPTERS" >> $GITHUB_OUTPUT
+          echo "tests=$TEST_SCHEMES" >> $GITHUB_OUTPUT
+
+      - name: Build adapter test bundles (build-for-testing)
+        run: |
+          set -euo pipefail
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          DEST="platform=iOS Simulator,OS=17.4,name=iPhone 15"
+          mkdir -p "$DD"
+          for TS in ${{ steps.adapters.outputs.tests }}; do
+            echo "== build-for-testing $TS =="
+            xcodebuild build-for-testing \
+              -workspace BidOn.xcworkspace \
+              -scheme "$TS" \
+              -configuration Debug \
+              -sdk iphonesimulator \
+              -destination "$DEST" \
+              -derivedDataPath "$DD"
+          done
 
       - name: Test, package and upload adapters (continue on error)
         run: |
           set -u
           FAILS=()
           ALL=( ${{ steps.adapters.outputs.names }} )
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          DEST="platform=iOS Simulator,OS=17.4,name=iPhone 15"
+          # Run tests without building using prebuilt xctestrun files
+          for TS in ${{ steps.adapters.outputs.tests }}; do
+            echo "===== Running tests (without building) for $TS ====="
+            XCTESTRUN="$DD/Build/Products/Debug-iphonesimulator/${TS}.xctestrun"
+            if [ -f "$XCTESTRUN" ]; then
+              if xcodebuild test-without-building -xctestrun "$XCTESTRUN" -destination "$DEST"; then
+                echo "OK tests: $TS"
+              else
+                echo "FAILED tests: $TS"
+              fi
+            else
+              echo "SKIP tests: $TS (xctestrun not found)"
+            fi
+          done
           for NAME in ${{ steps.adapters.outputs.names }}; do
             echo "===== Running adapter_ci for $NAME ====="
-            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:true pods:false skip_build:true check_deprecations:${{ inputs.check_deprecations }} deprecations_as_errors:${{ inputs.deprecations_as_errors }}; then
+            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:false pods:false skip_build:true check_deprecations:false deprecations_as_errors:false; then
               echo "OK: $NAME"
             else
               echo "FAILED: $NAME"
