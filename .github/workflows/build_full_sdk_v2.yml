@@ -94,7 +94,17 @@ jobs:
           set -e
           SCHEMES_JSON=$(xcodebuild -list -json -workspace BidOn.xcworkspace)
           echo "$SCHEMES_JSON" > schemes.json
-          ADAPTERS=$(ruby -e 'require "json"; j=JSON.parse(File.read("schemes.json")); puts j["workspace"]["schemes"].grep(/^BidonAdapter/).reject{|s| s=="BidonAdapterYandex"}.join(" ")')
+          ADAPTERS=$(ruby -e '
+            require "json";
+            j = JSON.parse(File.read("schemes.json"));
+            schemes = (j.dig("workspace","schemes") || []);
+            names = schemes.select { |s|
+              (s.start_with?("BidonAdapter") || s == "ISBidonCustomAdapter" || s == "AppLovinMediationBidonAdapter")
+            }.reject { |s|
+              s.end_with?("Tests") || s == "BidonAdapterYandex"
+            };
+            puts names.join(" ")
+          ')
           echo "names=$ADAPTERS" >> $GITHUB_OUTPUT
 
       - name: Test, package and upload adapters (continue on error)
