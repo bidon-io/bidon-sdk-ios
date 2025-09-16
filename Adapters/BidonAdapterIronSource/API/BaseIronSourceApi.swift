@@ -7,31 +7,36 @@
 
 import Foundation
 import IronSource
-
+import Bidon
 
 struct BaseIronSourceApi: IronSourceApi {
-    func initialiseIronSource(with appKey: String) {
-        let adUnits = [
-            IS_BANNER,
-            IS_INTERSTITIAL,
-            IS_REWARDED_VIDEO
-        ]
-
-        IronSource.initISDemandOnly(appKey, adUnits: adUnits)
+    func initialiseIronSource(with appKey: String, completion: @escaping ((SdkError?) -> Void)) {
+        let builder = ISAInitRequestBuilder(appKey: appKey)
+        let adFormats = [ISAAdFormatType.interstitial,
+                         ISAAdFormatType.rewarded,
+                         ISAAdFormatType.banner]
+            .map { ISAAdFormat(adFormatType: $0) }
+        
+        builder.withLegacyAdFormats(adFormats)
+        
+        IronSourceAds.initWith(builder.build()) { initialized, error in
+            if let error {
+                completion(.message(error.localizedDescription))
+                return
+            }
+            
+            completion(initialized ? nil : .message("Error while SDK initialization"))
+        }
     }
-
-    func addImpressionDataDelegate(_ delegate: ISImpressionDataDelegate) {
-        IronSource.add(delegate)
-    }
-
+    
     func setConsent(
         _ consent: Bool
     ) {
-        IronSource.setConsent(consent)
+        IronSourceAds.setConsent(consent)
     }
 
     func setChildDirected(_ isChildDirected: Bool) {
-        IronSource.setMetaDataWithKey(
+        IronSourceAds.setMetaDataWithKey(
             "is_child_directed",
             value: isChildDirected ? "YES" : "NO"
         )
@@ -40,11 +45,7 @@ struct BaseIronSourceApi: IronSourceApi {
     func setMediationType(_ mediator: String?) {
         mediator.map(IronSource.setMediationType)
     }
-
-    func setUserId(_ userId: String?) {
-        userId.map(IronSource.setUserId)
-    }
-
+    
     func hasInterstitial(with instance: String) -> Bool {
         return IronSource.hasISDemandOnlyInterstitial(instance)
     }
