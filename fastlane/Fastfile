@@ -14,7 +14,7 @@ $configuration = "Release"
 # Product schemes/targets
 $targets = [
   "Bidon",
-  "BidonAdapterAmazon",
+  # "BidonAdapterAmazon",
   # "BidonAdapterBidMachine",
   # "BidonAdapterGoogleAdManager",
   # "BidonAdapterGoogleMobileAds",
@@ -29,7 +29,7 @@ $targets = [
   # "BidonAdapterAmazon",
   # "BidonAdapterChartboost",
   "BidonAdapterIronSource",
-  "BidonAdapterMyTarget",
+  # "BidonAdapterMyTarget",
   # "BidonAdapterMobileFuse",
   # "AppLovinMediationBidonAdapter",
   # "ISBidonCustomAdapter",
@@ -850,30 +850,43 @@ lane :adapter_ci do |options|
   # 2.6) Deprecation scan (optional)
   if check_deprecations
     UI.message("🔎 Scanning deprecated API usage in #{adapter_name}…")
-    # Detect a valid simulator destination if not provided
-    dep_destination = sim_destination
-    if dep_destination.to_s.strip.empty?
-      begin
-        show = sh("xcodebuild -showdestinations -workspace '#{$root_dir}/BidOn.xcworkspace' -scheme '#{adapter_name}' | cat")
-        line = show.lines.map { |l| l.strip }.find { |l| l.include?("platform:iOS Simulator") && l.include?("id:") }
-        if line
-          m = line.match(/id:\s*([A-F0-9\-]+)/)
-          dep_destination = "platform=iOS Simulator,id=#{m[1]}" if m
-        end
-      rescue => e
-        UI.message("Could not detect simulator destination for deprecations: #{e}")
-      end
-      dep_destination ||= "platform=iOS Simulator,OS=17.4,name=iPad (10th generation)"
-    end
-
-    # Build for simulator (Debug) and capture log
     logs_dir = "#{$build_dir}/reports/deprecations"
     FileUtils.mkdir_p(logs_dir)
-    log_file = File.join(logs_dir, "#{adapter_name}_build.log")
-    sh("set -o pipefail && xcodebuild build -destination '#{dep_destination}' -scheme '#{adapter_name}' -workspace '#{$root_dir}/BidOn.xcworkspace' -configuration Debug -sdk iphonesimulator | tee '#{log_file}' | xcpretty --color --simple | cat")
+    log_file = nil
+
+    if skip_build
+      # Use latest existing xcodebuild log from earlier build step
+      begin
+        xc_logs = Dir.glob(File.expand_path("~/Library/Logs/fastlane/xcbuild/**/xcodebuild.log"))
+        xc_logs = xc_logs.sort_by { |p| File.mtime(p) }
+        log_file = xc_logs.last
+        UI.message("Using existing build log: #{log_file}") if log_file
+      rescue => e
+        UI.message("Could not locate previous xcodebuild.log: #{e}")
+      end
+    else
+      # Build for simulator (Debug) and capture log to generate warnings
+      dep_destination = sim_destination
+      if dep_destination.to_s.strip.empty?
+        begin
+          show = sh("xcodebuild -showdestinations -workspace '#{$root_dir}/BidOn.xcworkspace' -scheme '#{adapter_name}' | cat")
+          line = show.lines.map { |l| l.strip }.find { |l| l.include?("platform:iOS Simulator") && l.include?("id:") }
+          if line
+            m = line.match(/id:\s*([A-F0-9\-]+)/)
+            dep_destination = "platform=iOS Simulator,id=#{m[1]}" if m
+          end
+        rescue => e
+          UI.message("Could not detect simulator destination for deprecations: #{e}")
+        end
+        dep_destination ||= "platform=iOS Simulator,OS=17.4,name=iPad (10th generation)"
+      end
+
+      log_file = File.join(logs_dir, "#{adapter_name}_build.log")
+      sh("set -o pipefail && xcodebuild build -destination '#{dep_destination}' -scheme '#{adapter_name}' -workspace '#{$root_dir}/BidOn.xcworkspace' -configuration Debug -sdk iphonesimulator | tee '#{log_file}' | xcpretty --color --simple | cat")
+    end
 
     # Parse log for 'deprecated' within this adapter's sources only
-    raw = File.exist?(log_file) ? File.read(log_file) : ""
+    raw = (log_file && File.exist?(log_file)) ? File.read(log_file) : ""
     adapter_path_fragment = "/Adapters/#{adapter_name}/"
     matches = raw.lines.select { |l| l.downcase.include?("deprecated") && l.include?(adapter_path_fragment) }.map(&:rstrip)
 
