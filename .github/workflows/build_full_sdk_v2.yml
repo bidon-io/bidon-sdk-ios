@@ -81,12 +81,66 @@ jobs:
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
             use_network_versions:${{ inputs.use_network_versions }} \
-            upload:${{ inputs.upload }}
+            upload:false
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
+
+      - name: Discover adapter schemes
+        id: adapters
+        run: |
+          set -e
+          SCHEMES_JSON=$(xcodebuild -list -json -workspace BidOn.xcworkspace)
+          echo "$SCHEMES_JSON" > schemes.json
+          ADAPTERS=$(ruby -e 'require "json"; j=JSON.parse(File.read("schemes.json")); puts j["workspace"]["schemes"].grep(/^BidonAdapter/).reject{|s| s=="BidonAdapterYandex"}.join(" ")')
+          echo "names=$ADAPTERS" >> $GITHUB_OUTPUT
+
+      - name: Test, package and upload adapters (continue on error)
+        run: |
+          set -u
+          FAILS=()
+          ALL=( ${{ steps.adapters.outputs.names }} )
+          for NAME in ${{ steps.adapters.outputs.names }}; do
+            echo "===== Running adapter_ci for $NAME ====="
+            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:true pods:false; then
+              echo "OK: $NAME"
+            else
+              echo "FAILED: $NAME"
+              FAILS+=($NAME)
+            fi
+          done
+          echo "Failed adapters: ${FAILS[*]:-none}"
+          # Prepare JSON and Markdown reports
+          mkdir -p build/reports
+          PASSED_COUNT=$(( ${#ALL[@]} - ${#FAILS[@]} ))
+          jq -n --argjson total ${#ALL[@]} --argjson passed $PASSED_COUNT --arg failed "$(printf '%s\n' "${FAILS[@]}" | jq -R . | jq -s .)" '{total:$total, passed:$passed, failed:$failed}' > build/reports/adapters_test_report.json
+          {
+            echo "# Adapters Test Report";
+            echo "";
+            echo "- Total adapters: ${#ALL[@]}";
+            echo "- Passed: $PASSED_COUNT";
+            echo "- Failed: ${#FAILS[@]}";
+            echo "";
+            if [ ${#FAILS[@]} -gt 0 ]; then
+              echo "## Failed";
+              for f in "${FAILS[@]}"; do echo "- $f"; done;
+            else
+              echo "All adapters passed.";
+            fi;
+          } > build/reports/adapters_test_report.md
+          cat build/reports/adapters_test_report.md >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
+      - name: Upload adapters test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapters-test-report
+          path: |
+            build/reports/adapters_test_report.json
+            build/reports/adapters_test_report.md
 
       - name: Setup SSH for podspec repo
         if: ${{ inputs.push_specs }}

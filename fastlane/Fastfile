@@ -717,6 +717,7 @@ lane :adapter_ci do |options|
   end
   upload          = options[:upload] || false
   skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
+  run_tests       = options.key?(:run_tests) ? !!options[:run_tests] : true
 
   # На CI по умолчанию ставим Pods (можно переопределить pods:true/false)
   should_install_pods = if options.key?(:pods)
@@ -779,6 +780,27 @@ lane :adapter_ci do |options|
     else
       xcframework(adapter_name, adapter_name, adapter_name, adapter_version)
     end
+  end
+
+  # 2.5) Tests (before packaging/upload)
+  if run_tests
+    UI.message("🧪 Running tests for #{adapter_name}…")
+    test_bundle = "#{adapter_name}Tests"
+    begin
+      xcodebuild(
+        test: true,
+        destination: "platform=iOS Simulator,name=iPhone 15,OS=latest",
+        scheme: adapter_name,
+        workspace: "BidOn.xcworkspace",
+        configuration: "Debug",
+        sdk: "iphonesimulator",
+        xcargs: "-only-testing:#{test_bundle}"
+      )
+    rescue => e
+      UI.user_error!("Tests failed for #{adapter_name}: #{e}")
+    end
+  else
+    UI.message("Skipping tests for #{adapter_name} (run_tests=false)")
   end
 
   # 3) Package & podspec
