@@ -241,95 +241,25 @@ target 'Tests-Swift' do
   project 'Tests/Tests.xcodeproj'
 end
 
-target 'BidonAdapterMolocoTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  moloco
-end
-
-target 'BidonAdapterYandexTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  yandex
-end
-
-# Vungle adapter tests
-target 'BidonAdapterVungleTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  vungle
-end
-
-target 'BidonAdapterUnityAdsTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  unity_ads
-end
-
-target 'BidonAdapterMyTargetTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  my_target
-end
-
-target 'BidonAdapterMobileFuseTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  mobilefuse
-end
-
-target 'BidonAdapterMintegralTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  mintegral
-end
-
-target 'BidonAdapterMetaAudienceNetworkTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  meta_ads
-end
-
-target 'BidonAdapterIronSourceTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  ironsource
-end
-
-target 'BidonAdapterInMobiTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  inmobi
-end
-
-target 'BidonAdapterGoogleMobileAdsTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  admob
-end
-
-target 'BidonAdapterGoogleAdManagerTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  admob
-end
-
-target 'BidonAdapterDTExchangeTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  dtexchange
-end
-
-target 'BidonAdapterChartboostTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  chartboost
-end
-
-target 'BidonAdapterBigoAdsTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  bigo_ads
-end
-
-target 'BidonAdapterBidMachineTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  bidmachine
-end
-
-target 'BidonAdapterAppLovinTests' do
-  project 'Adapters/Adapters.xcodeproj'
-  applovin
-end
-
-target 'BidonAdapterAmazonTests' do
-  project 'Adapters/Adapters.xcodeproj'
+target 'AdaptersTests' do
+  project 'Tests/Tests.xcodeproj'
   amazon
+  applovin
+  bidmachine
+  admob
+  bigo_ads
+  dtexchange
+  meta_ads
+  unity_ads
+  mintegral
+  mobilefuse
+  moloco
+  vungle
+  inmobi
+  my_target
+  chartboost
+  ironsource
+  yandex
 end
 
 # Demo

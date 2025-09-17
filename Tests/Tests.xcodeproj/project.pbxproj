@@ -32,6 +32,44 @@
 		42F2651C2A531F290081EC55 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */; };
 		42F2651E2A5320110081EC55 /* NetworkManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */; };
 		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
+		B9009E0E2E7ABDAA005C6187 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E0D2E7ABDAA005C6187 /* Bidon.framework */; };
+		B9009E122E7ABE1D005C6187 /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E112E7ABE1D005C6187 /* BidonAdapterAmazon.framework */; };
+		B9009E162E7ABE40005C6187 /* BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E152E7ABE40005C6187 /* BidonAdapterAppLovin.framework */; };
+		B9009E1A2E7ABE4B005C6187 /* BidonAdapterBidMachine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E192E7ABE4B005C6187 /* BidonAdapterBidMachine.framework */; };
+		B9009E1D2E7ABE59005C6187 /* BidonAdapterBigoAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E1C2E7ABE59005C6187 /* BidonAdapterBigoAds.framework */; };
+		B9009E202E7ABE62005C6187 /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E1F2E7ABE61005C6187 /* BidonAdapterChartboost.framework */; };
+		B9009E232E7ABE69005C6187 /* BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E222E7ABE69005C6187 /* BidonAdapterDTExchange.framework */; };
+		B9009E262E7ABE75005C6187 /* BidonAdapterGoogleAdManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E252E7ABE75005C6187 /* BidonAdapterGoogleAdManager.framework */; };
+		B9009E292E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E282E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework */; };
+		B9009E2C2E7ABE96005C6187 /* BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E2B2E7ABE96005C6187 /* BidonAdapterInMobi.framework */; };
+		B9009E2F2E7ABEA6005C6187 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E2E2E7ABEA6005C6187 /* BidonAdapterIronSource.framework */; };
+		B9009E322E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E312E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework */; };
+		B9009E352E7ABFC8005C6187 /* BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E342E7ABFC8005C6187 /* BidonAdapterMintegral.framework */; };
+		B9009E382E7ABFD2005C6187 /* BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E372E7ABFD2005C6187 /* BidonAdapterMobileFuse.framework */; };
+		B9009E3B2E7ABFDA005C6187 /* BidonAdapterMoloco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E3A2E7ABFDA005C6187 /* BidonAdapterMoloco.framework */; };
+		B9009E3E2E7ABFE4005C6187 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E3D2E7ABFE4005C6187 /* BidonAdapterMyTarget.framework */; };
+		B9009E412E7ABFF0005C6187 /* BidonAdapterUnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E402E7ABFF0005C6187 /* BidonAdapterUnityAds.framework */; };
+		B9009E442E7ABFF9005C6187 /* BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E432E7ABFF9005C6187 /* BidonAdapterVungle.framework */; };
+		B9009E472E7AC005005C6187 /* libBidonAdapterYandex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E462E7AC005005C6187 /* libBidonAdapterYandex.a */; };
+		B9009E6C2E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E542E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift */; };
+		B9009E6D2E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E562E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift */; };
+		B9009E6E2E7AC04A005C6187 /* BidonAdapterMolocoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E622E7AC04A005C6187 /* BidonAdapterMolocoTests.swift */; };
+		B9009E6F2E7AC04A005C6187 /* BidonAdapterInMobiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E582E7AC04A005C6187 /* BidonAdapterInMobiTests.swift */; };
+		B9009E702E7AC04A005C6187 /* BidonAdapterAppLovinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4A2E7AC04A005C6187 /* BidonAdapterAppLovinTests.swift */; };
+		B9009E712E7AC04A005C6187 /* BidonAdapterVungleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E682E7AC04A005C6187 /* BidonAdapterVungleTests.swift */; };
+		B9009E722E7AC04A005C6187 /* BidonAdapterMintegralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E5E2E7AC04A005C6187 /* BidonAdapterMintegralTests.swift */; };
+		B9009E732E7AC04A005C6187 /* BidonAdapterYandexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */; };
+		B9009E742E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E662E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift */; };
+		B9009E752E7AC04A005C6187 /* BidonAdapterAmazonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E482E7AC04A005C6187 /* BidonAdapterAmazonTests.swift */; };
+		B9009E762E7AC04A005C6187 /* BidonAdapterMobileFuseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E602E7AC04A005C6187 /* BidonAdapterMobileFuseTests.swift */; };
+		B9009E772E7AC04A005C6187 /* BidonAdapterMyTargetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E642E7AC04A005C6187 /* BidonAdapterMyTargetTests.swift */; };
+		B9009E782E7AC04A005C6187 /* BidonAdapterIronSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E5A2E7AC04A005C6187 /* BidonAdapterIronSourceTests.swift */; };
+		B9009E792E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E5C2E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests.swift */; };
+		B9009E7A2E7AC04A005C6187 /* BidonAdapterDTExchangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E522E7AC04A005C6187 /* BidonAdapterDTExchangeTests.swift */; };
+		B9009E7B2E7AC04A005C6187 /* BidonAdapterChartboostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */; };
+		B9009E7C2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */; };
+		B9009E7D2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */; };
+		C3E14CDD0E14A3D59EC3EB8E /* Pods_AdaptersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,8 +113,49 @@
 		42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRequestBuilderMock.swift; sourceTree = "<group>"; };
 		42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerMock.swift; sourceTree = "<group>"; };
 		55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.debug.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.debug.xcconfig"; sourceTree = "<group>"; };
+		5A002D3DE9E6A4EFCBE03201 /* Pods-AdaptersTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptersTests.debug.xcconfig"; path = "Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests.debug.xcconfig"; sourceTree = "<group>"; };
+		926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptersTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.release.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.release.xcconfig"; sourceTree = "<group>"; };
 		AD68D69E88BAECD14AC5F688 /* Pods-Tests-ObjectiveC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.debug.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.debug.xcconfig"; sourceTree = "<group>"; };
+		B8264E5BF116F268A834F0F9 /* Pods-AdaptersTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptersTests.release.xcconfig"; path = "Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests.release.xcconfig"; sourceTree = "<group>"; };
+		B9009E032E7ABD31005C6187 /* AdaptersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdaptersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E0D2E7ABDAA005C6187 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E112E7ABE1D005C6187 /* BidonAdapterAmazon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterAmazon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E152E7ABE40005C6187 /* BidonAdapterAppLovin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterAppLovin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E192E7ABE4B005C6187 /* BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E1C2E7ABE59005C6187 /* BidonAdapterBigoAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterBigoAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E1F2E7ABE61005C6187 /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E222E7ABE69005C6187 /* BidonAdapterDTExchange.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterDTExchange.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E252E7ABE75005C6187 /* BidonAdapterGoogleAdManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterGoogleAdManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E282E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterGoogleMobileAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E2B2E7ABE96005C6187 /* BidonAdapterInMobi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterInMobi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E2E2E7ABEA6005C6187 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E312E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E342E7ABFC8005C6187 /* BidonAdapterMintegral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMintegral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E372E7ABFD2005C6187 /* BidonAdapterMobileFuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMobileFuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E3A2E7ABFDA005C6187 /* BidonAdapterMoloco.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMoloco.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E3D2E7ABFE4005C6187 /* BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E402E7ABFF0005C6187 /* BidonAdapterUnityAds.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterUnityAds.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E432E7ABFF9005C6187 /* BidonAdapterVungle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterVungle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E462E7AC005005C6187 /* libBidonAdapterYandex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBidonAdapterYandex.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9009E482E7AC04A005C6187 /* BidonAdapterAmazonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterAmazonTests.swift; sourceTree = "<group>"; };
+		B9009E4A2E7AC04A005C6187 /* BidonAdapterAppLovinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterAppLovinTests.swift; sourceTree = "<group>"; };
+		B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterBidMachineTests.swift; sourceTree = "<group>"; };
+		B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterBigoAdsTests.swift; sourceTree = "<group>"; };
+		B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterChartboostTests.swift; sourceTree = "<group>"; };
+		B9009E522E7AC04A005C6187 /* BidonAdapterDTExchangeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterDTExchangeTests.swift; sourceTree = "<group>"; };
+		B9009E542E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterGoogleAdManagerTests.swift; sourceTree = "<group>"; };
+		B9009E562E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterGoogleMobileAdsTests.swift; sourceTree = "<group>"; };
+		B9009E582E7AC04A005C6187 /* BidonAdapterInMobiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterInMobiTests.swift; sourceTree = "<group>"; };
+		B9009E5A2E7AC04A005C6187 /* BidonAdapterIronSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterIronSourceTests.swift; sourceTree = "<group>"; };
+		B9009E5C2E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterMetaAudienceNetworkTests.swift; sourceTree = "<group>"; };
+		B9009E5E2E7AC04A005C6187 /* BidonAdapterMintegralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterMintegralTests.swift; sourceTree = "<group>"; };
+		B9009E602E7AC04A005C6187 /* BidonAdapterMobileFuseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterMobileFuseTests.swift; sourceTree = "<group>"; };
+		B9009E622E7AC04A005C6187 /* BidonAdapterMolocoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterMolocoTests.swift; sourceTree = "<group>"; };
+		B9009E642E7AC04A005C6187 /* BidonAdapterMyTargetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterMyTargetTests.swift; sourceTree = "<group>"; };
+		B9009E662E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterUnityAdsTests.swift; sourceTree = "<group>"; };
+		B9009E682E7AC04A005C6187 /* BidonAdapterVungleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterVungleTests.swift; sourceTree = "<group>"; };
+		B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterYandexTests.swift; sourceTree = "<group>"; };
 		E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_ObjectiveC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.release.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +167,33 @@
 			files = (
 				ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */,
 				42ABAF902A49D73400B1DF65 /* Bidon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9009E002E7ABD31005C6187 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9009E0E2E7ABDAA005C6187 /* Bidon.framework in Frameworks */,
+				B9009E232E7ABE69005C6187 /* BidonAdapterDTExchange.framework in Frameworks */,
+				B9009E122E7ABE1D005C6187 /* BidonAdapterAmazon.framework in Frameworks */,
+				B9009E2C2E7ABE96005C6187 /* BidonAdapterInMobi.framework in Frameworks */,
+				B9009E3E2E7ABFE4005C6187 /* BidonAdapterMyTarget.framework in Frameworks */,
+				B9009E262E7ABE75005C6187 /* BidonAdapterGoogleAdManager.framework in Frameworks */,
+				B9009E202E7ABE62005C6187 /* BidonAdapterChartboost.framework in Frameworks */,
+				B9009E1D2E7ABE59005C6187 /* BidonAdapterBigoAds.framework in Frameworks */,
+				B9009E442E7ABFF9005C6187 /* BidonAdapterVungle.framework in Frameworks */,
+				B9009E1A2E7ABE4B005C6187 /* BidonAdapterBidMachine.framework in Frameworks */,
+				B9009E382E7ABFD2005C6187 /* BidonAdapterMobileFuse.framework in Frameworks */,
+				B9009E412E7ABFF0005C6187 /* BidonAdapterUnityAds.framework in Frameworks */,
+				B9009E162E7ABE40005C6187 /* BidonAdapterAppLovin.framework in Frameworks */,
+				B9009E322E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
+				B9009E2F2E7ABEA6005C6187 /* BidonAdapterIronSource.framework in Frameworks */,
+				B9009E292E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
+				B9009E3B2E7ABFDA005C6187 /* BidonAdapterMoloco.framework in Frameworks */,
+				B9009E352E7ABFC8005C6187 /* BidonAdapterMintegral.framework in Frameworks */,
+				B9009E472E7AC005005C6187 /* libBidonAdapterYandex.a in Frameworks */,
+				C3E14CDD0E14A3D59EC3EB8E /* Pods_AdaptersTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +212,7 @@
 		422101E6285A0007006596DA = {
 			isa = PBXGroup;
 			children = (
+				B9009E0B2E7ABD44005C6187 /* AdaptersTests */,
 				425672282A444EB6007AEE23 /* Tests-Swift */,
 				422101F5285A004C006596DA /* Products */,
 				422101FC285A006C006596DA /* Frameworks */,
@@ -117,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				425672272A444EB6007AEE23 /* Tests-Swift.xctest */,
+				B9009E032E7ABD31005C6187 /* AdaptersTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,6 +232,25 @@
 		422101FC285A006C006596DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B9009E462E7AC005005C6187 /* libBidonAdapterYandex.a */,
+				B9009E432E7ABFF9005C6187 /* BidonAdapterVungle.framework */,
+				B9009E402E7ABFF0005C6187 /* BidonAdapterUnityAds.framework */,
+				B9009E3D2E7ABFE4005C6187 /* BidonAdapterMyTarget.framework */,
+				B9009E3A2E7ABFDA005C6187 /* BidonAdapterMoloco.framework */,
+				B9009E372E7ABFD2005C6187 /* BidonAdapterMobileFuse.framework */,
+				B9009E342E7ABFC8005C6187 /* BidonAdapterMintegral.framework */,
+				B9009E312E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework */,
+				B9009E2E2E7ABEA6005C6187 /* BidonAdapterIronSource.framework */,
+				B9009E2B2E7ABE96005C6187 /* BidonAdapterInMobi.framework */,
+				B9009E282E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework */,
+				B9009E252E7ABE75005C6187 /* BidonAdapterGoogleAdManager.framework */,
+				B9009E222E7ABE69005C6187 /* BidonAdapterDTExchange.framework */,
+				B9009E1F2E7ABE61005C6187 /* BidonAdapterChartboost.framework */,
+				B9009E1C2E7ABE59005C6187 /* BidonAdapterBigoAds.framework */,
+				B9009E192E7ABE4B005C6187 /* BidonAdapterBidMachine.framework */,
+				B9009E152E7ABE40005C6187 /* BidonAdapterAppLovin.framework */,
+				B9009E112E7ABE1D005C6187 /* BidonAdapterAmazon.framework */,
+				B9009E0D2E7ABDAA005C6187 /* Bidon.framework */,
 				42ABAF852A49D73300B1DF65 /* BidonAdapterAppLovin.framework */,
 				42ABAF872A49D73300B1DF65 /* BidonAdapterBidMachine.framework */,
 				42ABAF892A49D73300B1DF65 /* BidonAdapterDTExchange.framework */,
@@ -140,6 +267,7 @@
 				42EC989228914469003BE6CF /* BidOn.framework */,
 				E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */,
 				1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */,
+				926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -220,9 +348,180 @@
 				F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */,
 				55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */,
 				A26103BDBAF480AA266E736B /* Pods-Tests-Swift.release.xcconfig */,
+				5A002D3DE9E6A4EFCBE03201 /* Pods-AdaptersTests.debug.xcconfig */,
+				B8264E5BF116F268A834F0F9 /* Pods-AdaptersTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
+			sourceTree = "<group>";
+		};
+		B9009E0B2E7ABD44005C6187 /* AdaptersTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E492E7AC04A005C6187 /* BidonAdapterAmazonTests */,
+				B9009E4B2E7AC04A005C6187 /* BidonAdapterAppLovinTests */,
+				B9009E4D2E7AC04A005C6187 /* BidonAdapterBidMachineTests */,
+				B9009E4F2E7AC04A005C6187 /* BidonAdapterBigoAdsTests */,
+				B9009E512E7AC04A005C6187 /* BidonAdapterChartboostTests */,
+				B9009E532E7AC04A005C6187 /* BidonAdapterDTExchangeTests */,
+				B9009E552E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests */,
+				B9009E572E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests */,
+				B9009E592E7AC04A005C6187 /* BidonAdapterInMobiTests */,
+				B9009E5B2E7AC04A005C6187 /* BidonAdapterIronSourceTests */,
+				B9009E5D2E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests */,
+				B9009E5F2E7AC04A005C6187 /* BidonAdapterMintegralTests */,
+				B9009E612E7AC04A005C6187 /* BidonAdapterMobileFuseTests */,
+				B9009E632E7AC04A005C6187 /* BidonAdapterMolocoTests */,
+				B9009E652E7AC04A005C6187 /* BidonAdapterMyTargetTests */,
+				B9009E672E7AC04A005C6187 /* BidonAdapterUnityAdsTests */,
+				B9009E692E7AC04A005C6187 /* BidonAdapterVungleTests */,
+				B9009E6B2E7AC04A005C6187 /* BidonAdapterYandexTests */,
+			);
+			path = AdaptersTests;
+			sourceTree = "<group>";
+		};
+		B9009E492E7AC04A005C6187 /* BidonAdapterAmazonTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E482E7AC04A005C6187 /* BidonAdapterAmazonTests.swift */,
+			);
+			path = BidonAdapterAmazonTests;
+			sourceTree = "<group>";
+		};
+		B9009E4B2E7AC04A005C6187 /* BidonAdapterAppLovinTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E4A2E7AC04A005C6187 /* BidonAdapterAppLovinTests.swift */,
+			);
+			path = BidonAdapterAppLovinTests;
+			sourceTree = "<group>";
+		};
+		B9009E4D2E7AC04A005C6187 /* BidonAdapterBidMachineTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */,
+			);
+			path = BidonAdapterBidMachineTests;
+			sourceTree = "<group>";
+		};
+		B9009E4F2E7AC04A005C6187 /* BidonAdapterBigoAdsTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */,
+			);
+			path = BidonAdapterBigoAdsTests;
+			sourceTree = "<group>";
+		};
+		B9009E512E7AC04A005C6187 /* BidonAdapterChartboostTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */,
+			);
+			path = BidonAdapterChartboostTests;
+			sourceTree = "<group>";
+		};
+		B9009E532E7AC04A005C6187 /* BidonAdapterDTExchangeTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E522E7AC04A005C6187 /* BidonAdapterDTExchangeTests.swift */,
+			);
+			path = BidonAdapterDTExchangeTests;
+			sourceTree = "<group>";
+		};
+		B9009E552E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E542E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift */,
+			);
+			path = BidonAdapterGoogleAdManagerTests;
+			sourceTree = "<group>";
+		};
+		B9009E572E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E562E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift */,
+			);
+			path = BidonAdapterGoogleMobileAdsTests;
+			sourceTree = "<group>";
+		};
+		B9009E592E7AC04A005C6187 /* BidonAdapterInMobiTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E582E7AC04A005C6187 /* BidonAdapterInMobiTests.swift */,
+			);
+			path = BidonAdapterInMobiTests;
+			sourceTree = "<group>";
+		};
+		B9009E5B2E7AC04A005C6187 /* BidonAdapterIronSourceTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E5A2E7AC04A005C6187 /* BidonAdapterIronSourceTests.swift */,
+			);
+			path = BidonAdapterIronSourceTests;
+			sourceTree = "<group>";
+		};
+		B9009E5D2E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E5C2E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests.swift */,
+			);
+			path = BidonAdapterMetaAudienceNetworkTests;
+			sourceTree = "<group>";
+		};
+		B9009E5F2E7AC04A005C6187 /* BidonAdapterMintegralTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E5E2E7AC04A005C6187 /* BidonAdapterMintegralTests.swift */,
+			);
+			path = BidonAdapterMintegralTests;
+			sourceTree = "<group>";
+		};
+		B9009E612E7AC04A005C6187 /* BidonAdapterMobileFuseTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E602E7AC04A005C6187 /* BidonAdapterMobileFuseTests.swift */,
+			);
+			path = BidonAdapterMobileFuseTests;
+			sourceTree = "<group>";
+		};
+		B9009E632E7AC04A005C6187 /* BidonAdapterMolocoTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E622E7AC04A005C6187 /* BidonAdapterMolocoTests.swift */,
+			);
+			path = BidonAdapterMolocoTests;
+			sourceTree = "<group>";
+		};
+		B9009E652E7AC04A005C6187 /* BidonAdapterMyTargetTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E642E7AC04A005C6187 /* BidonAdapterMyTargetTests.swift */,
+			);
+			path = BidonAdapterMyTargetTests;
+			sourceTree = "<group>";
+		};
+		B9009E672E7AC04A005C6187 /* BidonAdapterUnityAdsTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E662E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift */,
+			);
+			path = BidonAdapterUnityAdsTests;
+			sourceTree = "<group>";
+		};
+		B9009E692E7AC04A005C6187 /* BidonAdapterVungleTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E682E7AC04A005C6187 /* BidonAdapterVungleTests.swift */,
+			);
+			path = BidonAdapterVungleTests;
+			sourceTree = "<group>";
+		};
+		B9009E6B2E7AC04A005C6187 /* BidonAdapterYandexTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */,
+			);
+			path = BidonAdapterYandexTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +545,26 @@
 			productReference = 425672272A444EB6007AEE23 /* Tests-Swift.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		B9009E022E7ABD31005C6187 /* AdaptersTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9009E092E7ABD32005C6187 /* Build configuration list for PBXNativeTarget "AdaptersTests" */;
+			buildPhases = (
+				95EAB0D60B106B4C423CEAC2 /* [CP] Check Pods Manifest.lock */,
+				B9009DFF2E7ABD31005C6187 /* Sources */,
+				B9009E002E7ABD31005C6187 /* Frameworks */,
+				B9009E012E7ABD31005C6187 /* Resources */,
+				88E7907D62B424E3E548042A /* [CP] Embed Pods Frameworks */,
+				C501A323314425C980FE3919 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AdaptersTests;
+			productName = AdaptersTests;
+			productReference = B9009E032E7ABD31005C6187 /* AdaptersTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -253,11 +572,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					425672262A444EB6007AEE23 = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					B9009E022E7ABD31005C6187 = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
@@ -275,6 +597,7 @@
 			projectRoot = "";
 			targets = (
 				425672262A444EB6007AEE23 /* Tests-Swift */,
+				B9009E022E7ABD31005C6187 /* AdaptersTests */,
 			);
 		};
 /* End PBXProject section */
@@ -287,9 +610,80 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B9009E012E7ABD31005C6187 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		88E7907D62B424E3E548042A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95EAB0D60B106B4C423CEAC2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AdaptersTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C501A323314425C980FE3919 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		CAC5059F0708489F601BBD7D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -342,6 +736,31 @@
 				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
 				42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */,
 				42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9009DFF2E7ABD31005C6187 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9009E6C2E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift in Sources */,
+				B9009E6D2E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift in Sources */,
+				B9009E6E2E7AC04A005C6187 /* BidonAdapterMolocoTests.swift in Sources */,
+				B9009E6F2E7AC04A005C6187 /* BidonAdapterInMobiTests.swift in Sources */,
+				B9009E702E7AC04A005C6187 /* BidonAdapterAppLovinTests.swift in Sources */,
+				B9009E712E7AC04A005C6187 /* BidonAdapterVungleTests.swift in Sources */,
+				B9009E722E7AC04A005C6187 /* BidonAdapterMintegralTests.swift in Sources */,
+				B9009E732E7AC04A005C6187 /* BidonAdapterYandexTests.swift in Sources */,
+				B9009E742E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift in Sources */,
+				B9009E752E7AC04A005C6187 /* BidonAdapterAmazonTests.swift in Sources */,
+				B9009E762E7AC04A005C6187 /* BidonAdapterMobileFuseTests.swift in Sources */,
+				B9009E772E7AC04A005C6187 /* BidonAdapterMyTargetTests.swift in Sources */,
+				B9009E782E7AC04A005C6187 /* BidonAdapterIronSourceTests.swift in Sources */,
+				B9009E792E7AC04A005C6187 /* BidonAdapterMetaAudienceNetworkTests.swift in Sources */,
+				B9009E7A2E7AC04A005C6187 /* BidonAdapterDTExchangeTests.swift in Sources */,
+				B9009E7B2E7AC04A005C6187 /* BidonAdapterChartboostTests.swift in Sources */,
+				B9009E7C2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift in Sources */,
+				B9009E7D2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +841,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appodeal.com.Tests-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -485,9 +908,162 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appodeal.com.Tests-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B9009E072E7ABD32005C6187 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A002D3DE9E6A4EFCBE03201 /* Pods-AdaptersTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = appodeal.AdaptersTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B9009E082E7ABD32005C6187 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8264E5BF116F268A834F0F9 /* Pods-AdaptersTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WG4VFF78ZM;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = appodeal.AdaptersTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -511,6 +1087,15 @@
 			buildConfigurations = (
 				4256722B2A444EB6007AEE23 /* Debug */,
 				4256722C2A444EB6007AEE23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B9009E092E7ABD32005C6187 /* Build configuration list for PBXNativeTarget "AdaptersTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B9009E072E7ABD32005C6187 /* Debug */,
+				B9009E082E7ABD32005C6187 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
