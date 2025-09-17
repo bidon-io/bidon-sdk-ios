@@ -133,10 +133,13 @@ jobs:
         run: |
           set -euo pipefail
           DD="$GITHUB_WORKSPACE/DerivedData"
-          DEST="platform=iOS Simulator,OS=17.4,name=iPhone 15"
           mkdir -p "$DD"
           for TS in ${{ steps.adapters.outputs.tests }}; do
             echo "== build-for-testing $TS =="
+            DEST=$(xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme "$TS" \
+              | awk '/platform:iOS Simulator, id:/ {print; exit}' \
+              | sed -E 's/.*id: ([A-F0-9-]+).*/platform=iOS Simulator,id=\1/')
+            if [ -z "$DEST" ]; then echo "No iOS Simulator destination for $TS"; exit 1; fi
             xcodebuild build-for-testing \
               -workspace BidOn.xcworkspace \
               -scheme "$TS" \
@@ -152,12 +155,15 @@ jobs:
           FAILS=()
           ALL=( ${{ steps.adapters.outputs.names }} )
           DD="$GITHUB_WORKSPACE/DerivedData"
-          DEST="platform=iOS Simulator,OS=17.4,name=iPhone 15"
           # Run tests without building using prebuilt xctestrun files
           for TS in ${{ steps.adapters.outputs.tests }}; do
             echo "===== Running tests (without building) for $TS ====="
             XCTESTRUN="$DD/Build/Products/Debug-iphonesimulator/${TS}.xctestrun"
             if [ -f "$XCTESTRUN" ]; then
+              DEST=$(xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme "$TS" \
+                | awk '/platform:iOS Simulator, id:/ {print; exit}' \
+                | sed -E 's/.*id: ([A-F0-9-]+).*/platform=iOS Simulator,id=\1/')
+              if [ -z "$DEST" ]; then echo "No iOS Simulator destination for $TS"; continue; fi
               if xcodebuild test-without-building -xctestrun "$XCTESTRUN" -destination "$DEST"; then
                 echo "OK tests: $TS"
               else
