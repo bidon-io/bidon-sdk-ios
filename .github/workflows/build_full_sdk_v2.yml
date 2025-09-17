@@ -90,21 +90,19 @@ jobs:
       - name: Run adapter tests
         run: |
           set -euo pipefail
-          echo "Resolving simulator for AdaptersTests…"
-          RAW_JSON=$(xcodebuild -showdestinations -json -workspace BidOn.xcworkspace -scheme AdaptersTests 2>/dev/null | sed -n '/^{/,$p' || true)
-          DEST_ID=$(echo "$RAW_JSON" | jq -r '[..|objects|select(.platform?=="iOS Simulator" and .id?)|.id][0]' 2>/dev/null || true)
+          echo "Selecting available iOS Simulator via simctl…"
+          DEST_ID=$(xcrun simctl list devices available -j \
+            | jq -r '[.devices[] | .[] | select(.isAvailable==true and (.name|test("^iPhone|^iPad"))) | .udid][0]')
           if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-            echo "JSON parse failed, trying text fallback…"
-            DEST_ID=$(xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme AdaptersTests | awk '/platform:iOS Simulator, id:/{print; exit}' | sed -E 's/.*id: ([A-F0-9-]+).*/\1/' || true)
-          fi
-          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-            echo "No iOS Simulator destination for AdaptersTests"; exit 1;
+            echo "No available iOS Simulator device";
+            xcrun simctl list devices || true;
+            exit 1;
           fi
           xcodebuild test \
             -workspace BidOn.xcworkspace \
             -scheme AdaptersTests \
             -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,id=$DEST_ID" \
+            -destination "id=$DEST_ID" \
             | xcbeautify
 
       - name: Build SDK via Fastlane
