@@ -607,19 +607,19 @@ end
       )
     end
     # Build Yandex adapter via dedicated lane (pods, .a)
-    yandex_ver = if use_network_versions
-      adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
-    else
-      (options[:adapters_version] || "#{base_version}.1")
-    end
-    adapter(
-      name: "BidonAdapterYandex",
-      version: yandex_ver,
-      sdk_version: core_ver,
-      upload: upload,
-      skip_build: false,
-      pods: true
-    )
+    # yandex_ver = if use_network_versions
+    #   adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+    # else
+    #   (options[:adapters_version] || "#{base_version}.1")
+    # end
+    # adapter(
+    #   name: "BidonAdapterYandex",
+    #   version: yandex_ver,
+    #   sdk_version: core_ver,
+    #   upload: upload,
+    #   skip_build: false,
+    #   pods: true
+    # )
 
   end
 
@@ -895,6 +895,11 @@ end
     generate_sandbox_constants(
       path: $root_dir + "/Sandbox/Sandbox"
     )
+  end
+
+  desc "Install CocoaPods"
+  lane :pods_install do |_options|
+    cocoapods(use_bundle_exec: true)
   end
 
   desc "Build a specific adapter with temporary override of network SDK version(s) via Podfile/Podfile.lock"

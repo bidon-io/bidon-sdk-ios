@@ -84,6 +84,24 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
+      - name: Install CocoaPods (Fastlane)
+        run: bundle exec fastlane pods_install
+
+      - name: Run adapter tests
+        run: |
+          set -euo pipefail
+          echo "Resolving simulator for AdaptersTests…"
+          DEST_ID=$(xcodebuild -showdestinations -json -workspace BidOn.xcworkspace -scheme AdaptersTests | jq -r '[..|objects|select(.platform?=="iOS Simulator" and .id?)|.id][0]')
+          if [ -z "$DEST_ID" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No iOS Simulator destination for AdaptersTests"; exit 1;
+          fi
+          xcodebuild test \
+            -workspace BidOn.xcworkspace \
+            -scheme AdaptersTests \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,id=$DEST_ID" \
+            | xcbeautify
+
       - name: Build SDK via Fastlane
         run: |
           bundle exec fastlane sdk \
