@@ -48,10 +48,14 @@ jobs:
             git config --global user.name "bidon-runner"
             git config --global user.email "runner@bidon.org"
 
-      - name: Select Xcode 16.1
-        run: sudo xcode-select -s /Applications/Xcode_16.1.app
+      - name: Select Xcode 16.2
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
         
-      # Removed legacy simulator/platform preparation; not needed for build-only workflow
+      - name: Prepare Xcode (safe)
+        run: |
+          xcodebuild -runFirstLaunch || true
+          xcodebuild -license accept || true
+          rm -rf ~/Library/Developer/Xcode/DerivedData || true
 
       - name: Show SDKs & destinations (diagnostics)
         run: |
