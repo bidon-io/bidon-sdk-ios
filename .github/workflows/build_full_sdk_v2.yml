@@ -136,10 +136,10 @@ jobs:
           mkdir -p "$DD"
           for TS in ${{ steps.adapters.outputs.tests }}; do
             echo "== build-for-testing $TS =="
-            DEST=$(xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme "$TS" \
-              | awk '/platform:iOS Simulator, id:/ {print; exit}' \
-              | sed -E 's/.*id: ([A-F0-9-]+).*/platform=iOS Simulator,id=\1/')
-            if [ -z "$DEST" ]; then echo "No iOS Simulator destination for $TS"; exit 1; fi
+            DEST_ID=$(xcodebuild -showdestinations -json -workspace BidOn.xcworkspace -scheme "$TS" \
+              | jq -r '[.. | objects | select(.platform? == "iOS Simulator" and .id?) | .id][0]')
+            if [ -z "$DEST_ID" ] || [ "$DEST_ID" = "null" ]; then echo "No iOS Simulator destination for $TS"; exit 1; fi
+            DEST="platform=iOS Simulator,id=$DEST_ID"
             xcodebuild build-for-testing \
               -workspace BidOn.xcworkspace \
               -scheme "$TS" \
@@ -160,10 +160,10 @@ jobs:
             echo "===== Running tests (without building) for $TS ====="
             XCTESTRUN="$DD/Build/Products/Debug-iphonesimulator/${TS}.xctestrun"
             if [ -f "$XCTESTRUN" ]; then
-              DEST=$(xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme "$TS" \
-                | awk '/platform:iOS Simulator, id:/ {print; exit}' \
-                | sed -E 's/.*id: ([A-F0-9-]+).*/platform=iOS Simulator,id=\1/')
-              if [ -z "$DEST" ]; then echo "No iOS Simulator destination for $TS"; continue; fi
+              DEST_ID=$(xcodebuild -showdestinations -json -workspace BidOn.xcworkspace -scheme "$TS" \
+                | jq -r '[.. | objects | select(.platform? == "iOS Simulator" and .id?) | .id][0]')
+              if [ -z "$DEST_ID" ] || [ "$DEST_ID" = "null" ]; then echo "No iOS Simulator destination for $TS"; continue; fi
+              DEST="platform=iOS Simulator,id=$DEST_ID"
               if xcodebuild test-without-building -xctestrun "$XCTESTRUN" -destination "$DEST"; then
                 echo "OK tests: $TS"
               else
