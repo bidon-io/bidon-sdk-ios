@@ -61,10 +61,12 @@ jobs:
 
       - name: Ensure iOS device SDK is available
         run: |
-          if ! xcodebuild -showsdks | grep -q "iphoneos"; then
-            echo "iPhoneOS SDK not found, attempting to download platform..."
-            xcodebuild -downloadPlatform iOS || true
-          fi
+          echo "Before:"
+          xcodebuild -showsdks || true
+          echo "Downloading iOS platform (safe)…"
+          xcodebuild -downloadPlatform iOS || true
+          echo "After:"
+          xcodebuild -showsdks || true
 
       - name: Show SDKs & destinations (diagnostics)
         run: |
