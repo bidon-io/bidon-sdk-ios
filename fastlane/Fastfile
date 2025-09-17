@@ -604,7 +604,7 @@ end
         is_adapter: is_adapter
       )
     end
-    Build Yandex adapter via dedicated lane (pods, .a)
+    # Build Yandex adapter via dedicated lane (pods, .a)
     yandex_ver = if use_network_versions
       adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
     else
