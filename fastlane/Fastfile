@@ -518,8 +518,6 @@ end
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
     core_ver = core_version_with_pre(base_version, prerelease)
 
-    cocoapods(use_bundle_exec: true)
-
     # 1) Core Bidon
     build_universal("Bidon")
     xcframework("Bidon", "Bidon", "Bidon", core_ver)
@@ -606,20 +604,20 @@ end
         is_adapter: is_adapter
       )
     end
-    # Build Yandex adapter via dedicated lane (pods, .a)
-    # yandex_ver = if use_network_versions
-    #   adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
-    # else
-    #   (options[:adapters_version] || "#{base_version}.1")
-    # end
-    # adapter(
-    #   name: "BidonAdapterYandex",
-    #   version: yandex_ver,
-    #   sdk_version: core_ver,
-    #   upload: upload,
-    #   skip_build: false,
-    #   pods: true
-    # )
+    Build Yandex adapter via dedicated lane (pods, .a)
+    yandex_ver = if use_network_versions
+      adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+    else
+      (options[:adapters_version] || "#{base_version}.1")
+    end
+    adapter(
+      name: "BidonAdapterYandex",
+      version: yandex_ver,
+      sdk_version: core_ver,
+      upload: upload,
+      skip_build: false,
+      pods: true
+    )
 
   end
 
