@@ -90,11 +90,16 @@ jobs:
       - name: Run adapter tests
         run: |
           set -euo pipefail
-          echo "Selecting available iOS Simulator via simctl…"
+          echo "Selecting iOS Simulator that matches installed SDK…"
+          SDK_VER=$(xcodebuild -version -sdk iphonesimulator 2>/dev/null | awk '/ProductVersion:/ {print $2; exit}')
+          if [ -z "${SDK_VER:-}" ]; then
+            echo "Failed to detect iphonesimulator SDK version"; xcodebuild -showsdks || true; exit 1;
+          fi
+          SDK_VER_TAG="iOS-${SDK_VER//./-}"
           DEST_ID=$(xcrun simctl list devices available -j \
-            | jq -r '[.devices[] | .[] | select(.isAvailable==true and (.name|test("^iPhone|^iPad"))) | .udid][0]')
+            | jq -r --arg ver "$SDK_VER_TAG" '[.devices[] | .[] | select(.isAvailable==true and (.runtime|test($ver))) | .udid][0]')
           if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-            echo "No available iOS Simulator device";
+            echo "No available simulator matching runtime $SDK_VER_TAG";
             xcrun simctl list devices || true;
             exit 1;
           fi
