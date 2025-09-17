@@ -84,6 +84,19 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
+      - name: Configure GitHub token for CocoaPods (avoid rate limits)
+        run: |
+          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
+          chmod 600 ~/.netrc
+
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/DerivedData
+          key: dd-${{ runner.os }}-xcode-16.2-${{ hashFiles('Podfile.lock') }}-${{ inputs.sdk_version }}
+          restore-keys: |
+            dd-${{ runner.os }}-xcode-16.2-
+
       - name: Install CocoaPods (Fastlane)
         run: bundle exec fastlane pods_install
 
@@ -103,11 +116,15 @@ jobs:
             xcrun simctl list devices || true;
             exit 1;
           fi
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          mkdir -p "$DD" Result || true
           xcodebuild test \
             -workspace BidOn.xcworkspace \
             -scheme AdaptersTests \
             -sdk iphonesimulator \
             -destination "id=$DEST_ID" \
+            -derivedDataPath "$DD" \
+            -resultBundlePath Result/AdaptersTests.xcresult \
             | xcbeautify
 
       - name: Build SDK via Fastlane
