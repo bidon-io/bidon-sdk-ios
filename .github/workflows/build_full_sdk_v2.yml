@@ -51,12 +51,7 @@ jobs:
       - name: Select Xcode 16.1
         run: sudo xcode-select -s /Applications/Xcode_16.1.app
         
-      - name: Prepare Xcode iOS platform
-        run: |
-          sudo xcodebuild -runFirstLaunch || true
-          sudo xcodebuild -license accept || true
-          sudo xcodebuild -downloadPlatform iOS
-          rm -rf ~/Library/Developer/Xcode/DerivedData || true
+      # Removed legacy simulator/platform preparation; not needed for build-only workflow
 
       - name: Show SDKs & destinations (diagnostics)
         run: |
