@@ -103,16 +103,24 @@ jobs:
       - name: Run adapter tests
         run: |
           set -euo pipefail
-          echo "Selecting iOS Simulator that matches installed SDK…"
-          SDK_VER=$(xcodebuild -version -sdk iphonesimulator 2>/dev/null | awk '/ProductVersion:/ {print $2; exit}')
-          if [ -z "${SDK_VER:-}" ]; then
-            echo "Failed to detect iphonesimulator SDK version"; xcodebuild -showsdks || true; exit 1;
+          echo "Selecting iOS Simulator runtime via simctl…"
+          RUNTIME_ID=$(xcrun simctl list runtimes -j \
+            | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
+          if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
+            echo "No available iOS simulator runtime found";
+            xcrun simctl list runtimes || true;
+            exit 1;
           fi
-          SDK_VER_TAG="iOS-${SDK_VER//./-}"
-          DEST_ID=$(xcrun simctl list devices available -j \
-            | jq -r --arg ver "$SDK_VER_TAG" '[.devices[] | .[] | select(.isAvailable==true and (.runtime|test($ver))) | .udid][0]')
+          echo "Using runtime: $RUNTIME_ID"
+          DEST_ID=$(xcrun simctl list devices -j \
+            | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
           if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-            echo "No available simulator matching runtime $SDK_VER_TAG";
+            echo "No device under $RUNTIME_ID, falling back to any available device";
+            DEST_ID=$(xcrun simctl list devices -j \
+              | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
+          fi
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No available iOS Simulator device";
             xcrun simctl list devices || true;
             exit 1;
           fi
