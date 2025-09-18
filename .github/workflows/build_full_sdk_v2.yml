@@ -135,6 +135,47 @@ jobs:
             -resultBundlePath Result/AdaptersTests.xcresult \
             | xcbeautify
 
+      - name: Collect deprecated warnings (xcresult)
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/deprecations
+          # Dump xcresult to JSON
+          xcrun xcresulttool get --path Result/AdaptersTests.xcresult --format json > build/reports/deprecations/xcresult.json || true
+          # Extract deprecation warnings for adapter sources only
+          jq -r '
+            [
+              .. | objects
+              | select(.issueType? or .type? or .diagnosticType?)
+              | {text: (.message?.text? // .text? // ""), url: (.documentLocation?.url? // .location?.url? // "")}
+              | select(.text|test("deprecated"; "i"))
+              | select(.url|test("/Adapters/"))
+            ]
+          ' build/reports/deprecations/xcresult.json > build/reports/deprecations/deprecations.json || echo "[]" > build/reports/deprecations/deprecations.json
+          COUNT=$(jq 'length' build/reports/deprecations/deprecations.json 2>/dev/null || echo 0)
+          {
+            echo "# Adapters Deprecated API Report";
+            echo "";
+            echo "- Findings: ${COUNT}";
+            echo "";
+            if [ "$COUNT" -gt 0 ]; then
+              echo "## Items";
+              jq -r '.[] | "- " + (.url|sub("^file:///"; "")) + " — " + (.text|gsub("\n"; " "))' build/reports/deprecations/deprecations.json
+            else
+              echo "No deprecated API usage found in adapter sources.";
+            fi
+          } > build/reports/deprecations/deprecations.md
+          echo "\n" >> "$GITHUB_STEP_SUMMARY"
+          cat build/reports/deprecations/deprecations.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload deprecations report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapters-deprecations-report
+          path: |
+            build/reports/deprecations/deprecations.json
+            build/reports/deprecations/deprecations.md
+
       - name: Build SDK via Fastlane
         run: |
           bundle exec fastlane sdk \
