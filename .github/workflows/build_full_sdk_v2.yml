@@ -52,7 +52,6 @@ jobs:
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
-          xcrun simctl list devices | sed -n '1,40p' || true
 
       # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
       - name: CocoaPods install (self-hosted)
@@ -85,13 +84,8 @@ jobs:
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
           # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
           if ! command -v xcpretty >/dev/null 2>&1; then
-            echo "Installing xcpretty for Ruby 3.2..."
             /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
           fi
-          echo "Ruby in PATH: $(which ruby)"
-          ruby -v
-          echo "xcpretty: $(which xcpretty)" || true
-          xcpretty --version || true
 
       # - name: Run adapter tests
       #   run: |
