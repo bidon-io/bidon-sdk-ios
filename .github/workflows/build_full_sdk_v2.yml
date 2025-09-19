@@ -52,20 +52,23 @@ jobs:
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
+          xcrun simctl list devices | sed -n '1,40p' || true
 
       # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
       - name: CocoaPods install (self-hosted)
         run: |
+          set -o pipefail
           GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
           POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
           echo "Using POD_BIN=$POD_BIN"
           "$POD_BIN" --version || true
-          "$POD_BIN" install
+          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
       - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
+          set -o pipefail
           /opt/homebrew/opt/ruby@3.2/bin/bundle config set path vendor/bundle
-          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3
+          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
 
       # - name: Run adapter tests
       #   run: |
@@ -145,30 +148,43 @@ jobs:
 
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
+          set -o pipefail
+          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
             use_network_versions:${{ inputs.use_network_versions }} \
-            upload:${{ inputs.upload }}
+            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_sdk.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
-      - name: Dump xcodebuild log tail (on failure)
+      - name: Dump logs tail (on failure)
         if: failure()
         run: |
           set -e
+          echo "\nFastlane (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 300 "$RUNNER_TEMP/fastlane_sdk.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nCocoaPods (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/pod_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nBundle install (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/bundle_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
           LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
-          echo "xcodebuild.log = ${LOG:-not found}"
+          echo "\nxcodebuild.log path: ${LOG:-not found}" >> "$GITHUB_STEP_SUMMARY"
           if [ -f "$LOG" ]; then
+            echo "xcodebuild (tail)" >> "$GITHUB_STEP_SUMMARY"
             echo '```' >> "$GITHUB_STEP_SUMMARY"
-            tail -n 400 "$LOG" >> "$GITHUB_STEP_SUMMARY"
+            tail -n 300 "$LOG" >> "$GITHUB_STEP_SUMMARY"
             echo '```' >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "No xcodebuild.log found under ~/Library/Logs/fastlane/xcbuild" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Collect build logs (on failure)
@@ -184,6 +200,10 @@ jobs:
           if [ -f "$ACT" ]; then cp "$ACT" build/ci-logs/Build.xcactivitylog; fi
           # Any xcresult bundles if produced by steps
           if [ -d build/Logs ]; then cp -R build/Logs build/ci-logs/xcresult 2>/dev/null || true; fi
+          # Our tee'd logs
+          cp "$RUNNER_TEMP"/fastlane_sdk.log build/ci-logs/ 2>/dev/null || true
+          cp "$RUNNER_TEMP"/pod_install.log build/ci-logs/ 2>/dev/null || true
+          cp "$RUNNER_TEMP"/bundle_install.log build/ci-logs/ 2>/dev/null || true
 
       - name: Upload build logs (on failure)
         if: failure()
