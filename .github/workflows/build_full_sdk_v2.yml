@@ -148,14 +148,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/deprecations
-          : > build/reports/deprecations/deprecations.txt
-          mapfile -t LOGS < <(find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" 2>/dev/null || true)
-          if [ ${#LOGS[@]} -gt 0 ]; then
-            for ACT in "${LOGS[@]}"; do
-              (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings \
-                | grep -i 'deprecated' | grep '/Adapters/' >> build/reports/deprecations/deprecations.txt || true
-            done
-          fi
+          # Collect deprecations from all available xcactivitylogs (macOS bash 3.2 compatible)
+          find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null \
+            | while IFS= read -r -d '' ACT; do
+                (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings \
+                  | grep -i 'deprecated' | grep '/Adapters/' || true
+              done > build/reports/deprecations/deprecations.txt
           COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
           # extract adapter names by pattern /Adapters/<Name>
           if [ -s build/reports/deprecations/deprecations.txt ]; then
