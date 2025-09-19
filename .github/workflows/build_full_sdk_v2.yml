@@ -87,81 +87,81 @@ jobs:
             /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
           fi
 
-      # - name: Run adapter tests
-      #   run: |
-      #     set -euo pipefail
-      #     echo "Selecting iOS Simulator runtime via simctl…"
-      #     RUNTIME_ID=$(xcrun simctl list runtimes -j \
-      #       | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
-      #     if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
-      #       echo "No available iOS simulator runtime found";
-      #       xcrun simctl list runtimes || true;
-      #       exit 1;
-      #     fi
-      #     echo "Using runtime: $RUNTIME_ID"
-      #     DEST_ID=$(xcrun simctl list devices -j \
-      #       | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
-      #     if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-      #       echo "No device under $RUNTIME_ID, falling back to any available device";
-      #       DEST_ID=$(xcrun simctl list devices -j \
-      #         | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
-      #     fi
-      #     if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
-      #       echo "No available iOS Simulator device";
-      #       xcrun simctl list devices || true;
-      #       exit 1;
-      #     fi
-      #     DD="$GITHUB_WORKSPACE/DerivedData"
-      #     mkdir -p "$DD" Result || true
-      #     xcodebuild test \
-      #       -workspace BidOn.xcworkspace \
-      #       -scheme AdaptersTests \
-      #       -sdk iphonesimulator \
-      #       -destination "id=$DEST_ID" \
-      #       -derivedDataPath "$DD" \
-      #       -resultBundlePath Result/AdaptersTests.xcresult \
-      #       | xcbeautify
+      - name: Run adapter tests
+        run: |
+          set -euo pipefail
+          echo "Selecting iOS Simulator runtime via simctl…"
+          RUNTIME_ID=$(xcrun simctl list runtimes -j \
+            | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
+          if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
+            echo "No available iOS simulator runtime found";
+            xcrun simctl list runtimes || true;
+            exit 1;
+          fi
+          echo "Using runtime: $RUNTIME_ID"
+          DEST_ID=$(xcrun simctl list devices -j \
+            | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No device under $RUNTIME_ID, falling back to any available device";
+            DEST_ID=$(xcrun simctl list devices -j \
+              | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
+          fi
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No available iOS Simulator device";
+            xcrun simctl list devices || true;
+            exit 1;
+          fi
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          mkdir -p "$DD" Result || true
+          xcodebuild test \
+            -workspace BidOn.xcworkspace \
+            -scheme AdaptersTests \
+            -sdk iphonesimulator \
+            -destination "id=$DEST_ID" \
+            -derivedDataPath "$DD" \
+            -resultBundlePath Result/AdaptersTests.xcresult \
+            | xcbeautify
 
-      # - name: Collect deprecated warnings (xcresult)
-      #   run: |
-      #     set -euo pipefail
-      #     mkdir -p build/reports/deprecations
-      #     # Dump xcresult to JSON
-      #     xcrun xcresulttool get object --legacy --path Result/AdaptersTests.xcresult --format json > build/reports/deprecations/xcresult.json || echo '{}' > build/reports/deprecations/xcresult.json
-      #     # Extract deprecation warnings for adapter sources only
-      #     jq -r '
-      #       [
-      #         .. | objects
-      #         | select(.issueType? or .type? or .diagnosticType?)
-      #         | {text: (.message?.text? // .text? // ""), url: (.documentLocation?.url? // .location?.url? // "")}
-      #         | select(.text|test("deprecated"; "i"))
-      #         | select(.url|test("/Adapters/"))
-      #       ]
-      #     ' build/reports/deprecations/xcresult.json > build/reports/deprecations/deprecations.json || echo "[]" > build/reports/deprecations/deprecations.json
-      #     COUNT=$(jq -r 'try length catch 0' build/reports/deprecations/deprecations.json 2>/dev/null || echo 0)
-      #     {
-      #       echo "# Adapters Deprecated API Report";
-      #       echo "";
-      #       echo "- Findings: ${COUNT:-0}";
-      #       echo "";
-      #       if [ "${COUNT:-0}" -gt 0 ]; then
-      #         echo "## Items";
-      #         jq -r '.[] | "- " + (.url|sub("^file:///"; "")) + " — " + (.text|gsub("\n"; " "))' build/reports/deprecations/deprecations.json
-      #       else
-      #         echo "No deprecated API usage found in adapter sources.";
-      #       fi
-      #     } > build/reports/deprecations/deprecations.md
-      #     echo "\n" >> "$GITHUB_STEP_SUMMARY"
-      #     cat build/reports/deprecations/deprecations.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Collect deprecated warnings (xcresult)
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/deprecations
+          # Dump xcresult to JSON
+          xcrun xcresulttool get object --legacy --path Result/AdaptersTests.xcresult --format json > build/reports/deprecations/xcresult.json || echo '{}' > build/reports/deprecations/xcresult.json
+          # Extract deprecation warnings for adapter sources only
+          jq -r '
+            [
+              .. | objects
+              | select(.issueType? or .type? or .diagnosticType?)
+              | {text: (.message?.text? // .text? // ""), url: (.documentLocation?.url? // .location?.url? // "")}
+              | select(.text|test("deprecated"; "i"))
+              | select(.url|test("/Adapters/"))
+            ]
+          ' build/reports/deprecations/xcresult.json > build/reports/deprecations/deprecations.json || echo "[]" > build/reports/deprecations/deprecations.json
+          COUNT=$(jq -r 'try length catch 0' build/reports/deprecations/deprecations.json 2>/dev/null || echo 0)
+          {
+            echo "# Adapters Deprecated API Report";
+            echo "";
+            echo "- Findings: ${COUNT:-0}";
+            echo "";
+            if [ "${COUNT:-0}" -gt 0 ]; then
+              echo "## Items";
+              jq -r '.[] | "- " + (.url|sub("^file:///"; "")) + " — " + (.text|gsub("\n"; " "))' build/reports/deprecations/deprecations.json
+            else
+              echo "No deprecated API usage found in adapter sources.";
+            fi
+          } > build/reports/deprecations/deprecations.md
+          echo "\n" >> "$GITHUB_STEP_SUMMARY"
+          cat build/reports/deprecations/deprecations.md >> "$GITHUB_STEP_SUMMARY"
 
-      # - name: Upload deprecations report
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: adapters-deprecations-report
-      #     path: |
-      #       build/reports/deprecations/deprecations.json
-      #       build/reports/deprecations/deprecations.md
+      - name: Upload deprecations report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adapters-deprecations-report
+          path: |
+            build/reports/deprecations/deprecations.json
+            build/reports/deprecations/deprecations.md
 
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
