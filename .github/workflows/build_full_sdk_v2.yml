@@ -35,7 +35,7 @@ on:
 
 jobs:
   build-bidon-sdk:
-    runs-on: [self-hosted, macOS, ARM64, xcode-16]
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
 
 
     steps:
@@ -53,49 +53,14 @@ jobs:
         run: |
           xcodebuild -version
         
-      - name: Prepare Xcode (safe)
-        run: |
-          xcodebuild -runFirstLaunch || true
-          xcodebuild -license accept || true
-          rm -rf ~/Library/Developer/Xcode/DerivedData || true
+      # self-hosted: Xcode и SDK уже подготовлены на машине
 
-      - name: Ensure iOS device SDK is available
-        run: |
-          echo "Before:"
-          xcodebuild -showsdks || true
-          echo "Downloading iOS platform (safe)…"
-          xcodebuild -downloadPlatform iOS || true
-          echo "After:"
-          xcodebuild -showsdks || true
-
-      - name: Show SDKs & destinations (diagnostics)
-        run: |
-          xcodebuild -version
-          xcodebuild -showsdks
-          xcrun simctl list runtimes
-          xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme Bidon
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1.4'
-          bundler-cache: true
+      # Ruby/Bundler установлены на self-hosted машине (brew ruby 3.4.6)
 
       - name: Install dependencies
         run: bundle install
 
-      - name: Configure GitHub token for CocoaPods (avoid rate limits)
-        run: |
-          echo "machine github.com login ${{ secrets.GITHUB_TOKEN }}" > ~/.netrc
-          chmod 600 ~/.netrc
-
-      - name: Cache DerivedData
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/DerivedData
-          key: dd-${{ runner.os }}-xcode-16.4-${{ hashFiles('Podfile.lock') }}-${{ inputs.sdk_version }}
-          restore-keys: |
-            dd-${{ runner.os }}-xcode-16.4-
+      # Кэш и .netrc не используем на self-hosted (среда постоянная)
 
       - name: Install CocoaPods (Fastlane)
         run: bundle exec fastlane pods_install
