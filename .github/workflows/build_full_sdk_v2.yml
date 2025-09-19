@@ -64,11 +64,34 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
       - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
           set -o pipefail
-          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path vendor/bundle
-          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH and xcpretty
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
+          if ! command -v xcpretty >/dev/null 2>&1; then
+            echo "Installing xcpretty for Ruby 3.2..."
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
+          fi
+          echo "Ruby in PATH: $(which ruby)"
+          ruby -v
+          echo "xcpretty: $(which xcpretty)" || true
+          xcpretty --version || true
 
       # - name: Run adapter tests
       #   run: |
@@ -150,6 +173,10 @@ jobs:
         run: |
           set -o pipefail
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
+          # Force Ruby 3.2 and bundled gem binstubs first
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Avoid leaking system Ruby GEM_* into subprocesses
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
