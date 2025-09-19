@@ -52,6 +52,12 @@ jobs:
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
+
+      - name: Use Homebrew Ruby
+        run: |
+          /opt/homebrew/opt/ruby/bin/ruby -v
+          /opt/homebrew/opt/ruby/bin/gem env home
+          /opt/homebrew/opt/ruby/bin/bundler -v || /opt/homebrew/opt/ruby/bin/gem install bundler -N
         
       # self-hosted: Xcode и SDK уже подготовлены на машине
 
@@ -59,8 +65,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bundle config set path vendor/bundle
-          bundle install --jobs 4 --retry 3
+          /opt/homebrew/opt/ruby/bin/bundle config set path vendor/bundle
+          /opt/homebrew/opt/ruby/bin/bundle install --jobs 4 --retry 3
 
       # Кэш и .netrc не используем на self-hosted (среда постоянная)
 
