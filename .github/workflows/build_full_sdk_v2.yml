@@ -58,7 +58,9 @@ jobs:
       # Ruby/Bundler установлены на self-hosted машине (brew ruby 3.4.6)
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       # Кэш и .netrc не используем на self-hosted (среда постоянная)
 
