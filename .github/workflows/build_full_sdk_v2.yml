@@ -152,13 +152,18 @@ jobs:
           find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null \
             | while IFS= read -r -d '' ACT; do
                 (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings \
-                  | grep -i 'deprecated' | grep '/Adapters/' || true
+                  | grep -ai 'deprecated' | grep -ai 'Adapters/' || true
               done > build/reports/deprecations/deprecations.txt
+          # Also scan fastlane xcodebuild.log if present
+          LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
+          if [ -f "$LOG" ]; then
+            grep -ai 'deprecated' "$LOG" | grep -ai 'Adapters/' >> build/reports/deprecations/deprecations.txt || true
+          fi
           COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
           # extract adapter names by pattern /Adapters/<Name>
           if [ -s build/reports/deprecations/deprecations.txt ]; then
-            grep -aoE '/Adapters/[^/ ]+' build/reports/deprecations/deprecations.txt \
-              | sed -E 's#.*/Adapters/##' \
+            grep -aoE 'Adapters/[^/ ]+' build/reports/deprecations/deprecations.txt \
+              | sed -E 's#.*Adapters/##' \
               | sed -E 's#/.*##' \
               | sort -u > build/reports/deprecations/adapters.txt || true
           else
