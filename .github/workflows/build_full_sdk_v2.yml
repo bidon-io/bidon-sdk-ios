@@ -49,9 +49,8 @@ jobs:
             git config --global user.name "bidon-runner"
             git config --global user.email "runner@bidon.org"
 
-      - name: Select Xcode 16.4 (self-hosted)
+      - name: Verify Xcode (self-hosted)
         run: |
-          xcode-select -s /Applications/Xcode_16.4.app || true
           xcodebuild -version
         
       - name: Prepare Xcode (safe)
