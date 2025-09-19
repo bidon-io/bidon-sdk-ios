@@ -54,14 +54,13 @@ jobs:
           xcodebuild -version
 
       # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
-      - name: Install dependencies (Ruby 3.2)
-        run: |
-          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path vendor/bundle
-          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3
-
       - name: CocoaPods install (self-hosted)
         run: |
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane pods_install
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" install
 
       - name: Run adapter tests
         run: |
@@ -141,7 +140,8 @@ jobs:
 
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          FASTLANE_SKIP_BUNDLER_CHECK=1 FASTLANE_DISABLE_UPDATE_CHECK=1 "$GEM_HOME/bin/fastlane" sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
