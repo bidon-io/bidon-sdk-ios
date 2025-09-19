@@ -62,6 +62,11 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install
 
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
+        run: |
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path vendor/bundle
+          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3
+
       - name: Run adapter tests
         run: |
           set -euo pipefail
@@ -140,8 +145,7 @@ jobs:
 
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
-          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
-          FASTLANE_SKIP_BUNDLER_CHECK=1 FASTLANE_DISABLE_UPDATE_CHECK=1 "$GEM_HOME/bin/fastlane" sdk \
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
