@@ -148,39 +148,39 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/deprecations
-          ACT=$(find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 | xargs -0 ls -1t 2>/dev/null | head -n1 || true)
-          if [ -f "${ACT:-}" ]; then
-            (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings \
-              | grep -i 'deprecated' | grep '/Adapters/' > build/reports/deprecations/deprecations.txt || true
-            COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
-            # extract adapter names like Adapters/BidonAdapterIronSource/...
-            if [ -s build/reports/deprecations/deprecations.txt ]; then
-              awk '{print}' build/reports/deprecations/deprecations.txt \
-              | sed -E 's#.*?/Adapters/([^/]+)/.*#\1#' \
-              | sort -u > build/reports/deprecations/adapters.txt || true
-            else
-              : > build/reports/deprecations/adapters.txt
-            fi
-            ADAPTERS=$(tr '\n' ',' < build/reports/deprecations/adapters.txt | sed 's/,$//')
-            {
-              echo "# Adapters Deprecated API Report";
-              echo "";
-              echo "- Findings: ${COUNT:-0}";
-              echo "";
-              if [ "${COUNT:-0}" -gt 0 ]; then
-                echo "## Adapters";
-                sed 's/^/- /' build/reports/deprecations/adapters.txt
-              else
-                echo "No deprecated API usage found in adapter sources.";
-              fi
-            } > build/reports/deprecations/deprecations.md
-            echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
-            echo "adapters=${ADAPTERS:-}" >> "$GITHUB_OUTPUT"
-          else
-            printf '%s\n' '# Adapters Deprecated API Report' '' '- Findings: 0' '' 'No build log found.' > build/reports/deprecations/deprecations.md
-            echo "count=0" >> "$GITHUB_OUTPUT"
-            echo "adapters=" >> "$GITHUB_OUTPUT"
+          : > build/reports/deprecations/deprecations.txt
+          mapfile -t LOGS < <(find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" 2>/dev/null || true)
+          if [ ${#LOGS[@]} -gt 0 ]; then
+            for ACT in "${LOGS[@]}"; do
+              (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings \
+                | grep -i 'deprecated' | grep '/Adapters/' >> build/reports/deprecations/deprecations.txt || true
+            done
           fi
+          COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
+          # extract adapter names by pattern /Adapters/<Name>
+          if [ -s build/reports/deprecations/deprecations.txt ]; then
+            grep -aoE '/Adapters/[^/ ]+' build/reports/deprecations/deprecations.txt \
+              | sed -E 's#.*/Adapters/##' \
+              | sed -E 's#/.*##' \
+              | sort -u > build/reports/deprecations/adapters.txt || true
+          else
+            : > build/reports/deprecations/adapters.txt
+          fi
+          ADAPTERS=$(tr '\n' ',' < build/reports/deprecations/adapters.txt | sed 's/,$//')
+          {
+            echo "# Adapters Deprecated API Report";
+            echo "";
+            echo "- Findings: ${COUNT:-0}";
+            echo "";
+            if [ "${COUNT:-0}" -gt 0 ]; then
+              echo "## Adapters";
+              sed 's/^/- /' build/reports/deprecations/adapters.txt
+            else
+              echo "No deprecated API usage found in adapter sources.";
+            fi
+          } > build/reports/deprecations/deprecations.md
+          echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
+          echo "adapters=${ADAPTERS:-}" >> "$GITHUB_OUTPUT"
 
       - name: Upload deprecations report
         if: always()
@@ -193,7 +193,7 @@ jobs:
             build/reports/deprecations/adapters.txt
 
       - name: Notify Slack on deprecations
-        if: ${{ steps.collect_deprecations.outputs.count != '0' }}
+        if: ${{ steps.collect_deprecations.outputs.adapters != '' }}
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
