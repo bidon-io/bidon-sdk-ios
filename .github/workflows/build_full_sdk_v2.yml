@@ -35,7 +35,7 @@ on:
 
 jobs:
   build-bidon-sdk:
-    runs-on: [self-hosted, macos, ARM64, xcode-16, mac-ci-appodeal]
+    runs-on: [self-hosted, macOS, ARM64, xcode-16]
 
 
     steps:
