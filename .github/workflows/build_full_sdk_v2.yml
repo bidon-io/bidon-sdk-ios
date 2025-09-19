@@ -53,25 +53,9 @@ jobs:
         run: |
           xcodebuild -version
 
-      - name: Use Homebrew Ruby 3.2
-        run: |
-          /opt/homebrew/opt/ruby@3.2/bin/ruby -v
-          /opt/homebrew/opt/ruby@3.2/bin/gem env home
-          /opt/homebrew/opt/ruby@3.2/bin/bundler -v || /opt/homebrew/opt/ruby@3.2/bin/gem install bundler -N
-        
-      # self-hosted: Xcode и SDK уже подготовлены на машине
-
-      # Ruby/Bundler установлены на self-hosted машине (brew ruby 3.4.6)
-
-      - name: Install dependencies (Ruby 3.2)
-        run: |
-          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path vendor/bundle
-          /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3
-
-      # Кэш и .netrc не используем на self-hosted (среда постоянная)
-
-      - name: Install CocoaPods (Fastlane)
-        run: /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane pods_install
+      # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
+      - name: CocoaPods install (self-hosted)
+        run: /opt/homebrew/opt/ruby@3.2/bin/fastlane pods_install
 
       - name: Run adapter tests
         run: |
@@ -149,9 +133,9 @@ jobs:
             build/reports/deprecations/deprecations.json
             build/reports/deprecations/deprecations.md
 
-      - name: Build SDK via Fastlane (Ruby 3.2)
+      - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
+          /opt/homebrew/opt/ruby@3.2/bin/fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
