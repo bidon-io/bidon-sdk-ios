@@ -897,7 +897,8 @@ end
 
   desc "Install CocoaPods"
   lane :pods_install do |_options|
-    cocoapods(use_bundle_exec: true)
+    # На self-hosted используем глобально установленный CocoaPods, без bundler
+    cocoapods(use_bundle_exec: false)
   end
 
   desc "Build a specific adapter with temporary override of network SDK version(s) via Podfile/Podfile.lock"
