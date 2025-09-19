@@ -102,7 +102,7 @@ jobs:
           set -euo pipefail
           mkdir -p build/reports/deprecations
           # Dump xcresult to JSON
-          xcrun xcresulttool get --path Result/AdaptersTests.xcresult --format json > build/reports/deprecations/xcresult.json || true
+          xcrun xcresulttool get object --legacy --path Result/AdaptersTests.xcresult --format json > build/reports/deprecations/xcresult.json || echo '{}' > build/reports/deprecations/xcresult.json
           # Extract deprecation warnings for adapter sources only
           jq -r '
             [
@@ -113,13 +113,13 @@ jobs:
               | select(.url|test("/Adapters/"))
             ]
           ' build/reports/deprecations/xcresult.json > build/reports/deprecations/deprecations.json || echo "[]" > build/reports/deprecations/deprecations.json
-          COUNT=$(jq 'length' build/reports/deprecations/deprecations.json 2>/dev/null || echo 0)
+          COUNT=$(jq -r 'try length catch 0' build/reports/deprecations/deprecations.json 2>/dev/null || echo 0)
           {
             echo "# Adapters Deprecated API Report";
             echo "";
-            echo "- Findings: ${COUNT}";
+            echo "- Findings: ${COUNT:-0}";
             echo "";
-            if [ "$COUNT" -gt 0 ]; then
+            if [ "${COUNT:-0}" -gt 0 ]; then
               echo "## Items";
               jq -r '.[] | "- " + (.url|sub("^file:///"; "")) + " — " + (.text|gsub("\n"; " "))' build/reports/deprecations/deprecations.json
             else
