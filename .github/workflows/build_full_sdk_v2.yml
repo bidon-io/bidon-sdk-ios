@@ -71,7 +71,7 @@ jobs:
       # Кэш и .netrc не используем на self-hosted (среда постоянная)
 
       - name: Install CocoaPods (Fastlane)
-        run: bundle exec fastlane pods_install
+        run: /opt/homebrew/opt/ruby/bin/bundle exec fastlane pods_install
 
       - name: Run adapter tests
         run: |
@@ -151,7 +151,7 @@ jobs:
 
       - name: Build SDK via Fastlane
         run: |
-          bundle exec fastlane sdk \
+          /opt/homebrew/opt/ruby/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
