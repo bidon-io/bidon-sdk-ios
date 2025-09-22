@@ -147,7 +147,10 @@ jobs:
         id: collect_deprecations
         if: always()
         run: |
-          set -euo pipefail
+          # Be tolerant: do not fail the step on partial errors
+          set +e
+          set +u
+          set +o pipefail 2>/dev/null || true
           mkdir -p build/reports/deprecations
           RAW="build/reports/deprecations/raw.txt"
           : > "$RAW"
