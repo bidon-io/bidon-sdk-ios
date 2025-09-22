@@ -148,8 +148,76 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
-          bash scripts/scan_deprecations.sh
+          mkdir -p build/reports/deprecations
+          RAW="build/reports/deprecations/raw.txt"
+          : > "$RAW"
+          # Collect all lines with "deprecated" from xcactivitylogs (macOS bash 3.2 compatible)
+          find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null \
+            | while IFS= read -r -d '' ACT; do
+                (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings | grep -ai 'deprecated' || true
+              done >> "$RAW"
+          # Also parse any Result/*.xcresult JSON for 'deprecated'
+          if [ -d Result ]; then
+            find Result -type d -name '*.xcresult' 2>/dev/null \
+              | while IFS= read -r RES; do
+                  xcrun xcresulttool get --path "$RES" --format json --legacy 2>/dev/null | grep -ai 'deprecated' || true
+                done >> "$RAW"
+          fi
+          # Also scan fastlane xcodebuild.log if present
+          LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
+          if [ -f "$LOG" ]; then
+            grep -ai 'deprecated' "$LOG" >> "$RAW" || true
+          fi
+          # And scan our live test output if present
+          if [ -f build/reports/deprecations/test_output.log ]; then
+            grep -ai 'deprecated' build/reports/deprecations/test_output.log >> "$RAW" || true
+          fi
+          # Unique lines
+          sort -u "$RAW" > build/reports/deprecations/deprecations.txt || true
           COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
+          # Build filename -> adapter mapping to resolve warnings that do not include adapter path
+          : > build/reports/deprecations/basename_to_adapter.txt
+          if [ -d Adapters ]; then
+            find Adapters -type f -name '*.*' -print | while IFS= read -r P; do
+              BN=$(basename "$P")
+              AD=$(echo "$P" | awk -F "/" '{for(i=1;i<=NF;i++){if($i ~ /^BidonAdapter[A-Za-z]+$/){print $i; exit}}}')
+              if [ -n "$BN" ] && [ -n "$AD" ]; then
+                echo "$BN|$AD" >> build/reports/deprecations/basename_to_adapter.txt
+              fi
+            done
+            sort -u -o build/reports/deprecations/basename_to_adapter.txt build/reports/deprecations/basename_to_adapter.txt
+          fi
+          # Detect adapters by name presence in lines (covers cases without file paths)
+          : > build/reports/deprecations/adapters.txt
+          # Gather adapter names from repo
+          ls -1 Adapters 2>/dev/null | grep -E '^BidonAdapter[A-Za-z]+' | sort -u > build/reports/deprecations/all_adapters.txt || true
+          # 1) Path-based extraction: look for Adapters/<AdapterName> directly in lines
+          grep -aoE 'Adapters/BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
+            | sed -E 's#.*Adapters/##' \
+            | sort -u >> build/reports/deprecations/adapters.txt || true
+          if [ -s build/reports/deprecations/deprecations.txt ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
+            while IFS= read -r ADP; do
+              # match either path-based or plain name occurrences
+              if grep -aiqE "(Adapters/|/)${ADP}(/|\\.| |:|$)|(^|[^A-Za-z0-9_])${ADP}([^A-Za-z0-9_]|$)" build/reports/deprecations/deprecations.txt; then
+                echo "$ADP" >> build/reports/deprecations/adapters.txt
+              fi
+            done < build/reports/deprecations/all_adapters.txt
+            # Also try to infer by filenames appearing in warning lines
+            if [ -s build/reports/deprecations/basename_to_adapter.txt ]; then
+              # Extract potential basenames from warnings
+              grep -Eo '[A-Za-z0-9_\-]+\.(swift|mm|m|h|hpp|cpp)' build/reports/deprecations/deprecations.txt | sort -u > build/reports/deprecations/basenames.txt || true
+              if [ -s build/reports/deprecations/basenames.txt ]; then
+                while IFS= read -r BN; do
+                  AD=$(grep -E "^${BN}\\|" build/reports/deprecations/basename_to_adapter.txt | awk -F '|' '{print $2}' | sort -u)
+                  if [ -n "$AD" ]; then
+                    echo "$AD" >> build/reports/deprecations/adapters.txt
+                  fi
+                done < build/reports/deprecations/basenames.txt
+              fi
+            fi
+            sort -u -o build/reports/deprecations/adapters.txt build/reports/deprecations/adapters.txt
+          fi
+          # Always ensure unique adapter names even if block above didn't run
           sort -u -o build/reports/deprecations/adapters.txt build/reports/deprecations/adapters.txt 2>/dev/null || true
           ADAPTERS=$(tr '\n' ',' < build/reports/deprecations/adapters.txt | sed 's/,$//')
           {
