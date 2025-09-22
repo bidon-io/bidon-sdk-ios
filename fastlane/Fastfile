@@ -518,8 +518,6 @@ end
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
     core_ver = core_version_with_pre(base_version, prerelease)
 
-    cocoapods(use_bundle_exec: true)
-
     # 1) Core Bidon
     build_universal("Bidon")
     xcframework("Bidon", "Bidon", "Bidon", core_ver)
@@ -621,6 +619,62 @@ end
       pods: true
     )
 
+  end
+
+  desc "Build only Bidon Core (xcframework, zip, podspec, optional S3 upload)"
+  lane :core do |options|
+    raise "No SDK version specified".red if options[:version].nil?
+
+    upload = options[:upload] || false
+    base_version = options[:version]
+    prerelease = options[:pre]
+    core_ver = core_version_with_pre(base_version, prerelease)
+
+    # Build Core Bidon
+    build_universal("Bidon")
+    xcframework("Bidon", "Bidon", "Bidon", core_ver)
+
+    # Copy PrivacyInfo.xcprivacy into both slices of the produced XCFramework
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+    copy_resources(
+      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+      "PrivacyInfo.xcprivacy"
+    )
+
+    # Zip core
+    zip(
+      path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
+      output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
+    )
+
+    # Optional upload to S3
+    if upload
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "Bidon/#{core_ver}",
+        files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
+      )
+    end
+
+    # Generate podspec for core
+    podspec(
+      name: "Bidon",
+      version: core_ver,
+      sdk_version: core_ver,
+      podfile: $root_dir + "/Podfile",
+      s3_region: ENV["S3_REGION"],
+      s3_bucket: ENV["S3_BUCKET"],
+      path: $podspecs_dir,
+      vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
+      is_adapter: false
+    )
   end
 
   desc "Build a specific Bidon adapter"
@@ -895,6 +949,12 @@ end
     generate_sandbox_constants(
       path: $root_dir + "/Sandbox/Sandbox"
     )
+  end
+
+  desc "Install CocoaPods"
+  lane :pods_install do |_options|
+    # На self-hosted используем глобально установленный CocoaPods, без bundler
+    cocoapods(use_bundle_exec: false)
   end
 
   desc "Build a specific adapter with temporary override of network SDK version(s) via Podfile/Podfile.lock"
