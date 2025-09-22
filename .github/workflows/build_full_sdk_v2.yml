@@ -155,7 +155,9 @@ jobs:
           RAW="build/reports/deprecations/raw.txt"
           : > "$RAW"
           # Collect all lines with "deprecated" from xcactivitylogs (macOS bash 3.2 compatible)
-          find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null \
+          find "$GITHUB_WORKSPACE/DerivedData" -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null \
+            -o -type f -path "*/Logs/Test/*.xcactivitylog" -print0 2>/dev/null \
+            -o -type f -path "*/Logs/Build/*.xcactivitylog" -print0 2>/dev/null -H ~/Library/Developer/Xcode/DerivedData \
             | while IFS= read -r -d '' ACT; do
                 (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings | grep -ai 'deprecated' || true
               done >> "$RAW"
@@ -197,6 +199,9 @@ jobs:
           # 1) Path-based extraction: look for Adapters/<AdapterName> directly in lines
           grep -aoE 'Adapters/BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
             | sed -E 's#.*Adapters/##' \
+            | sort -u >> build/reports/deprecations/adapters.txt || true
+          # 1b) Fallback: extract plain adapter names anywhere in the line
+          grep -aoE 'BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
             | sort -u >> build/reports/deprecations/adapters.txt || true
           if [ -s build/reports/deprecations/deprecations.txt ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
             while IFS= read -r ADP; do
