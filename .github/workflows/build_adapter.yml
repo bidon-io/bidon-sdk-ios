@@ -7,10 +7,6 @@ on:
         description: 'Adapter name (e.g. BidonAdapterIronSource)'
         required: true
         type: string
-      adapter_version:
-        description: 'Adapter version (e.g. 3.0.1.0)'
-        required: true
-        type: string
       sdk_version:
         description: 'SDK version (e.g. 3.0.1)'
         required: true
@@ -71,7 +67,6 @@ jobs:
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
             name:"${{ inputs.adapter_name }}" \
-            version:"${{ inputs.adapter_version }}" \
             sdk_version:"${{ inputs.sdk_version }}" \
             upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter.log"
         env:
@@ -106,7 +101,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -117,7 +112,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
