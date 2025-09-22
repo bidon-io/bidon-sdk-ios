@@ -1,5 +1,11 @@
+# develop (0.12.0)
+
+## New features
+- BDN-1010 Adapter Versioning and Github Actions
 
 # develop (0.11.0)
+
+- BDN-1001 Migrate IronSource and LevelPlay API to new API
 
 ## New features
 - BDN-1033 Bidon request params

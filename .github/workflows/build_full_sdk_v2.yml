@@ -35,7 +35,8 @@ on:
 
 jobs:
   build-bidon-sdk:
-    runs-on: macos-15
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+
 
     steps:
       - name: Checkout repository
@@ -48,109 +49,289 @@ jobs:
             git config --global user.name "bidon-runner"
             git config --global user.email "runner@bidon.org"
 
-      - name: Select Xcode 16.1
-        run: sudo xcode-select -s /Applications/Xcode_16.1.app
-        
-      - name: Prepare Xcode iOS platform
-        run: |
-          sudo xcodebuild -runFirstLaunch || true
-          sudo xcodebuild -license accept || true
-          sudo xcodebuild -downloadPlatform iOS
-          rm -rf ~/Library/Developer/Xcode/DerivedData || true
-
-      - name: Show SDKs & destinations (diagnostics)
+      - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
-          xcodebuild -showsdks
-          xcrun simctl list runtimes
-          xcodebuild -showdestinations -workspace BidOn.xcworkspace -scheme Bidon
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1.4'
-          bundler-cache: true
-
-      - name: Install dependencies
-        run: bundle install
-
-      - name: Build SDK via Fastlane
+      # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
+      - name: CocoaPods install (self-hosted)
         run: |
-          bundle exec fastlane sdk \
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
+        run: |
+          set -o pipefail
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH and xcpretty
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
+          if ! command -v xcpretty >/dev/null 2>&1; then
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
+          fi
+
+      - name: Run adapter tests
+        run: |
+          set -euo pipefail
+          echo "Selecting iOS Simulator runtime via simctl…"
+          RUNTIME_ID=$(xcrun simctl list runtimes -j \
+            | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
+          if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
+            echo "No available iOS simulator runtime found";
+            xcrun simctl list runtimes || true;
+            exit 1;
+          fi
+          echo "Using runtime: $RUNTIME_ID"
+          DEST_ID=$(xcrun simctl list devices -j \
+            | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No device under $RUNTIME_ID, falling back to any available device";
+            DEST_ID=$(xcrun simctl list devices -j \
+              | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
+          fi
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No available iOS Simulator device";
+            xcrun simctl list devices || true;
+            exit 1;
+          fi
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          mkdir -p "$DD" Result build/reports/deprecations || true
+          xcodebuild test \
+            -workspace BidOn.xcworkspace \
+            -scheme AdaptersTests \
+            -sdk iphonesimulator \
+            -destination "id=$DEST_ID" \
+            -derivedDataPath "$DD" \
+            -resultBundlePath Result/AdaptersTests.xcresult \
+             | tee build/reports/deprecations/test_output.log \
+             | xcbeautify
+
+      - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
+        run: |
+          set -o pipefail
+          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
+          # Force Ruby 3.2 and bundled gem binstubs first
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Avoid leaking system Ruby GEM_* into subprocesses
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
             adapters_revision:"${{ inputs.adapters_revision }}" \
             use_network_versions:${{ inputs.use_network_versions }} \
-            upload:false
+            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_sdk.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
-      - name: Discover adapter schemes
-        id: adapters
+      - name: Collect deprecated warnings (build logs)
+        id: collect_deprecations
+        if: always()
         run: |
-          set -e
-          SCHEMES_JSON=$(xcodebuild -list -json -workspace BidOn.xcworkspace)
-          echo "$SCHEMES_JSON" > schemes.json
-          ADAPTERS=$(ruby -e '
-            require "json";
-            j = JSON.parse(File.read("schemes.json"));
-            schemes = (j.dig("workspace","schemes") || []);
-            names = schemes.select { |s|
-              (s.start_with?("BidonAdapter") || s == "ISBidonCustomAdapter" || s == "AppLovinMediationBidonAdapter")
-            }.reject { |s|
-              s.end_with?("Tests") || s == "BidonAdapterYandex"
-            };
-            puts names.join(" ")
-          ')
-          echo "names=$ADAPTERS" >> $GITHUB_OUTPUT
-
-      - name: Test, package and upload adapters (continue on error)
-        run: |
-          set -u
-          FAILS=()
-          ALL=( ${{ steps.adapters.outputs.names }} )
-          for NAME in ${{ steps.adapters.outputs.names }}; do
-            echo "===== Running adapter_ci for $NAME ====="
-            if bundle exec fastlane adapter_ci name:$NAME sdk_version:${{ inputs.sdk_version }} pre:"${{ inputs.pre }}" use_network_versions:${{ inputs.use_network_versions }} upload:${{ inputs.upload }} run_tests:true pods:false; then
-              echo "OK: $NAME"
-            else
-              echo "FAILED: $NAME"
-              FAILS+=($NAME)
+          # Be tolerant: do not fail the step on partial errors
+          set +e
+          set +u
+          set +o pipefail 2>/dev/null || true
+          mkdir -p build/reports/deprecations
+          RAW="build/reports/deprecations/raw.txt"
+          : > "$RAW"
+          # Collect all lines with "deprecated" from xcactivitylogs (macOS bash 3.2 compatible)
+          { \
+            find "$GITHUB_WORKSPACE/DerivedData" -type f \( -path "*/Logs/Build/*.xcactivitylog" -o -path "*/Logs/Test/*.xcactivitylog" \) -print0 2>/dev/null; \
+            find ~/Library/Developer/Xcode/DerivedData -type f \( -path "*/Logs/Build/*.xcactivitylog" -o -path "*/Logs/Test/*.xcactivitylog" \) -print0 2>/dev/null; \
+          } | while IFS= read -r -d '' ACT; do
+                (gzcat "$ACT" 2>/dev/null || cat "$ACT") | strings | grep -ai 'deprecated' || true
+              done >> "$RAW"
+          # Also parse any Result/*.xcresult JSON for 'deprecated'
+          if [ -d Result ]; then
+            find Result -type d -name '*.xcresult' 2>/dev/null \
+              | while IFS= read -r RES; do
+                  xcrun xcresulttool get --path "$RES" --format json --legacy 2>/dev/null | grep -ai 'deprecated' || true
+                done >> "$RAW"
+          fi
+          # Also scan fastlane xcodebuild.log if present
+          LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
+          if [ -f "$LOG" ]; then
+            grep -ai 'deprecated' "$LOG" >> "$RAW" || true
+          fi
+          # And scan our live test output if present
+          if [ -f build/reports/deprecations/test_output.log ]; then
+            grep -ai 'deprecated' build/reports/deprecations/test_output.log >> "$RAW" || true
+          fi
+          # Unique lines
+          sort -u "$RAW" > build/reports/deprecations/deprecations.txt || true
+          COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
+          # Build filename -> adapter mapping to resolve warnings that do not include adapter path
+          : > build/reports/deprecations/basename_to_adapter.txt
+          if [ -d Adapters ]; then
+            find Adapters -type f -name '*.*' -print | while IFS= read -r P; do
+              BN=$(basename "$P")
+              AD=$(echo "$P" | awk -F "/" '{for(i=1;i<=NF;i++){if($i ~ /^BidonAdapter[A-Za-z]+$/){print $i; exit}}}')
+              if [ -n "$BN" ] && [ -n "$AD" ]; then
+                echo "$BN|$AD" >> build/reports/deprecations/basename_to_adapter.txt
+              fi
+            done
+            sort -u -o build/reports/deprecations/basename_to_adapter.txt build/reports/deprecations/basename_to_adapter.txt
+          fi
+          # Detect adapters by name presence in lines (covers cases without file paths)
+          : > build/reports/deprecations/adapters.txt
+          # Gather adapter names from repo
+          ls -1 Adapters 2>/dev/null | grep -E '^BidonAdapter[A-Za-z]+' | sort -u > build/reports/deprecations/all_adapters.txt || true
+          # 1) Path-based extraction: look for Adapters/<AdapterName> directly in lines
+          grep -aoE 'Adapters/BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
+            | sed -E 's#.*Adapters/##' \
+            | sort -u >> build/reports/deprecations/adapters.txt || true
+          # 1b) Fallback: extract plain adapter names anywhere in the line
+          grep -aoE 'BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
+            | sort -u >> build/reports/deprecations/adapters.txt || true
+          # 1c) Heuristics by SDK keywords in messages (when no file paths present)
+          if grep -qiE '\b(ALInterstitialAd|ALIncentivizedInterstitialAd|ALAdView|AppLovin)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterAppLovin' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(IronSource|LevelPlay|ISImpressionData|ISAdUnit|ISLogDelegate|ISContainerParams|ISGender)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterIronSource' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(GADMobileAds|GAD[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterGoogleMobileAds' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(GAM[A-Za-z]+|Google\s*Ad\s*Manager|DFP)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterGoogleAdManager' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(APSDeprecatedMessage|APS\b|DTB[A-Za-z]+|Amazon\s*Publisher\s*Services)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterAmazon' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(InMobi|IMSdk)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterInMobi' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(MobileFuse)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMobileFuse' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(BidMachine)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterBidMachine' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(UnityAds|Unity\s*Ads)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterUnityAds' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Chartboost|CHB[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterChartboost' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Mintegral|MTG[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMintegral' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Yandex|YAN[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterYandex' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Moloco)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMoloco' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Vungle)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterVungle' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(MyTarget)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMyTarget' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(FBAudienceNetwork|Meta\s*Audience\s*Network|FAN\b)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMetaAudienceNetwork' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(Bigo\s*Ads|BigoAds|Bigo)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterBigoAds' >> build/reports/deprecations/adapters.txt; fi
+          if grep -qiE '\b(DTExchange|Fyber|Digital\s*Turbine)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterDTExchange' >> build/reports/deprecations/adapters.txt; fi
+          if [ -s build/reports/deprecations/deprecations.txt ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
+            while IFS= read -r ADP; do
+              # match either path-based or plain name occurrences
+              if grep -aiqE "(Adapters/|/)${ADP}(/|\\.| |:|$)|(^|[^A-Za-z0-9_])${ADP}([^A-Za-z0-9_]|$)" build/reports/deprecations/deprecations.txt; then
+                echo "$ADP" >> build/reports/deprecations/adapters.txt
+              fi
+            done < build/reports/deprecations/all_adapters.txt
+            # Also try to infer by filenames appearing in warning lines
+            if [ -s build/reports/deprecations/basename_to_adapter.txt ]; then
+              # Extract potential basenames from warnings
+              grep -Eo '[A-Za-z0-9_\-]+\.(swift|mm|m|h|hpp|cpp)' build/reports/deprecations/deprecations.txt | sort -u > build/reports/deprecations/basenames.txt || true
+              if [ -s build/reports/deprecations/basenames.txt ]; then
+                while IFS= read -r BN; do
+                  AD=$(grep -E "^${BN}\\|" build/reports/deprecations/basename_to_adapter.txt | awk -F '|' '{print $2}' | sort -u)
+                  if [ -n "$AD" ]; then
+                    echo "$AD" >> build/reports/deprecations/adapters.txt
+                  fi
+                done < build/reports/deprecations/basenames.txt
+              fi
             fi
-          done
-          echo "Failed adapters: ${FAILS[*]:-none}"
-          # Prepare JSON and Markdown reports
-          mkdir -p build/reports
-          PASSED_COUNT=$(( ${#ALL[@]} - ${#FAILS[@]} ))
-          jq -n --argjson total ${#ALL[@]} --argjson passed $PASSED_COUNT --arg failed "$(printf '%s\n' "${FAILS[@]}" | jq -R . | jq -s .)" '{total:$total, passed:$passed, failed:$failed}' > build/reports/adapters_test_report.json
+            sort -u -o build/reports/deprecations/adapters.txt build/reports/deprecations/adapters.txt
+          fi
+          # Always ensure unique adapter names even if block above didn't run
+          sort -u -o build/reports/deprecations/adapters.txt build/reports/deprecations/adapters.txt 2>/dev/null || true
+          ADAPTERS=$(tr '\n' ',' < build/reports/deprecations/adapters.txt | sed 's/,$//')
           {
-            echo "# Adapters Test Report";
+            echo "# Adapters Deprecated API Report";
             echo "";
-            echo "- Total adapters: ${#ALL[@]}";
-            echo "- Passed: $PASSED_COUNT";
-            echo "- Failed: ${#FAILS[@]}";
+            echo "- Findings: ${COUNT:-0}";
             echo "";
-            if [ ${#FAILS[@]} -gt 0 ]; then
-              echo "## Failed";
-              for f in "${FAILS[@]}"; do echo "- $f"; done;
+            if [ "${COUNT:-0}" -gt 0 ]; then
+              echo "## Adapters";
+              sort -u build/reports/deprecations/adapters.txt | sed 's/^/- /'
             else
-              echo "All adapters passed.";
-            fi;
-          } > build/reports/adapters_test_report.md
-          cat build/reports/adapters_test_report.md >> "$GITHUB_STEP_SUMMARY"
-          exit 0
+              echo "No deprecated API usage found in adapter sources.";
+            fi
+          } > build/reports/deprecations/deprecations.md
+          echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
+          echo "adapters=${ADAPTERS:-}" >> "$GITHUB_OUTPUT"
 
-      - name: Upload adapters test report
+      - name: Upload deprecations report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: adapters-test-report
+          name: adapters-deprecations-report
           path: |
-            build/reports/adapters_test_report.json
-            build/reports/adapters_test_report.md
+            build/reports/deprecations/deprecations.md
+            build/reports/deprecations/deprecations.txt
+            build/reports/deprecations/adapters.txt
+
+      - name: Notify Slack on deprecations
+        if: ${{ steps.collect_deprecations.outputs.adapters != '' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "⚠️ [Bidon] Deprecated API usage found in adapters: `${{ steps.collect_deprecations.outputs.adapters }}`\n• Version: `${{ inputs.sdk_version }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Dump logs tail (on failure)
+        if: failure()
+        run: |
+          set -e
+          echo "\nFastlane (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 300 "$RUNNER_TEMP/fastlane_sdk.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nCocoaPods (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/pod_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nBundle install (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/bundle_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
+          echo "\nxcodebuild.log path: ${LOG:-not found}" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f "$LOG" ]; then
+            echo "xcodebuild (tail)" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            tail -n 300 "$LOG" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Collect build logs (on failure)
+        if: failure()
+        run: |
+          set -e
+          mkdir -p build/ci-logs
+          # Fastlane xcodebuild log (if present)
+          LOG=$(ls -t ~/Library/Logs/fastlane/xcbuild/*/xcodebuild.log 2>/dev/null | head -n1 || true)
+          if [ -f "$LOG" ]; then cp "$LOG" build/ci-logs/fastlane-xcodebuild.log; fi
+          # Latest xcactivitylog from DerivedData
+          ACT=$(find ~/Library/Developer/Xcode/DerivedData -type f -path "*/Logs/Build/*.xcactivitylog" -print0 | xargs -0 ls -1t 2>/dev/null | head -n1 || true)
+          if [ -f "$ACT" ]; then cp "$ACT" build/ci-logs/Build.xcactivitylog; fi
+          # Any xcresult bundles if produced by steps
+          if [ -d build/Logs ]; then cp -R build/Logs build/ci-logs/xcresult 2>/dev/null || true; fi
+          # Our tee'd logs
+          cp "$RUNNER_TEMP"/fastlane_sdk.log build/ci-logs/ 2>/dev/null || true
+          cp "$RUNNER_TEMP"/pod_install.log build/ci-logs/ 2>/dev/null || true
+          cp "$RUNNER_TEMP"/bundle_install.log build/ci-logs/ 2>/dev/null || true
+
+      - name: Upload build logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build/ci-logs
 
       - name: Setup SSH for podspec repo
         if: ${{ inputs.push_specs }}
