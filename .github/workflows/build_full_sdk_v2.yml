@@ -148,7 +148,7 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
-          sh scripts/scan_deprecations.sh
+          bash scripts/scan_deprecations.sh
           COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
           sort -u -o build/reports/deprecations/adapters.txt build/reports/deprecations/adapters.txt 2>/dev/null || true
           ADAPTERS=$(tr '\n' ',' < build/reports/deprecations/adapters.txt | sed 's/,$//')
