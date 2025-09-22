@@ -4,18 +4,14 @@
 //
 
 import IronSource
-
+import Bidon
 
 protocol IronSourceApi {
-    func initialiseIronSource(with appKey: String)
-
-    func addImpressionDataDelegate(_ delegate: ISImpressionDataDelegate)
+    func initialiseIronSource(with appKey: String, completion: @escaping ((SdkError?) -> Void))
 
     func setConsent(
         _ consent: Bool
     )
-
-    func setUserId(_ userId: String?)
 
     func setChildDirected(_ isChildDirected: Bool)
 

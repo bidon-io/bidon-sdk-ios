@@ -5,6 +5,8 @@
 
 # develop (0.11.0)
 
+- BDN-1001 Migrate IronSource and LevelPlay API to new API
+
 ## New features
 - BDN-1033 Bidon request params
 - BDN-1009 Bidon init by order

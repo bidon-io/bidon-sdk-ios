@@ -21,11 +21,10 @@ DirectAdViewDemandSourceAdapter
     public let demandId: String = IronSourceDemandSourceAdapter.identifier
     public let name: String = "IronSource"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = IronSource.sdkVersion()
+    public let sdkVersion: String = LevelPlay.sdkVersion()
     private(set) public var isInitialized = false
 
     let api: IronSourceApi = BaseIronSourceApi()
-    let delegate = ImpressionDataDelegate()
 
     @Injected(\.context)
     var context: SdkContext
@@ -52,17 +51,14 @@ extension IronSourceDemandSourceAdapter: ParameterizedInitializableAdapter {
         api.setConsent(context.regulations.gdpr == .applies)
         api.setChildDirected(context.regulations.coppa == .yes)
 
-        api.addImpressionDataDelegate(delegate)
-        api.initialiseIronSource(with: parameters.appKey)
-        isInitialized = true
-
-        completion(nil)
-    }
-}
-
-final class ImpressionDataDelegate: NSObject, ISImpressionDataDelegate {
-
-    public func impressionDataDidSucceed(_ impressionData: ISImpressionData!) {
-        print(impressionData)
+        api.initialiseIronSource(with: parameters.appKey) { [weak self] error in
+            if let error {
+                completion(error)
+                return
+            }
+            
+            self?.isInitialized = true
+            completion(nil)
+        }
     }
 }
