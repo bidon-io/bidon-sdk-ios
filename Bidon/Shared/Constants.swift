@@ -40,7 +40,8 @@ struct Constants {
             "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
             "BidonAdapterYandex.YandexDemandSourceAdapter",
             "BidonAdapterChartboost.ChartboostDemandSourceAdapter",
-            "BidonAdapterMoloco.MolocoDemandSourceAdapter"
+            "BidonAdapterMoloco.MolocoDemandSourceAdapter",
+            "BidonAdapterStartIo.StartIoDemandSourceAdapter"
         ]
     }
 

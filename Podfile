@@ -103,6 +103,10 @@ def yandex
   pod 'YandexMobileAds', "~> 7.14.1"
 end
 
+def startio
+  pod 'StartAppSDK', '~> 4.11.0'
+end
+
 
 def appodeal_mediation
   # pod 'Appodeal', '~> 3.3.0'
@@ -195,6 +199,11 @@ target 'BidonAdapterMoloco' do
   moloco
 end
 
+target 'BidonAdapterStartIo' do
+  project 'Adapters/Adapters.xcodeproj'
+  startio
+end
+
 target 'BidonAdapterVungle' do
   project 'Adapters/Adapters.xcodeproj'
   vungle
@@ -254,6 +263,7 @@ target 'AdaptersTests' do
   mintegral
   mobilefuse
   moloco
+  startio
   vungle
   inmobi
   my_target
@@ -278,6 +288,7 @@ target 'Sandbox' do
   mintegral
   mobilefuse
   moloco
+  startio
   vungle
   bigo_ads
   meta_ads

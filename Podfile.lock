@@ -187,6 +187,7 @@ PODS:
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
+  - StartAppSDK (4.11.0)
   - SwiftLint (0.61.0)
   - UnityAds (4.16.1)
   - VGSL (7.9.1):
@@ -227,6 +228,7 @@ DEPENDENCIES:
   - MolocoSDKiOS (~> 3.12.0)
   - myTargetSDK (~> 5.33.0)
   - StackConsentManager (~> 3.0.0)
+  - StartAppSDK (~> 4.11.0)
   - SwiftLint
   - UnityAds (~> 4.16.0)
   - VungleAds (~> 7.5.2)
@@ -288,6 +290,7 @@ SPEC REPOS:
     - myTrackerSDK
     - OMSDK_Appodeal
     - StackModules
+    - StartAppSDK
     - SwiftLint
     - UnityAds
     - VGSL
@@ -351,6 +354,7 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
+  StartAppSDK: 8da2f1ff9b74f37b11972de191266d40582e5fbf
   SwiftLint: bf6da11a31c6644a0bbb27f4fa15fd9636db00b3
   UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
   VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
@@ -360,6 +364,6 @@ SPEC CHECKSUMS:
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 199dd6ffe310f59bbaf245addbaf30221b25125e
+PODFILE CHECKSUM: 4ea817d1c4887f0e42359eaa9c6932313a14bd9a
 
 COCOAPODS: 1.16.2
