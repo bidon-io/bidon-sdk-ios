@@ -233,7 +233,6 @@
 		B93BC21D2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */; };
 		B93BDD642E5F415B0001B4DD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93BDD632E5F415B0001B4DD /* Bidon.framework */; };
 		B99C35732E82A5C000488A3A /* StartIoDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C35722E82A5C000488A3A /* StartIoDemandSourceAdapter.swift */; };
-		B99C35782E82A81D00488A3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B99C35772E82A81C00488A3A /* Bidon.framework */; };
 		B99C35882E82CB5000488A3A /* StartIoBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C35832E82CB5000488A3A /* StartIoBiddingRewardedDemandProvider.swift */; };
 		B99C35892E82CB5000488A3A /* StartIoBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C357D2E82CB5000488A3A /* StartIoBiddingResponse.swift */; };
 		B99C358B2E82CB5000488A3A /* StartIoAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C357C2E82CB5000488A3A /* StartIoAdUnitExtras.swift */; };
@@ -242,6 +241,7 @@
 		B99C358F2E82CB5000488A3A /* StartIoBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C35822E82CB5000488A3A /* StartIoBiddingInterstitialDemandProvider.swift */; };
 		B99C35902E82CB5000488A3A /* StartIoParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99C357E2E82CB5000488A3A /* StartIoParameters.swift */; };
 		B99C35912E82CB5000488A3A /* BidonAdapterStartIo.h in Headers */ = {isa = PBXBuildFile; fileRef = B99C357B2E82CB5000488A3A /* BidonAdapterStartIo.h */; };
+		B99C35972E82F6A400488A3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B99C35962E82F6A400488A3A /* Bidon.framework */; };
 		B9B0B95F2E673DBD00286D44 /* InMobiBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B95E2E673DBD00286D44 /* InMobiBiddingResponse.swift */; };
 		B9B0B9612E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9602E673F3B00286D44 /* InMobiBiddingBaseDemandProvider.swift */; };
 		B9B0B9632E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9622E67403D00286D44 /* InMobiBiddingInterstitialDemandProvider.swift */; };
@@ -627,6 +627,7 @@
 		B99C35812E82CB5000488A3A /* StartIoBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
 		B99C35822E82CB5000488A3A /* StartIoBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
 		B99C35832E82CB5000488A3A /* StartIoBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		B99C35962E82F6A400488A3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A149922E6EDE8A00DFAF8D /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A149F12E6F146600DFAF8D /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9A14A062E6F184900DFAF8D /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -862,7 +863,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1D4B20341B47D4A26E39E8E /* Pods_BidonAdapterStartIo.framework in Frameworks */,
-				B99C35782E82A81D00488A3A /* Bidon.framework in Frameworks */,
+				B99C35972E82F6A400488A3A /* Bidon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1614,6 +1615,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B99C35962E82F6A400488A3A /* Bidon.framework */,
 				B99C35772E82A81C00488A3A /* Bidon.framework */,
 				B9A14B3E2E70249D00DFAF8D /* Bidon.framework */,
 				B9A14B292E70230100DFAF8D /* Bidon.framework */,
@@ -6781,6 +6783,7 @@
 					"@loader_path/Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = staticlib;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -6791,6 +6794,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
@@ -6868,6 +6874,7 @@
 					"@loader_path/Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = staticlib;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -6877,6 +6884,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;

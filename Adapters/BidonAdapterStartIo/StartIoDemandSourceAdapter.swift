@@ -51,11 +51,34 @@ extension StartIoDemandSourceAdapter: ParameterizedInitializableAdapter {
         if let sdk = STAStartAppSDK.sharedInstance() {
             sdk.appID = parameters.appId
 //            sdk.devID = parameters.devId
+            
+            applyConsent(from: context.regulations)
+            STAStartAppSDK.sharedInstance().enableMediationMode(for: "Bidon", version: adapterVersion)
+            
             isInitialized = true
             completion(nil)
         } else {
             isInitialized = false
             completion(SdkError.unknown)
+        }
+    }
+}
+
+private extension StartIoDemandSourceAdapter {
+    func applyConsent(from regulations: Regulations) {
+        if regulations.gdpr == .applies {
+            let consent = regulations.hasGdprConsent
+            STAStartAppSDK.sharedInstance().setUserConsent(
+                consent,
+                forConsentType: "pas",
+                withTimestamp: Int(Date().timeIntervalSince1970)
+            )
+        }
+
+        if let usPrivacy = regulations.usPrivacyString {
+            STAStartAppSDK.sharedInstance().handleExtras { extras in
+                extras?["us_privacy"] = usPrivacy
+            }
         }
     }
 }

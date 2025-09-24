@@ -6,16 +6,14 @@
 import Foundation
 import UIKit
 import Bidon
-
-
-final class StartIoBannerContainerView: UIView {}
+import StartApp
 
 
 final class StartIoAdViewDemandAd: DemandAd {
     public let id: String
-    public var adView: StartIoBannerContainerView
+    public var adView: STABannerViewBase
 
-    init(unitId: String, adView: StartIoBannerContainerView) {
+    init(unitId: String, adView: STABannerViewBase) {
         self.id = unitId
         self.adView = adView
     }
@@ -27,8 +25,9 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
     weak var rootViewController: UIViewController?
 
     private var response: Bidon.DemandProviderResponse?
-    private var adView: StartIoBannerContainerView?
+    private var adView: STABannerViewBase?
     private var unitId: String = ""
+    private var bannerLoader: STABannerLoader?
 
     init(
         context: AdViewContext
@@ -49,13 +48,38 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
         self.response = response
         self.unitId = adUnitExtras.adUnitId
 
-        // Placeholder implementation; integrate Start.io banner here
-        let banner = StartIoBannerContainerView(frame: .zero)
-        self.adView = banner
+        let pref = STAAdPreferences()
+        pref.adTag = adUnitExtras.adUnitId
 
-        let wrappedAd = StartIoAdViewDemandAd(unitId: unitId, adView: banner)
-        response(.success(wrappedAd))
-        self.response = nil
+        let loader = STABannerLoader(adPreferences: pref, adm: payload.payload)
+        self.bannerLoader = loader
+
+        loader.loadAd { [weak self] creator, error in
+            guard let self else { return }
+
+            if let error = error {
+                self.response?(.failure(.noFill(error.localizedDescription)))
+                self.response = nil
+                return
+            }
+
+            guard let creator = creator else {
+                self.response?(.failure(.noFill("Creator is nil")))
+                self.response = nil
+                return
+            }
+
+            let view = creator.createBannerView(forDelegate: self, supportAutolayout: true)
+            self.adView = view
+
+            if let inlineView = view as? STAInlineView {
+                inlineView.translatesAutoresizingMaskIntoConstraints = false
+            }
+
+            let wrappedAd = StartIoAdViewDemandAd(unitId: self.unitId, adView: view)
+            self.response?(.success(wrappedAd))
+            self.response = nil
+        }
     }
 }
 
@@ -66,13 +90,30 @@ extension StartIoBiddingAdViewDemandProvider: AdViewDemandProvider {
     }
 
     func didTrackImpression(for ad: StartIoAdViewDemandAd) {
-        // Integrate impression tracking with Start.io when available
+        // no-op
     }
 }
 
-
-extension StartIoBannerContainerView: Bidon.AdViewContainer {
+extension STABannerViewBase: Bidon.AdViewContainer {
     public var isAdaptive: Bool { false }
 }
+
+extension StartIoBiddingAdViewDemandProvider: STABannerDelegateProtocol {
+    func didDisplayBannerAd(_ banner: STABannerViewBase) {
+        delegate?.providerWillPresent(self)
+        let wrappedAd = StartIoAdViewDemandAd(unitId: unitId, adView: banner)
+        revenueDelegate?.provider(self, didLogImpression: wrappedAd)
+    }
+
+    func didClickBannerAd(_ banner: STABannerViewBase) {
+        delegate?.providerDidClick(self)
+    }
+
+    func failedLoadBannerAd(_ banner: STABannerViewBase, withError error: Error) {
+        response?(.failure(.noFill(error.localizedDescription)))
+        response = nil
+    }
+}
+
 
 
