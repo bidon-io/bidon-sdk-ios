@@ -121,13 +121,13 @@ PODS:
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
   - InMobiSDK (10.8.6)
-  - IronSourceAdQualitySDK (7.25.2)
-  - IronSourceSDK (8.10.0.0):
-    - IronSourceSDK/AdQuality (= 8.10.0.0)
-    - IronSourceSDK/Ads (= 8.10.0.0)
-  - IronSourceSDK/AdQuality (8.10.0.0):
-    - IronSourceAdQualitySDK (~> 7.25.2)
-  - IronSourceSDK/Ads (8.10.0.0)
+  - IronSourceAdQualitySDK (9.0.1)
+  - IronSourceSDK (9.0.0.0):
+    - IronSourceSDK/AdQuality (= 9.0.0.0)
+    - IronSourceSDK/Ads (= 9.0.0.0)
+  - IronSourceSDK/AdQuality (9.0.0.0):
+    - IronSourceAdQualitySDK (~> 9.0.0)
+  - IronSourceSDK/Ads (9.0.0.0)
   - KSCrash/Core (2.0.0)
   - KSCrash/Recording (2.0.0):
     - KSCrash/RecordingCore
@@ -221,7 +221,7 @@ DEPENDENCIES:
   - Fyber_Marketplace_SDK (~> 8.3.8)
   - Google-Mobile-Ads-SDK (~> 12.8)
   - InMobiSDK (~> 10.8.6)
-  - IronSourceSDK (~> 8.10.0)
+  - IronSourceSDK (~> 9.0.0)
   - MintegralAdSDK (~> 7.7.9)
   - MobileFuseSDK (~> 1.9.2)
   - MolocoSDKiOS (~> 3.12.0)
@@ -340,8 +340,8 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 08194bf203dc13f4422de827a4b254f27cd4a3a5
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
   InMobiSDK: a6e7bfbecb698c83183f42c5a3cfa1ac52f16bff
-  IronSourceAdQualitySDK: 639d5a93e15e823538f87b75f3809c4905afc30b
-  IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
+  IronSourceAdQualitySDK: a23d5ad2cc7906c675f4124436a9d8343a661ff8
+  IronSourceSDK: b64660084bc4b162f30a4e846f7b763ce0074664
   KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 054814f99bb7e967b8974fe635d9005b225cbe42
   MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
@@ -360,6 +360,6 @@ SPEC CHECKSUMS:
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: ea28d108122e3fe2e35ccf27c05b4e2c52910eb9
+PODFILE CHECKSUM: ef2f446131a360666da3a4e018ea0f877502568c
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

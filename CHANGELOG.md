@@ -2,6 +2,7 @@
 # develop (0.11.0)
 
 - BDN-1001 Migrate IronSource and LevelPlay API to new API
+- BDN-1043 Update IronSource SDK
 
 ## New features
 - BDN-1033 Bidon request params
