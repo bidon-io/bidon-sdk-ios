@@ -3,6 +3,9 @@
 ## New features
 - BDN-1010 Adapter Versioning and Github Actions
 
+## Fixes
+- BDN-1053 Location waiting fix
+
 # develop (0.11.0)
 
 - BDN-1001 Migrate IronSource and LevelPlay API to new API
