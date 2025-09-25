@@ -1,3 +1,7 @@
+# develop (0.12.0)
+
+## New features
+- BDN-1010 Adapter Versioning and Github Actions
 
 # develop (0.11.0)
 
