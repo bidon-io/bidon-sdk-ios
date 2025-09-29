@@ -22,12 +22,10 @@ final class TaurusXBiddingInterstitialDemandProvider: TaurusXBiddingBaseDemandPr
     ) {
         self.response = response
 
-        let interstitial = TaurusXInterstitial()
-        interstitial.placementId = adUnitExtras.placementId
-        interstitial.delegate = self
-        interstitial.load(withPayload: payload.payload)
-        
-        self.interstitialAd = interstitial
+        self.interstitialAd = TaurusXInterstitial()
+        self.interstitialAd?.placementId = adUnitExtras.placementId
+        self.interstitialAd?.delegate = self
+        self.interstitialAd?.load(withPayload: payload.payload)
     }
 }
 

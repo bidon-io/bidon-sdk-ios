@@ -36,12 +36,10 @@ final class TaurusXDirectInterstitialDemandProvider: NSObject, DirectDemandProvi
     ) {
         self.response = response
 
-        let interstitial = TaurusXInterstitial()
-        interstitial.placementId = adUnitExtras.placementId
-        interstitial.delegate = self
-        interstitial.load()
-        
-        self.interstitialAd = interstitial
+        interstitialAd = TaurusXInterstitial()
+        interstitialAd?.placementId = adUnitExtras.placementId
+        interstitialAd?.delegate = self
+        interstitialAd?.load()
     }
     
     func notify(ad: TaurusXDemandAd, event: DemandProviderEvent) {}
