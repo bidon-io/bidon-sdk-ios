@@ -269,6 +269,7 @@ target 'AdaptersTests' do
   chartboost
   ironsource
   yandex
+  taurus
 end
 
 # Demo
