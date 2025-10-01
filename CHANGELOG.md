@@ -6,6 +6,7 @@
 
 ## Fixes
 - BDN-1053 Location waiting fix
+- BDN-1062 userAgent freeze in iOS 26 WebView fix
 
 # develop (0.11.0)
 
