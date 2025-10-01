@@ -9,14 +9,51 @@ import UIKit
 import Bidon
 import TaurusxAdsSDK
 
-final class TaurusXBiddingRewardedDemandProvider: TaurusXBiddingBaseDemandProvider<TaurusXRewardedDemandAd> {
+final class TaurusXBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider {
 
     private var response: DemandProviderResponse?
+    weak var delegate: DemandProviderDelegate?
+    weak var revenueDelegate: DemandProviderRevenueDelegate?
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     private var rewardedAd: TaurusXRewarded?
+    
+    func collectBiddingToken(
+        biddingTokenExtras: TaurusXBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        var tokens = [String: String]()
+        let group = DispatchGroup()
 
-    override func load(
+        biddingTokenExtras.placementIds
+            .filter { $0.format == .rewarded }
+            .forEach { adUnit in
+                group.enter()
+                TaurusXBidManager.getToken(adUnit.placementId) { token in
+                    tokens[adUnit.placementId] = token
+                    group.leave()
+                }
+            }
+
+        group.notify(queue: .main) {
+            if tokens.isEmpty {
+                response(.failure(.unspecifiedException("No bidding tokens")))
+            } else {
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: tokens, options: [])
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        response(.success(jsonString))
+                    } else {
+                        response(.failure(.unspecifiedException("Mapping tokens error")))
+                    }
+                } catch {
+                    response(.failure(.unspecifiedException("Mapping tokens error")))
+                }
+            }
+        }
+    }
+
+    func load(
         payload: TaurusXBiddingPayload,
         adUnitExtras: TaurusXAdUnitExtras,
         response: @escaping DemandProviderResponse
@@ -28,6 +65,8 @@ final class TaurusXBiddingRewardedDemandProvider: TaurusXBiddingBaseDemandProvid
         rewardedAd?.delegate = self
         rewardedAd?.load(withPayload: payload.payload)
     }
+    
+    func notify(ad: TaurusXRewardedDemandAd, event: DemandProviderEvent) {}
 }
 
 extension TaurusXBiddingRewardedDemandProvider: RewardedAdDemandProvider {

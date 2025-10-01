@@ -10,9 +10,11 @@ import UIKit
 import Bidon
 import TaurusxAdsSDK
 
-final class TaurusXBiddingAdViewDemandProvider: TaurusXBiddingBaseDemandProvider<TaurusXBannerDemandAd> {
+final class TaurusXBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider {
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
+    weak var delegate: DemandProviderDelegate?
+    weak var revenueDelegate: DemandProviderRevenueDelegate?
 
     let context: AdViewContext
 
@@ -31,9 +33,44 @@ final class TaurusXBiddingAdViewDemandProvider: TaurusXBiddingBaseDemandProvider
         super.init()
     }
     
-    override func load(
+    func collectBiddingToken(
+        biddingTokenExtras: TaurusXBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        var tokens = [String: String]()
+        let group = DispatchGroup()
+
+        biddingTokenExtras.placementIds
+            .filter { $0.format == .banner }
+            .forEach { adUnit in
+                group.enter()
+                TaurusXBidManager.getToken(adUnit.placementId) { token in
+                    tokens[adUnit.placementId] = token
+                    group.leave()
+                }
+            }
+
+        group.notify(queue: .main) {
+            if tokens.isEmpty {
+                response(.failure(.unspecifiedException("No bidding tokens")))
+            } else {
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: tokens, options: [])
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        response(.success(jsonString))
+                    } else {
+                        response(.failure(.unspecifiedException("Mapping tokens error")))
+                    }
+                } catch {
+                    response(.failure(.unspecifiedException("Mapping tokens error")))
+                }
+            }
+        }
+    }
+    
+    func load(
         payload: TaurusXBiddingPayload,
-        adUnitExtras: AdUnitExtras,
+        adUnitExtras: TaurusXAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
@@ -49,6 +86,7 @@ final class TaurusXBiddingAdViewDemandProvider: TaurusXBiddingBaseDemandProvider
         }
     }
     
+    func notify(ad: TaurusXBannerDemandAd, event: DemandProviderEvent) {}
 }
 
 extension TaurusXBiddingAdViewDemandProvider: AdViewDemandProvider {

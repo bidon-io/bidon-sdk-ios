@@ -46,12 +46,10 @@ final class GeoManager: NSObject, Geo, Environment {
         return UInt(diff)
     }
 
-    var completion: (() -> ())?
-
     private lazy var locationManager: CLLocationManager = DispatchQueue.bd.blocking { [unowned self] in
         let manager = CLLocationManager()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         return manager
     }
 
@@ -69,43 +67,35 @@ final class GeoManager: NSObject, Geo, Environment {
 
 extension GeoManager {
     func prepare(completion: @escaping () -> ()) {
-        self.completion = completion
-
         if isAvailable {
             locationManager.requestLocation()
-        } else {
-            self.completion?()
-            self.completion = nil
         }
+        completion()
     }
 }
 
 
 extension GeoManager: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    func locationManager(
+        _ manager: CLLocationManager,
+        didChangeAuthorization status: CLAuthorizationStatus
+    ) {
         if isAvailable {
             manager.requestLocation()
-        } else if status != .notDetermined {
-            completion?()
-            completion = nil
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        self.completion?()
-        self.completion = nil
-    }
+    func locationManager(
+        _ manager: CLLocationManager,
+        didFailWithError error: Error) { }
 
     func locationManager(
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
     ) {
-        guard let location = locations.first else {
-            completion?()
-            completion = nil
+        guard let location = locations.last else {
             return
         }
-
         $lat.wrappedValue = location.coordinate.latitude
         $lon.wrappedValue = location.coordinate.longitude
         $accuracy.wrappedValue = UInt(sqrt(pow(location.verticalAccuracy, 2) * pow(location.horizontalAccuracy, 2)))
@@ -118,11 +108,6 @@ extension GeoManager: CLLocationManagerDelegate {
             location,
             preferredLocale: locale
         ) { [weak self] placemarks, _ in
-            defer {
-                self?.completion?()
-                self?.completion = nil
-            }
-
             guard let placemark = placemarks?.first else { return }
 
             self?.$country.wrappedValue = placemark.isoCountryCode

@@ -12,10 +12,8 @@ import TaurusxAdsSDK
 typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
-DirectAdViewDemandSourceAdapter &
 BiddingInterstitialDemandSourceAdapter &
-BiddingRewardedAdDemandSourceAdapter &
-BiddingAdViewDemandSourceAdapter
+BiddingRewardedAdDemandSourceAdapter
 
 @objc public final class TaurusXDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "taurusx"
@@ -38,10 +36,6 @@ BiddingAdViewDemandSourceAdapter
     public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
         return TaurusXDirectRewardedDemandProvider()
     }
-
-    public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
-        return TaurusXDirectAdViewDemandProvider(context: context)
-    }
     
     public func biddingInterstitialDemandProvider() throws -> Bidon.AnyBiddingInterstitialDemandProvider {
         return TaurusXBiddingInterstitialDemandProvider()
@@ -49,10 +43,6 @@ BiddingAdViewDemandSourceAdapter
     
     public func biddingRewardedAdDemandProvider() throws -> Bidon.AnyBiddingRewardedAdDemandProvider {
         return TaurusXBiddingRewardedDemandProvider()
-    }
-    
-    public func biddingAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyBiddingAdViewDemandProvider {
-        return TaurusXBiddingAdViewDemandProvider(context: context)
     }
 }
 

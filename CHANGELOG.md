@@ -1,3 +1,10 @@
+# develop (0.12.0)
+
+## New features
+- BDN-1010 Adapter Versioning and Github Actions
+
+## Fixes
+- BDN-1053 Location waiting fix
 
 # develop (0.11.0)
 

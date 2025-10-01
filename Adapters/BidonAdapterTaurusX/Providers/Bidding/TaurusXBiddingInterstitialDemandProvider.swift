@@ -9,13 +9,15 @@ import UIKit
 import Bidon
 import TaurusxAdsSDK
 
-final class TaurusXBiddingInterstitialDemandProvider: TaurusXBiddingBaseDemandProvider<TaurusXDemandAd> {
+final class TaurusXBiddingInterstitialDemandProvider: NSObject, BiddingDemandProvider {
+    
+    weak var delegate: DemandProviderDelegate?
+    weak var revenueDelegate: DemandProviderRevenueDelegate?
 
     private var response: DemandProviderResponse?
-
     private var interstitialAd: TaurusXInterstitial?
     
-    override func load(
+    func load(
         payload: TaurusXBiddingPayload,
         adUnitExtras: TaurusXAdUnitExtras,
         response: @escaping DemandProviderResponse
@@ -27,6 +29,43 @@ final class TaurusXBiddingInterstitialDemandProvider: TaurusXBiddingBaseDemandPr
         self.interstitialAd?.delegate = self
         self.interstitialAd?.load(withPayload: payload.payload)
     }
+    
+    func collectBiddingToken(
+        biddingTokenExtras: TaurusXBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        var tokens = [String: String]()
+        let group = DispatchGroup()
+
+        biddingTokenExtras.placementIds
+            .filter { $0.format == .interstitial }
+            .forEach { adUnit in
+                group.enter()
+                TaurusXBidManager.getToken(adUnit.placementId) { token in
+                    tokens[adUnit.placementId] = token
+                    group.leave()
+                }
+            }
+
+        group.notify(queue: .main) {
+            if tokens.isEmpty {
+                response(.failure(.unspecifiedException("No bidding tokens")))
+            } else {
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: tokens, options: [])
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        response(.success(jsonString))
+                    } else {
+                        response(.failure(.unspecifiedException("Mapping tokens error")))
+                    }
+                } catch {
+                    response(.failure(.unspecifiedException("Mapping tokens error")))
+                }
+            }
+        }
+    }
+    
+    func notify(ad: TaurusXDemandAd, event: DemandProviderEvent) {}
 }
 
 extension TaurusXBiddingInterstitialDemandProvider: InterstitialDemandProvider {
