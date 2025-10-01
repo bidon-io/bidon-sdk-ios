@@ -86,9 +86,39 @@ final class DeviceManager: Device, Environment {
 
 
 private extension DeviceManager {
-    static let userAgent: String = {
-        return (WKWebView().value(forKey: "userAgent") as? String) ?? ""
-    }()
+    static var userAgent: String {
+        let currentOS = UIDevice.current.systemVersion
+        let storedOS = UserDefaults.standard.string(forKey: Constants.UserDefaultsKey.userAgentOSVersion)
+        let cachedUA = UserDefaults.standard.string(forKey: Constants.UserDefaultsKey.userAgent)
+
+        if let ua = cachedUA, !ua.isEmpty, storedOS == currentOS {
+            return ua
+        }
+
+        prewarmAndCacheWebKitUserAgentIfNeeded()
+
+        UserDefaults.standard.set("", forKey: Constants.UserDefaultsKey.userAgent)
+        UserDefaults.standard.set(currentOS, forKey: Constants.UserDefaultsKey.userAgentOSVersion)
+
+        return ""
+    }
+
+    static func prewarmAndCacheWebKitUserAgentIfNeeded() {
+        DispatchQueue.main.async {
+            let webView = WKWebView()
+            webView.evaluateJavaScript("navigator.userAgent") { [webView] result, _ in
+                let jsUA = (result as? String).flatMap { $0.isEmpty ? nil : $0 }
+                let kvcUA = webView.value(forKey: "userAgent") as? String
+                guard let ua = jsUA ?? kvcUA, !ua.isEmpty else { return }
+
+                let current = UserDefaults.standard.string(forKey: Constants.UserDefaultsKey.userAgent)
+                guard current != ua else { return }
+
+                UserDefaults.standard.set(ua, forKey: Constants.UserDefaultsKey.userAgent)
+                UserDefaults.standard.set(UIDevice.current.systemVersion, forKey: Constants.UserDefaultsKey.userAgentOSVersion)
+            }
+        }
+    }
 
     static let scaleFactor: CGFloat = {
         switch UIDevice.current.userInterfaceIdiom {

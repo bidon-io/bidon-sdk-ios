@@ -51,6 +51,8 @@ struct Constants {
         static let coppa = "BidonCoppa"
         static let segmentId = "BidonSegmentId"
         static let segmentUid = "BidonSegmentUid"
+        static let userAgent = "BidonUserAgent"
+        static let userAgentOSVersion = "BidonUserAgentOSVersion"
     }
 
     enum Timeout {
