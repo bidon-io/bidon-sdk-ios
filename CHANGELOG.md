@@ -2,6 +2,7 @@
 
 ## New features
 - BDN-1010 Adapter Versioning and Github Actions
+- BDN-1017 TaurusX implementation
 
 ## Fixes
 - BDN-1053 Location waiting fix
