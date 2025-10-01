@@ -103,6 +103,10 @@ def yandex
   pod 'YandexMobileAds', "~> 7.14.1"
 end
 
+def taurus
+  pod 'TaurusxAdsSDK','~> 1.9.2'
+end
+
 
 def appodeal_mediation
   # pod 'Appodeal', '~> 3.3.0'
@@ -225,6 +229,11 @@ target 'BidonAdapterYandex' do
   yandex
 end
 
+target 'BidonAdapterTaurusX' do
+  project 'Adapters/Adapters.xcodeproj'
+  taurus
+end
+
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
   pod 'AppLovinSDK', '~> 13.3.1'
@@ -260,6 +269,7 @@ target 'AdaptersTests' do
   chartboost
   ironsource
   yandex
+  taurus
 end
 
 # Demo
@@ -289,6 +299,7 @@ target 'Sandbox' do
   chartboost
   ironsource
   yandex
+  taurus
 end
 
 post_install do |installer|

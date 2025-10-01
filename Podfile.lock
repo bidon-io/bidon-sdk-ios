@@ -188,6 +188,9 @@ PODS:
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
   - SwiftLint (0.61.0)
+  - TaurusxAdsSDK (1.9.2):
+    - TaurusxAdsSDK/TaurusxAds (= 1.9.2)
+  - TaurusxAdsSDK/TaurusxAds (1.9.2)
   - UnityAds (4.16.1)
   - VGSL (7.9.1):
     - VGSLFundamentals (= 7.9.1)
@@ -228,6 +231,7 @@ DEPENDENCIES:
   - myTargetSDK (~> 5.33.0)
   - StackConsentManager (~> 3.0.0)
   - SwiftLint
+  - TaurusxAdsSDK (~> 1.9.2)
   - UnityAds (~> 4.16.0)
   - VungleAds (~> 7.5.2)
   - YandexMobileAds (~> 7.14.1)
@@ -289,6 +293,7 @@ SPEC REPOS:
     - OMSDK_Appodeal
     - StackModules
     - SwiftLint
+    - TaurusxAdsSDK
     - UnityAds
     - VGSL
     - VGSLFundamentals
@@ -352,6 +357,7 @@ SPEC CHECKSUMS:
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
   StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
   SwiftLint: bf6da11a31c6644a0bbb27f4fa15fd9636db00b3
+  TaurusxAdsSDK: 5005501aa0f9fc222a11a17d62d67e9edff934b8
   UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
   VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
   VGSLFundamentals: b754240ae1927d90aa2bceea9191b9ce330e9c94
@@ -360,6 +366,6 @@ SPEC CHECKSUMS:
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 199dd6ffe310f59bbaf245addbaf30221b25125e
+PODFILE CHECKSUM: 0c51464679cbbf1767d10ea3a7de7bb771635e14
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

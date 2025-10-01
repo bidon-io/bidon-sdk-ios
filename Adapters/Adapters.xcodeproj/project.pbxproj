@@ -161,6 +161,20 @@
 		42F71CFA29967AEE002FC80D /* BidMachineAdDemand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CF929967AEE002FC80D /* BidMachineAdDemand.swift */; };
 		42F71CFC29969E3B002FC80D /* BidMachineDirectRewardedAdDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFB29969E3B002FC80D /* BidMachineDirectRewardedAdDemandProvider.swift */; };
 		42F71D002996B0B5002FC80D /* BidMachineDirectAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F71CFF2996B0B5002FC80D /* BidMachineDirectAdViewDemandProvider.swift */; };
+		4900BD762E7AFBFF006E6B19 /* BidonAdapterTaurusX.h in Headers */ = {isa = PBXBuildFile; fileRef = 4900BD742E7AFBFF006E6B19 /* BidonAdapterTaurusX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4900BD782E7AFC31006E6B19 /* TaurusXDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900BD772E7AFC31006E6B19 /* TaurusXDemandSourceAdapter.swift */; };
+		4907F8312E7B00BC00A04207 /* TaurusXAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F8292E7B00BC00A04207 /* TaurusXAdUnitExtras.swift */; };
+		4907F8322E7B00BC00A04207 /* TaurusXRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F82F2E7B00BC00A04207 /* TaurusXRewardedDemandProvider.swift */; };
+		4907F8332E7B00BC00A04207 /* TaurusXDirectAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F82C2E7B00BC00A04207 /* TaurusXDirectAdViewDemandProvider.swift */; };
+		4907F8342E7B00BC00A04207 /* TaurusXParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F82A2E7B00BC00A04207 /* TaurusXParameters.swift */; };
+		4907F8362E7B00BC00A04207 /* TaurusXDirectInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F82E2E7B00BC00A04207 /* TaurusXDirectInterstitialDemandProvider.swift */; };
+		4907F83C2E7C613A00A04207 /* TaurusXBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F8392E7C613A00A04207 /* TaurusXBiddingAdViewDemandProvider.swift */; };
+		4907F83D2E7C613A00A04207 /* TaurusXBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F83B2E7C613A00A04207 /* TaurusXBiddingRewardedDemandProvider.swift */; };
+		4907F83E2E7C613A00A04207 /* TaurusXBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F83A2E7C613A00A04207 /* TaurusXBiddingInterstitialDemandProvider.swift */; };
+		4907F8402E7C62B100A04207 /* TaurusXBiddingToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F83F2E7C62B100A04207 /* TaurusXBiddingToken.swift */; };
+		4907F8422E7C62C500A04207 /* TaurusXBiddingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907F8412E7C62C500A04207 /* TaurusXBiddingPayload.swift */; };
+		4907F84A2E8175EF00A04207 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4907F8492E8175EF00A04207 /* Bidon.framework */; };
+		4907F84B2E8175EF00A04207 /* Bidon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4907F8492E8175EF00A04207 /* Bidon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		49088BF52C6A4E870024A640 /* BidonAdapterIronSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 49088BF42C6A4E870024A640 /* BidonAdapterIronSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49088C022C6A4E920024A640 /* IronSourceInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088BF92C6A4E920024A640 /* IronSourceInterstitialDemandProvider.swift */; };
 		49088C032C6A4E920024A640 /* IronSourceRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49088BFA2C6A4E920024A640 /* IronSourceRewardedDemandProvider.swift */; };
@@ -216,6 +230,7 @@
 		6DF14586318869FA72F054CD /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
 		77CEB42F0160C1D1D1FBFC78 /* Pods_BidonAdapterMoloco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5458F138EF1375B12B5BD86 /* Pods_BidonAdapterMoloco.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
+		91E8CF40A766F40FA61F751C /* Pods_BidonAdapterTaurusX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 200F9F4223F7A6201011BC19 /* Pods_BidonAdapterTaurusX.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
 		B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; };
 		B90A2D5E2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -246,6 +261,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4907F84C2E8175EF00A04207 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4907F84B2E8175EF00A04207 /* Bidon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		499682932E44B1C7003DE568 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -282,6 +308,7 @@
 		19D38ACA458B91ABD92F69D9 /* Pods_BidonAdapterAppLovinTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterAppLovinTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BB99F652294D4BB007C15C5 /* Pods_BidonAdapterMyTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMyTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D15F8CA3786B73814F1ADA8 /* Pods_BidonAdapterChartboostTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterChartboostTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		200F9F4223F7A6201011BC19 /* Pods_BidonAdapterTaurusX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterTaurusX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		205BE40A56721DFA00D0C84D /* Pods_BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		24575D8C024D615C56920AF9 /* Pods_BidonAdapterIronSourceTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterIronSourceTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B3F964E39F067DCA07D1A8 /* Pods-BidonAdapterMolocoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMolocoTests.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMolocoTests/Pods-BidonAdapterMolocoTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -472,7 +499,21 @@
 		485BCB9C6A1173CDC5BD3082 /* Pods-NewAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NewAdapter.debug.xcconfig"; path = "Target Support Files/Pods-NewAdapter/Pods-NewAdapter.debug.xcconfig"; sourceTree = "<group>"; };
 		4900278EEAEDF82D74C48F6D /* Pods-BidonAdapterMobileFuse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMobileFuse.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMobileFuse/Pods-BidonAdapterMobileFuse.release.xcconfig"; sourceTree = "<group>"; };
 		4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.3.1/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
+		4900BD6C2E7AFBF2006E6B19 /* BidonAdapterTaurusX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterTaurusX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4900BD742E7AFBFF006E6B19 /* BidonAdapterTaurusX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterTaurusX.h; sourceTree = "<group>"; };
+		4900BD772E7AFC31006E6B19 /* TaurusXDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		4901A9752D2D442F00BDE4C4 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.10.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
+		4907F8292E7B00BC00A04207 /* TaurusXAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXAdUnitExtras.swift; sourceTree = "<group>"; };
+		4907F82A2E7B00BC00A04207 /* TaurusXParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXParameters.swift; sourceTree = "<group>"; };
+		4907F82C2E7B00BC00A04207 /* TaurusXDirectAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXDirectAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		4907F82E2E7B00BC00A04207 /* TaurusXDirectInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXDirectInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		4907F82F2E7B00BC00A04207 /* TaurusXRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		4907F8392E7C613A00A04207 /* TaurusXBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
+		4907F83A2E7C613A00A04207 /* TaurusXBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
+		4907F83B2E7C613A00A04207 /* TaurusXBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
+		4907F83F2E7C62B100A04207 /* TaurusXBiddingToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXBiddingToken.swift; sourceTree = "<group>"; };
+		4907F8412E7C62C500A04207 /* TaurusXBiddingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaurusXBiddingPayload.swift; sourceTree = "<group>"; };
+		4907F8492E8175EF00A04207 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49088BF22C6A4E870024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49088BF42C6A4E870024A640 /* BidonAdapterIronSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterIronSource.h; sourceTree = "<group>"; };
 		49088BF92C6A4E920024A640 /* IronSourceInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IronSourceInterstitialDemandProvider.swift; sourceTree = "<group>"; };
@@ -536,6 +577,7 @@
 		49C4081E2C60C8ED005CB90B /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C4083A2C62443A005CB90B /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.7/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49D69CBE2C6CC93D007EF1F8 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C56316E7DD72227D36BEAC0 /* Pods-BidonAdapterTaurusX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterTaurusX.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterTaurusX/Pods-BidonAdapterTaurusX.release.xcconfig"; sourceTree = "<group>"; };
 		4C82188542ACCE43277E9B09 /* Pods-BidonAdapterDTExchangeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterDTExchangeTests.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterDTExchangeTests/Pods-BidonAdapterDTExchangeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFC6D9B2BA785E1B75C49E0 /* Pods-BidonAdapterYandexTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterYandexTests.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterYandexTests/Pods-BidonAdapterYandexTests.release.xcconfig"; sourceTree = "<group>"; };
 		500C274D0C5F61B645D9B0AB /* Pods-BidonAdapterDTExchangeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterDTExchangeTests.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterDTExchangeTests/Pods-BidonAdapterDTExchangeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -547,6 +589,7 @@
 		590DCEB56042CAE4CC28A8F1 /* Pods_BidonAdapterBidMachine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterBidMachine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59A49A0D592B62A8EBF3A11B /* Pods-BidonAdapterMyTargetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterMyTargetTests.release.xcconfig"; path = "Target Support Files/Pods-BidonAdapterMyTargetTests/Pods-BidonAdapterMyTargetTests.release.xcconfig"; sourceTree = "<group>"; };
 		5ACFA1A9D3D9DF1686E1EF11 /* Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; path = "Target Support Files/Pods-BidOnAdapterGoogleMobileAds/Pods-BidOnAdapterGoogleMobileAds.debug.xcconfig"; sourceTree = "<group>"; };
+		5BC8A592BD368D2F639CC479 /* Pods-BidonAdapterTaurusX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterTaurusX.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterTaurusX/Pods-BidonAdapterTaurusX.debug.xcconfig"; sourceTree = "<group>"; };
 		62484BD68A0C4A67CE2EA827 /* Pods_BidonAdapterMetaAudienceNetworkTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BidonAdapterMetaAudienceNetworkTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62706AC459249320E79227E4 /* Pods-BidonAdapterGoogleAdManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterGoogleAdManagerTests.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterGoogleAdManagerTests/Pods-BidonAdapterGoogleAdManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		62C402451EA9D2A9BD6E2C20 /* Pods-BidonAdapterChartboost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BidonAdapterChartboost.debug.xcconfig"; path = "Target Support Files/Pods-BidonAdapterChartboost/Pods-BidonAdapterChartboost.debug.xcconfig"; sourceTree = "<group>"; };
@@ -787,6 +830,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4900BD692E7AFBF2006E6B19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91E8CF40A766F40FA61F751C /* Pods_BidonAdapterTaurusX.framework in Frameworks */,
+				4907F84A2E8175EF00A04207 /* Bidon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49088BEF2C6A4E870024A640 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -922,6 +974,7 @@
 				4249D5F229AFAF6800BAA338 /* BidonAdapterUnityAds */,
 				4265B5382A5FEFDA007AD808 /* BidonAdapterVungle */,
 				4996829D2E44B1CD003DE568 /* BidonAdapterYandex */,
+				4900BD752E7AFBFF006E6B19 /* BidonAdapterTaurusX */,
 				628D13BF18603C4DCE80EE71 /* Frameworks */,
 				8462A3B50D72D26B685AAD18 /* Pods */,
 				42210211285A32ED006596DA /* Products */,
@@ -950,6 +1003,7 @@
 				495CD3262C7761B700590AAD /* BidonAdapterChartboost.framework */,
 				499682952E44B1C7003DE568 /* libBidonAdapterYandex.a */,
 				B93BC1F92E54C7A600C99DBE /* BidonAdapterMoloco.framework */,
+				4900BD6C2E7AFBF2006E6B19 /* BidonAdapterTaurusX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1410,6 +1464,57 @@
 			path = Bidding;
 			sourceTree = "<group>";
 		};
+		4900BD752E7AFBFF006E6B19 /* BidonAdapterTaurusX */ = {
+			isa = PBXGroup;
+			children = (
+				4907F82B2E7B00BC00A04207 /* Models */,
+				4907F8302E7B00BC00A04207 /* Providers */,
+				4900BD742E7AFBFF006E6B19 /* BidonAdapterTaurusX.h */,
+				4900BD772E7AFC31006E6B19 /* TaurusXDemandSourceAdapter.swift */,
+			);
+			path = BidonAdapterTaurusX;
+			sourceTree = "<group>";
+		};
+		4907F82B2E7B00BC00A04207 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4907F8412E7C62C500A04207 /* TaurusXBiddingPayload.swift */,
+				4907F83F2E7C62B100A04207 /* TaurusXBiddingToken.swift */,
+				4907F8292E7B00BC00A04207 /* TaurusXAdUnitExtras.swift */,
+				4907F82A2E7B00BC00A04207 /* TaurusXParameters.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4907F8302E7B00BC00A04207 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				4907F8382E7C608400A04207 /* Bidding */,
+				4907F8372E7C488A00A04207 /* Direct */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		4907F8372E7C488A00A04207 /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				4907F82C2E7B00BC00A04207 /* TaurusXDirectAdViewDemandProvider.swift */,
+				4907F82E2E7B00BC00A04207 /* TaurusXDirectInterstitialDemandProvider.swift */,
+				4907F82F2E7B00BC00A04207 /* TaurusXRewardedDemandProvider.swift */,
+			);
+			path = Direct;
+			sourceTree = "<group>";
+		};
+		4907F8382E7C608400A04207 /* Bidding */ = {
+			isa = PBXGroup;
+			children = (
+				4907F8392E7C613A00A04207 /* TaurusXBiddingAdViewDemandProvider.swift */,
+				4907F83A2E7C613A00A04207 /* TaurusXBiddingInterstitialDemandProvider.swift */,
+				4907F83B2E7C613A00A04207 /* TaurusXBiddingRewardedDemandProvider.swift */,
+			);
+			path = Bidding;
+			sourceTree = "<group>";
+		};
 		49088BF32C6A4E870024A640 /* BidonAdapterIronSource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1580,6 +1685,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4907F8492E8175EF00A04207 /* Bidon.framework */,
 				B9A14B3E2E70249D00DFAF8D /* Bidon.framework */,
 				B9A14B292E70230100DFAF8D /* Bidon.framework */,
 				B9A14B142E70215E00DFAF8D /* Bidon.framework */,
@@ -1677,6 +1783,7 @@
 				B363F2166D0D13FCAB9271AD /* Pods_BidonAdapterBidMachineTests.framework */,
 				19D38ACA458B91ABD92F69D9 /* Pods_BidonAdapterAppLovinTests.framework */,
 				C39295848052454C14B4344A /* Pods_BidonAdapterAmazonTests.framework */,
+				200F9F4223F7A6201011BC19 /* Pods_BidonAdapterTaurusX.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1766,6 +1873,8 @@
 				EDDB089365E94A523D88DB18 /* Pods-BidonAdapterAppLovinTests.release.xcconfig */,
 				85F40A99B30ACA29F21A7041 /* Pods-BidonAdapterAmazonTests.debug.xcconfig */,
 				89254793FD4C9BAFB26BDBFF /* Pods-BidonAdapterAmazonTests.release.xcconfig */,
+				5BC8A592BD368D2F639CC479 /* Pods-BidonAdapterTaurusX.debug.xcconfig */,
+				4C56316E7DD72227D36BEAC0 /* Pods-BidonAdapterTaurusX.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -1944,6 +2053,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				42CFF1B12AAF617500AC2C24 /* BidonAdapterInMobi.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4900BD672E7AFBF2006E6B19 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4900BD762E7AFBFF006E6B19 /* BidonAdapterTaurusX.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2239,6 +2356,26 @@
 			productReference = 42CFF1AE2AAF617400AC2C24 /* BidonAdapterInMobi.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		4900BD6B2E7AFBF2006E6B19 /* BidonAdapterTaurusX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4900BD732E7AFBF2006E6B19 /* Build configuration list for PBXNativeTarget "BidonAdapterTaurusX" */;
+			buildPhases = (
+				79F9353EEBD5D7A5E2FAFE93 /* [CP] Check Pods Manifest.lock */,
+				4900BD672E7AFBF2006E6B19 /* Headers */,
+				4900BD682E7AFBF2006E6B19 /* Sources */,
+				4900BD692E7AFBF2006E6B19 /* Frameworks */,
+				4900BD6A2E7AFBF2006E6B19 /* Resources */,
+				4907F84C2E8175EF00A04207 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BidonAdapterTaurusX;
+			productName = BidonAdapterTaurusX;
+			productReference = 4900BD6C2E7AFBF2006E6B19 /* BidonAdapterTaurusX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		49088BF12C6A4E870024A640 /* BidonAdapterIronSource */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49088BF82C6A4E870024A640 /* Build configuration list for PBXNativeTarget "BidonAdapterIronSource" */;
@@ -2397,6 +2534,10 @@
 						CreatedOnToolsVersion = 14.3.1;
 						LastSwiftMigration = 1430;
 					};
+					4900BD6B2E7AFBF2006E6B19 = {
+						CreatedOnToolsVersion = 16.1;
+						LastSwiftMigration = 1610;
+					};
 					49088BF12C6A4E870024A640 = {
 						CreatedOnToolsVersion = 15.2;
 						LastSwiftMigration = 1520;
@@ -2448,6 +2589,7 @@
 				495CD3252C7761B700590AAD /* BidonAdapterChartboost */,
 				499682942E44B1C7003DE568 /* BidonAdapterYandex */,
 				B93BC1F82E54C7A600C99DBE /* BidonAdapterMoloco */,
+				4900BD6B2E7AFBF2006E6B19 /* BidonAdapterTaurusX */,
 			);
 		};
 /* End PBXProject section */
@@ -2538,6 +2680,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		42CFF1AC2AAF617400AC2C24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4900BD6A2E7AFBF2006E6B19 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2763,6 +2912,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleMobileAds/Pods-BidonAdapterGoogleMobileAds-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79F9353EEBD5D7A5E2FAFE93 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BidonAdapterTaurusX-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7B7C2860B8C2175F5941569B /* [CP] Copy Pods Resources */ = {
@@ -3385,6 +3556,24 @@
 				B9B0B96B2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift in Sources */,
 				B9B0B9692E687C7800286D44 /* InMobiBiddingDemandAd.swift in Sources */,
 				42CFF1C22AAF6A3800AC2C24 /* InMobiDemandAd.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4900BD682E7AFBF2006E6B19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4900BD782E7AFC31006E6B19 /* TaurusXDemandSourceAdapter.swift in Sources */,
+				4907F8312E7B00BC00A04207 /* TaurusXAdUnitExtras.swift in Sources */,
+				4907F8322E7B00BC00A04207 /* TaurusXRewardedDemandProvider.swift in Sources */,
+				4907F83C2E7C613A00A04207 /* TaurusXBiddingAdViewDemandProvider.swift in Sources */,
+				4907F83D2E7C613A00A04207 /* TaurusXBiddingRewardedDemandProvider.swift in Sources */,
+				4907F8402E7C62B100A04207 /* TaurusXBiddingToken.swift in Sources */,
+				4907F83E2E7C613A00A04207 /* TaurusXBiddingInterstitialDemandProvider.swift in Sources */,
+				4907F8332E7B00BC00A04207 /* TaurusXDirectAdViewDemandProvider.swift in Sources */,
+				4907F8422E7C62C500A04207 /* TaurusXBiddingPayload.swift in Sources */,
+				4907F8342E7B00BC00A04207 /* TaurusXParameters.swift in Sources */,
+				4907F8362E7B00BC00A04207 /* TaurusXDirectInterstitialDemandProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5686,6 +5875,185 @@
 			};
 			name = Release;
 		};
+		4900BD702E7AFBF2006E6B19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BC8A592BD368D2F639CC479 /* Pods-BidonAdapterTaurusX.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appodeal.BidonAdapterTaurusX;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4900BD712E7AFBF2006E6B19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C56316E7DD72227D36BEAC0 /* Pods-BidonAdapterTaurusX.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = "$(inherited)";
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = staticlib;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appodeal.BidonAdapterTaurusX;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		49088BF62C6A4E870024A640 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 84AAA56990B0B7F933789065 /* Pods-BidonAdapterIronSource.debug.xcconfig */;
@@ -6654,6 +7022,15 @@
 			buildConfigurations = (
 				42CFF1B22AAF617600AC2C24 /* Debug */,
 				42CFF1B32AAF617600AC2C24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4900BD732E7AFBF2006E6B19 /* Build configuration list for PBXNativeTarget "BidonAdapterTaurusX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4900BD702E7AFBF2006E6B19 /* Debug */,
+				4900BD712E7AFBF2006E6B19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
