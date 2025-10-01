@@ -97,7 +97,7 @@ private extension DeviceManager {
 
         prewarmAndCacheWebKitUserAgentIfNeeded()
 
-        UserDefaults.standard.set("", forKey: Constants.UserDefaultsKey.userAgent)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultsKey.userAgent)
         UserDefaults.standard.set(currentOS, forKey: Constants.UserDefaultsKey.userAgentOSVersion)
 
         return ""
