@@ -18,7 +18,7 @@ class MolocoBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidding
         biddingTokenExtras: MolocoBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        Moloco.shared.getBidToken { bidToken, error in
+        Moloco.shared.getBidToken(params: MolocoParams(mediation: "")) { bidToken, error in
             if let error = error {
                 if let mErr = error as? MolocoBidTokenError {
                     response(.failure(MediationError(from: mErr)))

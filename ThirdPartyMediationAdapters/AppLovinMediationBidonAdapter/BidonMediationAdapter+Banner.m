@@ -40,7 +40,7 @@
             [banner setExtraValue:@(lastRegisteredEcpm) for:@"previous_auction_price"];
         }
         banner.delegate = self;
-
+        banner.rootViewController = parameters.presentingViewController;
         self.banner = banner;
         [banner loadAdWith:0 auctionKey:auctionKey];
     } else {
@@ -56,6 +56,7 @@
         NSLog(@"[BidonAdapter] [%@] Banner ad loaded from cache, Placement ID: %@", self.adViewAdUnitId, self.bannerPlacementId);
 
         self.banner = (BDNBannerView *)cachedAd.adInstance;
+        self.banner.rootViewController = parameters.presentingViewController;
         self.banner.delegate = self;
         [delegate didLoadAdForAdView:self.banner withExtraInfo:[self extrasDictForEcpm:ecpm ad:cachedAd.ad]];
     }

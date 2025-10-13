@@ -54,7 +54,7 @@ def mobilefuse
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '~> 3.12.0'
+  pod 'MolocoSDKiOS', '~> 4.0.0'
 end
 
 def vungle
