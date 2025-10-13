@@ -1,6 +1,7 @@
 # develop (0.12.0)
 
 ## New features
+- BDN-1067 Update Moloco
 - BDN-1010 Adapter Versioning and Github Actions
 - BDN-1017 TaurusX implementation
 
