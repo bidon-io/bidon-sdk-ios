@@ -49,17 +49,11 @@ extension StartIoDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         if let sdk = STAStartAppSDK.sharedInstance() {
+            STAStartAppSDK.sharedInstance().testAdsEnabled = true
             sdk.appID = parameters.appId
-//            sdk.devID = parameters.devId
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                let bidToken = STAStartAppSDK.sharedInstance().biddingToken
-                print(">>> bidToken: ", bidToken)
-                print(bidToken)
-//            }
             
             applyConsent(from: context.regulations)
             STAStartAppSDK.sharedInstance().enableMediationMode(for: "Bidon", version: adapterVersion)
-            
             isInitialized = true
             completion(nil)
         } else {

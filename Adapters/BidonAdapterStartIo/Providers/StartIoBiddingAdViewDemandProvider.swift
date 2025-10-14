@@ -46,10 +46,10 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
             return
         }
         self.response = response
-        self.unitId = adUnitExtras.adUnitId
+        self.unitId = adUnitExtras.tagId
 
         let pref = STAAdPreferences()
-        pref.adTag = adUnitExtras.adUnitId
+        pref.adTag = adUnitExtras.tagId
 
         let loader = STABannerLoader(adPreferences: pref, adm: payload.payload)
         self.bannerLoader = loader

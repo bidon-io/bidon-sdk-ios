@@ -30,15 +30,13 @@ final class StartIoBiddingInterstitialDemandProvider: StartIoBiddingBaseDemandPr
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.adUnitId
-
-        let interstitial = STAStartAppAd()
-            let pref = STAAdPreferences()
-            pref.adTag = adUnitExtras.adUnitId
-            interstitial?.load(withDelegate: self, with: pref, adm: payload.payload)
-        self.interstitial = interstitial
-//            interstitial.loadVideoAd(withDelegate: <#T##(any STADelegateProtocol)!#>, with: <#T##STAAdPreferences!#>)
+        self.unitId = adUnitExtras.tagId
         
+        let interstitial = STAStartAppAd()
+        let pref = STAAdPreferences()
+        pref.adTag = adUnitExtras.tagId
+        interstitial?.load(withDelegate: self, with: pref, adm: payload.payload)
+        self.interstitial = interstitial
     }
 }
 

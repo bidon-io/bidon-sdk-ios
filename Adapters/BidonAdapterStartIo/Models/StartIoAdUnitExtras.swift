@@ -6,7 +6,7 @@
 import Foundation
 
 struct StartIoAdUnitExtras: Codable {
-    var adUnitId: String
+    var tagId: String
 }
 
 struct StartIoBiddingTokenExtras: Codable { }

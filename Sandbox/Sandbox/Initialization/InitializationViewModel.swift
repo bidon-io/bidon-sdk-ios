@@ -155,7 +155,7 @@ fileprivate extension Array where Element == Bidon.Adapter {
             InMobiDemandSourceAdapter(),
             AmazonDemandSourceAdapter(),
             GoogleAdManagerDemandSourceAdapter(),
-            StartIoDemandSourceAdapter()
+            StartIoDemandSourceAdapter(),
             MolocoDemandSourceAdapter(),
             TaurusXDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }

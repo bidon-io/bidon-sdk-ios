@@ -32,11 +32,11 @@ final class StartIoBiddingRewardedDemandProvider: StartIoBiddingBaseDemandProvid
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.adUnitId
+        self.unitId = adUnitExtras.tagId
 
         let rewarded = STAStartAppAd()
         let pref = STAAdPreferences()
-        pref.adTag = adUnitExtras.adUnitId
+        pref.adTag = adUnitExtras.tagId
         rewarded?.loadRewardedVideoAd(withDelegate: self, with: pref, adm: payload.payload)
         self.rewarded = rewarded
     }
