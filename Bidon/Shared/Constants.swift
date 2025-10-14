@@ -40,8 +40,9 @@ struct Constants {
             "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
             "BidonAdapterYandex.YandexDemandSourceAdapter",
             "BidonAdapterChartboost.ChartboostDemandSourceAdapter",
-            "BidonAdapterMoloco.MolocoDemandSourceAdapter",
             "BidonAdapterStartIo.StartIoDemandSourceAdapter"
+            "BidonAdapterMoloco.MolocoDemandSourceAdapter",
+            "BidonAdapterTaurusX.TaurusXDemandSourceAdapter"
         ]
     }
 
@@ -51,6 +52,8 @@ struct Constants {
         static let coppa = "BidonCoppa"
         static let segmentId = "BidonSegmentId"
         static let segmentUid = "BidonSegmentUid"
+        static let userAgent = "BidonUserAgent"
+        static let userAgentOSVersion = "BidonUserAgentOSVersion"
     }
 
     enum Timeout {

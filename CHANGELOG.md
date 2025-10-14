@@ -2,6 +2,11 @@
 
 ## New features
 - BDN-1010 Adapter Versioning and Github Actions
+- BDN-1017 TaurusX implementation
+
+## Fixes
+- BDN-1053 Location waiting fix
+- BDN-1062 userAgent freeze in iOS 26 WebView fix
 
 # develop (0.11.0)
 

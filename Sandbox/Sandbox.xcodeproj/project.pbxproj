@@ -72,6 +72,7 @@
 		42EDA0B028C5FA3800BF74DE /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */; };
 		42EDA0B228C612B000BF74DE /* AppProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B128C612B000BF74DE /* AppProgressView.swift */; };
 		42EDA0B428C6178600BF74DE /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EDA0B328C6178600BF74DE /* PermissionView.swift */; };
+		4907F8442E7D530C00A04207 /* BidonAdapterTaurusX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4907F8432E7D530C00A04207 /* BidonAdapterTaurusX.framework */; };
 		49088C1E2C6B5E550024A640 /* BidonAdapterIronSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */; };
 		490F04722E0AC19B009C2592 /* InterstitialAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */; };
 		490F04742E0AC4FA009C2592 /* RewardedAdDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */; };
@@ -176,6 +177,7 @@
 		42EDA0AF28C5FA3800BF74DE /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		42EDA0B128C612B000BF74DE /* AppProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProgressView.swift; sourceTree = "<group>"; };
 		42EDA0B328C6178600BF74DE /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
+		4907F8432E7D530C00A04207 /* BidonAdapterTaurusX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterTaurusX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49088C1D2C6B5E550024A640 /* BidonAdapterIronSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterIronSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		490F04712E0AC19B009C2592 /* InterstitialAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdDemoView.swift; sourceTree = "<group>"; };
 		490F04732E0AC4FA009C2592 /* RewardedAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdDemoView.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				426A5C7C29AF7CDD0065AAD5 /* BidonAdapterBidMachine.framework in Frameworks */,
 				B93BC21F2E5728B100C99DBE /* BidonAdapterMoloco.framework in Frameworks */,
 				B99C359D2E82F84800488A3A /* Bidon.framework in Frameworks */,
+				4907F8442E7D530C00A04207 /* BidonAdapterTaurusX.framework in Frameworks */,
 				426827322A5D857B0084A48D /* BidonAdapterMobileFuse.framework in Frameworks */,
 				42E3DA002A5D968500546D3A /* BidonAdapterMobileFuse.framework in Frameworks */,
 				4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */,
@@ -269,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				B99C35922E82E51400488A3A /* BidonAdapterStartIo.framework */,
+				4907F8432E7D530C00A04207 /* BidonAdapterTaurusX.framework */,
 				499682B62E44B855003DE568 /* libBidonAdapterYandex.a */,
 				4996829F2E44B1F0003DE568 /* libNewAdapter.a */,
 				B93BC21E2E5728B100C99DBE /* BidonAdapterMoloco.framework */,
