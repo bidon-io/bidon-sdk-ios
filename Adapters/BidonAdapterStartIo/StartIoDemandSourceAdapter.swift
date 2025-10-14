@@ -49,7 +49,7 @@ extension StartIoDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         if let sdk = STAStartAppSDK.sharedInstance() {
-            STAStartAppSDK.sharedInstance().testAdsEnabled = true
+            STAStartAppSDK.sharedInstance().testAdsEnabled = context.isTestMode
             sdk.appID = parameters.appId
             
             applyConsent(from: context.regulations)
