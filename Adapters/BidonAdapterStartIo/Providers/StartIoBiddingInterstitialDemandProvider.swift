@@ -55,6 +55,7 @@ extension StartIoBiddingInterstitialDemandProvider: STADelegateProtocol {
     func didLoad(_ ad: STAAbstractAd!) {
         guard let interstitial = ad as? STAStartAppAd else {
             response?(.failure(.adFormatNotSupported))
+            response = nil
             return
         }
 

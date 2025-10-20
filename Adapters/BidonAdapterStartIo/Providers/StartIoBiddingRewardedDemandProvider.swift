@@ -58,6 +58,7 @@ extension StartIoBiddingRewardedDemandProvider: STADelegateProtocol {
     func didLoad(_ ad: STAAbstractAd!) {
         guard let rewarded = ad as? STAStartAppAd else {
             response?(.failure(.adFormatNotSupported))
+            response = nil
             return
         }
 
