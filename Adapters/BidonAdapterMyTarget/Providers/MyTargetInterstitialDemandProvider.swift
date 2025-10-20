@@ -9,7 +9,7 @@ import UIKit
 import Bidon
 import MyTargetSDK
 
-final class MintegralInterstitialDemandAd: DemandAd {
+final class MyTargetInterstitialDemandAd: DemandAd {
     var interstitial: MTRGInterstitialAd
     public var id: String { return String(interstitial.hash) }
 
@@ -18,7 +18,7 @@ final class MintegralInterstitialDemandAd: DemandAd {
     }
 }
 
-final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<MintegralInterstitialDemandAd> {
+final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<MyTargetInterstitialDemandAd> {
 
     private var interstitial: MTRGInterstitialAd?
     private var response: DemandProviderResponse?
@@ -65,7 +65,7 @@ final class MyTargetInterstitialDemandProvider: MyTargetBaseDemandProvider<Minte
 
 extension MyTargetInterstitialDemandProvider: InterstitialDemandProvider {
     func show(
-        ad: MintegralInterstitialDemandAd,
+        ad: MyTargetInterstitialDemandAd,
         from viewController: UIViewController
     ) {
         ad.interstitial.show(with: viewController)
@@ -74,7 +74,7 @@ extension MyTargetInterstitialDemandProvider: InterstitialDemandProvider {
 
 extension MyTargetInterstitialDemandProvider: MTRGInterstitialAdDelegate {
     func onLoad(with interstitialAd: MTRGInterstitialAd) {
-        let ad = MintegralInterstitialDemandAd(interstitial: interstitialAd)
+        let ad = MyTargetInterstitialDemandAd(interstitial: interstitialAd)
         response?(.success(ad))
         response = nil
     }
@@ -87,7 +87,7 @@ extension MyTargetInterstitialDemandProvider: MTRGInterstitialAdDelegate {
     func onDisplay(with interstitialAd: MTRGInterstitialAd) {
         delegate?.providerWillPresent(self)
 
-        let ad = MintegralInterstitialDemandAd(interstitial: interstitialAd)
+        let ad = MyTargetInterstitialDemandAd(interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
 
