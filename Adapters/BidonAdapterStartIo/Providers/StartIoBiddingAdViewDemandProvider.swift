@@ -89,9 +89,7 @@ extension StartIoBiddingAdViewDemandProvider: AdViewDemandProvider {
         return ad.adView
     }
 
-    func didTrackImpression(for ad: StartIoAdViewDemandAd) {
-        // no-op
-    }
+    func didTrackImpression(for ad: StartIoAdViewDemandAd) {}
 }
 
 extension STABannerViewBase: Bidon.AdViewContainer {
