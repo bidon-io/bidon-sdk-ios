@@ -21,7 +21,7 @@ public struct AdViewContext {
     ) {
         self.format = format
         self.size = size
-        self.rootViewController = rootViewController
+        self.rootViewController = rootViewController ?? UIApplication.shared.bd.topViewcontroller
     }
 
     public init(
