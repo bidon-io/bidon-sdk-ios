@@ -280,6 +280,7 @@ target 'AdaptersTests' do
   ironsource
   yandex
   taurus
+  startio
 end
 
 # Demo
