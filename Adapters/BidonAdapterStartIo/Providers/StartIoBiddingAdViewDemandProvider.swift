@@ -10,11 +10,10 @@ import StartApp
 
 
 final class StartIoAdViewDemandAd: DemandAd {
-    public let id: String
+    public var id: String { return String(adView.hash) }
     public var adView: STABannerViewBase
 
-    init(unitId: String, adView: STABannerViewBase) {
-        self.id = unitId
+    init(adView: STABannerViewBase) {
         self.adView = adView
     }
 }
@@ -26,7 +25,6 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
 
     private var response: Bidon.DemandProviderResponse?
     private var adView: STABannerViewBase?
-    private var unitId: String = ""
     private var bannerLoader: STABannerLoader?
 
     init(
@@ -46,7 +44,6 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
             return
         }
         self.response = response
-        self.unitId = adUnitExtras.tagId
 
         let pref = STAAdPreferences()
         pref.adTag = adUnitExtras.tagId
@@ -76,7 +73,7 @@ final class StartIoBiddingAdViewDemandProvider: StartIoBiddingBaseDemandProvider
                 inlineView.translatesAutoresizingMaskIntoConstraints = false
             }
 
-            let wrappedAd = StartIoAdViewDemandAd(unitId: self.unitId, adView: view)
+            let wrappedAd = StartIoAdViewDemandAd(adView: view)
             self.response?(.success(wrappedAd))
             self.response = nil
         }
@@ -99,7 +96,7 @@ extension STABannerViewBase: Bidon.AdViewContainer {
 extension StartIoBiddingAdViewDemandProvider: STABannerDelegateProtocol {
     func didDisplayBannerAd(_ banner: STABannerViewBase) {
         delegate?.providerWillPresent(self)
-        let wrappedAd = StartIoAdViewDemandAd(unitId: unitId, adView: banner)
+        let wrappedAd = StartIoAdViewDemandAd(adView: banner)
         revenueDelegate?.provider(self, didLogImpression: wrappedAd)
     }
 

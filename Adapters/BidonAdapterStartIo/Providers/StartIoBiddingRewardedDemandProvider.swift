@@ -9,11 +9,10 @@ import StartApp
 
 
 final class StartIoRewardedDemandAd: DemandAd {
-    public let id: String
+    public var id: String { return String(rewarded.hash) }
     public var rewarded: STAStartAppAd
 
-    init(unitId: String, rewarded: STAStartAppAd) {
-        self.id = unitId
+    init(rewarded: STAStartAppAd) {
         self.rewarded = rewarded
     }
 }
@@ -23,7 +22,6 @@ final class StartIoBiddingRewardedDemandProvider: StartIoBiddingBaseDemandProvid
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     private var response: Bidon.DemandProviderResponse?
-    private var unitId: String = ""
     private var rewarded: STAStartAppAd?
 
     override func load(
@@ -32,7 +30,6 @@ final class StartIoBiddingRewardedDemandProvider: StartIoBiddingBaseDemandProvid
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.tagId
 
         let rewarded = STAStartAppAd()
         let pref = STAAdPreferences()
@@ -62,7 +59,7 @@ extension StartIoBiddingRewardedDemandProvider: STADelegateProtocol {
             return
         }
 
-        let wrappedAd = StartIoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
+        let wrappedAd = StartIoRewardedDemandAd(rewarded: rewarded)
         response?(.success(wrappedAd))
         response = nil
     }
@@ -76,7 +73,7 @@ extension StartIoBiddingRewardedDemandProvider: STADelegateProtocol {
         delegate?.providerWillPresent(self)
 
         if let rewarded = ad as? STAStartAppAd {
-            let wrappedAd = StartIoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
+            let wrappedAd = StartIoRewardedDemandAd(rewarded: rewarded)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
         }
     }
@@ -85,7 +82,7 @@ extension StartIoBiddingRewardedDemandProvider: STADelegateProtocol {
         guard let rewarded = ad as? STAStartAppAd else {
             return
         }
-        let wrappedAd = StartIoRewardedDemandAd(unitId: unitId, rewarded: rewarded)
+        let wrappedAd = StartIoRewardedDemandAd(rewarded: rewarded)
         delegate?.provider(self, didFailToDisplayAd: wrappedAd, error: SdkError(error))
     }
 

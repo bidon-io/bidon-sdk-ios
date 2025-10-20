@@ -9,11 +9,10 @@ import StartApp
 
 
 final class StartIoInterstitialDemandAd: DemandAd {
-    public let id: String
+    public var id: String { return String(interstitial.hash) }
     public var interstitial: STAStartAppAd
 
-    init(unitId: String, interstitial: STAStartAppAd) {
-        self.id = unitId
+    init(interstitial: STAStartAppAd) {
         self.interstitial = interstitial
     }
 }
@@ -21,7 +20,6 @@ final class StartIoInterstitialDemandAd: DemandAd {
 
 final class StartIoBiddingInterstitialDemandProvider: StartIoBiddingBaseDemandProvider<StartIoInterstitialDemandAd> {
     private var response: Bidon.DemandProviderResponse?
-    private var unitId: String = ""
     private var interstitial: STAStartAppAd?
 
     override func load(
@@ -30,7 +28,6 @@ final class StartIoBiddingInterstitialDemandProvider: StartIoBiddingBaseDemandPr
         response: @escaping DemandProviderResponse
     ) {
         self.response = response
-        self.unitId = adUnitExtras.tagId
         
         let interstitial = STAStartAppAd()
         let pref = STAAdPreferences()
@@ -59,7 +56,7 @@ extension StartIoBiddingInterstitialDemandProvider: STADelegateProtocol {
             return
         }
 
-        let wrappedAd = StartIoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
+        let wrappedAd = StartIoInterstitialDemandAd(interstitial: interstitial)
         response?(.success(wrappedAd))
         response = nil
     }
@@ -73,7 +70,7 @@ extension StartIoBiddingInterstitialDemandProvider: STADelegateProtocol {
         delegate?.providerWillPresent(self)
 
         if let interstitial = ad as? STAStartAppAd {
-            let wrappedAd = StartIoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
+            let wrappedAd = StartIoInterstitialDemandAd(interstitial: interstitial)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
         }
     }
@@ -82,7 +79,7 @@ extension StartIoBiddingInterstitialDemandProvider: STADelegateProtocol {
         guard let interstitial = ad as? STAStartAppAd else {
             return
         }
-        let wrappedAd = StartIoInterstitialDemandAd(unitId: unitId, interstitial: interstitial)
+        let wrappedAd = StartIoInterstitialDemandAd(interstitial: interstitial)
         delegate?.provider(self, didFailToDisplayAd: wrappedAd, error: SdkError(error))
     }
     
