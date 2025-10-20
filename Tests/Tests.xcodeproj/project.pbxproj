@@ -72,10 +72,10 @@
 		B9009E7B2E7AC04A005C6187 /* BidonAdapterChartboostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */; };
 		B9009E7C2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */; };
 		B9009E7D2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */; };
+		B9AA00012EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */; };
 		B9FD55122EA6318E00046D0D /* BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */; };
 		B9FD55132EA6318E00046D0D /* BidonAdapterStartIo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3E14CDD0E14A3D59EC3EB8E /* Pods_AdaptersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */; };
-		B9AA00012EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -178,10 +178,10 @@
 		B9009E662E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterUnityAdsTests.swift; sourceTree = "<group>"; };
 		B9009E682E7AC04A005C6187 /* BidonAdapterVungleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterVungleTests.swift; sourceTree = "<group>"; };
 		B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterYandexTests.swift; sourceTree = "<group>"; };
+		B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterStartIoTests.swift; sourceTree = "<group>"; };
 		B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterStartIo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_ObjectiveC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.release.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.release.xcconfig"; sourceTree = "<group>"; };
-		B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterStartIoTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -676,13 +676,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -719,13 +715,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -33,7 +33,9 @@ $targets = [
   "BidonAdapterMobileFuse",
   "AppLovinMediationBidonAdapter",
   "ISBidonCustomAdapter",
-  "BidonAdapterMoloco"
+  "BidonAdapterMoloco",
+  "BidonAdapterStartIo",
+  "BidonAdapterTaurusX"
 ]
 
 # Primary pod per adapter (to derive adapter version from Podfile.lock)
@@ -57,7 +59,9 @@ $adapter_primary_pod = {
   "BidonAdapterMobileFuse" => "MobileFuseSDK",
   "BidonAdapterYandex" => "YandexMobileAds",
   "AppLovinMediationBidonAdapter" => "AppLovinSDK",
-  "ISBidonCustomAdapter" => "IronSourceSDK"
+  "ISBidonCustomAdapter" => "IronSourceSDK",
+  "BidonAdapterStartIo" => "StartAppSDK",
+  "BidonAdapterTaurusX" => "TaurusxAdsSDK"
 }
 
 # ---------- Helpers ----------
