@@ -103,6 +103,10 @@ def yandex
   pod 'YandexMobileAds', "~> 7.14.1"
 end
 
+def startio
+  pod 'StartAppSDK', '~> 4.11.0'
+end
+
 def taurus
   pod 'TaurusxAdsSDK','~> 1.9.2'
 end
@@ -199,6 +203,11 @@ target 'BidonAdapterMoloco' do
   moloco
 end
 
+target 'BidonAdapterStartIo' do
+  project 'Adapters/Adapters.xcodeproj'
+  startio
+end
+
 target 'BidonAdapterVungle' do
   project 'Adapters/Adapters.xcodeproj'
   vungle
@@ -263,6 +272,7 @@ target 'AdaptersTests' do
   mintegral
   mobilefuse
   moloco
+  startio
   vungle
   inmobi
   my_target
@@ -270,6 +280,7 @@ target 'AdaptersTests' do
   ironsource
   yandex
   taurus
+  startio
 end
 
 # Demo
@@ -288,6 +299,7 @@ target 'Sandbox' do
   mintegral
   mobilefuse
   moloco
+  startio
   vungle
   bigo_ads
   meta_ads

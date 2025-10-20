@@ -117,17 +117,17 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.3.8)
-  - Google-Mobile-Ads-SDK (12.10.0):
+  - Google-Mobile-Ads-SDK (12.12.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
-  - InMobiSDK (10.8.6)
-  - IronSourceAdQualitySDK (7.25.2)
-  - IronSourceSDK (8.10.0.0):
-    - IronSourceSDK/AdQuality (= 8.10.0.0)
-    - IronSourceSDK/Ads (= 8.10.0.0)
-  - IronSourceSDK/AdQuality (8.10.0.0):
-    - IronSourceAdQualitySDK (~> 7.25.2)
-  - IronSourceSDK/Ads (8.10.0.0)
+  - InMobiSDK (10.8.8)
+  - IronSourceAdQualitySDK (7.26.2)
+  - IronSourceSDK (8.10.0.1):
+    - IronSourceSDK/AdQuality (= 8.10.0.1)
+    - IronSourceSDK/Ads (= 8.10.0.1)
+  - IronSourceSDK/AdQuality (8.10.0.1):
+    - IronSourceAdQualitySDK (~> 7.26.2)
+  - IronSourceSDK/Ads (8.10.0.1)
   - KSCrash/Core (2.0.0)
   - KSCrash/Recording (2.0.0):
     - KSCrash/RecordingCore
@@ -176,32 +176,33 @@ PODS:
   - OMSDK_Appodeal (1.5.2)
   - StackConsentManager (3.0.0):
     - GoogleUserMessagingPlatform (~> 2.1)
-  - StackModules/Core-Static (3.3.0)
-  - StackModules/ProductPresentation-Static (3.3.0):
+  - StackModules/Core-Static (3.3.1)
+  - StackModules/ProductPresentation-Static (3.3.1):
     - StackModules/Core-Static
-  - StackModules/Rendering-Static (3.3.0):
+  - StackModules/Rendering-Static (3.3.1):
     - OMSDK_Appodeal (= 1.5.2)
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
-  - StackModules/Static (3.3.0):
+  - StackModules/Static (3.3.1):
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
+  - StartAppSDK (4.11.0)
   - SwiftLint (0.61.0)
-  - TaurusxAdsSDK (1.9.2):
-    - TaurusxAdsSDK/TaurusxAds (= 1.9.2)
-  - TaurusxAdsSDK/TaurusxAds (1.9.2)
-  - UnityAds (4.16.1)
-  - VGSL (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
-    - VGSLNetworking (= 7.9.1)
-    - VGSLUI (= 7.9.1)
-  - VGSLFundamentals (7.9.1)
-  - VGSLNetworking (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
-    - VGSLUI (= 7.9.1)
-  - VGSLUI (7.9.1):
-    - VGSLFundamentals (= 7.9.1)
+  - TaurusxAdsSDK (1.9.3):
+    - TaurusxAdsSDK/TaurusxAds (= 1.9.3)
+  - TaurusxAdsSDK/TaurusxAds (1.9.3)
+  - UnityAds (4.16.2)
+  - VGSL (7.9.3):
+    - VGSLFundamentals (= 7.9.3)
+    - VGSLNetworking (= 7.9.3)
+    - VGSLUI (= 7.9.3)
+  - VGSLFundamentals (7.9.3)
+  - VGSLNetworking (7.9.3):
+    - VGSLFundamentals (= 7.9.3)
+    - VGSLUI (= 7.9.3)
+  - VGSLUI (7.9.3):
+    - VGSLFundamentals (= 7.9.3)
   - VungleAds (7.5.3)
   - YandexMobileAds (7.14.1):
     - AppMetricaAdSupport (< 6.0.0, >= 5.11.0)
@@ -230,6 +231,7 @@ DEPENDENCIES:
   - MolocoSDKiOS (~> 3.12.0)
   - myTargetSDK (~> 5.33.0)
   - StackConsentManager (~> 3.0.0)
+  - StartAppSDK (~> 4.11.0)
   - SwiftLint
   - TaurusxAdsSDK (~> 1.9.2)
   - UnityAds (~> 4.16.0)
@@ -292,6 +294,7 @@ SPEC REPOS:
     - myTrackerSDK
     - OMSDK_Appodeal
     - StackModules
+    - StartAppSDK
     - SwiftLint
     - TaurusxAdsSDK
     - UnityAds
@@ -342,11 +345,11 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: 078ce5d06cee765bc822ace5c231af7a17e8dcd1
-  Google-Mobile-Ads-SDK: 08194bf203dc13f4422de827a4b254f27cd4a3a5
+  Google-Mobile-Ads-SDK: 4dde70a8c18d96b14f9548759b8cec6ecb0bc3e6
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
-  InMobiSDK: a6e7bfbecb698c83183f42c5a3cfa1ac52f16bff
-  IronSourceAdQualitySDK: 639d5a93e15e823538f87b75f3809c4905afc30b
-  IronSourceSDK: 41b727888a5853a5489eb00115f26bb07044a76e
+  InMobiSDK: 3772de19a4fa048225857e78d8a466dda0a004a8
+  IronSourceAdQualitySDK: 03888a0ac60e1f24ff6277672c3184f00813af64
+  IronSourceSDK: 85111252cc3c32769ea0a3158e155a8051e50fb9
   KSCrash: ad271a7799f0a2841be0fb7d6bd105444c440832
   MintegralAdSDK: 054814f99bb7e967b8974fe635d9005b225cbe42
   MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
@@ -355,17 +358,18 @@ SPEC CHECKSUMS:
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
-  StackModules: 0b77df5a1453951c9e6aa0e32cab0b055fbf68e1
+  StackModules: cd35dad51d369dad83cce23e2211524d9a85342f
+  StartAppSDK: 8da2f1ff9b74f37b11972de191266d40582e5fbf
   SwiftLint: bf6da11a31c6644a0bbb27f4fa15fd9636db00b3
-  TaurusxAdsSDK: 5005501aa0f9fc222a11a17d62d67e9edff934b8
-  UnityAds: 24cb6536614958aefcd5a44576eb4f3157c781d0
-  VGSL: f2c315124143ea10a49d1523d19759319de9fb2a
-  VGSLFundamentals: b754240ae1927d90aa2bceea9191b9ce330e9c94
-  VGSLNetworking: 724adba87e38d351f81b7c4b67586512d9c8fa32
-  VGSLUI: 7e7763e2ab91c13a49f954d62f1996db051ec0ce
+  TaurusxAdsSDK: 8b4e97ceff9a4192ca6eae1a2bc159b35eae2088
+  UnityAds: 1f4e00833d90743e1e0cb9eb0c4749c4e0beee24
+  VGSL: 1151762ca6ae47989eda7cccfec5f1b5aed09c9f
+  VGSLFundamentals: 7e8fa7a891329928af4ef23bf2ea6211e54e06ac
+  VGSLNetworking: 043cc3a6a1227c709e7ff44e9347af3972853047
+  VGSLUI: 7536dcd32baad81282a30ecda00c54a69ebc79af
   VungleAds: 3b273eba0219680dbef90d51e690d165422702d9
   YandexMobileAds: 29f102232eb1eeed96e1390f3f2bc4d5945a79fd
 
-PODFILE CHECKSUM: 0c51464679cbbf1767d10ea3a7de7bb771635e14
+PODFILE CHECKSUM: ab1e46d14cc79a9fc5838ae7b247f124562b4380
 
 COCOAPODS: 1.15.2
