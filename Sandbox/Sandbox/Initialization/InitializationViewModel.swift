@@ -28,6 +28,7 @@ import BidonAdapterChartboost
 import BidonAdapterIronSource
 import BidonAdapterMoloco
 import BidonAdapterTaurusX
+import BidonAdapterYandex
 
 
 final class InitializationViewModel: ObservableObject, AdResponder {
@@ -155,7 +156,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             AmazonDemandSourceAdapter(),
             GoogleAdManagerDemandSourceAdapter(),
             MolocoDemandSourceAdapter(),
-            TaurusXDemandSourceAdapter()
+            TaurusXDemandSourceAdapter(),
+            YandexDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }

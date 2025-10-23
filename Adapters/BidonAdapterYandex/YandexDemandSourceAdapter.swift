@@ -5,7 +5,9 @@ import YandexMobileAds
 typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
-DirectAdViewDemandSourceAdapter
+DirectAdViewDemandSourceAdapter &
+BiddingInterstitialDemandSourceAdapter &
+BiddingRewardedAdDemandSourceAdapter
 
 @objc public final class YandexDemandSourceAdapter: NSObject, DemandSourceAdapter {
 
@@ -18,6 +20,9 @@ DirectAdViewDemandSourceAdapter
         format: "%d.%d.%d",
         YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH
     )
+    
+    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "MEDIATION_NETWORK_NAME")
+
 
     private(set) public var isInitialized: Bool = false
 
@@ -25,15 +30,23 @@ DirectAdViewDemandSourceAdapter
     var context: SdkContext
 
     public func directInterstitialDemandProvider() throws -> Bidon.AnyDirectInterstitialDemandProvider {
-        return YandexInterstitialDemandProvider()
+        return YandexDirectInterstitialDemandProvider()
     }
 
     public func directRewardedAdDemandProvider() throws -> Bidon.AnyDirectRewardedAdDemandProvider {
-        return YandexRewardedDemandProvider()
+        return YandexDirectRewardedDemandProvider()
     }
 
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
-        return YandexAdViewDemandProvider(context: context)
+        return YandexDirectAdViewDemandProvider(context: context)
+    }
+    
+    public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
+        return YandexBiddingInterstitialDemandProvider()
+    }
+    
+    public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
+        return YandexBiddingRewardedDemandProvider()
     }
 }
 

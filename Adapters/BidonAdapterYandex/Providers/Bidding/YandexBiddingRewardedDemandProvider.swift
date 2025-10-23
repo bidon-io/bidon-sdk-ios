@@ -1,35 +1,50 @@
 //
-//  YandexRewardedDemandProvider.swift
+//  YandexBiddingRewardedDemandProvider.swift
 //  BidonAdapterYandex
 //
-//  Created by Евгения Григорович on 14/08/2024.
+//  Created by Евгения Григорович on 22/10/2025.
 //
 
-import UIKit
+import Foundation
 import Bidon
 import YandexMobileAds
 
-final class YandexRewardedDemandAd: DemandAd {
-    public var id: String
-
-    init(rewarded: YandexMobileAds.RewardedAd) {
-        self.id = rewarded.adInfo?.adUnitId ?? String(rewarded.hash)
-    }
-}
-
-final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewardedDemandAd> {
+final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider {
+    weak var delegate: DemandProviderDelegate?
+    weak var revenueDelegate: DemandProviderRevenueDelegate?
+    
+    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "Bidon")
 
     private var response: DemandProviderResponse?
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     private var rewardedLoader: RewardedAdLoader?
     private var rewardedAd: YandexMobileAds.RewardedAd?
-
-    override func load(
-        pricefloor: Price,
-        adUnitExtras: YandexAdUnitExtras,
-        response: @escaping DemandProviderResponse
+    
+    func collectBiddingToken(
+        auctionKey: String?,
+        biddingTokenExtras: BiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
     ) {
+        collectBiddingToken(biddingTokenExtras: biddingTokenExtras, response: response)
+    }
+    
+    func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
+        let requestConfiguration = BidderTokenRequestConfiguration(adType: .interstitial)
+        requestConfiguration.parameters = [
+            "adapter_version": MobileAds.sdkVersion(),
+            "adapter_network_sdk_version": BidonSdk.sdkVersion
+        ]
+        bidderTokenLoader.loadBidderToken(requestConfiguration: requestConfiguration) { bidderToken in
+            if let bidderToken {
+                response(.success(bidderToken))
+            } else {
+                response(.failure(.unspecifiedException("Yandex has not provided bidding token")))
+            }
+        }
+    }
+
+    func load(payload: YandexBiddingPayload, adUnitExtras: YandexAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
 
         let request = AdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
@@ -37,9 +52,11 @@ final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewarde
         rewardedLoader?.delegate = self
         rewardedLoader?.loadAd(with: request)
     }
+    
+    func notify(ad: YandexInterstitialDemandAd, event: DemandProviderEvent) {}
 }
 
-extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
+extension YandexBiddingRewardedDemandProvider: RewardedAdLoaderDelegate {
     func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
         rewardedAd.delegate = self
         self.rewardedAd = rewardedAd
@@ -54,16 +71,13 @@ extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
     }
 }
 
-extension YandexRewardedDemandProvider: RewardedAdDemandProvider {
-    func show(
-        ad: YandexRewardedDemandAd,
-        from viewController: UIViewController
-    ) {
+extension YandexBiddingRewardedDemandProvider: RewardedAdDemandProvider {
+    func show(ad: YandexInterstitialDemandAd, from viewController: UIViewController) {
         rewardedAd?.show(from: viewController)
     }
 }
 
-extension YandexRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
+extension YandexBiddingRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
 
     func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didFailToShowWithError error: any Error) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)

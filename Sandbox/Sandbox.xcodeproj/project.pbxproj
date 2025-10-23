@@ -81,6 +81,7 @@
 		490F047F2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */; };
 		495CD3422C77623F00590AAD /* BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */; };
 		495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C408362C624351005CB90B /* BidonAdapterMyTarget.framework */; };
+		497207ED2EA66C54006026B4 /* libBidonAdapterYandex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 497207EC2EA66C54006026B4 /* libBidonAdapterYandex.a */; };
 		49BCF9782DF9C23E008EC8E3 /* SdkInitializationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */; };
 		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
 		9A18C91D2C903E07005BE4F2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A18C91C2C903E07005BE4F2 /* Constants.swift */; };
@@ -168,6 +169,7 @@
 		490F04752E0AC6AD009C2592 /* BannerAdDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdDemoView.swift; sourceTree = "<group>"; };
 		490F047E2E0C0A0F009C2592 /* ISBidonCustomAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ISBidonCustomAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495CD3412C77623F00590AAD /* BidonAdapterChartboost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterChartboost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		497207EC2EA66C54006026B4 /* libBidonAdapterYandex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBidonAdapterYandex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4996829F2E44B1F0003DE568 /* libNewAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libNewAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		499682B62E44B855003DE568 /* libBidonAdapterYandex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBidonAdapterYandex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		49BCF9772DF9C23E008EC8E3 /* SdkInitializationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkInitializationView.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				169F7C8E91CEF4CADB6E417E /* Pods_Sandbox.framework in Frameworks */,
 				426A5C8029AF80060065AAD5 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
 				4253FED72ABC98340013A675 /* BidonAdapterAmazon.framework in Frameworks */,
+				497207ED2EA66C54006026B4 /* libBidonAdapterYandex.a in Frameworks */,
 				495FB4D22C6377100023E8A0 /* BidonAdapterMyTarget.framework in Frameworks */,
 				42CFF1B62AAF623000AC2C24 /* BidonAdapterInMobi.framework in Frameworks */,
 			);
@@ -253,6 +256,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				497207EC2EA66C54006026B4 /* libBidonAdapterYandex.a */,
 				4907F8432E7D530C00A04207 /* BidonAdapterTaurusX.framework */,
 				499682B62E44B855003DE568 /* libBidonAdapterYandex.a */,
 				4996829F2E44B1F0003DE568 /* libNewAdapter.a */,
@@ -805,7 +809,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.games.joinblocks;
+				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -845,7 +849,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_CODE_SIGN_FLAGS = "--generate-entitlement-der";
-				PRODUCT_BUNDLE_IDENTIFIER = com.games.joinblocks;
+				PRODUCT_BUNDLE_IDENTIFIER = loppipoppi.ginrummy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

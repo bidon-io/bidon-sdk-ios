@@ -100,7 +100,7 @@ end
 def yandex
   pod 'DivKit', '32.6.0'
   pod 'AppMetricaAnalytics', '~> 5.11.2'
-  pod 'YandexMobileAds', "~> 7.14.1"
+  pod 'YandexMobileAds', "~> 7.16.2"
 end
 
 def taurus
