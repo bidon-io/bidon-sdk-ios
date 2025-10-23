@@ -214,6 +214,8 @@
 		495FB5332C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52B2C6385360023E8A0 /* MyTargetInterstitialDemandProvider.swift */; };
 		495FB5342C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52C2C6385360023E8A0 /* MyTargetAdViewDemandProvider.swift */; };
 		495FB5352C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495FB52D2C6385360023E8A0 /* MyTargetDemandSourceAdapter.swift */; };
+		497207F82EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; };
+		497207F92EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		499682AB2E44B26E003DE568 /* YandexAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A52E44B26E003DE568 /* YandexAdViewDemandProvider.swift */; };
 		499682AC2E44B26E003DE568 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A62E44B26E003DE568 /* YandexBaseDemandProvider.swift */; };
 		499682AD2E44B26E003DE568 /* YandexDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */; };
@@ -230,11 +232,9 @@
 		6DF14586318869FA72F054CD /* Pods_BidonAdapterYandex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 462155B2CCC68B69BB6291B3 /* Pods_BidonAdapterYandex.framework */; };
 		77CEB42F0160C1D1D1FBFC78 /* Pods_BidonAdapterMoloco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5458F138EF1375B12B5BD86 /* Pods_BidonAdapterMoloco.framework */; };
 		8FC72DFA7232BEF1F75EB90D /* Pods_BidonAdapterMobileFuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D6345CC163ADE551681561 /* Pods_BidonAdapterMobileFuse.framework */; };
-		A1D4B20341B47D4A26E39E8E /* Pods_BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8D90952981041E46DCC53D /* Pods_BidonAdapterStartIo.framework */; };
 		91E8CF40A766F40FA61F751C /* Pods_BidonAdapterTaurusX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 200F9F4223F7A6201011BC19 /* Pods_BidonAdapterTaurusX.framework */; };
+		A1D4B20341B47D4A26E39E8E /* Pods_BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8D90952981041E46DCC53D /* Pods_BidonAdapterStartIo.framework */; };
 		A2B3000AD1E820BEF2D50BC8 /* Pods_BidonAdapterVungle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A64AFA7E81B8A19DE68A30E8 /* Pods_BidonAdapterVungle.framework */; };
-		B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; };
-		B90A2D5E2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4900BD492E65A320006E6B19 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B93BC2042E54C9B700C99DBE /* BidonAdapterMoloco.h in Headers */ = {isa = PBXBuildFile; fileRef = B93BC2032E54C9B700C99DBE /* BidonAdapterMoloco.h */; };
 		B93BC2062E54CC8E00C99DBE /* MolocoDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2052E54CC8E00C99DBE /* MolocoDemandSourceAdapter.swift */; };
 		B93BC2092E54CE0900C99DBE /* MolocoParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC2082E54CE0900C99DBE /* MolocoParameters.swift */; };
@@ -283,6 +283,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		497207FA2EAA5CAD006026B4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				497207F92EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		499682932E44B1C7003DE568 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,17 +301,6 @@
 			dstSubfolderSpec = 16;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B90A2D5F2E6AEF3A007D942B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				B90A2D5E2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -661,7 +661,6 @@
 		B93BDD632E5F415B0001B4DD /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99C355A2E82A4FA00488A3A /* BidonAdapterStartIo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterStartIo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99C35722E82A5C000488A3A /* StartIoDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoDemandSourceAdapter.swift; sourceTree = "<group>"; };
-		B99C35772E82A81C00488A3A /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99C357B2E82CB5000488A3A /* BidonAdapterStartIo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterStartIo.h; sourceTree = "<group>"; };
 		B99C357C2E82CB5000488A3A /* StartIoAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoAdUnitExtras.swift; sourceTree = "<group>"; };
 		B99C357D2E82CB5000488A3A /* StartIoBiddingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIoBiddingResponse.swift; sourceTree = "<group>"; };
@@ -786,7 +785,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B90A2D5D2E6AEF3A007D942B /* DTBiOSSDK.xcframework in Frameworks */,
+				497207F82EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -2279,7 +2278,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				B90A2D5F2E6AEF3A007D942B /* Embed Frameworks */,
+				497207FA2EAA5CAD006026B4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
