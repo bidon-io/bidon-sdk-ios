@@ -1,6 +1,7 @@
 # develop (0.12.0)
 
 ## New features
+- BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
 - BDN-1069 Fixes in BCA banners
 - BDN-1010 Adapter Versioning and Github Actions
 - BDN-1017 TaurusX implementation
