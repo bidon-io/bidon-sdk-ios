@@ -50,7 +50,7 @@ def mintegral
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '3.12.0'
+  pod 'MolocoSDKiOS', '~> 4.0.0'
 end
 
 def meta_sdk
