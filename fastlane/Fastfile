@@ -33,7 +33,9 @@ $targets = [
   "BidonAdapterMobileFuse",
   "AppLovinMediationBidonAdapter",
   "ISBidonCustomAdapter",
-  "BidonAdapterMoloco"
+  "BidonAdapterMoloco",
+  "BidonAdapterStartIo",
+  "BidonAdapterTaurusX"
 ]
 
 # Primary pod per adapter (to derive adapter version from Podfile.lock)
@@ -57,7 +59,9 @@ $adapter_primary_pod = {
   "BidonAdapterMobileFuse" => "MobileFuseSDK",
   "BidonAdapterYandex" => "YandexMobileAds",
   "AppLovinMediationBidonAdapter" => "AppLovinSDK",
-  "ISBidonCustomAdapter" => "IronSourceSDK"
+  "ISBidonCustomAdapter" => "IronSourceSDK",
+  "BidonAdapterStartIo" => "StartAppSDK",
+  "BidonAdapterTaurusX" => "TaurusxAdsSDK"
 }
 
 # ---------- Helpers ----------
@@ -70,9 +74,11 @@ def build_universal(scheme)
     "BidonAdapterYandex"     => "13.0",
     "BidonAdapterDTExchange" => "13.0",
     "BidonAdapterUnityAds"   => "13.0",
-    "BidonAdapterMoloco"     => "13.0"
+    "BidonAdapterMoloco"     => "13.0",
+    "BidonAdapterStartIo"    => "13.0",
+    "BidonAdapterTaurusX"    => "13.0"
   }
-  deployment_target = min_versions.fetch(scheme, "12.0")
+  deployment_target = min_versions.fetch(scheme, "13.0")
   is_yandex = (scheme == "BidonAdapterYandex")
 
   # Build settings string (no empty values)
@@ -340,7 +346,8 @@ def adapter_version_for(target, lock_versions, revision, prerelease)
 end
 
 def core_version_with_pre(version, prerelease)
-  prerelease.to_s.empty? ? version : "#{version}-#{prerelease}"
+  # Deprecated: prerelease is now part of version (e.g., 0.12.0-alpha.1)
+  version
 end
 
 def read_adapter_revision_from_source(target)
@@ -377,9 +384,9 @@ lane :sdkTest do |options|
   upload = options[:upload] || false
   base_version = options[:version]
   use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-  prerelease = options[:pre]
+  prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
   rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-  core_ver = core_version_with_pre(base_version, prerelease)
+  core_ver = base_version
 
   cocoapods(use_bundle_exec: true)
   build_all_products_via_release!
@@ -435,7 +442,7 @@ lane :sdkTest do |options|
     ver = if is_adapter && use_network_versions
       adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
     else
-      (options[:adapters_version] || "#{base_version}.1")
+      (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
     end
 
     package_framework_xcframework(target, ver)
@@ -474,7 +481,7 @@ lane :sdkTest do |options|
   yandex_ver = if use_network_versions
     adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
   else
-    (options[:adapters_version] || "#{base_version}.1")
+    (options[:adapters_version] || "#{base_version}.#{resolve_revision_for("BidonAdapterYandex", rev_spec)}")
   end
   package_staticlib_xcframework("BidonAdapterYandex", yandex_ver)
 
@@ -514,9 +521,9 @@ end
     upload = options[:upload] || false
     base_version = options[:version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-    prerelease = options[:pre]
+    prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-    core_ver = core_version_with_pre(base_version, prerelease)
+    core_ver = base_version
 
     # 1) Core Bidon
     build_universal("Bidon")
@@ -571,7 +578,7 @@ end
       ver = if is_adapter && use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
-        (options[:adapters_version] || "#{base_version}.1")
+        (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
       end
 
       build_universal(target)
@@ -608,7 +615,7 @@ end
     yandex_ver = if use_network_versions
       adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
     else
-      (options[:adapters_version] || "#{base_version}.1")
+      (options[:adapters_version] || "#{base_version}.#{resolve_revision_for("BidonAdapterYandex", rev_spec)}")
     end
     adapter(
       name: "BidonAdapterYandex",
@@ -627,8 +634,8 @@ end
 
     upload = options[:upload] || false
     base_version = options[:version]
-    prerelease = options[:pre]
-    core_ver = core_version_with_pre(base_version, prerelease)
+    prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
+    core_ver = base_version
 
     # Build Core Bidon
     build_universal("Bidon")
@@ -685,9 +692,9 @@ end
     adapter_name = options[:name]
     sdk_base_version = options[:sdk_version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-    prerelease = options[:pre]
+    prerelease = sdk_base_version.include?("-") ? sdk_base_version.split("-", 2)[1] : nil
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-    core_ver = core_version_with_pre(sdk_base_version, prerelease)
+    core_ver = sdk_base_version
     adapter_version = if options[:version]
       options[:version]
     elsif use_network_versions
@@ -756,9 +763,9 @@ lane :adapter_ci do |options|
   adapter_name    = options[:name]
   sdk_base_version     = options[:sdk_version]
   use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-  prerelease = options[:pre]
+  prerelease = sdk_base_version.include?("-") ? sdk_base_version.split("-", 2)[1] : nil
   rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-  core_ver = core_version_with_pre(sdk_base_version, prerelease)
+  core_ver = sdk_base_version
   adapter_version = if options[:version].to_s.empty?
     if use_network_versions
       lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
@@ -876,9 +883,9 @@ end
 
     base_version = options[:version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-    prerelease = options[:pre]
+    prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-    core_ver = core_version_with_pre(base_version, prerelease)
+    core_ver = base_version
     lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
 
     $targets.each do |target|
@@ -886,7 +893,7 @@ end
       ver = if is_adapter && use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
-        (options[:adapters_version] || "#{base_version}.1")
+        (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
       end
 
       podspec(
@@ -910,9 +917,9 @@ end
 
     base_version = options[:version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-    prerelease = options[:pre]
+    prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
-    core_ver = core_version_with_pre(base_version, prerelease)
+    core_ver = base_version
     lock_versions = read_lock_versions($root_dir + "/Podfile.lock")
 
     $targets.each do |target|
@@ -920,7 +927,7 @@ end
       ver = if is_adapter && use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
-        (options[:adapters_version] || "#{base_version}.1")
+        (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
       end
 
       podspec(
@@ -965,7 +972,7 @@ end
 
     adapter_name = options[:name]
     sdk_version  = options[:sdk_version]
-    prerelease   = options[:pre]
+    prerelease   = sdk_version.include?("-") ? sdk_version.split("-", 2)[1] : nil
     mapping_str  = options[:network_sdk_versions]
     upload       = options[:upload] || false
 
@@ -1003,7 +1010,6 @@ end
       adapter(
         name: adapter_name,
         sdk_version: sdk_version,
-        pre: prerelease,
         upload: upload,
         skip_build: false,
         pods: false, # already installed

@@ -13,7 +13,8 @@ typealias DemandSourceAdapter = Adapter &
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
 BiddingInterstitialDemandSourceAdapter &
-BiddingRewardedAdDemandSourceAdapter
+BiddingRewardedAdDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter
 
 @objc public final class TaurusXDemandSourceAdapter: NSObject, DemandSourceAdapter {
     @objc public static let identifier = "taurusx"
@@ -43,6 +44,10 @@ BiddingRewardedAdDemandSourceAdapter
     
     public func biddingRewardedAdDemandProvider() throws -> Bidon.AnyBiddingRewardedAdDemandProvider {
         return TaurusXBiddingRewardedDemandProvider()
+    }
+    
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return TaurusXBiddingAdViewDemandProvider(context: context)
     }
 }
 

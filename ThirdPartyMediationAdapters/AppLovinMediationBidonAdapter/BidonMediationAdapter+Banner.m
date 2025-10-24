@@ -40,6 +40,7 @@
             [banner setExtraValue:@(lastRegisteredEcpm) for:@"previous_auction_price"];
         }
         banner.delegate = self;
+
         banner.rootViewController = parameters.presentingViewController;
         self.banner = banner;
         [banner loadAdWith:0 auctionKey:auctionKey];

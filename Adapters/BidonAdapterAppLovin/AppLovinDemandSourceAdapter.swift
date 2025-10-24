@@ -56,6 +56,12 @@ extension AppLovinDemandSourceAdapter: ParameterizedInitializableAdapter {
 
         let configuration = ALSdkInitializationConfiguration(sdkKey: parameters.sdkKey) { config in
             config.testDeviceAdvertisingIdentifiers = context.isTestMode ? [currentDeviceUUID] : []
+            if let adUnitIds = parameters.adUnitIds {
+                config.adUnitIdentifiers = adUnitIds
+            }
+            if let mediator = parameters.mediator {
+                config.mediationProvider = mediator
+            }
         }
 
         // GDPR
