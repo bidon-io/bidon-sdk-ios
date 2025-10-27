@@ -7,7 +7,8 @@ DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
 DirectAdViewDemandSourceAdapter &
 BiddingInterstitialDemandSourceAdapter &
-BiddingRewardedAdDemandSourceAdapter
+BiddingRewardedAdDemandSourceAdapter &
+BiddingAdViewDemandSourceAdapter
 
 @objc public final class YandexDemandSourceAdapter: NSObject, DemandSourceAdapter {
 
@@ -47,6 +48,10 @@ BiddingRewardedAdDemandSourceAdapter
     
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
         return YandexBiddingRewardedDemandProvider()
+    }
+    
+    public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
+        return YandexBiddingAdViewDemandProvider(context: context)
     }
 }
 

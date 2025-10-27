@@ -30,7 +30,7 @@ final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider
     }
     
     func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration(adType: .interstitial)
+        let requestConfiguration = BidderTokenRequestConfiguration(adType: .rewarded)
         requestConfiguration.parameters = [
             "adapter_version": MobileAds.sdkVersion(),
             "adapter_network_sdk_version": BidonSdk.sdkVersion
@@ -53,7 +53,7 @@ final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider
         rewardedLoader?.loadAd(with: request)
     }
     
-    func notify(ad: YandexInterstitialDemandAd, event: DemandProviderEvent) {}
+    func notify(ad: YandexRewardedDemandAd, event: DemandProviderEvent) {}
 }
 
 extension YandexBiddingRewardedDemandProvider: RewardedAdLoaderDelegate {
@@ -72,7 +72,7 @@ extension YandexBiddingRewardedDemandProvider: RewardedAdLoaderDelegate {
 }
 
 extension YandexBiddingRewardedDemandProvider: RewardedAdDemandProvider {
-    func show(ad: YandexInterstitialDemandAd, from viewController: UIViewController) {
+    func show(ad: YandexRewardedDemandAd, from viewController: UIViewController) {
         rewardedAd?.show(from: viewController)
     }
 }

@@ -27,6 +27,7 @@ import BidonAdapterMyTarget
 import BidonAdapterChartboost
 import BidonAdapterIronSource
 import BidonAdapterMoloco
+import BidonAdapterStartIo
 import BidonAdapterTaurusX
 import BidonAdapterYandex
 
@@ -155,6 +156,7 @@ fileprivate extension Array where Element == Bidon.Adapter {
             InMobiDemandSourceAdapter(),
             AmazonDemandSourceAdapter(),
             GoogleAdManagerDemandSourceAdapter(),
+            StartIoDemandSourceAdapter(),
             MolocoDemandSourceAdapter(),
             TaurusXDemandSourceAdapter(),
             YandexDemandSourceAdapter()
