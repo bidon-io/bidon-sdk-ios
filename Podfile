@@ -3,6 +3,7 @@ workspace 'Bidon.xcworkspace'
 
 source 'https://github.com/appodeal/CocoaPods.git'
 source 'https://cdn.cocoapods.org/'
+source "https://github.com/bidon-io/CocoaPods_Specs.git"
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
 use_frameworks! 
@@ -50,7 +51,7 @@ def mintegral
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '~> 4.0.0'
+  pod 'MolocoSDKiOS', '4.0.0'
 end
 
 def meta_sdk
@@ -90,9 +91,9 @@ def ironsource
 end
 
 def yandex
-  pod 'DivKit', '32.9.0'
-  pod 'AppMetricaAnalytics', '~> 5.12.1'
-  pod 'YandexMobileAds', "~> 7.16.2"
+  pod 'DivKit', '32.6.0'
+#  pod 'AppMetricaAnalytics', '~> 5.12.1'
+  pod 'YandexMobileAds', "7.14.1"
 end
 
 def startio
@@ -282,6 +283,7 @@ target 'Sandbox' do
   ironsource
   yandex
   taurus
+#  pod 'BidonAdapterYandex', '7.16.2.0-test.7'
 end
 
 post_install do |installer|
