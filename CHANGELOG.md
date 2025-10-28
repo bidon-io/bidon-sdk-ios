@@ -1,4 +1,4 @@
-# develop (0.12.0)
+# Release 0.12.0
 
 ## New features
 - BDN-1067 Update Moloco
@@ -12,7 +12,7 @@
 - BDN-1053 Location waiting fix
 - BDN-1062 userAgent freeze in iOS 26 WebView fix
 
-# develop (0.11.0)
+# Release 0.11.0
 
 - BDN-1001 Migrate IronSource and LevelPlay API to new API
 
