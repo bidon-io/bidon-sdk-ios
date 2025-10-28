@@ -47,7 +47,8 @@ final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider
     func load(payload: YandexBiddingPayload, adUnitExtras: YandexAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
 
-        let request = AdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
+        let request = MutableAdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
+        request.biddingData = payload.signaldata
         rewardedLoader = RewardedAdLoader()
         rewardedLoader?.delegate = self
         rewardedLoader?.loadAd(with: request)
