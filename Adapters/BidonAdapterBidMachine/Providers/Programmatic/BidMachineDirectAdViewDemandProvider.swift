@@ -38,20 +38,6 @@ final class BidMachineDirectAdViewDemandProvider: BidMachineBaseDemandProvider<B
             return
         }
 
-        if adUnitExtras.bapps != nil || adUnitExtras.bcat != nil || adUnitExtras.badv != nil {
-            BidMachineSdk.shared.targetingInfo.populate { builder in
-                if let bapps = adUnitExtras.bapps, !bapps.isEmpty {
-                    builder.withBlockedApps(bapps)
-                }
-                if let bcat = adUnitExtras.bcat, !bcat.isEmpty {
-                    builder.withBlockedCategories(bcat)
-                }
-                if let badv = adUnitExtras.badv, !badv.isEmpty {
-                    builder.withBlockedAdvertisers(badv)
-                }
-            }
-        }
-
         let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in
             builder.appendPriceFloor(pricefloor, UUID().uuidString)
         }

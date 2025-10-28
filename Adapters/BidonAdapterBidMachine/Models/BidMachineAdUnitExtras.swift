@@ -8,11 +8,8 @@
 import Foundation
 
 
-struct BidMachineAdUnitExtras: Decodable {
+struct BidMachineAdUnitExtras: Codable {
     let customParameters: [String: String]?
     let placements: [String: String]?
     let placement: String?
-    let bcat: [String]?
-    let badv: [String]?
-    let bapps: [String]?
 }
