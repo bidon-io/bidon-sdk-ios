@@ -1,3 +1,8 @@
+# develop
+
+## New features
+- APDM-1631 Podspec generation - update
+
 # Release 0.12.0
 
 ## New features
