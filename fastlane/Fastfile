@@ -299,8 +299,8 @@ def read_lock_versions(lock_path)
       in_pods = false
     end
     if in_pods
-      if line.strip.start_with?("- ")
-        entry = line.strip.sub("- ", "")
+      if line.start_with?("  - ")
+        entry = line.sub(/^  - /, "").strip
         name, ver = entry.split(" (", 2)
         if name && ver
           v = ver.to_s.delete(")").strip

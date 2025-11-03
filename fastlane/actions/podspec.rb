@@ -267,8 +267,8 @@ module Fastlane
           if in_pods && line.match?(/^[A-Z][A-Z ]+:/)
             in_pods = false
           end
-          if in_pods && line.strip.start_with?("- ")
-            entry = line.strip.sub("- ", "")
+          if in_pods && line.start_with?("  - ")
+            entry = line.sub(/^  - /, "").strip
             name, ver = entry.split(" (", 2)
             if name && ver
               v = ver.to_s.delete(")").strip
