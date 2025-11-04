@@ -270,27 +270,22 @@ jobs:
           LIST=""
           if [ -f "$FILE" ]; then
             COUNT=$(grep -c . "$FILE" || true)
-            LIST=$(paste -sd ',' "$FILE" || true)
+            LIST=$(paste -sd ', ' "$FILE" || true)
           fi
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
-          echo "list=$LIST" >> "$GITHUB_OUTPUT"
-
-      - name: Upload existing archives report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: existing-archives
-          path: |
-            build/reports/existing_archives/existing.txt
+          TEXT="ℹ️ [Bidon] S3: Archives already exist; upload skipped:\n${LIST}\n• Version: \`${SDK_VERSION}\`\n• Workflow: <${RUN_URL}|View Run>"
+          PAYLOAD=$(jq -n --arg text "$TEXT" '{text: $text}')
+          echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
+        env:
+          SDK_VERSION: ${{ inputs.sdk_version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify Slack on existing archives
-        if: ${{ steps.existing_archives.outputs.count && steps.existing_archives.outputs.count != '0' }}
+        if: ${{ steps.existing_archives.outputs.count != '0' }}
         uses: slackapi/slack-github-action@v1.25.0
+        continue-on-error: true
         with:
-          payload: |
-            {
-              "text": "ℹ️ [Bidon] S3: уже существуют архивы, загрузка пропущена:\n${{ steps.existing_archives.outputs.list }}\n• Version: `${{ inputs.sdk_version }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>`
-            }
+          payload: ${{ steps.existing_archives.outputs.payload }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
