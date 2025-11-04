@@ -266,15 +266,17 @@ jobs:
         run: |
           set -e
           FILE="build/reports/existing_archives/existing.txt"
-          COUNT=0
-          LIST=""
-          if [ -f "$FILE" ]; then
-            COUNT=$(grep -c . "$FILE" || true)
-            LIST=$(paste -sd ', ' "$FILE" || true)
-          fi
+          mkdir -p "$(dirname "$FILE")"
+          touch "$FILE"
+          COUNT=$(wc -l < "$FILE" | tr -d ' ' || echo 0)
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
-          TEXT="ℹ️ [Bidon] S3: Archives already exist; upload skipped:\n${LIST}\n• Version: \`${SDK_VERSION}\`\n• Workflow: <${RUN_URL}|View Run>"
-          PAYLOAD=$(jq -c -n --arg text "$TEXT" '{text: $text}')
+          PAYLOAD=$(jq -c -n \
+            --rawfile f "$FILE" \
+            --arg header "ℹ️ [Bidon] S3: Archives already exist; upload skipped:" \
+            --arg version "$SDK_VERSION" \
+            --arg run "$RUN_URL" \
+            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
+          )
           echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
         env:
           SDK_VERSION: ${{ inputs.sdk_version }}
