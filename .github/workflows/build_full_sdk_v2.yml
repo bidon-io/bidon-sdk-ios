@@ -274,7 +274,7 @@ jobs:
           fi
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
           TEXT="ℹ️ [Bidon] S3: Archives already exist; upload skipped:\n${LIST}\n• Version: \`${SDK_VERSION}\`\n• Workflow: <${RUN_URL}|View Run>"
-          PAYLOAD=$(jq -n --arg text "$TEXT" '{text: $text}')
+          PAYLOAD=$(jq -c -n --arg text "$TEXT" '{text: $text}')
           echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
         env:
           SDK_VERSION: ${{ inputs.sdk_version }}
