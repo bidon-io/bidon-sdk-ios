@@ -364,6 +364,30 @@ def read_adapter_revision_from_source(target)
   0
 end
 
+# ---------- S3 helpers ----------
+require 'aws-sdk-s3'
+
+def s3_object_exists?(bucket:, key:, region:)
+  client = Aws::S3::Client.new(
+    region: region,
+    access_key_id: ENV['S3_ACCESS_KEY'],
+    secret_access_key: ENV['S3_SECRET_ACCESS_KEY']
+  )
+  client.head_object(bucket: bucket, key: key)
+  true
+rescue Aws::S3::Errors::NotFound, Aws::S3::Errors::NoSuchKey
+  false
+rescue => e
+  UI.message("S3 head_object error for #{key}: #{e}")
+  false
+end
+
+def record_existing_archive(s3_url)
+  dir = File.join($build_dir, 'reports', 'existing_archives')
+  FileUtils.mkdir_p(dir)
+  File.open(File.join(dir, 'existing.txt'), 'a') { |f| f.puts(s3_url) }
+end
+
 # ---------- Lanes ----------
 
 platform :ios do
@@ -408,15 +432,20 @@ lane :sdkTest do |options|
   )
 
   if upload
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "Bidon/#{core_ver}",
-      files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
-    )
+    key = "Bidon/#{core_ver}/Bidon.zip"
+    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+    else
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "Bidon/#{core_ver}",
+        files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
+      )
+    end
   end
 
   podspec(
@@ -453,15 +482,20 @@ lane :sdkTest do |options|
     )
 
     if upload
-      aws_s3(
-        access_key: ENV["S3_ACCESS_KEY"],
-        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-        bucket: ENV["S3_BUCKET"],
-        region: ENV["S3_REGION"],
-        acl: "bucket-owner-full-control",
-        path: "#{target}/#{ver}",
-        files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
-      )
+      key = "#{target}/#{ver}/#{target}.zip"
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "#{target}/#{ver}",
+          files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
+        )
+      end
     end
 
     podspec(
@@ -503,15 +537,20 @@ lane :sdkTest do |options|
   )
 
   if upload
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "BidonAdapterYandex/#{yandex_ver}",
-      files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"]
-    )
+    key = "BidonAdapterYandex/#{yandex_ver}/BidonAdapterYandex.zip"
+    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+    else
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "BidonAdapterYandex/#{yandex_ver}",
+        files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"]
+      )
+    end
   end
 end
 
@@ -545,15 +584,22 @@ end
       output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
     )
 
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "Bidon/#{core_ver}",
-      files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
-    ) if upload
+    if upload
+      key = "Bidon/#{core_ver}/Bidon.zip"
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "Bidon/#{core_ver}",
+          files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
+        )
+      end
+    end
 
     podspec(
       name: "Bidon",
@@ -589,15 +635,22 @@ end
         output_path: "#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"
       )
 
-      aws_s3(
-        access_key: ENV["S3_ACCESS_KEY"],
-        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-        bucket: ENV["S3_BUCKET"],
-        region: ENV["S3_REGION"],
-        acl: "bucket-owner-full-control",
-        path: "#{target}/#{ver}",
-        files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
-      ) if upload
+      if upload
+        key = "#{target}/#{ver}/#{target}.zip"
+        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+        else
+          aws_s3(
+            access_key: ENV["S3_ACCESS_KEY"],
+            secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+            bucket: ENV["S3_BUCKET"],
+            region: ENV["S3_REGION"],
+            acl: "bucket-owner-full-control",
+            path: "#{target}/#{ver}",
+            files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
+          )
+        end
+      end
 
       podspec(
         name: target,
@@ -743,15 +796,20 @@ end
     )
 
     if upload
-      aws_s3(
-        access_key: ENV["S3_ACCESS_KEY"],
-        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-        bucket: ENV["S3_BUCKET"],
-        region: ENV["S3_REGION"],
-        acl: "bucket-owner-full-control",
-        path: "#{adapter_name}/#{adapter_version}",
-        files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
-      )
+      key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "#{adapter_name}/#{adapter_version}",
+          files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+        )
+      end
     end
   end
 
@@ -862,15 +920,20 @@ lane :adapter_ci do |options|
 
   # 4) Optional upload to S3
   if upload
-    aws_s3(
-      access_key: ENV["S3_ACCESS_KEY"],
-      secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-      bucket: ENV["S3_BUCKET"],
-      region: ENV["S3_REGION"],
-      acl: "bucket-owner-full-control",
-      path: "#{adapter_name}/#{adapter_version}",
-      files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
-    )
+    key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
+    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+    else
+      aws_s3(
+        access_key: ENV["S3_ACCESS_KEY"],
+        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+        bucket: ENV["S3_BUCKET"],
+        region: ENV["S3_REGION"],
+        acl: "bucket-owner-full-control",
+        path: "#{adapter_name}/#{adapter_version}",
+        files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+      )
+    end
   end
 
   UI.success("✅ adapter_ci finished: #{adapter_name} #{adapter_version} (SDK #{core_ver})")
