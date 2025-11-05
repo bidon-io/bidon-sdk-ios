@@ -26,7 +26,6 @@ $targets = [
   "BidonAdapterMetaAudienceNetwork",
   "BidonAdapterVungle",
   "BidonAdapterInMobi",
-  "BidonAdapterAmazon",
   "BidonAdapterChartboost",
   "BidonAdapterIronSource",
   "BidonAdapterMyTarget",
@@ -36,7 +35,7 @@ $targets = [
   "BidonAdapterMoloco",
   "BidonAdapterStartIo",
   "BidonAdapterTaurusX"
-]
+].uniq
 
 # Primary pod per adapter (to derive adapter version from Podfile.lock)
 $adapter_primary_pod = {
@@ -384,8 +383,12 @@ end
 
 def record_existing_archive(s3_url)
   dir = File.join($build_dir, 'reports', 'existing_archives')
+  path = File.join(dir, 'existing.txt')
   FileUtils.mkdir_p(dir)
-  File.open(File.join(dir, 'existing.txt'), 'a') { |f| f.puts(s3_url) }
+  existing = File.exist?(path) ? File.read(path).split("\n") : []
+  unless existing.include?(s3_url)
+    File.open(path, 'a') { |f| f.puts(s3_url) }
+  end
 end
 
 # ---------- Lanes ----------
