@@ -260,6 +260,37 @@ jobs:
             build/reports/deprecations/deprecations.txt
             build/reports/deprecations/adapters.txt
 
+      - name: Collect existing archives
+        id: existing_archives
+        if: always()
+        run: |
+          set -e
+          FILE="build/reports/existing_archives/existing.txt"
+          mkdir -p "$(dirname "$FILE")"
+          touch "$FILE"
+          COUNT=$(wc -l < "$FILE" | tr -d ' ' || echo 0)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          PAYLOAD=$(jq -c -n \
+            --rawfile f "$FILE" \
+            --arg header "ℹ️ [Bidon] S3: Archives already exist; upload skipped:" \
+            --arg version "$SDK_VERSION" \
+            --arg run "$RUN_URL" \
+            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
+          )
+          echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
+        env:
+          SDK_VERSION: ${{ inputs.sdk_version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Notify Slack on existing archives
+        if: ${{ steps.existing_archives.outputs.count != '0' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        continue-on-error: true
+        with:
+          payload: ${{ steps.existing_archives.outputs.payload }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Notify Slack on deprecations
         if: ${{ steps.collect_deprecations.outputs.adapters != '' }}
         uses: slackapi/slack-github-action@v1.25.0
