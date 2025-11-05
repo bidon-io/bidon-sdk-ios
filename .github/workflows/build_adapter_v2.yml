@@ -93,6 +93,43 @@ jobs:
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
+      - name: Collect existing archives
+        id: existing_archives
+        if: always()
+        run: |
+          set -e
+          FILE="build/reports/existing_archives/existing.txt"
+          mkdir -p "$(dirname "$FILE")"
+          touch "$FILE"
+          COUNT=$(wc -l < "$FILE" | tr -d ' ' || echo 0)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          PAYLOAD=$(jq -c -n \
+            --rawfile f "$FILE" \
+            --arg header "ℹ️ [Bidon] S3: Archives already exist; upload skipped:" \
+            --arg adapter "${{ inputs.adapter_name }}" \
+            --arg version "${{ inputs.sdk_version }}" \
+            --arg run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Adapter: `" + $adapter + "`\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
+          )
+          echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
+
+      - name: Upload existing archives report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: existing-archives
+          path: |
+            build/reports/existing_archives/existing.txt
+
+      - name: Notify Slack on existing archives
+        if: ${{ steps.existing_archives.outputs.count != '0' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        continue-on-error: true
+        with:
+          payload: ${{ steps.existing_archives.outputs.payload }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Dump logs tail (on failure)
         if: failure()
         run: |
