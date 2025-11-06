@@ -22,13 +22,7 @@ struct AdaptersInfo: Encodable {
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            var adapterVersion: String
-            if let index = Constants.sdkVersion.firstIndex(of: "-") {
-                adapterVersion = Constants.sdkVersion
-                adapterVersion.insert(contentsOf: ".\(adapter.adapterVersion)", at: index)
-            } else {
-                adapterVersion = Constants.sdkVersion + "." + adapter.adapterVersion
-            }
+            let adapterVersion: String = adapter.sdkVersion + "." + adapter.adapterVersion
 
             try container.encode(
                 adapterVersion,
