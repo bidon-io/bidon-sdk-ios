@@ -2,7 +2,6 @@
 
 ## New features
 - APDM-1631 Podspec generation - update
-- BDN-1083 CI S3 zip-archive checking
 
 # Release 0.12.0
 
