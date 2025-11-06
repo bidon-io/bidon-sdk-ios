@@ -21,13 +21,11 @@ BiddingRewardedAdDemandSourceAdapter
     public let demandId: String = AmazonDemandSourceAdapter.identifier
     public let name: String = "Amazon"
     public let adapterVersion: String = "0"
-    public var sdkVersion: String {
-        let raw = APS.version()
+    public var sdkVersion: String = APS.version()
+    public var fullAdapterVersion: String {
         let prefix = "aps-ios-"
-        if raw.hasPrefix(prefix) {
-            return String(raw.dropFirst(prefix.count))
-        }
-        return raw
+        let cleaned = sdkVersion.hasPrefix(prefix) ? String(sdkVersion.dropFirst(prefix.count)) : sdkVersion
+        return cleaned + "." + adapterVersion
     }
 
     @Injected(\.context)
