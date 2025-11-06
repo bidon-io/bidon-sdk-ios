@@ -409,6 +409,7 @@ lane :sdkTest do |options|
   raise "No SDK version specified".red if options[:version].nil?
 
   upload = options[:upload] || false
+  force_upload = options[:force_upload] || false
   base_version = options[:version]
   use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
   prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
@@ -436,9 +437,7 @@ lane :sdkTest do |options|
 
   if upload
     key = "Bidon/#{core_ver}/Bidon.zip"
-    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-    else
+    if force_upload
       aws_s3(
         access_key: ENV["S3_ACCESS_KEY"],
         secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -448,6 +447,20 @@ lane :sdkTest do |options|
         path: "Bidon/#{core_ver}",
         files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
       )
+    else
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "Bidon/#{core_ver}",
+          files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
+        )
+      end
     end
   end
 
@@ -486,9 +499,7 @@ lane :sdkTest do |options|
 
     if upload
       key = "#{target}/#{ver}/#{target}.zip"
-      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-      else
+      if force_upload
         aws_s3(
           access_key: ENV["S3_ACCESS_KEY"],
           secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -498,6 +509,20 @@ lane :sdkTest do |options|
           path: "#{target}/#{ver}",
           files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
         )
+      else
+        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"]) 
+          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+        else
+          aws_s3(
+            access_key: ENV["S3_ACCESS_KEY"],
+            secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+            bucket: ENV["S3_BUCKET"],
+            region: ENV["S3_REGION"],
+            acl: "bucket-owner-full-control",
+            path: "#{target}/#{ver}",
+            files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
+          )
+        end
       end
     end
 
@@ -541,9 +566,7 @@ lane :sdkTest do |options|
 
   if upload
     key = "BidonAdapterYandex/#{yandex_ver}/BidonAdapterYandex.zip"
-    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-    else
+    if force_upload
       aws_s3(
         access_key: ENV["S3_ACCESS_KEY"],
         secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -553,6 +576,20 @@ lane :sdkTest do |options|
         path: "BidonAdapterYandex/#{yandex_ver}",
         files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"]
       )
+    else
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "BidonAdapterYandex/#{yandex_ver}",
+          files: ["#{$build_dir}/BidonAdapterYandex/BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.zip"]
+        )
+      end
     end
   end
 end
@@ -561,6 +598,7 @@ end
     raise "No SDK version specified".red if options[:version].nil?
 
     upload = options[:upload] || false
+  force_upload = options[:force_upload] || false
     base_version = options[:version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
     prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
@@ -589,9 +627,7 @@ end
 
     if upload
       key = "Bidon/#{core_ver}/Bidon.zip"
-      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-      else
+      if force_upload
         aws_s3(
           access_key: ENV["S3_ACCESS_KEY"],
           secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -601,6 +637,20 @@ end
           path: "Bidon/#{core_ver}",
           files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
         )
+      else
+        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+        else
+          aws_s3(
+            access_key: ENV["S3_ACCESS_KEY"],
+            secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+            bucket: ENV["S3_BUCKET"],
+            region: ENV["S3_REGION"],
+            acl: "bucket-owner-full-control",
+            path: "Bidon/#{core_ver}",
+            files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
+          )
+        end
       end
     end
 
@@ -640,9 +690,7 @@ end
 
       if upload
         key = "#{target}/#{ver}/#{target}.zip"
-        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-        else
+        if force_upload
           aws_s3(
             access_key: ENV["S3_ACCESS_KEY"],
             secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -652,6 +700,20 @@ end
             path: "#{target}/#{ver}",
             files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
           )
+        else
+          if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"]) 
+            record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+          else
+            aws_s3(
+              access_key: ENV["S3_ACCESS_KEY"],
+              secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+              bucket: ENV["S3_BUCKET"],
+              region: ENV["S3_REGION"],
+              acl: "bucket-owner-full-control",
+              path: "#{target}/#{ver}",
+              files: ["#{$build_dir}/#{target}/#{target}-#{ver}/#{target}.zip"]
+            )
+          end
         end
       end
 
@@ -678,6 +740,7 @@ end
       version: yandex_ver,
       sdk_version: core_ver,
       upload: upload,
+      force_upload: force_upload,
       skip_build: false,
       pods: true
     )
@@ -760,6 +823,7 @@ end
       UI.user_error!("No adapter version specified and use_network_versions is false")
     end
     upload = options[:upload] || false
+    force_upload = options[:force_upload] || false
     skip_build = options[:skip_build].nil? ? false : options[:skip_build]
     should_install_pods = options[:pods].nil? ? false : options[:pods]
 
@@ -800,9 +864,7 @@ end
 
     if upload
       key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
-      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-      else
+      if force_upload
         aws_s3(
           access_key: ENV["S3_ACCESS_KEY"],
           secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -812,6 +874,20 @@ end
           path: "#{adapter_name}/#{adapter_version}",
           files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
         )
+      else
+        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+        else
+          aws_s3(
+            access_key: ENV["S3_ACCESS_KEY"],
+            secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+            bucket: ENV["S3_BUCKET"],
+            region: ENV["S3_REGION"],
+            acl: "bucket-owner-full-control",
+            path: "#{adapter_name}/#{adapter_version}",
+            files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+          )
+        end
       end
     end
   end
@@ -838,6 +914,7 @@ lane :adapter_ci do |options|
     options[:version]
   end
   upload          = options[:upload] || false
+  force_upload    = options[:force_upload] || false
   skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
 
   # На CI по умолчанию ставим Pods (можно переопределить pods:true/false)
@@ -924,9 +1001,7 @@ lane :adapter_ci do |options|
   # 4) Optional upload to S3
   if upload
     key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
-    if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-      record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
-    else
+    if force_upload
       aws_s3(
         access_key: ENV["S3_ACCESS_KEY"],
         secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
@@ -936,6 +1011,20 @@ lane :adapter_ci do |options|
         path: "#{adapter_name}/#{adapter_version}",
         files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
       )
+    else
+      if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
+        record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+      else
+        aws_s3(
+          access_key: ENV["S3_ACCESS_KEY"],
+          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
+          bucket: ENV["S3_BUCKET"],
+          region: ENV["S3_REGION"],
+          acl: "bucket-owner-full-control",
+          path: "#{adapter_name}/#{adapter_version}",
+          files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
+        )
+      end
     end
   end
 

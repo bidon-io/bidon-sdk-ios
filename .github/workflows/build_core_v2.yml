@@ -17,6 +17,11 @@ on:
         required: true
         type: boolean
         default: false
+      force_upload:
+        description: 'Force re-upload to S3 even if object exists?'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build-core-v2:
@@ -81,7 +86,8 @@ jobs:
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane core \
             version:${{ inputs.sdk_version }} \
             pre:"${{ inputs.pre }}" \
-            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_core.log"
+            upload:${{ inputs.upload }} \
+            force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_core.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
@@ -144,7 +150,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Core Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Core Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -155,7 +161,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Core Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Core Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

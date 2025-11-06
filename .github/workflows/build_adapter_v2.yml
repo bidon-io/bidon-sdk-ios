@@ -16,6 +16,11 @@ on:
         required: true
         type: boolean
         default: false
+      force_upload:
+        description: 'Force re-upload to S3 even if object exists?'
+        required: false
+        type: boolean
+        default: false
       push_specs:
         description: 'Push generated podspec to repo?'
         required: true
@@ -86,7 +91,8 @@ jobs:
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
             name:${{ inputs.adapter_name }} \
             sdk_version:${{ inputs.sdk_version }} \
-            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter.log"
+            upload:${{ inputs.upload }} \
+            force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
@@ -207,7 +213,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -218,7 +224,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
