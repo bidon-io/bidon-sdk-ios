@@ -26,7 +26,7 @@ DirectAdViewDemandSourceAdapter
     public let demandId: String = BigoAdsDemandSourceAdapter.identifier
     public let name: String = "BigoAds"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = BigoAdSdk.sharedInstance().getVersion()
+    public let sdkVersion: String = BigoAdSdk.sharedInstance().getVersionName()
 
     @Injected(\.context)
     var context: SdkContext

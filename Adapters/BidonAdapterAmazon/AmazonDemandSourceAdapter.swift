@@ -21,7 +21,12 @@ BiddingRewardedAdDemandSourceAdapter
     public let demandId: String = AmazonDemandSourceAdapter.identifier
     public let name: String = "Amazon"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = DTBAds.version()
+    public var sdkVersion: String = APS.version()
+    public var fullAdapterVersion: String {
+        let prefix = "aps-ios-"
+        let cleaned = sdkVersion.hasPrefix(prefix) ? String(sdkVersion.dropFirst(prefix.count)) : sdkVersion
+        return cleaned + "." + adapterVersion
+    }
 
     @Injected(\.context)
     var context: Bidon.SdkContext
