@@ -1045,7 +1045,9 @@ end
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = if is_adapter && use_network_versions
+      ver = if !is_adapter
+        core_ver
+      elsif use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
         (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
@@ -1079,7 +1081,9 @@ end
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = if is_adapter && use_network_versions
+      ver = if !is_adapter
+        core_ver
+      elsif use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
         (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
