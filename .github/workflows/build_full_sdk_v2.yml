@@ -17,6 +17,11 @@ on:
         required: true
         type: boolean
         default: false
+      force_upload:
+        description: 'Force re-upload to S3 even if object exists?'
+        required: false
+        type: boolean
+        default: false
       push_specs:
         description: 'Push generated podspecs to repo?'
         required: true
@@ -124,7 +129,8 @@ jobs:
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
             version:${{ inputs.sdk_version }} \
             use_network_versions:${{ inputs.use_network_versions }} \
-            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_sdk.log"
+            upload:${{ inputs.upload }} \
+            force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_sdk.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
@@ -260,6 +266,37 @@ jobs:
             build/reports/deprecations/deprecations.txt
             build/reports/deprecations/adapters.txt
 
+      - name: Collect existing archives
+        id: existing_archives
+        if: always()
+        run: |
+          set -e
+          FILE="build/reports/existing_archives/existing.txt"
+          mkdir -p "$(dirname "$FILE")"
+          touch "$FILE"
+          COUNT=$(wc -l < "$FILE" | tr -d ' ' || echo 0)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          PAYLOAD=$(jq -c -n \
+            --rawfile f "$FILE" \
+            --arg header "ℹ️ [Bidon] S3: Archives already exist; upload skipped:" \
+            --arg version "$SDK_VERSION" \
+            --arg run "$RUN_URL" \
+            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
+          )
+          echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
+        env:
+          SDK_VERSION: ${{ inputs.sdk_version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Notify Slack on existing archives
+        if: ${{ steps.existing_archives.outputs.count != '0' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        continue-on-error: true
+        with:
+          payload: ${{ steps.existing_archives.outputs.payload }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Notify Slack on deprecations
         if: ${{ steps.collect_deprecations.outputs.adapters != '' }}
         uses: slackapi/slack-github-action@v1.25.0
@@ -357,7 +394,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -368,7 +405,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *[Bidon] SDK Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *[Bidon] SDK Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -31,6 +31,9 @@
 		42F2651A2A52DEF70081EC55 /* BiddingDemandProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */; };
 		42F2651C2A531F290081EC55 /* AuctionRequestBuilderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */; };
 		42F2651E2A5320110081EC55 /* NetworkManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */; };
+		491FD48C2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift in Resources */ = {isa = PBXBuildFile; fileRef = 491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */; };
+		491FD48E2E8D3164005B69D9 /* BidonAdapterTaurusX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 491FD48D2E8D3164005B69D9 /* BidonAdapterTaurusX.framework */; };
+		491FD4912E8D325B005B69D9 /* BidonAdapterTaurusXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */; };
 		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
 		B9009E0E2E7ABDAA005C6187 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E0D2E7ABDAA005C6187 /* Bidon.framework */; };
 		B9009E122E7ABE1D005C6187 /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E112E7ABE1D005C6187 /* BidonAdapterAmazon.framework */; };
@@ -69,8 +72,25 @@
 		B9009E7B2E7AC04A005C6187 /* BidonAdapterChartboostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */; };
 		B9009E7C2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */; };
 		B9009E7D2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */; };
+		B9AA00012EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */; };
+		B9FD55122EA6318E00046D0D /* BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */; };
+		B9FD55132EA6318E00046D0D /* BidonAdapterStartIo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3E14CDD0E14A3D59EC3EB8E /* Pods_AdaptersTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B9FD55142EA6318E00046D0D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B9FD55132EA6318E00046D0D /* BidonAdapterStartIo.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +132,8 @@
 		42F265192A52DEF70081EC55 /* BiddingDemandProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiddingDemandProviderMock.swift; sourceTree = "<group>"; };
 		42F2651B2A531F290081EC55 /* AuctionRequestBuilderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionRequestBuilderMock.swift; sourceTree = "<group>"; };
 		42F2651D2A5320110081EC55 /* NetworkManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerMock.swift; sourceTree = "<group>"; };
+		491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterTaurusXTests.swift; sourceTree = "<group>"; };
+		491FD48D2E8D3164005B69D9 /* BidonAdapterTaurusX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterTaurusX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B67CFEEDBBD41E9AD055FF /* Pods-Tests-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Swift.debug.xcconfig"; path = "Target Support Files/Pods-Tests-Swift/Pods-Tests-Swift.debug.xcconfig"; sourceTree = "<group>"; };
 		5A002D3DE9E6A4EFCBE03201 /* Pods-AdaptersTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdaptersTests.debug.xcconfig"; path = "Target Support Files/Pods-AdaptersTests/Pods-AdaptersTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926E9DEF2AE03DFB539B4625 /* Pods_AdaptersTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptersTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +178,8 @@
 		B9009E662E7AC04A005C6187 /* BidonAdapterUnityAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterUnityAdsTests.swift; sourceTree = "<group>"; };
 		B9009E682E7AC04A005C6187 /* BidonAdapterVungleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterVungleTests.swift; sourceTree = "<group>"; };
 		B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterYandexTests.swift; sourceTree = "<group>"; };
+		B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterStartIoTests.swift; sourceTree = "<group>"; };
+		B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterStartIo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_ObjectiveC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.release.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +214,8 @@
 				B9009E322E7ABFC0005C6187 /* BidonAdapterMetaAudienceNetwork.framework in Frameworks */,
 				B9009E2F2E7ABEA6005C6187 /* BidonAdapterIronSource.framework in Frameworks */,
 				B9009E292E7ABE81005C6187 /* BidonAdapterGoogleMobileAds.framework in Frameworks */,
+				B9FD55122EA6318E00046D0D /* BidonAdapterStartIo.framework in Frameworks */,
+				491FD48E2E8D3164005B69D9 /* BidonAdapterTaurusX.framework in Frameworks */,
 				B9009E3B2E7ABFDA005C6187 /* BidonAdapterMoloco.framework in Frameworks */,
 				B9009E352E7ABFC8005C6187 /* BidonAdapterMintegral.framework in Frameworks */,
 				B9009E472E7AC005005C6187 /* libBidonAdapterYandex.a in Frameworks */,
@@ -232,6 +258,8 @@
 		422101FC285A006C006596DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */,
+				491FD48D2E8D3164005B69D9 /* BidonAdapterTaurusX.framework */,
 				B9009E462E7AC005005C6187 /* libBidonAdapterYandex.a */,
 				B9009E432E7ABFF9005C6187 /* BidonAdapterVungle.framework */,
 				B9009E402E7ABFF0005C6187 /* BidonAdapterUnityAds.framework */,
@@ -341,6 +369,14 @@
 			path = Demand;
 			sourceTree = "<group>";
 		};
+		491FD48A2E8D2CA7005B69D9 /* BidonAdapterTaurusXTests */ = {
+			isa = PBXGroup;
+			children = (
+				491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */,
+			);
+			path = BidonAdapterTaurusXTests;
+			sourceTree = "<group>";
+		};
 		9E879BD8DED23500B1141F35 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +394,8 @@
 		B9009E0B2E7ABD44005C6187 /* AdaptersTests */ = {
 			isa = PBXGroup;
 			children = (
+				B9AA00022EA73E8B00D7C111 /* BidonAdapterStartIoTests */,
+				491FD48A2E8D2CA7005B69D9 /* BidonAdapterTaurusXTests */,
 				B9009E492E7AC04A005C6187 /* BidonAdapterAmazonTests */,
 				B9009E4B2E7AC04A005C6187 /* BidonAdapterAppLovinTests */,
 				B9009E4D2E7AC04A005C6187 /* BidonAdapterBidMachineTests */,
@@ -524,6 +562,14 @@
 			path = BidonAdapterYandexTests;
 			sourceTree = "<group>";
 		};
+		B9AA00022EA73E8B00D7C111 /* BidonAdapterStartIoTests */ = {
+			isa = PBXGroup;
+			children = (
+				B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */,
+			);
+			path = BidonAdapterStartIoTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -555,6 +601,7 @@
 				B9009E012E7ABD31005C6187 /* Resources */,
 				88E7907D62B424E3E548042A /* [CP] Embed Pods Frameworks */,
 				C501A323314425C980FE3919 /* [CP] Copy Pods Resources */,
+				B9FD55142EA6318E00046D0D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -614,6 +661,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				491FD48C2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,6 +783,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9AA00012EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift in Sources */,
+				491FD4912E8D325B005B69D9 /* BidonAdapterTaurusXTests.swift in Sources */,
 				B9009E6C2E7AC04A005C6187 /* BidonAdapterGoogleAdManagerTests.swift in Sources */,
 				B9009E6D2E7AC04A005C6187 /* BidonAdapterGoogleMobileAdsTests.swift in Sources */,
 				B9009E6E2E7AC04A005C6187 /* BidonAdapterMolocoTests.swift in Sources */,

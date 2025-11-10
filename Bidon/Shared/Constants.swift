@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.11.0"
+    static let sdkVersion: String = "0.12.0"
 
     static let zeroUUID: String = "00000000-0000-0000-0000-000000000000"
 
@@ -40,7 +40,9 @@ struct Constants {
             "BidonAdapterIronSource.IronSourceDemandSourceAdapter",
             "BidonAdapterYandex.YandexDemandSourceAdapter",
             "BidonAdapterChartboost.ChartboostDemandSourceAdapter",
-            "BidonAdapterMoloco.MolocoDemandSourceAdapter"
+            "BidonAdapterStartIo.StartIoDemandSourceAdapter",
+            "BidonAdapterMoloco.MolocoDemandSourceAdapter",
+            "BidonAdapterTaurusX.TaurusXDemandSourceAdapter"
         ]
     }
 
@@ -50,6 +52,8 @@ struct Constants {
         static let coppa = "BidonCoppa"
         static let segmentId = "BidonSegmentId"
         static let segmentUid = "BidonSegmentUid"
+        static let userAgent = "BidonUserAgent"
+        static let userAgentOSVersion = "BidonUserAgentOSVersion"
     }
 
     enum Timeout {

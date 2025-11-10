@@ -10,4 +10,6 @@ import Foundation
 
 public struct AppLovinParameters: Codable {
     var sdkKey: String
+    var adUnitIds: [String]?
+    var mediator: String?
 }

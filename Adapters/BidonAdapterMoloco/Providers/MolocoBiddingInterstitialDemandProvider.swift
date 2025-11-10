@@ -35,7 +35,9 @@ final class MolocoBiddingInterstitialDemandProvider: MolocoBiddingBaseDemandProv
         self.response = response
         self.unitId = adUnitExtras.adUnitId
         Task { @MainActor in
-            let ad = Moloco.shared.createInterstitial(for: adUnitExtras.adUnitId, delegate: self)
+            let params = MolocoCreateAdParams(adUnit: adUnitExtras.adUnitId, mediation: "")
+            let ad = Moloco.shared.createInterstitial(params: params)
+            ad?.interstitialDelegate = self
             ad?.load(bidResponse: payload.payload)
             self.interstitial = ad
         }

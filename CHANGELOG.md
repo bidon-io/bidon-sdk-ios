@@ -1,9 +1,24 @@
-# develop (0.12.0)
+# develop
 
 ## New features
-- BDN-1010 Adapter Versioning and Github Actions
+- APDM-1631 Podspec generation - update
+- BDN-1083 CI S3 zip-archive checking
 
-# develop (0.11.0)
+# Release 0.12.0
+
+## New features
+- BDN-1067 Update Moloco
+- BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
+- BDN-1069 Fixes in BCA banners
+- BDN-1010 Adapter Versioning and Github Actions
+- BDN-1017 TaurusX implementation
+- BDN-1056 Start.io implementation
+
+## Fixes
+- BDN-1053 Location waiting fix
+- BDN-1062 userAgent freeze in iOS 26 WebView fix
+
+# Release 0.11.0
 
 - BDN-1001 Migrate IronSource and LevelPlay API to new API
 

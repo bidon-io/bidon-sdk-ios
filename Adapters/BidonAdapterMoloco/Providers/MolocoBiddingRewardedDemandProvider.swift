@@ -38,7 +38,8 @@ final class MolocoBiddingRewardedDemandProvider: MolocoBiddingBaseDemandProvider
         self.unitId = adUnitExtras.adUnitId
 
         Task { @MainActor in
-            let ad = Moloco.shared.createRewarded(for: adUnitExtras.adUnitId, delegate: self)
+            let ad = Moloco.shared.createRewarded(params: MolocoCreateAdParams(adUnit: adUnitExtras.adUnitId, mediation: ""))
+            ad?.rewardedDelegate = self
             ad?.load(bidResponse: payload.payload)
             self.rewarded = ad
         }

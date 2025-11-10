@@ -13,8 +13,15 @@ public protocol Adapter {
     var name: String { get }
     var adapterVersion: String { get }
     var sdkVersion: String { get }
+    var fullAdapterVersion: String { get }
 
     init()
+}
+
+extension Adapter {
+    public var fullAdapterVersion: String {
+        return sdkVersion + "." + adapterVersion
+    }
 }
 
 // TODO: Decide to restore or remove it

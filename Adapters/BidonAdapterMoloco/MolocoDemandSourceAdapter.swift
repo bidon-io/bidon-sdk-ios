@@ -44,15 +44,15 @@ BiddingAdViewDemandSourceAdapter
 
 extension MolocoDemandSourceAdapter: ParameterizedInitializableAdapter {
     public var isInitialized: Bool {
-        Moloco.shared.state.isInitialized
+        Moloco.shared.isInitialized
     }
 
     public func initialize(
         parameters: MolocoParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        let initParams = MolocoInitParams(appKey: parameters.appKey)
-        Moloco.shared.initialize(initParams: initParams) { success, error in
+        let initParams = MolocoInitParams(appKey: parameters.appKey, mediation: "")
+        Moloco.shared.initialize(params: initParams) { success, error in
             if let error {
                 let sdkError = SdkError(error)
                 completion(sdkError)
