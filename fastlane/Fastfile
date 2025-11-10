@@ -105,7 +105,7 @@ xcodebuild(
   destination: "generic/platform=iOS",
   archive_path: "#{$build_dir}/#{scheme}/archives/ios.xcarchive",
   scheme: scheme,
-  workspace: "BidOn.xcworkspace",
+  workspace: "#{$root_dir}/BidOn.xcworkspace",
   configuration: $configuration,
   sdk: "iphoneos",
   xcargs: xcargs
@@ -117,7 +117,7 @@ xcodebuild(
   destination: "generic/platform=iOS Simulator",
   archive_path: "#{$build_dir}/#{scheme}/archives/ios-sim.xcarchive",
   scheme: scheme,
-  workspace: "BidOn.xcworkspace",
+  workspace: "#{$root_dir}/BidOn.xcworkspace",
   configuration: $configuration,
   sdk: "iphonesimulator",
   xcargs: xcargs
@@ -196,7 +196,7 @@ def build_all_products_via_release!
     build: true,
     destination: "generic/platform=iOS",
     scheme: "Release",                        # твоя агрегатная схема
-    workspace: "BidOn.xcworkspace",
+    workspace: "#{$root_dir}/BidOn.xcworkspace",
     configuration: $configuration,
     sdk: "iphoneos",
     xcargs: "#{common_xcargs(deployment_target: '12.0', build_library_for_distribution: true)} BUILD_DIR=#{products_dir}",
@@ -209,7 +209,7 @@ def build_all_products_via_release!
     build: true,
     destination: "generic/platform=iOS Simulator",
     scheme: "Release",
-    workspace: "BidOn.xcworkspace",
+    workspace: "#{$root_dir}/BidOn.xcworkspace",
     configuration: $configuration,
     sdk: "iphonesimulator",
     xcargs: "#{common_xcargs(deployment_target: '12.0', build_library_for_distribution: true)} BUILD_DIR=#{products_dir}",
@@ -227,7 +227,7 @@ def build_yandex_only!
     build: true,
     destination: "generic/platform=iOS",
     scheme: "BidonAdapterYandex",
-    workspace: "BidOn.xcworkspace",
+    workspace: "#{$root_dir}/BidOn.xcworkspace",
     configuration: $configuration,
     sdk: "iphoneos",
     xcargs: "#{common_xcargs(deployment_target: '13.0', build_library_for_distribution: false)} BUILD_DIR=#{products_dir}"
@@ -238,7 +238,7 @@ def build_yandex_only!
     build: true,
     destination: "generic/platform=iOS Simulator",
     scheme: "BidonAdapterYandex",
-    workspace: "BidOn.xcworkspace",
+    workspace: "#{$root_dir}/BidOn.xcworkspace",
     configuration: $configuration,
     sdk: "iphonesimulator",
     xcargs: "#{common_xcargs(deployment_target: '13.0', build_library_for_distribution: false)} BUILD_DIR=#{products_dir}"
@@ -916,6 +916,8 @@ lane :adapter_ci do |options|
   upload          = options[:upload] || false
   force_upload    = options[:force_upload] || false
   skip_build      = options.key?(:skip_build) ? !!options[:skip_build] : false
+  sim_destination = options[:sim_destination]
+  run_tests       = options.key?(:run_tests) ? !!options[:run_tests] : true
 
   # На CI по умолчанию ставим Pods (можно переопределить pods:true/false)
   should_install_pods = if options.key?(:pods)
@@ -927,13 +929,18 @@ lane :adapter_ci do |options|
   cocoapods(use_bundle_exec: true) if should_install_pods
 
   # Проверяем workspace
-  unless File.exist?("BidOn.xcworkspace") || File.exist?("BidOn.xcworkspace/contents.xcworkspacedata")
-    UI.user_error!("Workspace 'BidOn.xcworkspace' not found. Did you run `pod install`?")
+  unless File.exist?("#{$root_dir}/BidOn.xcworkspace") || File.exist?("#{$root_dir}/BidOn.xcworkspace/contents.xcworkspacedata")
+    UI.message("Workspace not found; running cocoapods install…")
+    begin
+      cocoapods(use_bundle_exec: true)
+    rescue => e
+      UI.user_error!("Workspace 'BidOn.xcworkspace' not found and pod install failed: #{e}")
+    end
   end
 
   # Валидируем наличие схемы (точное совпадение регистра)
   begin
-    schemes_json = sh("xcodebuild -list -json -workspace BidOn.xcworkspace")
+    schemes_json = sh("xcodebuild -list -json -workspace '#{$root_dir}/BidOn.xcworkspace'")
   rescue => e
     UI.user_error!("Failed to list schemes: #{e}")
   end
@@ -978,6 +985,55 @@ lane :adapter_ci do |options|
     else
       xcframework(adapter_name, adapter_name, adapter_name, adapter_version)
     end
+  end
+
+  # 2.5) Tests (before packaging/upload)
+  if run_tests
+    UI.message("🧪 Running tests for #{adapter_name}…")
+    test_bundle = "#{adapter_name}Tests"
+    # Prefer dedicated test scheme if present, otherwise run tests via adapter scheme
+    test_scheme = schemes_json && schemes_json.include?("\"#{adapter_name}Tests\"") ? "#{adapter_name}Tests" : adapter_name
+    # Detect a valid simulator destination if not provided
+    destination_to_use = sim_destination
+    if destination_to_use.to_s.strip.empty?
+      begin
+        show = sh("xcodebuild -showdestinations -workspace '#{$root_dir}/BidOn.xcworkspace' -scheme '#{test_scheme}' | cat")
+        line = show.lines.map { |l| l.strip }.find { |l| l.include?("platform:iOS Simulator") && l.include?("id:") }
+        if line
+          m = line.match(/id:\s*([A-F0-9\-]+)/)
+          destination_to_use = "platform=iOS Simulator,id=#{m[1]}" if m
+        end
+      rescue => e
+        UI.message("Could not detect simulator destination: #{e}")
+      end
+      destination_to_use ||= "platform=iOS Simulator,OS=17.4,name=iPad (10th generation)"
+    end
+    begin
+      if test_scheme == adapter_name
+        xcodebuild(
+          test: true,
+          destination: destination_to_use,
+          scheme: adapter_name,
+          workspace: "#{$root_dir}/BidOn.xcworkspace",
+          configuration: "Debug",
+          sdk: "iphonesimulator",
+          xcargs: "-only-testing:#{test_bundle}"
+        )
+      else
+        xcodebuild(
+          test: true,
+          destination: destination_to_use,
+          scheme: test_scheme,
+          workspace: "#{$root_dir}/BidOn.xcworkspace",
+          configuration: "Debug",
+          sdk: "iphonesimulator"
+        )
+      end
+    rescue => e
+      UI.user_error!("Tests failed for #{adapter_name}: #{e}")
+    end
+  else
+    UI.message("Skipping tests for #{adapter_name} (run_tests=false)")
   end
 
   # 3) Package & podspec
