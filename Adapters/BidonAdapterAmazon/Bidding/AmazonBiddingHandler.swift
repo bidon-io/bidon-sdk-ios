@@ -30,11 +30,10 @@ struct AmazonBiddingSlot: Codable {
 
     init?(response: DTBAdResponse) {
         guard
-            let adSize = response.adSize(),
-            let slotUuid = adSize.slotUUID
+            let adSize = response.adSize()
         else { return nil }
 
-        self.slotUuid = slotUuid
+        self.slotUuid = adSize.slotUUID
         self.pricePoint = response.amznSlots()
     }
 }

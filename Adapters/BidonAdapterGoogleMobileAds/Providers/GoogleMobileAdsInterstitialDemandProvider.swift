@@ -11,6 +11,21 @@ import GoogleMobileAds
 import UIKit
 
 final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemandProvider<InterstitialAd> {
+    override func collectBiddingToken(
+        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        let reqest = InterstitialSignalRequest(signalType: "")
+        MobileAds.generateSignal(reqest) { signal, error in
+            guard let token = signal?.signal else {
+                response(.failure(.adapterNotInitialized))
+                return
+            }
+
+            response(.success(token))
+        }
+    }
+    
     override func loadAd(_ request: Request, adUnitId: String) {
         InterstitialAd.load(with: adUnitId, request: request) { [weak self] interstitial, error in
             guard let self = self else { return }

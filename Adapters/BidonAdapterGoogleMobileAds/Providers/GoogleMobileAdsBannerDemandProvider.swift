@@ -27,6 +27,21 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
         self.rootViewController = context.rootViewController
         super.init(parameters: parameters)
     }
+    
+    override func collectBiddingToken(
+        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        let reqest = BannerSignalRequest(signalType: "")
+        MobileAds.generateSignal(reqest) { signal, error in
+            guard let token = signal?.signal else {
+                response(.failure(.adapterNotInitialized))
+                return
+            }
+
+            response(.success(token))
+        }
+    }
 
     override func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         DispatchQueue.main.async { [weak self] in

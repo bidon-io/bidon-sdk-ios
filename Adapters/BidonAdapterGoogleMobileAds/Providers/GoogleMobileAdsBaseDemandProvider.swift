@@ -26,6 +26,13 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
         self.parameters = parameters
         super.init()
     }
+    
+    func collectBiddingToken(
+        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        fatalError("Base demand provider can't collect bidding token")
+    }
 
     open func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
@@ -79,27 +86,6 @@ extension GoogleMobileAdsBaseDemandProvider: DirectDemandProvider {
 
 
 extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
-    func collectBiddingToken(
-        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
-        response: @escaping (Result<String, MediationError>) -> ()
-    ) {
-        let request = GoogleMobileAds.Request { builder in
-            builder.withQueryType(parameters.queryInfoType)
-            builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdpr)
-            builder.withUSPrivacyString(context.regulations.usPrivacyString)
-        }
-
-        QueryInfo.createQueryInfo(with: request, adFormat: AdObject.adFormat) { info, _ in
-            guard let token = info?.query else {
-                response(.failure(.adapterNotInitialized))
-                return
-            }
-
-            response(.success(token))
-        }
-    }
-
     func load(
         payload: GoogleMobileAdsBiddingPayload,
         adUnitExtras: GoogleMobileAdsAdUnitExtras,
