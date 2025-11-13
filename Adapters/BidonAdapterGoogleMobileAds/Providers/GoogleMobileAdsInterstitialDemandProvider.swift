@@ -16,7 +16,7 @@ final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemand
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
         let reqest = InterstitialSignalRequest(signalType: "")
-        MobileAds.generateSignal(reqest) { signal, error in
+        MobileAds.generateSignal(reqest) { signal, _ in
             guard let token = signal?.signal else {
                 response(.failure(.adapterNotInitialized))
                 return
