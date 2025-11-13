@@ -23,7 +23,7 @@ where AdObject: BidMachineAdProtocol {
     ) {
         let key = auctionKey.flatMap { $0.isEmpty ? nil : $0 } ?? "default"
         let placementId = biddingTokenExtras.placements?[key] as? String
-        let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
+        let placement = try? BidMachineSdk.shared.placement(adFormat) {
             if let placementId {
                 $0.withPlacementId(placementId)
             }

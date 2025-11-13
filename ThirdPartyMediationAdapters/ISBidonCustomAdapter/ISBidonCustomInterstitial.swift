@@ -86,7 +86,6 @@ extension ISBidonCustomInterstitial: FullscreenAdDelegate {
     public func fullscreenAd(_ fullscreenAd: any Bidon.FullscreenAdObject, willPresentAd ad: any Bidon.Ad) {
         print("[ISBidonCustomAdapter] Interstitial did show, Placement ID: \(placementId), adUnitId: \(adUnitId)")
         interstitialDelegate?.adDidOpen()
-        interstitialDelegate?.adDidShowSucceed()
         interstitialDelegate?.adDidStart()
     }
 
