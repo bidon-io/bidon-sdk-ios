@@ -14,8 +14,6 @@ import Bidon
 final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
-    override var placementFormat: PlacementFormat { .rewarded }
-
     override func load(
         payload: BidMachineBiddingPayload,
         adUnitExtras: BidMachineAdUnitExtras,
@@ -24,7 +22,7 @@ final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandPr
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
 
-        let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
+        let placement = try? BidMachineSdk.shared.placement(.rewarded) {
             $0.withCustomParameters(parameters)
         }
 

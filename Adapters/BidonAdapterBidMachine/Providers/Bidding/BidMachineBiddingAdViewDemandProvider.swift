@@ -16,8 +16,6 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
 
     weak var adViewDelegate: DemandProviderAdViewDelegate?
 
-    override var placementFormat: PlacementFormat { .init(format: format) }
-
     override func load(
         payload: BidMachineBiddingPayload,
         adUnitExtras: BidMachineAdUnitExtras,
@@ -26,7 +24,7 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
 
-        let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
+        let placement = try? BidMachineSdk.shared.placement(format.bmBannerFormat) {
             $0.withCustomParameters(parameters)
         }
 

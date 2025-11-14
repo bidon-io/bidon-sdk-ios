@@ -13,6 +13,21 @@ import UIKit
 
 final class GoogleMobileAdsRewardedAdDemandProvider: GoogleMobileAdsBaseDemandProvider<GoogleMobileAds.RewardedAd> {
     weak var rewardDelegate: DemandProviderRewardDelegate?
+    
+    override func collectBiddingToken(
+        biddingTokenExtras: GoogleMobileAdsBiddingTokenExtras,
+        response: @escaping (Result<String, MediationError>) -> ()
+    ) {
+        let reqest = RewardedSignalRequest(signalType: "")
+        MobileAds.generateSignal(reqest) { signal, _ in
+            guard let token = signal?.signal else {
+                response(.failure(.adapterNotInitialized))
+                return
+            }
+
+            response(.success(token))
+        }
+    }
 
     override func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         GoogleMobileAds.RewardedAd.load(with: adUnitId, request: request) { [weak self] rewardedAd, error in

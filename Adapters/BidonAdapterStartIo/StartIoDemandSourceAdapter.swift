@@ -20,7 +20,7 @@ BiddingAdViewDemandSourceAdapter
     public let demandId: String = StartIoDemandSourceAdapter.identifier
     public let name: String = "StartIo"
     public var adapterVersion: String = "0"
-    public var sdkVersion: String = STAStartAppSDK.sharedInstance().version
+    public lazy var sdkVersion: String = STAStartAppSDK.sharedInstance().version
     
     public var isInitialized: Bool = false
 

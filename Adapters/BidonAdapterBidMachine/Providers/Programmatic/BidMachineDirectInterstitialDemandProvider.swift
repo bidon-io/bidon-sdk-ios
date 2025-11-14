@@ -12,7 +12,7 @@ import Bidon
 
 
 final class BidMachineDirectInterstitialDemandProvider: BidMachineBaseDemandProvider<BidMachineInterstitial>, DirectDemandProvider {
-    override var placementFormat: PlacementFormat { .interstitial }
+    override var adFormat: AdFormat { .interstitial }
 
     func load(
         pricefloor: Price,
@@ -22,7 +22,7 @@ final class BidMachineDirectInterstitialDemandProvider: BidMachineBaseDemandProv
         var parameters = adUnitExtras.customParameters ?? [String: String]()
         parameters["mediation_mode"] = "bidon"
 
-        let placement = try? BidMachineSdk.shared.placement(from: placementFormat) {
+        let placement = try? BidMachineSdk.shared.placement(adFormat) {
             if let placementId = adUnitExtras.placement {
                 $0.withPlacementId(placementId)
             }
@@ -32,6 +32,20 @@ final class BidMachineDirectInterstitialDemandProvider: BidMachineBaseDemandProv
         guard let placement else {
             response(.failure(.unspecifiedException("No placement")))
             return
+        }
+
+        if adUnitExtras.bapps != nil || adUnitExtras.bcat != nil || adUnitExtras.badv != nil {
+            BidMachineSdk.shared.targetingInfo.populate { builder in
+                if let bapps = adUnitExtras.bapps, !bapps.isEmpty {
+                    builder.withBlockedApps(bapps)
+                }
+                if let bcat = adUnitExtras.bcat, !bcat.isEmpty {
+                    builder.withBlockedCategories(bcat)
+                }
+                if let badv = adUnitExtras.badv, !badv.isEmpty {
+                    builder.withBlockedAdvertisers(badv)
+                }
+            }
         }
 
         let request = BidMachineSdk.shared.auctionRequest(placement: placement) { builder in

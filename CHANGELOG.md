@@ -1,12 +1,17 @@
 # develop
 
 ## New features
+- BND-1046 Networks update
 - APDM-1631 Podspec generation - update
 - BDN-1083 CI S3 zip-archive checking
+
+## Fixes
+- BDN-1092 Crashes - Start.io
 
 # Release 0.12.0
 
 ## New features
+- BDN-1076 Support bcat, badv, and bapps for BidMachine CPM ad units
 - BDN-1067 Update Moloco
 - BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
 - BDN-1069 Fixes in BCA banners
