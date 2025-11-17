@@ -33,8 +33,15 @@ module Fastlane
         s3_bucket = params[:s3_bucket]
 
         dependencies = podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep|
+          dep_name =
+            if dep.name == "IronSourceSDK/Ads"
+              dep.name            # не трогаем, оставляем IronSourceSDK/Ads
+            else
+              dep.name.split("/").first
+            end
+
           Dependency.new(
-            name: dep.name.split("/").first,
+            name: dep_name,
             version: dep.to_s.scan(/\((.*)\)/m).flatten[0]
           )
         end
