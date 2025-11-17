@@ -1,5 +1,5 @@
 //
-//  YandexAdViewDemandProvider.swift
+//  YandexDirectAdViewDemandProvider.swift
 //  BidonAdapterYandex
 //
 //  Created by Евгения Григорович on 14/08/2024.
@@ -17,7 +17,7 @@ final class YandexBannerDemandAd: DemandAd {
     }
 }
 
-final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDemandAd> {
+final class YandexDirectAdViewDemandProvider: YandexDirectBaseDemandProvider<YandexBannerDemandAd> {
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
 
@@ -54,7 +54,7 @@ final class YandexAdViewDemandProvider: YandexBaseDemandProvider<YandexBannerDem
     }
 }
 
-extension YandexAdViewDemandProvider: AdViewDemandProvider {
+extension YandexDirectAdViewDemandProvider: AdViewDemandProvider {
 
     func container(for ad: YandexBannerDemandAd) -> Bidon.AdViewContainer? {
         return yandexAdView
@@ -63,7 +63,7 @@ extension YandexAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: YandexBannerDemandAd) { }
 }
 
-extension YandexAdViewDemandProvider: YandexMobileAds.AdViewDelegate {
+extension YandexDirectAdViewDemandProvider: YandexMobileAds.AdViewDelegate {
     func adViewDidLoad(_ adView: YandexMobileAds.AdView) {
         let ad = YandexBannerDemandAd(adView: adView)
         response?(.success(ad))

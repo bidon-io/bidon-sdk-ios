@@ -2,6 +2,7 @@ platform :ios, '13.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://cdn.cocoapods.org/'
+source "https://github.com/bidon-io/CocoaPods_Specs.git"
 source 'https://github.com/appodeal/CocoaPods.git'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
@@ -90,9 +91,7 @@ def ironsource
 end
 
 def yandex
-#  pod 'DivKit', '32.6.0'
-#  pod 'AppMetricaAnalytics', '~> 5.11.2'
-  pod 'YandexMobileAds', "7.16.2"
+  pod 'YandexMobileAds', "7.17.0"
 end
 
 def startio
@@ -282,10 +281,11 @@ target 'Sandbox' do
   ironsource
   yandex
   taurus
+#  pod 'BidonAdapterYandex', '7.16.2.0-test.7'
 end
 
 post_install do |installer|
-  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter']
+  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter', 'DivKitBinaryCompatibilityFacade']
   
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
