@@ -147,14 +147,14 @@ PODS:
   - OMSDK_Appodeal (1.5.2)
   - StackConsentManager (3.0.0):
     - GoogleUserMessagingPlatform (~> 2.1)
-  - StackModules/Core-Static (3.4.0)
-  - StackModules/ProductPresentation-Static (3.4.0):
+  - StackModules/Core-Static (3.4.1)
+  - StackModules/ProductPresentation-Static (3.4.1):
     - StackModules/Core-Static
-  - StackModules/Rendering-Static (3.4.0):
+  - StackModules/Rendering-Static (3.4.1):
     - OMSDK_Appodeal (= 1.5.2)
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
-  - StackModules/Static (3.4.0):
+  - StackModules/Static (3.4.1):
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
@@ -207,8 +207,6 @@ DEPENDENCIES:
   - YandexMobileAds (= 7.17.0)
 
 SPEC REPOS:
-  https://github.com/appodeal/CocoaPods.git:
-    - StackConsentManager
   trunk:
     - AmazonPublisherServicesSDK
     - AppLovinSDK
@@ -256,6 +254,7 @@ SPEC REPOS:
     - myTargetSDK
     - myTrackerSDK
     - OMSDK_Appodeal
+    - StackConsentManager
     - StackModules
     - StartAppSDK
     - SwiftLint
@@ -315,8 +314,8 @@ SPEC CHECKSUMS:
   myTargetSDK: da3e099a87540587a5a5f1fa6f5636e13fd84086
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
-  StackConsentManager: 3ef396bb4870b0772db2bb95f23d2ed304ba543d
-  StackModules: 97b0723863071a0ed41621156d3a5f3bb6c6461a
+  StackConsentManager: 80684e96361f88476985a2ed91a9299bc9196be8
+  StackModules: 2cdc4fe670b6536c8024c4ae24d4c2c76dc15006
   StartAppSDK: 8da2f1ff9b74f37b11972de191266d40582e5fbf
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 5005501aa0f9fc222a11a17d62d67e9edff934b8
@@ -328,6 +327,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
 
-PODFILE CHECKSUM: 73de354702da3947395da5b9201cb810869b8c41
+PODFILE CHECKSUM: cbef06fe50009adf1456469a2dbaf1cbe5ec160f
 
 COCOAPODS: 1.16.2

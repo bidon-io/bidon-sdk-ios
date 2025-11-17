@@ -47,7 +47,7 @@ def unity_ads
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '7.7.9'
+  pod 'MintegralAdSDK', '7.7.8'
 end
 
 def moloco
