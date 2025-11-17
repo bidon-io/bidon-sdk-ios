@@ -4,6 +4,7 @@
 require 'json'
 require 'net/http'
 require 'uri'
+require 'rubygems/version'
 
 TRUNK_BASE = 'https://trunk.cocoapods.org/api/v1/pods'
 
@@ -55,7 +56,7 @@ end
 def trunk_versions_for(pod)
   data = http_get_json("#{TRUNK_BASE}/#{URI.encode_www_form_component(pod)}")
   versions = (data['versions'] || []).map { |x| x['name'] }.compact.uniq
-  versions.sort_by { |v| semver_key(v) }
+  versions.sort_by { |v| Gem::Version.new(v) }
 end
 
 def replace_pod_version_in_podfile(pod, to_version)
@@ -134,7 +135,8 @@ def main
     pod = e[:name]
     cur = e[:version]
     all = trunk_versions_for(pod)
-    newer = all.select { |v| semver_key(v) > semver_key(cur) }
+    cur_v = Gem::Version.new(cur)
+    newer = all.select { |v| Gem::Version.new(v) > cur_v }
     next if newer.empty?
 
     newer.each do |to_v|

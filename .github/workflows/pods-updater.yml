@@ -33,7 +33,7 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
-      - name: Run updater (Ruby)
+      - name: Run updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PODS_BASE_BRANCH: dev
