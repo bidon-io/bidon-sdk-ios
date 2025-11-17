@@ -36,7 +36,7 @@ final class YandexBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider {
     }
     
     func collectBiddingToken(biddingTokenExtras: BiddingTokenExtras, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration(adType: .banner)
+        let requestConfiguration = BidderTokenRequestConfiguration.banner(size: adSize)
         requestConfiguration.parameters = [
             "adapter_version": MobileAds.sdkVersion(),
             "adapter_network_sdk_version": BidonSdk.sdkVersion

@@ -30,7 +30,7 @@ final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider
     }
     
     func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration(adType: .rewarded)
+        let requestConfiguration = BidderTokenRequestConfiguration.rewarded()
         requestConfiguration.parameters = [
             "adapter_version": MobileAds.sdkVersion(),
             "adapter_network_sdk_version": BidonSdk.sdkVersion

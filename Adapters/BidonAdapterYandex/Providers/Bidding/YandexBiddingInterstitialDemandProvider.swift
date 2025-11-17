@@ -28,7 +28,7 @@ final class YandexBiddingInterstitialDemandProvider: NSObject, BiddingDemandProv
     }
     
     func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration(adType: .interstitial)
+        let requestConfiguration = BidderTokenRequestConfiguration.interstitial()
         requestConfiguration.parameters = [
             "adapter_version": MobileAds.sdkVersion(),
             "adapter_network_sdk_version": BidonSdk.sdkVersion
