@@ -20,7 +20,7 @@ DirectAdViewDemandSourceAdapter
 
     public let demandId: String = IronSourceDemandSourceAdapter.identifier
     public let name: String = "IronSource"
-    public let adapterVersion: String = "0"
+    public let adapterVersion: String = "2"
     public let sdkVersion: String = LevelPlay.sdkVersion()
     private(set) public var isInitialized = false
 
