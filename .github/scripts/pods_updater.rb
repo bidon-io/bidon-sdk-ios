@@ -99,16 +99,27 @@ end
 def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   owner, repo = repo_slug.split('/', 2)
   uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls")
-  req = Net::HTTP::Post.new(uri)
-  req['Authorization'] = "Bearer #{github_token}"
-  req['Accept'] = 'application/vnd.github+json'
-  req.body = { title: title, head: branch, base: default_branch, body: body, maintainer_can_modify: true }.to_json
+  payloads = [
+    { title: title, head: branch, base: default_branch, body: body, maintainer_can_modify: true },
+    { title: title, head: "#{owner}:#{branch}", base: default_branch, body: body, maintainer_can_modify: true }
+  ]
   pr = nil
+  last_resp = nil
   Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-    resp = http.request(req)
-    raise "PR create failed: #{resp.code} #{resp.body}" unless resp.is_a?(Net::HTTPSuccess)
-    pr = JSON.parse(resp.body)
+    payloads.each do |pl|
+      req = Net::HTTP::Post.new(uri)
+      req['Authorization'] = "Bearer #{github_token}"
+      req['Accept'] = 'application/vnd.github+json'
+      req.body = pl.to_json
+      resp = http.request(req)
+      last_resp = resp
+      if resp.is_a?(Net::HTTPSuccess)
+        pr = JSON.parse(resp.body)
+        break
+      end
+    end
   end
+  raise "PR create failed: #{last_resp&.code} #{last_resp&.body}" unless pr
   issues_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/labels")
   lab_req = Net::HTTP::Post.new(issues_uri)
   lab_req['Authorization'] = "Bearer #{github_token}"
