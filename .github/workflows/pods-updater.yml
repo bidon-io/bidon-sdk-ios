@@ -23,6 +23,7 @@ jobs:
         run: |
           git config --global user.name "bidon-runner"
           git config --global user.email "runner@bidon.org"
+          git config --global credential.helper ""
 
       - name: CocoaPods repo update (self-hosted)
         run: |
@@ -35,7 +36,7 @@ jobs:
 
       - name: Run updater
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
           PODS_BASE_BRANCH: dev
         run: |
           export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
