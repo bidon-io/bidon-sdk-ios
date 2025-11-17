@@ -2488,7 +2488,6 @@
 				49088BEE2C6A4E870024A640 /* Sources */,
 				49088BEF2C6A4E870024A640 /* Frameworks */,
 				49088BF02C6A4E870024A640 /* Resources */,
-				63E65DFB82D7A21E34554A5A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3011,23 +3010,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterGoogleAdManager/Pods-BidonAdapterGoogleAdManager-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		63E65DFB82D7A21E34554A5A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BidonAdapterIronSource/Pods-BidonAdapterIronSource-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		79F4F5DA4E055A4E4C1EF1C5 /* [CP] Copy Pods Resources */ = {
