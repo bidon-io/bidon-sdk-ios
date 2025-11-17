@@ -12,6 +12,7 @@ import Bidon
 
 
 final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandProvider<BidMachineRewarded> {
+    override var adFormat: AdFormat { .rewardedVideo }
     weak var rewardDelegate: DemandProviderRewardDelegate?
 
     override func load(
