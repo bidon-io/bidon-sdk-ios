@@ -1,5 +1,5 @@
 //
-//  YandexRewardedDemandProvider.swift
+//  YandexDirectRewardedDemandProvider.swift
 //  BidonAdapterYandex
 //
 //  Created by Евгения Григорович on 14/08/2024.
@@ -17,7 +17,7 @@ final class YandexRewardedDemandAd: DemandAd {
     }
 }
 
-final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewardedDemandAd> {
+final class YandexDirectRewardedDemandProvider: YandexDirectBaseDemandProvider<YandexRewardedDemandAd> {
 
     private var response: DemandProviderResponse?
     weak var rewardDelegate: DemandProviderRewardDelegate?
@@ -39,7 +39,7 @@ final class YandexRewardedDemandProvider: YandexBaseDemandProvider<YandexRewarde
     }
 }
 
-extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
+extension YandexDirectRewardedDemandProvider: RewardedAdLoaderDelegate {
     func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
         rewardedAd.delegate = self
         self.rewardedAd = rewardedAd
@@ -54,7 +54,7 @@ extension YandexRewardedDemandProvider: RewardedAdLoaderDelegate {
     }
 }
 
-extension YandexRewardedDemandProvider: RewardedAdDemandProvider {
+extension YandexDirectRewardedDemandProvider: RewardedAdDemandProvider {
     func show(
         ad: YandexRewardedDemandAd,
         from viewController: UIViewController
@@ -63,7 +63,7 @@ extension YandexRewardedDemandProvider: RewardedAdDemandProvider {
     }
 }
 
-extension YandexRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
+extension YandexDirectRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
 
     func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didFailToShowWithError error: any Error) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
