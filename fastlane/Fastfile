@@ -54,11 +54,11 @@ $adapter_primary_pod = {
   "BidonAdapterAmazon" => "AmazonPublisherServicesSDK",
   "BidonAdapterMyTarget" => "myTargetSDK",
   "BidonAdapterChartboost" => "ChartboostSDK",
-  "BidonAdapterIronSource" => "IronSourceSDK",
+  "BidonAdapterIronSource" => "IronSourceSDK/Ads",
   "BidonAdapterMobileFuse" => "MobileFuseSDK",
   "BidonAdapterYandex" => "YandexMobileAds",
   "AppLovinMediationBidonAdapter" => "AppLovinSDK",
-  "ISBidonCustomAdapter" => "IronSourceSDK/Ads",
+  "ISBidonCustomAdapter" => "IronSourceSDK",
   "BidonAdapterStartIo" => "StartAppSDK",
   "BidonAdapterTaurusX" => "TaurusxAdsSDK"
 }
