@@ -87,7 +87,13 @@ end
 def git_push_branch(branch)
   owner, repo = repo_slug.split('/', 2)
   remote = "https://x-access-token:#{github_token}@github.com/#{owner}/#{repo}.git"
-  sh!("git push #{remote} HEAD:#{branch} --force-with-lease")
+  # First attempt with force-with-lease (safer)
+  ok = system("git push -u #{remote} HEAD:#{branch} --force-with-lease")
+  unless ok
+    # If lease fails due to stale info, refresh and force push
+    system("git fetch origin #{branch}") # ignore result
+    sh!("git push -u #{remote} HEAD:#{branch} --force")
+  end
 end
 
 def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
@@ -141,6 +147,8 @@ def main
 
     newer.each do |to_v|
       branch = "chore/pod-#{pod}-#{to_v}"
+      # Always base PR branch from the base branch (e.g., 'dev')
+      sh!("git fetch origin #{default_branch}")
       sh!("git checkout -B #{branch} origin/#{default_branch}")
       replace_pod_version_in_podfile(pod, to_v)
       pod_bin = ENV['POD_BIN'] || 'pod'
@@ -149,7 +157,16 @@ def main
       msg = "chore(pods): #{pod} #{cur} -> #{to_v}"
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
-      create_pr(branch, msg, pr_body(pod, cur, to_v))
+      begin
+        create_pr(branch, msg, pr_body(pod, cur, to_v))
+      rescue => e
+        # If PR already exists (422), ignore; re-raise for other errors
+        if e.message.include?('422') && e.message.include?('already exists')
+          # no-op
+        else
+          raise
+        end
+      end
       git_reset_to_default
     end
   end
