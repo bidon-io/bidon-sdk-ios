@@ -17,8 +17,8 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
 
-    var placementFormat: PlacementFormat {
-        fatalError("Base demand provider doesn't provide placement format")
+    var adFormat: AdFormat {
+        fatalError("Base demand provider doesn't provide ad format")
     }
 
     internal var response: DemandProviderResponse?

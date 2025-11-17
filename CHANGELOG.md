@@ -1,6 +1,18 @@
-# develop (0.12.0)
+# develop
 
 ## New features
+- BDN-1070 Added Yandex Bidding support
+- BND-1046 Networks update
+- APDM-1631 Podspec generation - update
+- BDN-1083 CI S3 zip-archive checking
+
+## Fixes
+- BDN-1092 Crashes - Start.io
+
+# Release 0.12.0
+
+## New features
+- BDN-1076 Support bcat, badv, and bapps for BidMachine CPM ad units
 - BDN-1067 Update Moloco
 - BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
 - BDN-1069 Fixes in BCA banners
@@ -12,7 +24,7 @@
 - BDN-1053 Location waiting fix
 - BDN-1062 userAgent freeze in iOS 26 WebView fix
 
-# develop (0.11.0)
+# Release 0.11.0
 
 - BDN-1001 Migrate IronSource and LevelPlay API to new API
 

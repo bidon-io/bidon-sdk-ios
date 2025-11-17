@@ -10,7 +10,7 @@ final class BidonAdapterBigoAdsTests: XCTestCase {
 
         XCTAssertEqual(adapter.demandId, "bigoads")
         XCTAssertEqual(adapter.name, "BigoAds")
-        XCTAssertEqual(adapter.sdkVersion, BigoAdSdk.sharedInstance().getVersion())
+        XCTAssertEqual(adapter.sdkVersion, BigoAdSdk.sharedInstance().getVersionName())
         XCTAssertFalse(adapter.adapterVersion.isEmpty)
     }
 

@@ -1,0 +1,143 @@
+name: Trunk Core v2
+
+on:
+  workflow_dispatch:
+    inputs:
+      sdk_version:
+        description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
+        required: true
+        type: string
+      pre:
+        description: 'Prerelease tag (optional, e.g. alpha.1)'
+        required: false
+        type: string
+        default: ''
+      upload:
+        description: 'Upload to AWS?'
+        required: true
+        type: boolean
+        default: false
+      adapters_version:
+        description: 'Adapters version (optional)'
+        required: false
+        type: string
+        default: ''
+      validate:
+        description: 'Perform full CocoaPods validations (tests, imports)?'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  trunk-core-v2:
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitconfig
+        run: |
+          git config --global user.name "bidon-runner"
+          git config --global user.email "runner@bidon.org"
+
+      - name: Verify Xcode (self-hosted)
+        run: |
+          xcodebuild -version
+
+      - name: CocoaPods install (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+
+      - name: Build Core via Fastlane 
+        run: |
+          set -o pipefail
+          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
+          # Force Ruby 3.2 and bundled gem binstubs first
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Avoid leaking system Ruby GEM_* into subprocesses
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane core \
+            version:${{ inputs.sdk_version }} \
+            pre:"${{ inputs.pre }}" \
+            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_core.log"
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+
+      - name: Generate podspec(s)
+        run: |
+          if [[ -z "${{ inputs.adapters_version }}" ]]; then
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }}
+          else
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }}
+          fi
+
+      - name: Push all podspecs to trunk (continue on failure)
+        id: push_specs
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          echo "Pushing all podspecs in build/Podspecs/..."
+          mkdir -p build/logs
+          FAILED=()
+
+          for spec in build/Podspecs/*.podspec.json; do
+            echo "🟡 Pushing $spec..."
+            CMD="pod trunk push \"$spec\" --allow-warnings"
+
+            if [ "${{ inputs.validate }}" = "false" ]; then
+              CMD="$CMD --skip-tests --skip-import-validation"
+            fi
+
+            if ! eval $CMD; then
+              echo "❌ Failed to push $spec"
+              FAILED+=("$spec")
+            else
+              echo "✅ Successfully pushed $spec"
+            fi
+          done
+
+          if [ ${#FAILED[@]} -ne 0 ]; then
+            echo "FAILED_SPECS<<EOF" >> $GITHUB_ENV
+            printf "%s\n" "${FAILED[@]}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            echo "At least one podspec failed to push"
+            exit 1
+          else
+            echo "FAILED_SPECS=" >> $GITHUB_ENV
+            echo "All podspecs pushed successfully"
+          fi
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ <!here> *Bidon Podspecs Pushed to Trunk (v2)!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ <!here> *Podspec Push Failed (v2)!*\n• SDK: `${{ inputs.sdk_version }}`\n• Adapters: `${{ inputs.adapters_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>\n${{ env.FAILED_SPECS != '' && format('• ❗ Failed specs:\n```{0}```', env.FAILED_SPECS) || '' }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+

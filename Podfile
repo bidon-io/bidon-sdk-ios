@@ -11,31 +11,31 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.3.0'
+  pod 'AmazonPublisherServicesSDK', '5.3.2'
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.3.1'
+  pod 'AppLovinSDK', '13.5.0'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.4.0'
+  pod 'BidMachine', '3.5.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '12.8.0'
+  pod 'Google-Mobile-Ads-SDK', '12.13.0'
 end
 
 def appsflyer
-  pod 'AppsFlyerFramework', '6.15.2'
+  pod 'AppsFlyerFramework', '6.17.7'
 end
 
 def bigo_ads
-  pod 'BigoADS', '4.9.0'
+  pod 'BigoADS', '5.0.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.3.8'
+  pod 'Fyber_Marketplace_SDK', '8.4.1'
 end
 
 def meta_ads
@@ -43,15 +43,15 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.14.2'
+  pod 'UnityAds', '4.16.3'
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '7.7.7'
+  pod 'MintegralAdSDK', '7.7.9'
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.0.0'
+  pod 'MolocoSDKiOS', '4.1.0'
 end
 
 def meta_sdk
@@ -59,7 +59,7 @@ def meta_sdk
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.0'
+  pod 'UnityAds', '4.16.3'
 end
 
 def mintegral
@@ -67,32 +67,30 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.9.2'
+  pod 'MobileFuseSDK', '1.9.3'
 end
 
 def vungle
-  pod 'VungleAds', '7.5.2'
+  pod 'VungleAds', '7.6.2'
 end
 
 def inmobi
-  pod 'InMobiSDK', '10.8.6'
+  pod 'InMobiSDK', '11.1.0'
 end
 
 def my_target
-  pod "myTargetSDK", '5.33.0'
+  pod "myTargetSDK", '5.36.2'
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.9.2'
+  pod 'ChartboostSDK', '9.10.1'
 end
 
 def ironsource
-  pod "IronSourceSDK", "8.10.0"
+  pod "IronSourceSDK", "9.1.0"
 end
 
 def yandex
-#  pod 'DivKit', '32.6.0'
-#  pod 'AppMetricaAnalytics', '~> 5.12.1'
   pod 'YandexMobileAds', "7.17.0"
 end
 
@@ -217,12 +215,12 @@ end
 
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'AppLovinSDK', '~> 13.3.1'
+  applovin
 end
 
 target 'ISBidonCustomAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
-  pod 'IronSourceSDK', '~> 8.10.0'
+  ironsource
 end
 
 # Tests

@@ -1,52 +1,53 @@
-name: Build Adapter v2
+name: Trunk Adapters v2
 
 on:
   workflow_dispatch:
     inputs:
-      adapter_name:
-        description: 'Adapter name (e.g. BidonAdapterIronSource)'
-        required: true
-        type: string
       sdk_version:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
         type: string
+      use_network_versions:
+        description: 'Use network SDK versions for adapters'
+        required: false
+        type: boolean
+        default: true
       upload:
         description: 'Upload to AWS?'
         required: true
         type: boolean
         default: false
-      force_upload:
-        description: 'Force re-upload to S3 even if object exists?'
-        required: false
+      push_specs:
+        description: 'Push generated podspecs to trunk?'
+        required: true
         type: boolean
         default: false
-      push_specs:
-        description: 'Push generated podspec to repo?'
+      validate:
+        description: 'Perform full CocoaPods validations (tests, imports)?'
         required: true
         type: boolean
         default: false
 
 jobs:
-  build-adapter-v2:
+  build-bidon-sdk:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+          
       - name: gitconfig
         run: |
-          git config --global user.name "bidon-runner"
-          git config --global user.email "runner@bidon.org"
+            git config --global user.name "bidon-runner"
+            git config --global user.email "runner@bidon.org"
 
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
 
-      # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
@@ -56,31 +57,7 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
-      - name: Cache Ruby gems (Bundler)
-        uses: actions/cache@v4
-        with:
-          path: ~/.bundle/bidon-sdk-ios
-          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-ruby-3.2-bundle-
-
-      - name: Install Ruby gems for fastlane (Ruby 3.2)
-        run: |
-          set -o pipefail
-          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
-          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
-          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
-
-      - name: Ensure Ruby 3.2 PATH and xcpretty
-        run: |
-          set -euo pipefail
-          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
-          # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
-          if ! command -v xcpretty >/dev/null 2>&1; then
-            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
-          fi
-
-      - name: Build adapter via Fastlane (self-hosted Ruby 3.2)
+      - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
           set -o pipefail
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
@@ -88,11 +65,10 @@ jobs:
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
           # Avoid leaking system Ruby GEM_* into subprocesses
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
-            name:${{ inputs.adapter_name }} \
-            sdk_version:${{ inputs.sdk_version }} \
-            upload:${{ inputs.upload }} \
-            force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter.log"
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane sdk \
+            version:${{ inputs.sdk_version }} \
+            use_network_versions:${{ inputs.use_network_versions }} \
+            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_sdk.log"
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
@@ -112,20 +88,14 @@ jobs:
           PAYLOAD=$(jq -c -n \
             --rawfile f "$FILE" \
             --arg header "ℹ️ [Bidon] S3: Archives already exist; upload skipped:" \
-            --arg adapter "${{ inputs.adapter_name }}" \
-            --arg version "${{ inputs.sdk_version }}" \
-            --arg run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Adapter: `" + $adapter + "`\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
+            --arg version "$SDK_VERSION" \
+            --arg run "$RUN_URL" \
+            '{text: ($header + "\n" + ($f | split("\n") | map(select(length>0)) | map("• " + .) | join("\n")) + "\n• Version: `" + $version + "`\n• Workflow: <" + $run + "|View Run>")}'
           )
           echo "payload=$PAYLOAD" >> "$GITHUB_OUTPUT"
-
-      - name: Upload existing archives report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: existing-archives
-          path: |
-            build/reports/existing_archives/existing.txt
+        env:
+          SDK_VERSION: ${{ inputs.sdk_version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify Slack on existing archives
         if: ${{ steps.existing_archives.outputs.count != '0' }}
@@ -134,7 +104,7 @@ jobs:
         with:
           payload: ${{ steps.existing_archives.outputs.payload }}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}      
 
       - name: Dump logs tail (on failure)
         if: failure()
@@ -142,7 +112,7 @@ jobs:
           set -e
           echo "\nFastlane (tail)" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          tail -n 300 "$RUNNER_TEMP/fastlane_adapter.log" >> "$GITHUB_STEP_SUMMARY" || true
+          tail -n 300 "$RUNNER_TEMP/fastlane_sdk.log" >> "$GITHUB_STEP_SUMMARY" || true
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           echo "\nCocoaPods (tail)" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
@@ -175,7 +145,7 @@ jobs:
           # Any xcresult bundles if produced by steps
           if [ -d build/Logs ]; then cp -R build/Logs build/ci-logs/xcresult 2>/dev/null || true; fi
           # Our tee'd logs
-          cp "$RUNNER_TEMP"/fastlane_adapter.log build/ci-logs/ 2>/dev/null || true
+          cp "$RUNNER_TEMP"/fastlane_sdk.log build/ci-logs/ 2>/dev/null || true
           cp "$RUNNER_TEMP"/pod_install.log build/ci-logs/ 2>/dev/null || true
           cp "$RUNNER_TEMP"/bundle_install.log build/ci-logs/ 2>/dev/null || true
 
@@ -186,26 +156,43 @@ jobs:
           name: build-logs
           path: build/ci-logs
 
-      - name: Setup SSH for podspec repo
+      - name: Push Bidon podspec to trunk first
         if: ${{ inputs.push_specs }}
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          echo "Pushing Bidon.podspec.json to CocoaPods trunk first..."
+          CMD="pod trunk push build/Podspecs/Bidon.podspec.json --allow-warnings"
+          if [ "${{ inputs.validate }}" = "false" ]; then
+            CMD="$CMD --skip-tests --skip-import-validation"
+          fi
+          echo "Running: $CMD"
+          eval "$CMD"
 
-      - name: Register CocoaPods repo
+      - name: Push adapter podspecs to trunk
         if: ${{ inputs.push_specs }}
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-          pod repo remove bidon || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
-
-      - name: Push adapter podspec to podspec repo
-        if: ${{ inputs.push_specs }}
-        run: |
-          spec=build/Podspecs/${{ inputs.adapter_name }}.podspec.json
-          echo "Pushing $spec..."
-          pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+          echo "Pushing adapter podspecs (excluding Bidon) to CocoaPods trunk..."
+          FAILED=0
+          for spec in build/Podspecs/*.podspec.json; do
+            if [[ "$spec" != *"Bidon.podspec.json" ]]; then
+              CMD="pod trunk push \"$spec\" --allow-warnings"
+              if [ "${{ inputs.validate }}" = "false" ]; then
+                CMD="$CMD --skip-tests --skip-import-validation"
+              fi
+              echo "Running: $CMD"
+              if ! eval "$CMD"; then
+                echo "Failed to push $spec"
+                FAILED=1
+              fi
+            fi
+          done
+          if [ "$FAILED" -ne 0 ]; then
+            echo "Some podspecs failed to push"
+            exit 1
+          fi
 
       - name: Notify Slack on success
         if: success()
@@ -213,7 +200,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Build Succeeded!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *[Bidon] SDK Build + Trunk Push Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed (trunk): `${{ inputs.push_specs }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -224,7 +211,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Adapter Build Failed!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Spec pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *[Bidon] SDK Build or Trunk Push Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Specs pushed (trunk): `${{ inputs.push_specs }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
