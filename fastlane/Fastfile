@@ -1101,7 +1101,9 @@ end
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = if is_adapter && use_network_versions
+      ver = if !is_adapter
+        core_ver
+      elsif use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
         (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
@@ -1135,7 +1137,9 @@ end
 
     $targets.each do |target|
       is_adapter = ["BidonAdapter", "BidonCustomAdapter"].any? { |id| target.include?(id) }
-      ver = if is_adapter && use_network_versions
+      ver = if !is_adapter
+        core_ver
+      elsif use_network_versions
         adapter_version_for(target, lock_versions, resolve_revision_for(target, rev_spec), prerelease)
       else
         (options[:adapters_version] || "#{base_version}.#{resolve_revision_for(target, rev_spec)}")
@@ -1154,6 +1158,27 @@ end
         is_development_pod: false
       )
     end
+
+    # Corner case: Yandex is not included in $targets and uses static libraries
+    # Generate its podspec explicitly to keep semantics of generate_specs
+    yandex_ver = if use_network_versions
+      adapter_version_for("BidonAdapterYandex", lock_versions, resolve_revision_for("BidonAdapterYandex", rev_spec), prerelease)
+    else
+      (options[:adapters_version] || "#{base_version}.#{resolve_revision_for("BidonAdapterYandex", rev_spec)}")
+    end
+
+    podspec(
+      name: "BidonAdapterYandex",
+      version: yandex_ver,
+      sdk_version: core_ver,
+      podfile: $root_dir + "/Podfile",
+      s3_region: ENV["S3_REGION"],
+      s3_bucket: ENV["S3_BUCKET"],
+      path: $podspecs_dir,
+      vendored_frameworks: "BidonAdapterYandex-#{yandex_ver}/BidonAdapterYandex.xcframework",
+      is_adapter: true,
+      is_development_pod: false
+    )
   end
 
   lane :sandbox_env do |_options|

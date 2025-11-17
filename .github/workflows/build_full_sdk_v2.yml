@@ -47,8 +47,16 @@ jobs:
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
+      
+      - name: CocoaPods repo update (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
-      # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
