@@ -93,7 +93,7 @@ end
 def yandex
 #  pod 'DivKit', '32.6.0'
 #  pod 'AppMetricaAnalytics', '~> 5.12.1'
-  pod 'YandexMobileAds', "7.16.2"
+  pod 'YandexMobileAds', "7.17.0"
 end
 
 def startio
@@ -287,7 +287,7 @@ target 'Sandbox' do
 end
 
 post_install do |installer|
-  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter']
+  problematic_targets = ['VGSLFundamentals', 'VGSLUI', 'VGSLNetworking', 'VGSL', 'AppMetricaLibraryAdapter', 'DivKitBinaryCompatibilityFacade']
   
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|

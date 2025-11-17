@@ -68,9 +68,8 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
             MobileAds.setAgeRestrictedUser(true)
         }
 
-        MobileAds.initializeSDK { [weak self] in
-            self?.isInitialized = true
-            completion(nil)
-        }
+        MobileAds.initializeSDK()
+        isInitialized = true
+        completion(nil)
     }
 }
