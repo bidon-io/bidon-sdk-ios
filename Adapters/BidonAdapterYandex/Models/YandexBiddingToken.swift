@@ -8,5 +8,4 @@
 import Foundation
 
 struct YandexBiddingToken: Codable {
-//    var token: String
 }
