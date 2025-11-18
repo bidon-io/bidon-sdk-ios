@@ -54,7 +54,18 @@ def exact_version?(s)
 end
 
 def trunk_versions_for(pod)
-  data = http_get_json("#{TRUNK_BASE}/#{URI.encode_www_form_component(pod)}")
+  # Trunk API is keyed by the root pod (without subspec path).
+  root = pod.to_s.split('/').first
+  begin
+    data = http_get_json("#{TRUNK_BASE}/#{URI.encode_www_form_component(root)}")
+  rescue => e
+    # Gracefully skip pods not present in Trunk (e.g., private pods) or 404 for subspecs
+    if e.message.include?('HTTP 404')
+      warn "Skip #{pod}: not found in Trunk"
+      return []
+    end
+    raise
+  end
   versions = (data['versions'] || []).map { |x| x['name'] }.compact.uniq
   versions.sort_by { |v| Gem::Version.new(v) }
 end
