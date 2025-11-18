@@ -43,7 +43,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3'
+  pod 'UnityAds', "4.16.4"
 end
 
 def mintegral
@@ -59,7 +59,7 @@ def meta_sdk
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3'
+  pod 'UnityAds', "4.16.4"
 end
 
 def mintegral
