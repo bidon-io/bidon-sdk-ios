@@ -13,6 +13,7 @@ import Bidon
 
 final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvider<BidMachineBanner> {
     private let format: BannerFormat
+    override var adFormat: AdFormat { format.bmBannerFormat }
 
     weak var adViewDelegate: DemandProviderAdViewDelegate?
 
