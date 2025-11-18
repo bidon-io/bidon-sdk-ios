@@ -70,16 +70,16 @@ PODS:
     - StackModules/Static (~> 3.4.0)
   - BigoADS (5.0.0)
   - ChartboostSDK (9.10.1)
-  - DivKit (32.25.0):
-    - DivKit_LayoutKit (= 32.25.0)
-    - DivKit_Serialization (= 32.25.0)
+  - DivKit (32.26.0):
+    - DivKit_LayoutKit (= 32.26.0)
+    - DivKit_Serialization (= 32.26.0)
     - VGSL (~> 7.7)
-  - DivKit_LayoutKit (32.25.0):
-    - DivKit_LayoutKitInterface (= 32.25.0)
+  - DivKit_LayoutKit (32.26.0):
+    - DivKit_LayoutKitInterface (= 32.26.0)
     - VGSL (~> 7.7)
-  - DivKit_LayoutKitInterface (32.25.0):
+  - DivKit_LayoutKitInterface (32.26.0):
     - VGSL (~> 7.7)
-  - DivKit_Serialization (32.25.0):
+  - DivKit_Serialization (32.26.0):
     - VGSL (~> 7.7)
   - DivKitBinaryCompatibilityFacade (5.2.1):
     - DivKit (~> 32.14)
@@ -169,7 +169,7 @@ PODS:
   - VGSLUI (7.12.3):
     - VGSLFundamentals (= 7.12.3)
   - VungleAds (7.6.2)
-  - YandexMobileAds (7.17.0):
+  - YandexMobileAds (7.17.1):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
     - AppMetricaLibraryAdapter (~> 5.14.0)
@@ -198,7 +198,7 @@ DEPENDENCIES:
   - TaurusxAdsSDK (= 1.9.2)
   - UnityAds (= 4.16.3)
   - VungleAds (= 7.6.2)
-  - YandexMobileAds (= 7.17.0)
+  - YandexMobileAds (= 7.17.1)
 
 SPEC REPOS:
   trunk:
@@ -285,10 +285,10 @@ SPEC CHECKSUMS:
   BidMachine: 7722254fdf6641a354ceef845bcb6cc3ff8dc0f3
   BigoADS: 789ca51394adb1adb405e7e01ec8e43d3dc14f15
   ChartboostSDK: 377d7bbec1cccba0f7119f5d0830bd1ada89b672
-  DivKit: 26d4b2189bc7b503ba3cab27e533483150ce8b59
-  DivKit_LayoutKit: 264dc54aea864508076e78b4463e6ba161388a6a
-  DivKit_LayoutKitInterface: 9e178db3df2dd1f797421067ff7c5d0578036357
-  DivKit_Serialization: ec1d14ca0499fd167b6d9036789c96c88a175cce
+  DivKit: 0d2f3c8135a02b2936d0aecdbb6a67c593b94564
+  DivKit_LayoutKit: 308b9e3385a376378b0299599ede195464ff965e
+  DivKit_LayoutKitInterface: 8d28205359cc2e1e70c76d4a3e9507469fe2a1cc
+  DivKit_Serialization: 59aa620a7ebb2c58d863d13c0a66b88e8db4d6b3
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
@@ -317,8 +317,8 @@ SPEC CHECKSUMS:
   VGSLNetworking: 9152be749af191ed4a77d5d1398142d74284c49f
   VGSLUI: 56123a84ba0cf39540befa77a08ca5a0e9d7c2d3
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
-  YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
+  YandexMobileAds: 289ca4aa8e92f9c3ee093ee9236795e8b94a13a0
 
-PODFILE CHECKSUM: 784033fb3b8e3e8791eec481c4876b1ef58d56f2
+PODFILE CHECKSUM: b424b06e9faca94e50027d6ff2bc34260c4bdf20
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
