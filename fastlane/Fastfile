@@ -58,7 +58,7 @@ $adapter_primary_pod = {
   "BidonAdapterMobileFuse" => "MobileFuseSDK",
   "BidonAdapterYandex" => "YandexMobileAds",
   "AppLovinMediationBidonAdapter" => "AppLovinSDK",
-  "ISBidonCustomAdapter" => "IronSourceSDK",
+  "ISBidonCustomAdapter" => "IronSourceSDK/Ads",
   "BidonAdapterStartIo" => "StartAppSDK",
   "BidonAdapterTaurusX" => "TaurusxAdsSDK"
 }
