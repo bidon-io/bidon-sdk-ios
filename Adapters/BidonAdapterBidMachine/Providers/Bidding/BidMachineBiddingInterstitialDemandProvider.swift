@@ -12,6 +12,8 @@ import Bidon
 
 
 final class BidMachineBiddingInterstitialDemandProvider: BidMachineBiddingDemandProvider<BidMachineInterstitial> {
+    override var adFormat: AdFormat { .interstitial }
+    
     override func load(
         payload: BidMachineBiddingPayload,
         adUnitExtras: BidMachineAdUnitExtras,
