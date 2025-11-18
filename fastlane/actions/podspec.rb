@@ -35,7 +35,7 @@ module Fastlane
         dependencies = podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep|
           dep_name =
             if dep.name == "IronSourceSDK/Ads"
-              dep.name            # не трогаем, оставляем IronSourceSDK/Ads
+              dep.name
             else
               dep.name.split("/").first
             end

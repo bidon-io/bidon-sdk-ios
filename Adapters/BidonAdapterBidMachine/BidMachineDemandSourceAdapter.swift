@@ -26,7 +26,7 @@ BiddingAdViewDemandSourceAdapter
 
     public let demandId: String = BidMachineDemandSourceAdapter.identifier
     public let name: String = "BidMachine"
-    public let adapterVersion: String = "1"
+    public let adapterVersion: String = "0"
     public let sdkVersion: String = BidMachineSdk.sdkVersion
 
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
