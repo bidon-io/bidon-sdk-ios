@@ -15,7 +15,8 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.5.0'
+#  pod 'AppLovinSDK', '13.5.0'
+pod 'AppLovinSDK', '13.5.1'
 end
 
 def bidmachine 
@@ -23,7 +24,8 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '12.13.0'
+#  pod 'Google-Mobile-Ads-SDK', '12.13.0'
+pod 'Google-Mobile-Ads-SDK', '12.14.0'
 end
 
 def appsflyer
@@ -35,11 +37,13 @@ def bigo_ads
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.1'
+#  pod 'Fyber_Marketplace_SDK', '8.4.1'
+pod 'Fyber_Marketplace_SDK', '8.4.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.20.1'
+#  pod 'FBAudienceNetwork', '6.20.1'
+pod 'FBAudienceNetwork', '6.21.0'
 end
 
 def unity_ads
@@ -59,11 +63,12 @@ def meta_sdk
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3'
+  pod 'UnityAds', '4.16.3' #
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '7.7.9'
+#  pod 'MintegralAdSDK', '7.7.9'
+ pod 'MintegralAdSDK', '8.0.3'
 end
 
 def mobilefuse
@@ -79,7 +84,8 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.36.2'
+#  pod "myTargetSDK", '5.36.2'
+pod "myTargetSDK", '5.37.1'
 end
 
 def chartboost
@@ -91,7 +97,8 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', "7.17.0"
+#  pod 'YandexMobileAds', "7.17.0"
+  pod 'YandexMobileAds', "7.17.1"
 end
 
 def startio
@@ -99,7 +106,8 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK','1.9.2'
+#  pod 'TaurusxAdsSDK','1.9.2'
+pod 'TaurusxAdsSDK','1.12.0'
 end
 
 def consent_manager
