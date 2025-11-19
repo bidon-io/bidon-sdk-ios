@@ -130,6 +130,21 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
       end
     end
   end
+  # If PR already exists (422), locate it and proceed to labeling/reviewers
+  if pr.nil? && last_resp && last_resp.code.to_s == '422'
+    list_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls?head=#{owner}%3A#{branch}&base=#{default_branch}&state=open")
+    list_req = Net::HTTP::Get.new(list_uri)
+    list_req['Authorization'] = "Bearer #{github_token}"
+    list_req['Accept'] = 'application/vnd.github+json'
+    list_prs = nil
+    Net::HTTP.start(list_uri.host, list_uri.port, use_ssl: true) do |http|
+      list_resp = http.request(list_req)
+      if list_resp.is_a?(Net::HTTPSuccess)
+        arr = JSON.parse(list_resp.body)
+        pr = arr.first if arr.is_a?(Array) && !arr.empty?
+      end
+    end
+  end
   raise "PR create failed: #{last_resp&.code} #{last_resp&.body}" unless pr
   # Add labels
   issues_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/labels")
