@@ -18,6 +18,14 @@ def github_token
   ENV['PODS_UPDATER_TOKEN'].to_s.empty? ? ENV.fetch('GITHUB_TOKEN') : ENV['PODS_UPDATER_TOKEN']
 end
 
+def pr_api_token
+  # Use GITHUB_TOKEN to create/update PRs so the author is github-actions[bot],
+  # which allows repository members to approve via UI. Falls back to PAT if needed.
+  tok = ENV['PR_CREATION_TOKEN']
+  return tok unless tok.to_s.empty?
+  ENV.fetch('GITHUB_TOKEN')
+end
+
 def default_branch
   # Base branch for PRs, override via env (e.g., 'dev')
   ENV['PODS_BASE_BRANCH'] || 'dev'
@@ -122,7 +130,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
     payloads.each do |pl|
       req = Net::HTTP::Post.new(uri)
-      req['Authorization'] = "Bearer #{github_token}"
+      req['Authorization'] = "Bearer #{pr_api_token}"
       req['Accept'] = 'application/vnd.github+json'
       req.body = pl.to_json
       resp = http.request(req)
@@ -138,7 +146,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   if pr.nil? && last_resp && last_resp.code.to_s == '422'
     list_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls?head=#{owner}%3A#{branch}&base=#{default_branch}&state=open")
     list_req = Net::HTTP::Get.new(list_uri)
-    list_req['Authorization'] = "Bearer #{github_token}"
+    list_req['Authorization'] = "Bearer #{pr_api_token}"
     list_req['Accept'] = 'application/vnd.github+json'
     list_prs = nil
     Net::HTTP.start(list_uri.host, list_uri.port, use_ssl: true) do |http|
@@ -154,7 +162,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   # Add labels
   issues_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/labels")
   lab_req = Net::HTTP::Post.new(issues_uri)
-  lab_req['Authorization'] = "Bearer #{github_token}"
+  lab_req['Authorization'] = "Bearer #{pr_api_token}"
   lab_req['Accept'] = 'application/vnd.github+json'
   lab_req.body = { labels: labels }.to_json
   Net::HTTP.start(issues_uri.host, issues_uri.port, use_ssl: true) { |http| http.request(lab_req) }
@@ -174,7 +182,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
     if users.any? || teams.any?
       rr_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls/#{pr['number']}/requested_reviewers")
       rr_req = Net::HTTP::Post.new(rr_uri)
-      rr_req['Authorization'] = "Bearer #{github_token}"
+      rr_req['Authorization'] = "Bearer #{pr_api_token}"
       rr_req['Accept'] = 'application/vnd.github+json'
       rr_req.body = { reviewers: users, team_reviewers: teams }.to_json
       rr_resp = nil
