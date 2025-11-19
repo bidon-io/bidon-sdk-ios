@@ -144,6 +144,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
         pr = arr.first if arr.is_a?(Array) && !arr.empty?
       end
     end
+    puts ">> Found existing PR for #{branch}: ##{pr['number']}" if pr
   end
   raise "PR create failed: #{last_resp&.code} #{last_resp&.body}" unless pr
   # Add labels
@@ -174,7 +175,9 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
       rr_req.body = { reviewers: users, team_reviewers: teams }.to_json
       rr_resp = nil
       Net::HTTP.start(rr_uri.host, rr_uri.port, use_ssl: true) { |http| rr_resp = http.request(rr_req) }
-      unless rr_resp.is_a?(Net::HTTPSuccess)
+      if rr_resp.is_a?(Net::HTTPSuccess)
+        puts ">> Requested reviewers: users=#{users.join(',')} teams=#{teams.join(',')}"
+      else
         warn "Request reviewers failed: #{rr_resp.code} #{rr_resp.body}"
         # Fallback: add as assignees to surface ownership even if review request was rejected
         unless users.empty?
@@ -185,7 +188,11 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
           assign_req.body = { assignees: users }.to_json
           Net::HTTP.start(assign_uri.host, assign_uri.port, use_ssl: true) do |http|
             assign_resp = http.request(assign_req)
-            warn "Assign fallback result: #{assign_resp.code} #{assign_resp.body}" unless assign_resp.is_a?(Net::HTTPSuccess)
+            if assign_resp.is_a?(Net::HTTPSuccess)
+              puts ">> Assigned as fallback: users=#{users.join(',')}"
+            else
+              warn "Assign fallback result: #{assign_resp.code} #{assign_resp.body}"
+            end
           end
         end
       end
