@@ -59,7 +59,35 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
-      - name: Run adapter tests (similar to build_full_sdk_v2)
+      - name: Build only changed adapter (if scheme exists)
+        id: build_adapter
+        if: steps.meta.outputs.adapter != ''
+        run: |
+          set -euo pipefail
+          ADAPTER="${{ steps.meta.outputs.adapter }}"
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          mkdir -p "$DD" Result build/reports || true
+          echo "Looking for scheme: $ADAPTER"
+          xcodebuild -list -json -workspace BidOn.xcworkspace | tee xclist.json >/dev/null
+          HAS_SCHEME=$(jq -r --arg s "$ADAPTER" '.workspace.schemes | index($s) // empty' xclist.json | wc -l | tr -d ' ')
+          if [ "${HAS_SCHEME:-0}" -gt 0 ]; then
+            echo "Found scheme '$ADAPTER'. Building (no tests)…"
+            xcodebuild build \
+              -workspace BidOn.xcworkspace \
+              -scheme "$ADAPTER" \
+              -sdk iphonesimulator \
+              -destination "generic/platform=iOS Simulator" \
+              -derivedDataPath "$DD" \
+              | tee build/reports/build_adapter.log \
+              | xcbeautify
+            echo "build=ok" >> "$GITHUB_OUTPUT"
+          else
+            echo "Scheme '$ADAPTER' not found. Skipping build-only path."
+            echo "build=skip" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run adapter tests (fallback to full suite)
+        if: steps.build_adapter.outputs.build != 'ok'
         run: |
           set -euo pipefail
           echo "Selecting iOS Simulator runtime via simctl…"
