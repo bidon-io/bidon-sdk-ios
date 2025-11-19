@@ -1,0 +1,95 @@
+name: Pods Build after Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  build-after-approval:
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+    if: >
+      github.event.review.state == 'approved' &&
+      startsWith(github.event.pull_request.head.ref, 'chore/pod-')
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Extract build metadata
+        id: meta
+        run: |
+          ruby - <<'RUBY'
+          body = ENV['PR_BODY'].to_s
+          m = body.match(/<!--\s*build-metadata\s*(\{[\s\S]*?\})\s*-->/m)
+          if m
+            json = m[1]
+            require 'json'
+            data = JSON.parse(json)
+            File.open(ENV['GITHUB_OUTPUT'], 'a') do |f|
+              f.puts "pod=#{data['pod']}"
+              f.puts "from=#{data['from']}"
+              f.puts "to=#{data['to']}"
+              f.puts "adapter=#{data['adapter']}"
+            end
+          end
+          RUBY
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+      - name: CocoaPods install (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+
+      - name: Build adapter (self-hosted)
+        if: steps.meta.outputs.pod != ''
+        run: |
+          set -o pipefail
+          export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          chmod +x scripts/build_adapter.sh
+          scripts/build_adapter.sh --pod "${{ steps.meta.outputs.pod }}" --from "${{ steps.meta.outputs.from }}" --to "${{ steps.meta.outputs.to }}" --adapter "${{ steps.meta.outputs.adapter }}"
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Adapter Build Failed (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Enable PR auto-merge (squash) on success
+        if: success()
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+
+

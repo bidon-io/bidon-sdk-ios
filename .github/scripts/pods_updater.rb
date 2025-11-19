@@ -131,12 +131,35 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
     end
   end
   raise "PR create failed: #{last_resp&.code} #{last_resp&.body}" unless pr
+  # Add labels
   issues_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/labels")
   lab_req = Net::HTTP::Post.new(issues_uri)
   lab_req['Authorization'] = "Bearer #{github_token}"
   lab_req['Accept'] = 'application/vnd.github+json'
   lab_req.body = { labels: labels }.to_json
   Net::HTTP.start(issues_uri.host, issues_uri.port, use_ssl: true) { |http| http.request(lab_req) }
+
+  # Optionally request reviewers if PODS_REVIEWERS provided (comma-separated).
+  reviewers_csv = ENV['PODS_REVIEWERS'].to_s.strip
+  unless reviewers_csv.empty?
+    users = []
+    teams = []
+    reviewers_csv.split(',').map(&:strip).each do |entry|
+      if entry.include?('/')
+        teams << entry.split('/', 2).last
+      elsif !entry.empty?
+        users << entry
+      end
+    end
+    if users.any? || teams.any?
+      rr_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls/#{pr['number']}/requested_reviewers")
+      rr_req = Net::HTTP::Post.new(rr_uri)
+      rr_req['Authorization'] = "Bearer #{github_token}"
+      rr_req['Accept'] = 'application/vnd.github+json'
+      rr_req.body = { reviewers: users, team_reviewers: teams }.to_json
+      Net::HTTP.start(rr_uri.host, rr_uri.port, use_ssl: true) { |http| http.request(rr_req) }
+    end
+  end
   pr
 end
 
