@@ -41,6 +41,15 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
 
+      - name: CocoaPods repo update (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
+
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail

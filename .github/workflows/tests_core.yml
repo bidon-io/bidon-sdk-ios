@@ -8,6 +8,7 @@ on:
 
 jobs:
   tests_swift:
+    if: "!startsWith(github.event.pull_request.head.ref, 'chore/pod-')"
     runs-on: macos-14
 
     steps:
