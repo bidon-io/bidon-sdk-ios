@@ -37,6 +37,7 @@ jobs:
       - name: Run updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
           PODS_BASE_BRANCH: feature/BDN-1013_Adapters_upgrade_bot
           PODS_REVIEWERS: "EvgeniaGorbacheva,AndrewRudyk" # comma-separated GitHub usernames or org/team-slug
         run: |

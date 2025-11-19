@@ -13,7 +13,9 @@ def repo_slug
 end
 
 def github_token
-  ENV.fetch('GITHUB_TOKEN')
+  # Prefer a user PAT if provided to ensure PR events trigger other workflows,
+  # otherwise fall back to the default GITHUB_TOKEN.
+  ENV['PODS_UPDATER_TOKEN'].to_s.empty? ? ENV.fetch('GITHUB_TOKEN') : ENV['PODS_UPDATER_TOKEN']
 end
 
 def default_branch
@@ -116,6 +118,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   ]
   pr = nil
   last_resp = nil
+  created = false
   Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
     payloads.each do |pl|
       req = Net::HTTP::Post.new(uri)
@@ -126,6 +129,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
       last_resp = resp
       if resp.is_a?(Net::HTTPSuccess)
         pr = JSON.parse(resp.body)
+        created = (resp.code.to_s == '201')
         break
       end
     end
@@ -198,7 +202,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
       end
     end
   end
-  pr
+  [pr, created]
 end
 
 def pr_body(pod, from_v, to_v, adapter: nil)
@@ -241,7 +245,13 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        create_pr(branch, msg, pr_body(pod, cur, to_v))
+        pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v))
+        # If PR is newly created and PAT is available, push an empty commit to trigger PR CI (synchronize)
+        if created && !ENV['PODS_UPDATER_TOKEN'].to_s.empty?
+          sh!("git checkout #{branch}")
+          sh!(%{git commit --allow-empty -m "ci: retrigger PR CI"})
+          git_push_branch(branch)
+        end
       rescue => e
         # If PR already exists (422), ignore; re-raise for other errors
         if e.message.include?('422') && e.message.include?('already exists')
