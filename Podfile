@@ -47,7 +47,7 @@ pod 'FBAudienceNetwork', '6.21.0'
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3'
+  pod 'UnityAds', "4.16.4"
 end
 
 def mintegral
@@ -63,7 +63,7 @@ def meta_sdk
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3' #
+  pod 'UnityAds', "4.16.4" #
 end
 
 def mintegral
