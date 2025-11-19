@@ -172,7 +172,23 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
       rr_req['Authorization'] = "Bearer #{github_token}"
       rr_req['Accept'] = 'application/vnd.github+json'
       rr_req.body = { reviewers: users, team_reviewers: teams }.to_json
-      Net::HTTP.start(rr_uri.host, rr_uri.port, use_ssl: true) { |http| http.request(rr_req) }
+      rr_resp = nil
+      Net::HTTP.start(rr_uri.host, rr_uri.port, use_ssl: true) { |http| rr_resp = http.request(rr_req) }
+      unless rr_resp.is_a?(Net::HTTPSuccess)
+        warn "Request reviewers failed: #{rr_resp.code} #{rr_resp.body}"
+        # Fallback: add as assignees to surface ownership even if review request was rejected
+        unless users.empty?
+          assign_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/assignees")
+          assign_req = Net::HTTP::Post.new(assign_uri)
+          assign_req['Authorization'] = "Bearer #{github_token}"
+          assign_req['Accept'] = 'application/vnd.github+json'
+          assign_req.body = { assignees: users }.to_json
+          Net::HTTP.start(assign_uri.host, assign_uri.port, use_ssl: true) do |http|
+            assign_resp = http.request(assign_req)
+            warn "Assign fallback result: #{assign_resp.code} #{assign_resp.body}" unless assign_resp.is_a?(Net::HTTPSuccess)
+          end
+        end
+      end
     end
   end
   pr
