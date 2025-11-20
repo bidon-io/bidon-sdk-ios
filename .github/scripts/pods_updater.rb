@@ -16,6 +16,12 @@ def github_token
   ENV.fetch('GITHUB_TOKEN')
 end
 
+def git_push_token
+  # Prefer PAT for git pushes (to generate events outside GITHUB_TOKEN),
+  # but fall back to GITHUB_TOKEN if PAT is not provided.
+  ENV['PODS_UPDATER_TOKEN'].to_s.empty? ? github_token : ENV['PODS_UPDATER_TOKEN']
+end
+
 def default_branch
   # Base branch for PRs, override via env (e.g., 'dev')
   ENV['PODS_BASE_BRANCH'] || 'dev'
@@ -97,7 +103,7 @@ end
 
 def git_push_branch(branch)
   owner, repo = repo_slug.split('/', 2)
-  remote = "https://x-access-token:#{github_token}@github.com/#{owner}/#{repo}.git"
+  remote = "https://x-access-token:#{git_push_token}@github.com/#{owner}/#{repo}.git"
   # First attempt with force-with-lease (safer)
   ok = system("git push -u #{remote} HEAD:#{branch} --force-with-lease")
   unless ok
@@ -243,7 +249,13 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        create_pr(branch, msg, pr_body(pod, cur, to_v))
+        pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v))
+        # If PR is newly created and PAT is available, push an empty commit to trigger PR CI (synchronize)
+        if created && !ENV['PODS_UPDATER_TOKEN'].to_s.empty?
+          sh!("git checkout #{branch}")
+          sh!(%{git commit --allow-empty -m "ci: retrigger Pods PR CI"})
+          git_push_branch(branch)
+        end
       rescue => e
         # If PR already exists (422), ignore; re-raise for other errors
         if e.message.include?('422') && e.message.include?('already exists')
