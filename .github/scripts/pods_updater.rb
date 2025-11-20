@@ -76,6 +76,26 @@ def trunk_versions_for(pod)
   versions.sort_by { |v| Gem::Version.new(v) }
 end
 
+def add_labels(issue_number, labels)
+  owner, repo = repo_slug.split('/', 2)
+  uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{issue_number}/labels")
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Bearer #{github_token}"
+  req['Accept'] = 'application/vnd.github+json'
+  req.body = { labels: labels }.to_json
+  Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
+end
+
+def add_comment(issue_number, body)
+  owner, repo = repo_slug.split('/', 2)
+  uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{issue_number}/comments")
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Bearer #{github_token}"
+  req['Accept'] = 'application/vnd.github+json'
+  req.body = { body: body }.to_json
+  Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
+end
+
 def replace_pod_version_in_podfile(pod, to_version)
   src = File.read('Podfile')
   changed = false
@@ -86,6 +106,45 @@ def replace_pod_version_in_podfile(pod, to_version)
   end
   raise "Pod '#{pod}' not found in Podfile" unless changed
   File.write('Podfile', new_src)
+end
+
+def run_pods_tests
+  sh!(<<~'BASH')
+    set -euo pipefail
+    echo "Selecting iOS Simulator runtime via simctl…"
+    RUNTIME_ID=$(xcrun simctl list runtimes -j \
+      | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
+    if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
+      echo "No available iOS simulator runtime found";
+      xcrun simctl list runtimes || true;
+      exit 1;
+    fi
+    echo "Using runtime: $RUNTIME_ID"
+    DEST_ID=$(xcrun simctl list devices -j \
+      | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
+    if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+      echo "No device under $RUNTIME_ID, falling back to any available device";
+      DEST_ID=$(xcrun simctl list devices -j \
+        | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
+    fi
+    if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+      echo "No available iOS Simulator device";
+      xcrun simctl list devices || true;
+      exit 1;
+    fi
+    DD="${GITHUB_WORKSPACE:-$PWD}/DerivedData"
+    mkdir -p "$DD" Result build/reports || true
+    echo "Running AdaptersTests on Simulator id=$DEST_ID…"
+    xcodebuild test \
+      -workspace BidOn.xcworkspace \
+      -scheme AdaptersTests \
+      -sdk iphonesimulator \
+      -destination "id=$DEST_ID" \
+      -derivedDataPath "$DD" \
+      -resultBundlePath Result/AdaptersTests.xcresult \
+      | tee build/reports/pods_tests.log \
+      | xcbeautify
+  BASH
 end
 
 def sh!(cmd)
@@ -255,11 +314,26 @@ def main
       git_push_branch(branch)
       begin
         pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v))
-        # If PR is newly created and PAT is available, push an empty commit to trigger PR CI (synchronize)
-        if created && !ENV['PODS_UPDATER_TOKEN'].to_s.empty?
-          sh!("git checkout #{branch}")
-          sh!(%{git commit --allow-empty -m "ci: retrigger Pods PR CI"})
-          git_push_branch(branch)
+        if created && pr
+          tests_ok = true
+          begin
+            run_pods_tests
+          rescue => e
+            warn "Pods tests failed for #{pod} #{cur} -> #{to_v}: #{e.message}"
+            tests_ok = false
+          ensure
+            begin
+              if tests_ok
+                add_labels(pr['number'], ['pods-tests-passed'])
+                add_comment(pr['number'], "✅ Pods tests passed for this update.")
+              else
+                add_labels(pr['number'], ['pods-tests-failed'])
+                add_comment(pr['number'], "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs.")
+              end
+            rescue => e2
+              warn "Unable to annotate PR ##{pr['number']} with test result: #{e2.message}"
+            end
+          end
         end
       rescue => e
         # If PR already exists (422), ignore; re-raise for other errors
