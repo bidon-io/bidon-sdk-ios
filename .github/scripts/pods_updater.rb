@@ -110,7 +110,8 @@ end
 
 def run_pods_tests
   sh!(<<~'BASH')
-    set -euo pipefail
+    # Do not use -u here to avoid failing on unset env vars in older shells
+    set -eo pipefail
     echo "Selecting iOS Simulator runtime via simctl…"
     RUNTIME_ID=$(xcrun simctl list runtimes -j \
       | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
