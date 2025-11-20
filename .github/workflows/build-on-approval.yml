@@ -23,6 +23,7 @@ permissions:
   pull-requests: write
   actions: read
   statuses: write
+  checks: write
 
 jobs:
   build:
@@ -31,10 +32,17 @@ jobs:
       (github.event_name == 'pull_request' && startsWith(github.event.pull_request.head.ref, 'chore/pod-'))
       || (github.event_name == 'workflow_dispatch' && startsWith(inputs.head_ref, 'chore/pod-'))
     steps:
+      - name: Determine head SHA
+        id: sha
+        run: |
+          set -euo pipefail
+          SHA="${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.head_sha || github.sha }}"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
       - name: Checkout PR head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.head_sha || inputs.head_ref }}
+          ref: ${{ steps.sha.outputs.sha || inputs.head_ref }}
           fetch-depth: 0
 
       - name: Load PR body on dispatch
@@ -91,6 +99,24 @@ jobs:
           echo "Using POD_BIN=$POD_BIN"
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+
+      - name: Create check run
+        id: check
+        run: |
+          set -euo pipefail
+          NAME="Pods PR CI"
+          SHA="${{ steps.sha.outputs.sha }}"
+          URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          RESP=$(curl -sS -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/check-runs" \
+            -d "{\"name\":\"${NAME}\",\"head_sha\":\"${SHA}\",\"status\":\"in_progress\",\"details_url\":\"${URL}\"}")
+          ID=$(echo "$RESP" | jq -r '.id')
+          echo "id=$ID" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build only changed adapter (if scheme exists)
         id: build_adapter
@@ -160,44 +186,32 @@ jobs:
         if: success()
         run: |
           set -euo pipefail
-          SHA="${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.head_sha || github.sha }}"
           TARGET="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          echo "Posting success status for $SHA"
-          curl -sS -X POST \
+          echo "Completing check-run ${CHECK_ID} as success"
+          curl -sS -X PATCH \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/statuses/${SHA}" \
-            -d @- <<JSON
-          {
-            "state": "success",
-            "context": "Pods PR CI",
-            "description": "Pods pre-merge checks passed",
-            "target_url": "${TARGET}"
-          }
-          JSON
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/check-runs/${CHECK_ID}" \
+            -d "{\"status\":\"completed\",\"conclusion\":\"success\",\"completed_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"details_url\":\"${TARGET}\",\"output\":{\"title\":\"Pods pre-merge checks passed\",\"summary\":\"All steps succeeded.\"}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHECK_ID: ${{ steps.check.outputs.id }}
 
       - name: Report PR status (failure)
         if: failure()
         run: |
           set -euo pipefail
-          SHA="${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.head_sha || github.sha }}"
           TARGET="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          echo "Posting failure status for $SHA"
-          curl -sS -X POST \
+          echo "Completing check-run ${CHECK_ID} as failure"
+          curl -sS -X PATCH \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/statuses/${SHA}" \
-            -d @- <<JSON
-          {
-            "state": "failure",
-            "context": "Pods PR CI",
-            "description": "Pods pre-merge checks failed",
-            "target_url": "${TARGET}"
-          }
-          JSON
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${{ github.repository }}/check-runs/${CHECK_ID}" \
+            -d "{\"status\":\"completed\",\"conclusion\":\"failure\",\"completed_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"details_url\":\"${TARGET}\",\"output\":{\"title\":\"Pods pre-merge checks failed\",\"summary\":\"See workflow logs for details.\"}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHECK_ID: ${{ steps.check.outputs.id }}
 
 
