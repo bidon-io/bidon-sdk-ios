@@ -173,7 +173,7 @@ jobs:
             "description": "Pods pre-merge checks passed",
             "target_url": "${TARGET}"
           }
-JSON
+          JSON
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -195,7 +195,7 @@ JSON
             "description": "Pods pre-merge checks failed",
             "target_url": "${TARGET}"
           }
-JSON
+          JSON
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
