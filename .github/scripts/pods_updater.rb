@@ -221,7 +221,8 @@ def dispatch_build_ci(pr_number, head_ref, head_sha)
   req['Authorization'] = "Bearer #{github_token}" # requires workflow scope (PAT if available)
   req['Accept'] = 'application/vnd.github+json'
   payload = {
-    ref: default_branch,
+    # Run the workflow on the PR head branch so the run is associated with that ref
+    ref: head_ref.to_s,
     inputs: {
       pr_number: pr_number.to_s,
       head_ref: head_ref.to_s,
