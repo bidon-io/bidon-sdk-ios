@@ -103,6 +103,11 @@ end
 
 def git_push_branch(branch)
   owner, repo = repo_slug.split('/', 2)
+   if ENV['PODS_UPDATER_TOKEN'].to_s.empty?
+     puts '>> git_push: using GITHUB_TOKEN'
+   else
+     puts '>> git_push: using PODS_UPDATER_TOKEN'
+   end
   remote = "https://x-access-token:#{git_push_token}@github.com/#{owner}/#{repo}.git"
   # First attempt with force-with-lease (safer)
   ok = system("git push -u #{remote} HEAD:#{branch} --force-with-lease")
