@@ -13,16 +13,6 @@ def repo_slug
 end
 
 def github_token
-  # Prefer a user PAT if provided to ensure PR events trigger other workflows,
-  # otherwise fall back to the default GITHUB_TOKEN.
-  ENV['PODS_UPDATER_TOKEN'].to_s.empty? ? ENV.fetch('GITHUB_TOKEN') : ENV['PODS_UPDATER_TOKEN']
-end
-
-def pr_api_token
-  # Use GITHUB_TOKEN to create/update PRs so the author is github-actions[bot],
-  # which allows repository members to approve via UI. Falls back to PAT if needed.
-  tok = ENV['PR_CREATION_TOKEN']
-  return tok unless tok.to_s.empty?
   ENV.fetch('GITHUB_TOKEN')
 end
 
@@ -130,7 +120,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
     payloads.each do |pl|
       req = Net::HTTP::Post.new(uri)
-      req['Authorization'] = "Bearer #{pr_api_token}"
+      req['Authorization'] = "Bearer #{github_token}"
       req['Accept'] = 'application/vnd.github+json'
       req.body = pl.to_json
       resp = http.request(req)
@@ -146,7 +136,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   if pr.nil? && last_resp && last_resp.code.to_s == '422'
     list_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls?head=#{owner}%3A#{branch}&base=#{default_branch}&state=open")
     list_req = Net::HTTP::Get.new(list_uri)
-    list_req['Authorization'] = "Bearer #{pr_api_token}"
+    list_req['Authorization'] = "Bearer #{github_token}"
     list_req['Accept'] = 'application/vnd.github+json'
     list_prs = nil
     Net::HTTP.start(list_uri.host, list_uri.port, use_ssl: true) do |http|
@@ -162,7 +152,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   # Add labels
   issues_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/issues/#{pr['number']}/labels")
   lab_req = Net::HTTP::Post.new(issues_uri)
-  lab_req['Authorization'] = "Bearer #{pr_api_token}"
+  lab_req['Authorization'] = "Bearer #{github_token}"
   lab_req['Accept'] = 'application/vnd.github+json'
   lab_req.body = { labels: labels }.to_json
   Net::HTTP.start(issues_uri.host, issues_uri.port, use_ssl: true) { |http| http.request(lab_req) }
@@ -182,7 +172,7 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
     if users.any? || teams.any?
       rr_uri = URI("https://api.github.com/repos/#{owner}/#{repo}/pulls/#{pr['number']}/requested_reviewers")
       rr_req = Net::HTTP::Post.new(rr_uri)
-      rr_req['Authorization'] = "Bearer #{pr_api_token}"
+      rr_req['Authorization'] = "Bearer #{github_token}"
       rr_req['Accept'] = 'application/vnd.github+json'
       rr_req.body = { reviewers: users, team_reviewers: teams }.to_json
       rr_resp = nil
@@ -211,33 +201,6 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
     end
   end
   [pr, created]
-end
-
-def dispatch_build_ci(pr_number, head_ref, head_sha)
-  owner, repo = repo_slug.split('/', 2)
-  # Trigger the existing build-on-approval workflow via workflow_dispatch
-  uri = URI("https://api.github.com/repos/#{owner}/#{repo}/actions/workflows/build-on-approval.yml/dispatches")
-  req = Net::HTTP::Post.new(uri)
-  req['Authorization'] = "Bearer #{github_token}" # requires workflow scope (PAT if available)
-  req['Accept'] = 'application/vnd.github+json'
-  payload = {
-    # Run the workflow on the PR head branch so the run is associated with that ref
-    ref: head_ref.to_s,
-    inputs: {
-      pr_number: pr_number.to_s,
-      head_ref: head_ref.to_s,
-      head_sha: head_sha.to_s
-    }
-  }
-  req.body = payload.to_json
-  Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-    resp = http.request(req)
-    unless resp.is_a?(Net::HTTPNoContent)
-      warn "workflow_dispatch failed: #{resp.code} #{resp.body}"
-    else
-      puts ">> Dispatched build-on-approval for PR ##{pr_number}"
-    end
-  end
 end
 
 def pr_body(pod, from_v, to_v, adapter: nil)
@@ -280,17 +243,7 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v))
-        # If PR is newly created and PAT is available, push an empty commit to trigger PR CI (synchronize)
-        if created && !ENV['PODS_UPDATER_TOKEN'].to_s.empty?
-          sh!("git checkout #{branch}")
-          sh!(%{git commit --allow-empty -m "ci: retrigger PR CI"})
-          git_push_branch(branch)
-        end
-        # Also dispatch the CI workflow directly to avoid relying on push events
-        if pr && pr['number'] && created
-          dispatch_build_ci(pr['number'], branch, `git rev-parse HEAD`.strip)
-        end
+        create_pr(branch, msg, pr_body(pod, cur, to_v))
       rescue => e
         # If PR already exists (422), ignore; re-raise for other errors
         if e.message.include?('422') && e.message.include?('already exists')
