@@ -8,6 +8,28 @@ require 'rubygems/version'
 
 TRUNK_BASE = 'https://trunk.cocoapods.org/api/v1/pods'
 
+POD_TO_ADAPTER = {
+  'AmazonPublisherServicesSDK' => ['BidonAdapterAmazon'],
+  'AppLovinSDK'               => ['BidonAdapterAppLovin', 'AppLovinMediationBidonAdapter'],
+  'BidMachine'                => ['BidonAdapterBidMachine'],
+  'Google-Mobile-Ads-SDK'     => ['BidonAdapterGoogleMobileAds', 'BidonAdapterGoogleAdManager'],
+  'BigoADS'                   => ['BidonAdapterBigoAds'],
+  'Fyber_Marketplace_SDK'     => ['BidonAdapterDTExchange'],
+  'FBAudienceNetwork'         => ['BidonAdapterMetaAudienceNetwork'],
+  'UnityAds'                  => ['BidonAdapterUnityAds'],
+  'MintegralAdSDK'            => ['BidonAdapterMintegral'],
+  'MolocoSDKiOS'              => ['BidonAdapterMoloco'],
+  'VungleAds'                 => ['BidonAdapterVungle'],
+  'MobileFuseSDK'             => ['BidonAdapterMobileFuse'],
+  'InMobiSDK'                 => ['BidonAdapterInMobi'],
+  'myTargetSDK'               => ['BidonAdapterMyTarget'],
+  'ChartboostSDK'             => ['BidonAdapterChartboost'],
+  'IronSourceSDK'             => ['BidonAdapterIronSource', 'ISBidonCustomAdapter'],
+  'YandexMobileAds'           => ['BidonAdapterYandex'],
+  'TaurusxAdsSDK'             => ['BidonAdapterTaurusX'],
+  'StartAppSDK'               => ['BidonAdapterStartIo']
+}.freeze
+
 def repo_slug
   ENV.fetch('GITHUB_REPOSITORY')
 end
@@ -274,8 +296,8 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   [pr, created]
 end
 
-def pr_body(pod, from_v, to_v, adapter: nil)
-  meta = { pod: pod, from: from_v, to: to_v, adapter: adapter.to_s }
+def pr_body(pod, from_v, to_v, adapters: [])
+  meta = { pod: pod, from: from_v, to: to_v, adapters: adapters }
   <<~MD
   Update CocoaPods dependency
 
@@ -314,7 +336,8 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v))
+        adapter_names = POD_TO_ADAPTER[pod] || []
+        pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v, adapters: adapter_names))
         if created && pr
           tests_ok = true
           begin

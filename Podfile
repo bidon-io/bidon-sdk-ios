@@ -50,20 +50,12 @@ def unity_ads
   pod 'UnityAds', '4.16.3'
 end
 
-def mintegral
-  pod 'MintegralAdSDK', '7.7.8'
-end
-
 def moloco
   pod 'MolocoSDKiOS', '4.1.0'
 end
 
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
-end
-
-def unity_ads
-  pod 'UnityAds', '4.16.3' #
 end
 
 def mintegral

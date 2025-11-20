@@ -32,11 +32,17 @@ jobs:
             json = m[1]
             require 'json'
             data = JSON.parse(json)
+            adapters = data['adapters']
+            if adapters.nil?
+              adapter = data['adapter']
+              adapters = adapter ? [adapter] : []
+            end
             File.open(ENV['GITHUB_OUTPUT'], 'a') do |f|
               f.puts "pod=#{data['pod']}"
               f.puts "from=#{data['from']}"
               f.puts "to=#{data['to']}"
-              f.puts "adapter=#{data['adapter']}"
+              f.puts "adapters=#{adapters.join(',')}"
+              f.puts "adapter=#{adapters.first}"
             end
           end
           RUBY
@@ -52,15 +58,92 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
-      - name: Build adapter (self-hosted)
-        if: steps.meta.outputs.pod != ''
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
           set -o pipefail
-          export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
-          export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
-          echo "Using POD_BIN=$POD_BIN"
-          chmod +x scripts/build_adapter.sh
-          scripts/build_adapter.sh --pod "${{ steps.meta.outputs.pod }}" --from "${{ steps.meta.outputs.from }}" --to "${{ steps.meta.outputs.to }}" --adapter "${{ steps.meta.outputs.adapter }}"
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH and xcpretty
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
+          if ! command -v xcpretty >/dev/null 2>&1; then
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
+          fi
+
+      - name: Read SDK last release version
+        id: sdk
+        run: |
+          set -euo pipefail
+          VERSION=$(sed -n 's/^[[:space:]]*static let sdkVersionLastRelease: String = "\([^"]*\)".*/\1/p' Bidon/Shared/Constants.swift | head -n1)
+          if [ -z "$VERSION" ]; then
+            echo "Unable to parse sdkVersionLastRelease from Constants.swift"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build adapter via Fastlane (self-hosted Ruby 3.2)
+        if: steps.meta.outputs.adapters != ''
+        run: |
+          set -o pipefail
+          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
+          # Force Ruby 3.2 and bundled gem binstubs first
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          # Avoid leaking system Ruby GEM_* into subprocesses
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            echo "Building adapter $AD..."
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
+              name:$AD \
+              sdk_version:${{ steps.sdk.outputs.version }} \
+              upload:true \
+              force_upload:false 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
+          done
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+
+      - name: Setup SSH for podspec repo
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Register CocoaPods repo
+        run: |
+          pod repo remove bidon || true
+          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+
+      - name: Push adapter podspec to podspec repo
+        if: steps.meta.outputs.adapters != ''
+        run: |
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            spec="build/Podspecs/${AD}.podspec.json"
+            echo "Pushing $spec..."
+            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+          done
 
       - name: Notify Slack on success
         if: success()
