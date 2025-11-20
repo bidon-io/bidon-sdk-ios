@@ -213,6 +213,32 @@ def create_pr(branch, title, body, labels: %w[dependencies cocoapods])
   [pr, created]
 end
 
+def dispatch_build_ci(pr_number, head_ref, head_sha)
+  owner, repo = repo_slug.split('/', 2)
+  # Trigger the existing build-on-approval workflow via workflow_dispatch
+  uri = URI("https://api.github.com/repos/#{owner}/#{repo}/actions/workflows/build-on-approval.yml/dispatches")
+  req = Net::HTTP::Post.new(uri)
+  req['Authorization'] = "Bearer #{github_token}" # requires workflow scope (PAT if available)
+  req['Accept'] = 'application/vnd.github+json'
+  payload = {
+    ref: default_branch,
+    inputs: {
+      pr_number: pr_number.to_s,
+      head_ref: head_ref.to_s,
+      head_sha: head_sha.to_s
+    }
+  }
+  req.body = payload.to_json
+  Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+    resp = http.request(req)
+    unless resp.is_a?(Net::HTTPNoContent)
+      warn "workflow_dispatch failed: #{resp.code} #{resp.body}"
+    else
+      puts ">> Dispatched build-on-approval for PR ##{pr_number}"
+    end
+  end
+end
+
 def pr_body(pod, from_v, to_v, adapter: nil)
   meta = { pod: pod, from: from_v, to: to_v, adapter: adapter.to_s }
   <<~MD
@@ -259,6 +285,10 @@ def main
           sh!("git checkout #{branch}")
           sh!(%{git commit --allow-empty -m "ci: retrigger PR CI"})
           git_push_branch(branch)
+        end
+        # Also dispatch the CI workflow directly to avoid relying on push events
+        if pr && pr['number'] && created
+          dispatch_build_ci(pr['number'], branch, `git rev-parse HEAD`.strip)
         end
       rescue => e
         # If PR already exists (422), ignore; re-raise for other errors

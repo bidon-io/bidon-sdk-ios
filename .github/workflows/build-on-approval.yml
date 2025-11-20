@@ -3,6 +3,20 @@ name: Pods PR CI (pre-merge)
 on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review, labeled, edited]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to run CI for'
+        required: true
+        type: string
+      head_ref:
+        description: 'PR head ref (branch)'
+        required: true
+        type: string
+      head_sha:
+        description: 'PR head sha (optional, will use head_ref if empty)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -12,13 +26,29 @@ permissions:
 jobs:
   build:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
-    if: startsWith(github.event.pull_request.head.ref, 'chore/pod-')
+    if: >
+      (github.event_name == 'pull_request' && startsWith(github.event.pull_request.head.ref, 'chore/pod-'))
+      || (github.event_name == 'workflow_dispatch' && startsWith(inputs.head_ref, 'chore/pod-'))
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || inputs.head_sha || inputs.head_ref }}
           fetch-depth: 0
+
+      - name: Load PR body on dispatch
+        id: load_body
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          PR=${{ inputs.pr_number }}
+          OWNER=${{ github.repository_owner }}
+          REPO=${{ github.event.repository.name }}
+          BODY=$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${OWNER}/${REPO}/pulls/${PR}" | jq -r '.body // ""')
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$BODY" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Extract build metadata
         id: meta
@@ -39,7 +69,7 @@ jobs:
           end
           RUBY
         env:
-          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_BODY: ${{ github.event_name == 'pull_request' && github.event.pull_request.body || steps.load_body.outputs.body }}
 
       - name: CocoaPods repo update (self-hosted)
         run: |
