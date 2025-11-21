@@ -406,6 +406,9 @@ def main
     next if newer.empty?
 
     newer.each do |to_v|
+      puts "\n=============================="
+      puts "🚀 Processing SDK #{pod} #{cur} → #{to_v}"
+      puts "=============================="
       branch = "chore/pod-#{pod}-#{to_v}"
       # Always base PR branch from the base branch (e.g., 'dev')
       sh!("git fetch origin #{default_branch}")
