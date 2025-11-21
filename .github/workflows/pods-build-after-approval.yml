@@ -151,7 +151,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapters: `${{ steps.meta.outputs.adapters }}`\n• Podspecs: <https://github.com/bidon-io/CocoaPods-Specs/search?q=${{ steps.meta.outputs.adapters }}.podspec.json|View in CocoaPods-Specs>\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
