@@ -145,13 +145,43 @@ jobs:
             pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
           done
 
+      - name: Collect podspec URLs
+        id: podspec_links
+        if: success() && steps.meta.outputs.adapters != ''
+        run: |
+          set -euo pipefail
+          BASE="https://github.com/bidon-io/CocoaPods-Specs/blob/main/Specs"
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          OUT=""
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            SPEC="build/Podspecs/${AD}.podspec.json"
+            if [ ! -f "$SPEC" ]; then
+              continue
+            fi
+            VERSION=$(jq -r '.version' "$SPEC" 2>/dev/null || sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$SPEC" | head -n1)
+            if [ -z "$VERSION" ]; then
+              continue
+            fi
+            URL="${BASE}/${AD}/${VERSION}/${AD}.podspec.json"
+            LINE="<${URL}|${AD} ${VERSION}>"
+            if [ -z "$OUT" ]; then
+              OUT="$LINE"
+            else
+              OUT="${OUT}\n$LINE"
+            fi
+          done
+          echo "list=$OUT" >> "$GITHUB_OUTPUT"
+
       - name: Notify Slack on success
         if: success()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {
-              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapters: `${{ steps.meta.outputs.adapters }}`\n• Podspecs: <https://github.com/bidon-io/CocoaPods-Specs/search?q=${{ steps.meta.outputs.adapters }}.podspec.json|View in CocoaPods-Specs>\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapters: `${{ steps.meta.outputs.adapters }}`\n• Podspecs:\n${{ steps.podspec_links.outputs.list }}\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
