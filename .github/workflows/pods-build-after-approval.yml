@@ -86,10 +86,16 @@ jobs:
         id: sdk
         run: |
           set -euo pipefail
-          # Search sdkVersionLastRelease in any Constants.swift to avoid path/duplication issues
-          VERSION=$(grep -Rho 'sdkVersionLastRelease: String = "[^"]*"' -- */Constants.swift \
-            | sed -E 's/.*"([^"]*)".*/\1/' \
-            | head -n1 || true)
+          FILES=$(find . -name 'Constants.swift' -print || true)
+          if [ -z "$FILES" ]; then
+            echo "No Constants.swift files found"
+            exit 1
+          fi
+          VERSION=$(
+            grep -Hn 'sdkVersionLastRelease: String' $FILES 2>/dev/null \
+            | sed -E 's/.*sdkVersionLastRelease: String = "([^"]*)".*/\1/' \
+            | head -n1 || true
+          )
           if [ -z "$VERSION" ]; then
             echo "Unable to parse sdkVersionLastRelease from Constants.swift"
             exit 1
