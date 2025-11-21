@@ -76,7 +76,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", "5.37.0"
+  pod "myTargetSDK", "5.37.3"
 #pod "myTargetSDK", '5.37.1'
 end
 
