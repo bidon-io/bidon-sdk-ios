@@ -63,6 +63,56 @@ def semver_key(v)
   v.to_s.split(/[\.\-]/).map { |p| p =~ /^\d+$/ ? p.to_i : p }
 end
 
+def read_lock_versions(lock_path)
+  versions = {}
+  return versions unless File.exist?(lock_path)
+  in_pods = false
+  sanitize = proc do |raw|
+    v = raw.to_s.strip
+    v = v.sub(/^~>\s*/, "").sub(/^>=\s*/, "").sub(/^<=\s*/, "").sub(/^==\s*/, "").sub(/^=\s*/, "")
+    v.gsub(/[^0-9A-Za-z\.\-]/, "")
+  end
+  File.foreach(lock_path) do |line|
+    if line.start_with?("PODS:")
+      in_pods = true
+      next
+    end
+    if in_pods && line.match?(/^[A-Z][A-Z ]+:/)
+      in_pods = false
+    end
+    next unless in_pods
+    next unless line.start_with?("  - ")
+    entry = line.sub(/^  - /, "").strip
+    name, ver = entry.split(" (", 2)
+    next unless name && ver
+    v = ver.to_s.delete(")").strip
+    v = sanitize.call(v)
+    versions[name] = v if v.match(/^\d/)
+  end
+  versions
+end
+
+def adapter_revision(adapter_name)
+  dir = File.join("Adapters", adapter_name)
+  candidates = Dir.glob(File.join(dir, "**", "*DemandSourceAdapter.swift"))
+  return "0" if candidates.empty?
+  begin
+    content = File.read(candidates.first)
+    m = content.match(/adapterVersion\s*:\s*String\s*=\s*"(\d+)"/)
+    return m[1] if m
+  rescue => e
+    warn "Could not read adapterVersion from #{candidates.first}: #{e}"
+  end
+  "0"
+end
+
+def compute_adapter_version(adapter_name, pod_name, sdk_version_hint)
+  lock_versions = read_lock_versions("Podfile.lock")
+  base = lock_versions[pod_name] || sdk_version_hint
+  rev  = adapter_revision(adapter_name)
+  "#{base}.#{rev}"
+end
+
 def parse_podfile_entries
   src = File.read('Podfile')
   entries = []
@@ -128,6 +178,38 @@ def replace_pod_version_in_podfile(pod, to_version)
   end
   raise "Pod '#{pod}' not found in Podfile" unless changed
   File.write('Podfile', new_src)
+end
+
+def update_adapter_changelog(adapter_name, pod_name, sdk_version_hint)
+  path = File.join("Adapters", adapter_name, "CHANGELOG.md")
+  unless File.exist?(path)
+    warn "CHANGELOG not found for #{adapter_name} (#{path})"
+    return
+  end
+
+  adapter_ver = compute_adapter_version(adapter_name, pod_name, sdk_version_hint)
+  content = File.read(path)
+  # Skip if this version already documented
+  return if content.include?("## #{adapter_ver}")
+
+  lines = content.lines
+  idx = lines.index { |l| l.start_with?("# Changelog") } || 0
+  insert_at = idx + 1
+
+  block = []
+  block << "\n" unless lines[insert_at]&.strip&.empty?
+  block << "## #{adapter_ver}\n"
+  block << "\n"
+  block << "* Updated to #{pod_name} #{compute_adapter_version(adapter_name, pod_name, sdk_version_hint).split('.', 0).first || sdk_version_hint}\n"
+  block << "\n"
+
+  # Simpler: use sdk_version from lock/argument directly
+  block[-2] = "* Updated to #{pod_name} #{read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint}\n"
+
+  lines.insert(insert_at, *block)
+  File.write(path, lines.join)
+rescue => e
+  warn "Failed to update CHANGELOG for #{adapter_name}: #{e}"
 end
 
 def run_pods_tests
@@ -331,7 +413,11 @@ def main
       replace_pod_version_in_podfile(pod, to_v)
       pod_bin = ENV['POD_BIN'] || 'pod'
       sh!("#{pod_bin} update #{pod} --no-repo-update")
-      sh!("git add Podfile Podfile.lock")
+      # Update adapter changelogs before committing
+      (POD_TO_ADAPTER[pod] || []).each do |adapter_name|
+        update_adapter_changelog(adapter_name, pod, to_v)
+      end
+      sh!("git add Podfile Podfile.lock Adapters/*/CHANGELOG.md")
       msg = "chore(pods): #{pod} #{cur} -> #{to_v}"
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
