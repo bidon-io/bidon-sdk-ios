@@ -196,10 +196,15 @@ def update_adapter_changelog(adapter_name, pod_name, sdk_version_hint)
   idx = lines.index { |l| l.start_with?("# Changelog") } || 0
   insert_at = idx + 1
 
+  # Normalize whitespace after "# Changelog": remove any existing blank lines
+  while lines[insert_at]&.strip&.empty?
+    lines.delete_at(insert_at)
+  end
+
   block = []
-  # Ensure one blank line after "# Changelog"
-  block << "\n" unless lines[insert_at]&.strip&.empty?
-  # Header line without trailing blank line before bullet
+  # Exactly one blank line after "# Changelog"
+  block << "\n"
+  # Header line with no extra blank before bullet
   block << "## #{adapter_ver}\n"
   # Single bullet immediately after header
   sdk_ver = read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint
