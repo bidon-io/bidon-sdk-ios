@@ -86,18 +86,9 @@ jobs:
         id: sdk
         run: |
           set -euo pipefail
-          FILES=$(find . -name 'Constants.swift' -print || true)
-          if [ -z "$FILES" ]; then
-            echo "No Constants.swift files found"
-            exit 1
-          fi
-          VERSION=$(
-            grep -Hn 'sdkVersionLastRelease: String' $FILES 2>/dev/null \
-            | sed -E 's/.*sdkVersionLastRelease: String = "([^"]*)".*/\1/' \
-            | head -n1 || true
-          )
+          VERSION=$(sed -n 's/^[[:space:]]*static let sdkVersionLastRelease: String = "\([^"]*\)".*/\1/p' Bidon/Shared/Constants.swift | head -n1)
           if [ -z "$VERSION" ]; then
-            echo "Unable to parse sdkVersionLastRelease from Constants.swift"
+            echo "Unable to parse sdkVersionLastRelease from Bidon/Shared/Constants.swift"
             exit 1
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
