@@ -16,7 +16,6 @@ end
 
 def applovin
   pod 'AppLovinSDK', '13.5.0'
-#pod 'AppLovinSDK', '13.5.1'
 end
 
 def bidmachine 
@@ -25,7 +24,6 @@ end
 
 def admob
   pod 'Google-Mobile-Ads-SDK', '12.13.0'
-#pod 'Google-Mobile-Ads-SDK', '12.14.0'
 end
 
 def appsflyer
@@ -38,12 +36,10 @@ end
 
 def dtexchange
   pod 'Fyber_Marketplace_SDK', '8.4.1'
-#pod 'Fyber_Marketplace_SDK', '8.4.2'
 end
 
 def meta_ads
   pod 'FBAudienceNetwork', '6.20.1'
-#pod 'FBAudienceNetwork', '6.21.0'
 end
 
 def unity_ads
@@ -60,7 +56,6 @@ end
 
 def mintegral
   pod 'MintegralAdSDK', '7.7.9'
-# pod 'MintegralAdSDK', '8.0.3'
 end
 
 def mobilefuse
