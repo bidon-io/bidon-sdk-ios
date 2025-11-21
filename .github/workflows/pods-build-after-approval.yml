@@ -150,7 +150,7 @@ jobs:
         if: success() && steps.meta.outputs.adapters != ''
         run: |
           set -euo pipefail
-          BASE="https://github.com/bidon-io/CocoaPods-Specs/blob/main/Specs"
+          BASE="https://github.com/bidon-io/CocoaPods-Specs/blob/main"
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           OUT=""
           for AD in "${ADAPTERS[@]}"; do

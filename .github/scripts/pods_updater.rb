@@ -197,14 +197,15 @@ def update_adapter_changelog(adapter_name, pod_name, sdk_version_hint)
   insert_at = idx + 1
 
   block = []
+  # Ensure one blank line after "# Changelog"
   block << "\n" unless lines[insert_at]&.strip&.empty?
+  # Header line without trailing blank line before bullet
   block << "## #{adapter_ver}\n"
+  # Single bullet immediately after header
+  sdk_ver = read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint
+  block << "* Updated to #{pod_name} #{sdk_ver}\n"
+  # Trailing blank line for spacing
   block << "\n"
-  block << "* Updated to #{pod_name} #{compute_adapter_version(adapter_name, pod_name, sdk_version_hint).split('.', 0).first || sdk_version_hint}\n"
-  block << "\n"
-
-  # Simpler: use sdk_version from lock/argument directly
-  block[-2] = "* Updated to #{pod_name} #{read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint}\n"
 
   lines.insert(insert_at, *block)
   File.write(path, lines.join)
