@@ -72,7 +72,6 @@ end
 
 def my_target
   pod "myTargetSDK", "5.37.3"
-#pod "myTargetSDK", '5.37.1'
 end
 
 def chartboost
@@ -85,7 +84,6 @@ end
 
 def yandex
   pod 'YandexMobileAds', "7.17.0"
-#  pod 'YandexMobileAds', "7.17.1"
 end
 
 def startio
@@ -94,7 +92,6 @@ end
 
 def taurus
   pod 'TaurusxAdsSDK','1.9.2'
-#pod 'TaurusxAdsSDK','1.12.0'
 end
 
 def consent_manager
