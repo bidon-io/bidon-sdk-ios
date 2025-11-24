@@ -174,7 +174,7 @@ def replace_pod_version_in_podfile(pod, to_version)
   new_src = src.gsub(/^(\s*pod\s+["']#{Regexp.escape(pod)}["'])\s*(?:,\s*["']([^"']+)["'])?/) do
     prefix = Regexp.last_match(1)
     changed = true
-    %(#{prefix}, "#{to_version}")
+    %(#{prefix}, '#{to_version}')
   end
   raise "Pod '#{pod}' not found in Podfile" unless changed
   File.write('Podfile', new_src)
