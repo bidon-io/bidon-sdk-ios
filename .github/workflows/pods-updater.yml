@@ -2,7 +2,7 @@ name: Pods Updater (self-hosted)
 
 on:
   schedule:
-    - cron: "0 6 * * 1-5"
+    - cron: "0 6 * * 1"
   workflow_dispatch:
 
 permissions:
