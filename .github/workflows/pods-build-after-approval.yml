@@ -142,7 +142,7 @@ jobs:
             fi
             spec="build/Podspecs/${AD}.podspec.json"
             echo "Pushing $spec..."
-            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+            pod repo push bidon "$spec"
           done
 
       - name: Collect podspec URLs
