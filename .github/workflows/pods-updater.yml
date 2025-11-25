@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: dev
 
       - name: gitconfig
         run: |
@@ -38,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
-          PODS_BASE_BRANCH: feature/BDN-1013_Adapters_upgrade_bot
+          PODS_BASE_BRANCH: dev
           PODS_REVIEWERS: "EvgeniaGorbacheva,AndrewRudyk" # comma-separated GitHub usernames or org/team-slug
         run: |
           export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
