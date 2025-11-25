@@ -2,7 +2,7 @@ name: Pods Updater (self-hosted)
 
 on:
   schedule:
-    - cron: "0 6 * * 1-5"
+    - cron: "0 6 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -23,6 +23,7 @@ jobs:
         run: |
           git config --global user.name "bidon-runner"
           git config --global user.email "runner@bidon.org"
+          git config --global credential.helper ""
 
       - name: CocoaPods repo update (self-hosted)
         run: |
@@ -33,9 +34,10 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
-      - name: Run updater (Ruby)
+      - name: Run updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
           PODS_BASE_BRANCH: feature/BDN-1013_Adapters_upgrade_bot
           PODS_REVIEWERS: "EvgeniaGorbacheva,AndrewRudyk" # comma-separated GitHub usernames or org/team-slug
         run: |
