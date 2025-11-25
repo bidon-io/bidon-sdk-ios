@@ -1,0 +1,49 @@
+name: Pods Updater (self-hosted)
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitconfig
+        run: |
+          git config --global user.name "bidon-runner"
+          git config --global user.email "runner@bidon.org"
+          git config --global credential.helper ""
+
+      - name: CocoaPods repo update (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
+
+      - name: Run updater
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
+          PODS_BASE_BRANCH: feature/BDN-1013_Adapters_upgrade_bot
+          PODS_REVIEWERS: "EvgeniaGorbacheva,AndrewRudyk" # comma-separated GitHub usernames or org/team-slug
+        run: |
+          export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          /opt/homebrew/opt/ruby@3.2/bin/ruby .github/scripts/pods_updater.rb
+
+

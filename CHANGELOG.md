@@ -5,6 +5,7 @@
 - BND-1046 Networks update
 - APDM-1631 Podspec generation - update
 - BDN-1083 CI S3 zip-archive checking
+- BDN-1013 Pods updater bot 
 
 ## Fixes
 - BDN-1092 Crashes - Start.io

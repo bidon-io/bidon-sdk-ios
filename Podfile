@@ -43,11 +43,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.3'
-end
-
-def mintegral
-  pod 'MintegralAdSDK', '7.7.9'
+  pod 'UnityAds', '4.16.4'
 end
 
 def moloco
@@ -56,10 +52,6 @@ end
 
 def meta_sdk
   pod 'FBSDKLoginKit', '~> 17.1.0'
-end
-
-def unity_ads
-  pod 'UnityAds', '4.16.3'
 end
 
 def mintegral
@@ -79,7 +71,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.36.2'
+  pod "myTargetSDK", '5.37.3'
 end
 
 def chartboost
@@ -87,11 +79,11 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", "9.1.0"
+  pod "IronSourceSDK/Ads", '9.1.0'
 end
 
 def yandex
-  pod 'YandexMobileAds', "7.17.0"
+  pod 'YandexMobileAds', '7.17.0'
 end
 
 def startio
