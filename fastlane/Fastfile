@@ -398,7 +398,6 @@ platform :ios do
     Dotenv.load ".env.default"
 
     clean_build_artifacts
-    FileUtils.rm_rf($build_dir)
     FileUtils.mkdir_p($build_dir)
     FileUtils.mkdir_p($podspecs_dir)
   end
