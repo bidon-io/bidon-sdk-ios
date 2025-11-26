@@ -396,13 +396,37 @@ jobs:
             fi
           done
 
+      - name: Collect pods install snippet
+        id: pods_list
+        if: success()
+        run: |
+          set -euo pipefail
+          OUT=""
+          for SPEC in build/Podspecs/*.podspec.json; do
+            if [ ! -f "$SPEC" ]; then
+              continue
+            fi
+            NAME=$(jq -r '.name' "$SPEC" 2>/dev/null || basename "$SPEC" .podspec.json)
+            VERSION=$(jq -r '.version' "$SPEC" 2>/dev/null || sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$SPEC" | head -n1)
+            if [ -z "$NAME" ] || [ -z "$VERSION" ] || [ "$NAME" = "null" ] || [ "$VERSION" = "null" ]; then
+              continue
+            fi
+            LINE="pod \"${NAME}\", \"${VERSION}\""
+            if [ -z "$OUT" ]; then
+              OUT="$LINE"
+            else
+              OUT="${OUT}\n$LINE"
+            fi
+          done
+          echo "list=$OUT" >> "$GITHUB_OUTPUT"
+
       - name: Notify Slack on success
         if: success()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {
-              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Pods:\n${{ steps.pods_list.outputs.list }}\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
