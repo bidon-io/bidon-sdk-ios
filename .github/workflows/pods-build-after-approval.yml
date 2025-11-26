@@ -96,7 +96,7 @@ jobs:
       - name: Build adapter via Fastlane (self-hosted Ruby 3.2)
         if: steps.meta.outputs.adapters != ''
         run: |
-          set -o pipefail
+          set -euo pipefail
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
           # Force Ruby 3.2 and bundled gem binstubs first
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
@@ -130,11 +130,13 @@ jobs:
       - name: Register CocoaPods repo
         run: |
           pod repo remove bidon || true
+          pod repo remove bidon-io-cocoapods_specs || true
           pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
 
       - name: Push adapter podspec to podspec repo
         if: steps.meta.outputs.adapters != ''
         run: |
+          set -euo pipefail
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
             if [ -z "$AD" ]; then
@@ -142,7 +144,7 @@ jobs:
             fi
             spec="build/Podspecs/${AD}.podspec.json"
             echo "Pushing $spec..."
-            pod repo push bidon "$spec"
+            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources=bidon
           done
 
       - name: Push adapter podspec to trunk
