@@ -411,7 +411,8 @@ jobs:
             if [ -z "$NAME" ] || [ -z "$VERSION" ] || [ "$NAME" = "null" ] || [ "$VERSION" = "null" ]; then
               continue
             fi
-            LINE="pod \"${NAME}\", \"${VERSION}\""
+            # Use single quotes inside the line so that the JSON Slack payload remains valid
+            LINE="pod '${NAME}', '${VERSION}'"
             if [ -z "$OUT" ]; then
               OUT="$LINE"
             else
