@@ -137,6 +137,13 @@ jobs:
         if: steps.meta.outputs.adapters != ''
         run: |
           set -euo pipefail
+          SDK_VERSION="${{ steps.sdk.outputs.version }}"
+          if [[ "$SDK_VERSION" == *"-"* ]]; then
+            SOURCES="bidon"
+          else
+            SOURCES="trunk"
+          fi
+          echo "Using CocoaPods sources: $SOURCES for SDK_VERSION=$SDK_VERSION"
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
             if [ -z "$AD" ]; then
@@ -144,7 +151,7 @@ jobs:
             fi
             spec="build/Podspecs/${AD}.podspec.json"
             echo "Pushing $spec..."
-            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources=bidon
+            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources="$SOURCES"
           done
 
       - name: Push adapter podspec to trunk
