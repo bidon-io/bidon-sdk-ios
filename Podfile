@@ -15,7 +15,7 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.5.0'
+  pod 'AppLovinSDK', '13.5.1'
 end
 
 def bidmachine 
