@@ -6,6 +6,8 @@
 - APDM-1631 Podspec generation - update
 - BDN-1083 CI S3 zip-archive checking
 - BDN-1013 Pods updater bot 
+- APDM-1673 Podspecs generation logic - update
+- APDM-1672 Github Actions flow - Slack info
 
 ## Fixes
 - BDN-1092 Crashes - Start.io
