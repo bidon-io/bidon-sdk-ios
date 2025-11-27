@@ -13,6 +13,7 @@ module Fastlane
       Dependency = Struct.new("PodspecDependency", :name, :version, keyword_init: true)
 
       IOS_MIN_VERSIONS = {
+          "Bidon"                  => "12.0",
           "BidonAdapterIronSource" => "13.0",
           "ISBidonCustomAdapter"   => "13.0",
           "BidonAdapterMyTarget"   => "12.4",
