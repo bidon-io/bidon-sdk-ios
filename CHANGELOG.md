@@ -9,6 +9,7 @@
 
 ## Fixes
 - BDN-1092 Crashes - Start.io
+- BDN-1096 Fixed crash in ConcurrentAuctionController
 
 # Release 0.12.0
 
