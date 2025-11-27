@@ -101,10 +101,16 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Create Demand Requests.
 
     private func setupDemandRequestOperations() {
+        var ops = [any AuctionOperationRequestDemand]()
+        
         auctionConfiguration.adUnits.forEach { adUnit in
             let operation = createDemandRequestOperation(adUnit)
-            pendingOperations.append(operation)
+            ops.append(operation)
         }
+        
+        operationLock.lock()
+        _pendingOperations.append(contentsOf: ops)
+        operationLock.unlock()
     }
 
     private func createDemandRequestOperation(_ adUnit: AdUnitModel) -> any AuctionOperationRequestDemand {
@@ -125,13 +131,23 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     //MARK: - Auction Processing.
 
     private func scheduleNextOperation() {
-        guard !self.pendingOperations.isEmpty else {
+        guard let nextOperation = dequeueNextOperation() else {
             self.finishAuction()
             return
         }
-
-        let nextOperation = self.pendingOperations.removeFirst()
+        
         self.addOperation(nextOperation)
+    }
+    
+    private func dequeueNextOperation() -> (any AuctionOperationRequestDemand)? {
+        operationLock.lock()
+        defer { operationLock.unlock() }
+        
+        guard !_pendingOperations.isEmpty else {
+            return nil
+        }
+        
+        return _pendingOperations.removeFirst()
     }
 
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
@@ -208,19 +224,22 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }
 
     //MARK: - Finish Auction.
-
+    
     private func finishAuction() {
         finishLock.lock()
         defer { finishLock.unlock() }
-
+        
         guard !isFinishing else {
             return
         }
         isFinishing = true
-
+        
         invalidateTimer()
-
-        pendingOperations.removeAll()
+        
+        operationLock.lock()
+        _pendingOperations.removeAll()
+        operationLock.unlock()
+        
         queue.cancelAllOperations()
 
         guard
