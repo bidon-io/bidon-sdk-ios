@@ -43,7 +43,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.4'
+  pod 'UnityAds', '4.16.3'
 end
 
 def moloco
@@ -71,7 +71,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.37.3'
+  pod "myTargetSDK", '5.36.2'
 end
 
 def chartboost
