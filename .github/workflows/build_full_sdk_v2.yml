@@ -129,6 +129,7 @@ jobs:
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
           set -o pipefail
+          cd fastlane
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
           # Force Ruby 3.2 and bundled gem binstubs first
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"

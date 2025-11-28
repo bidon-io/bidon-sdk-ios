@@ -74,7 +74,7 @@ module Fastlane
           spec.license = { type: "Copyright", text: "Copyright #{Time.new.year}. Bidon Inc." }
           spec.author = { "Bidon Inc." => "https://bidon.org" }
 
-          ios_version = IOS_MIN_VERSIONS.fetch(params[:name], "13.0")
+          ios_version = IOS_MIN_VERSIONS.fetch(params[:name], "12.0")
           spec.platform = :ios, ios_version
 
           if params[:is_development_pod]
