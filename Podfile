@@ -91,7 +91,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK','1.9.2'
+  pod 'TaurusxAdsSDK', '1.9.3'
 end
 
 def consent_manager
