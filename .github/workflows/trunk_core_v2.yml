@@ -46,8 +46,34 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
+        run: |
+          set -o pipefail
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH and xcpretty
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          if ! command -v xcpretty >/dev/null 2>&1; then
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
+          fi
+
       - name: Generate podspec(s)
         run: |
+          set -o pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           if [[ -z "${{ inputs.adapters_version }}" ]]; then
             /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }}
           else
