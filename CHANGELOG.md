@@ -8,6 +8,7 @@
 - BDN-1013 Pods updater bot 
 - APDM-1673 Podspecs generation logic - update
 - APDM-1672 Github Actions flow - Slack info
+- BDN-1107 Podspecs new source
 
 ## Fixes
 - BDN-1092 Crashes - Start.io

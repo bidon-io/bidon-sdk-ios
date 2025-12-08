@@ -2,7 +2,7 @@ platform :ios, '13.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://cdn.cocoapods.org/'
-source "https://github.com/bidon-io/CocoaPods_Specs.git"
+source "https://github.com/bidon-io/CocoaPods-Specs.git"
 source 'https://github.com/appodeal/CocoaPods.git'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
