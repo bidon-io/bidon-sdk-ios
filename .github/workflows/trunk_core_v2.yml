@@ -79,6 +79,9 @@ jobs:
           else
             /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }}
           fi
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
 
       - name: Push all podspecs to trunk (continue on failure)
         id: push_specs
