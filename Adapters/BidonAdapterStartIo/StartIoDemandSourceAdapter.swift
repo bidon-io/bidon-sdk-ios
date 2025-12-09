@@ -20,6 +20,7 @@ BiddingAdViewDemandSourceAdapter
     public let demandId: String = StartIoDemandSourceAdapter.identifier
     public let name: String = "StartIo"
     public var adapterVersion: String = "0"
+
     public let sdkVersion: String = {
         let bundle = Bundle(for: STAStartAppSDK.self)
         return (bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
