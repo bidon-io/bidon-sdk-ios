@@ -221,6 +221,10 @@
 		497207F72EA92070006026B4 /* YandexBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497207F62EA92070006026B4 /* YandexBiddingRewardedDemandProvider.swift */; };
 		499682AB2E44B26E003DE568 /* YandexDirectAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A52E44B26E003DE568 /* YandexDirectAdViewDemandProvider.swift */; };
 		499682AC2E44B26E003DE568 /* YandexDirectBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A62E44B26E003DE568 /* YandexDirectBaseDemandProvider.swift */; };
+		497207F82EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; };
+		497207F92EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49C05E182E4CE45400EE0D1D /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		499682AB2E44B26E003DE568 /* YandexAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A52E44B26E003DE568 /* YandexAdViewDemandProvider.swift */; };
+		499682AC2E44B26E003DE568 /* YandexBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A62E44B26E003DE568 /* YandexBaseDemandProvider.swift */; };
 		499682AD2E44B26E003DE568 /* YandexDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */; };
 		499682AE2E44B26E003DE568 /* YandexDirectInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A72E44B26E003DE568 /* YandexDirectInterstitialDemandProvider.swift */; };
 		499682AF2E44B26E003DE568 /* YandexDirectRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A82E44B26E003DE568 /* YandexDirectRewardedDemandProvider.swift */; };
@@ -284,6 +288,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4907F84B2E8175EF00A04207 /* Bidon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		497207FA2EAA5CAD006026B4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				497207F92EAA5CAD006026B4 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
