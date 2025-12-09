@@ -85,7 +85,7 @@ PODS:
     - DivKit (~> 32.14)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
-  - FBAudienceNetwork (6.20.1)
+  - FBAudienceNetwork (6.21.0)
   - FBSDKCoreKit (17.1.0):
     - FBAEMKit (= 17.1.0)
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -182,7 +182,7 @@ DEPENDENCIES:
   - BidMachine (= 3.5.0)
   - BigoADS (= 5.0.0)
   - ChartboostSDK (= 9.10.1)
-  - FBAudienceNetwork (= 6.20.1)
+  - FBAudienceNetwork (= 6.21.0)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.1)
   - Google-Mobile-Ads-SDK (= 12.13.0)
@@ -291,7 +291,7 @@ SPEC CHECKSUMS:
   DivKit_Serialization: 3f88e14df78a3a2178afed66530aefa53f6aee07
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
-  FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
+  FBAudienceNetwork: f4ab9e073ab98c884dbdb5ffe7c861272b380bc2
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
@@ -319,6 +319,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
 
-PODFILE CHECKSUM: 7ac9428c5ad0652a9f32ca164ce33988181dd475
+PODFILE CHECKSUM: d05d77ed95d2a67de406f10d267c0779da1758a6
 
 COCOAPODS: 1.16.2
