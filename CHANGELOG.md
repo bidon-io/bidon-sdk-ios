@@ -1,4 +1,6 @@
-# develop
+# New release
+
+# Release 0.13.0
 
 ## New features
 - BDN-1070 Added Yandex Bidding support
@@ -18,6 +20,8 @@
 
 ## New features
 - BDN-1076 Support bcat, badv, and bapps for BidMachine CPM ad units
+- APDM-1631 Podspec generation - update
+- BDN-1083 CI S3 zip-archive checking
 - BDN-1067 Update Moloco
 - BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
 - BDN-1069 Fixes in BCA banners
