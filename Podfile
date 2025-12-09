@@ -71,7 +71,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.36.2'
+  pod "myTargetSDK", '5.38.0'
 end
 
 def chartboost
@@ -91,7 +91,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK','1.9.2'
+  pod 'TaurusxAdsSDK', '1.12.1'
 end
 
 def consent_manager
