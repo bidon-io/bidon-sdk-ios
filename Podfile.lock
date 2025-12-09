@@ -36,6 +36,14 @@ PODS:
     - AppMetricaPlatform (= 5.14.0)
     - AppMetricaStorageUtils (= 5.14.0)
     - AppMetricaSynchronization (= 5.14.0)
+  - AppMetricaIDSync (5.14.0):
+    - AppMetricaCore (= 5.14.0)
+    - AppMetricaCoreExtension (= 5.14.0)
+    - AppMetricaCoreUtils (= 5.14.0)
+    - AppMetricaLog (= 5.14.0)
+    - AppMetricaNetwork (= 5.14.0)
+    - AppMetricaPlatform (= 5.14.0)
+    - AppMetricaStorageUtils (= 5.14.0)
   - AppMetricaKeychain (5.14.0):
     - AppMetricaCoreUtils (= 5.14.0)
     - AppMetricaLog (= 5.14.0)
@@ -169,9 +177,10 @@ PODS:
   - VGSLUI (7.15.1):
     - VGSLFundamentals (= 7.15.1)
   - VungleAds (7.6.2)
-  - YandexMobileAds (7.17.0):
+  - YandexMobileAds (7.18.0):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
+    - AppMetricaIDSync (~> 5.14.0)
     - AppMetricaLibraryAdapter (~> 5.14.0)
     - DivKitBinaryCompatibilityFacade (~> 5.2.1)
 
@@ -198,7 +207,7 @@ DEPENDENCIES:
   - TaurusxAdsSDK (= 1.9.2)
   - UnityAds (= 4.16.3)
   - VungleAds (= 7.6.2)
-  - YandexMobileAds (= 7.17.0)
+  - YandexMobileAds (= 7.18.0)
 
 SPEC REPOS:
   trunk:
@@ -212,6 +221,7 @@ SPEC REPOS:
     - AppMetricaFMDB
     - AppMetricaHostState
     - AppMetricaIdentifiers
+    - AppMetricaIDSync
     - AppMetricaKeychain
     - AppMetricaLibraryAdapter
     - AppMetricaLog
@@ -271,6 +281,7 @@ SPEC CHECKSUMS:
   AppMetricaFMDB: 109e4a5ff89ca8c5609c2f2b597831aac7712e65
   AppMetricaHostState: 8a9a1d723974201acdf819bf3a5fadb3af3f2e82
   AppMetricaIdentifiers: 57e3164c945075fce4831567ae3a65959efaff44
+  AppMetricaIDSync: f2dcb1b268dda44cd3f1edff5dad74abbb5cb9d4
   AppMetricaKeychain: 99950a926fb90e54913d6737a9901c45af34d800
   AppMetricaLibraryAdapter: 643eeb8958caad92a37658751c10a591b3f74e28
   AppMetricaLog: d2bee5f12ec196308f4a13c46b4a65013900d2db
@@ -317,8 +328,8 @@ SPEC CHECKSUMS:
   VGSLNetworking: 7dac4d4254e46d368bb6ae1ab1abc137bc2c64f4
   VGSLUI: 0801f5ce73fdc3a2849fa1475a1fdae446a7c948
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
-  YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
+  YandexMobileAds: fdb8bcd562f25080b0d9ff99384026c868e0baea
 
-PODFILE CHECKSUM: 7ac9428c5ad0652a9f32ca164ce33988181dd475
+PODFILE CHECKSUM: 9d4f733912eb9f784d00933efd9cec5ddbad44e6
 
 COCOAPODS: 1.16.2
