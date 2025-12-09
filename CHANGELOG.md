@@ -1,5 +1,8 @@
 # New release
 
+## Fixes
+- BDN-1033 Device info
+
 # Release 0.13.0
 
 ## New features
