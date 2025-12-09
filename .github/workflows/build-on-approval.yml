@@ -1,0 +1,131 @@
+name: Pods PR CI (pre-merge)
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  build:
+    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
+    if: >
+      startsWith(github.event.pull_request.head.ref, 'chore/pod-') &&
+      startsWith(github.event.pull_request.head.ref, 'chore/pod-')
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Extract build metadata
+        id: meta
+        run: |
+          ruby - <<'RUBY'
+          body = ENV['PR_BODY'].to_s
+          m = body.match(/<!--\s*build-metadata\s*(\{[\s\S]*?\})\s*-->/m)
+          if m
+            json = m[1]
+            require 'json'
+            data = JSON.parse(json)
+            File.open(ENV['GITHUB_OUTPUT'], 'a') do |f|
+              f.puts "pod=#{data['pod']}"
+              f.puts "from=#{data['from']}"
+              f.puts "to=#{data['to']}"
+              f.puts "adapter=#{data['adapter']}"
+            end
+          end
+          RUBY
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+      - name: CocoaPods install (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+
+      - name: Run adapter tests (similar to build_full_sdk_v2)
+        run: |
+          set -euo pipefail
+          echo "Selecting iOS Simulator runtime via simctl…"
+          RUNTIME_ID=$(xcrun simctl list runtimes -j \
+            | jq -r '[.runtimes[] | select((.availability?=="(available)" or .isAvailable==true) and (.identifier|test("iOS"))) | .identifier] | sort | last')
+          if [ -z "${RUNTIME_ID:-}" ] || [ "$RUNTIME_ID" = "null" ]; then
+            echo "No available iOS simulator runtime found";
+            xcrun simctl list runtimes || true;
+            exit 1;
+          fi
+          echo "Using runtime: $RUNTIME_ID"
+          DEST_ID=$(xcrun simctl list devices -j \
+            | jq -r --arg rid "$RUNTIME_ID" '((.devices[$rid] // []) | map(select(.isAvailable==true)) | map(.udid) | .[0])')
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No device under $RUNTIME_ID, falling back to any available device";
+            DEST_ID=$(xcrun simctl list devices -j \
+              | jq -r '[.devices[] | .[] | select(.isAvailable==true) | .udid][0]')
+          fi
+          if [ -z "${DEST_ID:-}" ] || [ "$DEST_ID" = "null" ]; then
+            echo "No available iOS Simulator device";
+            xcrun simctl list devices || true;
+            exit 1;
+          fi
+          DD="$GITHUB_WORKSPACE/DerivedData"
+          mkdir -p "$DD" Result build/reports || true
+          xcodebuild test \
+            -workspace BidOn.xcworkspace \
+            -scheme AdaptersTests \
+            -sdk iphonesimulator \
+            -destination "id=$DEST_ID" \
+            -derivedDataPath "$DD" \
+            -resultBundlePath Result/AdaptersTests.xcresult \
+             | tee build/reports/test_output.log \
+             | xcbeautify
+
+      - name: Build adapter (self-hosted)
+        if: steps.meta.outputs.pod != ''
+        run: |
+          set -o pipefail
+          export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          chmod +x scripts/build_adapter.sh
+          scripts/build_adapter.sh --pod "${{ steps.meta.outputs.pod }}" --from "${{ steps.meta.outputs.from }}" --to "${{ steps.meta.outputs.to }}" --adapter "${{ steps.meta.outputs.adapter }}"
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ *Pods Merge Build Succeeded!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Pods Merge Build Failed!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Enable PR auto-merge (squash) on success
+        if: success()
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+
+
