@@ -273,7 +273,6 @@ target 'Sandbox' do
   ironsource
   yandex
   taurus
-#  pod 'BidonAdapterYandex', '7.16.2.0-test.7'
 end
 
 post_install do |installer|
