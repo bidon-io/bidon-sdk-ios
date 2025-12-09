@@ -157,7 +157,7 @@ PODS:
   - TaurusxAdsSDK (1.9.2):
     - TaurusxAdsSDK/TaurusxAds (= 1.9.2)
   - TaurusxAdsSDK/TaurusxAds (1.9.2)
-  - UnityAds (4.16.3)
+  - UnityAds (4.16.5)
   - VGSL (7.15.1):
     - VGSLFundamentals (= 7.15.1)
     - VGSLNetworking (= 7.15.1)
@@ -196,7 +196,7 @@ DEPENDENCIES:
   - StartAppSDK (= 4.11.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.9.2)
-  - UnityAds (= 4.16.3)
+  - UnityAds (= 4.16.5)
   - VungleAds (= 7.6.2)
   - YandexMobileAds (= 7.17.0)
 
@@ -311,7 +311,7 @@ SPEC CHECKSUMS:
   StartAppSDK: 8da2f1ff9b74f37b11972de191266d40582e5fbf
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 5005501aa0f9fc222a11a17d62d67e9edff934b8
-  UnityAds: 64164885dd38214bfc556eb074ab1995cc613fbf
+  UnityAds: 8b9e0ecf7c4aa7334d15f81efb58db279e28f502
   VGSL: ea58907772e77ec8569a914a128ad422d33d28de
   VGSLFundamentals: cf2bf1fca0187dde9ffa861282eff34da82528f1
   VGSLNetworking: 7dac4d4254e46d368bb6ae1ab1abc137bc2c64f4
@@ -319,6 +319,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
 
-PODFILE CHECKSUM: 7ac9428c5ad0652a9f32ca164ce33988181dd475
+PODFILE CHECKSUM: cfdd454a11bb8eab72613f3b101ff5ad303e43c6
 
 COCOAPODS: 1.16.2
