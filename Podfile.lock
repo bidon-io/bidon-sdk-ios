@@ -152,7 +152,7 @@ PODS:
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
-  - StartAppSDK (4.11.0)
+  - StartAppSDK (4.12.0)
   - SwiftLint (0.62.2)
   - TaurusxAdsSDK (1.9.2):
     - TaurusxAdsSDK/TaurusxAds (= 1.9.2)
@@ -193,7 +193,7 @@ DEPENDENCIES:
   - MolocoSDKiOS (= 4.1.0)
   - myTargetSDK (= 5.36.2)
   - StackConsentManager (~> 3.0.0)
-  - StartAppSDK (= 4.11.0)
+  - StartAppSDK (= 4.12.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.9.2)
   - UnityAds (= 4.16.3)
@@ -308,7 +308,7 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
   StackConsentManager: 80684e96361f88476985a2ed91a9299bc9196be8
   StackModules: 2cdc4fe670b6536c8024c4ae24d4c2c76dc15006
-  StartAppSDK: 8da2f1ff9b74f37b11972de191266d40582e5fbf
+  StartAppSDK: a01a0595a1ef4e7e75a003f0358650de932031d8
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 5005501aa0f9fc222a11a17d62d67e9edff934b8
   UnityAds: 64164885dd38214bfc556eb074ab1995cc613fbf
@@ -319,6 +319,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: 9f5355c2faffc575004ca2b267625a323686a368
 
-PODFILE CHECKSUM: 7ac9428c5ad0652a9f32ca164ce33988181dd475
+PODFILE CHECKSUM: dcd12d7adc0b71e4d57b8fffb4e862b11faca38d
 
 COCOAPODS: 1.16.2
