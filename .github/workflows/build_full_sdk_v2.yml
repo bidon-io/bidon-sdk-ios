@@ -47,8 +47,16 @@ jobs:
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
+      
+      - name: CocoaPods repo update (self-hosted)
+        run: |
+          set -o pipefail
+          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
+          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
+          "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
-      # На self-hosted fastlane/pods установлены глобально (Ruby 3.2)
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
@@ -121,6 +129,7 @@ jobs:
       - name: Build SDK via Fastlane (self-hosted Ruby 3.2)
         run: |
           set -o pipefail
+          cd fastlane
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
           # Force Ruby 3.2 and bundled gem binstubs first
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
@@ -388,13 +397,38 @@ jobs:
             fi
           done
 
+      - name: Collect pods install snippet
+        id: pods_list
+        if: success()
+        run: |
+          set -euo pipefail
+          OUT=""
+          for SPEC in build/Podspecs/*.podspec.json; do
+            if [ ! -f "$SPEC" ]; then
+              continue
+            fi
+            NAME=$(jq -r '.name' "$SPEC" 2>/dev/null || basename "$SPEC" .podspec.json)
+            VERSION=$(jq -r '.version' "$SPEC" 2>/dev/null || sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$SPEC" | head -n1)
+            if [ -z "$NAME" ] || [ -z "$VERSION" ] || [ "$NAME" = "null" ] || [ "$VERSION" = "null" ]; then
+              continue
+            fi
+            # Use single quotes inside the line so that the JSON Slack payload remains valid
+            LINE="pod '${NAME}', '${VERSION}'"
+            if [ -z "$OUT" ]; then
+              OUT="$LINE"
+            else
+              OUT="${OUT}\n$LINE"
+            fi
+          done
+          echo "list=$OUT" >> "$GITHUB_OUTPUT"
+
       - name: Notify Slack on success
         if: success()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {
-              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *[Bidon] SDK Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Use network versions: `${{ inputs.use_network_versions }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Specs pushed: `${{ inputs.push_specs }}`\n• Pods:\n${{ steps.pods_list.outputs.list }}\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

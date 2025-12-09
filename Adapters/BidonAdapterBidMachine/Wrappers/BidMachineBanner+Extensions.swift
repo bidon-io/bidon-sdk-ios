@@ -15,13 +15,17 @@ extension BidMachineBanner: AdViewContainer {
 }
 
 
-extension PlacementFormat {
-    init(format: BannerFormat) {
-        switch format {
-        case .banner: self = .banner320x50
-        case .leaderboard: self = .banner728x90
-        case .adaptive: self = .banner
-        case .mrec: self = .banner300x250
+extension BannerFormat {
+    var bmBannerFormat: AdFormat {
+        switch self {
+        case .banner:
+            return .banner320x50
+        case .leaderboard:
+            return .banner728x90
+        case .mrec:
+            return .banner300x250
+        case .adaptive:
+            return .bannerAdaptive(width: UInt32(self.preferredSize.width))
         }
     }
 }

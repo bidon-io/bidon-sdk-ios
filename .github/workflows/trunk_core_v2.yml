@@ -7,16 +7,6 @@ on:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
         type: string
-      pre:
-        description: 'Prerelease tag (optional, e.g. alpha.1)'
-        required: false
-        type: string
-        default: ''
-      upload:
-        description: 'Upload to AWS?'
-        required: true
-        type: boolean
-        default: false
       adapters_version:
         description: 'Adapters version (optional)'
         required: false
@@ -56,31 +46,42 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
-      - name: Build Core via Fastlane 
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
           set -o pipefail
-          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
-          # Force Ruby 3.2 and bundled gem binstubs first
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH and xcpretty
+        run: |
+          set -euo pipefail
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
-          # Avoid leaking system Ruby GEM_* into subprocesses
-          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane core \
-            version:${{ inputs.sdk_version }} \
-            pre:"${{ inputs.pre }}" \
-            upload:${{ inputs.upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_core.log"
-        env:
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          S3_REGION: ${{ secrets.S3_REGION }}
+          if ! command -v xcpretty >/dev/null 2>&1; then
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
+          fi
 
       - name: Generate podspec(s)
         run: |
+          set -o pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           if [[ -z "${{ inputs.adapters_version }}" ]]; then
-            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }}
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} only_core:true
           else
-            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }}
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs version:${{ inputs.sdk_version }} adapters_version:${{ inputs.adapters_version }} only_core:true
           fi
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
 
       - name: Push all podspecs to trunk (continue on failure)
         id: push_specs

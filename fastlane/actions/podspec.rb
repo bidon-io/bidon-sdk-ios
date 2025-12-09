@@ -33,15 +33,20 @@ module Fastlane
         s3_bucket = params[:s3_bucket]
 
         dependencies = podfile.target_definitions[params[:name]].nil? ? [] : podfile.target_definitions[params[:name]].dependencies.map do |dep|
+          dep_name =
+            if dep.name == "IronSourceSDK/Ads"
+              dep.name
+            else
+              dep.name.split("/").first
+            end
+
           Dependency.new(
-            name: dep.name.split("/").first,
+            name: dep_name,
             version: dep.to_s.scan(/\((.*)\)/m).flatten[0]
           )
         end
 
-        # Remove Stack dependencies from adapters and BidMachine bidding adapters
         if params[:is_adapter]
-          # Pin non-Bidon dependencies to exact resolved versions
           dependencies = dependencies.map do |d|
             next d if d.name == "Bidon"
             resolved = resolved_versions[d.name]
@@ -52,7 +57,7 @@ module Fastlane
             end
           end
 
-          sdk_ver = params[:sdk_version]
+          sdk_ver = self.read_sdk_last_release_from_constants(params[:podfile]) || params[:sdk_version]
           dep_version = sdk_ver.nil? || sdk_ver.empty? ? nil : ">= #{sdk_ver}"
           dependencies.append(Dependency.new(
             name: "Bidon",
@@ -128,6 +133,26 @@ module Fastlane
         # Write podspec to file
         File.open(params[:path] + "/" + params[:name] + ".podspec.json", "w") do |f|
           f.write(JSON.pretty_generate(podspec_hash))
+        end
+      end
+
+      def self.read_sdk_last_release_from_constants(podfile_path)
+        begin
+          root = File.dirname(podfile_path)
+          path = File.join(root, "Bidon", "Shared", "Constants.swift")
+          return nil unless File.exist?(path)
+
+          content = File.read(path)
+          match = content.match(/sdkVersionLastRelease\s*:\s*String\s*=\s*"([^"]+)"/)
+          if match
+            match[1]
+          else
+            UI.message("sdkVersionLastRelease not found in #{path}, falling back to sdk_version param")
+            nil
+          end
+        rescue => e
+          UI.message("Failed to read sdkVersionLastRelease from Constants.swift: #{e}")
+          nil
         end
       end
 

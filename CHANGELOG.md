@@ -1,12 +1,27 @@
-# develop
+# New release
+
+# Release 0.13.0
 
 ## New features
+- BDN-1070 Added Yandex Bidding support
+- BND-1046 Networks update
 - APDM-1631 Podspec generation - update
 - BDN-1083 CI S3 zip-archive checking
+- BDN-1013 Pods updater bot 
+- APDM-1673 Podspecs generation logic - update
+- APDM-1672 Github Actions flow - Slack info
+- BDN-1107 Podspecs new source
+
+## Fixes
+- BDN-1092 Crashes - Start.io
+- BDN-1096 Fixed crash in ConcurrentAuctionController
 
 # Release 0.12.0
 
 ## New features
+- BDN-1076 Support bcat, badv, and bapps for BidMachine CPM ad units
+- APDM-1631 Podspec generation - update
+- BDN-1083 CI S3 zip-archive checking
 - BDN-1067 Update Moloco
 - BDN-1078 Added mediator and ad_unit_ids params support for Applovin adapter
 - BDN-1069 Fixes in BCA banners

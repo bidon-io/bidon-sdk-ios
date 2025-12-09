@@ -9,7 +9,9 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.12.0"
+    static let sdkVersion: String = "0.13.0"
+
+    static let sdkVersionLastRelease: String = "0.12.0"
 
     static let zeroUUID: String = "00000000-0000-0000-0000-000000000000"
 
@@ -42,7 +44,8 @@ struct Constants {
             "BidonAdapterChartboost.ChartboostDemandSourceAdapter",
             "BidonAdapterStartIo.StartIoDemandSourceAdapter",
             "BidonAdapterMoloco.MolocoDemandSourceAdapter",
-            "BidonAdapterTaurusX.TaurusXDemandSourceAdapter"
+            "BidonAdapterTaurusX.TaurusXDemandSourceAdapter",
+            "BidonAdapterYandex.YandexDemandSourceAdapter"
         ]
     }
 

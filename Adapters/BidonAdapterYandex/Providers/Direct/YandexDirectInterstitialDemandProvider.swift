@@ -1,5 +1,5 @@
 //
-//  YandexInterstitialDemandProvider.swift
+//  YandexDirectInterstitialDemandProvider.swift
 //  BidonAdapterYandex
 //
 //  Created by Евгения Григорович on 14/08/2024.
@@ -17,7 +17,7 @@ final class YandexInterstitialDemandAd: DemandAd {
     }
 }
 
-final class YandexInterstitialDemandProvider: YandexBaseDemandProvider<YandexInterstitialDemandAd> {
+final class YandexDirectInterstitialDemandProvider: YandexDirectBaseDemandProvider<YandexInterstitialDemandAd> {
 
     private var response: DemandProviderResponse?
 
@@ -38,7 +38,7 @@ final class YandexInterstitialDemandProvider: YandexBaseDemandProvider<YandexInt
     }
 }
 
-extension YandexInterstitialDemandProvider: InterstitialDemandProvider {
+extension YandexDirectInterstitialDemandProvider: InterstitialDemandProvider {
     func show(
         ad: YandexInterstitialDemandAd,
         from viewController: UIViewController
@@ -47,7 +47,7 @@ extension YandexInterstitialDemandProvider: InterstitialDemandProvider {
     }
 }
 
-extension YandexInterstitialDemandProvider: InterstitialAdLoaderDelegate {
+extension YandexDirectInterstitialDemandProvider: InterstitialAdLoaderDelegate {
     func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didLoad interstitialAd: YandexMobileAds.InterstitialAd) {
         interstitialAd.delegate = self
         self.interstitialAd = interstitialAd
@@ -64,7 +64,7 @@ extension YandexInterstitialDemandProvider: InterstitialAdLoaderDelegate {
 
 }
 
-extension YandexInterstitialDemandProvider: InterstitialAdDelegate {
+extension YandexDirectInterstitialDemandProvider: InterstitialAdDelegate {
 
     func interstitialAdDidShow(_ interstitialAd: InterstitialAd) {
         delegate?.providerWillPresent(self)

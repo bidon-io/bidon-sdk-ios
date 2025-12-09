@@ -1,5 +1,5 @@
 //
-//  YandexBaseDemandProvider.swift
+//  YandexDirectBaseDemandProvider.swift
 //  BidonAdapterYandex
 //
 //  Created by Евгения Григорович on 14/08/2024.
@@ -9,7 +9,7 @@ import Foundation
 import Bidon
 import YandexMobileAds
 
-class YandexBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandProvider {
+class YandexDirectBaseDemandProvider<DemandAdType: DemandAd>: NSObject, DirectDemandProvider {
 
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
