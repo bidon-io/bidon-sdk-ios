@@ -108,7 +108,8 @@ end
 
 def compute_adapter_version(adapter_name, pod_name, sdk_version_hint)
   lock_versions = read_lock_versions("Podfile.lock")
-  base = lock_versions[pod_name] || sdk_version_hint
+  root = pod_name.to_s.split('/').first
+  base = lock_versions[pod_name] || lock_versions[root] || sdk_version_hint
   rev  = adapter_revision(adapter_name)
   "#{base}.#{rev}"
 end
@@ -207,7 +208,9 @@ def update_adapter_changelog(adapter_name, pod_name, sdk_version_hint)
   # Header line with no extra blank before bullet
   block << "## #{adapter_ver}\n"
   # Single bullet immediately after header
-  sdk_ver = read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint
+  root = pod_name.to_s.split('/').first
+  lock_versions = read_lock_versions("Podfile.lock")
+  sdk_ver = lock_versions[pod_name] || lock_versions[root] || sdk_version_hint
   block << "* Updated to #{pod_name} #{sdk_ver}\n"
   # Trailing blank line for spacing
   block << "\n"
