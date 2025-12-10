@@ -1,5 +1,9 @@
 # New release
 
+## Fixes
+- BDN-1033 Device info
+- BDN-1105 Code clean
+
 # Release 0.13.0
 
 ## New features
