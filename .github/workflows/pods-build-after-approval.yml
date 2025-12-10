@@ -93,6 +93,12 @@ jobs:
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: Ensure adapters metadata present
+        if: steps.meta.outputs.adapters == ''
+        run: |
+          echo "No adapters found in build metadata. Ensure PR body includes adapters and POD_TO_ADAPTER mapping covers pod '${{ steps.meta.outputs.pod }}'."
+          exit 1
+
       - name: Build adapter via Fastlane (self-hosted Ruby 3.2)
         if: steps.meta.outputs.adapters != ''
         run: |
