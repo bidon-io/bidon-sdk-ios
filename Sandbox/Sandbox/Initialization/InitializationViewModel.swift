@@ -97,18 +97,6 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         }
     }
 
-    @Published var mediation: Mediation = .none {
-        didSet {
-            switch mediation {
-            case .none:
-                AdServiceProvider.shared.service = RawAdService()
-            case .appodeal: break
-// MARK: DROP_APD_SUPPORT
-//                AdServiceProvider.shared.service = AppodealAdService()
-            }
-        }
-    }
-
     @Published var adapters: [Bidon.Adapter] = .default()
 
     @MainActor

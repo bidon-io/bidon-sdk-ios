@@ -9,13 +9,6 @@ import Foundation
 import Bidon
 import Combine
 
-
-enum Mediation: String, CaseIterable {
-    case none
-    case appodeal
-}
-
-
 enum AdType {
     case banner
     case interstitial
@@ -58,7 +51,6 @@ protocol AdServiceParameters: AnyObject {
 
 
 protocol AdService: AnyObject {
-    var mediation: Mediation { get }
     var verstion: String { get }
     var segmentId: String? { get }
     var parameters: AdServiceParameters { get }

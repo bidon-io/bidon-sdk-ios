@@ -72,7 +72,7 @@ extension AppsFlyerLib {
 
         let adRevenueData = AFAdRevenueData(
             monetizationNetwork: ad.networkName,
-            mediationNetwork: .appodeal,
+            mediationNetwork: .custom,
             currencyIso4217Code: adRevenue.currency,
             eventRevenue: adRevenue.revenue as NSNumber
         )

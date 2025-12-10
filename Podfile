@@ -3,7 +3,6 @@ workspace 'Bidon.xcworkspace'
 
 source 'https://cdn.cocoapods.org/'
 source "https://github.com/bidon-io/CocoaPods-Specs.git"
-source 'https://github.com/appodeal/CocoaPods.git'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
 use_frameworks! 
@@ -92,10 +91,6 @@ end
 
 def taurus
   pod 'TaurusxAdsSDK', '1.12.1'
-end
-
-def consent_manager
-  pod "StackConsentManager", '~> 3.0.0'
 end
 
 def swiftlint
@@ -249,7 +244,6 @@ end
 
 target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
-  consent_manager
   swiftlint
   applovin
   appsflyer

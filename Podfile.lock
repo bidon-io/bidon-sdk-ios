@@ -147,8 +147,6 @@ PODS:
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
   - OMSDK_Appodeal (1.5.2)
-  - StackConsentManager (3.0.0):
-    - GoogleUserMessagingPlatform (~> 2.1)
   - StackModules/Core-Static (3.4.1)
   - StackModules/ProductPresentation-Static (3.4.1):
     - StackModules/Core-Static
@@ -201,7 +199,6 @@ DEPENDENCIES:
   - MobileFuseSDK (= 1.9.3)
   - MolocoSDKiOS (= 4.1.0)
   - myTargetSDK (= 5.38.0)
-  - StackConsentManager (~> 3.0.0)
   - StartAppSDK (= 4.12.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.12.1)
@@ -257,7 +254,6 @@ SPEC REPOS:
     - myTargetSDK
     - myTrackerSDK
     - OMSDK_Appodeal
-    - StackConsentManager
     - StackModules
     - StartAppSDK
     - SwiftLint
@@ -317,7 +313,6 @@ SPEC CHECKSUMS:
   myTargetSDK: c761a9b66095dda4a510bd17b2e97a54edb466fc
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
-  StackConsentManager: 80684e96361f88476985a2ed91a9299bc9196be8
   StackModules: 2cdc4fe670b6536c8024c4ae24d4c2c76dc15006
   StartAppSDK: a01a0595a1ef4e7e75a003f0358650de932031d8
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
@@ -330,6 +325,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: fdb8bcd562f25080b0d9ff99384026c868e0baea
 
-PODFILE CHECKSUM: f37044fecd7c1cb49ebd83c104bc81f04fdc3b5d
+PODFILE CHECKSUM: 900356693d3346d6303bf00591f539a0e0be9c01
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
