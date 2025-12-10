@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: dev
+          ref: bugfix/CI_update_bot
 
       - name: gitconfig
         run: |
@@ -40,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
           PODS_BASE_BRANCH: dev
-          PODS_REVIEWERS: "EvgeniaGorbacheva,AndrewRudyk" # comma-separated GitHub usernames or org/team-slug
+          PODS_REVIEWERS: "bidon-io/bidon-ios" # comma-separated GitHub usernames or org/team-slug
         run: |
           export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
           export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")

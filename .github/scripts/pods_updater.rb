@@ -423,7 +423,8 @@ def main
       pod_bin = ENV['POD_BIN'] || 'pod'
       sh!("#{pod_bin} update #{pod} --no-repo-update")
       # Update adapter changelogs before committing
-      (POD_TO_ADAPTER[pod] || []).each do |adapter_name|
+      adapter_key = pod.split('/').first
+      (POD_TO_ADAPTER[adapter_key] || POD_TO_ADAPTER[pod] || []).each do |adapter_name|
         update_adapter_changelog(adapter_name, pod, to_v)
       end
       sh!("git add Podfile Podfile.lock Adapters/*/CHANGELOG.md")
@@ -431,7 +432,8 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        adapter_names = POD_TO_ADAPTER[pod] || []
+        adapter_key = pod.split('/').first
+        adapter_names = POD_TO_ADAPTER[adapter_key] || POD_TO_ADAPTER[pod] || []
         pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v, adapters: adapter_names))
         if created && pr
           tests_ok = true
