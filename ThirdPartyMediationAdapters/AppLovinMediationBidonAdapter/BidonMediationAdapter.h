@@ -3,7 +3,7 @@
 //  Sandbox
 //
 //  Created by Евгения Григорович on 20/03/2025.
-//  Copyright © 2025 Stack. All rights reserved.
+//  Copyright © 2025 Bidon. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

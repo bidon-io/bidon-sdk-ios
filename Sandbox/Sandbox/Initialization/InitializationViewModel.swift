@@ -31,7 +31,6 @@ import BidonAdapterStartIo
 import BidonAdapterTaurusX
 import BidonAdapterYandex
 
-
 final class InitializationViewModel: ObservableObject, AdResponder {
     enum InitializationState {
         case idle
@@ -98,18 +97,6 @@ final class InitializationViewModel: ObservableObject, AdResponder {
         }
     }
 
-    @Published var mediation: Mediation = .none {
-        didSet {
-            switch mediation {
-            case .none:
-                AdServiceProvider.shared.service = RawAdService()
-            case .appodeal: break
-// MARK: DROP_APD_SUPPORT
-//                AdServiceProvider.shared.service = AppodealAdService()
-            }
-        }
-    }
-
     @Published var adapters: [Bidon.Adapter] = .default()
 
     @MainActor
@@ -159,7 +146,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             StartIoDemandSourceAdapter(),
             MolocoDemandSourceAdapter(),
             TaurusXDemandSourceAdapter(),
-            YandexDemandSourceAdapter()
+            YandexDemandSourceAdapter(),
+            TaurusXDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }
