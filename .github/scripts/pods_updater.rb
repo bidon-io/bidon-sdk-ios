@@ -108,7 +108,8 @@ end
 
 def compute_adapter_version(adapter_name, pod_name, sdk_version_hint)
   lock_versions = read_lock_versions("Podfile.lock")
-  base = lock_versions[pod_name] || sdk_version_hint
+  root = pod_name.to_s.split('/').first
+  base = lock_versions[pod_name] || lock_versions[root] || sdk_version_hint
   rev  = adapter_revision(adapter_name)
   "#{base}.#{rev}"
 end
@@ -207,7 +208,9 @@ def update_adapter_changelog(adapter_name, pod_name, sdk_version_hint)
   # Header line with no extra blank before bullet
   block << "## #{adapter_ver}\n"
   # Single bullet immediately after header
-  sdk_ver = read_lock_versions("Podfile.lock")[pod_name] || sdk_version_hint
+  root = pod_name.to_s.split('/').first
+  lock_versions = read_lock_versions("Podfile.lock")
+  sdk_ver = lock_versions[pod_name] || lock_versions[root] || sdk_version_hint
   block << "* Updated to #{pod_name} #{sdk_ver}\n"
   # Trailing blank line for spacing
   block << "\n"
@@ -423,7 +426,8 @@ def main
       pod_bin = ENV['POD_BIN'] || 'pod'
       sh!("#{pod_bin} update #{pod} --no-repo-update")
       # Update adapter changelogs before committing
-      (POD_TO_ADAPTER[pod] || []).each do |adapter_name|
+      adapter_key = pod.split('/').first
+      (POD_TO_ADAPTER[adapter_key] || POD_TO_ADAPTER[pod] || []).each do |adapter_name|
         update_adapter_changelog(adapter_name, pod, to_v)
       end
       sh!("git add Podfile Podfile.lock Adapters/*/CHANGELOG.md")
@@ -431,7 +435,8 @@ def main
       sh!(%{git commit -m "#{msg}"})
       git_push_branch(branch)
       begin
-        adapter_names = POD_TO_ADAPTER[pod] || []
+        adapter_key = pod.split('/').first
+        adapter_names = POD_TO_ADAPTER[adapter_key] || POD_TO_ADAPTER[pod] || []
         pr, created = create_pr(branch, msg, pr_body(pod, cur, to_v, adapters: adapter_names))
         if created && pr
           tests_ok = true
