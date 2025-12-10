@@ -3,7 +3,7 @@
 //  APDAppLovinMAXAdapter
 //
 //  Created by Евгения Григорович on 20/03/2025.
-//  Copyright © 2025 Appodeal, Inc. All rights reserved.
+//  Copyright © 2025 Bidon. All rights reserved.
 //
 
 #import "BidonMediationAdapter.h"

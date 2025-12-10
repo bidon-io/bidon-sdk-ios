@@ -1185,19 +1185,6 @@ end
     end
   end
 
-  lane :sandbox_env do |_options|
-    generate_sandbox_constants(
-      path: $root_dir + "/Sandbox/Sandbox"
-    )
-  end
-
-  lane :setup do |_options|
-    cocoapods(use_bundle_exec: true)
-    generate_sandbox_constants(
-      path: $root_dir + "/Sandbox/Sandbox"
-    )
-  end
-
   desc "Install CocoaPods"
   lane :pods_install do |_options|
     # На self-hosted используем глобально установленный CocoaPods, без bundler

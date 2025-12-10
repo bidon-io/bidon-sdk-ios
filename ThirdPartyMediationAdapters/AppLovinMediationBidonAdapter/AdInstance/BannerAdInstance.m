@@ -3,7 +3,7 @@
 //  BidonMediationAdapter
 //
 //  Created by Евгения Григорович on 22/04/2025.
-//  Copyright © 2025 Appodeal, Inc. All rights reserved.
+//  Copyright © 2025 Bidon. All rights reserved.
 //
 
 #import "BannerAdInstance.h"
