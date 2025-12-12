@@ -7,11 +7,6 @@ on:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
         type: string
-      pre:
-        description: 'Prerelease tag (optional, e.g. alpha.1)'
-        required: false
-        type: string
-        default: ''
       upload:
         description: 'Upload to AWS?'
         required: true
@@ -85,7 +80,6 @@ jobs:
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane core \
             version:${{ inputs.sdk_version }} \
-            pre:"${{ inputs.pre }}" \
             upload:${{ inputs.upload }} \
             force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_core.log"
         env:
@@ -93,6 +87,50 @@ jobs:
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
+
+      - name: Setup SSH for podspec repo
+        if: success()
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Register CocoaPods repo
+        if: success()
+        run: |
+          pod repo remove bidon || true
+          pod repo remove bidon-io-cocoapods_specs || true
+          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+
+      - name: Push core podspec to podspec repo
+        if: success()
+        run: |
+          set -euo pipefail
+          SPEC="build/Podspecs/Bidon.podspec.json"
+          if [ ! -f "$SPEC" ]; then
+            echo "Podspec not found: $SPEC"
+            exit 1
+          fi
+          pod repo push bidon "$SPEC" --allow-warnings --skip-tests --skip-import-validation --sources="bidon"
+
+      - name: Collect podspec URL
+        id: podspec_link
+        if: success()
+        run: |
+          set -euo pipefail
+          SPEC="build/Podspecs/Bidon.podspec.json"
+          if [ ! -f "$SPEC" ]; then
+            echo "Podspec not found: $SPEC"
+            exit 1
+          fi
+          VERSION=$(jq -r '.version' "$SPEC" 2>/dev/null || sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$SPEC" | head -n1)
+          if [ -z "$VERSION" ]; then
+            echo "Version not found in $SPEC"
+            exit 1
+          fi
+          BASE="https://github.com/bidon-io/CocoaPods-Specs/blob/main/Bidon/${VERSION}/Bidon.podspec.json"
+          echo "url=${BASE}" >> "$GITHUB_OUTPUT"
 
       - name: Dump logs tail (on failure)
         if: failure()
@@ -150,7 +188,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Core Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Core Build Succeeded!*\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Podspec: <${{ steps.podspec_link.outputs.url }}|Bidon>\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -161,7 +199,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Core Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Pre: `${{ inputs.pre }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Core Build Failed!*\n• Version: `${{ inputs.sdk_version }}`\n• Upload: `${{ inputs.upload }}`\n• Force upload: `${{ inputs.force_upload }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
