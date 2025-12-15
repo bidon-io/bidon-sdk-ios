@@ -72,10 +72,10 @@ PODS:
   - AppsFlyerFramework (6.17.8):
     - AppsFlyerFramework/Main (= 6.17.8)
   - AppsFlyerFramework/Main (6.17.8)
-  - BidMachine (3.5.0):
-    - BidMachine/Static (= 3.5.0)
-  - BidMachine/Static (3.5.0):
-    - StackModules/Static (~> 3.4.0)
+  - BidMachine (3.5.1):
+    - BidMachine/Static (= 3.5.1)
+  - BidMachine/Static (3.5.1):
+    - StackModules/Static (~> 3.4.2)
   - BigoADS (5.0.0)
   - ChartboostSDK (9.10.1)
   - DivKit (32.29.0):
@@ -146,15 +146,15 @@ PODS:
   - myTargetSDK (5.38.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
-  - OMSDK_Appodeal (1.5.2)
-  - StackModules/Core-Static (3.4.1)
-  - StackModules/ProductPresentation-Static (3.4.1):
+  - OMSDK_Appodeal/Static (1.6.0.2)
+  - StackModules/Core-Static (3.4.3)
+  - StackModules/ProductPresentation-Static (3.4.3):
     - StackModules/Core-Static
-  - StackModules/Rendering-Static (3.4.1):
-    - OMSDK_Appodeal (= 1.5.2)
+  - StackModules/Rendering-Static (3.4.3):
+    - OMSDK_Appodeal/Static (= 1.6.0.2)
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
-  - StackModules/Static (3.4.1):
+  - StackModules/Static (3.4.3):
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
@@ -186,7 +186,7 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.3.3)
   - AppLovinSDK (= 13.5.1)
   - AppsFlyerFramework (= 6.17.8)
-  - BidMachine (= 3.5.0)
+  - BidMachine (= 3.5.1)
   - BigoADS (= 5.0.0)
   - ChartboostSDK (= 9.10.1)
   - FBAudienceNetwork (= 6.20.1)
@@ -289,7 +289,7 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: bb31d877359a6d1ad8ae5a6d89951edddf01af75
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
-  BidMachine: 7722254fdf6641a354ceef845bcb6cc3ff8dc0f3
+  BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
   BigoADS: 789ca51394adb1adb405e7e01ec8e43d3dc14f15
   ChartboostSDK: 377d7bbec1cccba0f7119f5d0830bd1ada89b672
   DivKit: cb89a628fc0d7c89b4d1eb8e9ee315ded32a20d8
@@ -312,8 +312,8 @@ SPEC CHECKSUMS:
   MolocoSDKiOS: 553932150e3f5682a924181ca29a2b44cc1be6bf
   myTargetSDK: c761a9b66095dda4a510bd17b2e97a54edb466fc
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
-  OMSDK_Appodeal: 066f9da2c77d560e319341c6bd4739828bc65842
-  StackModules: 2cdc4fe670b6536c8024c4ae24d4c2c76dc15006
+  OMSDK_Appodeal: 24a4e82085d9d8273129a53354e13dcf0a32bce9
+  StackModules: ca80fdd51655605b6c12aefee055dd18340b225f
   StartAppSDK: a01a0595a1ef4e7e75a003f0358650de932031d8
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 417769fe00ce943fb91367dec1a37cd6b24fbad6
@@ -325,6 +325,6 @@ SPEC CHECKSUMS:
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
   YandexMobileAds: fdb8bcd562f25080b0d9ff99384026c868e0baea
 
-PODFILE CHECKSUM: fcf993f863fd0318b0387ecf875e9da113664adc
+PODFILE CHECKSUM: 0775fdeb5333d921db1f4291c0fbb0c07d1eb0a7
 
 COCOAPODS: 1.16.2
