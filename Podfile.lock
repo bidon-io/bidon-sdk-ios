@@ -164,18 +164,18 @@ PODS:
     - TaurusxAdsSDK/TaurusxAds (= 1.12.1)
   - TaurusxAdsSDK/TaurusxAds (1.12.1)
   - UnityAds (4.16.5)
-  - VGSL (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
-    - VGSLNetworking (= 7.15.1)
-    - VGSLUI (= 7.15.1)
-  - VGSLFundamentals (7.15.1)
-  - VGSLNetworking (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
-    - VGSLUI (= 7.15.1)
-  - VGSLUI (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
+  - VGSL (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
+    - VGSLNetworking (= 7.15.2)
+    - VGSLUI (= 7.15.2)
+  - VGSLFundamentals (7.15.2)
+  - VGSLNetworking (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
+    - VGSLUI (= 7.15.2)
+  - VGSLUI (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
   - VungleAds (7.6.2)
-  - YandexMobileAds (7.18.0):
+  - YandexMobileAds (7.18.1):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
     - AppMetricaIDSync (~> 5.14.0)
@@ -204,7 +204,7 @@ DEPENDENCIES:
   - TaurusxAdsSDK (= 1.12.1)
   - UnityAds (= 4.16.5)
   - VungleAds (= 7.6.2)
-  - YandexMobileAds (= 7.18.0)
+  - YandexMobileAds (= 7.18.1)
 
 SPEC REPOS:
   trunk:
@@ -318,13 +318,13 @@ SPEC CHECKSUMS:
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 417769fe00ce943fb91367dec1a37cd6b24fbad6
   UnityAds: 8b9e0ecf7c4aa7334d15f81efb58db279e28f502
-  VGSL: ea58907772e77ec8569a914a128ad422d33d28de
-  VGSLFundamentals: cf2bf1fca0187dde9ffa861282eff34da82528f1
-  VGSLNetworking: 7dac4d4254e46d368bb6ae1ab1abc137bc2c64f4
-  VGSLUI: 0801f5ce73fdc3a2849fa1475a1fdae446a7c948
+  VGSL: dabeeb6e50ea7e7a3bb9152cd2767e5348214a91
+  VGSLFundamentals: ce1fb1b5b665e766334598a28ff332a682b5cb22
+  VGSLNetworking: 98eb009d428290a234b9f8ce1f55d35aebd04441
+  VGSLUI: 4a75805b8c64c7260684894ab835ce2f5130c965
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
-  YandexMobileAds: fdb8bcd562f25080b0d9ff99384026c868e0baea
+  YandexMobileAds: 246020ffd644f626e099ebff82284e89b6c77d90
 
-PODFILE CHECKSUM: fcf993f863fd0318b0387ecf875e9da113664adc
+PODFILE CHECKSUM: 1245fa6e9ffbbc0155421161df54b64dab6fd20f
 
 COCOAPODS: 1.16.2
