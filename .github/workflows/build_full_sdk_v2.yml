@@ -206,25 +206,6 @@ jobs:
           # 1b) Fallback: extract plain adapter names anywhere in the line
           grep -aoE 'BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
             | sort -u >> build/reports/deprecations/adapters.txt || true
-          # 1c) Heuristics by SDK keywords in messages (when no file paths present)
-          if grep -qiE '\b(ALInterstitialAd|ALIncentivizedInterstitialAd|ALAdView|AppLovin)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterAppLovin' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(IronSource|LevelPlay|ISImpressionData|ISAdUnit|ISLogDelegate|ISContainerParams|ISGender)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterIronSource' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(GADMobileAds|GAD[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterGoogleMobileAds' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(GAM[A-Za-z]+|Google\s*Ad\s*Manager|DFP)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterGoogleAdManager' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(APSDeprecatedMessage|APS\b|DTB[A-Za-z]+|Amazon\s*Publisher\s*Services)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterAmazon' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(InMobi|IMSdk)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterInMobi' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(MobileFuse)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMobileFuse' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(BidMachine)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterBidMachine' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(UnityAds|Unity\s*Ads)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterUnityAds' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Chartboost|CHB[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterChartboost' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Mintegral|MTG[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMintegral' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Yandex|YAN[A-Za-z]+)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterYandex' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Moloco)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMoloco' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Vungle)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterVungle' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(MyTarget)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMyTarget' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(FBAudienceNetwork|Meta\s*Audience\s*Network|FAN\b)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterMetaAudienceNetwork' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(Bigo\s*Ads|BigoAds|Bigo)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterBigoAds' >> build/reports/deprecations/adapters.txt; fi
-          if grep -qiE '\b(DTExchange|Fyber|Digital\s*Turbine)\b' build/reports/deprecations/deprecations.txt; then echo 'BidonAdapterDTExchange' >> build/reports/deprecations/adapters.txt; fi
           if [ -s build/reports/deprecations/deprecations.txt ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
             while IFS= read -r ADP; do
               # match either path-based or plain name occurrences
@@ -373,7 +354,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 
 
       - name: Register CocoaPods repo
         if: ${{ inputs.push_specs }}
