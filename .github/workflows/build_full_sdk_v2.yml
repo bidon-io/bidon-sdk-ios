@@ -180,9 +180,15 @@ jobs:
           if [ -f build/reports/deprecations/test_output.log ]; then
             grep -ai 'deprecated' build/reports/deprecations/test_output.log >> "$RAW" || true
           fi
-          # Unique lines
-          sort -u "$RAW" > build/reports/deprecations/deprecations.txt || true
-          COUNT=$(wc -l < build/reports/deprecations/deprecations.txt 2>/dev/null || echo 0)
+          # Keep only compiler warning lines that look like Xcode output:
+          #   <file>.<ext>:<line>:<col>: warning: ... is deprecated ...
+          # This avoids false positives like framework headers named "*Deprecated*.h"
+          # printed by build scripts (e.g. "[CP] Copy XCFrameworks").
+          DEPR="build/reports/deprecations/deprecations.txt"
+          : > "$DEPR"
+          grep -aiE '\.(swift|m|mm|h|hpp|cpp):[0-9]+:[0-9]+: warning: .*is deprecated' "$RAW" \
+            | sort -u > "$DEPR" || true
+          COUNT=$(wc -l < "$DEPR" 2>/dev/null || echo 0)
           # Build filename -> adapter mapping to resolve warnings that do not include adapter path
           : > build/reports/deprecations/basename_to_adapter.txt
           if [ -d Adapters ]; then
@@ -200,23 +206,23 @@ jobs:
           # Gather adapter names from repo
           ls -1 Adapters 2>/dev/null | grep -E '^BidonAdapter[A-Za-z]+' | sort -u > build/reports/deprecations/all_adapters.txt || true
           # 1) Path-based extraction: look for Adapters/<AdapterName> directly in lines
-          grep -aoE 'Adapters/BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
+          grep -aoE 'Adapters/BidonAdapter[A-Za-z]+' "$DEPR" \
             | sed -E 's#.*Adapters/##' \
             | sort -u >> build/reports/deprecations/adapters.txt || true
           # 1b) Fallback: extract plain adapter names anywhere in the line
-          grep -aoE 'BidonAdapter[A-Za-z]+' build/reports/deprecations/deprecations.txt \
+          grep -aoE 'BidonAdapter[A-Za-z]+' "$DEPR" \
             | sort -u >> build/reports/deprecations/adapters.txt || true
-          if [ -s build/reports/deprecations/deprecations.txt ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
+          if [ -s "$DEPR" ] && [ -s build/reports/deprecations/all_adapters.txt ]; then
             while IFS= read -r ADP; do
               # match either path-based or plain name occurrences
-              if grep -aiqE "(Adapters/|/)${ADP}(/|\\.| |:|$)|(^|[^A-Za-z0-9_])${ADP}([^A-Za-z0-9_]|$)" build/reports/deprecations/deprecations.txt; then
+              if grep -aiqE "(Adapters/|/)${ADP}(/|\\.| |:|$)|(^|[^A-Za-z0-9_])${ADP}([^A-Za-z0-9_]|$)" "$DEPR"; then
                 echo "$ADP" >> build/reports/deprecations/adapters.txt
               fi
             done < build/reports/deprecations/all_adapters.txt
             # Also try to infer by filenames appearing in warning lines
             if [ -s build/reports/deprecations/basename_to_adapter.txt ]; then
               # Extract potential basenames from warnings
-              grep -Eo '[A-Za-z0-9_\-]+\.(swift|mm|m|h|hpp|cpp)' build/reports/deprecations/deprecations.txt | sort -u > build/reports/deprecations/basenames.txt || true
+              grep -Eo '[A-Za-z0-9_\-]+\.(swift|mm|m|h|hpp|cpp)' "$DEPR" | sort -u > build/reports/deprecations/basenames.txt || true
               if [ -s build/reports/deprecations/basenames.txt ]; then
                 while IFS= read -r BN; do
                   AD=$(grep -E "^${BN}\\|" build/reports/deprecations/basename_to_adapter.txt | awk -F '|' '{print $2}' | sort -u)
