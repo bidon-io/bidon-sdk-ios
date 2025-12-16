@@ -5,15 +5,10 @@ on:
     types:
       - opened
       - synchronize
-  # PRs created by github-actions[bot] may not trigger `pull_request` workflows.
-  # Trigger on push to pod-updater branches so the required check is still reported (skipped).
-  push:
-    branches:
-      - chore/pod-**
 
 jobs:
   check_changelog:
-    if: ${{ !startsWith(github.head_ref || github.ref_name, 'chore/pod-') }}
+    if: "!startsWith(github.event.pull_request.head.ref, 'chore/pod-')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
