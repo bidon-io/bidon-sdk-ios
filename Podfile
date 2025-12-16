@@ -18,7 +18,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.5.0'
+  pod 'BidMachine', '3.5.1'
 end
 
 def admob
