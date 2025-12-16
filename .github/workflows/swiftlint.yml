@@ -5,6 +5,10 @@ on:
     types:
       - opened
       - synchronize
+  push:
+    branches:
+      - chore/pod-**
+  workflow_dispatch:
 
 jobs:
   swiftlint:
