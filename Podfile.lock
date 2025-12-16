@@ -78,16 +78,16 @@ PODS:
     - StackModules/Static (~> 3.4.2)
   - BigoADS (5.0.0)
   - ChartboostSDK (9.10.1)
-  - DivKit (32.29.0):
-    - DivKit_LayoutKit (= 32.29.0)
-    - DivKit_Serialization (= 32.29.0)
+  - DivKit (32.30.0):
+    - DivKit_LayoutKit (= 32.30.0)
+    - DivKit_Serialization (= 32.30.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKit (32.29.0):
-    - DivKit_LayoutKitInterface (= 32.29.0)
+  - DivKit_LayoutKit (32.30.0):
+    - DivKit_LayoutKitInterface (= 32.30.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKitInterface (32.29.0):
+  - DivKit_LayoutKitInterface (32.30.0):
     - VGSL (~> 7.12)
-  - DivKit_Serialization (32.29.0):
+  - DivKit_Serialization (32.30.0):
     - VGSL (~> 7.12)
   - DivKitBinaryCompatibilityFacade (5.2.1):
     - DivKit (~> 32.14)
@@ -164,18 +164,18 @@ PODS:
     - TaurusxAdsSDK/TaurusxAds (= 1.12.1)
   - TaurusxAdsSDK/TaurusxAds (1.12.1)
   - UnityAds (4.16.5)
-  - VGSL (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
-    - VGSLNetworking (= 7.15.1)
-    - VGSLUI (= 7.15.1)
-  - VGSLFundamentals (7.15.1)
-  - VGSLNetworking (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
-    - VGSLUI (= 7.15.1)
-  - VGSLUI (7.15.1):
-    - VGSLFundamentals (= 7.15.1)
+  - VGSL (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
+    - VGSLNetworking (= 7.15.2)
+    - VGSLUI (= 7.15.2)
+  - VGSLFundamentals (7.15.2)
+  - VGSLNetworking (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
+    - VGSLUI (= 7.15.2)
+  - VGSLUI (7.15.2):
+    - VGSLFundamentals (= 7.15.2)
   - VungleAds (7.6.2)
-  - YandexMobileAds (7.18.0):
+  - YandexMobileAds (7.18.1):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
     - AppMetricaIDSync (~> 5.14.0)
@@ -204,7 +204,7 @@ DEPENDENCIES:
   - TaurusxAdsSDK (= 1.12.1)
   - UnityAds (= 4.16.5)
   - VungleAds (= 7.6.2)
-  - YandexMobileAds (= 7.18.0)
+  - YandexMobileAds (= 7.18.1)
 
 SPEC REPOS:
   trunk:
@@ -292,10 +292,10 @@ SPEC CHECKSUMS:
   BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
   BigoADS: 789ca51394adb1adb405e7e01ec8e43d3dc14f15
   ChartboostSDK: 377d7bbec1cccba0f7119f5d0830bd1ada89b672
-  DivKit: cb89a628fc0d7c89b4d1eb8e9ee315ded32a20d8
-  DivKit_LayoutKit: 65600989bafd387319409460fbb812a1687babc7
-  DivKit_LayoutKitInterface: d2d3c1d928ea7684069564dac6a057594e40a42f
-  DivKit_Serialization: 3f88e14df78a3a2178afed66530aefa53f6aee07
+  DivKit: 4e3f9da8ee34b6798ad0885ff4498205e4cac1a7
+  DivKit_LayoutKit: c08ff86a093ede806c90edda697a4f6975b8dae2
+  DivKit_LayoutKitInterface: 364ea1746ac940ec2a5a26c797f58ed08fdc0b58
+  DivKit_Serialization: 05154dd7ad928161024ba3b1b8542f5fb4482306
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
@@ -318,13 +318,13 @@ SPEC CHECKSUMS:
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
   TaurusxAdsSDK: 417769fe00ce943fb91367dec1a37cd6b24fbad6
   UnityAds: 8b9e0ecf7c4aa7334d15f81efb58db279e28f502
-  VGSL: ea58907772e77ec8569a914a128ad422d33d28de
-  VGSLFundamentals: cf2bf1fca0187dde9ffa861282eff34da82528f1
-  VGSLNetworking: 7dac4d4254e46d368bb6ae1ab1abc137bc2c64f4
-  VGSLUI: 0801f5ce73fdc3a2849fa1475a1fdae446a7c948
+  VGSL: dabeeb6e50ea7e7a3bb9152cd2767e5348214a91
+  VGSLFundamentals: ce1fb1b5b665e766334598a28ff332a682b5cb22
+  VGSLNetworking: 98eb009d428290a234b9f8ce1f55d35aebd04441
+  VGSLUI: 4a75805b8c64c7260684894ab835ce2f5130c965
   VungleAds: f0edfe120c864561e3da762a06529edd26b07eef
-  YandexMobileAds: fdb8bcd562f25080b0d9ff99384026c868e0baea
+  YandexMobileAds: 246020ffd644f626e099ebff82284e89b6c77d90
 
-PODFILE CHECKSUM: 0775fdeb5333d921db1f4291c0fbb0c07d1eb0a7
+PODFILE CHECKSUM: 56d519e6becb22038f2a7da62fe05935eabf25b1
 
 COCOAPODS: 1.16.2
