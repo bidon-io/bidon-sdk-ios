@@ -18,7 +18,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.5.0'
+  pod 'BidMachine', '3.5.1'
 end
 
 def admob
@@ -82,7 +82,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.0'
+  pod 'YandexMobileAds', '7.18.1'
 end
 
 def startio
