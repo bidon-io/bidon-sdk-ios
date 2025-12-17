@@ -582,10 +582,11 @@ def main
               depr = collect_deprecations_report(adapter_names: adapter_names)
               if depr && depr[:count].to_i > 0
                 lines = depr[:lines].first(200)
-                add_comment(pr['number'], "```text\n#{lines.join("\n")}\n```")
+                header = "Deprecated warnings found (#{depr[:count]}) for: #{adapter_names.join(', ')}"
+                add_comment(pr['number'], "#{header}\n\n```text\n#{lines.join("\n")}\n```")
               else
                 # Keep it quiet but explicit: this is useful for automation/prompts
-                add_comment(pr['number'], "```text\n(no deprecated warnings for: #{adapter_names.join(', ')})\n```")
+                add_comment(pr['number'], "No deprecated warnings found for: #{adapter_names.join(', ')}")
               end
             rescue => e2
               warn "Unable to annotate PR ##{pr['number']} with test result: #{e2.message}"
