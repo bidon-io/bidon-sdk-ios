@@ -90,7 +90,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.12.0'
+  pod 'TaurusxAdsSDK', '1.12.1'
 end
 
 def swiftlint
