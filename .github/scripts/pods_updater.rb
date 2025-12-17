@@ -565,7 +565,6 @@ def main
             tests_ok = false
           ensure
             begin
-              depr = collect_deprecations_report
               if tests_ok
                 add_labels(pr['number'], ['pods-tests-passed'])
               else
@@ -583,7 +582,17 @@ def main
               if depr && depr[:count].to_i > 0
                 lines = depr[:lines].first(200)
                 header = "Deprecated warnings found (#{depr[:count]}) for: #{adapter_names.join(', ')}"
-                add_comment(pr['number'], "#{header}\n\n```text\n#{lines.join("\n")}\n```")
+                claude_prompt = <<~MD.rstrip
+                @claude Please fix the deprecated API usage reported below.
+
+                Constraints:
+                - Only modify code under: #{adapter_names.map { |a| "`Adapters/#{a}/`" }.join(', ')}
+                - Do not change `Podfile` / `Podfile.lock`.
+                - Commit the fix directly to this PR branch.
+
+                Deprecated warnings:
+                MD
+                add_comment(pr['number'], "#{header}\n\n#{claude_prompt}\n\n```text\n#{lines.join("\n")}\n```")
               else
                 # Keep it quiet but explicit: this is useful for automation/prompts
                 add_comment(pr['number'], "No deprecated warnings found for: #{adapter_names.join(', ')}")
