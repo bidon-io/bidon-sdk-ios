@@ -18,7 +18,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.5.0'
+  pod 'BidMachine', '3.5.1'
 end
 
 def admob
@@ -46,7 +46,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.1.1'
+  pod 'MolocoSDKiOS', '4.1.2'
 end
 
 def meta_sdk
@@ -62,7 +62,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.6.2'
+  pod 'VungleAds', '7.6.3'
 end
 
 def inmobi
@@ -82,7 +82,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.0'
+  pod 'YandexMobileAds', '7.18.1'
 end
 
 def startio

@@ -237,7 +237,7 @@ jobs:
         if: success()
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
 

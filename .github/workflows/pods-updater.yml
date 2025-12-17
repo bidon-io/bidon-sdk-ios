@@ -35,10 +35,17 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.PODS_UPDATER_APP_ID }}
+          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+
       - name: Run updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PODS_UPDATER_TOKEN: ${{ secrets.PODS_UPDATER_TOKEN }}
+          PODS_UPDATER_TOKEN: ${{ steps.app-token.outputs.token }}
           PODS_BASE_BRANCH: feature/BDN-1111_Deprecation_job
           PODS_REVIEWERS: "bidon-io/bidon-ios" # comma-separated GitHub usernames or org/team-slug
         run: |
