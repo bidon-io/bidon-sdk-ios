@@ -271,7 +271,7 @@ def sh_allow_fail(cmd)
   system(cmd)
 end
 
-def collect_deprecations_report
+def collect_deprecations_report(adapter_names: [])
   FileUtils.mkdir_p('build/reports/deprecations')
 
   # Best-effort collection; must never raise.
@@ -352,19 +352,30 @@ def collect_deprecations_report
     } > build/reports/deprecations/deprecations.md
   BASH
 
-  md_path = 'build/reports/deprecations/deprecations.md'
   txt_path = 'build/reports/deprecations/deprecations.txt'
-  count = 0
-  md = nil
+  filtered_path = 'build/reports/deprecations/deprecations.filtered.txt'
+  filtered = []
 
   begin
-    count = File.exist?(txt_path) ? File.foreach(txt_path).count : 0
-    md = File.exist?(md_path) ? File.read(md_path) : nil
+    lines = File.exist?(txt_path) ? File.read(txt_path).lines.map(&:rstrip) : []
+    lines.reject!(&:empty?)
+
+    # Keep only warnings originating from the adapter(s) in this PR:
+    # - Only lines that include ".../Adapters/<AdapterName>/..."
+    # - This drops noise from DerivedData / vendor frameworks headers.
+    if adapter_names && !adapter_names.empty?
+      needles = adapter_names.map { |a| "/Adapters/#{a}/" }
+      filtered = lines.select { |l| needles.any? { |n| l.include?(n) } }
+    else
+      filtered = lines
+    end
+
+    File.write(filtered_path, filtered.join("\n") + (filtered.empty? ? "" : "\n"))
   rescue => e
     warn "Failed to read deprecations report: #{e.message}"
   end
 
-  { count: count, markdown: md }
+  { count: filtered.length, lines: filtered, path: filtered_path }
 end
 
 def sh!(cmd)
@@ -561,15 +572,21 @@ def main
                 add_labels(pr['number'], ['pods-tests-failed'])
               end
 
-              body = +""
-              body << (tests_ok ? "✅ Pods tests passed for this update.\n" : "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs.\n")
-              body << "\n"
-              if depr && depr[:markdown] && !depr[:markdown].to_s.strip.empty?
-                body << depr[:markdown].to_s
+              # 1) Post tests result as a separate comment
+              add_comment(
+                pr['number'],
+                tests_ok ? "✅ Pods tests passed for this update." : "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs."
+              )
+
+              # 2) Post deprecated warnings as a separate comment (filtered to the adapter(s) in this PR)
+              depr = collect_deprecations_report(adapter_names: adapter_names)
+              if depr && depr[:count].to_i > 0
+                lines = depr[:lines].first(200)
+                add_comment(pr['number'], "```text\n#{lines.join("\n")}\n```")
               else
-                body << "## Deprecated API warnings\n\nUnable to generate report.\n"
+                # Keep it quiet but explicit: this is useful for automation/prompts
+                add_comment(pr['number'], "```text\n(no deprecated warnings for: #{adapter_names.join(', ')})\n```")
               end
-              add_comment(pr['number'], body)
             rescue => e2
               warn "Unable to annotate PR ##{pr['number']} with test result: #{e2.message}"
             end
