@@ -70,4 +70,5 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           trigger_phrase: "@claude"
           claude_args: |
-            --max-turns 15
+            --model claude-sonnet-4-5-20250929
+            --max-turns 8
