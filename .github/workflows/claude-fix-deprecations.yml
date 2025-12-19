@@ -31,9 +31,49 @@ jobs:
           app-id: ${{ vars.PODS_UPDATER_APP_ID }}
           private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
 
+      - name: Dedupe trigger comment (avoid duplicate deliveries)
+        id: dedupe
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const commentId = context.payload.comment?.id;
+            if (!commentId) {
+              core.warning('No comment id in payload; continuing without dedupe.');
+              core.setOutput('skip', 'false');
+              return;
+            }
+
+            const actor = context.actor; // expected: bidon-pods-updater[bot]
+            const content = 'eyes';
+
+            const reactions = await github.paginate(
+              github.rest.reactions.listForIssueComment,
+              { owner, repo, comment_id: commentId, per_page: 100 }
+            );
+
+            const alreadyMarked = reactions.some(r => r?.content === content && r?.user?.login === actor);
+            if (alreadyMarked) {
+              core.info(`Comment already marked by ${actor} with '${content}' reaction; skipping run.`);
+              core.setOutput('skip', 'true');
+              return;
+            }
+
+            await github.rest.reactions.createForIssueComment({
+              owner,
+              repo,
+              comment_id: commentId,
+              content,
+            });
+
+            core.setOutput('skip', 'false');
+
       - name: Fetch pull request info
         id: pr
         uses: actions/github-script@v7
+        if: steps.dedupe.outputs.skip != 'true'
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
@@ -53,6 +93,7 @@ jobs:
 
       - name: Checkout PR branch
         uses: actions/checkout@v4
+        if: steps.dedupe.outputs.skip != 'true'
         with:
           fetch-depth: 0
           # We only support branches within the same repo for auto-commit.
@@ -60,12 +101,14 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Configure git
+        if: steps.dedupe.outputs.skip != 'true'
         run: |
           git config user.name "claude-bot"
           git config user.email "claude-bot@users.noreply.github.com"
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
+        if: steps.dedupe.outputs.skip != 'true'
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ steps.app-token.outputs.token }}
