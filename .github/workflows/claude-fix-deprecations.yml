@@ -46,17 +46,22 @@ jobs:
               return;
             }
 
-            const actor = context.actor; // expected: bidon-pods-updater[bot]
-            const content = 'eyes';
+            // Use reactions as a lightweight, cross-run lock to dedupe
+            // duplicate event deliveries for the same comment.
+            // NOTE: Reactions API still requires the "squirrel-girl" preview in some environments.
+            const content = 'rocket';
+            const mediaType = { previews: ['squirrel-girl'] };
 
             const reactions = await github.paginate(
               github.rest.reactions.listForIssueComment,
-              { owner, repo, comment_id: commentId, per_page: 100 }
+              { owner, repo, comment_id: commentId, per_page: 100, mediaType }
             );
 
-            const alreadyMarked = reactions.some(r => r?.content === content && r?.user?.login === actor);
+            // Dedupe regardless of which account applied the reaction.
+            // If humans can add the same reaction, pick a different marker.
+            const alreadyMarked = reactions.some(r => r?.content === content);
             if (alreadyMarked) {
-              core.info(`Comment already marked by ${actor} with '${content}' reaction; skipping run.`);
+              core.notice(`Comment already marked with '${content}' reaction; skipping duplicate run.`);
               core.setOutput('skip', 'true');
               return;
             }
@@ -66,6 +71,7 @@ jobs:
               repo,
               comment_id: commentId,
               content,
+              mediaType,
             });
 
             core.setOutput('skip', 'false');
