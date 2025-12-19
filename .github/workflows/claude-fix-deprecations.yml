@@ -68,6 +68,10 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ steps.app-token.outputs.token }}
+          allowed_bots: |
+            bidon-pods-updater
+            bidon-pods-updater[bot]
           trigger_phrase: "@claude"
           claude_args: |
-            --max-turns 15
+            --model claude-sonnet-4-5-20250929
+            --max-turns 8
