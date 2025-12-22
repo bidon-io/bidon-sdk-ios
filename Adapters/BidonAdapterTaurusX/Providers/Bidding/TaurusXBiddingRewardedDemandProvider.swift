@@ -29,8 +29,10 @@ final class TaurusXBiddingRewardedDemandProvider: NSObject, BiddingDemandProvide
             .filter { $0.format == .rewarded }
             .forEach { adUnit in
                 group.enter()
-                TaurusXBidManager.makeToken(adUnit.placementId) { token in
-                    tokens[adUnit.placementId] = token
+                TaurusXBidManager.makeToken(adUnit.placementId) { token, error in
+                    if let token = token {
+                        tokens[adUnit.placementId] = token
+                    }
                     group.leave()
                 }
             }
