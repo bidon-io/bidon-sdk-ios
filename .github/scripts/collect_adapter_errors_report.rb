@@ -180,6 +180,7 @@ else
     md << "- Only modify code under: `Adapters/`\n"
   end
   md << "- Do not change `Podfile` / `Podfile.lock`.\n"
+  md << "- Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`).\n"
   md << "- Commit the fix directly to this PR branch.\n\n"
   md << "Build/Test errors:\n\n"
   md << "```text\n"

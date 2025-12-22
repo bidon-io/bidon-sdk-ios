@@ -456,7 +456,34 @@ def main
                 add_comment(pr['number'], "✅ Pods tests passed for this update.")
               else
                 add_labels(pr['number'], ['pods-tests-failed'])
-                add_comment(pr['number'], "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs.")
+              end
+
+              # 1) Post tests result as a separate comment
+              add_comment(
+                pr['number'],
+                tests_ok ? "✅ Pods tests passed for this update." : "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs."
+              )
+
+              # 2) Post deprecated warnings as a separate comment (filtered to the adapter(s) in this PR)
+              depr = collect_deprecations_report(adapter_names: adapter_names)
+              if depr && depr[:count].to_i > 0
+                lines = depr[:lines].first(200)
+                header = "Deprecated warnings found (#{depr[:count]}) for: #{adapter_names.join(', ')}"
+                claude_prompt = <<~MD.rstrip
+                @claude Please fix the deprecated API usage reported below.
+
+                Constraints:
+                - Only modify code under: #{adapter_names.map { |a| "`Adapters/#{a}/`" }.join(', ')}
+                - Do not change `Podfile` / `Podfile.lock`.
+                - Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`).
+                - Commit the fix directly to this PR branch.
+
+                Deprecated warnings:
+                MD
+                add_comment(pr['number'], "#{header}\n\n#{claude_prompt}\n\n```text\n#{lines.join("\n")}\n```")
+              else
+                # Keep it quiet but explicit: this is useful for automation/prompts
+                add_comment(pr['number'], "No deprecated warnings found for: #{adapter_names.join(', ')}")
               end
             rescue => e2
               warn "Unable to annotate PR ##{pr['number']} with test result: #{e2.message}"
