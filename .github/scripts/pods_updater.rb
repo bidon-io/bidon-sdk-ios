@@ -588,6 +588,7 @@ def main
                 Constraints:
                 - Only modify code under: #{adapter_names.map { |a| "`Adapters/#{a}/`" }.join(', ')}
                 - Do not change `Podfile` / `Podfile.lock`.
+                - Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`).
                 - Commit the fix directly to this PR branch.
 
                 Deprecated warnings:
