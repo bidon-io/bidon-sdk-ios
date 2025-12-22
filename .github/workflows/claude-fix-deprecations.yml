@@ -22,7 +22,10 @@ jobs:
       github.event.issue.pull_request != null &&
       github.event.comment.user.login != 'claude[bot]' &&
       contains(github.event.comment.body, '@claude') &&
-      contains(github.event.comment.body, 'Deprecated warnings found')
+      (
+        contains(github.event.comment.body, 'Deprecated warnings found') ||
+        contains(github.event.comment.body, 'Build/Test errors found')
+      )
     runs-on: ubuntu-latest
 
     steps:
