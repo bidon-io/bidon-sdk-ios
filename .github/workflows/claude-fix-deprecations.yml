@@ -114,7 +114,7 @@ jobs:
           trigger_phrase: "@claude"
           claude_args: |
             --model claude-sonnet-4-5-20250929
-            --max-turns 50
+            --max-turns 15
             --dangerously-skip-permissions
 
       - name: Mark Claude phase as done (label PR)
