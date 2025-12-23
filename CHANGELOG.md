@@ -3,6 +3,7 @@
 ## Fixes
 - BDN-1033 Device info
 - BDN-1105 Code clean
+- BDN-1111 CI Deprecation job
 
 # Release 0.13.0
 
