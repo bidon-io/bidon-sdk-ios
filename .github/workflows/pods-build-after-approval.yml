@@ -14,7 +14,8 @@ jobs:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
     if: >
       github.event.review.state == 'approved' &&
-      startsWith(github.event.pull_request.head.ref, 'chore/pod-')
+      startsWith(github.event.pull_request.head.ref, 'chore/pod-') &&
+      github.event.pull_request.base.ref == 'dev'
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
