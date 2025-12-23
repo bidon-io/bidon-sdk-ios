@@ -17,6 +17,8 @@ jobs:
   claude:
     outputs:
       head_ref: ${{ steps.pr.outputs.head_ref }}
+      phase: ${{ steps.gate.outputs.phase }}
+      run: ${{ steps.gate.outputs.run }}
     # PR comments are issue comments with pull_request field.
     if: >
       github.event.issue.pull_request != null &&
@@ -112,13 +114,14 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot]"
           trigger_phrase: "@claude"
+          show_full_output: true
           claude_args: |
             --model claude-sonnet-4-5-20250929
-            --max-turns 20
+            --max-turns 40
             --dangerously-skip-permissions
 
       - name: Mark Claude phase as done (label PR)
-        if: steps.gate.outputs.run == 'true'
+        if: steps.gate.outputs.run == 'true' && always()
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
@@ -159,7 +162,7 @@ jobs:
   adapter-tests:
     name: Run adapter tests (after Claude)
     needs: claude
-    if: needs.claude.result == 'success'
+    if: always() && needs.claude.outputs.run == 'true'
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
 
     steps:
