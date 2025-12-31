@@ -46,7 +46,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.1.2'
+  pod 'MolocoSDKiOS', '4.2.0'
 end
 
 def meta_sdk
@@ -54,7 +54,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.3'
+  pod 'MintegralAdSDK', '8.0.4'
 end
 
 def mobilefuse
@@ -74,7 +74,7 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.10.1'
+  pod 'ChartboostSDK', '9.11.0'
 end
 
 def ironsource
@@ -90,7 +90,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.12.1'
+  pod 'TaurusxAdsSDK', '1.13.0'
 end
 
 def swiftlint
