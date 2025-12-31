@@ -77,7 +77,7 @@ PODS:
   - BidMachine/Static (3.5.1):
     - StackModules/Static (~> 3.4.2)
   - BigoADS (5.0.0)
-  - ChartboostSDK (9.10.1)
+  - ChartboostSDK (9.11.0)
   - DivKit (32.30.0):
     - DivKit_LayoutKit (= 32.30.0)
     - DivKit_Serialization (= 32.30.0)
@@ -188,7 +188,7 @@ DEPENDENCIES:
   - AppsFlyerFramework (= 6.17.8)
   - BidMachine (= 3.5.1)
   - BigoADS (= 5.0.0)
-  - ChartboostSDK (= 9.10.1)
+  - ChartboostSDK (= 9.11.0)
   - FBAudienceNetwork (= 6.20.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.2)
@@ -291,7 +291,7 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
   BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
   BigoADS: 789ca51394adb1adb405e7e01ec8e43d3dc14f15
-  ChartboostSDK: 377d7bbec1cccba0f7119f5d0830bd1ada89b672
+  ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
   DivKit: 4e3f9da8ee34b6798ad0885ff4498205e4cac1a7
   DivKit_LayoutKit: c08ff86a093ede806c90edda697a4f6975b8dae2
   DivKit_LayoutKitInterface: 364ea1746ac940ec2a5a26c797f58ed08fdc0b58
@@ -325,6 +325,6 @@ SPEC CHECKSUMS:
   VungleAds: 40e87d1eaba17ac818b0f94461fd8ed21ad768dc
   YandexMobileAds: 246020ffd644f626e099ebff82284e89b6c77d90
 
-PODFILE CHECKSUM: 6a23346971a60768cc0f18dce4431afe90193093
+PODFILE CHECKSUM: 166286f89591e01c5eb15319bfe011368043d5a7
 
 COCOAPODS: 1.16.2
