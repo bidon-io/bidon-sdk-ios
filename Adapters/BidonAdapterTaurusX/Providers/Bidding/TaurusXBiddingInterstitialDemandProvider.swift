@@ -41,7 +41,7 @@ final class TaurusXBiddingInterstitialDemandProvider: NSObject, BiddingDemandPro
             .filter { $0.format == .interstitial }
             .forEach { adUnit in
                 group.enter()
-                TaurusXBidManager.getToken(adUnit.placementId) { token in
+                TaurusXBidManager.makeToken(adUnit.placementId) { token, _ in
                     tokens[adUnit.placementId] = token
                     group.leave()
                 }
