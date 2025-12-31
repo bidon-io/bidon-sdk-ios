@@ -44,7 +44,7 @@ final class TaurusXBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider 
             .filter { $0.format == .banner }
             .forEach { adUnit in
                 group.enter()
-                TaurusXBidManager.getToken(adUnit.placementId) { token in
+                TaurusXBidManager.makeToken(adUnit.placementId) { token, _ in
                     tokens[adUnit.placementId] = token
                     group.leave()
                 }

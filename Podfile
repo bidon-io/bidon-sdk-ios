@@ -74,7 +74,7 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.10.1'
+  pod 'ChartboostSDK', '9.11.0'
 end
 
 def ironsource
@@ -90,7 +90,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.12.1'
+  pod 'TaurusxAdsSDK', '1.13.0'
 end
 
 def swiftlint
