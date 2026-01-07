@@ -85,6 +85,8 @@ final internal class BannerViewManager: NSObject {
 
         let useVisibilityTracker = extras["use_visibility_tracker"] as? Bool ?? true
         
+        Logger.debug("Visibility tracker is: \(useVisibilityTracker ? "enabled" : "disabled")")
+        
         UIView.animate(
             withDuration: 0.25,
             delay: 0,
