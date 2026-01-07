@@ -83,6 +83,8 @@ final internal class BannerViewManager: NSObject {
 
         NSLayoutConstraint.activate(constraints)
 
+        let useVisibilityTracker = extras["use_visibility_tracker"] as? Bool ?? true
+        
         UIView.animate(
             withDuration: 0.25,
             delay: 0,
@@ -101,7 +103,10 @@ final internal class BannerViewManager: NSObject {
                 .compactMap { $0 as? AdViewContainer }
                 .forEach { $0.destroy() }
 
-            self?.viewabilityTracker.startTracking(view: view) { [weak self] in
+            self?.viewabilityTracker.startTracking(
+                view: view,
+                useVisibilityTracker: useVisibilityTracker
+            ) { [weak self] in
                 self?.viewabilityTracker.finishTracking()
                 self?.trackImpression(adView: view)
 
