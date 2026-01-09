@@ -93,6 +93,10 @@ def taurus
   pod 'TaurusxAdsSDK', '1.13.0'
 end
 
+def zmaticoo
+  pod 'zMaticoo', '1.5.4.6'
+end
+
 def swiftlint
   pod 'SwiftLint'
 end
@@ -200,6 +204,11 @@ target 'BidonAdapterTaurusX' do
   taurus
 end
 
+target 'BidonAdapterZmaticoo' do
+  project 'Adapters/Adapters.xcodeproj'
+  zmaticoo
+end
+
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
   applovin
@@ -238,6 +247,7 @@ target 'AdaptersTests' do
   yandex
   taurus
   startio
+  zmaticoo
 end
 
 # Demo
@@ -267,6 +277,7 @@ target 'Sandbox' do
   ironsource
   yandex
   taurus
+  zmaticoo
 end
 
 post_install do |installer|

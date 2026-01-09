@@ -84,6 +84,7 @@
 		9A18C9192C903DD6005BE4F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A18C9182C903DD6005BE4F2 /* GoogleService-Info.plist */; };
 		9A8E29222C99806A00D94199 /* Bundle+AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */; };
 		B93BC21F2E5728B100C99DBE /* BidonAdapterMoloco.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93BC21E2E5728B100C99DBE /* BidonAdapterMoloco.framework */; };
+		B95A94A52F0FCD8E00B3EB7C /* BidonAdapterZmaticoo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B95A94A42F0FCD8E00B3EB7C /* BidonAdapterZmaticoo.framework */; };
 		B99C359A2E82F83B00488A3A /* BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B99C35922E82E51400488A3A /* BidonAdapterStartIo.framework */; };
 		B99C359B2E82F83B00488A3A /* BidonAdapterStartIo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B99C35922E82E51400488A3A /* BidonAdapterStartIo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B99C359D2E82F84800488A3A /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426A5C6F29AF7C5A0065AAD5 /* Bidon.framework */; };
@@ -194,6 +195,7 @@
 		9A18C91A2C903DE1005BE4F2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A8E29212C99806A00D94199 /* Bundle+AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+AppVersion.swift"; sourceTree = "<group>"; };
 		B93BC21E2E5728B100C99DBE /* BidonAdapterMoloco.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterMoloco.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B95A94A42F0FCD8E00B3EB7C /* BidonAdapterZmaticoo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterZmaticoo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B99C35922E82E51400488A3A /* BidonAdapterStartIo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterStartIo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F846B990A6AF5B081BB0BD12 /* Pods-Sandbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sandbox.debug.xcconfig"; path = "Target Support Files/Pods-Sandbox/Pods-Sandbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,6 +213,7 @@
 				B99C359D2E82F84800488A3A /* Bidon.framework in Frameworks */,
 				4907F8442E7D530C00A04207 /* BidonAdapterTaurusX.framework in Frameworks */,
 				426827322A5D857B0084A48D /* BidonAdapterMobileFuse.framework in Frameworks */,
+				B95A94A52F0FCD8E00B3EB7C /* BidonAdapterZmaticoo.framework in Frameworks */,
 				42E3DA002A5D968500546D3A /* BidonAdapterMobileFuse.framework in Frameworks */,
 				4215B8B12A5597FB00675ACC /* BidonAdapterMintegral.framework in Frameworks */,
 				4265B53F2A5FF001007AD808 /* BidonAdapterVungle.framework in Frameworks */,
@@ -270,6 +273,7 @@
 		4243091928A25E9F002360B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B95A94A42F0FCD8E00B3EB7C /* BidonAdapterZmaticoo.framework */,
 				497207EC2EA66C54006026B4 /* libBidonAdapterYandex.a */,
 				B99C35922E82E51400488A3A /* BidonAdapterStartIo.framework */,
 				4907F8432E7D530C00A04207 /* BidonAdapterTaurusX.framework */,
