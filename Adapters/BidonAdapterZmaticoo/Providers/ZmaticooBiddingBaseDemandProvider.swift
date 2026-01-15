@@ -14,13 +14,21 @@ class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
 
+    var adFormat: ZmaticooAdFormat {
+        fatalError("Subclasses must override adFormat")
+    }
+
     func collectBiddingToken(
         biddingTokenExtras: ZmaticooBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
+        guard let placement = biddingTokenExtras.placementIds?.first(where: { $0.format == adFormat }) else {
+            response(.failure(.adapterNotInitialized))
+            return
+        }
+
         let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
-        let placementId = biddingTokenExtras.placementId.placementId
-        let bidToken = MaticooAds.shareSDK().getBiddingToken(placementId, timestamp: timestamp)
+        let bidToken = MaticooAds.shareSDK().getBiddingToken(placement.placementId, timestamp: timestamp)
         response(.success(bidToken))
     }
 
