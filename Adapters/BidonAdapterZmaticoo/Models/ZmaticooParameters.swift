@@ -9,7 +9,7 @@ import Foundation
 
 public struct ZmaticooParameters: Codable {
     var appKey: String
-    let adUnitIds: [ZmaticooAdUnit]?
+    let placementIds: [ZmaticooAdUnit]?
 }
 
 public struct ZmaticooAdUnit: Codable {

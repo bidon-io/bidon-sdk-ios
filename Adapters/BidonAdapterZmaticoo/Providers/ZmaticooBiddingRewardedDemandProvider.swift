@@ -27,6 +27,8 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
     private var placementId: String = ""
     private var rewarded: MATRewardedVideoAd?
 
+    override var adFormat: ZmaticooAdFormat { .rewarded }
+
     override func load(
         payload: ZmaticooBiddingToken,
         adUnitExtras: ZmaticooAdUnitExtras,

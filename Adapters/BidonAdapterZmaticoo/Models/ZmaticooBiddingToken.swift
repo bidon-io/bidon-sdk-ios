@@ -13,5 +13,5 @@ struct ZmaticooBiddingToken: Codable {
 }
 
 struct ZmaticooBiddingTokenExtras: Codable {
-    var placementId: ZmaticooAdUnit
+    let placementIds: [ZmaticooAdUnit]?
 }

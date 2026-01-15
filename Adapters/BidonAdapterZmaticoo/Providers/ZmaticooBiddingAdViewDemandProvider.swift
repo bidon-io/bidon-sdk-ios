@@ -30,9 +30,15 @@ final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvid
     private var response: Bidon.DemandProviderResponse?
     private var placementId: String = ""
     private var banner: MATBannerAd?
+    private var bannerFormat: BannerFormat
+
+    override var adFormat: ZmaticooAdFormat {
+        bannerFormat == .mrec ? .mrec : .banner
+    }
 
     init(context: AdViewContext) {
         self.rootViewController = context.rootViewController
+        self.bannerFormat = context.format
         super.init()
     }
 

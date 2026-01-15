@@ -26,6 +26,8 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
     private var placementId: String = ""
     private var interstitial: MATInterstitialAd?
 
+    override var adFormat: ZmaticooAdFormat { .interstitial }
+
     override func load(
         payload: ZmaticooBiddingToken,
         adUnitExtras: ZmaticooAdUnitExtras,
