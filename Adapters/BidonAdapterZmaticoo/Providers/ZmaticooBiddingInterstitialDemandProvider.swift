@@ -27,7 +27,7 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
     private var interstitial: MATInterstitialAd?
 
     override func load(
-        payload: ZmaticooBiddingResponse,
+        payload: ZmaticooBiddingToken,
         adUnitExtras: ZmaticooAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
@@ -35,7 +35,7 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
         self.placementId = adUnitExtras.placementId
 
         let ad = MATInterstitialAd(placementID: adUnitExtras.placementId)
-        ad.loadAd(payload.payload)
+        ad.loadAd(payload.token)
         ad.delegate = self
         self.interstitial = ad
     }

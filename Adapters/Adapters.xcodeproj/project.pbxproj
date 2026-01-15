@@ -251,12 +251,13 @@
 		B93BC21B2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21A2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift */; };
 		B93BC21D2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */; };
 		B93BDD642E5F415B0001B4DD /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93BDD632E5F415B0001B4DD /* Bidon.framework */; };
+		B944E9002F1926760055C3AC /* ZmaticooBiddingToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944E8FF2F1926760055C3AC /* ZmaticooBiddingToken.swift */; };
 		B95A949F2F0FC6AB00B3EB7C /* ZmaticooDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A949D2F0FC6AB00B3EB7C /* ZmaticooDemandSourceAdapter.swift */; };
 		B95A94A02F0FCD0100B3EB7C /* BidonAdapterZmaticoo.h in Headers */ = {isa = PBXBuildFile; fileRef = B95A94A12F0FCD0100B3EB7C /* BidonAdapterZmaticoo.h */; };
 		B95A94A12F0FCD4C00B3EB7C /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B95A94A02F0FCD4C00B3EB7C /* Bidon.framework */; };
 		B95A94A32F0FCD5C00B3EB7C /* ZmaticooParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94A22F0FCD5C00B3EB7C /* ZmaticooParameters.swift */; };
 		B95A94A52F0FCD6A00B3EB7C /* ZmaticooAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94A42F0FCD6A00B3EB7C /* ZmaticooAdUnitExtras.swift */; };
-		B95A94A72F0FCD7600B3EB7C /* ZmaticooBiddingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingResponse.swift */; };
+		B95A94A72F0FCD7600B3EB7C /* ZmaticooBiddingPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingPayload.swift */; };
 		B95A94A92F0FCD9000B3EB7C /* ZmaticooSdkBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94A82F0FCD9000B3EB7C /* ZmaticooSdkBridge.swift */; };
 		B95A94AB2F0FCDA200B3EB7C /* ZmaticooBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94AA2F0FCDA200B3EB7C /* ZmaticooBiddingBaseDemandProvider.swift */; };
 		B95A94AD2F0FCDB000B3EB7C /* ZmaticooBiddingInterstitialDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A94AC2F0FCDB000B3EB7C /* ZmaticooBiddingInterstitialDemandProvider.swift */; };
@@ -685,13 +686,14 @@
 		B93BC21A2E56074900C99DBE /* MolocoBiddingRewardedDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingRewardedDemandProvider.swift; sourceTree = "<group>"; };
 		B93BC21C2E560EE100C99DBE /* MolocoBiddingAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MolocoBiddingAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		B93BDD632E5F415B0001B4DD /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B944E8FF2F1926760055C3AC /* ZmaticooBiddingToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooBiddingToken.swift; sourceTree = "<group>"; };
 		B95A94962F0FC63000B3EB7C /* BidonAdapterZmaticoo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterZmaticoo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B95A949D2F0FC6AB00B3EB7C /* ZmaticooDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		B95A94A02F0FCD4C00B3EB7C /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B95A94A12F0FCD0100B3EB7C /* BidonAdapterZmaticoo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterZmaticoo.h; sourceTree = "<group>"; };
 		B95A94A22F0FCD5C00B3EB7C /* ZmaticooParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooParameters.swift; sourceTree = "<group>"; };
 		B95A94A42F0FCD6A00B3EB7C /* ZmaticooAdUnitExtras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooAdUnitExtras.swift; sourceTree = "<group>"; };
-		B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooBiddingResponse.swift; sourceTree = "<group>"; };
+		B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooBiddingPayload.swift; sourceTree = "<group>"; };
 		B95A94A82F0FCD9000B3EB7C /* ZmaticooSdkBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooSdkBridge.swift; sourceTree = "<group>"; };
 		B95A94AA2F0FCDA200B3EB7C /* ZmaticooBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
 		B95A94AC2F0FCDB000B3EB7C /* ZmaticooBiddingInterstitialDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZmaticooBiddingInterstitialDemandProvider.swift; sourceTree = "<group>"; };
@@ -2052,9 +2054,10 @@
 		B95A94B42F0FCE1D00B3EB7C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B95A94A22F0FCD5C00B3EB7C /* ZmaticooParameters.swift */,
+				B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingPayload.swift */,
+				B944E8FF2F1926760055C3AC /* ZmaticooBiddingToken.swift */,
 				B95A94A42F0FCD6A00B3EB7C /* ZmaticooAdUnitExtras.swift */,
-				B95A94A62F0FCD7600B3EB7C /* ZmaticooBiddingResponse.swift */,
+				B95A94A22F0FCD5C00B3EB7C /* ZmaticooParameters.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3949,13 +3952,14 @@
 			files = (
 				B95A94A32F0FCD5C00B3EB7C /* ZmaticooParameters.swift in Sources */,
 				B95A94A52F0FCD6A00B3EB7C /* ZmaticooAdUnitExtras.swift in Sources */,
-				B95A94A72F0FCD7600B3EB7C /* ZmaticooBiddingResponse.swift in Sources */,
+				B95A94A72F0FCD7600B3EB7C /* ZmaticooBiddingPayload.swift in Sources */,
 				B95A94A92F0FCD9000B3EB7C /* ZmaticooSdkBridge.swift in Sources */,
 				B95A94AB2F0FCDA200B3EB7C /* ZmaticooBiddingBaseDemandProvider.swift in Sources */,
 				B95A94AD2F0FCDB000B3EB7C /* ZmaticooBiddingInterstitialDemandProvider.swift in Sources */,
 				B95A94AF2F0FCDBE00B3EB7C /* ZmaticooBiddingRewardedDemandProvider.swift in Sources */,
 				B95A94B12F0FCDCB00B3EB7C /* ZmaticooBiddingAdViewDemandProvider.swift in Sources */,
 				B95A949F2F0FC6AB00B3EB7C /* ZmaticooDemandSourceAdapter.swift in Sources */,
+				B944E9002F1926760055C3AC /* ZmaticooBiddingToken.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ZmaticooBiddingResponse: Codable {
+struct ZmaticooBiddingPayload: Codable {
     var payload: String
 }
 

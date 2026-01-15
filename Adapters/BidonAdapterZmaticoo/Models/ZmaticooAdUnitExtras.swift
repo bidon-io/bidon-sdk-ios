@@ -11,9 +11,5 @@ struct ZmaticooAdUnitExtras: Codable {
     var placementId: String
 }
 
-struct ZmaticooBiddingTokenExtras: Codable {
-    var placementId: String
-    var timestampMs: Int64?
-}
 
 
