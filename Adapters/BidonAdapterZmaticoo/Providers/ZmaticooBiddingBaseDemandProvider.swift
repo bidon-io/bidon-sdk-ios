@@ -18,14 +18,14 @@ class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
         biddingTokenExtras: ZmaticooBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        let timestamp = biddingTokenExtras.timestampMs ?? Int64(Date().timeIntervalSince1970 * 1000.0)
-        
-        let bidToken = MaticooAds.shareSDK().getBiddingToken(biddingTokenExtras.placementId, timestamp: Int(timestamp))
+        let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
+        let placementId = biddingTokenExtras.placementId.placementId
+        let bidToken = MaticooAds.shareSDK().getBiddingToken(placementId, timestamp: timestamp)
         response(.success(bidToken))
     }
 
     func load(
-        payload: ZmaticooBiddingResponse,
+        payload: ZmaticooBiddingToken,
         adUnitExtras: ZmaticooAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {

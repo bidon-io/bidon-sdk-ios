@@ -37,7 +37,7 @@ final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvid
     }
 
     override func load(
-        payload: ZmaticooBiddingResponse,
+        payload: ZmaticooBiddingToken,
         adUnitExtras: ZmaticooAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
@@ -46,7 +46,7 @@ final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvid
 
         let ad = MATBannerAd(placementID: adUnitExtras.placementId)
         ad.delegate = self
-        ad.load(payload.payload)
+        ad.load(payload.token)
         self.banner = ad
     }
 }
