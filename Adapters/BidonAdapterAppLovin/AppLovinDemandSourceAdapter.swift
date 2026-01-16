@@ -9,8 +9,6 @@ import Foundation
 import AppLovinSDK
 import AdSupport
 import Bidon
-import MaticooSDK
-
 
 internal typealias DemandSourceAdapter =
 DirectInterstitialDemandSourceAdapter &
