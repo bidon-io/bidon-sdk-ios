@@ -1,6 +1,7 @@
 # New release
 
 ## Fixes
+- BDN-1127 Setup core range for adapters in podspec
 - BDN-1123 Visibility tracker
 - BDN-1033 Device info
 - BDN-1105 Code clean
