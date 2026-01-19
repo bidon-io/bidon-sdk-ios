@@ -48,7 +48,7 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     ) {
         switch event {
         case .lose:
-            ad.ad.cancel()
+            break
         default:
             break
         }
