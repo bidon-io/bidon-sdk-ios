@@ -17,19 +17,42 @@ class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
     var adFormat: ZmaticooAdFormat {
         fatalError("Subclasses must override adFormat")
     }
+    
+    private struct PlacementTokenPayload: Encodable {
+        let token: String
+        let timestamp: Int
+    }
 
     func collectBiddingToken(
         biddingTokenExtras: ZmaticooBiddingTokenExtras,
-        response: @escaping (Result<String, MediationError>) -> ()
+        response: @escaping (Result<String, MediationError>) -> Void
     ) {
-        guard let placement = biddingTokenExtras.placementIds?.first(where: { $0.format == adFormat }) else {
-            response(.failure(.adapterNotInitialized))
+        guard let placements = biddingTokenExtras.placementIds?.filter({ $0.format == adFormat }),
+              !placements.isEmpty
+        else {
+            response(.failure(.adFormatNotSupported))
             return
         }
 
-        let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
-        let bidToken = MaticooAds.shareSDK().getBiddingToken(placement.placementId, timestamp: timestamp)
-        response(.success(bidToken))
+        var payload: [String: PlacementTokenPayload] = [:]
+        payload.reserveCapacity(placements.count)
+
+        for placement in placements {
+            let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
+            let token = MaticooAds.shareSDK().getBiddingToken(placement.placementId, timestamp: timestamp)
+            payload[placement.placementId] = PlacementTokenPayload(token: token, timestamp: timestamp)
+        }
+
+        do {
+            let data = try JSONEncoder().encode(payload)
+            guard let jsonString = String(data: data, encoding: .utf8) else {
+                response(.failure(.unspecifiedException("Failed to map tokens")))
+                return
+            }
+            response(.success(jsonString))
+        } catch {
+            response(.failure(.unspecifiedException("Failed to map tokens")))
+        }
     }
 
     func load(

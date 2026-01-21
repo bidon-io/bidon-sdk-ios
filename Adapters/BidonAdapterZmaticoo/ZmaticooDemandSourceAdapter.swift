@@ -53,9 +53,8 @@ extension ZmaticooDemandSourceAdapter: ParameterizedInitializableAdapter {
         if context.regulations.coppa != .unknown {
             MaticooAds.shareSDK().setIsAgeRestrictedUser(context.regulations.coppaApplies)
         }
-        print(">>> ZmaticooDemandSourceAdapter appkey: ", parameters.appKey)
+//        completion(nil)
         MaticooAds.shareSDK().initSDK(parameters.appKey) {
-            print(">>> ZmaticooDemandSourceAdapter init success")
             
 //            let timestamp = 1768483453302 // Int(Date().timeIntervalSince1970 * 1000)
 //            let placement = "1003208345"
