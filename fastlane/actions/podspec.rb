@@ -10,7 +10,7 @@ module Fastlane
     end
 
     class PodspecAction < Action
-      Dependency = Struct.new("PodspecDependency", :name, :version, keyword_init: true)
+      Dependency = Struct.new("PodspecDependency", :name, :versions, keyword_init: true)
 
       IOS_MIN_VERSIONS = {
           "BidonAdapterIronSource" => "13.0",
@@ -40,9 +40,11 @@ module Fastlane
               dep.name.split("/").first
             end
 
+          v = dep.to_s.scan(/\((.*)\)/m).flatten[0]
+
           Dependency.new(
             name: dep_name,
-            version: dep.to_s.scan(/\((.*)\)/m).flatten[0]
+            versions: (v.nil? || v.empty?) ? [] : [v]
           )
         end
 
@@ -51,17 +53,24 @@ module Fastlane
             next d if d.name == "Bidon"
             resolved = resolved_versions[d.name]
             if resolved && !resolved.to_s.empty?
-              Dependency.new(name: d.name, version: "= #{resolved}")
+              Dependency.new(name: d.name, versions: ["= #{resolved}"])
             else
               d
             end
           end
 
-          sdk_ver = self.read_sdk_last_release_from_constants(params[:podfile]) || params[:sdk_version]
-          dep_version = sdk_ver.nil? || sdk_ver.empty? ? nil : ">= #{sdk_ver}"
+          last_release, max_release = self.read_sdk_versions_from_constants(params[:podfile])
+
+          lower = (last_release && !last_release.empty?) ? last_release : params[:sdk_version]
+          upper = (max_release && !max_release.empty?) ? max_release : nil
+
+          bidon_constraints = []
+          bidon_constraints << ">= #{lower}" if lower && !lower.empty?
+          bidon_constraints << "< #{upper}"  if upper && !upper.empty?
+
           dependencies.append(Dependency.new(
             name: "Bidon",
-            version: dep_version
+            versions: bidon_constraints
           ))
         end
 
@@ -94,10 +103,10 @@ module Fastlane
           spec.vendored_frameworks = [params[:vendored_frameworks]]
 
           dependencies.each do |dep|
-            if dep.version.nil?
+            if dep.versions.nil? || dep.versions.empty?
               spec.dependency dep.name
             else
-              spec.dependency dep.name, dep.version
+              spec.dependency dep.name, *dep.versions
             end
           end
 
@@ -133,6 +142,30 @@ module Fastlane
         # Write podspec to file
         File.open(params[:path] + "/" + params[:name] + ".podspec.json", "w") do |f|
           f.write(JSON.pretty_generate(podspec_hash))
+        end
+      end
+
+      def self.read_sdk_versions_from_constants(podfile_path)
+        begin
+          root = File.dirname(podfile_path)
+          path = File.join(root, "Bidon", "Shared", "Constants.swift")
+          return [nil, nil] unless File.exist?(path)
+
+          content = File.read(path)
+
+          last_release = content.match(/sdkVersionLastRelease\s*:\s*String\s*=\s*"([^"]+)"/)
+          max_release = content.match(/maxSdkReleaseVersion\s*:\s*String\s*=\s*"([^"]+)"/)
+
+          last_release_value = last_release ? last_release[1] : nil
+          max_release_value = max_release ? max_release[1] : nil
+
+          UI.message("sdkVersionLastRelease not found in #{path}, falling back to sdk_version param") if last_release_value.nil? || last_release_value.empty?
+          UI.message("maxSdkReleaseVersion not found in #{path}") if max_release_value.nil? || max_release_value.empty?
+
+          [last_release_value, max_release_value]
+        rescue => e
+          UI.message("Failed to read SDK versions from Constants.swift: #{e}")
+          [nil, nil]
         end
       end
 
