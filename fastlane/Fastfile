@@ -364,21 +364,18 @@ def read_adapter_revision_from_source(target)
 end
 
 # ---------- S3 helpers ----------
-require 'aws-sdk-s3'
 
 def s3_object_exists?(bucket:, key:, region:)
-  client = Aws::S3::Client.new(
-    region: region,
-    access_key_id: ENV['S3_ACCESS_KEY'],
-    secret_access_key: ENV['S3_SECRET_ACCESS_KEY']
-  )
-  client.head_object(bucket: bucket, key: key)
-  true
-rescue Aws::S3::Errors::NotFound, Aws::S3::Errors::NoSuchKey
-  false
-rescue => e
-  UI.message("S3 head_object error for #{key}: #{e}")
-  false
+  out = sh(
+    %Q(aws s3 ls "s3://#{bucket}/#{key}" --region "#{region}"),
+    log: false,
+    error_callback: ->(_e) { "" }
+  ).to_s
+  !out.strip.empty?
+end
+
+def s3_upload_public(file_path:, bucket:, key:, region:)
+  sh(%Q(aws s3 cp "#{file_path}" "s3://#{bucket}/#{key}" --region "#{region}" --acl public-read))
 end
 
 def record_existing_archive(s3_url)
@@ -397,10 +394,16 @@ platform :ios do
   before_all do
     Dotenv.load ".env.default"
 
+   ENV["AWS_PROFILE"] = "mediation-sdk-326381498390"
+
     clean_build_artifacts
     FileUtils.mkdir_p($build_dir)
     FileUtils.mkdir_p($podspecs_dir)
   end
+
+lane :aws_whoami do
+  sh("aws sts get-caller-identity")
+end
 
   desc "Build all modules into xcframeworks"
 desc "Build all modules into xcframeworks (fast aggregate build)"
@@ -777,15 +780,15 @@ end
 
     # Optional upload to S3
     if upload
-      aws_s3(
-        access_key: ENV["S3_ACCESS_KEY"],
-        secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-        bucket: ENV["S3_BUCKET"],
-        region: ENV["S3_REGION"],
-        acl: "bucket-owner-full-control",
-        path: "Bidon/#{core_ver}",
-        files: ["#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"]
-      )
+      bucket = ENV["S3_BUCKET"]
+      region = ENV["S3_REGION"].to_s.empty? ? "us-west-1" : ENV["S3_REGION"].to_s
+      UI.user_error!("Missing S3_BUCKET") if bucket.to_s.empty?
+
+      file_path = "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
+      key = "Bidon/#{core_ver}/Bidon.zip"
+
+      UI.message("Uploading core to s3://#{bucket}/#{key} (public-read)")
+      s3_upload_public(file_path: file_path, bucket: bucket, key: key, region: region)
     end
 
     # Generate podspec for core
@@ -862,30 +865,23 @@ end
     )
 
     if upload
-      key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
+      bucket = ENV["S3_BUCKET"]
+      region = ENV["S3_REGION"].to_s.empty? ? "us-west-1" : ENV["S3_REGION"].to_s
+      UI.user_error!("Missing S3_BUCKET") if bucket.to_s.empty?
+
+      file_path = "#{$build_dir}/#{scheme}/release/#{adapter}.zip"
+      key = "Bidon/Adapters/#{adapter}/#{version}/#{File.basename(file_path)}"
+
       if force_upload
-        aws_s3(
-          access_key: ENV["S3_ACCESS_KEY"],
-          secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-          bucket: ENV["S3_BUCKET"],
-          region: ENV["S3_REGION"],
-          acl: "bucket-owner-full-control",
-          path: "#{adapter_name}/#{adapter_version}",
-          files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
-        )
+        UI.message("Uploading (force) to s3://#{bucket}/#{key}")
+        s3_upload_public(file_path: file_path, bucket: bucket, key: key, region: region)
       else
-        if s3_object_exists?(bucket: ENV["S3_BUCKET"], key: key, region: ENV["S3_REGION"])
-          record_existing_archive("s3://#{ENV["S3_BUCKET"]}/#{key}")
+        if s3_object_exists?(bucket: bucket, key: key, region: region)
+          UI.message("Already exists → skipping upload: s3://#{bucket}/#{key}")
+          append_existing_archive_url(bucket: bucket, key: key)
         else
-          aws_s3(
-            access_key: ENV["S3_ACCESS_KEY"],
-            secret_access_key: ENV["S3_SECRET_ACCESS_KEY"],
-            bucket: ENV["S3_BUCKET"],
-            region: ENV["S3_REGION"],
-            acl: "bucket-owner-full-control",
-            path: "#{adapter_name}/#{adapter_version}",
-            files: ["#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"]
-          )
+          UI.message("Not found → uploading to s3://#{bucket}/#{key}")
+          s3_upload_public(file_path: file_path, bucket: bucket, key: key, region: region)
         end
       end
     end
