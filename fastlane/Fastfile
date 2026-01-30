@@ -394,8 +394,6 @@ platform :ios do
   before_all do
     Dotenv.load ".env.default"
 
-   ENV["AWS_PROFILE"] = "mediation-sdk-326381498390"
-
     clean_build_artifacts
     FileUtils.mkdir_p($build_dir)
     FileUtils.mkdir_p($podspecs_dir)
