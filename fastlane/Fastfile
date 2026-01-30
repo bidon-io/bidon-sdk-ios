@@ -833,12 +833,13 @@ end
     )
 
     if upload
-      bucket = ENV["S3_BUCKET"]
-      region = ENV["S3_REGION"].to_s.empty? ? "us-west-1" : ENV["S3_REGION"].to_s
-      UI.user_error!("Missing S3_BUCKET") if bucket.to_s.empty?
+      bucket = ENV["S3_BUCKET"].to_s
+      region = ENV["S3_REGION"].to_s
+      UI.user_error!("Missing S3_BUCKET") if bucket.empty?
+      UI.user_error!("Missing S3_REGION") if region.empty?
 
-      file_path = "#{$build_dir}/#{scheme}/release/#{adapter}.zip"
-      key = "Bidon/Adapters/#{adapter}/#{version}/#{File.basename(file_path)}"
+      file_path = "#{$build_dir}/#{adapter_name}/#{adapter_name}-#{adapter_version}/#{adapter_name}.zip"
+      key = "#{adapter_name}/#{adapter_version}/#{adapter_name}.zip"
 
       if force_upload
         UI.message("Uploading (force) to s3://#{bucket}/#{key}")
@@ -846,13 +847,14 @@ end
       else
         if s3_object_exists?(bucket: bucket, key: key, region: region)
           UI.message("Already exists → skipping upload: s3://#{bucket}/#{key}")
-          append_existing_archive_url(bucket: bucket, key: key)
+          record_existing_archive("s3://#{bucket}/#{key}")
         else
           UI.message("Not found → uploading to s3://#{bucket}/#{key}")
           s3_upload_public(file_path: file_path, bucket: bucket, key: key, region: region)
         end
       end
     end
+
   end
 
 desc "CI-safe build for a single Bidon adapter (pods, scheme validation, packaging)"
