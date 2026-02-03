@@ -25,12 +25,6 @@ jobs:
           git config --global user.name "bidon-runner"
           git config --global user.email "runner@bidon.org"
           git config --global credential.helper ""
-          
-      - name: Debug App ID used by workflow
-        shell: bash
-        run: |
-          echo "PODS_UPDATER_APP_ID=${{ vars.PODS_UPDATER_APP_ID }}"
-
 
       - name: CocoaPods repo update (self-hosted)
         run: |
@@ -45,7 +39,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.PODS_UPDATER_APP_ID }}
+          app-id: ${{ vars.PODS_UPDATER_APP_ID_V2 }}
           private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
 
       - name: Run updater
