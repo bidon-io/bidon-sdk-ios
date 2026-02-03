@@ -26,17 +26,11 @@ jobs:
           git config --global user.email "runner@bidon.org"
           git config --global credential.helper ""
           
-      - name: Fingerprint App key from secret
+      - name: Debug App ID used by workflow
         shell: bash
-        env:
-          APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
         run: |
-          set -euo pipefail
-          umask 077
-          KEY_FILE="$RUNNER_TEMP/app_private_key.pem"
-          printf '%s' "$APP_KEY" > "$KEY_FILE"
-          FP=$(openssl rsa -in "$KEY_FILE" -pubout 2>/dev/null | openssl sha256 | awk '{print $2}')
-          echo "CI public key sha256: $FP"
+          echo "PODS_UPDATER_APP_ID=${{ vars.PODS_UPDATER_APP_ID }}"
+
 
       - name: CocoaPods repo update (self-hosted)
         run: |
