@@ -587,6 +587,8 @@ end
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
     core_ver = base_version
 
+    cocoapods(use_bundle_exec: true)
+
     # 1) Core Bidon
     build_universal("Bidon")
     xcframework("Bidon", "Bidon", "Bidon", core_ver)
@@ -716,6 +718,8 @@ end
     )
 
   end
+
+
 
   desc "Build only Bidon Core (xcframework, zip, podspec, optional S3 upload)"
   lane :core do |options|
