@@ -58,14 +58,7 @@ struct HomeView: View {
     }
 
     private var title: Text {
-        let mediation: String
-
-        switch AdServiceProvider.shared.service.mediation {
-        case .appodeal: mediation = "Appodeal + "
-        case .none: mediation = "Raw "
-        }
-
-        return Text(mediation + "Bidon v\(BidonSdk.sdkVersion)")
+        return Text("Bidon v\(BidonSdk.sdkVersion)")
     }
 }
 

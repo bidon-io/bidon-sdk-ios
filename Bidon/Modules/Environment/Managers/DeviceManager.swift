@@ -20,7 +20,7 @@ final class DeviceManager: Device, Environment {
     let make: String = "Apple"
 
     var model: String {
-        return DeviceManager.sysctlString("hw.machine") ?? UIDevice.current.model
+        return DeviceManager.utsNameModel() ?? UIDevice.current.model
     }
 
     @MainThreadComputable(DeviceType.current)
@@ -33,7 +33,7 @@ final class DeviceManager: Device, Environment {
     var osVersion: String
 
     var hardwareVersion: String {
-        return DeviceManager.sysctlString("kern.version") ?? "Unknown"
+        return DeviceManager.hardwareVersion() ?? "Unknown"
     }
 
     @MainThreadComputable(Int(UIScreen.main.bounds.height * UIScreen.main.scale))
@@ -127,12 +127,35 @@ private extension DeviceManager {
         }
     }()
 
-    static func sysctlString(_ name: String) -> String? {
-        var size: size_t = 0
-        guard sysctlbyname(name, nil, &size, nil, 0) == 0, size > 0 else { return nil }
-        var buf = [CChar](repeating: 0, count: Int(size))
-        guard sysctlbyname(name, &buf, &size, nil, 0) == 0 else { return nil }
-        return String(cString: buf)
+    static func utsNameModel() -> String? {
+#if targetEnvironment(simulator)
+        return ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"]
+#else
+        var systemInfo = utsname()
+        guard uname(&systemInfo) == 0 else { return nil }
+        return withUnsafePointer(to: &systemInfo.machine) { pointer in
+            pointer.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+                string(from: $0, length: Int(_SYS_NAMELEN))
+            }
+        }
+#endif
+    }
+
+    static func hardwareVersion() -> String? {
+        var systemInfo = utsname()
+        guard uname(&systemInfo) == 0 else { return nil }
+        return withUnsafePointer(to: &systemInfo.version) { pointer in
+            pointer.withMemoryRebound(to: CChar.self, capacity: Int(_SYS_NAMELEN)) {
+                string(from: $0, length: Int(_SYS_NAMELEN))
+            }
+        }
+    }
+
+    private static func string(from pointer: UnsafePointer<CChar>, length: Int) -> String? {
+        let buffer = UnsafeBufferPointer(start: pointer, count: length)
+        let bytes = buffer.prefix { $0 != 0 }.map { UInt8(bitPattern: $0) }
+        guard !bytes.isEmpty else { return nil }
+        return String(bytes: bytes, encoding: .utf8)
     }
 }
 

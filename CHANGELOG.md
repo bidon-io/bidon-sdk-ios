@@ -1,15 +1,22 @@
-# New release
+# Release 0.14.0
+
+## Fixes
+- BDN-1127 Setup core range for adapters in podspec
+- BDN-1123 Visibility tracker
+- BDN-1033 Device info
+- BDN-1105 Code clean
+- BDN-1111 CI Deprecation job
 
 # Release 0.13.0
 
 ## New features
 - BDN-1070 Added Yandex Bidding support
 - BND-1046 Networks update
-- APDM-1631 Podspec generation - update
+- BDN-1631 Podspec generation - update
 - BDN-1083 CI S3 zip-archive checking
 - BDN-1013 Pods updater bot 
-- APDM-1673 Podspecs generation logic - update
-- APDM-1672 Github Actions flow - Slack info
+- BDN-1673 Podspecs generation logic - update
+- BDN-1672 Github Actions flow - Slack info
 - BDN-1107 Podspecs new source
 
 ## Fixes
@@ -58,8 +65,8 @@
 - BDN-1021 Fix Win/Loss Notification Logic Based on external_win_notifications
 - BDN-1006 AdNetworks updated
 - BDN-971 AdNetworks operators updated
-- APDM-1474 Fixed adapters init
-- APDM-1475 AppMetricaAnalytics version fix
+- BDN-1474 Fixed adapters init
+- BDN-1475 AppMetricaAnalytics version fix
 
 ## Fixes
 - BDN-1007 CLGeocoder multiple processing - fix
@@ -71,9 +78,9 @@
 
 ## New features
 - BDN-987 VungleSDK Banner API - updated
-- APDM-1396 Update BCA MAX callbacks
+- BDN-1396 Update BCA MAX callbacks
 - BDN-966 Updated Bidmachine to 3.3.0. Added BM placements logic
-- APDM-1411 Update IronSource network
+- BDN-1411 Update IronSource network
 
 # Release 0.8.1
 
@@ -84,13 +91,13 @@
 # Release 0.8.0
 
 ## New features
-- APDM-1305 BCALP Adapter to Bidon - Interstitial 
+- BDN-1305 BCALP Adapter to Bidon - Interstitial 
 - BDN-978 Initialization failure state
 - BDN-942 New Bidon SDK init logic
 - BDN-975 GitHub Actions
 
 ## Fixes
-- APDM-1357 SKAdNetworks duplication fix
+- BDN-1357 SKAdNetworks duplication fix
 
 ## Network updates
 

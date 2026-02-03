@@ -27,7 +27,6 @@ struct AdServiceParametersView: View {
                 Section(header: Text("Regulations")) {
                     Toggle("GDPR", isOn: $vm.gdprApplies)
                     Toggle("COPPA", isOn: $vm.coppaApplies)
-                    CMPRow()
                 }
 
                 Section(header: Text("Regulations")) {

@@ -1,5 +1,5 @@
 //
-//  AppodealAdWrapper.swift
+//  AdWrapper.swift
 //  Sandbox
 //
 //  Created by Bidon Team on 15.02.2023.
@@ -9,9 +9,6 @@ import Foundation
 import Combine
 import SwiftUI
 import Bidon
-
-//import Appodeal
-
 
 protocol AdWrapper {
     var adEventSubject: PassthroughSubject<AdEventModel, Never> { get }

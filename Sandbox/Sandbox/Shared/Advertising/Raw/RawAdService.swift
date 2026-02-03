@@ -19,8 +19,6 @@ enum RawAdServiceError: Error {
 
 
 final class RawAdService: NSObject, AdService {
-    var mediation: Mediation { .none }
-
     var verstion: String { "-" }
 
     var segmentId: String?

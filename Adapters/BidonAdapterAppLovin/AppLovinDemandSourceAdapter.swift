@@ -10,7 +10,6 @@ import AppLovinSDK
 import AdSupport
 import Bidon
 
-
 internal typealias DemandSourceAdapter =
 DirectInterstitialDemandSourceAdapter &
 DirectRewardedAdDemandSourceAdapter &
