@@ -55,12 +55,11 @@ def default_branch
 end
 
 def http_get_json(url)
-  cmd = %(curl -fsSL --retry 3 --retry-delay 1 "#{url}")
-  body = `#{cmd}`
+  cmd = ["curl", "-fsSL", "--retry", "3", "--retry-delay", "1", url]
+  body = IO.popen(cmd, &:read)
   raise "curl failed for #{url}" unless $?.success?
   JSON.parse(body)
 end
-
 
 def semver_key(v)
   v.to_s.split(/[\.\-]/).map { |p| p =~ /^\d+$/ ? p.to_i : p }
