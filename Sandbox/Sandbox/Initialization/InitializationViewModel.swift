@@ -148,7 +148,6 @@ fileprivate extension Array where Element == Bidon.Adapter {
             MolocoDemandSourceAdapter(),
             TaurusXDemandSourceAdapter(),
             YandexDemandSourceAdapter(),
-            TaurusXDemandSourceAdapter(),
             ZmaticooDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
