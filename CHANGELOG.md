@@ -1,4 +1,4 @@
-# New release
+# Release 0.14.0
 
 ## Fixes
 - BDN-1127 Setup core range for adapters in podspec
