@@ -27,7 +27,7 @@ jobs:
           git config --global credential.helper ""
           
       - name: Fingerprint App key from secret
-       shell: bash
+        shell: bash
         env:
           APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
         run: |
