@@ -38,8 +38,6 @@ jobs:
           FP=$(openssl rsa -in "$KEY_FILE" -pubout 2>/dev/null | openssl sha256 | awk '{print $2}')
           echo "CI public key sha256: $FP"
 
-
-    
       - name: CocoaPods repo update (self-hosted)
         run: |
           set -o pipefail
