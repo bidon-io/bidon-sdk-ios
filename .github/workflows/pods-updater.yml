@@ -25,6 +25,29 @@ jobs:
           git config --global user.name "bidon-runner"
           git config --global user.email "runner@bidon.org"
           git config --global credential.helper ""
+    
+      - name: Validate App ID and key (quick)
+        shell: bash
+        env:
+          APP_ID: ${{ vars.PODS_UPDATER_APP_ID }}
+          APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$APP_ID" =~ ^[0-9]+$ ]]; then
+            echo "PODS_UPDATER_APP_ID is not numeric (likely Client ID). Value: $APP_ID"
+            exit 1
+          fi
+
+          umask 077
+          KEY_FILE="$RUNNER_TEMP/app_private_key.pem"
+          printf '%s' "$APP_KEY" > "$KEY_FILE"
+
+          openssl pkey -in "$KEY_FILE" -noout >/dev/null
+          openssl pkey -in "$KEY_FILE" -text -noout 2>/dev/null | grep -qi rsa || (echo "Key is not RSA" && exit 1)
+
+          echo "App ID looks numeric and key parses as RSA"
+
 
       - name: CocoaPods repo update (self-hosted)
         run: |
