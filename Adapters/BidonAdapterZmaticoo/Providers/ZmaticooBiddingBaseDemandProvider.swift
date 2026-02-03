@@ -11,40 +11,34 @@ import MaticooSDK
 
 
 class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, BiddingDemandProvider {
+    private typealias BiddingTokensStorage = [String: ZmaticooBiddingToken]
+    
     weak var delegate: Bidon.DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
 
     var adFormat: ZmaticooAdFormat {
         fatalError("Subclasses must override adFormat")
     }
-    
-    private struct PlacementTokenPayload: Encodable {
-        let token: String
-        let timestamp: Int
-    }
 
     func collectBiddingToken(
         biddingTokenExtras: ZmaticooBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> Void
     ) {
-        guard let placements = biddingTokenExtras.placementIds?.filter({ $0.format == adFormat }),
-              !placements.isEmpty
+        guard
+            let placements = biddingTokenExtras.placementIds?.filter({ $0.format == adFormat }),
+            !placements.isEmpty
         else {
             response(.failure(.adFormatNotSupported))
             return
         }
-
-        var payload: [String: PlacementTokenPayload] = [:]
-        payload.reserveCapacity(placements.count)
-
-        for placement in placements {
-            let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
-            let token = MaticooAds.shareSDK().getBiddingToken(placement.placementId, timestamp: timestamp)
-            payload[placement.placementId] = PlacementTokenPayload(token: token, timestamp: timestamp)
+        let tokens = TokensCollector.collect(for: placements)
+                                         
+        guard tokens.isEmpty == false else {
+            response(.failure(.unspecifiedException("No bidding tokens")))
+            return
         }
-
         do {
-            let data = try JSONEncoder().encode(payload)
+            let data = try JSONEncoder().encode(tokens)
             guard let jsonString = String(data: data, encoding: .utf8) else {
                 response(.failure(.unspecifiedException("Failed to map tokens")))
                 return
@@ -56,7 +50,7 @@ class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
     }
 
     func load(
-        payload: ZmaticooBiddingToken,
+        payload: ZmaticooBiddingPayload,
         adUnitExtras: ZmaticooAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
@@ -69,4 +63,21 @@ class ZmaticooBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Biddi
     ) {}
 }
 
-
+extension ZmaticooBiddingBaseDemandProvider {
+    private enum TokensCollector {
+        static func collect(for placements: [ZmaticooAdUnit]) -> BiddingTokensStorage {
+            let tokens = placements.reduce(into: BiddingTokensStorage()) { accumulator, placement in
+                let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
+                let token = MaticooAds.shareSDK().getBiddingToken(
+                    placement.placementId,
+                    timestamp: timestamp
+                )
+                accumulator[placement.placementId] = ZmaticooBiddingToken(
+                    token: token,
+                    timestamp: timestamp
+                )
+            }
+            return tokens
+        }
+    }
+}
