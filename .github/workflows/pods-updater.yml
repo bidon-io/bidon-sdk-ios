@@ -35,6 +35,32 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
 
+      - name: Check runner clock vs GitHub (delta)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+import subprocess, email.utils, datetime, re
+
+local = datetime.datetime.utcnow()
+
+hdr = subprocess.check_output(
+    ["bash", "-lc", "curl -sI https://api.github.com/"]
+).decode()
+
+m = re.search(r"^Date:\s*(.+)$", hdr, re.M)
+gh = email.utils.parsedate_to_datetime(m.group(1)).replace(tzinfo=None) if m else None
+
+print("Local UTC :", local.strftime("%Y-%m-%d %H:%M:%S"))
+print("GitHub UTC :", gh.strftime("%Y-%m-%d %H:%M:%S") if gh else "N/A")
+
+if gh:
+    delta = (local - gh).total_seconds()
+    print("Delta sec :", delta)
+    if abs(delta) > 30:
+        raise SystemExit("Clock skew > 30s. Fix runner time (NTP).")
+PY
+
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v2
@@ -47,11 +73,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PODS_UPDATER_TOKEN: ${{ steps.app-token.outputs.token }}
           PODS_BASE_BRANCH: dev
-          PODS_REVIEWERS: "bidon-io/bidon-ios" # comma-separated GitHub usernames or org/team-slug
+          PODS_REVIEWERS: "bidon-io/bidon-ios"
         run: |
           export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
           export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
           echo "Using POD_BIN=$POD_BIN"
           /opt/homebrew/opt/ruby@3.2/bin/ruby .github/scripts/pods_updater.rb
-
-
