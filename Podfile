@@ -30,7 +30,7 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.0.5'
+  pod 'BigoADS', '5.0.6'
 end
 
 def dtexchange
