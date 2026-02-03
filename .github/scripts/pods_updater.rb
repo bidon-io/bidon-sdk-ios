@@ -55,10 +55,13 @@ def default_branch
 end
 
 def http_get_json(url)
-  cmd = ["curl", "-fsSL", "--retry", "3", "--retry-delay", "1", url]
-  body = IO.popen(cmd, &:read)
-  raise "curl failed for #{url}" unless $?.success?
-  JSON.parse(body)
+  uri = URI(url)
+  req = Net::HTTP::Get.new(uri)
+  Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+    resp = http.request(req)
+    raise "HTTP #{resp.code} for #{url}" unless resp.is_a?(Net::HTTPSuccess)
+    JSON.parse(resp.body)
+  end
 end
 
 def semver_key(v)
