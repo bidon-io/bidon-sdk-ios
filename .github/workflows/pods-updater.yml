@@ -26,51 +26,18 @@ jobs:
           git config --global user.email "runner@bidon.org"
           git config --global credential.helper ""
           
-      - name: Debug GitHub App JWT (calls /app)
-        shell: bash
+      - name: Fingerprint App key from secret
+      shell: bash
         env:
-          APP_ID: ${{ vars.PODS_UPDATER_APP_ID }}
           APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
         run: |
           set -euo pipefail
           umask 077
-
-          # 1) save key
           KEY_FILE="$RUNNER_TEMP/app_private_key.pem"
           printf '%s' "$APP_KEY" > "$KEY_FILE"
+          FP=$(openssl rsa -in "$KEY_FILE" -pubout 2>/dev/null | openssl sha256 | awk '{print $2}')
+          echo "CI public key sha256: $FP"
 
-          # 2) quick sanity: RSA parse
-          openssl rsa -in "$KEY_FILE" -check -noout >/dev/null
-
-          # 3) build JWT (RS256) without extra deps
-          b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
-
-          NOW=$(date +%s)
-          IAT=$NOW
-          EXP=$((NOW + 540))  # 9 minutes
-
-          HEADER='{"alg":"RS256","typ":"JWT"}'
-          PAYLOAD="{\"iat\":$IAT,\"exp\":$EXP,\"iss\":$APP_ID}"
-
-          H64=$(printf '%s' "$HEADER"  | b64url)
-          P64=$(printf '%s' "$PAYLOAD" | b64url)
-          DATA="$H64.$P64"
-
-          SIG=$(printf '%s' "$DATA" | openssl dgst -sha256 -sign "$KEY_FILE" | b64url)
-          JWT="$DATA.$SIG"
-
-          # 4) call GitHub /app using JWT
-          CODE=$(curl -sS -o /tmp/app.json -w '%{http_code}' \
-            -H "Authorization: Bearer $JWT" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/app)
-
-          echo "HTTP /app: $CODE"
-          if [ "$CODE" != "200" ]; then
-            echo "Response:"
-            cat /tmp/app.json
-            exit 1
-          fi
 
     
       - name: CocoaPods repo update (self-hosted)
