@@ -30,7 +30,7 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
     override var adFormat: ZmaticooAdFormat { .rewarded }
 
     override func load(
-        payload: ZmaticooBiddingToken,
+        payload: ZmaticooBiddingPayload,
         adUnitExtras: ZmaticooAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
@@ -38,7 +38,7 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
         self.placementId = adUnitExtras.placementId
 
         let ad = MATRewardedVideoAd(placementID: adUnitExtras.placementId)
-        ad.loadAd(payload.token)
+        ad.loadAd(payload.payload)
         ad.delegate = self
         self.rewarded = ad
     }
