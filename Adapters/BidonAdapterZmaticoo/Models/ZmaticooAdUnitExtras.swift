@@ -8,8 +8,5 @@
 import Foundation
 
 struct ZmaticooAdUnitExtras: Codable {
-    var placementId: String
+    let placementId: String
 }
-
-
-

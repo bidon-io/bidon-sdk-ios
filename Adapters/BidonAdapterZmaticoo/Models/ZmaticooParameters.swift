@@ -8,7 +8,7 @@
 import Foundation
 
 public struct ZmaticooParameters: Codable {
-    var appKey: String
+    let appKey: String
     let placementIds: [ZmaticooAdUnit]?
 }
 

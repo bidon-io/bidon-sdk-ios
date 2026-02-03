@@ -8,7 +8,7 @@
 import Foundation
 
 struct ZmaticooBiddingPayload: Codable {
-    var payload: String
+    let payload: String
 }
 
 

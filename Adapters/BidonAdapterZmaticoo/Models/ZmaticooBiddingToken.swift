@@ -7,9 +7,9 @@
 
 import Foundation
 
-
 struct ZmaticooBiddingToken: Codable {
-    var token: String
+    let token: String
+    let timestamp: Int
 }
 
 struct ZmaticooBiddingTokenExtras: Codable {
