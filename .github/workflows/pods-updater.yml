@@ -30,7 +30,7 @@ jobs:
         shell: bash
         env:
           APP_ID: ${{ vars.PODS_UPDATER_APP_ID }}
-          APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+          APP_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
         run: |
           set -euo pipefail
 
@@ -63,7 +63,7 @@ jobs:
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ vars.PODS_UPDATER_APP_ID }}
-          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
 
       - name: Run updater
         env:
