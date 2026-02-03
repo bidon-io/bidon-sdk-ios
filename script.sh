@@ -24,7 +24,7 @@ fi
 # Loop through each podspec file and push it to the repo
 for podspec_file in $podspec_files; do
   echo "Pushing $podspec_file to $repo_name..."
-  if pod repo push bidon "$podspec_file"; then
+  if pod trunk push "$podspec_file"; then
     echo "Successfully pushed $podspec_file to $repo_name."
   else
     echo "Failed to push $podspec_file to $repo_name."
