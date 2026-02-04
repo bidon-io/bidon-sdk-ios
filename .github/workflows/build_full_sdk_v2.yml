@@ -27,7 +27,7 @@ on:
         required: true
         type: boolean
         default: false
-        
+
 permissions:
   id-token: write
   contents: read
@@ -36,15 +36,14 @@ jobs:
   build-bidon-sdk:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-    - name: Ensure AWS CLI (self-hosted)
-      run: |
+
+      - name: Ensure AWS CLI (self-hosted)
+        run: |
           set -e
           if [ -x /opt/homebrew/bin/brew ]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -67,16 +66,16 @@ jobs:
 
       - name: AWS whoami
         run: aws sts get-caller-identity
-          
+
       - name: gitconfig
         run: |
-            git config --global user.name "bidon-runner"
-            git config --global user.email "runner@bidon.org"
+          git config --global user.name "bidon-runner"
+          git config --global user.email "runner@bidon.org"
 
       - name: Verify Xcode (self-hosted)
         run: |
           xcodebuild -version
-      
+
       - name: CocoaPods repo update (self-hosted)
         run: |
           set -o pipefail
@@ -389,7 +388,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts 
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
       - name: Register CocoaPods repo
         if: ${{ inputs.push_specs }}
