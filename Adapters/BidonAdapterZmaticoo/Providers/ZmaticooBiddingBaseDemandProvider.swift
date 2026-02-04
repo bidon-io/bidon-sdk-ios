@@ -67,7 +67,7 @@ extension ZmaticooBiddingBaseDemandProvider {
     private enum TokensCollector {
         static func collect(for placements: [ZmaticooAdUnit]) -> BiddingTokensStorage {
             let tokens = placements.reduce(into: BiddingTokensStorage()) { accumulator, placement in
-                let timestamp = Int(Date().timeIntervalSince1970 * 1000.0)
+                let timestamp = Date().timeIntervalSince1970.milliseconds
                 let token = MaticooAds.shareSDK().getBiddingToken(
                     placement.placementId,
                     timestamp: timestamp
@@ -79,5 +79,12 @@ extension ZmaticooBiddingBaseDemandProvider {
             }
             return tokens
         }
+    }
+}
+
+private extension TimeInterval {
+    var milliseconds: Int {
+        let ms = self * 1000
+        return Int(ms.rounded())
     }
 }

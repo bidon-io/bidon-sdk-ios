@@ -23,7 +23,7 @@ BiddingAdViewDemandSourceAdapter
     public var sdkVersion: String = MaticooAds.shareSDK().getSDKVersion()
 
     @Injected(\.context)
-    var context: SdkContext
+    private var context: SdkContext
 
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return ZmaticooBiddingInterstitialDemandProvider()
