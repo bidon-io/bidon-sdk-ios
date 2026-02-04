@@ -119,7 +119,7 @@ jobs:
               name:$AD \
               sdk_version:${{ steps.sdk.outputs.version }} \
               upload:true \
-              force_upload:false 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
+              force_upload:true 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
           done
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
