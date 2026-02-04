@@ -265,6 +265,29 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+        - name: Debug merge permissions (single source of truth)
+          env:
+            GH_TOKEN: ${{ github.token }}
+          run: |
+            set -euo pipefail
+
+            echo "== Repo permissions for token =="
+            gh api repos/${GITHUB_REPOSITORY} --jq '.permissions'
+
+            PR_NUMBER="${{ github.event.pull_request.number || '' }}"
+            if [ -n "$PR_NUMBER" ]; then
+              echo "== PR mergeability =="
+              gh api repos/${GITHUB_REPOSITORY}/pulls/$PR_NUMBER \
+                --jq '{number, mergeable, mergeable_state, base: .base.ref}'
+            else
+              echo "PR number not available in this event"
+            fi
+
+            echo "== Branch protection (develop) =="
+            gh api repos/${GITHUB_REPOSITORY}/branches/develop/protection \
+              --jq '{required_status_checks, required_pull_request_reviews, restrictions}' \
+              || echo "No classic branch protection (maybe rulesets)"
+
       - name: Enable PR auto-merge (squash) on success
         if: success()
         uses: peter-evans/enable-pull-request-automerge@v3
