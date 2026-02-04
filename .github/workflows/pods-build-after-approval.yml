@@ -192,26 +192,23 @@ jobs:
             pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources="$SOURCES"
           done
 
-#      - name: Push adapter podspec to trunk
-#        if: steps.meta.outputs.adapters != ''
-#        env:
-#          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-#        run: |
-#          set -euo pipefail
-#          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
-#          for AD in "${ADAPTERS[@]}"; do
-#            if [ -z "$AD" ]; then
-#              continue
-#            fi
-#            spec="build/Podspecs/${AD}.podspec.json"
-#            if [ ! -f "$spec" ]; then
-#              echo "❌ Podspec not found at $spec"
-#              exit 1
-#            fi
-#            CMD="pod trunk push \"$spec\" --allow-warnings --skip-tests --skip-import-validation"
-#            echo "Running: $CMD"
-#            eval "$CMD"
-#          done
+      - name: Push adapter podspec to trunk
+        if: steps.meta.outputs.adapters != ''
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          set -euo pipefail
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            spec="build/Podspecs/${AD}.podspec.json"
+            if [ ! -f "$spec" ]; then
+              echo "❌ Podspec not found at $spec"
+              exit 1
+            fi
+          done
 
       - name: Collect podspec URLs
         id: podspec_links
