@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (5.3.3)
+  - AmazonPublisherServicesSDK (5.4.0)
   - AppLovinSDK (13.5.1)
   - AppMetricaAdSupport (5.14.0):
     - AppMetricaCore (= 5.14.0)
@@ -183,7 +183,7 @@ PODS:
     - DivKitBinaryCompatibilityFacade (~> 5.2.1)
 
 DEPENDENCIES:
-  - AmazonPublisherServicesSDK (= 5.3.3)
+  - AmazonPublisherServicesSDK (= 5.4.0)
   - AppLovinSDK (= 13.5.1)
   - AppsFlyerFramework (= 6.17.8)
   - BidMachine (= 3.5.1)
@@ -267,7 +267,7 @@ SPEC REPOS:
     - YandexMobileAds
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 08312af8e8b0cca3dcb3e91c8d464b83e95bcaba
+  AmazonPublisherServicesSDK: fc623116402655f408b6ddb8f33cab94af6f03a7
   AppLovinSDK: 8d9af6c7617e4d35b38aa8393a3e9d161a74b230
   AppMetricaAdSupport: 702bdcf46b81a7fed457de56f6b0554d0480b5a3
   AppMetricaCore: d1c73033e83316264d5797d003f0c8f7957b7f31
@@ -325,6 +325,6 @@ SPEC CHECKSUMS:
   VungleAds: 40e87d1eaba17ac818b0f94461fd8ed21ad768dc
   YandexMobileAds: 246020ffd644f626e099ebff82284e89b6c77d90
 
-PODFILE CHECKSUM: a5dc4ac93e160920f2ea1746585f14e673fcde2e
+PODFILE CHECKSUM: 513b0f7add0c77cf52a3b548b8c5a97a0bfd50cf
 
 COCOAPODS: 1.16.2
