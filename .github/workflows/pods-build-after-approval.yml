@@ -15,7 +15,7 @@ jobs:
     if: >
       github.event.review.state == 'approved' &&
       startsWith(github.event.pull_request.head.ref, 'chore/pod-') &&
-      github.event.pull_request.base.ref == 'dev'
+      github.event.pull_request.base.ref == 'develop'
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
