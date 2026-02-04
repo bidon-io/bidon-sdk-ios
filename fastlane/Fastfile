@@ -366,12 +366,13 @@ end
 # ---------- S3 helpers ----------
 
 def s3_object_exists?(bucket:, key:, region:)
-  out = sh(
-    %Q(aws s3 ls "s3://#{bucket}/#{key}" --region "#{region}"),
-    log: false,
-    error_callback: ->(_e) { "" }
-  ).to_s
-  !out.strip.empty?
+  cmd = %Q(aws s3api head-object --bucket "#{bucket}" --key "#{key}" --region "#{region}" >/dev/null 2>&1)
+  begin
+    sh(cmd, log: false)
+    true
+  rescue
+    false
+  end
 end
 
 def s3_upload_public(file_path:, bucket:, key:, region:)

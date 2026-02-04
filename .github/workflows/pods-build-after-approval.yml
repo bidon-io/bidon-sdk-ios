@@ -5,7 +5,8 @@ on:
     types: [submitted]
 
 permissions:
-  contents: write
+  id-token: write
+  contents: read
   pull-requests: write
   actions: read
 
@@ -16,6 +17,7 @@ jobs:
       github.event.review.state == 'approved' &&
       startsWith(github.event.pull_request.head.ref, 'chore/pod-') &&
       github.event.pull_request.base.ref == 'develop'
+
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v4
@@ -50,6 +52,38 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
 
+      - name: Ensure adapters metadata present
+        if: steps.meta.outputs.adapters == ''
+        run: |
+          echo "No adapters found in build metadata. Ensure PR body includes adapters and POD_TO_ADAPTER mapping covers pod '${{ steps.meta.outputs.pod }}'."
+          exit 1
+
+      - name: Ensure AWS CLI (self-hosted)
+        run: |
+          set -e
+          if [ -x /opt/homebrew/bin/brew ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+          fi
+          if ! command -v aws >/dev/null 2>&1; then
+            echo "aws not found; installing via Homebrew..."
+            brew update
+            brew install awscli
+          fi
+          aws --version
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          role-to-assume: ${{ secrets.AWS_APPODEAL_OIDC_ROLE_ARN }}
+          role-session-name: gha-${{ github.run_id }}
+          aws-region: ${{ secrets.S3_REGION }}
+
+      - name: AWS whoami
+        run: aws sts get-caller-identity
+
+      - name: Verify Xcode (self-hosted)
+        run: xcodebuild -version
+
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
@@ -70,6 +104,7 @@ jobs:
       - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
           set -o pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$PATH"
           /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
           /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
           /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
@@ -78,7 +113,6 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
-          # Install xcpretty for Ruby 3.2 if missing (to avoid system Ruby 2.6)
           if ! command -v xcpretty >/dev/null 2>&1; then
             /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
           fi
@@ -94,21 +128,20 @@ jobs:
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Ensure adapters metadata present
-        if: steps.meta.outputs.adapters == ''
+      - name: AWS check (before fastlane)
         run: |
-          echo "No adapters found in build metadata. Ensure PR body includes adapters and POD_TO_ADAPTER mapping covers pod '${{ steps.meta.outputs.pod }}'."
-          exit 1
+          set -euo pipefail
+          aws sts get-caller-identity
+          aws s3 ls "s3://${{ secrets.S3_BUCKET }}/" --region "${{ secrets.S3_REGION }}" | head -n 5 || true
 
-      - name: Build adapter via Fastlane (self-hosted Ruby 3.2)
+      - name: Build adapter(s) via Fastlane (self-hosted Ruby 3.2)
         if: steps.meta.outputs.adapters != ''
         run: |
           set -euo pipefail
           export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
-          # Force Ruby 3.2 and bundled gem binstubs first
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
-          # Avoid leaking system Ruby GEM_* into subprocesses
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
+
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
             if [ -z "$AD" ]; then
@@ -116,15 +149,13 @@ jobs:
             fi
             echo "Building adapter $AD..."
             /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
-              name:$AD \
-              sdk_version:${{ steps.sdk.outputs.version }} \
+              name:"$AD" \
+              sdk_version:"${{ steps.sdk.outputs.version }}" \
               upload:true \
-              force_upload:false 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
+              force_upload:true 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
           done
         env:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
-          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
       - name: Setup SSH for podspec repo
@@ -241,5 +272,3 @@ jobs:
           token: ${{ github.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
-
-
