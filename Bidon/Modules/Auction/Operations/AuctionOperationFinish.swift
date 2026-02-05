@@ -97,34 +97,34 @@ where BidType.ProviderType == AdTypeContextType.DemandProviderType, BidType.Dema
         _ bids: [BidModel<AdTypeContextType.DemandProviderType>],
         winner: BidModel<AdTypeContextType.DemandProviderType>
     ) {
-        guard !bids.isEmpty else { return }
-
-        let winnerUID = winner.adUnit.uid
-        let losingEvent: DemandProviderEvent = .lose(
-            winner.adUnit.demandId,
-            winner.ad,
-            winner.price
-        )
-
-        for bid in bids {
-            let isWinner = bid.adUnit.uid == winnerUID
-            let shouldNotifyWin  = !auctionConfiguration.isExternalNotificationsEnabled && isWinner && bid.adUnit.bidType == .direct
-            let shouldNotifyLose = !isWinner && bid.adUnit.bidType == .direct
-
-            if shouldNotifyWin {
-                bid.provider.notify(opaque: bid.ad, event: .win)
-                Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) win")
-            } else if isWinner {
-                Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) win. Notifications enabled - \(auctionConfiguration.isExternalNotificationsEnabled), bid type - \(bid.adUnit.bidType.rawValue)")
-            }
-
-            if shouldNotifyLose {
-                bid.provider.notify(opaque: bid.ad, event: losingEvent)
-                Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) lose")
-            } else if !isWinner {
-                Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) lose. Bid type - \(bid.adUnit.bidType.rawValue)")
-
-            }
-        }
+//        guard !bids.isEmpty else { return }
+//
+//        let winnerUID = winner.adUnit.uid
+//        let losingEvent: DemandProviderEvent = .lose(
+//            winner.adUnit.demandId,
+//            winner.ad,
+//            winner.price
+//        )
+//
+//        for bid in bids {
+//            let isWinner = bid.adUnit.uid == winnerUID
+//            let shouldNotifyWin  = !auctionConfiguration.isExternalNotificationsEnabled && isWinner && bid.adUnit.bidType == .direct
+//            let shouldNotifyLose = !isWinner && bid.adUnit.bidType == .direct
+//
+//            if shouldNotifyWin {
+//                bid.provider.notify(opaque: bid.ad, event: .win)
+//                Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) win")
+//            } else if isWinner {
+//                Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) win. Notifications enabled - \(auctionConfiguration.isExternalNotificationsEnabled), bid type - \(bid.adUnit.bidType.rawValue)")
+//            }
+//
+//            if shouldNotifyLose {
+//                bid.provider.notify(opaque: bid.ad, event: losingEvent)
+//                Logger.info("[Win/Loss] Notify \(bid.adUnit.demandId) lose")
+//            } else if !isWinner {
+//                Logger.info("[Win/Loss] Do not notify \(bid.adUnit.demandId) lose. Bid type - \(bid.adUnit.bidType.rawValue)")
+//
+//            }
+//        }
     }
 }
