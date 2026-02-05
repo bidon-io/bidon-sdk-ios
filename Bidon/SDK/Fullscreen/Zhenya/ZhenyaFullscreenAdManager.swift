@@ -20,6 +20,7 @@ where
     AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
         var isFirstLoad: Bool = true
+        var auction: ZhenyaAuctionControllerType?
         
         override var isReady: Bool {
             return Cacher.storage.peek() != nil
@@ -129,6 +130,10 @@ where
                         self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
                     }
                 }
+                
+                self.auction = nil
             }
+            
+            self.auction = auction
         }
 }

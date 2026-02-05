@@ -48,7 +48,7 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
             operationLock.unlock()
         }
     }
-
+    
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
     var singleLoadCompletion: SingleCompletion?
