@@ -188,6 +188,9 @@
 		49FBCCF12F349D9600271DAE /* AdCacheConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCF02F349D9600271DAE /* AdCacheConfig.swift */; };
 		49FBCCF52F34A00400271DAE /* ZhenyaFullscreenAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */; };
 		49FBCCF72F34A02E00271DAE /* DimaFullscreenAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCF62F34A02E00271DAE /* DimaFullscreenAdManager.swift */; };
+		49FBCCF92F34A67600271DAE /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCF82F34A67600271DAE /* Cacher.swift */; };
+		49FBCCFB2F34A7E800271DAE /* CacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */; };
+		49FBCCFD2F34AC6100271DAE /* ZhenyaAuctionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCFC2F34AC6100271DAE /* ZhenyaAuctionController.swift */; };
 		49FE393A2BC54EEF000865FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -375,6 +378,9 @@
 		49FBCCF02F349D9600271DAE /* AdCacheConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCacheConfig.swift; sourceTree = "<group>"; };
 		49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhenyaFullscreenAdManager.swift; sourceTree = "<group>"; };
 		49FBCCF62F34A02E00271DAE /* DimaFullscreenAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimaFullscreenAdManager.swift; sourceTree = "<group>"; };
+		49FBCCF82F34A67600271DAE /* Cacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
+		49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStorage.swift; sourceTree = "<group>"; };
+		49FBCCFC2F34AC6100271DAE /* ZhenyaAuctionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhenyaAuctionController.swift; sourceTree = "<group>"; };
 		49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -869,6 +875,7 @@
 			children = (
 				42BA81A928758A90001F1744 /* AuctionController.swift */,
 				429EE2D0286DD0E2009439C6 /* ConcurrentAuctionController.swift */,
+				49FBCCFC2F34AC6100271DAE /* ZhenyaAuctionController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1063,6 +1070,8 @@
 			isa = PBXGroup;
 			children = (
 				49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */,
+				49FBCCF82F34A67600271DAE /* Cacher.swift */,
+				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
 			);
 			path = Zhenya;
 			sourceTree = "<group>";
@@ -1201,6 +1210,7 @@
 				428FFC7028BF83AF0090B126 /* StatisticRequestBuilder.swift in Sources */,
 				42AAEA0528CB80E10093DB23 /* String+Extensions.swift in Sources */,
 				42C4F46829E6E4AC00B12E15 /* ErrorCode.swift in Sources */,
+				49FBCCF92F34A67600271DAE /* Cacher.swift in Sources */,
 				42BA81DB28770B5D001F1744 /* Reward.swift in Sources */,
 				42A0156429F2E8CC00547B37 /* Operation+Extensions.swift in Sources */,
 				426DD79B28A4F47800A1ADF5 /* BaseRequestBuilder.swift in Sources */,
@@ -1288,6 +1298,7 @@
 				42244DA828C8E8FF00E9C416 /* AnyDemandSourceAdapter.swift in Sources */,
 				420EFD892A29EB6600328FD4 /* RewardedImpressionRequestBuilder.swift in Sources */,
 				42389E1228745C6A006024BA /* InterstitialDemandProvider.swift in Sources */,
+				49FBCCFD2F34AC6100271DAE /* ZhenyaAuctionController.swift in Sources */,
 				428DDD1629DC2B7300147ABA /* ExtrasProvider.swift in Sources */,
 				42BA81AC28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift in Sources */,
 				421D48E62888423B007DE2E4 /* Logger.swift in Sources */,
@@ -1308,6 +1319,7 @@
 				42D047E0289D5E5C0096A8C6 /* Session.swift in Sources */,
 				42D40BDA2B064BEB0008B34A /* AdaptersInitializator.swift in Sources */,
 				426DD7B328A68BF400A1ADF5 /* FullscreenAdDelegate.swift in Sources */,
+				49FBCCFB2F34A7E800271DAE /* CacheStorage.swift in Sources */,
 				42697DA92A3A1DBC00D6B1EB /* ExtrasManager.swift in Sources */,
 				428C45D12A2772C0009E90EF /* InterfaceOrientation.swift in Sources */,
 				42389DEC2872F497006024BA /* AdaptersRepository.swift in Sources */,

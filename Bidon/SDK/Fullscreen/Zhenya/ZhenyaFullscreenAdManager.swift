@@ -19,7 +19,75 @@ where
     ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType>,
     AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         
-    override func loadAd(pricefloor: Price, auctionKey: String?) {
+        override func loadAd(pricefloor: Price, auctionKey: String?) {
+            if !Cacher.storage.snapshot().isEmpty {
+                self.delegate?.adManager(self, didLoad: Cacher.storage.peek()!.ad, auctionInfo: auctionInfo)
+            } else {
+                super.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
+            }
+        }
         
-    }
+        override func show(from rootViewController: UIViewController) {
+            
+        }
+        
+        override func performAuction(_ auctionInfo: BaseFullscreenAdManager<AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>.AuctionInfo, tokens: [BiddingDemandToken]) {
+            
+            Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
+
+            let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
+
+            let observer = BaseAuctionObserver(
+                configuration: configuration,
+                adType: context.adType
+            )
+            if let auctionStartTimestamp {
+                observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
+            }
+
+            let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
+
+            let auction = AuctionControllerType { (builder: AuctionControllerBuilderType) in
+                builder.withAdaptersRepository(sdk.adaptersRepository)
+                builder.withAdUnitProvider(provider)
+                builder.withAuctionObserver(observer)
+                builder.withPricefloor(auctionInfo.pricefloor)
+                builder.withAdRevenueObserver(self.adRevenueObserver)
+                builder.withContext(context)
+                builder.withAuctionConfiguration(configuration)
+            }
+
+            state = .auction(controller: auction)
+
+            auction.load { [unowned observer, weak self] result in
+                guard let self = self else { return }
+
+                self.sendAuctionReport(observer.report)
+                var allDemands = observer.report.round.demands
+                if let biddingDemands = observer.report.round.bidding?.demands {
+                    allDemands += biddingDemands
+                }
+                self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
+
+                switch result {
+                case .success(let bid):
+                    adRevenueObserver.observe(bid)
+                    let controller = ImpressionControllerType(bid: bid)
+                    controller.delegate = self
+                    self.state = .ready(controller: controller)
+                    let ad = AdContainer(bid: bid)
+
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                    }
+                case .failure(let error):
+                    self.state = .idle
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self else { return }
+                        self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                    }
+                }
+            }
+        }
 }

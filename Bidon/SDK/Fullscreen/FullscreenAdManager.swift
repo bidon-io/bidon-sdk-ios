@@ -34,12 +34,13 @@ ImpressionControllerType: FullscreenImpressionController,
 ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType>,
 AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
-    fileprivate typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
+    typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
+    typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
+    typealias ZhenyaAuctionControllerType = ZhenyaAuctionController<AdTypeContextType>
 
-    private typealias AuctionInfo = AuctionRequest.ResponseBody
+    typealias AuctionInfo = AuctionRequest.ResponseBody
 
-    fileprivate enum State {
+    enum State {
         case idle
         case preparing
         case auction(controller: AuctionControllerType)
@@ -51,15 +52,15 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     private var networkManager: NetworkManager
 
     @Injected(\.sdk)
-    private var sdk: Sdk
+    var sdk: Sdk
 
-    private var state: State = .idle
+    var state: State = .idle
 
-    private weak var delegate: (any FullscreenAdManagerDelegate)?
+    weak var delegate: (any FullscreenAdManagerDelegate)?
 
-    private let context: AdTypeContextType
+    let context: AdTypeContextType
 
-    private lazy var adRevenueObserver: AdRevenueObserver = {
+    lazy var adRevenueObserver: AdRevenueObserver = {
         let observer = BaseAdRevenueObserver()
 
         observer.ads = { [weak self] in
@@ -82,9 +83,9 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
-    private var auctionStartTimestamp: TimeInterval?
+    var auctionStartTimestamp: TimeInterval?
 
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
 
@@ -194,7 +195,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private func performAuction(_ auctionInfo: AuctionInfo, tokens: [BiddingDemandToken]) {
+    func performAuction(_ auctionInfo: AuctionInfo, tokens: [BiddingDemandToken]) {
         Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
@@ -336,7 +337,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private func sendAuctionReport<T: AuctionReport>(_ report: T) {
+    func sendAuctionReport<T: AuctionReport>(_ report: T) {
         let request = context.statisticRequest { builder in
             builder.withEnvironmentRepository(sdk.environmentRepository)
             builder.withTestMode(sdk.isTestMode)
