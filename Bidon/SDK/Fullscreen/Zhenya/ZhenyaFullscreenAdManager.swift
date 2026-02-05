@@ -38,15 +38,15 @@ where
         }
         
         override func show(from rootViewController: UIViewController) {
-            guard let ad = Cacher.storage.popFirst()?.ad as? BidContainer else {
-                return
-            }
-            let bid = ad.bid
-            let imprController = ImpressionControllerType(bid: bid as! BidModel<AdTypeContextType.DemandProviderType>)
-            imprController.delegate = self
-            
             switch state {
             case .ready:
+                guard let ad = Cacher.storage.popFirst()?.ad as? BidContainer else {
+                    return
+                }
+                let bid = ad.bid
+                let imprController = ImpressionControllerType(bid: bid as! BidModel<AdTypeContextType.DemandProviderType>)
+                imprController.delegate = self
+                
                 state = .impression(controller: imprController)
                 imprController.show(from: rootViewController)
             default:
