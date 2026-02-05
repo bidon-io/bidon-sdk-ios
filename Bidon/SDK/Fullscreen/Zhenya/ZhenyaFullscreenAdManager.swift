@@ -92,6 +92,10 @@ where
                 }
                 
                 if isFirstLoad {
+                    let controller = ImpressionControllerType(bid: bid)
+                    controller.delegate = self
+                    self.state = .ready(controller: controller)
+                    
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
                         self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
