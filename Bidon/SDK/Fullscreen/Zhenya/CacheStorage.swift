@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct Item {
     let ad: Ad
     let manager: ZhenyaAdManager<
@@ -21,14 +19,13 @@ struct Item {
 
 final class CacheStorage {
 
-
     private let capacity: Int
     private let lock = NSLock()
 
-    /// items[0] — sticky head
-    /// items[1...] — отсортированный tail (DESC by price)
-    private var items: [Item] = []
+    /// Если true: items[0] закреплён и не сортируется; сортируем только items[1...]
+    private var stickyHeadActive: Bool = false
 
+    private var items: [Item] = []
     private var indexByKey: [String: Int] = [:]
 
     init(capacity: Int) {
@@ -40,7 +37,7 @@ final class CacheStorage {
     // MARK: - Public API
 
     @discardableResult
-    func insert(_ element: Item) -> Bool {
+    func insert(_ element: Item, sticky: Bool) -> Bool {
         lock.lock()
         defer {
             logCacheState(reason: "insert")
@@ -51,36 +48,55 @@ final class CacheStorage {
 
         let key = element.ad.id
 
-        // update
+        // update existing
         if let idx = indexByKey[key] {
             items[idx] = element
-            sortTailKeepingHead()
+
+            // если попросили sticky — поднимаем в голову
+            if sticky, idx != 0 {
+                promoteToStickyHead(at: idx)
+            }
+
+            sortAccordingToMode()
             rebuildIndex()
             trimIfNeeded()
             return true
         }
 
-        // first element → sticky
-        if items.isEmpty {
-            items.append(element)
-            indexByKey[key] = 0
-            return true
-        }
-
-        // full + too cheap → ignore
-        if items.count == capacity,
-           let cheapest = cheapestItem(),
-           element.ad.price <= cheapest.ad.price {
+        // capacity == 1 special case:
+        // если есть sticky head и вставка не sticky — нельзя вытеснять sticky
+        if capacity == 1, !items.isEmpty, stickyHeadActive, !sticky {
             return false
         }
 
-        items.append(element)
-        sortTailKeepingHead()
+        // full + too cheap -> ignore (учитываем sticky-режим)
+        if items.count == capacity, let threshold = cheapestAllowedToEvictPrice(), element.ad.price <= threshold {
+            return false
+        }
+
+        if items.isEmpty {
+            // Первый элемент: если sticky=true -> включаем sticky, иначе обычный режим (но массив из 1 элемента и так ок)
+            items.append(element)
+            indexByKey[key] = 0
+            stickyHeadActive = sticky
+            return true
+        }
+
+        if sticky {
+            // новый sticky становится головой; старая голова (если была) уходит в хвост
+            items.insert(element, at: 0)
+            stickyHeadActive = true
+        } else {
+            items.append(element)
+        }
+
+        sortAccordingToMode()
         rebuildIndex()
         trimIfNeeded()
         return true
     }
 
+    /// Возвращает items[0]. Если голова была sticky — выключает sticky-режим.
     func popFirst() -> Item? {
         lock.lock()
         defer {
@@ -93,9 +109,13 @@ final class CacheStorage {
         let first = items.removeFirst()
         indexByKey[first.ad.id] = nil
 
-        sortTailKeepingHead()
-        rebuildIndex()
+        if stickyHeadActive {
+            // sticky съеден — переходим в normal mode
+            stickyHeadActive = false
+            items.sort { $0.ad.price > $1.ad.price }
+        }
 
+        rebuildIndex()
         return first
     }
 
@@ -123,8 +143,9 @@ final class CacheStorage {
         var lines: [String] = []
         lines.append("[AdCaching] CACHE size: \(items.count) ->")
 
-        for item in items {
-            lines.append(format(element: item))
+        for (i, item) in items.enumerated() {
+            let prefix = (stickyHeadActive && i == 0) ? "[STICKY] " : ""
+            lines.append(prefix + format(element: item))
         }
 
         Logger.debug(lines.joined(separator: "\n"))
@@ -133,12 +154,24 @@ final class CacheStorage {
     private func format(element: Item) -> String {
         let ad = element.ad
         let bidType = ad.adUnit.bidType == .cpm ? "CPM" : "RTB"
-        let price = "\(ad.price)"
-
-        return "\(ad.networkName) / \(bidType) / \(price)"
+        return "\(ad.networkName) / \(bidType) / \(ad.price)"
     }
 
     // MARK: - Helpers
+
+    private func promoteToStickyHead(at idx: Int) {
+        let element = items.remove(at: idx)
+        items.insert(element, at: 0)
+        stickyHeadActive = true
+    }
+
+    private func sortAccordingToMode() {
+        if stickyHeadActive {
+            sortTailKeepingHead()
+        } else {
+            items.sort { $0.ad.price > $1.ad.price }
+        }
+    }
 
     private func sortTailKeepingHead() {
         guard items.count > 2 else { return }
@@ -148,33 +181,35 @@ final class CacheStorage {
         items = [head] + tail
     }
 
+    /// В sticky-режиме cheapest для вытеснения — только из хвоста.
+    private func cheapestAllowedToEvictPrice() -> Price? {
+        if items.isEmpty { return nil }
+
+        if stickyHeadActive {
+            // хвост пустой -> нечего вытеснять (кроме sticky, но его нельзя)
+            guard items.count >= 2 else { return nil }
+            // хвост отсортирован DESC => cheapest = last
+            return items.last?.ad.price
+        } else {
+            // весь массив отсортирован DESC => cheapest = last
+            return items.last?.ad.price
+        }
+    }
+
     private func trimIfNeeded() {
         while items.count > capacity {
-            guard let idx = indexOfCheapest() else { break }
-            let removed = items.remove(at: idx)
-            indexByKey[removed.ad.id] = nil
-        }
-        rebuildIndex()
-    }
-
-    private func cheapestItem() -> Item? {
-        guard let idx = indexOfCheapest() else { return nil }
-        return items[idx]
-    }
-
-    private func indexOfCheapest() -> Int? {
-        guard !items.isEmpty else { return nil }
-        var minIdx = 0
-        var minPrice = items[0].ad.price
-
-        for i in 1..<items.count {
-            let p = items[i].ad.price
-            if p < minPrice {
-                minPrice = p
-                minIdx = i
+            if stickyHeadActive {
+                // никогда не выкидываем sticky head — выкидываем cheapest из хвоста
+                guard items.count >= 2 else { break }
+                let removed = items.removeLast()
+                indexByKey[removed.ad.id] = nil
+            } else {
+                // обычный режим: cheapest в конце
+                let removed = items.removeLast()
+                indexByKey[removed.ad.id] = nil
             }
         }
-        return minIdx
+        rebuildIndex()
     }
 
     private func rebuildIndex() {

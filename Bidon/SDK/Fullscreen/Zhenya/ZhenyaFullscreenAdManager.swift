@@ -87,7 +87,7 @@ where
                 guard let self else { return }
                 let ad = BidContainer(bid: bid)
                 let item = Item(ad: ad, manager: self as! ZhenyaAdManager<InterstitialAdTypeContext, InterstitialConcurrentAuctionControllerBuilder, InterstitialImpressionController, InterstitialAdaptersFetcher>)
-                if Cacher.storage.insert(item) == true {
+                if Cacher.storage.insert(item, sticky: isFirstLoad) == true {
                     adRevenueObserver.observe(bid)
                 }
                 
