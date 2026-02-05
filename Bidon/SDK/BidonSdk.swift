@@ -109,6 +109,17 @@ public final class BidonSdk: NSObject {
             .environment(ExtrasManager.self)
             .extras[key] = value
     }
+    
+    @objc
+    public static func setAdCacheConfig(
+        _ cacheConfig: AdCacheConfig
+    ) {
+        shared
+            .environmentRepository
+            .environment(AppManager.self)
+            .updateAdCacheConfig(cacheConfig)
+        Logger.debug("[Cache] set cache config: \(cacheConfig)")
+    }
 
     @objc
     public static func setFramework(

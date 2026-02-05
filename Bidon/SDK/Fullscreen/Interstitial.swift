@@ -29,10 +29,33 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @Injected(\.sdk)
     private var sdk: Sdk
 
-    private lazy var manager = Manager(
-        context: InterstitialAdTypeContext(),
-        delegate: self
-    )
+    private lazy var manager: Manager = {
+        guard let config = BidonSdk.shared.environmentRepository.environment(AppManager.self).config else {
+            return Manager(
+                context: InterstitialAdTypeContext(),
+                delegate: self
+            )
+        }
+        
+        switch config.interstitial.strategy {
+        case 1:
+            return ZhenyaAdManager(
+                context: InterstitialAdTypeContext(),
+                delegate: self
+            )
+        case 2:
+            return DimaAdManager(
+                context: InterstitialAdTypeContext(),
+                delegate: self
+            )
+        default:
+            return Manager(
+                context: InterstitialAdTypeContext(),
+                delegate: self
+            )
+        }
+        
+    }()
 
     @objc public init(
         auctionKey: String? = nil

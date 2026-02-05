@@ -27,7 +27,7 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 }
 
 
-final class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>: NSObject, FullscreenAdManager where
+class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>: NSObject, FullscreenAdManager where
 AdTypeContextType: AdTypeContext,
 AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AdTypeContextType>,
 ImpressionControllerType: FullscreenImpressionController,
