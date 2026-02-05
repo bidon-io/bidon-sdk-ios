@@ -118,10 +118,11 @@ where
 
                 switch result {
                 case .success(let bid):
-                    let controller = ImpressionControllerType(bid: bid)
-                    controller.delegate = self
-                    self.state = .ready(controller: controller)
-                    let ad = AdContainer(bid: bid)
+                    break
+//                    let controller = ImpressionControllerType(bid: bid)
+//                    controller.delegate = self
+//                    self.state = .ready(controller: controller)
+//                    let ad = AdContainer(bid: bid)
 
                 case .failure(let error):
                     self.state = .idle
