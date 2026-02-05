@@ -7,6 +7,7 @@
 
 import Foundation
 
+import Foundation
 
 struct Item {
     let ad: Ad
@@ -20,12 +21,13 @@ struct Item {
 
 final class CacheStorage {
 
-    typealias Element = Item
 
     private let capacity: Int
     private let lock = NSLock()
 
-    private var items: [Element] = []
+    /// items[0] — sticky head
+    /// items[1...] — отсортированный tail (DESC by price)
+    private var items: [Item] = []
 
     private var indexByKey: [String: Int] = [:]
 
@@ -35,84 +37,144 @@ final class CacheStorage {
         self.items.reserveCapacity(capacity)
     }
 
-    var isEmpty: Bool {
-        lock.lock(); defer { lock.unlock() }
-        return items.isEmpty
-    }
-
-    var count: Int {
-        lock.lock(); defer { lock.unlock() }
-        return items.count
-    }
-
-    func snapshot() -> [Element] {
-        lock.lock(); defer { lock.unlock() }
-        return items
-    }
+    // MARK: - Public API
 
     @discardableResult
-    func insert(_ element: Element) -> Bool {
+    func insert(_ element: Item) -> Bool {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            logCacheState(reason: "insert")
+            lock.unlock()
+        }
 
-        let key = element.ad.id // change to ad.id if needed
+        logWaterfallPolling(for: element)
 
-        // Update existing (dedup)
+        let key = element.ad.id
+
+        // update
         if let idx = indexByKey[key] {
             items[idx] = element
-            // "When added — sort immediately"
-            items.sort { $0.ad.price > $1.ad.price }
+            sortTailKeepingHead()
             rebuildIndex()
             trimIfNeeded()
             return true
         }
 
-        // If full and element is not better than the cheapest — ignore.
-        if items.count == capacity, let cheapest = items.last, element.ad.price <= cheapest.ad.price {
+        // first element → sticky
+        if items.isEmpty {
+            items.append(element)
+            indexByKey[key] = 0
+            return true
+        }
+
+        // full + too cheap → ignore
+        if items.count == capacity,
+           let cheapest = cheapestItem(),
+           element.ad.price <= cheapest.ad.price {
             return false
         }
 
         items.append(element)
-        items.sort { $0.ad.price > $1.ad.price }   // always sorted
+        sortTailKeepingHead()
         rebuildIndex()
         trimIfNeeded()
         return true
     }
 
-    /// Pops the most expensive element (first). Returns nil if empty.
-    func popFirst() -> Element? {
+    func popFirst() -> Item? {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            logCacheState(reason: "pop")
+            lock.unlock()
+        }
 
         guard !items.isEmpty else { return nil }
+
         let first = items.removeFirst()
         indexByKey[first.ad.id] = nil
+
+        sortTailKeepingHead()
         rebuildIndex()
+
         return first
     }
-    
-    func peek() -> Element? {
+
+    func peek() -> Item? {
         lock.lock()
         defer { lock.unlock() }
         return items.first
     }
 
-    func removeAll() {
-        lock.lock(); defer { lock.unlock() }
-        items.removeAll(keepingCapacity: true)
-        indexByKey.removeAll(keepingCapacity: true)
+    // MARK: - Logging
+
+    private func logWaterfallPolling(for element: Item) {
+        Logger.debug("""
+        [AdCaching] waterfall polling adunits:
+        \(format(element: element))
+        """)
+    }
+
+    private func logCacheState(reason: String) {
+        guard !items.isEmpty else {
+            Logger.debug("[AdCaching] CACHE empty after \(reason)")
+            return
+        }
+
+        var lines: [String] = []
+        lines.append("[AdCaching] CACHE size: \(items.count) ->")
+
+        for item in items {
+            lines.append(format(element: item))
+        }
+
+        Logger.debug(lines.joined(separator: "\n"))
+    }
+
+    private func format(element: Item) -> String {
+        let ad = element.ad
+        let bidType = ad.adUnit.bidType == .cpm ? "CPM" : "RTB"
+        let price = "\(ad.price)"
+
+        return "\(ad.networkName) / \(bidType) / \(price)"
     }
 
     // MARK: - Helpers
 
+    private func sortTailKeepingHead() {
+        guard items.count > 2 else { return }
+        let head = items[0]
+        var tail = items.dropFirst()
+        tail.sort { $0.ad.price > $1.ad.price }
+        items = [head] + tail
+    }
+
     private func trimIfNeeded() {
-        guard items.count > capacity else { return }
-        // array is DESC sorted, so extra items are cheapest at the end
         while items.count > capacity {
-            let removed = items.removeLast()
+            guard let idx = indexOfCheapest() else { break }
+            let removed = items.remove(at: idx)
             indexByKey[removed.ad.id] = nil
         }
         rebuildIndex()
+    }
+
+    private func cheapestItem() -> Item? {
+        guard let idx = indexOfCheapest() else { return nil }
+        return items[idx]
+    }
+
+    private func indexOfCheapest() -> Int? {
+        guard !items.isEmpty else { return nil }
+        var minIdx = 0
+        var minPrice = items[0].ad.price
+
+        for i in 1..<items.count {
+            let p = items[i].ad.price
+            if p < minPrice {
+                minPrice = p
+                minIdx = i
+            }
+        }
+        return minIdx
     }
 
     private func rebuildIndex() {

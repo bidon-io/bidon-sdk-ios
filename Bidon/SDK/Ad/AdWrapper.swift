@@ -167,3 +167,90 @@ extension AdContainer {
         object.auctionId == auctionId
     }
 }
+
+final class BidContainer: NSObject, Ad {
+    final class AdNetworkUnitModel: NSObject, AdNetworkUnit {
+        let uid: String
+        let demandId: String
+        let label: String
+        let pricefloor: Price
+        let bidType: AdBidType
+        let extras: [String: BidonDecodable]
+        var extrasJsonString: String?
+
+        init(
+            uid: String,
+            demandId: String,
+            label: String,
+            pricefloor: Price,
+            bidType: AdBidType,
+            extras: [String: BidonDecodable]
+        ) {
+            self.uid = uid
+            self.demandId = demandId
+            self.pricefloor = pricefloor
+            self.label = label
+            self.bidType = bidType
+            self.extras = extras
+            self.extrasJsonString = extras.jsonString
+            super.init()
+        }
+
+        convenience init(_ adUnit: AnyAdUnit) {
+            self.init(
+                uid: adUnit.uid,
+                demandId: adUnit.demandId,
+                label: adUnit.label,
+                pricefloor: adUnit.pricefloor,
+                bidType: AdBidType(bidType: adUnit.bidType),
+                extras: adUnit.extrasDictionary ?? [:]
+            )
+        }
+    }
+
+    let id: String
+    let adType: AdType
+    let price: Price
+    let currencyCode: Currency?
+    let networkName: String
+    let dsp: String?
+    let auctionId: String
+    let adUnit: AdNetworkUnit
+    let bid: any Bid
+
+    init(
+        id: String,
+        adType: AdType,
+        price: Price,
+        currencyCode: Currency?,
+        networkName: String,
+        dsp: String?,
+        auctionId: String,
+        adUnit: AdNetworkUnitModel,
+        bid: any Bid
+    ) {
+        self.id = id
+        self.adType = adType
+        self.price = price
+        self.currencyCode = currencyCode
+        self.networkName = networkName
+        self.dsp = dsp
+        self.auctionId = auctionId
+        self.adUnit = adUnit
+        self.bid = bid
+    }
+
+    convenience init<T: Bid>(bid: T) where T.DemandAdType: DemandAd {
+        self.init(
+            id: bid.ad.id,
+            adType: bid.adType,
+            price: bid.price,
+            currencyCode: bid.ad.currency,
+            networkName: bid.adUnit.demandId,
+            dsp: bid.ad.dsp,
+            auctionId: bid.auctionConfiguration.auctionId,
+            adUnit: AdNetworkUnitModel(bid.adUnit),
+            bid: bid
+        )
+    }
+}

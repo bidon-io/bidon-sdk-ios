@@ -96,7 +96,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
 
                     let event = DirectDemandDidLoadAuctionEvent(bid: bid)
                     self.observer.log(event)
-
+                    
                 case .failure(let error):
                     logLoadingError(error: error)
                 }

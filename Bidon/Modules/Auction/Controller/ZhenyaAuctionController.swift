@@ -11,6 +11,7 @@ import Foundation
 final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionController {
     typealias DemandProviderType = AdTypeContextType.DemandProviderType
     typealias BidType = BidModel<DemandProviderType>
+    typealias SingleCompletion = ((BidType) -> Void)
 
     private let context: AdTypeContextType
     private let rounds: [AuctionRound]
@@ -32,7 +33,6 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
     private let operationsQueue = DispatchQueue(label: "com.bidon.auction.operationsQueue", attributes: .concurrent)
 
     private var executingOperation: (any AuctionOperationRequestDemand)?
-    private var maxPrice: Price
 
     private var _pendingOperations = [any AuctionOperationRequestDemand]()
     private let operationLock = NSLock()
@@ -51,6 +51,7 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
 
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
+    var singleLoadCompletion: SingleCompletion?
 
     private let finishLock = NSLock()
     private var isFinishing = false
@@ -69,7 +70,6 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
         self.auctionObserver = builder.auctionObserver
         self.adRevenueObserver = builder.adRevenueObserver
         self.auctionConfiguration = builder.auctionConfiguration
-        self.maxPrice = builder.pricefloor
     }
 
     //MARK: - Public
@@ -80,7 +80,7 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
             return
         }
         self.completion = completion
-
+        
         let timeout = auctionConfiguration.timeoutInSeconds
         setupAuctionTimeout(timeoutInSeconds: timeout)
 
@@ -154,12 +154,7 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
         guard let adUnit = adUnit(from: operation) else {
             return
         }
-        if adUnit.pricefloor < maxPrice {
-            handlePriceFloorBelowMax(adUnit: adUnit)
-            scheduleNextOperation()
-        } else {
-            performDemandRequest(operation)
-        }
+        performDemandRequest(operation)
     }
 
     private func performDemandRequest(_ operation: any AuctionOperationRequestDemand) {
@@ -178,21 +173,17 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
         let finishDemandOperation = BlockOperation { [weak self] in
             guard let self else { return }
 
+            if let bid = operation.bid {
+                singleLoadCompletion?(bid as! BidType)
+            }
             // If single ad unit is canceled we do not process the result and start next operation.
             guard !operation.isCancelled else {
                 self.scheduleNextOperation()
                 return
             }
-            self.rewriteMaxPriceIfNeeded(for: operation)
             self.scheduleNextOperation()
         }
         return finishDemandOperation
-    }
-
-    private func rewriteMaxPriceIfNeeded(for operation: any AuctionOperationRequestDemand) {
-        if let result = operation.bid as (any Bid)? {
-            self.maxPrice = result.price
-        }
     }
 
     //MARK: - Auction Timeout.

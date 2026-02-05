@@ -43,7 +43,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     enum State {
         case idle
         case preparing
-        case auction(controller: AuctionControllerType)
+        case auction(controller: any AuctionController)
         case ready(controller: ImpressionControllerType)
         case impression(controller: ImpressionControllerType)
     }

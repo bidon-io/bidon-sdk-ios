@@ -101,6 +101,13 @@ final class InitializationViewModel: ObservableObject, AdResponder {
 
     @MainActor
     func initialize() async {
+        let emptyConfig = AdTypeCacheConfig(adunitСacheSize: 0, noFillDelayMs: 0, strategy: 0)
+        let interstitialConfig = AdTypeCacheConfig(adunitСacheSize: 10, noFillDelayMs: 0, strategy: 1)
+        BidonSdk.setAdCacheConfig(AdCacheConfig(
+            banner: emptyConfig,
+            interstitial: interstitialConfig,
+            rewardedVideo: emptyConfig)
+        )
         update(.initializing)
         await adService.initialize()
         update(.initialized)
