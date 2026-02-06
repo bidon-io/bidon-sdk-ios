@@ -27,7 +27,7 @@ protocol FullscreenAdManagerDelegate: AnyObject {
 }
 
 
-class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>: NSObject, FullscreenAdManager where
+class BaseFullscreenAdManager <AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>: NSObject, FullscreenAdManager, FullscreenImpressionControllerDelegate where
 AdTypeContextType: AdTypeContext,
 AuctionControllerBuilderType: BaseConcurrentAuctionControllerBuilder<AdTypeContextType>,
 ImpressionControllerType: FullscreenImpressionController,
@@ -110,6 +110,20 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
             guard self.state.isIdle else {
                 Logger.warning("Fullscreen ad manager is not idle. Loading attempt is prohibited.")
+                return
+            }
+
+            self.fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
+        }
+    }
+    
+    func forceLoadAd(pricefloor: Price, auctionKey: String?) {
+        BidonSdk.addInitializationHandler { [weak self] in
+            guard let self else { return }
+
+            guard BidonSdk.isInitialized else {
+                Logger.warning("Bidon SDK is not initialized or failed initialization. Initialize SDK first")
+                self.delegate?.adManager(self, didFailToLoad: .message("SDK is not initialized"), auctionInfo: auctionInfo)
                 return
             }
 
@@ -370,10 +384,9 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
         impression.markTrackedIfNeeded(path)
     }
-}
-
-
-extension BaseFullscreenAdManager: FullscreenImpressionControllerDelegate {
+    
+    // MARK: - FullscreenImpressionControllerDelegate
+    
     func didExpire(_ impression: inout Impression) {
         state = .idle
         let container = AdContainer(impression: impression)

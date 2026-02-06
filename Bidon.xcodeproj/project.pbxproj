@@ -191,6 +191,8 @@
 		49FBCCF92F34A67600271DAE /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCF82F34A67600271DAE /* Cacher.swift */; };
 		49FBCCFB2F34A7E800271DAE /* CacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */; };
 		49FBCCFD2F34AC6100271DAE /* ZhenyaAuctionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCFC2F34AC6100271DAE /* ZhenyaAuctionController.swift */; };
+		49FBCCFF2F360DE800271DAE /* ZhenyaManagerPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */; };
+		49FBCD012F360E4200271DAE /* ZHENYA_POOL_README.md in Resources */ = {isa = PBXBuildFile; fileRef = 49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */; };
 		49FE393A2BC54EEF000865FD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -381,6 +383,8 @@
 		49FBCCF82F34A67600271DAE /* Cacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
 		49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStorage.swift; sourceTree = "<group>"; };
 		49FBCCFC2F34AC6100271DAE /* ZhenyaAuctionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhenyaAuctionController.swift; sourceTree = "<group>"; };
+		49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhenyaManagerPool.swift; sourceTree = "<group>"; };
+		49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ZHENYA_POOL_README.md; sourceTree = "<group>"; };
 		49FE39392BC54EEF000865FD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -561,6 +565,8 @@
 				4224AA6E28B7E11200E8D886 /* FullscreenImpressionController.swift */,
 				424F181228ABCF470082AEF3 /* InterstitialImpressionController.swift */,
 				4224AA7028B7E2F400E8D886 /* RewardedImpressionController.swift */,
+				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
+				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
 			);
 			path = Fullscreen;
 			sourceTree = "<group>";
@@ -1156,6 +1162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49FE393A2BC54EEF000865FD /* PrivacyInfo.xcprivacy in Resources */,
+				49FBCD012F360E4200271DAE /* ZHENYA_POOL_README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1268,6 +1275,7 @@
 				427B1C1629A4CE34007D4E93 /* AdRevenue.swift in Sources */,
 				426DD79D28A4F4AC00A1ADF5 /* ConfigurationRequestBuilder.swift in Sources */,
 				428CCBF728A12C8D003123EF /* Date+Extensions.swift in Sources */,
+				49FBCCFF2F360DE800271DAE /* ZhenyaManagerPool.swift in Sources */,
 				42E158AA2B18A249004801AB /* AdViewStatisticsRequestBuilder.swift in Sources */,
 				428C45CA2A274CD2009E90EF /* BiddingDemandProvider.swift in Sources */,
 				429EE2C2286CA23F009439C6 /* Repository.swift in Sources */,
