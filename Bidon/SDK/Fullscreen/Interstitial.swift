@@ -108,8 +108,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         
         switch config.interstitial.strategy {
         case 2:
-            return DimaAdManager(
-                context: InterstitialAdTypeContext(),
+            return DimaSandbox.buildInterstitialManager(
                 delegate: self
             )
         default:
