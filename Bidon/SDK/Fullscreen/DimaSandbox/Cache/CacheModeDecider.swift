@@ -14,6 +14,7 @@ extension CacheModeDecider {
         let marketP80: Price?
         let lastWinnerPrice: Price?
         let isLastWinnerTrusted: Bool
+        let isLastWinnerOutlier: Bool
         let now: Date
         let lastPriceGapModeBAt: Date?
         let isColdStart: Bool
@@ -48,30 +49,45 @@ final class CacheModeDecider {
 
     func decide(for input: Input) -> Decision {
         let cachedPrice = input.cachedPrice
+        let depthBuffer = config.depthBuffer
+        let healthyDepth = input.targetDepth + depthBuffer
 
-        if cachedPrice < config.hardAbsoluteFloor {
+        // Phase 1: Cold start - always use cache (need fills, not optimization)
+        if input.isColdStart {
             return Decision(
-                mode: .fullAuction,
-                reason: "Below absolute floor: cached=\(fmt(cachedPrice)) < floor=\(fmt(config.hardAbsoluteFloor))",
+                mode: .useCache,
+                reason: "Cold start: using cache (price=\(fmt(cachedPrice)), depth=\(input.cacheDepth))",
                 markPriceGapNow: false
             )
         }
 
-        if input.isColdStart {
+        // Phase 2: Building depth - prefer auction to collect runner-ups
+        if input.cacheDepth < input.targetDepth {
+            // Cache is thin - run auction to build depth, BUT use cache if TTL expiring
             if input.remainingTTL < config.expiringTTLThreshold {
                 return Decision(
-                    mode: .tryToBeat,
-                    reason: "Cold start + TTL expiring (\(Int(input.remainingTTL))s) - limited tryToBeat",
+                    mode: .useCache,
+                    reason: "Building depth but TTL expiring (\(Int(input.remainingTTL))s) - using cache",
                     markPriceGapNow: false
                 )
             }
             return Decision(
-                mode: .useCache,
-                reason: "Cold start: prefer cache (price=\(fmt(cachedPrice)), TTL=\(Int(input.remainingTTL))s)",
+                mode: .fullAuction,
+                reason: "Building depth: depth=\(input.cacheDepth) < target=\(input.targetDepth), run auction for runner-ups",
                 markPriceGapNow: false
             )
         }
 
+        // Phase 3: Depth OK but not healthy yet - use cache, no tryToBeat
+        if input.cacheDepth < healthyDepth {
+            return Decision(
+                mode: .useCache,
+                reason: "Depth not healthy yet (\(input.cacheDepth) < \(healthyDepth)), using cache",
+                markPriceGapNow: false
+            )
+        }
+
+        // Phase 4: Healthy depth - can consider tryToBeat if conditions met
         guard input.isStatsWarm else {
             return Decision(
                 mode: .useCache,
@@ -80,35 +96,55 @@ final class CacheModeDecider {
             )
         }
 
-        if input.cacheDepth < input.targetDepth - 1 {
+        // TryToBeat gates: trusted + not outlier + healthy depth + stats warm
+        let canTryToBeat = input.isLastWinnerTrusted && !input.isLastWinnerOutlier
+
+        // Apply dynamic absolute floor
+        let dynamicFloor = calculateDynamicFloor(input: input)
+        if cachedPrice < dynamicFloor {
+            if canTryToBeat {
+                return Decision(
+                    mode: .tryToBeat,
+                    reason: "Below dynamic floor, tryToBeat: cached=\(fmt(cachedPrice)) < floor=\(fmt(dynamicFloor))",
+                    markPriceGapNow: false
+                )
+            }
             return Decision(
                 mode: .useCache,
-                reason: "Cache depth too low (\(input.cacheDepth) < \(input.targetDepth - 1)), preserving cache",
+                reason: "Below floor but can't tryToBeat (trusted=\(input.isLastWinnerTrusted), outlier=\(input.isLastWinnerOutlier))",
                 markPriceGapNow: false
             )
         }
 
+        // TTL expiring - tryToBeat if allowed
         if input.remainingTTL < config.expiringTTLThreshold {
+            if canTryToBeat {
+                return Decision(
+                    mode: .tryToBeat,
+                    reason: "TTL expiring (\(Int(input.remainingTTL))s), tryToBeat allowed",
+                    markPriceGapNow: false
+                )
+            }
             return Decision(
-                mode: .tryToBeat,
-                reason: "TTL expiring (\(Int(input.remainingTTL))s < \(Int(config.expiringTTLThreshold))s)",
+                mode: .useCache,
+                reason: "TTL expiring but can't tryToBeat, using cache",
                 markPriceGapNow: false
             )
         }
 
+        // Price-gap check (soft/hard thresholds)
         let thresholds = calculateThresholds(input: input)
 
         guard let thresholds else {
             return Decision(
                 mode: .useCache,
-                reason: "No market data, using cache (price=\(fmt(cachedPrice)) >= floor=\(fmt(config.hardAbsoluteFloor)))",
+                reason: "No market data, using cache (price=\(fmt(cachedPrice)))",
                 markPriceGapNow: false
             )
         }
 
         let (rawSoft, rawHard, thresholdSource) = thresholds
-
-        let finalHard = max(rawHard, config.hardAbsoluteFloor)
+        let finalHard = max(rawHard, dynamicFloor)
         let finalSoft = max(rawSoft, finalHard)
 
         let cooldownState = checkCooldown(
@@ -120,9 +156,9 @@ final class CacheModeDecider {
         let belowSoft = cachedPrice < finalSoft
         let belowHard = cachedPrice < finalHard
 
-        let baseInfo = "cached=\(fmt(cachedPrice)), soft=\(fmt(finalSoft)), hard=\(fmt(finalHard)), cooldown=\(cooldownState.description), source=\(thresholdSource)"
+        let baseInfo = "cached=\(fmt(cachedPrice)), soft=\(fmt(finalSoft)), hard=\(fmt(finalHard)), cooldown=\(cooldownState.description), source=\(thresholdSource), canTryToBeat=\(canTryToBeat)"
 
-        if belowHard {
+        if belowHard && canTryToBeat {
             return Decision(
                 mode: .tryToBeat,
                 reason: "HARD bypass: \(baseInfo)",
@@ -130,25 +166,17 @@ final class CacheModeDecider {
             )
         }
 
-        if belowSoft {
-            if !cooldownState.isActive {
-                return Decision(
-                    mode: .tryToBeat,
-                    reason: "Price-gap: \(baseInfo)",
-                    markPriceGapNow: true
-                )
-            } else {
-                return Decision(
-                    mode: .useCache,
-                    reason: "Cooldown active, above hard: \(baseInfo)",
-                    markPriceGapNow: false
-                )
-            }
+        if belowSoft && canTryToBeat && !cooldownState.isActive {
+            return Decision(
+                mode: .tryToBeat,
+                reason: "Price-gap: \(baseInfo)",
+                markPriceGapNow: true
+            )
         }
 
         return Decision(
             mode: .useCache,
-            reason: "Above soft threshold: \(baseInfo)",
+            reason: "Above thresholds or cooldown: \(baseInfo)",
             markPriceGapNow: false
         )
     }
@@ -194,6 +222,16 @@ private extension CacheModeDecider {
         }
 
         return nil
+    }
+
+    func calculateDynamicFloor(input: Input) -> Price {
+        // Dynamic floor based on p80 when available, otherwise use hardAbsoluteFloor
+        if let p80 = input.marketP80, p80 > 0 {
+            // Use p80 * hard multiplier as dynamic floor
+            return max(config.hardAbsoluteFloor * 0.5, p80 * config.hard.p80Multiplier)
+        }
+        // Fallback to static floor
+        return config.hardAbsoluteFloor
     }
 
     func checkCooldown(

@@ -40,6 +40,10 @@ final class BidCache: AdCacheStrategy {
 
     private var lastMaintenanceAt: Date = .distantPast
 
+    // Cooldown: entries released via releaseWithCooldown won't be re-reserved until cooldown expires
+    private var cooldownUntil: [String: Date] = [:]
+    private let defaultCooldownDuration: TimeInterval = 60
+
     public init(config: Config = .init()) {
         self.config = config
     }
@@ -99,6 +103,11 @@ final class BidCache: AdCacheStrategy {
                     guard !entry.isExpired else { continue }
                     guard entry.price >= pricefloor else { continue }
                     guard reservedById[entry.meta.entryId] == nil else { continue }
+
+                    // Skip entries in cooldown (recently rejected)
+                    if let cooldownEnd = cooldownUntil[entry.meta.entryId], Date() < cooldownEnd {
+                        continue
+                    }
 
                     // Pick best by price desc, then by later expiresAt (prefer longer TTL)
                     if best == nil || isBetter(entry, than: best!) {
@@ -173,6 +182,42 @@ final class BidCache: AdCacheStrategy {
             self.enforcePerKeyLimitLocked(key: key)
             self.enforceGlobalLimitLocked()
         }
+    }
+
+    /// Release with cooldown - prevents immediate re-reservation (use for fullAuction rejections)
+    public func releaseWithCooldown(entryId: String, cooldown: TimeInterval? = nil) {
+        let cooldownDuration = cooldown ?? defaultCooldownDuration
+        Logger.adCacheD(prefix: "BidCache", message: "releaseWithCooldown() called for entryId=\(entryId), cooldown=\(Int(cooldownDuration))s")
+        q.async(flags: .barrier) { [weak self] in
+            guard let self else { return }
+            self.cooldownUntil[entryId] = Date().addingTimeInterval(cooldownDuration)
+            self.releaseLocked(entryId: entryId)
+        }
+    }
+
+    private func releaseLocked(entryId: String) {
+        opportunisticMaintenanceLocked()
+
+        guard let entry = reservedById.removeValue(forKey: entryId) else {
+            Logger.adCacheD(prefix: "BidCache", message: "release() no-op: entryId=\(entryId) not reserved")
+            return
+        }
+        guard !entry.isExpired else {
+            Logger.adCacheD(prefix: "BidCache", message: "Released entry is expired, removing: demandId=\(entry.demandId)")
+            removeEverywhereLocked(entryId: entryId)
+            return
+        }
+
+        let key = entry.cacheKey
+        if availableByKey[key] == nil { availableByKey[key] = [] }
+        entry.reservationExpiresAt = nil
+        availableByKey[key]!.append(entry)
+        sortAvailableLocked(forKey: key)
+
+        Logger.adCacheD(prefix: "BidCache", message: "Released entry back to available: demandId=\(entry.demandId), price=\(entry.price)")
+
+        enforcePerKeyLimitLocked(key: key)
+        enforceGlobalLimitLocked()
     }
 
     public func peek(adType: AdType, pricefloor: Price) -> CachedBid? {
@@ -328,7 +373,13 @@ final class BidCache: AdCacheStrategy {
             internalStats.expiredRemovals += 1
         }
 
-        // 4) Enforce caps
+        // 4) Clean up expired cooldowns
+        let expiredCooldowns = cooldownUntil.filter { $0.value <= now }
+        for (id, _) in expiredCooldowns {
+            cooldownUntil.removeValue(forKey: id)
+        }
+
+        // 5) Enforce caps
         enforceGlobalLimitLocked()
         rebuildIndexesLockedIfNeeded()
     }

@@ -76,36 +76,72 @@ final class WarmupTracker {
     func detectOutlier(winner: Price, secondPrice: Price?, p80: Price?) -> OutlierResult {
         let config = outlierConfig
 
+        // Adaptive thresholds based on p80 (if available)
+        let adaptiveGapAbsolute = calculateAdaptiveGapAbsolute(p80: p80, baseConfig: config)
+        let adaptiveGapMultiplier = calculateAdaptiveGapMultiplier(p80: p80, baseConfig: config)
+        let adaptiveP80Multiplier = calculateAdaptiveP80Multiplier(p80: p80, baseConfig: config)
+
         if let second = secondPrice, second > 0.01 {
             let ratio = winner / second
-            if ratio >= config.gapMultiplier {
+            if ratio >= adaptiveGapMultiplier {
+                let ratioStr = String(format: "%.1f", ratio)
+                let multStr = String(format: "%.1f", adaptiveGapMultiplier)
                 return OutlierResult(
                     isOutlier: true,
-                    reason: "Ratio-gap: \(fmt(winner))/\(fmt(second))=\(String(format: "%.1f", ratio)) >= \(config.gapMultiplier)"
+                    reason: "Ratio-gap: \(fmt(winner))/\(fmt(second))=\(ratioStr) >= \(multStr)"
                 )
             }
         }
 
         if let second = secondPrice {
             let gap = winner - second
-            if gap >= config.gapAbsolute {
+            if gap >= adaptiveGapAbsolute {
                 return OutlierResult(
                     isOutlier: true,
-                    reason: "Absolute-gap: \(fmt(winner))-\(fmt(second))=\(fmt(gap)) >= \(fmt(config.gapAbsolute))"
+                    reason: "Absolute-gap: \(fmt(winner))-\(fmt(second))=\(fmt(gap)) >= \(fmt(adaptiveGapAbsolute))"
                 )
             }
         }
 
         if let p80, p80 > 0 {
-            let threshold = p80 * config.outlierP80Multiplier
+            let threshold = p80 * adaptiveP80Multiplier
             if winner >= threshold {
+                let multStr = String(format: "%.1f", adaptiveP80Multiplier)
                 return OutlierResult(
                     isOutlier: true,
-                    reason: "P80-outlier: \(fmt(winner)) >= \(fmt(p80))*\(config.outlierP80Multiplier)=\(fmt(threshold))"
+                    reason: "P80-outlier: \(fmt(winner)) >= \(fmt(p80))*\(multStr)=\(fmt(threshold))"
                 )
             }
         }
         return .notOutlier
+    }
+
+    // MARK: - Adaptive Thresholds
+
+    private func calculateAdaptiveGapAbsolute(p80: Price?, baseConfig: TrafficProfile.OutlierConfig) -> Price {
+        guard let p80, p80 > 0 else { return baseConfig.gapAbsolute }
+
+        // gapAbsolute grows with price level: clamp(p80 * 0.6, minAbs, maxAbs)
+        let profile = profileSelector.profile
+        let (minAbs, maxAbs): (Price, Price) = profile == .cheap ? (0.25, 0.8) : (1.0, 3.0)
+        return min(max(p80 * 0.6, minAbs), maxAbs)
+    }
+
+    private func calculateAdaptiveGapMultiplier(p80: Price?, baseConfig: TrafficProfile.OutlierConfig) -> Double {
+        guard let p80, p80 > 0 else { return baseConfig.gapMultiplier }
+
+        // gapMultiplier: higher on cheap traffic, lower on expensive
+        // Formula: 2.2 + 0.8 * (1.0 / max(0.3, p80)), clamped [2.4, 3.6]
+        let rawMultiplier = 2.2 + 0.8 * (1.0 / max(0.3, p80))
+        return min(max(rawMultiplier, 2.4), 3.6)
+    }
+
+    private func calculateAdaptiveP80Multiplier(p80: Price?, baseConfig: TrafficProfile.OutlierConfig) -> Double {
+        guard let p80, p80 > 0 else { return baseConfig.outlierP80Multiplier }
+
+        // outlierP80Multiplier: 1.7 + 0.6 * (0.6 / max(0.6, p80)), clamped [1.7, 2.5]
+        let rawMultiplier = 1.7 + 0.6 * (0.6 / max(0.6, p80))
+        return min(max(rawMultiplier, 1.7), 2.5)
     }
 
     func isOutlierWinner(winner: Price, secondPrice: Price?, p80: Price?) -> Bool {

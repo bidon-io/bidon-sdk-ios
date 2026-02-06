@@ -71,8 +71,6 @@ final class RefillManager {
         self.profileSelector = profileSelector
     }
 
-    // MARK: - Recording
-
     func recordRefill() {
         queue.async(flags: .barrier) { [self] in
             lastRefillAt = Date()
@@ -87,7 +85,6 @@ final class RefillManager {
             lastRefillAt = Date()
             consecutiveFailures += 1
 
-            // Downgrade floor source priority after failure
             if lastFloorSource == .second {
                 lastFloorSource = .sticky
                 Logger.adCacheD(prefix: "Refill", message: "Failure: downgraded source second→sticky")
@@ -108,8 +105,6 @@ final class RefillManager {
         }
     }
 
-    // MARK: - Decision
-
     func shouldRefill(cacheDepth: Int, reason: RefillReason) -> RefillDecision {
         queue.sync {
             guard refillsThisSession < policy.maxRefillsPerSession else {
@@ -121,7 +116,6 @@ final class RefillManager {
                 )
             }
 
-            // Calculate effective cooldown with backoff
             let backoff = min(
                 policy.minRefillInterval + Double(consecutiveFailures) * policy.backoffIntervalStep,
                 policy.maxBackoffInterval
@@ -163,44 +157,47 @@ final class RefillManager {
             return RefillDecision(
                 shouldRefill: true,
                 reason: reasonStr,
-                suggestedPricefloor: nil,  // Floor calculated separately with context
+                suggestedPricefloor: nil,
                 floorSource: nil
             )
         }
     }
-
-    // MARK: - Floor Calculation
-
     func calculateRefillFloor(context: RefillContext) -> (floor: Price, source: FloorSource) {
         let config = profileSelector.profile.refill
         var base: Price
         var source: FloorSource
 
-        // Priority: p80 → second → sticky
-        if let p80 = context.p80, p80 > 0 {
-            base = p80 * config.p80Multiplier
-            source = .p80
-        } else if let second = context.secondPrice, second > 0 {
-            base = second * config.secondMultiplier
-            source = .second
+        let useConservative = context.isColdStart || context.isOutlier || context.cacheDepth == 0
+
+        if useConservative {
+            if let p80 = context.p80, p80 > 0 {
+                base = min(p80 * config.p80Multiplier * 0.8, context.stickyFloor * 1.5)
+                source = .p80
+            } else {
+                base = context.stickyFloor * config.stickyMultiplier
+                source = .sticky
+            }
         } else {
-            base = context.stickyFloor * config.stickyMultiplier
-            source = .sticky
+            if let p80 = context.p80, p80 > 0 {
+                base = p80 * config.p80Multiplier
+                source = .p80
+            } else if let second = context.secondPrice, second > 0 {
+                base = second * config.secondMultiplier
+                source = .second
+            } else {
+                base = context.stickyFloor * config.stickyMultiplier
+                source = .sticky
+            }
         }
 
-        // Clamp: min = sticky, max depends on cold/outlier/cacheEmpty
-        let useStrictMax = context.isColdStart || context.isOutlier || context.cacheDepth == 0
-        let maxFloor = useStrictMax ? config.maxFloorCold : config.maxFloor
-
+        let maxFloor = useConservative ? config.maxFloorCold : config.maxFloor
         var floor = max(context.stickyFloor, min(base, maxFloor))
 
-        // Safety cap if p80 warm
-        if let p80 = context.p80, p80 > 0 {
+        if !useConservative, let p80 = context.p80, p80 > 0 {
             let p80Cap = p80 * config.p80CapMultiplier
             floor = min(floor, p80Cap)
         }
 
-        // Apply backoff multiplier if we had failures
         if consecutiveFailures > 0 {
             let backoffFloor = floor * pow(config.backoffMultiplier, Double(consecutiveFailures))
             floor = max(context.stickyFloor, backoffFloor)
@@ -212,13 +209,11 @@ final class RefillManager {
 
         Logger.adCacheD(
             prefix: "Refill",
-            message: "Floor=\(fmt(floor)) from \(source.rawValue), cold=\(context.isColdStart), outlier=\(context.isOutlier), depth=\(context.cacheDepth), failures=\(consecutiveFailures)"
+            message: "Floor=\(fmt(floor)) from \(source.rawValue), cold=\(context.isColdStart), outlier=\(context.isOutlier), depth=\(context.cacheDepth), failures=\(consecutiveFailures), conservative=\(useConservative)"
         )
 
         return (floor, source)
     }
-
-    // MARK: - Query
 
     func canRefill() -> Bool {
         queue.sync {
@@ -253,8 +248,6 @@ final class RefillManager {
         }
     }
 
-    // MARK: - Reset
-
     func resetSession() {
         queue.async(flags: .barrier) { [self] in
             refillsThisSession = 0
@@ -264,8 +257,6 @@ final class RefillManager {
             Logger.adCacheD(prefix: "Refill", message: "Session reset")
         }
     }
-
-    // MARK: - Helpers
 
     private func fmt(_ price: Price) -> String {
         String(format: "%.2f", price)

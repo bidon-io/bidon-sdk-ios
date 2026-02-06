@@ -64,6 +64,21 @@ final class DFullscreenAdManager: InterstitialBaseManager {
     }
 
     override func loadAd(pricefloor: Price, auctionKey: String?) {
+        // If refill is running, try to serve from cache directly (don't start another auction)
+        if isRefillAuction {
+            Logger.adCacheD(prefix: "Cache", message: "loadAd during refill - trying cache-only")
+            let adjustedPricefloor = floorManager.adjustedFloor(requested: pricefloor)
+            if let cachedBid = getReservedBid(pricefloor: adjustedPricefloor) {
+                cacheStats.recordHit()
+                floorManager.recordFill(ecpm: cachedBid.price)
+                useCachedBid(cachedBid)
+            } else {
+                Logger.adCacheD(prefix: "Cache", message: "No cache during refill, failing")
+                notifyDidFailToLoad(.noFill)
+            }
+            return
+        }
+
         let adjustedPricefloor = floorManager.adjustedFloor(requested: pricefloor)
         Logger.adCacheD(prefix: "Cache", message: "loadAd called with pricefloor: \(pricefloor) (adjusted: \(adjustedPricefloor)), profile=\(profile), state=\(state), sdkInitialized=\(BidonSdk.isInitialized)")
 
@@ -102,7 +117,8 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             super.loadAd(pricefloor: targetFloor, auctionKey: auctionKey)
 
         case .fullAuction:
-            cache.release(entryId: cachedBid.meta.entryId)
+            // Use cooldown to prevent immediate re-reservation of rejected entry
+            cache.releaseWithCooldown(entryId: cachedBid.meta.entryId)
             cacheStats.recordMiss()
             super.loadAd(pricefloor: adjustedPricefloor, auctionKey: auctionKey)
         }
@@ -324,16 +340,20 @@ final class DFullscreenAdManager: InterstitialBaseManager {
 
     private func calculateMinPriceForCaching(winnerPrice: Price, pricefloor: Price) -> Price {
         let cacheConfig = profile.cache
+        let tryToBeatConfig = profile.tryToBeat
         let snap = marketStats.snapshot()
         let cacheDepth = cache.count(adType: .interstitial)
         let isColdStart = warmupTracker.isColdStart
         let statsWarm = snap.count >= marketStats.minSamples
+        let isTrusted = DimaSandbox.lastWinnerTrusted
 
-        let needsDepth = isColdStart || cacheDepth < refillManager.targetDepth
+        // Use depth buffer for QUALITY mode threshold
+        let healthyDepth = refillManager.targetDepth + tryToBeatConfig.depthBuffer
+        let needsDepth = isColdStart || cacheDepth < healthyDepth
 
         if needsDepth {
             let fillDepthFloor = max(pricefloor, floorManager.currentFloor, cacheConfig.minCachePriceFloor)
-            Logger.adCacheD(prefix: "Cache", message: "FILL-DEPTH mode: minPrice=\(fmt(fillDepthFloor)) (depth=\(cacheDepth), cold=\(isColdStart))")
+            Logger.adCacheD(prefix: "Cache", message: "FILL-DEPTH mode: minPrice=\(fmt(fillDepthFloor)) (depth=\(cacheDepth)/\(healthyDepth), cold=\(isColdStart))")
             return fillDepthFloor
         }
 
@@ -344,7 +364,8 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             qualityFloor = max(qualityFloor, p80Floor)
         }
 
-        if !lastWinnerOutlier {
+        // WinnerShare only if trusted AND not outlier
+        if !lastWinnerOutlier && isTrusted {
             let winnerFloor = winnerPrice * cacheConfig.winnerShare
             qualityFloor = max(qualityFloor, winnerFloor)
         }
@@ -354,7 +375,7 @@ final class DFullscreenAdManager: InterstitialBaseManager {
 
         qualityFloor = max(qualityFloor, cacheConfig.minCachePriceFloor)
 
-        Logger.adCacheD(prefix: "Cache", message: "QUALITY mode: minPrice=\(fmt(qualityFloor)) (statsWarm=\(statsWarm), outlier=\(lastWinnerOutlier))")
+        Logger.adCacheD(prefix: "Cache", message: "QUALITY mode: minPrice=\(fmt(qualityFloor)) (statsWarm=\(statsWarm), outlier=\(lastWinnerOutlier), trusted=\(isTrusted))")
         return qualityFloor
     }
 
@@ -433,6 +454,7 @@ final class DFullscreenAdManager: InterstitialBaseManager {
                 marketP80: snap.p80,
                 lastWinnerPrice: refillStats.lastWinnerPrice,
                 isLastWinnerTrusted: DimaSandbox.lastWinnerTrusted,
+                isLastWinnerOutlier: lastWinnerOutlier,
                 now: now,
                 lastPriceGapModeBAt: DimaSandbox.lastPriceGapModeBAt,
                 isColdStart: isColdStart,

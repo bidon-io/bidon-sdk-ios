@@ -7,18 +7,35 @@
 
 import Foundation
 
-// MARK: - Traffic Profile
-
 enum TrafficProfile {
     case cheap
     case expensive
-
-    // MARK: - Outlier Detection
 
     struct OutlierConfig {
         let gapMultiplier: Double
         let gapAbsolute: Price
         let outlierP80Multiplier: Double
+    }
+
+    struct WarmupConfig {
+        let warmupSeconds: TimeInterval
+        let firstImpressions: Int
+    }
+
+    struct RefillConfig {
+        let p80Multiplier: Double
+        let secondMultiplier: Double
+        let stickyMultiplier: Double
+        let maxFloor: Price
+        let maxFloorCold: Price
+        let p80CapMultiplier: Double
+        let backoffMultiplier: Double
+    }
+
+    struct CacheConfig {
+        let winnerShare: Double
+        let p80CacheMultiplier: Double
+        let minCachePriceFloor: Price
     }
 
     var outlier: OutlierConfig {
@@ -38,13 +55,6 @@ enum TrafficProfile {
         }
     }
 
-    // MARK: - Warmup
-
-    struct WarmupConfig {
-        let warmupSeconds: TimeInterval
-        let firstImpressions: Int
-    }
-
     var warmup: WarmupConfig {
         switch self {
         case .cheap:
@@ -52,18 +62,6 @@ enum TrafficProfile {
         case .expensive:
             return WarmupConfig(warmupSeconds: 180, firstImpressions: 5)
         }
-    }
-
-    // MARK: - Refill Floor
-
-    struct RefillConfig {
-        let p80Multiplier: Double
-        let secondMultiplier: Double
-        let stickyMultiplier: Double
-        let maxFloor: Price
-        let maxFloorCold: Price
-        let p80CapMultiplier: Double
-        let backoffMultiplier: Double
     }
 
     var refill: RefillConfig {
@@ -91,14 +89,6 @@ enum TrafficProfile {
         }
     }
 
-    // MARK: - Cache MinPrice
-
-    struct CacheConfig {
-        let winnerShare: Double
-        let p80CacheMultiplier: Double
-        let minCachePriceFloor: Price 
-    }
-
     var cache: CacheConfig {
         switch self {
         case .cheap:
@@ -116,14 +106,13 @@ enum TrafficProfile {
         }
     }
 
-    // MARK: - TryToBeat
-
     struct TryToBeatConfig {
         let beatMultiplier: Double
-        let beatMargin: Double  // Success margin: winner >= fallback * (1 + beatMargin)
+        let beatMargin: Double
         let expiringTTLThreshold: TimeInterval
         let priceGapCooldown: TimeInterval
         let hardAbsoluteFloor: Price
+        let depthBuffer: Int
 
         struct Threshold {
             let p80Multiplier: Double
@@ -142,7 +131,8 @@ enum TrafficProfile {
                 beatMargin: 0.02,
                 expiringTTLThreshold: 35,
                 priceGapCooldown: 90,
-                hardAbsoluteFloor: 0.30,
+                hardAbsoluteFloor: 0.18,
+                depthBuffer: 1,
                 soft: .init(p80Multiplier: 0.75, lastWinnerMultiplier: 0.70),
                 hard: .init(p80Multiplier: 0.55, lastWinnerMultiplier: 0.55)
             )
@@ -153,6 +143,7 @@ enum TrafficProfile {
                 expiringTTLThreshold: 45,
                 priceGapCooldown: 120,
                 hardAbsoluteFloor: 1.00,
+                depthBuffer: 2,
                 soft: .init(p80Multiplier: 0.80, lastWinnerMultiplier: 0.75),
                 hard: .init(p80Multiplier: 0.60, lastWinnerMultiplier: 0.60)
             )
@@ -162,16 +153,25 @@ enum TrafficProfile {
 
 final class ProfileSelector {
     struct SelectionConfig {
-        let winsRequired: Int
-        let medianThreshold: Price
-        let p80Threshold: Price
+        let windowSize: Int
+        let minWinsToEvaluate: Int
+        let evalInterval: Int
+
+        let toExpensiveMedian: Price
+        let toCheapMedian: Price
+        let toExpensiveP80: Price
+        let toCheapP80: Price
         let highWinThreshold: Price
         let highWinCountRequired: Int
 
         static let `default` = SelectionConfig(
-            winsRequired: 5,
-            medianThreshold: 1.5,
-            p80Threshold: 1.2,
+            windowSize: 10,
+            minWinsToEvaluate: 5,
+            evalInterval: 2,
+            toExpensiveMedian: 1.6,
+            toCheapMedian: 1.2,
+            toExpensiveP80: 1.3,
+            toCheapP80: 1.0,
             highWinThreshold: 3.0,
             highWinCountRequired: 2
         )
@@ -182,32 +182,32 @@ final class ProfileSelector {
 
     private var wins: [Price] = []
     private var selectedProfile: TrafficProfile?
-    private var selectionLockedAt: Date?
+    private var winsRecordedSinceLastEval: Int = 0
 
     init(config: SelectionConfig = .default) {
         self.config = config
     }
 
-    // MARK: - Recording
-
     func recordWin(_ price: Price) {
         queue.async(flags: .barrier) { [self] in
-            // Don't record after profile is locked
-            guard selectedProfile == nil else { return }
-
             wins.append(price)
+            if wins.count > config.windowSize {
+                wins.removeFirst()
+            }
 
-            if wins.count >= config.winsRequired {
-                selectProfileLocked()
+            winsRecordedSinceLastEval += 1
+
+            if wins.count >= config.minWinsToEvaluate &&
+               winsRecordedSinceLastEval >= config.evalInterval {
+                evaluateProfileLocked()
+                winsRecordedSinceLastEval = 0
             }
         }
     }
 
-    // MARK: - Query
-
     var profile: TrafficProfile {
         queue.sync {
-            selectedProfile ?? .cheap  // Default to cheap until determined
+            selectedProfile ?? .cheap
         }
     }
 
@@ -215,29 +215,48 @@ final class ProfileSelector {
         queue.sync { selectedProfile != nil }
     }
 
-    private func selectProfileLocked() {
+    private func evaluateProfileLocked() {
         let sorted = wins.sorted()
         let median = sorted[sorted.count / 2]
+        let p80Index = Int(Double(sorted.count) * 0.8)
+        let p80 = sorted[min(p80Index, sorted.count - 1)]
         let highWinCount = wins.filter { $0 >= config.highWinThreshold }.count
 
-        let isExpensive =
-            median >= config.medianThreshold ||
-            highWinCount >= config.highWinCountRequired
+        let currentProfile = selectedProfile ?? .cheap
+        var newProfile = currentProfile
 
-        selectedProfile = isExpensive ? .expensive : .cheap
-        selectionLockedAt = Date()
+        if currentProfile == .cheap {
+            let shouldUpgrade =
+                median >= config.toExpensiveMedian ||
+                p80 >= config.toExpensiveP80 ||
+                highWinCount >= config.highWinCountRequired
+            if shouldUpgrade {
+                newProfile = .expensive
+            }
+        } else {
+            let shouldDowngrade =
+                median <= config.toCheapMedian &&
+                p80 <= config.toCheapP80 &&
+                highWinCount == 0
+            if shouldDowngrade {
+                newProfile = .cheap
+            }
+        }
 
-        Logger.adCacheD(
-            prefix: "Profile",
-            message: "Selected \(selectedProfile!): median=\(String(format: "%.2f", median)), highWins=\(highWinCount)/\(wins.count)"
-        )
+        if newProfile != currentProfile || selectedProfile == nil {
+            selectedProfile = newProfile
+            Logger.adCacheD(
+                prefix: "Profile",
+                message: "Profile \(currentProfile)→\(newProfile) highWins=\(highWinCount)/\(wins.count)"
+            )
+        }
     }
 
     func reset() {
         queue.async(flags: .barrier) { [self] in
             wins.removeAll()
             selectedProfile = nil
-            selectionLockedAt = nil
+            winsRecordedSinceLastEval = 0
         }
     }
 }
