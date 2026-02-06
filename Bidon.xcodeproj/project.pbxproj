@@ -20,7 +20,9 @@
 		0110CD552F34FCA000EF8AD6 /* RefillManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110CD532F34FCA000EF8AD6 /* RefillManager.swift */; };
 		0110CD572F3563FE00EF8AD6 /* CacheStatsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110CD562F3563FE00EF8AD6 /* CacheStatsTracker.swift */; };
 		0110CD592F35FD2600EF8AD6 /* CacheModeDecider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110CD582F35FD2600EF8AD6 /* CacheModeDecider.swift */; };
-		0110CD5B2F35FE5600EF8AD6 /* DFullscreenAdManager+Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110CD5A2F35FE5600EF8AD6 /* DFullscreenAdManager+Configurations.swift */; };
+		01A4C2482F363785001900C3 /* WarmupTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A4C2472F363785001900C3 /* WarmupTracker.swift */; };
+		01A4C24A2F36378C001900C3 /* TrafficProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A4C2492F36378C001900C3 /* TrafficProfile.swift */; };
+		01A4C24C2F3638BF001900C3 /* DFullscreenAdManager+Configurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A4C24B2F3638BF001900C3 /* DFullscreenAdManager+Configurations.swift */; };
 		01A55A512F36173D0029231B /* Logger+AdCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A55A502F36173D0029231B /* Logger+AdCaching.swift */; };
 		420067A728BD0FBB003B734D /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A628BD0FBB003B734D /* AppManager.swift */; };
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
@@ -225,7 +227,9 @@
 		0110CD532F34FCA000EF8AD6 /* RefillManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefillManager.swift; sourceTree = "<group>"; };
 		0110CD562F3563FE00EF8AD6 /* CacheStatsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStatsTracker.swift; sourceTree = "<group>"; };
 		0110CD582F35FD2600EF8AD6 /* CacheModeDecider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheModeDecider.swift; sourceTree = "<group>"; };
-		0110CD5A2F35FE5600EF8AD6 /* DFullscreenAdManager+Configurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DFullscreenAdManager+Configurations.swift"; sourceTree = "<group>"; };
+		01A4C2472F363785001900C3 /* WarmupTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupTracker.swift; sourceTree = "<group>"; };
+		01A4C2492F36378C001900C3 /* TrafficProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficProfile.swift; sourceTree = "<group>"; };
+		01A4C24B2F3638BF001900C3 /* DFullscreenAdManager+Configurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DFullscreenAdManager+Configurations.swift"; sourceTree = "<group>"; };
 		01A55A502F36173D0029231B /* Logger+AdCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+AdCaching.swift"; sourceTree = "<group>"; };
 		420067A628BD0FBB003B734D /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
@@ -433,8 +437,9 @@
 			isa = PBXGroup;
 			children = (
 				0110CD5D2F36019400EF8AD6 /* Stats */,
-				0110CD582F35FD2600EF8AD6 /* CacheModeDecider.swift */,
 				0110CD522F34FCA000EF8AD6 /* NetworkHealthTracker.swift */,
+				01A4C2472F363785001900C3 /* WarmupTracker.swift */,
+				01A4C2492F36378C001900C3 /* TrafficProfile.swift */,
 				0110CD532F34FCA000EF8AD6 /* RefillManager.swift */,
 				01A55A502F36173D0029231B /* Logger+AdCaching.swift */,
 			);
@@ -452,9 +457,9 @@
 		0110CD462F34BA0B00EF8AD6 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				01A4C24B2F3638BF001900C3 /* DFullscreenAdManager+Configurations.swift */,
 				0110CD4C2F34D03600EF8AD6 /* CacheImpressionDelegateProxy.swift */,
 				49FBCCF62F34A02E00271DAE /* DFullscreenAdManager.swift */,
-				0110CD5A2F35FE5600EF8AD6 /* DFullscreenAdManager+Configurations.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -473,6 +478,7 @@
 				0110CD412F34B1F200EF8AD6 /* CachedBid.swift */,
 				0110CD3B2F34A85100EF8AD6 /* BidCache.swift */,
 				0110CD3D2F34A87200EF8AD6 /* AdCacheStrategy.swift */,
+				0110CD582F35FD2600EF8AD6 /* CacheModeDecider.swift */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -1320,6 +1326,7 @@
 				426DD79B28A4F47800A1ADF5 /* BaseRequestBuilder.swift in Sources */,
 				426DD7AA28A550F700A1ADF5 /* AdViewConcurrentAuctionControllerBuilder.swift in Sources */,
 				42D377312AF826D9003DCCA2 /* DummyAdUnit.swift in Sources */,
+				01A4C24A2F36378C001900C3 /* TrafficProfile.swift in Sources */,
 				4238BBA728CA0EA9002DC473 /* AuctionReportModel.swift in Sources */,
 				426CD9B42AA77A41000A2226 /* BannerLayoutHelper.swift in Sources */,
 				426DD7A628A5042A00A1ADF5 /* UserDefault.swift in Sources */,
@@ -1368,6 +1375,7 @@
 				423FBAA129F0491E00B20A5D /* BannerFormat.swift in Sources */,
 				42BE438D28C0B0E3000528E3 /* SessionManager.swift in Sources */,
 				0110CD492F34BB1000EF8AD6 /* AuctionBidsOperationFinish.swift in Sources */,
+				01A4C24C2F3638BF001900C3 /* DFullscreenAdManager+Configurations.swift in Sources */,
 				424F181328ABCF470082AEF3 /* InterstitialImpressionController.swift in Sources */,
 				4243093228A2BBFF002360B0 /* DeviceModel.swift in Sources */,
 				493FE94A2BFF4BEC0000023E /* PlacementModel.swift in Sources */,
@@ -1424,6 +1432,7 @@
 				420EFD872A29E9D500328FD4 /* InterstitialImpressionRequestBuilder.swift in Sources */,
 				4257D71A29DDBF970066DE1B /* NotificationRequestBuilder.swift in Sources */,
 				49E43B292C04ABAC00C2EC6B /* AdaptersFetcher.swift in Sources */,
+				01A4C2482F363785001900C3 /* WarmupTracker.swift in Sources */,
 				42C46C9329F280360057D7CE /* AuctionBidComparator.swift in Sources */,
 				428C45BE2A264E47009E90EF /* Regulations.swift in Sources */,
 				42BE438B28C0AE93000528E3 /* UserManager.swift in Sources */,
@@ -1449,7 +1458,6 @@
 				4224AA7128B7E2F400E8D886 /* RewardedImpressionController.swift in Sources */,
 				49BB8E3E2C369F1C00A51877 /* AuctionInfo.swift in Sources */,
 				420EFD912A29F08300328FD4 /* AdViewNotificationRequestBuilder.swift in Sources */,
-				0110CD5B2F35FE5600EF8AD6 /* DFullscreenAdManager+Configurations.swift in Sources */,
 				421D48EC2888582B007DE2E4 /* OSLogDestination.swift in Sources */,
 				42D3772F2AF6CA81003DCCA2 /* DummyBid.swift in Sources */,
 				42D047E7289D5F9A0096A8C6 /* Geo.swift in Sources */,

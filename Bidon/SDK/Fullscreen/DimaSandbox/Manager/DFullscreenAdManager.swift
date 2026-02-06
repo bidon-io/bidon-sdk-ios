@@ -16,62 +16,34 @@ typealias InterstitialBaseManager = BaseFullscreenAdManager<
 final class DFullscreenAdManager: InterstitialBaseManager {
     typealias AuctionControllerType = DAuctionController<InterstitialAdTypeContext>
     typealias CacheMode = CacheModeDecider.Decision.Mode
-    
-    struct Configurations {
-        let runnersUp: RunnerUPsConfig
-        let explore: ExploreConfig
-        let tryToBeat: TryToBeatConfig
-    }
 
-    struct RunnerUPsConfig {
-        let count: Int
-        let winnerShare: Double
-    }
-    
     struct ExploreConfig {
         let exploreRate: Double
         let minRandomExploreInterval: TimeInterval
         let minCacheDepthForExplore: Int
     }
-    
-    struct TryToBeatConfig {
-        struct Threshold {
-            let p80Multiplier: Double
-            let lastWinnerMultiplier: Double
-        }
 
-        let beatMultiplier: Double
-        let expiringTTLThreshold: TimeInterval
+    private let exploreConfig = ExploreConfig.default
+    private let maxRunnerUpsCount = 3
 
-        let soft: Threshold
-        let hard: Threshold
-
-        let priceGapCooldown: TimeInterval
-        let hardAbsoluteFloor: Price
-    }
-    
-    private let config = Configurations(
-        runnersUp: .default,
-        explore: .default,
-        tryToBeat: .default
-    )
-    
+    private let profileSelector = DimaSandbox.profileSelector
     private let cache = DimaSandbox.cache
     private let cacheStats = DimaSandbox.cacheStats
     private let marketStats = DimaSandbox.marketStats
     private let floorManager = DimaSandbox.floorManager
     private let networkHealth = DimaSandbox.networkHealth
+    private let warmupTracker = DimaSandbox.warmupTracker
     private let refillManager = DimaSandbox.refillManager
-    private let cacheModeDecider = CacheModeDecider()
+    private let cacheModeDecider = DimaSandbox.cacheModeDecider
 
     private var reservedFallbackBid: CachedBid?
     private var currentWinnerDemandId: String?
+    private var lastSecondPrice: Price?
+    private var lastWinnerOutlier: Bool = false
 
     private var isRefillAuction: Bool = false
-
     private var pendingRefill: Bool = false
-    private var pendingRefillFloor: Price?
-    
+
     private lazy var proxy: CacheImpressionDelegateProxy = {
         let proxy = CacheImpressionDelegateProxy(cache: cache)
         proxy.delegate = self
@@ -87,15 +59,17 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         return proxy
     }()
 
+    private var profile: TrafficProfile {
+        profileSelector.profile
+    }
+
     override func loadAd(pricefloor: Price, auctionKey: String?) {
-        // Apply sticky floor adjustment
         let adjustedPricefloor = floorManager.adjustedFloor(requested: pricefloor)
-        Logger.adCacheD(prefix: "Cache", message: "loadAd called with pricefloor: \(pricefloor) (adjusted: \(adjustedPricefloor))")
+        Logger.adCacheD(prefix: "Cache", message: "loadAd called with pricefloor: \(pricefloor) (adjusted: \(adjustedPricefloor)), profile=\(profile), state=\(state), sdkInitialized=\(BidonSdk.isInitialized)")
 
         floorManager.recordRequest()
         reservedFallbackBid = nil
 
-        // Epsilon-greedy: 5-10% of the time, skip cache to discover price spikes
         if shouldExplore() {
             Logger.adCacheD(prefix: "Cache", message: "Skipping cache due to EXPLORE SLOT - running full auction")
             cacheStats.recordMiss()
@@ -104,9 +78,10 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         }
 
         guard let cachedBid = getReservedBid(pricefloor: adjustedPricefloor) else {
-            Logger.adCacheD(prefix: "Cache", message: "Cache MISS - starting auction")
+            Logger.adCacheD(prefix: "Cache", message: "Cache MISS - calling super.loadAd()")
             cacheStats.recordMiss()
             super.loadAd(pricefloor: adjustedPricefloor, auctionKey: auctionKey)
+            Logger.adCacheD(prefix: "Cache", message: "super.loadAd() returned, state=\(state)")
             return
         }
 
@@ -120,9 +95,9 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             useCachedBid(cachedBid)
 
         case .tryToBeat:
-            // Raise floor to actually beat the cached bid
-            let targetFloor = max(adjustedPricefloor, cachedBid.price * config.tryToBeat.beatMultiplier)
-            Logger.adCacheD(prefix: "Cache", message: "Mode B: Try to beat cached=\(String(format: "%.2f", cachedBid.price)), targetFloor=\(String(format: "%.2f", targetFloor))")
+            let beatMultiplier = profile.tryToBeat.beatMultiplier
+            let targetFloor = max(adjustedPricefloor, cachedBid.price * beatMultiplier)
+            Logger.adCacheD(prefix: "Cache", message: "Mode B: Try to beat cached=\(fmt(cachedBid.price)), targetFloor=\(fmt(targetFloor))")
             reservedFallbackBid = cachedBid
             super.loadAd(pricefloor: targetFloor, auctionKey: auctionKey)
 
@@ -140,12 +115,10 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             Logger.adCacheD(prefix: "Cache", message: "Failed to build impression controller from cached bid, releasing")
             cache.release(entryId: cachedBid.meta.entryId)
             cacheStats.recordMiss()
-
-            performAsyncOnMain {
-                self.delegate?.adManager(self, didFailToLoad: .noFill, auctionInfo: self.auctionInfo)
-            }
+            notifyDidFailToLoad(.noFill)
             return
         }
+
         proxy.setCachedEntryId(cachedBid.meta.entryId)
         proxy.currentDemandId = cachedBid.demandId
         currentWinnerDemandId = cachedBid.demandId
@@ -155,14 +128,13 @@ final class DFullscreenAdManager: InterstitialBaseManager {
 
         let ad = cachedBid.makeAd()
         Logger.adCacheD(prefix: "Cache", message: "Mode A: Loaded ad from cache: demandId=\(cachedBid.demandId), price=\(cachedBid.price), TTL remaining=\(cachedBid.remainingTTL)s")
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
-        }
+        notifyDidLoad(ad)
     }
-    
+
     override func performAuction(_ auctionInfo: AuctionInfo, tokens: [BiddingDemandToken]) {
+        Logger.adCacheD(prefix: "Auction", message: "performAuction called with \(auctionInfo.adUnits.count) adUnits, \(tokens.count) tokens")
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
-        
+
         let observer = BaseAuctionObserver(
             configuration: configuration,
             adType: context.adType
@@ -170,9 +142,9 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         if let auctionStartTimestamp {
             observer.log(StartAuctionEvent(startTimestamp: auctionStartTimestamp))
         }
-        
+
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
-        
+
         let auction = AuctionControllerType { (builder: InterstitialConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withAdUnitProvider(provider)
@@ -182,10 +154,10 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             builder.withContext(context)
             builder.withAuctionConfiguration(configuration)
         }
-        
+
         state = .auction(controller: auction)
-        
-        auction.load { [unowned observer, weak self] result in
+
+        auction.load { [weak self, observer] result in
             self?.finalizeAuctionInfo(from: observer.report)
 
             switch result {
@@ -215,6 +187,7 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             handleRefillSuccess(bids: bids, configuration: configuration)
             return
         }
+
         if tryToBeat(winner: bids.first) {
             return
         }
@@ -223,6 +196,7 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             handleNoFill()
             return
         }
+
         handleWinner(winner, allBids: bids, configuration: configuration)
     }
 
@@ -236,14 +210,44 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         recordMarketAndHealth(winner: winner, allBids: allBids)
         cacheRunnerUps(allBids: allBids, configuration: configuration)
 
-        let controller = prepareReadyState(for: winner)
+        _ = prepareReadyState(for: winner, secondPrice: lastSecondPrice)
         let ad = AdContainer(bid: winner)
 
         notifyDidLoad(ad)
     }
 
     private func recordMarketAndHealth(winner: BidType, allBids: [BidType]) {
-        marketStats.recordWin(winner.price)
+        let secondPrice = allBids.dropFirst().first?.price
+        lastSecondPrice = secondPrice
+
+        let snap = marketStats.snapshot()
+        let statsWarm = snap.count >= marketStats.minSamples
+
+        let outlierResult = warmupTracker.detectOutlier(
+            winner: winner.price,
+            secondPrice: secondPrice,
+            p80: snap.p80
+        )
+        lastWinnerOutlier = outlierResult.isOutlier
+
+        let isTrusted = warmupTracker.isWinnerTrusted(
+            winner: winner.price,
+            secondPrice: secondPrice,
+            p80: snap.p80,
+            statsWarm: statsWarm
+        )
+        DimaSandbox.lastWinnerTrusted = isTrusted
+
+        let dampenedPrice = warmupTracker.dampenedWinner(winner.price, p80: snap.p80)
+
+        if outlierResult.isOutlier {
+            Logger.adCacheD(prefix: "Warmup", message: "Outlier: \(outlierResult.reason ?? "unknown"), dampened=\(fmt(dampenedPrice))")
+        }
+
+        marketStats.recordWin(dampenedPrice)
+        warmupTracker.recordWinner(price: dampenedPrice)
+        profileSelector.recordWin(winner.price)
+
         floorManager.recordFill(ecpm: winner.price)
         floorManager.maybeAdjust()
 
@@ -252,9 +256,14 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         for bid in allBids {
             networkHealth.recordFill(demandId: bid.adUnit.demandId)
         }
+
+        Logger.adCacheD(
+            prefix: "Market",
+            message: "winner=\(fmt(winner.price)), second=\(secondPrice.map { fmt($0) } ?? "nil"), trusted=\(isTrusted), outlier=\(lastWinnerOutlier), profile=\(profile)"
+        )
     }
 
-    private func prepareReadyState(for winner: BidType) -> InterstitialImpressionController {
+    private func prepareReadyState(for winner: BidType, secondPrice: Price?) -> InterstitialImpressionController {
         adRevenueObserver.observe(winner)
 
         let controller = InterstitialImpressionController(bid: winner)
@@ -262,28 +271,19 @@ final class DFullscreenAdManager: InterstitialBaseManager {
 
         proxy.currentDemandId = winner.adUnit.demandId
         currentWinnerDemandId = winner.adUnit.demandId
-        refillManager.recordWinnerPrice(winner.price)
+        refillManager.recordWinnerPrice(winner.price, secondPrice: secondPrice)
 
         state = .ready(controller: controller)
         return controller
-    }
-
-    private func notifyDidLoad(_ ad: Ad) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
-        }
-    }
-
-    private func notifyDidFailToLoad(_ error: SdkError) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
-        }
     }
     
     private func cacheRunnerUps(allBids: [BidType], configuration: AuctionConfiguration) {
         guard let winner = allBids.first else { return }
 
-        let minPrice = calculateMinPriceForCaching(winner: winner, pricefloor: configuration.pricefloor)
+        let minPrice = calculateMinPriceForCaching(
+            winnerPrice: winner.price,
+            pricefloor: configuration.pricefloor
+        )
 
         var seenDemandIds = Set<String>()
         var runnerUps: [CachedBid] = []
@@ -312,31 +312,52 @@ final class DFullscreenAdManager: InterstitialBaseManager {
             )
 
             runnerUps.append(cached)
-            if runnerUps.count >= config.runnersUp.count { break }
+            if runnerUps.count >= maxRunnerUpsCount { break }
         }
 
-        guard !runnerUps.isEmpty else {
-            return
-        }
-        let prices = runnerUps.map { String(format: "%.2f", $0.price) }.joined(separator: ", ")
-        Logger.adCacheD(prefix: "Cache", message: "Stored \(runnerUps.count) runner-ups [\(prices)], skipped=\(skippedCount), minPrice=\(String(format: "%.2f", minPrice))")
+        guard !runnerUps.isEmpty else { return }
+
+        let prices = runnerUps.map { fmt($0.price) }.joined(separator: ", ")
+        Logger.adCacheD(prefix: "Cache", message: "Stored \(runnerUps.count) runner-ups [\(prices)], skipped=\(skippedCount), minPrice=\(fmt(minPrice))")
         cache.store(runnerUps, winnerPrice: winner.price, adType: .interstitial)
     }
 
-    private func calculateMinPriceForCaching(winner: BidType, pricefloor: Price) -> Price {
+    private func calculateMinPriceForCaching(winnerPrice: Price, pricefloor: Price) -> Price {
+        let cacheConfig = profile.cache
         let snap = marketStats.snapshot()
-
-        let winnerFloor = winner.price * config.runnersUp.winnerShare
-        let marketFloor = snap.p80.map { $0 * config.tryToBeat.soft.p80Multiplier } ?? winnerFloor
+        let cacheDepth = cache.count(adType: .interstitial)
+        let isColdStart = warmupTracker.isColdStart
         let statsWarm = snap.count >= marketStats.minSamples
 
-        let combinedFloor = statsWarm
-            ? max(winnerFloor, marketFloor)
-            : min(winnerFloor, marketFloor)
+        let needsDepth = isColdStart || cacheDepth < refillManager.targetDepth
 
-        return min(max(pricefloor, combinedFloor), winner.price * 0.95)
+        if needsDepth {
+            let fillDepthFloor = max(pricefloor, floorManager.currentFloor, cacheConfig.minCachePriceFloor)
+            Logger.adCacheD(prefix: "Cache", message: "FILL-DEPTH mode: minPrice=\(fmt(fillDepthFloor)) (depth=\(cacheDepth), cold=\(isColdStart))")
+            return fillDepthFloor
+        }
+
+        var qualityFloor = pricefloor
+
+        if let p80 = snap.p80 {
+            let p80Floor = p80 * cacheConfig.p80CacheMultiplier
+            qualityFloor = max(qualityFloor, p80Floor)
+        }
+
+        if !lastWinnerOutlier {
+            let winnerFloor = winnerPrice * cacheConfig.winnerShare
+            qualityFloor = max(qualityFloor, winnerFloor)
+        }
+
+        let maxFloor = winnerPrice * 0.95
+        qualityFloor = min(qualityFloor, maxFloor)
+
+        qualityFloor = max(qualityFloor, cacheConfig.minCachePriceFloor)
+
+        Logger.adCacheD(prefix: "Cache", message: "QUALITY mode: minPrice=\(fmt(qualityFloor)) (statsWarm=\(statsWarm), outlier=\(lastWinnerOutlier))")
+        return qualityFloor
     }
-    
+
     private func handleAuctionFailure(_ error: SdkError) {
         if isRefillAuction {
             handleRefillFailure(error: error)
@@ -356,27 +377,34 @@ final class DFullscreenAdManager: InterstitialBaseManager {
         guard let fallback = reservedFallbackBid else {
             return false
         }
-        if let winner, winner.price >= fallback.price {
-            Logger.adCacheD(prefix: "Cache", message: "Mode B: Auction beat cache! winner=\(winner.price) >= fallback=\(fallback.price)")
-            cache.release(entryId: fallback.meta.entryId)
-            reservedFallbackBid = nil
-            
-            return false
-        } else {
-            let reason = winner.map { "winner=\($0.price) < fallback=\(fallback.price)" } ?? "no bids"
-            Logger.adCacheD(prefix: "Cache", message: "Mode B: Auction didn't beat cache (\(reason)), using fallback")
 
-            reservedFallbackBid = nil
-            cacheStats.recordHit()
-            useCachedBid(fallback)
-            
-            return true
+        // Use beatMargin from CacheModeDecider for proper "beat" check
+        if let winner {
+            let didBeat = cacheModeDecider.didBeatFallback(
+                winnerPrice: winner.price,
+                fallbackPrice: fallback.price
+            )
+            if didBeat {
+                Logger.adCacheD(prefix: "Cache", message: "Mode B: Auction beat cache! winner=\(fmt(winner.price)) >= fallback=\(fmt(fallback.price))*(1+margin)")
+                cache.release(entryId: fallback.meta.entryId)
+                reservedFallbackBid = nil
+                return false
+            }
         }
+
+        let reason = winner.map { "winner=\(fmt($0.price)) didn't beat fallback=\(fmt(fallback.price))" } ?? "no bids"
+        Logger.adCacheD(prefix: "Cache", message: "Mode B: Using fallback (\(reason))")
+
+        reservedFallbackBid = nil
+        cacheStats.recordHit()
+        useCachedBid(fallback)
+
+        return true
     }
-    
+
     @discardableResult
     private func fallbackFill() -> Bool {
-        guard let fallback = self.reservedFallbackBid else {
+        guard let fallback = reservedFallbackBid else {
             return false
         }
         reservedFallbackBid = nil
@@ -389,53 +417,14 @@ final class DFullscreenAdManager: InterstitialBaseManager {
 
         return true
     }
-    
-    private func performAsyncOnMain(_ block: @escaping () -> Void) {
-        guard Thread.isMainThread == false else {
-            block()
-            return
-        }
-        DispatchQueue.main.async {
-            block()
-        }
-    }
-    
-    private func shouldExplore() -> Bool {
-        let random = Double.random(in: 0..<1)
-        let passedRandom = random < config.explore.exploreRate
-
-        guard passedRandom else {
-            return false
-        }
-
-        if let lastAuction = DimaSandbox.lastFullAuctionAt {
-            let elapsed = Date().timeIntervalSince(lastAuction)
-            if elapsed < config.explore.minRandomExploreInterval {
-                Logger.adCacheD(prefix: "Cache", message: "Random explore suppressed (warmup: \(Int(elapsed))s < \(Int(config.explore.minRandomExploreInterval))s)")
-                return false
-            }
-        }
-
-        let cacheDepth = cache.count(adType: .interstitial)
-        if cacheDepth < config.explore.minCacheDepthForExplore {
-            Logger.adCacheD(prefix: "Cache", message: "Random explore suppressed (cacheDepth=\(cacheDepth) < min=\(config.explore.minCacheDepthForExplore))")
-            return false
-        }
-
-        let snap = marketStats.snapshot()
-        if snap.count < marketStats.minSamples {
-            Logger.adCacheD(prefix: "Cache", message: "Random explore suppressed (stats cold: \(snap.count) < \(marketStats.minSamples))")
-            return false
-        }
-
-        Logger.adCacheD(prefix: "Cache", message: "EXPLORE SLOT triggered (random=\(String(format: "%.2f", random)), cacheDepth=\(cacheDepth), statsSamples=\(snap.count))")
-        return true
-    }
 
     private func decideCacheMode(for cachedBid: CachedBid) -> CacheMode {
         let snap = marketStats.snapshot()
         let refillStats = refillManager.stats()
         let now = Date()
+        let isColdStart = warmupTracker.isColdStart
+        let statsWarm = snap.count >= marketStats.minSamples
+        let cacheDepth = cache.count(adType: .interstitial)
 
         let decision = cacheModeDecider.decide(
             for: .init(
@@ -443,100 +432,168 @@ final class DFullscreenAdManager: InterstitialBaseManager {
                 remainingTTL: cachedBid.remainingTTL,
                 marketP80: snap.p80,
                 lastWinnerPrice: refillStats.lastWinnerPrice,
+                isLastWinnerTrusted: DimaSandbox.lastWinnerTrusted,
                 now: now,
                 lastPriceGapModeBAt: DimaSandbox.lastPriceGapModeBAt,
-                config: .init(beatConfig: config.tryToBeat)
+                isColdStart: isColdStart,
+                isStatsWarm: statsWarm,
+                cacheDepth: cacheDepth,
+                targetDepth: refillManager.targetDepth
             )
         )
 
         if decision.markPriceGapNow {
             DimaSandbox.lastPriceGapModeBAt = now
         }
-        Logger.adCacheD(prefix: "Cache", message: "Using Mode \(decision.mode): \(decision.reason)")
-        
+        Logger.adCacheD(prefix: "Cache", message: "Mode \(decision.mode): \(decision.reason)")
+
         return decision.mode
     }
 
     private func getReservedBid(pricefloor: Price) -> CachedBid? {
         cache.performMaintenance()
 
-        Logger.adCacheD(prefix: "Cache", message: "Attempting to reserve bid for interstitial, pricefloor: \(pricefloor)")
+        Logger.adCacheD(prefix: "Cache", message: "Attempting to reserve bid, pricefloor: \(fmt(pricefloor))")
 
         let reserved = cache.reserve(
             adType: .interstitial,
             pricefloor: pricefloor
         )
         guard let reserved, reserved.isValid(currentConsentHash: "v0") else {
-            Logger.adCacheD(prefix: "Cache", message: "No valid cached bid found for pricefloor: \(pricefloor)")
+            Logger.adCacheD(prefix: "Cache", message: "No valid cached bid found")
             return nil
         }
-        Logger.adCacheD(prefix: "Cache", message: "Reserved cached bid: demandId=\(reserved.demandId), price=\(reserved.price), entryId=\(reserved.meta.entryId)")
+        Logger.adCacheD(prefix: "Cache", message: "Reserved: demandId=\(reserved.demandId), price=\(fmt(reserved.price)), entryId=\(reserved.meta.entryId)")
         return reserved
     }
 
-    private func handleImpression(demandId: String?) {
-        guard let demandId else {
-            return
+    private func shouldExplore() -> Bool {
+        let random = Double.random(in: 0..<1)
+        guard random < exploreConfig.exploreRate else {
+            return false
         }
+
+        if let lastAuction = DimaSandbox.lastFullAuctionAt {
+            let elapsed = Date().timeIntervalSince(lastAuction)
+            if elapsed < exploreConfig.minRandomExploreInterval {
+                Logger.adCacheD(prefix: "Cache", message: "Explore suppressed (warmup: \(Int(elapsed))s)")
+                return false
+            }
+        }
+
+        let cacheDepth = cache.count(adType: .interstitial)
+        if cacheDepth < exploreConfig.minCacheDepthForExplore {
+            Logger.adCacheD(prefix: "Cache", message: "Explore suppressed (depth=\(cacheDepth))")
+            return false
+        }
+
+        let snap = marketStats.snapshot()
+        if snap.count < marketStats.minSamples {
+            Logger.adCacheD(prefix: "Cache", message: "Explore suppressed (stats cold)")
+            return false
+        }
+
+        Logger.adCacheD(prefix: "Cache", message: "EXPLORE SLOT triggered")
+        return true
+    }
+
+    private func handleImpression(demandId: String?) {
+        guard let demandId else { return }
+
         networkHealth.recordShow(demandId: demandId)
+        warmupTracker.recordImpression()
 
         let cacheDepth = cache.count(adType: .interstitial)
         let refillStats = refillManager.stats()
 
-        Logger.adCacheD(prefix: "Refill", message: "Impression: demandId=\(demandId), cacheDepth=\(cacheDepth), targetDepth=\(refillManager.targetDepth), refillsThisSession=\(refillStats.refillsThisSession), isRefillActive=\(isRefillAuction)")
+        Logger.adCacheD(
+            prefix: "Refill",
+            message: "Impression: demandId=\(demandId), depth=\(cacheDepth), refills=\(refillStats.refillsThisSession), cold=\(warmupTracker.isColdStart)"
+        )
 
         let decision = refillManager.shouldRefill(
             cacheDepth: cacheDepth,
             reason: .postImpression
         )
 
-        Logger.adCacheD(prefix: "Refill", message: "Decision: shouldRefill=\(decision.shouldRefill), reason=\(decision.reason), suggestedFloor=\(decision.suggestedPricefloor ?? -1)")
+        Logger.adCacheD(prefix: "Refill", message: "Decision: shouldRefill=\(decision.shouldRefill), reason=\(decision.reason)")
 
         if decision.shouldRefill {
             pendingRefill = true
-            pendingRefillFloor = decision.suggestedPricefloor
             Logger.adCacheD(prefix: "Refill", message: "Refill pending (will execute on hide)")
         }
     }
 
     private func handleHide(demandId: String?) {
         currentWinnerDemandId = nil
-        Logger.adCacheD(prefix: "Refill", message: "Ad hidden, demandId=\(demandId ?? "nil")")
+        Logger.adCacheD(prefix: "Refill", message: "Ad hidden")
 
         if pendingRefill {
             pendingRefill = false
-            let floor = pendingRefillFloor
-            pendingRefillFloor = nil
-
-            Logger.adCacheD(prefix: "Refill", message: "Executing pending refill (manager now idle)")
-            scheduleRefillAuction(suggestedPricefloor: floor)
+            Logger.adCacheD(prefix: "Refill", message: "Executing pending refill")
+            scheduleRefillAuction()
         }
     }
 
     private func handleFailToPresent(demandId: String?) {
-        guard let demandId else {
-            return
-        }
+        guard let demandId else { return }
         networkHealth.recordFailToPresent(demandId: demandId)
+    }
+    
+    private func notifyDidLoad(_ ad: Ad) {
+        performAsyncOnMain {
+            self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+        }
+    }
+
+    private func notifyDidFailToLoad(_ error: SdkError) {
+        performAsyncOnMain {
+            self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+        }
+    }
+
+    private func performAsyncOnMain(_ block: @escaping () -> Void) {
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.async { block() }
+        }
+    }
+
+    private func fmt(_ price: Price) -> String {
+        String(format: "%.2f", price)
     }
 }
 
 private extension DFullscreenAdManager {
-    private func scheduleRefillAuction(suggestedPricefloor: Price?) {
+    func scheduleRefillAuction() {
         guard !isRefillAuction else {
-            Logger.adCacheD(prefix: "Refill", message: "Already running a refill auction, skipping")
+            Logger.adCacheD(prefix: "Refill", message: "Already running refill auction, skipping")
             return
         }
 
         isRefillAuction = true
 
-        let pricefloor = suggestedPricefloor ?? 0.1
-        Logger.adCacheD(prefix: "Refill", message: "Starting refill auction with pricefloor=\(pricefloor)")
+        let snap = marketStats.snapshot()
+        let refillStats = refillManager.stats()
+        let cacheDepth = cache.count(adType: .interstitial)
 
-        super.loadAd(pricefloor: pricefloor, auctionKey: nil)
+        let context = RefillManager.RefillContext(
+            p80: snap.p80,
+            secondPrice: refillStats.lastSecondPrice,
+            stickyFloor: floorManager.currentFloor,
+            isColdStart: warmupTracker.isColdStart,
+            isOutlier: lastWinnerOutlier,
+            cacheDepth: cacheDepth
+        )
+
+        let (floor, source) = refillManager.calculateRefillFloor(context: context)
+        Logger.adCacheD(prefix: "Refill", message: "Starting refill auction: floor=\(fmt(floor)), source=\(source.rawValue)")
+
+        super.loadAd(pricefloor: floor, auctionKey: nil)
     }
 
-    private func handleRefillSuccess(bids: [BidType], configuration: AuctionConfiguration) {
+    func handleRefillSuccess(bids: [BidType], configuration: AuctionConfiguration) {
         Logger.adCacheD(prefix: "Refill", message: "Succeeded with \(bids.count) bids (silent)")
 
         refillManager.recordRefill()
@@ -549,14 +606,15 @@ private extension DFullscreenAdManager {
         resetRefillState()
     }
 
-    private func handleRefillFailure(error: SdkError) {
+    func handleRefillFailure(error: SdkError) {
         Logger.adCacheD(prefix: "Refill", message: "Failed: \(error) (silent)")
+        refillManager.recordRefillFailure()
         resetRefillState()
     }
 
-    private func resetRefillState() {
+    func resetRefillState() {
         guard isRefillAuction else {
-            Logger.adCacheD(prefix: "Refill", message: "resetRefillState called but not in refill mode, skipping state reset")
+            Logger.adCacheD(prefix: "Refill", message: "resetRefillState: not in refill mode")
             return
         }
         state = .idle
