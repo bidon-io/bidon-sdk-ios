@@ -86,7 +86,7 @@ def yandex
 end
 
 def startio
-  pod 'StartAppSDK', '4.12.0'
+  pod 'StartAppSDK', '4.13.0'
 end
 
 def taurus
