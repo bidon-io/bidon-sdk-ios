@@ -199,7 +199,7 @@ DEPENDENCIES:
   - MobileFuseSDK (= 1.9.3)
   - MolocoSDKiOS (= 4.3.0)
   - myTargetSDK (= 5.39.0)
-  - StartAppSDK (= 4.12.0)
+  - StartAppSDK (= 4.13.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.14.0)
   - UnityAds (= 4.16.6)
