@@ -163,7 +163,7 @@ PODS:
   - TaurusxAdsSDK (1.14.0):
     - TaurusxAdsSDK/TaurusxAds (= 1.14.0)
   - TaurusxAdsSDK/TaurusxAds (1.14.0)
-  - UnityAds (4.16.5)
+  - UnityAds (4.16.6)
   - VGSL (7.15.2):
     - VGSLFundamentals (= 7.15.2)
     - VGSLNetworking (= 7.15.2)
@@ -202,7 +202,7 @@ DEPENDENCIES:
   - StartAppSDK (= 4.12.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.14.0)
-  - UnityAds (= 4.16.5)
+  - UnityAds (= 4.16.6)
   - VungleAds (= 7.6.3)
   - YandexMobileAds (= 7.18.1)
 
