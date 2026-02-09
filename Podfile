@@ -54,7 +54,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.5'
+  pod 'MintegralAdSDK', '8.0.7'
 end
 
 def mobilefuse
