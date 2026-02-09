@@ -81,18 +81,16 @@ extension ZmaticooBiddingAdViewDemandProvider: MATBannerAdDelegate {
     }
     
     func bannerAd(_ bannerAd: MATBannerAd, showFailWithError error: any Error) {
-        let ad = ZmaticooAdViewDemandAd(placementId: placementId, banner: bannerAd)
-        delegate?.provider(self, didFailToDisplayAd: ad, error: SdkError(error))
+        // NO-OP
     }
     
     func bannerAdDidClick(_ bannerAd: MATBannerAd) {
-        delegate?.providerDidClick(self)
+        // NO-OP
     }
     
     func bannerAdDismissed(_ bannerAd: MATBannerAd) {
-        adViewDelegate?.providerDidDismissModalView(self, adView: bannerAd)
+        // NO-OP
     }
-
 }
 
 extension MATBannerAd: Bidon.AdViewContainer {

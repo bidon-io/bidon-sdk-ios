@@ -37,20 +37,17 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
         self.placementId = adUnitExtras.placementId
 
         let ad = MATInterstitialAd(placementID: adUnitExtras.placementId)
-        ad.loadAd(payload.payload)
         ad.delegate = self
+        ad.loadAd(payload.payload)
         self.interstitial = ad
     }
 }
 
-
 extension ZmaticooBiddingInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: ZmaticooInterstitialDemandAd, from viewController: UIViewController) {
         interstitial?.show(from: viewController)
-        delegate?.providerWillPresent(self)
     }
 }
-
 
 extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     func interstitialAdDidLoad(_ interstitialAd: MATInterstitialAd) {
@@ -72,18 +69,19 @@ extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     func interstitialAdWillLogImpression(_ interstitialAd: MATInterstitialAd) {
         let ad = ZmaticooInterstitialDemandAd(placementId: placementId, interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
+
+        delegate?.providerWillPresent(self)
     }
     
     func interstitialAdDidClick(_ interstitialAd: MATInterstitialAd) {
         delegate?.providerDidClick(self)
     }
     
-    func interstitialAdWillClose(_ interstitialAd: MATInterstitialAd) {}
-    
     func interstitialAdDidClose(_ interstitialAd: MATInterstitialAd) {
         delegate?.providerDidHide(self)
     }
     
+    func interstitialAdWillClose(_ interstitialAd: MATInterstitialAd) {
+        // NO-OP
+    }
 }
-
-

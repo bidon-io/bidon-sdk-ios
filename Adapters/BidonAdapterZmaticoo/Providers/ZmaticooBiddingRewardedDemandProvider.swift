@@ -38,19 +38,17 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
         self.placementId = adUnitExtras.placementId
 
         let ad = MATRewardedVideoAd(placementID: adUnitExtras.placementId)
-        ad.loadAd(payload.payload)
         ad.delegate = self
+        ad.loadAd(payload.payload)
         self.rewarded = ad
     }
 }
-
 
 extension ZmaticooBiddingRewardedDemandProvider: RewardedAdDemandProvider {
     func show(ad: ZmaticooRewardedDemandAd, from viewController: UIViewController) {
         rewarded?.show(from: viewController)
     }
 }
-
 
 extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     func rewardedVideoAdDidLoad(_ rewardedVideoAd: MATRewardedVideoAd) {
@@ -69,23 +67,16 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
         delegate?.provider(self, didFailToDisplayAd: ad, error: SdkError(error))
     }
     
-    func rewardedVideoAdStarted(_ rewardedVideoAd: MATRewardedVideoAd) {
-        delegate?.providerWillPresent(self)
-    }
-    
-    func rewardedVideoAdCompleted(_ rewardedVideoAd: MATRewardedVideoAd) {
-    }
-    
     func rewardedVideoAdWillLogImpression(_ rewardedVideoAd: MATRewardedVideoAd) {
         let ad = ZmaticooRewardedDemandAd(placementId: placementId, rewarded: rewardedVideoAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
+        
+        delegate?.providerWillPresent(self)
     }
     
     func rewardedVideoAdDidClick(_ rewardedVideoAd: MATRewardedVideoAd) {
         delegate?.providerDidClick(self)
     }
-    
-    func rewardedVideoAdWillClose(_ rewardedVideoAd: MATRewardedVideoAd) {    }
     
     func rewardedVideoAdDidClose(_ rewardedVideoAd: MATRewardedVideoAd) {
         delegate?.providerDidHide(self)
@@ -94,7 +85,16 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     func rewardedVideoAdReward(_ rewardedVideoAd: MATRewardedVideoAd) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
+    
+    func rewardedVideoAdStarted(_ rewardedVideoAd: MATRewardedVideoAd) {
+        // NO-OP
+    }
+    
+    func rewardedVideoAdCompleted(_ rewardedVideoAd: MATRewardedVideoAd) {
+        // NO-OP
+    }
+    
+    func rewardedVideoAdWillClose(_ rewardedVideoAd: MATRewardedVideoAd) {
+        // NO-OP
+    }
 }
-
-
-
