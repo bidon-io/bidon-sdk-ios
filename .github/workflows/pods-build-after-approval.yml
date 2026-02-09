@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   pull-requests: write
   actions: read
 
@@ -27,15 +27,14 @@ jobs:
 
       - name: Extract build metadata
         id: meta
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           ruby - <<'RUBY'
           body = ENV['PR_BODY'].to_s
           m = body.match(/<!--\s*build-metadata\s*(\{[\s\S]*?\})\s*-->/m)
           if m
+            json = m[1]
             require 'json'
-            data = JSON.parse(m[1])
+            data = JSON.parse(json)
             adapters = data['adapters']
             if adapters.nil?
               adapter = data['adapter']
@@ -50,20 +49,23 @@ jobs:
             end
           end
           RUBY
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
 
       - name: Ensure adapters metadata present
         if: steps.meta.outputs.adapters == ''
         run: |
-          echo "No adapters found in build metadata"
+          echo "No adapters found in build metadata. Ensure PR body includes adapters and POD_TO_ADAPTER mapping covers pod '${{ steps.meta.outputs.pod }}'."
           exit 1
 
-      - name: Ensure AWS CLI
+      - name: Ensure AWS CLI (self-hosted)
         run: |
           set -e
           if [ -x /opt/homebrew/bin/brew ]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
           fi
           if ! command -v aws >/dev/null 2>&1; then
+            echo "aws not found; installing via Homebrew..."
             brew update
             brew install awscli
           fi
@@ -79,14 +81,16 @@ jobs:
       - name: AWS whoami
         run: aws sts get-caller-identity
 
-      - name: Verify Xcode
+      - name: Verify Xcode (self-hosted)
         run: xcodebuild -version
 
-      - name: CocoaPods install
+      - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
           GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
           POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
+          echo "Using POD_BIN=$POD_BIN"
+          "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
       - name: Cache Ruby gems (Bundler)
@@ -97,87 +101,187 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-ruby-3.2-bundle-
 
-      - name: Install Ruby gems (Ruby 3.2)
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
         run: |
           set -o pipefail
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$PATH"
-          bundle config set path ~/.bundle/bidon-sdk-ios
-          bundle config set clean 'true'
-          bundle check || bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
 
-      - name: Ensure xcpretty
+      - name: Ensure Ruby 3.2 PATH and xcpretty
         run: |
-          set -e
+          set -euo pipefail
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
           if ! command -v xcpretty >/dev/null 2>&1; then
-            gem install xcpretty -N
+            /opt/homebrew/opt/ruby@3.2/bin/gem install xcpretty -N
           fi
 
       - name: Read SDK last release version
         id: sdk
         run: |
-          set -e
+          set -euo pipefail
           VERSION=$(sed -n 's/^[[:space:]]*static let sdkVersionLastRelease: String = "\([^"]*\)".*/\1/p' Bidon/Shared/Constants.swift | head -n1)
-          [ -n "$VERSION" ] || exit 1
+          if [ -z "$VERSION" ]; then
+            echo "Unable to parse sdkVersionLastRelease from Bidon/Shared/Constants.swift"
+            exit 1
+          fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Build adapters via Fastlane
-        if: steps.meta.outputs.adapters != ''
-        env:
-          S3_BUCKET: ${{ secrets.S3_BUCKET }}
-          S3_REGION: ${{ secrets.S3_REGION }}
+      - name: AWS check (before fastlane)
         run: |
           set -euo pipefail
-          export CI=1 FASTLANE_SKIP_UPDATE_CHECK=1
+          aws sts get-caller-identity
+          aws s3 ls "s3://${{ secrets.S3_BUCKET }}/" --region "${{ secrets.S3_REGION }}" | head -n 5 || true
+
+      - name: Build adapter(s) via Fastlane (self-hosted Ruby 3.2)
+        if: steps.meta.outputs.adapters != ''
+        run: |
+          set -euo pipefail
+          export CI=1 NSUnbufferedIO=YES FASTLANE_SKIP_UPDATE_CHECK=1
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
 
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
-            bundle exec fastlane adapter \
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            echo "Building adapter $AD..."
+            /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
               name:"$AD" \
               sdk_version:"${{ steps.sdk.outputs.version }}" \
               upload:true \
-              force_upload:true
+              force_upload:true 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter_$AD.log"
+          done
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+
+      - name: Setup SSH for podspec repo
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Register CocoaPods repo
+        run: |
+          pod repo remove bidon || true
+          pod repo remove bidon-io-cocoapods_specs || true
+          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+
+      - name: Push adapter podspec to podspec repo
+        if: steps.meta.outputs.adapters != ''
+        run: |
+          set -euo pipefail
+          SDK_VERSION="${{ steps.sdk.outputs.version }}"
+          if [[ "$SDK_VERSION" == *"-"* ]]; then
+            SOURCES="bidon"
+          else
+            SOURCES="trunk"
+          fi
+          echo "Using CocoaPods sources: $SOURCES for SDK_VERSION=$SDK_VERSION"
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            spec="build/Podspecs/${AD}.podspec.json"
+            echo "Pushing $spec..."
+            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources="$SOURCES"
           done
 
-      - name: Push adapter podspecs
+      - name: Push adapter podspec to trunk
         if: steps.meta.outputs.adapters != ''
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
         run: |
-          set -e
-          pod repo remove bidon || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+          set -euo pipefail
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
-            pod repo push bidon "build/Podspecs/${AD}.podspec.json" \
-              --allow-warnings --skip-tests --skip-import-validation
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            spec="build/Podspecs/${AD}.podspec.json"
+            if [ ! -f "$spec" ]; then
+              echo "❌ Podspec not found at $spec"
+              exit 1
+            fi
+            CMD="pod trunk push \"$spec\" --allow-warnings --skip-tests --skip-import-validation"
+            echo "Running: $CMD"
+            eval "$CMD"
           done
 
-      - name: Debug merge permissions
-        if: always()
+      - name: Collect podspec URLs
+        id: podspec_links
+        if: success() && steps.meta.outputs.adapters != ''
+        run: |
+          set -euo pipefail
+          BASE="https://github.com/bidon-io/CocoaPods-Specs/blob/main"
+          IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
+          OUT=""
+          for AD in "${ADAPTERS[@]}"; do
+            if [ -z "$AD" ]; then
+              continue
+            fi
+            SPEC="build/Podspecs/${AD}.podspec.json"
+            if [ ! -f "$SPEC" ]; then
+              continue
+            fi
+            VERSION=$(jq -r '.version' "$SPEC" 2>/dev/null || sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$SPEC" | head -n1)
+            if [ -z "$VERSION" ]; then
+              continue
+            fi
+            URL="${BASE}/${AD}/${VERSION}/${AD}.podspec.json"
+            LINE="<${URL}|${AD} ${VERSION}>"
+            if [ -z "$OUT" ]; then
+              OUT="$LINE"
+            else
+              OUT="${OUT}\n$LINE"
+            fi
+          done
+          echo "list=$OUT" >> "$GITHUB_OUTPUT"
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ *Adapter Build Succeeded (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapters: `${{ steps.meta.outputs.adapters }}`\n• Podspecs:\n${{ steps.podspec_links.outputs.list }}\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ *Adapter Build Failed (after approval)!*\n• Pod: `${{ steps.meta.outputs.pod }}`\n• From: `${{ steps.meta.outputs.from }}` → To: `${{ steps.meta.outputs.to }}`\n• Adapter: `${{ steps.meta.outputs.adapter }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Enable PR auto-merge (squash) on success
+        if: success()
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ github.token }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
+
+      - name: (Optional) Ensure auto-merge via gh as well
+        if: success()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/${GITHUB_REPOSITORY} --jq '.permissions' || true
-
-      - name: Enable PR auto-merge (PAT)
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.PR_AUTOMERGE_TOKEN }}
-        run: |
           set -euo pipefail
-
-          SHA="${{ github.event.pull_request.head.sha }}"
-          PR_NUMBER="$(gh api "repos/${{ github.repository }}/commits/${SHA}/pulls" \
-            -H "Accept: application/vnd.github+json" \
-            --jq '.[0].number')"
-
-          [ -n "$PR_NUMBER" ] || exit 1
-
+          PR_NUMBER="${{ github.event.pull_request.number }}"
           gh pr merge \
-            -R "${{ github.repository }}" \
+            -R "bidon-io/bidon-sdk-ios" \
             --squash \
             --auto \
             "$PR_NUMBER"
