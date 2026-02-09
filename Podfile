@@ -42,7 +42,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.5'
+  pod 'UnityAds', '4.16.6'
 end
 
 def moloco
@@ -82,15 +82,15 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.1'
+  pod 'YandexMobileAds', '7.18.4'
 end
 
 def startio
-  pod 'StartAppSDK', '4.12.0'
+  pod 'StartAppSDK', '4.13.0'
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.13.0'
+  pod 'TaurusxAdsSDK', '1.14.0'
 end
 
 def swiftlint
