@@ -30,11 +30,11 @@ def appsflyer
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.0.0'
+  pod 'BigoADS', '5.0.6'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.3'
+  pod 'Fyber_Marketplace_SDK', '8.4.4'
 end
 
 def meta_ads
