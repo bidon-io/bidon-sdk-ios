@@ -78,16 +78,16 @@ PODS:
     - StackModules/Static (~> 3.4.2)
   - BigoADS (5.0.6)
   - ChartboostSDK (9.11.0)
-  - DivKit (32.30.0):
-    - DivKit_LayoutKit (= 32.30.0)
-    - DivKit_Serialization (= 32.30.0)
+  - DivKit (32.35.0):
+    - DivKit_LayoutKit (= 32.35.0)
+    - DivKit_Serialization (= 32.35.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKit (32.30.0):
-    - DivKit_LayoutKitInterface (= 32.30.0)
+  - DivKit_LayoutKit (32.35.0):
+    - DivKit_LayoutKitInterface (= 32.35.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKitInterface (32.30.0):
+  - DivKit_LayoutKitInterface (32.35.0):
     - VGSL (~> 7.12)
-  - DivKit_Serialization (32.30.0):
+  - DivKit_Serialization (32.35.0):
     - VGSL (~> 7.12)
   - DivKitBinaryCompatibilityFacade (5.2.1):
     - DivKit (~> 32.14)
@@ -142,7 +142,7 @@ PODS:
   - MintegralAdSDK/RewardVideoAd (8.0.6):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.9.3)
-  - MolocoSDKiOS (4.2.0)
+  - MolocoSDKiOS (4.3.0)
   - myTargetSDK (5.38.0):
     - myTrackerSDK (~> 3.3.0)
   - myTrackerSDK (3.3.0)
@@ -158,24 +158,24 @@ PODS:
     - StackModules/Core-Static
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
-  - StartAppSDK (4.12.0)
+  - StartAppSDK (4.13.0)
   - SwiftLint (0.62.2)
   - TaurusxAdsSDK (1.13.0):
     - TaurusxAdsSDK/TaurusxAds (= 1.13.0)
   - TaurusxAdsSDK/TaurusxAds (1.13.0)
   - UnityAds (4.16.5)
-  - VGSL (7.15.2):
-    - VGSLFundamentals (= 7.15.2)
-    - VGSLNetworking (= 7.15.2)
-    - VGSLUI (= 7.15.2)
-  - VGSLFundamentals (7.15.2)
-  - VGSLNetworking (7.15.2):
-    - VGSLFundamentals (= 7.15.2)
-    - VGSLUI (= 7.15.2)
-  - VGSLUI (7.15.2):
-    - VGSLFundamentals (= 7.15.2)
+  - VGSL (7.17.0):
+    - VGSLFundamentals (= 7.17.0)
+    - VGSLNetworking (= 7.17.0)
+    - VGSLUI (= 7.17.0)
+  - VGSLFundamentals (7.17.0)
+  - VGSLNetworking (7.17.0):
+    - VGSLFundamentals (= 7.17.0)
+    - VGSLUI (= 7.17.0)
+  - VGSLUI (7.17.0):
+    - VGSLFundamentals (= 7.17.0)
   - VungleAds (7.6.3)
-  - YandexMobileAds (7.18.1):
+  - YandexMobileAds (7.18.4):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
     - AppMetricaIDSync (~> 5.14.0)
@@ -197,14 +197,14 @@ DEPENDENCIES:
   - IronSourceSDK/Ads (= 9.2.0.0)
   - MintegralAdSDK (= 8.0.6)
   - MobileFuseSDK (= 1.9.3)
-  - MolocoSDKiOS (= 4.2.0)
+  - MolocoSDKiOS (= 4.3.0)
   - myTargetSDK (= 5.38.0)
-  - StartAppSDK (= 4.12.0)
+  - StartAppSDK (= 4.13.0)
   - SwiftLint
-  - TaurusxAdsSDK (= 1.13.0)
-  - UnityAds (= 4.16.5)
+  - TaurusxAdsSDK (= 1.14.0)
+  - UnityAds (= 4.16.6)
   - VungleAds (= 7.6.3)
-  - YandexMobileAds (= 7.18.1)
+  - YandexMobileAds (= 7.18.4)
 
 SPEC REPOS:
   trunk:
@@ -292,10 +292,10 @@ SPEC CHECKSUMS:
   BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
   BigoADS: 2aea8022bb285ebc1794ab2312858b5062a3a113
   ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
-  DivKit: 4e3f9da8ee34b6798ad0885ff4498205e4cac1a7
-  DivKit_LayoutKit: c08ff86a093ede806c90edda697a4f6975b8dae2
-  DivKit_LayoutKitInterface: 364ea1746ac940ec2a5a26c797f58ed08fdc0b58
-  DivKit_Serialization: 05154dd7ad928161024ba3b1b8542f5fb4482306
+  DivKit: 3dbffa1f9b303ba9f95ea4fc2b48375440768da2
+  DivKit_LayoutKit: c5025c06af360dc2b1a539b17567bfb628bd3755
+  DivKit_LayoutKitInterface: f31972d07134bdd373823ed31c0097eff5b9837f
+  DivKit_Serialization: c15fa9eb3878dda9710a30a19a395e61a9d2e118
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
@@ -309,21 +309,21 @@ SPEC CHECKSUMS:
   IronSourceSDK: 66e1483cd62fb63162a965651f6f41c6b91664db
   MintegralAdSDK: 54b0633d3ad8c81bb939440345601ea5cd1af04b
   MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
-  MolocoSDKiOS: 978085f5dd8ee0f5ffe153f11eb480903e71a8e4
+  MolocoSDKiOS: c2800326280d78aa3a7914f4e474024272891b85
   myTargetSDK: c761a9b66095dda4a510bd17b2e97a54edb466fc
   myTrackerSDK: 50f2ca5ca7a6aec2661f378b7441a85e15f2af29
   OMSDK_Appodeal: 24a4e82085d9d8273129a53354e13dcf0a32bce9
   StackModules: ca80fdd51655605b6c12aefee055dd18340b225f
-  StartAppSDK: a01a0595a1ef4e7e75a003f0358650de932031d8
+  StartAppSDK: 890149cde4355beec9ec4c0f5f4d499c44f42b79
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
-  TaurusxAdsSDK: 1ac0cef6682cb338201f3368f22d9836ac0e7f5b
+  TaurusxAdsSDK: 6689ea53cd6a5e71845ac869714fcc23a4f456ea
   UnityAds: 8b9e0ecf7c4aa7334d15f81efb58db279e28f502
-  VGSL: dabeeb6e50ea7e7a3bb9152cd2767e5348214a91
-  VGSLFundamentals: ce1fb1b5b665e766334598a28ff332a682b5cb22
-  VGSLNetworking: 98eb009d428290a234b9f8ce1f55d35aebd04441
-  VGSLUI: 4a75805b8c64c7260684894ab835ce2f5130c965
+  VGSL: 6696dd84229c7d3ce8ad9b940e89bbd199e2b12d
+  VGSLFundamentals: 5bd45cb6e0b594902aa9f8927402b4d787460bc7
+  VGSLNetworking: 4301c663201314d27357078ec8df9dccc631ec62
+  VGSLUI: 6cf73663cc3e9fcc808c095f065eb84555a5cd52
   VungleAds: 40e87d1eaba17ac818b0f94461fd8ed21ad768dc
-  YandexMobileAds: 246020ffd644f626e099ebff82284e89b6c77d90
+  YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
 
 PODFILE CHECKSUM: 5dd1675ecf9f04ae114d4a4f84126684a31c1aa0
 
