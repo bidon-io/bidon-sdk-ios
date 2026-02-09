@@ -67,10 +67,10 @@ extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     }
     
     func interstitialAdWillLogImpression(_ interstitialAd: MATInterstitialAd) {
+        delegate?.providerWillPresent(self)
+
         let ad = ZmaticooInterstitialDemandAd(placementId: placementId, interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
-
-        delegate?.providerWillPresent(self)
     }
     
     func interstitialAdDidClick(_ interstitialAd: MATInterstitialAd) {

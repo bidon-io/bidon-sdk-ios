@@ -20,8 +20,7 @@ final class ZmaticooAdViewDemandAd: DemandAd {
     }
 }
 
-final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvider<ZmaticooAdViewDemandAd>
-{
+final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvider<ZmaticooAdViewDemandAd> {
     weak var adViewDelegate: DemandProviderAdViewDelegate?
     weak var rootViewController: UIViewController?
 

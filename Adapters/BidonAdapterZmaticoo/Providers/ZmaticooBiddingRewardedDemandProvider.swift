@@ -68,10 +68,10 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     }
     
     func rewardedVideoAdWillLogImpression(_ rewardedVideoAd: MATRewardedVideoAd) {
+        delegate?.providerWillPresent(self)
+
         let ad = ZmaticooRewardedDemandAd(placementId: placementId, rewarded: rewardedVideoAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
-        
-        delegate?.providerWillPresent(self)
     }
     
     func rewardedVideoAdDidClick(_ rewardedVideoAd: MATRewardedVideoAd) {
