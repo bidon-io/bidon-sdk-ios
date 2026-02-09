@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   pull-requests: write
   actions: read
 
@@ -195,7 +195,7 @@ jobs:
       - name: Push adapter podspec to trunk
         if: steps.meta.outputs.adapters != ''
         env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN_V2 }}
         run: |
           set -euo pipefail
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
@@ -272,3 +272,16 @@ jobs:
           token: ${{ github.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
+
+      - name: (Optional) Ensure auto-merge via gh as well
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          gh pr merge \
+            -R "bidon-io/bidon-sdk-ios" \
+            --squash \
+            --auto \
+            "$PR_NUMBER"

@@ -34,7 +34,7 @@ def bigo_ads
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.3'
+  pod 'Fyber_Marketplace_SDK', '8.4.4'
 end
 
 def meta_ads
