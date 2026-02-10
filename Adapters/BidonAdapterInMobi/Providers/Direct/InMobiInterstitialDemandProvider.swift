@@ -48,7 +48,8 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
     ) {
         switch event {
         case .lose:
-            ad.ad.cancel()
+            // cancel() is deprecated with no replacement
+            break
         default:
             break
         }

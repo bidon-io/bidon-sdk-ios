@@ -17,7 +17,7 @@ final class BidonAdapterIronSourceTests: XCTestCase {
 
         XCTAssertEqual(adapter.demandId, "ironsource")
         XCTAssertEqual(adapter.name, "IronSource")
-        XCTAssertEqual(adapter.sdkVersion, IronSource.sdkVersion())
+        XCTAssertEqual(adapter.sdkVersion, LevelPlay.sdkVersion())
         XCTAssertFalse(adapter.adapterVersion.isEmpty)
     }
 
