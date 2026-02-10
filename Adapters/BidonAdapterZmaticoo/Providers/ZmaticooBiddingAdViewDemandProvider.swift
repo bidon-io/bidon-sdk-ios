@@ -12,11 +12,9 @@ import UIKit
 
 final class ZmaticooAdViewDemandAd: DemandAd {
     public let id: String
-    public let banner: MATBannerAd
 
-    init(placementId: String, banner: MATBannerAd) {
+    init(placementId: String) {
         self.id = placementId
-        self.banner = banner
     }
 }
 
@@ -56,7 +54,7 @@ final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvid
 
 extension ZmaticooBiddingAdViewDemandProvider: AdViewDemandProvider {
     func container(for ad: ZmaticooAdViewDemandAd) -> Bidon.AdViewContainer? {
-        return ad.banner
+        return banner
     }
 
     func didTrackImpression(for ad: ZmaticooAdViewDemandAd) {}
@@ -64,7 +62,7 @@ extension ZmaticooBiddingAdViewDemandProvider: AdViewDemandProvider {
 
 extension ZmaticooBiddingAdViewDemandProvider: MATBannerAdDelegate {
     func bannerAdDidLoad(_ bannerAd: MATBannerAd) {
-        let ad = ZmaticooAdViewDemandAd(placementId: placementId, banner: bannerAd)
+        let ad = ZmaticooAdViewDemandAd(placementId: placementId)
         response?(.success(ad))
         response = nil
     }
@@ -75,7 +73,7 @@ extension ZmaticooBiddingAdViewDemandProvider: MATBannerAdDelegate {
     }
     
     func bannerAdDidImpression(_ bannerAd: MATBannerAd) {
-        let ad = ZmaticooAdViewDemandAd(placementId: placementId, banner: bannerAd)
+        let ad = ZmaticooAdViewDemandAd(placementId: placementId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
     

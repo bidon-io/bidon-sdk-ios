@@ -12,11 +12,9 @@ import MaticooSDK
 
 final class ZmaticooInterstitialDemandAd: DemandAd {
     public let id: String
-    public let interstitial: MATInterstitialAd
 
-    init(placementId: String, interstitial: MATInterstitialAd) {
+    init(placementId: String) {
         self.id = placementId
-        self.interstitial = interstitial
     }
 }
 
@@ -51,7 +49,7 @@ extension ZmaticooBiddingInterstitialDemandProvider: InterstitialDemandProvider 
 
 extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     func interstitialAdDidLoad(_ interstitialAd: MATInterstitialAd) {
-        let ad = ZmaticooInterstitialDemandAd(placementId: placementId, interstitial: interstitialAd)
+        let ad = ZmaticooInterstitialDemandAd(placementId: placementId)
         response?(.success(ad))
         response = nil
     }
@@ -62,14 +60,14 @@ extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     }
     
     func interstitialAd(_ interstitialAd: MATInterstitialAd, displayFailWithError error: any Error) {
-        let ad = ZmaticooInterstitialDemandAd(placementId: placementId, interstitial: interstitialAd)
+        let ad = ZmaticooInterstitialDemandAd(placementId: placementId)
         delegate?.provider(self, didFailToDisplayAd: ad, error: SdkError(error))
     }
     
     func interstitialAdWillLogImpression(_ interstitialAd: MATInterstitialAd) {
         delegate?.providerWillPresent(self)
 
-        let ad = ZmaticooInterstitialDemandAd(placementId: placementId, interstitial: interstitialAd)
+        let ad = ZmaticooInterstitialDemandAd(placementId: placementId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
     

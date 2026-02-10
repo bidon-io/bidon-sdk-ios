@@ -12,11 +12,9 @@ import MaticooSDK
 
 final class ZmaticooRewardedDemandAd: DemandAd {
     public let id: String
-    public let rewarded: MATRewardedVideoAd
 
-    init(placementId: String, rewarded: MATRewardedVideoAd) {
+    init(placementId: String) {
         self.id = placementId
-        self.rewarded = rewarded
     }
 }
 
@@ -52,7 +50,7 @@ extension ZmaticooBiddingRewardedDemandProvider: RewardedAdDemandProvider {
 
 extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     func rewardedVideoAdDidLoad(_ rewardedVideoAd: MATRewardedVideoAd) {
-        let ad = ZmaticooRewardedDemandAd(placementId: placementId, rewarded: rewardedVideoAd)
+        let ad = ZmaticooRewardedDemandAd(placementId: placementId)
         response?(.success(ad))
         response = nil
     }
@@ -63,14 +61,14 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     }
     
     func rewardedVideoAd(_ rewardedVideoAd: MATRewardedVideoAd, displayFailWithError error: any Error) {
-        let ad = ZmaticooRewardedDemandAd(placementId: placementId, rewarded: rewardedVideoAd)
+        let ad = ZmaticooRewardedDemandAd(placementId: placementId)
         delegate?.provider(self, didFailToDisplayAd: ad, error: SdkError(error))
     }
     
     func rewardedVideoAdWillLogImpression(_ rewardedVideoAd: MATRewardedVideoAd) {
         delegate?.providerWillPresent(self)
 
-        let ad = ZmaticooRewardedDemandAd(placementId: placementId, rewarded: rewardedVideoAd)
+        let ad = ZmaticooRewardedDemandAd(placementId: placementId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
     
