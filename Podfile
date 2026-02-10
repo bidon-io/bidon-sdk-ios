@@ -42,11 +42,11 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.5'
+  pod 'UnityAds', '4.16.6'
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.2.0'
+  pod 'MolocoSDKiOS', '4.3.0'
 end
 
 def meta_sdk
@@ -54,7 +54,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.5'
+  pod 'MintegralAdSDK', '8.0.7'
 end
 
 def mobilefuse
@@ -62,7 +62,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.6.3'
+  pod 'VungleAds', '7.7.0'
 end
 
 def inmobi
@@ -70,7 +70,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.38.0'
+  pod "myTargetSDK", '5.39.1'
 end
 
 def chartboost
@@ -78,19 +78,19 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", '9.2.0.0'
+  pod "IronSourceSDK/Ads", '9.3.0.0'
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.1'
+  pod 'YandexMobileAds', '7.18.4'
 end
 
 def startio
-  pod 'StartAppSDK', '4.12.0'
+  pod 'StartAppSDK', '4.13.0'
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.13.0'
+  pod 'TaurusxAdsSDK', '1.14.0'
 end
 
 def swiftlint
