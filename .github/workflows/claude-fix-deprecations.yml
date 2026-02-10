@@ -34,8 +34,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.PODS_UPDATER_APP_ID }}
-          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
+          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
 
       - name: Fetch pull request info
         id: pr
@@ -181,8 +181,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.PODS_UPDATER_APP_ID }}
-          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
+          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
 
       - name: Checkout PR branch
         uses: actions/checkout@v4
