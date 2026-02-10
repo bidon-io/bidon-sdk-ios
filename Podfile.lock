@@ -181,6 +181,7 @@ PODS:
     - AppMetricaIDSync (~> 5.14.0)
     - AppMetricaLibraryAdapter (~> 5.14.0)
     - DivKitBinaryCompatibilityFacade (~> 5.2.1)
+  - zMaticoo (1.5.4.6)
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.3.3)
@@ -205,6 +206,7 @@ DEPENDENCIES:
   - UnityAds (= 4.16.6)
   - VungleAds (= 7.7.0)
   - YandexMobileAds (= 7.18.4)
+  - zMaticoo (= 1.5.4.6)
 
 SPEC REPOS:
   trunk:
@@ -265,6 +267,7 @@ SPEC REPOS:
     - VGSLUI
     - VungleAds
     - YandexMobileAds
+    - zMaticoo
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 08312af8e8b0cca3dcb3e91c8d464b83e95bcaba
@@ -307,9 +310,9 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: 43b1d6560bd75c8c382bb54fa8e248f5ed979860
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
-  MintegralAdSDK: 07ff43683ce5ee0c9a394abba6dd79620c775555
+  MintegralAdSDK: 9fde3aa7b739121e4e76ae83bcc612a4af27d7e5
   MobileFuseSDK: a9a80d4b2d46df2684417fa2ea952a3ed39819d1
-  MolocoSDKiOS: 978085f5dd8ee0f5ffe153f11eb480903e71a8e4
+  MolocoSDKiOS: c2800326280d78aa3a7914f4e474024272891b85
   myTargetSDK: fc8cea635522e4f1b34e087f95cc0f45bd5fe638
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
   OMSDK_Appodeal: 24a4e82085d9d8273129a53354e13dcf0a32bce9
@@ -324,7 +327,8 @@ SPEC CHECKSUMS:
   VGSLUI: 6cf73663cc3e9fcc808c095f065eb84555a5cd52
   VungleAds: 1d60d6d08d4adcaa84a401a7e65c35de5cd16ae9
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
+  zMaticoo: cb99d267ed924309aab95628d757eef61daa9a61
 
-PODFILE CHECKSUM: a11db13d7b313303bc7146a5e79b6d0f2679a715
+PODFILE CHECKSUM: f5a6c64580ef9497eb16c799cae38d07be33c449
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
