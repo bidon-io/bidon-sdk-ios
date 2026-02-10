@@ -58,7 +58,7 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.9.3'
+  pod 'MobileFuseSDK', '1.10.0'
 end
 
 def vungle
@@ -66,7 +66,7 @@ def vungle
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.1.0'
+  pod 'InMobiSDK', '11.1.1'
 end
 
 def my_target
