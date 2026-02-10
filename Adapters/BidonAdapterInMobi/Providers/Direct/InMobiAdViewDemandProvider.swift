@@ -66,12 +66,7 @@ final class InMobiAdViewDemandProvider: NSObject, DirectDemandProvider {
         ad: InMobiDemandAd<IMBanner>,
         event: DemandProviderEvent
     ) {
-        switch event {
-        case .lose:
-            ad.ad.cancel()
-        default:
-            break
-        }
+        // No action needed - InMobi SDK handles cleanup internally
     }
 }
 
