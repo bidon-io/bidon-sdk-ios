@@ -123,7 +123,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.VAULT_CLAUDE_API_KEY_SDK }}
           github_token: ${{ steps.app-token.outputs.token }}
-          allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot]"
+          allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot],bidon-pods-updater2,bidon-pods-updater2[bot]"
           trigger_phrase: "@claude"
           show_full_output: true
           claude_args: |
