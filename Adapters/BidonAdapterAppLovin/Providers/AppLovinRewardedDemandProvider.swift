@@ -123,11 +123,8 @@ extension AppLovinRewardedDemandProvider: DirectDemandProvider {
 
         interstitial.adDisplayDelegate = bridge
 
-        // Load ad using ALAdService instead of deprecated preloadAndNotify
-        sdk.adService.loadNextAd(
-            ALAdSize.zero,
-            andNotify: delegate
-        )
+        // Load ad using the new non-deprecated API
+        interstitial.preload(andNotify: delegate)
 
         self.interstitial = interstitial
     }
