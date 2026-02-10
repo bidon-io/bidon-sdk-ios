@@ -66,7 +66,7 @@ def vungle
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.1.0'
+  pod 'InMobiSDK', '11.1.1'
 end
 
 def my_target
