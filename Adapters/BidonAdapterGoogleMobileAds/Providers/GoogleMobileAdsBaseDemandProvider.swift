@@ -37,6 +37,10 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     open func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
     }
+    
+    open func loadAd(_ request: GoogleMobileAds.Request, payload: String) {
+        fatalError("Base demand provider can't load any ad")
+    }
 
     final func handleDidLoad(adObject: AdObject) {
         self.response?(.success(adObject))
