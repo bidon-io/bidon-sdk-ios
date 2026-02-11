@@ -42,6 +42,22 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
             response(.success(token))
         }
     }
+    
+    override func loadAd(_ request: Request, payload: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let banner = GoogleMobileAds.BannerView(adSize: adSize)
+
+            banner.delegate = self
+            banner.rootViewController = rootViewController
+
+            setupAdRevenueHandler(adObject: banner)
+
+            banner.load(with: payload)
+
+            self.banner = banner
+        }
+    }
 
     override func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         DispatchQueue.main.async { [weak self] in
