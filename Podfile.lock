@@ -93,7 +93,7 @@ PODS:
     - DivKit (~> 32.14)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
-  - FBAudienceNetwork (6.20.1)
+  - FBAudienceNetwork (6.21.0)
   - FBSDKCoreKit (17.1.0):
     - FBAEMKit (= 17.1.0)
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -190,7 +190,7 @@ DEPENDENCIES:
   - BidMachine (= 3.5.1)
   - BigoADS (= 5.0.6)
   - ChartboostSDK (= 9.11.0)
-  - FBAudienceNetwork (= 6.20.1)
+  - FBAudienceNetwork (= 6.21.0)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.4)
   - Google-Mobile-Ads-SDK (= 13.0.0)
@@ -301,7 +301,7 @@ SPEC CHECKSUMS:
   DivKit_Serialization: 2a96f66a624dec40973c90a01e91e9dc45c669df
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
-  FBAudienceNetwork: 08e86d63a05b3a5a59414af12e4af8d756943c80
+  FBAudienceNetwork: f4ab9e073ab98c884dbdb5ffe7c861272b380bc2
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
