@@ -229,6 +229,8 @@
 		499682B12E44B26E003DE568 /* YandexParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499682A32E44B26E003DE568 /* YandexParameters.swift */; };
 		499682B32E44B5C5003DE568 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B22E44B5C5003DE568 /* Bidon.framework */; };
 		499682B92E44DE52003DE568 /* AppMetricaLibraryAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */; };
+		49A3B9C02F3B7ABC00DE8005 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A3B9BF2F3B7ABC00DE8005 /* DTBiOSSDK.xcframework */; };
+		49A3B9C12F3B7ABC00DE8005 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 49A3B9BF2F3B7ABC00DE8005 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B123559C8D33313D4FDF2A2 /* Pods_BidonAdapterChartboost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA9ADED2B52F962D76E08ED /* Pods_BidonAdapterChartboost.framework */; };
 		4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D59382BB732B357DD161A0FE /* Pods_BidonAdapterAmazon.framework */; };
 		62978FD32B7CF4A35237B7C9 /* Pods_BidonAdapterDTExchange.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC66057C8D59DD82DE94E7 /* Pods_BidonAdapterDTExchange.framework */; };
@@ -278,8 +280,6 @@
 		B9B0B9672E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9662E687C5500286D44 /* InMobiBiddingAdUnitExtras.swift */; };
 		B9B0B9692E687C7800286D44 /* InMobiBiddingDemandAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B9682E687C7800286D44 /* InMobiBiddingDemandAd.swift */; };
 		B9B0B96B2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B0B96A2E687F6B00286D44 /* InMobiBiddingAdViewDemandProvider.swift */; };
-		B9FB6B002EEAD17900731BC6 /* DTBiOSSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB6AFF2EEAD17900731BC6 /* DTBiOSSDK.xcframework */; };
-		B9FB6B012EEAD17900731BC6 /* DTBiOSSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB6AFF2EEAD17900731BC6 /* DTBiOSSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5FC75AC036067A06E1D9716 /* Pods_BidonAdapterAppLovin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6726583B680D2D3A9117A1 /* Pods_BidonAdapterAppLovin.framework */; };
 		CA23DEA1E10FEE1D3BF005F0 /* Pods_BidonAdapterMintegral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8AE573463A5AAE8FAA93DA /* Pods_BidonAdapterMintegral.framework */; };
 		E0B0C505D1CBC75508B9F011 /* Pods_BidonAdapterInMobi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE0A68DAA0BB12884E9FA5DA /* Pods_BidonAdapterInMobi.framework */; };
@@ -309,13 +309,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B9FB6B022EEAD17900731BC6 /* Embed Frameworks */ = {
+		49A3B9C22F3B7ABC00DE8005 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B9FB6B012EEAD17900731BC6 /* DTBiOSSDK.xcframework in Embed Frameworks */,
+				49A3B9C12F3B7ABC00DE8005 /* DTBiOSSDK.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,6 +606,7 @@
 		499682AA2E44B26E003DE568 /* YandexDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		499682B22E44B5C5003DE568 /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		499682B82E44DE52003DE568 /* AppMetricaLibraryAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppMetricaLibraryAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49A3B9BF2F3B7ABC00DE8005 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-5.4.0/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E412C3D683A00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E452C3D685100A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.2/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
 		49BB8E492C3D688C00A51877 /* DTBiOSSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DTBiOSSDK.xcframework; path = "../Pods/AmazonPublisherServicesSDK/APS_iOS_SDK-4.9.6/DTBiOSSDK.xcframework"; sourceTree = "<group>"; };
@@ -824,7 +825,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9FB6B002EEAD17900731BC6 /* DTBiOSSDK.xcframework in Frameworks */,
+				49A3B9C02F3B7ABC00DE8005 /* DTBiOSSDK.xcframework in Frameworks */,
 				4253FEDD2ABC98670013A675 /* Bidon.framework in Frameworks */,
 				4D8991FBC98EE3416382863E /* Pods_BidonAdapterAmazon.framework in Frameworks */,
 			);
@@ -1790,6 +1791,7 @@
 		628D13BF18603C4DCE80EE71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49A3B9BF2F3B7ABC00DE8005 /* DTBiOSSDK.xcframework */,
 				B95A94A02F0FCD4C00B3EB7C /* Bidon.framework */,
 				B9FB6AFF2EEAD17900731BC6 /* DTBiOSSDK.xcframework */,
 				4930794C2EC4E17100B35FC1 /* DTBiOSSDK.xcframework */,
@@ -2396,7 +2398,7 @@
 				4253FECB2ABC97A50013A675 /* Sources */,
 				4253FECC2ABC97A50013A675 /* Frameworks */,
 				4253FECD2ABC97A50013A675 /* Resources */,
-				B9FB6B022EEAD17900731BC6 /* Embed Frameworks */,
+				49A3B9C22F3B7ABC00DE8005 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
