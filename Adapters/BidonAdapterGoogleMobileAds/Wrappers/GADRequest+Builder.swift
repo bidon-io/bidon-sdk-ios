@@ -61,6 +61,7 @@ extension GoogleMobileAds.Request {
 
         self.init()
 
+        self.adString = builder.adContent
         self.requestAgent = builder.requestAgent
 
         self.register(builder.extras)
