@@ -13,7 +13,7 @@ import GoogleMobileAds
 extension GoogleMobileAds.Request {
     final class Builder {
         private var parameters: [String: AnyHashable] = [:]
-        private(set) var adContent: String?
+        private(set) var adResponseString: String?
         private(set) var requestAgent: String?
 
         var extras: GoogleMobileAds.Extras {
@@ -38,7 +38,7 @@ extension GoogleMobileAds.Request {
 
         @discardableResult
         func withBiddingPayload(_ biddingPayload: String?) -> Self {
-            self.adContent = biddingPayload
+            self.adResponseString = biddingPayload
             return self
         }
 
@@ -61,7 +61,9 @@ extension GoogleMobileAds.Request {
 
         self.init()
 
-        self.adString = builder.adContent
+        // Note: adString is deprecated. The adResponseString should be used
+        // with format-specific loadWithAdResponseString: methods instead.
+        // This is handled in the specific demand providers.
         self.requestAgent = builder.requestAgent
 
         self.register(builder.extras)

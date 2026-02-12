@@ -44,6 +44,22 @@ final class GoogleMobileAdsRewardedAdDemandProvider: GoogleMobileAdsBaseDemandPr
             self.handleDidLoad(adObject: rewardedAd)
         }
     }
+
+    override func loadAd(withAdResponseString adResponseString: String) {
+        GoogleMobileAds.RewardedAd.load(withAdResponseString: adResponseString) { [weak self] rewardedAd, error in
+            guard let self = self else { return }
+
+            guard let rewardedAd = rewardedAd else {
+                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
+                return
+            }
+
+            rewardedAd.fullScreenContentDelegate = self
+
+            self.setupAdRevenueHandler(adObject: rewardedAd)
+            self.handleDidLoad(adObject: rewardedAd)
+        }
+    }
 }
 
 
