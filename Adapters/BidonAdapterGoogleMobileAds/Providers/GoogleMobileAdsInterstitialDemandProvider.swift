@@ -26,22 +26,6 @@ final class GoogleMobileAdsInterstitialDemandProvider: GoogleMobileAdsBaseDemand
         }
     }
     
-    override func loadAd(_ request: Request, payload: String) {
-        InterstitialAd.load(with: payload) { [weak self] interstitial, error in
-            guard let self = self else { return }
-
-            guard let interstitial = interstitial else {
-                self.handleDidFailToLoad(.noFill(error?.localizedDescription))
-                return
-            }
-
-            interstitial.fullScreenContentDelegate = self
-
-            self.setupAdRevenueHandler(adObject: interstitial)
-            self.handleDidLoad(adObject: interstitial)
-        }
-    }
-    
     override func loadAd(_ request: Request, adUnitId: String) {
         InterstitialAd.load(with: adUnitId, request: request) { [weak self] interstitial, error in
             guard let self = self else { return }
