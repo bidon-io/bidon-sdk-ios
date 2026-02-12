@@ -28,7 +28,8 @@ POD_TO_ADAPTER = {
   'IronSourceSDK'             => ['BidonAdapterIronSource', 'ISBidonCustomAdapter'],
   'YandexMobileAds'           => ['BidonAdapterYandex'],
   'TaurusxAdsSDK'             => ['BidonAdapterTaurusX'],
-  'StartAppSDK'               => ['BidonAdapterStartIo']
+  'StartAppSDK'               => ['BidonAdapterStartIo'],
+  'zMaticoo'                  => ['BidonAdapterZmaticoo'],
 }.freeze
 
 def repo_slug
