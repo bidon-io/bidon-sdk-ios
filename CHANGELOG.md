@@ -1,6 +1,7 @@
 # Develop
 
 - Updated secrets
+- Sandbox flag fix
 
 # Release 0.14.0
 
