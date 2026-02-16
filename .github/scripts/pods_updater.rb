@@ -29,7 +29,7 @@ POD_TO_ADAPTER = {
   'YandexMobileAds'           => ['BidonAdapterYandex'],
   'TaurusxAdsSDK'             => ['BidonAdapterTaurusX'],
   'StartAppSDK'               => ['BidonAdapterStartIo'],
-  'zMaticoo'                  => ['BidonAdapterZmaticoo'],
+  'zMaticoo'                  => ['BidonAdapterZmaticoo']
 }.freeze
 
 def repo_slug
