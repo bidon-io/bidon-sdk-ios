@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.3.3'
+  pod 'AmazonPublisherServicesSDK', '5.4.0'
 end
 
 def applovin
@@ -38,7 +38,7 @@ def dtexchange
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.20.1'
+  pod 'FBAudienceNetwork', '6.21.0'
 end
 
 def unity_ads
@@ -58,7 +58,7 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.9.3'
+  pod 'MobileFuseSDK', '1.10.0'
 end
 
 def vungle
@@ -66,11 +66,11 @@ def vungle
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.1.0'
+  pod 'InMobiSDK', '11.1.1'
 end
 
 def my_target
-  pod "myTargetSDK", '5.39.1'
+  pod "myTargetSDK", '5.40.0'
 end
 
 def chartboost

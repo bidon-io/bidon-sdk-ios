@@ -47,7 +47,7 @@ extension Bidon.COPPAAppliesStatus {
 
 extension Bidon.GDPRAppliesStatus {
     init(_ flag: Bool?) {
-        guard let flag = flag else {
+        guard let flag else {
             self = .unknown
             return
         }

@@ -143,7 +143,7 @@ final class AdServiceParametersViewModel: ObservableObject {
     }
 
     @Published var gdprApplies: Bool {
-        didSet { parameters.gdprApplies = coppaApplies }
+        didSet { parameters.gdprApplies = gdprApplies }
     }
 
     @Published var gdprConsentString: String {
