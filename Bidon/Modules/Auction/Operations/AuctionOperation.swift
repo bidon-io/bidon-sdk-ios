@@ -52,6 +52,9 @@ protocol AuctionOperationBuilder {
 
     @discardableResult
     func withAdapters(_ adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]) -> Self
+    
+    @discardableResult
+    func withStartRule(_ rule: @escaping (() -> Bool)) -> Self
 }
 
 
@@ -64,6 +67,7 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     private(set) var adRevenueObserver: AdRevenueObserver!
     private(set) var adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]!
     private(set) var adUnit: AdUnitModel!
+    private(set) var rule: (() -> Bool)?
 
     required init() {}
 
@@ -106,6 +110,12 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     @discardableResult
     func withAdUnit(_ adUnit: AdUnitModel) -> Self {
         self.adUnit = adUnit
+        return self
+    }
+    
+    @discardableResult
+    func withStartRule(_ rule: @escaping (() -> Bool)) -> Self {
+        self.rule = rule
         return self
     }
 }

@@ -31,7 +31,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
     }()
     private let operationsQueue = DispatchQueue(label: "com.bidon.auction.operationsQueue", attributes: .concurrent)
 
-    private var executingOperation: (any AuctionOperationRequestDemand)?
     private var maxPrice: Price
 
     private var _pendingOperations = [any AuctionOperationRequestDemand]()
@@ -84,18 +83,30 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         let timeout = auctionConfiguration.timeoutInSeconds
         setupAuctionTimeout(timeoutInSeconds: timeout)
 
-        finishAuctionOperation = operation { builder in
+        finishAuctionOperation = operation(adUnit: nil) { builder in
             builder.withCompletion(completion)
         }
 
         setupDemandRequestOperations()
-        scheduleNextOperation()
+        start()
     }
 
     func cancel() {
         auctionObserver.log(CancelAuctionEvent())
 
         finishAuction()
+    }
+    
+    func start() {
+        _pendingOperations.forEach({
+            let finishDemandOperation = createFinishDemandOperation($0)
+            finishDemandOperation.addDependency($0)
+
+            queue.addOperation($0)
+            queue.addOperation(finishDemandOperation)
+            finishAuctionOperation!.addDependency($0)
+        })
+        queue.addOperation(finishAuctionOperation!)
     }
 
     //MARK: - Create Demand Requests.
@@ -108,86 +119,41 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             ops.append(operation)
         }
         
-        operationLock.lock()
         _pendingOperations.append(contentsOf: ops)
-        operationLock.unlock()
     }
 
     private func createDemandRequestOperation(_ adUnit: AdUnitModel) -> any AuctionOperationRequestDemand {
+        var op: any AuctionOperationRequestDemand
+
         switch adUnit.bidType {
         case .bidding:
-            return operation { builder in
+            op = operation(adUnit: adUnit) { builder in
                 builder.withDemand(adUnit.demandId)
                 builder.withAdUnit(adUnit)
             } as AuctionOperationRequestBiddingDemand<AdTypeContextType>
         case .direct:
-             return operation { builder in
+            op = operation(adUnit: adUnit) { builder in
                  builder.withDemand(adUnit.demandId)
                  builder.withAdUnit(adUnit)
              } as AuctionOperationRequestDirectDemand<AdTypeContextType>
         }
-    }
-
-    //MARK: - Auction Processing.
-
-    private func scheduleNextOperation() {
-        guard let nextOperation = dequeueNextOperation() else {
-            self.finishAuction()
-            return
-        }
-        
-        self.addOperation(nextOperation)
+                
+        return op
     }
     
-    private func dequeueNextOperation() -> (any AuctionOperationRequestDemand)? {
-        operationLock.lock()
-        defer { operationLock.unlock() }
-        
-        guard !_pendingOperations.isEmpty else {
-            return nil
-        }
-        
-        return _pendingOperations.removeFirst()
-    }
-
-    private func addOperation(_ operation: any AuctionOperationRequestDemand) {
-        guard let adUnit = adUnit(from: operation) else {
-            return
-        }
-        if adUnit.pricefloor < maxPrice {
-            handlePriceFloorBelowMax(adUnit: adUnit)
-            scheduleNextOperation()
-        } else {
-            performDemandRequest(operation)
-        }
-    }
-
-    private func performDemandRequest(_ operation: any AuctionOperationRequestDemand) {
-        executingOperation = operation
-
-        // Add dependency to fetch demand operations and calc auction result.
-        finishAuctionOperation?.addDependency(operation)
-
-        let finishDemandOperation = createFinishDemandOperation(operation)
-        finishDemandOperation.addDependency(operation)
-        queue.addOperation(operation)
-        queue.addOperation(finishDemandOperation)
-    }
-
     private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
         let finishDemandOperation = BlockOperation { [weak self] in
             guard let self else { return }
 
-            // If single ad unit is canceled we do not process the result and start next operation.
             guard !operation.isCancelled else {
-                self.scheduleNextOperation()
                 return
             }
             self.rewriteMaxPriceIfNeeded(for: operation)
-            self.scheduleNextOperation()
         }
         return finishDemandOperation
     }
+
+    //MARK: - Auction Processing.
 
     private func rewriteMaxPriceIfNeeded(for operation: any AuctionOperationRequestDemand) {
         if let result = operation.bid as (any Bid)? {
@@ -214,7 +180,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
 
-        executingOperation?.timeoutReached()
         finishAuction()
     }
 
@@ -254,16 +219,6 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         queue.addOperation(finishAuctionOperation)
     }
 
-    private func handlePriceFloorBelowMax(adUnit: any AdUnit) {
-        if adUnit.bidType == .direct {
-            let event = DirectDemandBelowPricefloorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
-            auctionObserver.log(event)
-        } else {
-            let event = BiddingDemandBelowPricefloorAucitonEvent(adUnit: adUnit)
-            auctionObserver.log(event)
-        }
-    }
-
     //MARK: -
 
     private func handleEmptyAdUnits(completion: @escaping Completion) {
@@ -280,7 +235,7 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
         return nil
     }
 
-    private func operation<T: AuctionOperation>(build: ((T.BuilderType) -> ())? = nil) -> T
+    private func operation<T: AuctionOperation>(adUnit: AdUnitModel?, build: ((T.BuilderType) -> ())? = nil) -> T
     where T.BuilderType.AdTypeContextType == AdTypeContextType {
         return T { builder in
             builder.withContext(context)
@@ -289,6 +244,12 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             builder.withComparator(comparator)
             builder.withObserver(auctionObserver)
             builder.withAdRevenueObserver(adRevenueObserver)
+            builder.withStartRule { [weak self] in
+                guard let self else { return false }
+                guard let adUnit else { return true }
+                print("[ewgojwgj] \(adUnit.pricefloor) - \(self.maxPrice)")
+                return adUnit.pricefloor >= self.maxPrice
+            }
 
             build?(builder)
         }
