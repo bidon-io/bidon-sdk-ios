@@ -28,7 +28,8 @@ POD_TO_ADAPTER = {
   'IronSourceSDK'             => ['BidonAdapterIronSource', 'ISBidonCustomAdapter'],
   'YandexMobileAds'           => ['BidonAdapterYandex'],
   'TaurusxAdsSDK'             => ['BidonAdapterTaurusX'],
-  'StartAppSDK'               => ['BidonAdapterStartIo']
+  'StartAppSDK'               => ['BidonAdapterStartIo'],
+  'zMaticoo'                  => ['BidonAdapterZmaticoo']
 }.freeze
 
 def repo_slug
@@ -574,6 +575,44 @@ def main
                 tests_ok ? "✅ Pods tests passed for this update." : "❌ Pods tests FAILED for this update. Please check the Pods Updater workflow logs."
               )
 
+              # 1.1) If tests/build failed: collect adapter build errors and ask Claude (only if we have code diagnostics)
+              if !tests_ok
+                begin
+                  report_md = "build/reports/adapter-errors/adapter_errors.md"
+                  adapters_csv = adapter_names.join(',')
+
+                  sh_allow_fail(%Q(
+                    ruby .github/scripts/collect_adapter_errors_report.rb \
+                      --log build/reports/pods_tests.log \
+                      --out #{report_md} \
+                      --adapters "#{adapters_csv}"
+                  ))
+
+                  report_txt = report_md.sub(/\.md\z/i, '.txt')
+                  count = 0
+                  begin
+                    if File.exist?(report_txt)
+                      count = File.read(report_txt).lines.map(&:rstrip).reject(&:empty?).length
+                    end
+                  rescue => e4
+                    warn "Failed to read adapter errors txt: #{e4.message}"
+                  end
+
+                  if count > 0 && File.exist?(report_md)
+                    body = File.read(report_md)
+                    body = body.lines.first(350).join
+                    add_comment(pr['number'], body)
+                  else
+                    add_comment(
+                      pr['number'],
+                      "❌ Pods tests failed, but no actionable compiler `error:` diagnostics were detected in adapter code. Developer assistance is required."
+                    )
+                  end
+                rescue => e3
+                  warn "Failed to post adapter build errors report: #{e3.message}"
+                end
+              end
+
               # 2) Post deprecated warnings as a separate comment (filtered to the adapter(s) in this PR)
               depr = collect_deprecations_report(adapter_names: adapter_names)
               if depr && depr[:count].to_i > 0
@@ -614,5 +653,3 @@ def main
 end
 
 main
-
-
