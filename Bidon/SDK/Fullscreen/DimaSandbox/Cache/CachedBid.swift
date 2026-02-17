@@ -10,13 +10,13 @@ import Foundation
 extension CachedBid {
     struct BidPayload {
         let adType: AdType
-        let demandId: String
-        let auctionId: String
+        let demandID: String
+        let auctionID: String
         let price: Price
     }
-    
+
     struct Meta {
-        let entryId: String
+        let entryID: String
         let cachedAt: Date
         let expiresAt: Date
         let consentHash: String
@@ -26,59 +26,37 @@ extension CachedBid {
 final class CachedBid {
     typealias ImpressionControllerBuilder = () -> AnyObject
     typealias AdBuilder = () -> Ad
-    
+    typealias RevenueObserverHook = (AdRevenueObserver) -> Void
+
     let meta: Meta
     let payload: BidPayload
     let makeAd: AdBuilder
+    let observeRevenue: RevenueObserverHook
 
-    var reservationExpiresAt: Date?
-    
     private let makeImpressionController: ImpressionControllerBuilder
 
     init(
         meta: Meta,
         payload: BidPayload,
         makeAd: @escaping AdBuilder,
-        makeImpressionController: @escaping ImpressionControllerBuilder
+        makeImpressionController: @escaping ImpressionControllerBuilder,
+        observeRevenue: @escaping RevenueObserverHook
     ) {
         self.meta = meta
         self.payload = payload
         self.makeAd = makeAd
         self.makeImpressionController = makeImpressionController
+        self.observeRevenue = observeRevenue
     }
 }
 
 extension CachedBid {
-    var price: Price {
-        payload.price
-    }
-    
-    var demandId: String {
-        payload.demandId
-    }
-    
     var isExpired: Bool {
         Date() >= meta.expiresAt
     }
     
     var remainingTTL: TimeInterval {
         max(0, meta.expiresAt.timeIntervalSinceNow)
-    }
-
-    var cacheKey: String {
-        "\(payload.adType.rawValue)_\(meta.consentHash)"
-    }
-}
-
-extension CachedBid {
-    func isValid(currentConsentHash: String) -> Bool {
-        guard !isExpired else {
-            return false
-        }
-        guard meta.consentHash == currentConsentHash else {
-            return false
-        }
-        return true
     }
 }
 
@@ -93,7 +71,7 @@ extension CachedBid.Meta {
         let now = Date()
 
         return .init(
-            entryId: UUID().uuidString,
+            entryID: UUID().uuidString,
             cachedAt: now,
             expiresAt: now.addingTimeInterval(ttl),
             consentHash: consentHash

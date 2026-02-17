@@ -12,6 +12,7 @@ final class CacheStatsTracker {
         var hits: Int = 0
         var misses: Int = 0
         var savedFills: Int = 0
+        var invalidCount: Int = 0
 
         var hitRate: Double {
             let total = hits + misses
@@ -32,6 +33,10 @@ final class CacheStatsTracker {
 
     func recordSavedFill() {
         stats.savedFills += 1
+    }
+
+    func recordInvalid() {
+        stats.invalidCount += 1
     }
 
     func reset() {
