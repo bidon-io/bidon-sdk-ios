@@ -8,30 +8,30 @@
 import Foundation
 
 final class CacheImpressionDelegateProxy: NSObject {
-    private var cachedEntryId: String?
+    private var cachedEntryID: String?
     private var cacheConfirmSent = false
 
-    private let cache: BidCache
+    private let cache: BidCacheStore
 
     weak var delegate: FullscreenImpressionControllerDelegate?
 
-    var onImpression: ((_ demandId: String?) -> Void)?
-    var onHide: ((_ demandId: String?) -> Void)?
-    var onFailToPresent: ((_ demandId: String?) -> Void)?
+    var onImpression: ArgumentClosure<String?>?
+    var onHide: ArgumentClosure<String?>?
+    var onFailToPresent: ArgumentClosure<String?>?
 
-    var currentDemandId: String?
+    var currentDemandID: String?
 
-    init(cache: BidCache) {
+    init(cache: BidCacheStore) {
         self.cache = cache
     }
     
     func setCachedEntryId(_ id: String) {
-        cachedEntryId = id
+        cachedEntryID = id
         cacheConfirmSent = false
     }
 
     func clearCachedEntryId() {
-        cachedEntryId = nil
+        cachedEntryID = nil
         cacheConfirmSent = false
     }
 }
@@ -40,33 +40,33 @@ extension CacheImpressionDelegateProxy: FullscreenImpressionControllerDelegate {
     func willPresent(_ impression: inout any Impression) {
         delegate?.willPresent(&impression)
 
-        if let id = cachedEntryId, !cacheConfirmSent {
-            cache.confirm(entryId: id)
+        if let id = cachedEntryID, !cacheConfirmSent {
+            cache.confirm(entryID: id)
             cacheConfirmSent = true
-            cachedEntryId = nil
+            cachedEntryID = nil
         }
-        onImpression?(currentDemandId)
+        onImpression?(currentDemandID)
     }
     
     func didFailToPresent(_ impression: inout (any Impression)?, error: SdkError) {
         delegate?.didFailToPresent(&impression, error: error)
 
-        if let id = cachedEntryId, !cacheConfirmSent {
-            cache.release(entryId: id)
-            cachedEntryId = nil
+        if let id = cachedEntryID, !cacheConfirmSent {
+            cache.release(entryID: id)
+            cachedEntryID = nil
         }
-        onFailToPresent?(currentDemandId)
+        onFailToPresent?(currentDemandID)
     }
     
     func didHide(_ impression: inout any Impression) {
         delegate?.didHide(&impression)
 
-        if let id = cachedEntryId, !cacheConfirmSent {
-            cache.release(entryId: id)
-            cachedEntryId = nil
+        if let id = cachedEntryID, !cacheConfirmSent {
+            cache.release(entryID: id)
+            cachedEntryID = nil
         }
-        onHide?(currentDemandId)
-        currentDemandId = nil
+        onHide?(currentDemandID)
+        currentDemandID = nil
     }
     
     func didClick(_ impression: inout any Impression) {
@@ -76,9 +76,9 @@ extension CacheImpressionDelegateProxy: FullscreenImpressionControllerDelegate {
     func didExpire(_ impression: inout any Impression) {
         delegate?.didExpire(&impression)
 
-        if let id = cachedEntryId, !cacheConfirmSent {
-            cache.release(entryId: id)
-            cachedEntryId = nil
+        if let id = cachedEntryID, !cacheConfirmSent {
+            cache.release(entryID: id)
+            cachedEntryID = nil
         }
     }
     

@@ -239,7 +239,7 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
             !finishAuctionOperation.isFinished,
             !finishAuctionOperation.isCancelled
         else {
-            Logger.adCacheD(prefix: "Auction", message: "Can't finish auction. Finish is already in progress or completed.")
+            Logger.dAuction("Can't finish auction. Finish is already in progress or completed.")
             return
         }
         queue.addOperation(finishAuctionOperation)
