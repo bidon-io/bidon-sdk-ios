@@ -17,13 +17,6 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         InterstitialImpressionController,
         InterstitialAdaptersFetcher
     >
-    
-    private typealias ZhenyaManager = ZhenyaAdManager<
-        InterstitialAdTypeContext,
-        InterstitialConcurrentAuctionControllerBuilder,
-        InterstitialImpressionController,
-        InterstitialAdaptersFetcher
-    >
 
     @objc public weak var delegate: FullscreenAdDelegate?
 

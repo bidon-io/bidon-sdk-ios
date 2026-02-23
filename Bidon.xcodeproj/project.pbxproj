@@ -478,6 +478,31 @@
 			path = Cache;
 			sourceTree = "<group>";
 		};
+		013712E32F4CAD1E0054F769 /* CacheSandbox */ = {
+			isa = PBXGroup;
+			children = (
+				013712E52F4CAD8E0054F769 /* Banner */,
+				013712E42F4CAD2C0054F769 /* Fullscreen */,
+			);
+			path = CacheSandbox;
+			sourceTree = "<group>";
+		};
+		013712E42F4CAD2C0054F769 /* Fullscreen */ = {
+			isa = PBXGroup;
+			children = (
+				49FBCCF32F349FCC00271DAE /* Dima */,
+				49FBCCF22F349FC500271DAE /* Zhenya */,
+			);
+			path = Fullscreen;
+			sourceTree = "<group>";
+		};
+		013712E52F4CAD8E0054F769 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
 		421D48E4288841C6007DE2E4 /* Logging */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +548,7 @@
 		422101962859E2B3006596DA /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				013712E32F4CAD1E0054F769 /* CacheSandbox */,
 				49FBCCEF2F349D8D00271DAE /* Cache */,
 				49BB8E3C2C369F1000A51877 /* Auction */,
 				42FE946F29D4315300DF7920 /* Ad */,
@@ -636,16 +662,12 @@
 		424F180C28ABC0780082AEF3 /* Fullscreen */ = {
 			isa = PBXGroup;
 			children = (
-				49FBCCF32F349FCC00271DAE /* DimaSandbox */,
-				49FBCCF22F349FC500271DAE /* Zhenya */,
 				4299A423289BCDBC0062C580 /* Interstitial.swift */,
 				4224AA6C28B7D1F600E8D886 /* RewardedAd.swift */,
 				425E9C6128B7B19800F4E4C7 /* FullscreenAdManager.swift */,
 				4224AA6E28B7E11200E8D886 /* FullscreenImpressionController.swift */,
 				424F181228ABCF470082AEF3 /* InterstitialImpressionController.swift */,
 				4224AA7028B7E2F400E8D886 /* RewardedImpressionController.swift */,
-				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
-				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
 			);
 			path = Fullscreen;
 			sourceTree = "<group>";
@@ -1156,12 +1178,14 @@
 			children = (
 				49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */,
 				49FBCCF82F34A67600271DAE /* Cacher.swift */,
+				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
 				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
+				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
 			);
 			path = Zhenya;
 			sourceTree = "<group>";
 		};
-		49FBCCF32F349FCC00271DAE /* DimaSandbox */ = {
+		49FBCCF32F349FCC00271DAE /* Dima */ = {
 			isa = PBXGroup;
 			children = (
 				0110CD5C2F35FF7800EF8AD6 /* Cache */,
@@ -1171,7 +1195,7 @@
 				0110CD452F34B9F800EF8AD6 /* Controller */,
 				0110CD4A2F34BFED00EF8AD6 /* DimaSandbox.swift */,
 			);
-			path = DimaSandbox;
+			path = Dima;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
