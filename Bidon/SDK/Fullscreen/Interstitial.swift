@@ -32,7 +32,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private let strategy: Int = BidonSdk.shared.environmentRepository.environment(AppManager.self).config?.interstitial.strategy ?? 0
+    private let strategy: Int = BidonSdk.shared.interstitialCacheStrategy
 
     // Для стратегии 1 используем пул, для остальных - локальный менеджер
     private var localManager: Manager?
@@ -101,7 +101,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
         
         switch config.interstitial.strategy {
         case 2:
-            return DimaSandbox.buildInterstitialManager(
+            return DimaSandbox.Interstitial.buildManager(
                 delegate: self
             )
         default:
@@ -205,4 +205,14 @@ extension Interstitial: FullscreenAdManagerDelegate {
     }
 
     func adManager(_ adManager: FullscreenAdManager, didReward reward: Reward, ad: Ad) {}
+}
+
+private extension BidonSdk {
+    var interstitialCacheStrategy: Int {
+        environmentRepository
+            .environment(AppManager.self)
+            .config?
+            .interstitial
+            .strategy ?? 0
+    }
 }

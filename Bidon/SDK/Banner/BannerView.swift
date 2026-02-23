@@ -77,14 +77,27 @@ public final class BannerView: UIView, AdView {
         return manager
     }()
 
-    private lazy var adManager: BannerAdManager = {
-        let manager = BannerAdManager(
-            placement: .default,
-            adRevenueObserver: adRevenueObserver
-        )
-        manager.delegate = self
-        return manager
-    }()
+    private lazy var adManager: BannerAdManager = createAdManager()
+
+    private func createAdManager() -> BannerAdManager {
+        switch BidonSdk.shared.bannerCacheStrategy {
+        case 1:
+            return ZhenyaSandbox.buildBannerManager(
+                placement: .default,
+                adRevenueObserver: adRevenueObserver
+            )
+        case 2:
+            return DimaSandbox.Banner.buildManager(
+                placement: .default,
+                adRevenueObserver: adRevenueObserver
+            )
+        default:
+            return BannerAdManager(
+                placement: .default,
+                adRevenueObserver: adRevenueObserver
+            )
+        }
+    }
 
     @objc
     public init(
@@ -205,5 +218,15 @@ internal extension BannerView {
         return (adManager.impression ?? viewManager.impression).map {
             AdContainer(impression: $0)
         }
+    }
+}
+
+private extension BidonSdk {
+    var bannerCacheStrategy: Int {
+        environmentRepository
+            .environment(AppManager.self)
+            .config?
+            .banner
+            .strategy ?? 0
     }
 }

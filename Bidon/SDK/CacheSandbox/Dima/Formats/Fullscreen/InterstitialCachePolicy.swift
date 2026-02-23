@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InterstitialCachePolicy {
+struct InterstitialCachePolicy: DCachePolicy {
     typealias Bid = InterstitialBaseManager.BidType
 
     struct Config {
