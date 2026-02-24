@@ -23,7 +23,7 @@ where
     var auction: ZhenyaAuctionControllerType?
 
     override var isReady: Bool {
-        return Cacher.storage.peek() != nil
+        return Cacher.interstitialStorage.peek() != nil
     }
 
     override func loadAd(pricefloor: Price, auctionKey: String?) {
@@ -32,11 +32,11 @@ where
         - pricefloor: \(pricefloor)
         - auctionKey: \(auctionKey ?? "nil")
         - delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")
-        - cache has item: \(Cacher.storage.peek() != nil)
+        - cache has item: \(Cacher.interstitialStorage.peek() != nil)
         """)
         
         // If cache has a bid container that already meets the floor — use it.
-        if let ad = Cacher.storage.peek()?.ad as? BidContainer, ad.price >= pricefloor {
+        if let ad = Cacher.interstitialStorage.peek()?.ad as? BidContainer, ad.price >= pricefloor {
             let controller = ImpressionControllerType(
                 bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>
             )
@@ -54,7 +54,7 @@ where
     override func show(from rootViewController: UIViewController) {
         switch state {
         case .ready:
-            guard let ad = Cacher.storage.popFirst()?.ad as? BidContainer else { return }
+            guard let ad = Cacher.interstitialStorage.popFirst()?.ad as? BidContainer else { return }
 
             let bid = ad.bid
             let imprController = ImpressionControllerType(
@@ -107,7 +107,7 @@ where
 
         state = .auction(controller: auction)
         
-        Cacher.storage.beginIteration()
+        Cacher.interstitialStorage.beginIteration()
 
         // single-load callback: insert into cache + report refill outcome
         auction.singleLoadCompletion = { [weak self] bid in
@@ -124,7 +124,7 @@ where
                 >
             )
 
-            let inserted = Cacher.storage.insert(item, sticky: self.isFirstLoad)
+            let inserted = Cacher.interstitialStorage.insert(item, sticky: self.isFirstLoad)
             if inserted {
                 self.adRevenueObserver.observe(bid)
             }
@@ -144,20 +144,6 @@ where
                     guard let self else { 
                         Logger.error("[ZhenyaAdManager] self is nil in DispatchQueue.main.async!")
                         return 
-                    }
-                    
-                    Logger.debug("""
-                    [ZhenyaAdManager] Inside DispatchQueue.main.async
-                    - delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")
-                    - self: \(self)
-                    """)
-                    
-                    if self.delegate == nil {
-                        Logger.error("""
-                        [ZhenyaAdManager] ⚠️ delegate is NIL when trying to report didLoad!
-                        - ad: \(ad)
-                        - self: \(self)
-                        """)
                     }
                     
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
