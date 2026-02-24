@@ -77,7 +77,11 @@ public final class BannerView: UIView, AdView {
         return manager
     }()
 
-    private lazy var adManager: BannerAdManager = createAdManager()
+    private lazy var adManager: BannerAdManager = {
+        let manager = createAdManager()
+        manager.delegate = self
+        return manager
+    }()
 
     private func createAdManager() -> BannerAdManager {
         switch BidonSdk.shared.bannerCacheStrategy {
