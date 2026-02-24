@@ -16,24 +16,24 @@ protocol BannerAdManagerDelegate: AnyObject {
 
 
 class BannerAdManager: NSObject {
-    private typealias AuctionInfo = AuctionRequest.ResponseBody
+    typealias AuctionInfo = AuctionRequest.ResponseBody
 
-    fileprivate typealias AuctionControllerType = ConcurrentAuctionController<BannerAdTypeContext>
+    typealias AuctionControllerType = ConcurrentAuctionController<BannerAdTypeContext>
 
-    fileprivate enum State {
+    enum State {
         case idle
         case preparing
-        case auction(controller: AuctionControllerType)
+        case auction(controller: any AuctionController)
         case ready(impression: AdViewImpression)
     }
 
     @Injected(\.networkManager)
-    private var networkManager: NetworkManager
+    var networkManager: NetworkManager
 
     @Injected(\.sdk)
-    private var sdk: Sdk
+    var sdk: Sdk
 
-    private var state: State = .idle
+    var state: State = .idle
 
     let adRevenueObserver: AdRevenueObserver
 
@@ -51,9 +51,9 @@ class BannerAdManager: NSObject {
     var extras: [String: AnyHashable] = [:]
 
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
-    private let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
-    private var isCanceled = false
-    private var auctionStartTimestamp: TimeInterval?
+    let auctionInfo: auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    var isCanceled = false
+    var auctionStartTimestamp: TimeInterval?
 
     init(
         placement: String,
@@ -140,7 +140,7 @@ class BannerAdManager: NSObject {
         }
     }
 
-    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+    func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.auctionRequest { builder in
@@ -183,7 +183,7 @@ class BannerAdManager: NSObject {
         }
     }
 
-    private func performAuction(
+    func performAuction(
         auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken],
         viewContext: AdViewContext
@@ -254,7 +254,7 @@ class BannerAdManager: NSObject {
         }
     }
 
-    private func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {
+    func sendAuctionReport<T: AuctionReport>(_ report: T, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.statisticRequest { builder in
