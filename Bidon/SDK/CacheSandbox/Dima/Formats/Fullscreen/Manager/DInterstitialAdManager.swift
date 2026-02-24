@@ -18,7 +18,7 @@ final class DInterstitialAdManager: InterstitialBaseManager {
 
     private let cache = DimaSandbox.cache
     private let cacheStats = DimaSandbox.cacheStats
-    private let cachePolicy = DimaSandbox.cachePolicy
+    private let cachePolicy = DimaSandbox.Interstitial.cachePolicy
 
     private lazy var impressionProxy: CacheImpressionDelegateProxy = {
         let proxy = CacheImpressionDelegateProxy(cache: cache)

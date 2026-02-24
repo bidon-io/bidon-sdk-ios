@@ -18,6 +18,11 @@
 		0110CD4B2F34BFED00EF8AD6 /* DimaSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0110CD4A2F34BFED00EF8AD6 /* DimaSandbox.swift */; };
 		01243DD92F4499BE00C43E27 /* CacheStatsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01243DD82F4499BE00C43E27 /* CacheStatsTracker.swift */; };
 		01243DDB2F44A98E00C43E27 /* CacheImpressionDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01243DDA2F44A98E00C43E27 /* CacheImpressionDelegateProxy.swift */; };
+		013712ED2F4CB2DF0054F769 /* DimaSandbox+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712EC2F4CB2DF0054F769 /* DimaSandbox+Banner.swift */; };
+		013712EF2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712EE2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift */; };
+		013712F12F4CB3410054F769 /* ZhenyaSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712F02F4CB3410054F769 /* ZhenyaSandbox.swift */; };
+		013712F32F4CB9EC0054F769 /* BannerCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712F22F4CB9EC0054F769 /* BannerCachePolicy.swift */; };
+		013712F52F4CBA310054F769 /* DCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712F42F4CBA310054F769 /* DCachePolicy.swift */; };
 		01A55A512F36173D0029231B /* Logger+AdCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A55A502F36173D0029231B /* Logger+AdCaching.swift */; };
 		420067A728BD0FBB003B734D /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A628BD0FBB003B734D /* AppManager.swift */; };
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
@@ -220,6 +225,11 @@
 		0110CD4A2F34BFED00EF8AD6 /* DimaSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimaSandbox.swift; sourceTree = "<group>"; };
 		01243DD82F4499BE00C43E27 /* CacheStatsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheStatsTracker.swift; sourceTree = "<group>"; };
 		01243DDA2F44A98E00C43E27 /* CacheImpressionDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImpressionDelegateProxy.swift; sourceTree = "<group>"; };
+		013712EC2F4CB2DF0054F769 /* DimaSandbox+Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DimaSandbox+Banner.swift"; sourceTree = "<group>"; };
+		013712EE2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DimaSandbox+Fullscreen.swift"; sourceTree = "<group>"; };
+		013712F02F4CB3410054F769 /* ZhenyaSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZhenyaSandbox.swift; sourceTree = "<group>"; };
+		013712F22F4CB9EC0054F769 /* BannerCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCachePolicy.swift; sourceTree = "<group>"; };
+		013712F42F4CBA310054F769 /* DCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCachePolicy.swift; sourceTree = "<group>"; };
 		01A55A502F36173D0029231B /* Logger+AdCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+AdCaching.swift"; sourceTree = "<group>"; };
 		420067A628BD0FBB003B734D /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
@@ -439,7 +449,6 @@
 				01243DD82F4499BE00C43E27 /* CacheStatsTracker.swift */,
 				01A55A502F36173D0029231B /* Logger+AdCaching.swift */,
 				0108A0D52F47158900E4A043 /* ArgumentClosure.swift */,
-				0108A0D92F4757EC00E4A043 /* InterstitialCachePolicy.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -471,11 +480,99 @@
 		0110CD5C2F35FF7800EF8AD6 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				013712F42F4CBA310054F769 /* DCachePolicy.swift */,
 				0110CD412F34B1F200EF8AD6 /* CachedBid.swift */,
 				0110CD3B2F34A85100EF8AD6 /* BidCacheStore.swift */,
 				0110CD3D2F34A87200EF8AD6 /* CacheKey.swift */,
 			);
 			path = Cache;
+			sourceTree = "<group>";
+		};
+		013712E32F4CAD1E0054F769 /* CacheSandbox */ = {
+			isa = PBXGroup;
+			children = (
+				013712E72F4CB2740054F769 /* Zhenya */,
+				013712E62F4CB26F0054F769 /* Dima */,
+			);
+			path = CacheSandbox;
+			sourceTree = "<group>";
+		};
+		013712E42F4CAD2C0054F769 /* Fullscreen */ = {
+			isa = PBXGroup;
+			children = (
+				013712EE2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift */,
+				0110CD472F34BB0100EF8AD6 /* Operations */,
+				0110CD462F34BA0B00EF8AD6 /* Manager */,
+				0110CD452F34B9F800EF8AD6 /* Controller */,
+				0108A0D92F4757EC00E4A043 /* InterstitialCachePolicy.swift */,
+			);
+			path = Fullscreen;
+			sourceTree = "<group>";
+		};
+		013712E52F4CAD8E0054F769 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				013712F22F4CB9EC0054F769 /* BannerCachePolicy.swift */,
+				013712EC2F4CB2DF0054F769 /* DimaSandbox+Banner.swift */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		013712E62F4CB26F0054F769 /* Dima */ = {
+			isa = PBXGroup;
+			children = (
+				0110CD4A2F34BFED00EF8AD6 /* DimaSandbox.swift */,
+				013712EA2F4CB2B50054F769 /* Formats */,
+				0110CD5C2F35FF7800EF8AD6 /* Cache */,
+				0110CD3A2F34A84E00EF8AD6 /* Tools */,
+			);
+			path = Dima;
+			sourceTree = "<group>";
+		};
+		013712E72F4CB2740054F769 /* Zhenya */ = {
+			isa = PBXGroup;
+			children = (
+				013712F02F4CB3410054F769 /* ZhenyaSandbox.swift */,
+				013712EB2F4CB2CD0054F769 /* Formats */,
+			);
+			path = Zhenya;
+			sourceTree = "<group>";
+		};
+		013712E82F4CB28A0054F769 /* Fullscreen */ = {
+			isa = PBXGroup;
+			children = (
+				49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */,
+				49FBCCF82F34A67600271DAE /* Cacher.swift */,
+				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
+				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
+				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
+			);
+			path = Fullscreen;
+			sourceTree = "<group>";
+		};
+		013712E92F4CB2950054F769 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		013712EA2F4CB2B50054F769 /* Formats */ = {
+			isa = PBXGroup;
+			children = (
+				013712E52F4CAD8E0054F769 /* Banner */,
+				013712E42F4CAD2C0054F769 /* Fullscreen */,
+			);
+			path = Formats;
+			sourceTree = "<group>";
+		};
+		013712EB2F4CB2CD0054F769 /* Formats */ = {
+			isa = PBXGroup;
+			children = (
+				013712E92F4CB2950054F769 /* Banner */,
+				013712E82F4CB28A0054F769 /* Fullscreen */,
+			);
+			path = Formats;
 			sourceTree = "<group>";
 		};
 		421D48E4288841C6007DE2E4 /* Logging */ = {
@@ -523,6 +620,7 @@
 		422101962859E2B3006596DA /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				013712E32F4CAD1E0054F769 /* CacheSandbox */,
 				49FBCCEF2F349D8D00271DAE /* Cache */,
 				49BB8E3C2C369F1000A51877 /* Auction */,
 				42FE946F29D4315300DF7920 /* Ad */,
@@ -636,16 +734,12 @@
 		424F180C28ABC0780082AEF3 /* Fullscreen */ = {
 			isa = PBXGroup;
 			children = (
-				49FBCCF32F349FCC00271DAE /* DimaSandbox */,
-				49FBCCF22F349FC500271DAE /* Zhenya */,
 				4299A423289BCDBC0062C580 /* Interstitial.swift */,
 				4224AA6C28B7D1F600E8D886 /* RewardedAd.swift */,
 				425E9C6128B7B19800F4E4C7 /* FullscreenAdManager.swift */,
 				4224AA6E28B7E11200E8D886 /* FullscreenImpressionController.swift */,
 				424F181228ABCF470082AEF3 /* InterstitialImpressionController.swift */,
 				4224AA7028B7E2F400E8D886 /* RewardedImpressionController.swift */,
-				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
-				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
 			);
 			path = Fullscreen;
 			sourceTree = "<group>";
@@ -1151,29 +1245,6 @@
 			path = Cache;
 			sourceTree = "<group>";
 		};
-		49FBCCF22F349FC500271DAE /* Zhenya */ = {
-			isa = PBXGroup;
-			children = (
-				49FBCCF42F34A00400271DAE /* ZhenyaFullscreenAdManager.swift */,
-				49FBCCF82F34A67600271DAE /* Cacher.swift */,
-				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
-			);
-			path = Zhenya;
-			sourceTree = "<group>";
-		};
-		49FBCCF32F349FCC00271DAE /* DimaSandbox */ = {
-			isa = PBXGroup;
-			children = (
-				0110CD5C2F35FF7800EF8AD6 /* Cache */,
-				0110CD472F34BB0100EF8AD6 /* Operations */,
-				0110CD3A2F34A84E00EF8AD6 /* Tools */,
-				0110CD462F34BA0B00EF8AD6 /* Manager */,
-				0110CD452F34B9F800EF8AD6 /* Controller */,
-				0110CD4A2F34BFED00EF8AD6 /* DimaSandbox.swift */,
-			);
-			path = DimaSandbox;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1290,6 +1361,7 @@
 				42BA81F9287732F5001F1744 /* AdViewDemandProvider.swift in Sources */,
 				426DD7B828A68EC400A1ADF5 /* AdViewDelegate.swift in Sources */,
 				42F265232A532CBE0081EC55 /* RewardedAdTypeContext.swift in Sources */,
+				013712ED2F4CB2DF0054F769 /* DimaSandbox+Banner.swift in Sources */,
 				423FBA9F29F048BB00B20A5D /* DirectDemandProvider.swift in Sources */,
 				425E9C6228B7B19800F4E4C7 /* FullscreenAdManager.swift in Sources */,
 				42D047E2289D5EEE0096A8C6 /* App.swift in Sources */,
@@ -1315,6 +1387,7 @@
 				426CD9B42AA77A41000A2226 /* BannerLayoutHelper.swift in Sources */,
 				426DD7A628A5042A00A1ADF5 /* UserDefault.swift in Sources */,
 				42C46C9729F2ABC50057D7CE /* DirectedAcyclicGraph.swift in Sources */,
+				013712F52F4CBA310054F769 /* DCachePolicy.swift in Sources */,
 				0110CD422F34B1F200EF8AD6 /* CachedBid.swift in Sources */,
 				42CCB99128CB365400DBAE97 /* UIDevice+Extensions.swift in Sources */,
 				01A55A512F36173D0029231B /* Logger+AdCaching.swift in Sources */,
@@ -1332,6 +1405,7 @@
 				4299A424289BCDBC0062C580 /* Interstitial.swift in Sources */,
 				42B4531F2A41A54200D808D1 /* Bundle+Extensions.swift in Sources */,
 				428C45C02A264F68009E90EF /* RegulationsModel.swift in Sources */,
+				013712F32F4CB9EC0054F769 /* BannerCachePolicy.swift in Sources */,
 				0110CD4B2F34BFED00EF8AD6 /* DimaSandbox.swift in Sources */,
 				4265B55A2A60157A007AD808 /* ParameterizedInitializableAdapter.swift in Sources */,
 				42D047E4289D5F3E0096A8C6 /* User.swift in Sources */,
@@ -1353,6 +1427,7 @@
 				42389E172874665A006024BA /* UIApplication+Extensions.swift in Sources */,
 				4243093A28A2BCCC002360B0 /* GeoModel.swift in Sources */,
 				494C02522C2443E5003D881D /* AuctionOperationRoundTimeout.swift in Sources */,
+				013712EF2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift in Sources */,
 				49BB8E402C36A22E00A51877 /* DefaultAuctionInfo.swift in Sources */,
 				42481FA02AF39DE200FF3065 /* AuctionOperation.swift in Sources */,
 				428FFC7628BF95AC0090B126 /* ImpressionRequest.swift in Sources */,
@@ -1372,6 +1447,7 @@
 				42E158AA2B18A249004801AB /* AdViewStatisticsRequestBuilder.swift in Sources */,
 				428C45CA2A274CD2009E90EF /* BiddingDemandProvider.swift in Sources */,
 				429EE2C2286CA23F009439C6 /* Repository.swift in Sources */,
+				013712F12F4CB3410054F769 /* ZhenyaSandbox.swift in Sources */,
 				4243093C28A3AC18002360B0 /* DemandIdCodingKey.swift in Sources */,
 				429EE2C7286CA283009439C6 /* DemandSourceAdapter.swift in Sources */,
 				428FFC7228BF84060090B126 /* EncodableAuctionReportModel.swift in Sources */,

@@ -15,7 +15,7 @@ protocol BannerAdManagerDelegate: AnyObject {
 }
 
 
-final class BannerAdManager: NSObject {
+class BannerAdManager: NSObject {
     private typealias AuctionInfo = AuctionRequest.ResponseBody
 
     fileprivate typealias AuctionControllerType = ConcurrentAuctionController<BannerAdTypeContext>
