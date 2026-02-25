@@ -19,7 +19,7 @@ final class BannerSectionViewModel: ObservableObject {
     @Published var events: [AdEventModel] = []
     @Published var isLoading: Bool = false
     @Published var pricefloor: Price = 0.0
-    @Published var auctionKey: String = "1O16NVRFS0000"
+    @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
 
     func receive(event: AdEventModel) {
