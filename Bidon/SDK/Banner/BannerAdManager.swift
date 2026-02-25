@@ -52,6 +52,7 @@ class BannerAdManager: NSObject {
 
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
     let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+
     var isCanceled = false
     var auctionStartTimestamp: TimeInterval?
 
@@ -140,7 +141,7 @@ class BannerAdManager: NSObject {
         }
     }
 
-    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
+    func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?, viewContext: AdViewContext) {
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.auctionRequest { builder in

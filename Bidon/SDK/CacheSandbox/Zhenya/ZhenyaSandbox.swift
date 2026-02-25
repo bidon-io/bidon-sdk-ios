@@ -8,7 +8,6 @@
 import Foundation
 
 enum ZhenyaSandbox {
-    
     private static var bannerManagers: [String: BannerAdManager] = [:]
     
     static func buildBannerManager(
@@ -173,4 +172,3 @@ final class ZhenyaBannerAdManager: BannerAdManager {
         self.auction = auction
     }
 }
-
