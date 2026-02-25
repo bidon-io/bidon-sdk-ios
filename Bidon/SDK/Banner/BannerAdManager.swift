@@ -51,7 +51,8 @@ class BannerAdManager: NSObject {
     var extras: [String: AnyHashable] = [:]
 
     var demandsTokensManager: DemandsTokensManager<BannerAdTypeContext>?
-    let auctionInfo: auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+
     var isCanceled = false
     var auctionStartTimestamp: TimeInterval?
 

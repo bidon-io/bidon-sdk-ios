@@ -1,5 +1,5 @@
 //
-//  CacheStorage.swift
+//  BannerCacheStorage.swift
 //  Bidon
 //
 //  Created by Евгения Григорович on 05/02/2026.
@@ -7,44 +7,28 @@
 
 import Foundation
 
-struct Item {
+struct BannerCacheItem {
     let ad: Ad
-    let manager: ZhenyaAdManager<
-        InterstitialAdTypeContext,
-        InterstitialConcurrentAuctionControllerBuilder,
-        InterstitialImpressionController,
-        InterstitialAdaptersFetcher
-    >
+    let manager: ZhenyaBannerAdManager
 }
 
-final class CacheStorage {
-
+final class BannerCacheStorage {
     private let capacity: Int
     private let lock = NSLock()
-
-    /// Если true: items[0] закреплён и не сортируется; сортируем только items[1...]
     private var stickyHeadActive: Bool = false
 
-    private var items: [Item] = []
+    private var items: [BannerCacheItem] = []
     private var indexByKey: [String: Int] = [:]
-
-    // MARK: - Iteration max price
-
-    /// Максимальная цена внутри текущей итерации пополнения.
-    /// Сбрасывается при старте следующей итерации.
     private var iterationMaxPrice: Price?
 
-    /// Вызывать в начале каждой итерации пополнения кэша (например, перед новым проходом waterfall).
     func beginIteration() {
         lock.lock()
         defer { lock.unlock() }
-        
         Logger.debug("""
-        [AdCaching] 🔄 BEGIN ITERATION
+        [BannerAdCaching] 🔄 BEGIN ITERATION
         - resetting max price from: \(iterationMaxPrice?.description ?? "nil")
         - current cache size: \(items.count)/\(capacity)
         """)
-        
         iterationMaxPrice = nil
     }
 
@@ -54,68 +38,52 @@ final class CacheStorage {
         self.items.reserveCapacity(capacity)
     }
 
-    // MARK: - Public API
-
     @discardableResult
-    func insert(_ element: Item, sticky: Bool) -> Bool {
+    func insert(_ element: BannerCacheItem, sticky: Bool) -> Bool {
         lock.lock()
         defer {
             logCacheState(reason: "insert")
             lock.unlock()
         }
-
         logWaterfallPolling(for: element)
-        
         Logger.debug("""
-        [AdCaching] INSERT attempt:
+        [BannerAdCaching] INSERT attempt:
         - capacity: \(capacity)
         - current count: \(items.count)
         - sticky mode active: \(stickyHeadActive)
         - requesting sticky: \(sticky)
         - iteration max price: \(iterationMaxPrice?.description ?? "nil")
         """)
-
-        // 1) Итерационный max + фильтр 20% (только для capacity > 1)
         if capacity > 1, shouldRejectByIterationThreshold(element.ad.price) {
             Logger.debug("""
-            [AdCaching] ❌ INSERT REJECTED: iteration threshold
+            [BannerAdCaching] ❌ INSERT REJECTED: iteration threshold
             - element: \(format(element: element))
             """)
             return false
         }
-
         let key = element.ad.id
-
-        // update existing
         if let idx = indexByKey[key] {
             let oldElement = items[idx]
             items[idx] = element
-
             Logger.debug("""
-            [AdCaching] ✅ UPDATE EXISTING element at index \(idx)
+            [BannerAdCaching] ✅ UPDATE EXISTING element at index \(idx)
             - old: \(format(element: oldElement))
             - new: \(format(element: element))
             - sticky requested: \(sticky)
             """)
-
-            // если попросили sticky — поднимаем в голову
             if sticky, idx != 0 {
                 promoteToStickyHead(at: idx)
-                Logger.debug("[AdCaching] ↑ Promoted to sticky head")
+                Logger.debug("[BannerAdCaching] ↑ Promoted to sticky head")
             }
-
             sortAccordingToMode()
             rebuildIndex()
             trimIfNeeded()
             return true
         }
-
-        // capacity == 1 special case:
-        // если есть sticky head и вставка не sticky — можно вытеснить только если новый дороже
         if capacity == 1, !items.isEmpty, stickyHeadActive, !sticky {
             guard let currentPrice = items.first?.ad.price, element.ad.price > currentPrice else {
                 Logger.debug("""
-                [AdCaching] ❌ INSERT REJECTED: capacity=1, sticky head, non-sticky element
+                [BannerAdCaching] ❌ INSERT REJECTED: capacity=1, sticky head, non-sticky element
                 - current sticky price: \(items.first?.ad.price ?? 0)
                 - offered price: \(element.ad.price)
                 - element: \(format(element: element))
@@ -123,19 +91,16 @@ final class CacheStorage {
                 """)
                 return false
             }
-            // Новый элемент дороже - вытесняем sticky
             Logger.debug("""
-            [AdCaching] ⚠️ Evicting sticky head (capacity=1, new is more expensive)
+            [BannerAdCaching] ⚠️ Evicting sticky head (capacity=1, new is more expensive)
             - old sticky: \(format(element: items.first!))
             - new element: \(format(element: element))
             """)
             stickyHeadActive = false
         }
-
-        // full + too cheap -> ignore (учитываем sticky-режим)
         if items.count == capacity, let threshold = cheapestAllowedToEvictPrice(), element.ad.price <= threshold {
             Logger.debug("""
-            [AdCaching] ❌ INSERT REJECTED: cache full, element too cheap
+            [BannerAdCaching] ❌ INSERT REJECTED: cache full, element too cheap
             - capacity: \(capacity)
             - current count: \(items.count)
             - cheapest in cache: \(threshold)
@@ -145,112 +110,92 @@ final class CacheStorage {
             """)
             return false
         }
-
         if items.isEmpty {
-            // Первый элемент: если sticky=true -> включаем sticky, иначе обычный режим (но массив из 1 элемента и так ок)
             items.append(element)
             indexByKey[key] = 0
             stickyHeadActive = sticky
             Logger.debug("""
-            [AdCaching] ✅ INSERT SUCCESS: first element
+            [BannerAdCaching] ✅ INSERT SUCCESS: first element
             - element: \(format(element: element))
             - sticky: \(sticky)
             """)
             return true
         }
-
         if sticky {
-            // новый sticky становится головой; старая голова (если была) уходит в хвост
             items.insert(element, at: 0)
             stickyHeadActive = true
             Logger.debug("""
-            [AdCaching] ✅ INSERT SUCCESS: new sticky head
+            [BannerAdCaching] ✅ INSERT SUCCESS: new sticky head
             - element: \(format(element: element))
             """)
         } else {
             items.append(element)
             Logger.debug("""
-            [AdCaching] ✅ INSERT SUCCESS: appended to tail
+            [BannerAdCaching] ✅ INSERT SUCCESS: appended to tail
             - element: \(format(element: element))
             """)
         }
-
         sortAccordingToMode()
         rebuildIndex()
         trimIfNeeded()
         return true
     }
 
-    /// Возвращает items[0]. Если голова была sticky — выключает sticky-режим.
-    func popFirst() -> Item? {
+    func popFirst() -> BannerCacheItem? {
         lock.lock()
         defer {
             logCacheState(reason: "pop")
             lock.unlock()
         }
-
         guard !items.isEmpty else { return nil }
-
         let first = items.removeFirst()
         indexByKey[first.ad.id] = nil
-
         if stickyHeadActive {
-            // sticky съеден — переходим в normal mode
             stickyHeadActive = false
             items.sort { $0.ad.price > $1.ad.price }
         }
-
         rebuildIndex()
         return first
     }
 
-    func peek() -> Item? {
+    func peek() -> BannerCacheItem? {
         lock.lock()
         defer { lock.unlock() }
         return items.first
     }
 
-    // MARK: - Logging
-
-    private func logWaterfallPolling(for element: Item) {
+    private func logWaterfallPolling(for element: BannerCacheItem) {
         Logger.debug("""
-        [AdCaching] waterfall polling adunits:
+        [BannerAdCaching] waterfall polling adunits:
         \(format(element: element))
         """)
     }
 
     private func logCacheState(reason: String) {
         guard !items.isEmpty else {
-            Logger.debug("[AdCaching] CACHE empty after \(reason)")
+            Logger.debug("[BannerAdCaching] CACHE empty after \(reason)")
             return
         }
-
         var lines: [String] = []
-        lines.append("[AdCaching] CACHE size: \(items.count) ->")
-
+        lines.append("[BannerAdCaching] CACHE size: \(items.count) ->")
         for (i, item) in items.enumerated() {
             let prefix = (stickyHeadActive && i == 0) ? "[STICKY] " : ""
             lines.append(prefix + format(element: item))
         }
-
         Logger.debug(lines.joined(separator: "\n"))
     }
 
-    private func format(element: Item) -> String {
+    private func format(element: BannerCacheItem) -> String {
         let ad = element.ad
         let bidType = ad.adUnit.bidType == .cpm ? "CPM" : "RTB"
         return "\(ad.networkName) / \(bidType) / \(ad.price)"
     }
 
-    // MARK: - Helpers (Iteration threshold)
-
-    /// Обновляет iterationMaxPrice и возвращает true, если элемент нужно отбросить:
-    /// price < iterationMaxPrice * 0.8
     private func shouldRejectByIterationThreshold(_ price: Price) -> Bool {
         if let currentMax = iterationMaxPrice {
             if price > currentMax {
                 Logger.debug("""
-                [AdCaching] Iteration threshold: new MAX price
+                [BannerAdCaching] Iteration threshold: new MAX price
                 - previous max: \(currentMax)
                 - new max: \(price)
                 - equation: \(price) > \(currentMax) ✅
@@ -261,31 +206,29 @@ final class CacheStorage {
             }
             let minAllowed = currentMax * 0.5
             let shouldReject = price < minAllowed
-            
             if shouldReject {
                 Logger.debug("""
-                [AdCaching] Iteration threshold: REJECTED by 20% rule
+                [BannerAdCaching] Iteration threshold: REJECTED by 80% rule
                 - current max: \(currentMax)
                 - min allowed (80%): \(minAllowed)
                 - offered price: \(price)
-                - equation: \(price) < (\(currentMax) * 0.8) → \(price) < \(minAllowed) ❌
-                - ❌ REJECTED (too cheap, < 80% of max)
+                - equation: \(price) < (\(currentMax) * 0.5) → \(price) < \(minAllowed) ❌
+                - ❌ REJECTED (too cheap, < 50% of max)
                 """)
             } else {
                 Logger.debug("""
-                [AdCaching] Iteration threshold: within range
+                [BannerAdCaching] Iteration threshold: within range
                 - current max: \(currentMax)
-                - min allowed (50%): \(minAllowed)
+                - min allowed (80%): \(minAllowed)
                 - offered price: \(price)
-                - equation: \(price) >= (\(currentMax) * 0.5) → \(price) >= \(minAllowed) ✅
+                - equation: \(price) >= (\(currentMax) * 0.8) → \(price) >= \(minAllowed) ✅
                 - ✅ ACCEPTED
                 """)
             }
-            
             return shouldReject
         } else {
             Logger.debug("""
-            [AdCaching] Iteration threshold: FIRST in iteration
+            [BannerAdCaching] Iteration threshold: FIRST in iteration
             - price: \(price)
             - equation: iterationMaxPrice = \(price) (initial value)
             - ✅ ACCEPTED (first element sets max)
@@ -317,17 +260,12 @@ final class CacheStorage {
         items = [head] + tail
     }
 
-    /// В sticky-режиме cheapest для вытеснения — только из хвоста.
     private func cheapestAllowedToEvictPrice() -> Price? {
         if items.isEmpty { return nil }
-
         if stickyHeadActive {
-            // хвост пустой -> нечего вытеснять (кроме sticky, но его нельзя)
             guard items.count >= 2 else { return nil }
-            // хвост отсортирован DESC => cheapest = last
             return items.last?.ad.price
         } else {
-            // весь массив отсортирован DESC => cheapest = last
             return items.last?.ad.price
         }
     }
@@ -335,12 +273,10 @@ final class CacheStorage {
     private func trimIfNeeded() {
         while items.count > capacity {
             if stickyHeadActive {
-                // никогда не выкидываем sticky head — выкидываем cheapest из хвоста
                 guard items.count >= 2 else { break }
                 let removed = items.removeLast()
                 indexByKey[removed.ad.id] = nil
             } else {
-                // обычный режим: cheapest в конце
                 let removed = items.removeLast()
                 indexByKey[removed.ad.id] = nil
             }
@@ -355,3 +291,4 @@ final class CacheStorage {
         }
     }
 }
+

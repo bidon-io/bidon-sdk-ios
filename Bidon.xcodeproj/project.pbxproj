@@ -194,6 +194,7 @@
 		493FE94A2BFF4BEC0000023E /* PlacementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FE9492BFF4BEC0000023E /* PlacementModel.swift */; };
 		494C02522C2443E5003D881D /* AuctionOperationRoundTimeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */; };
 		496A77142C00C88700316B05 /* DemandsTokensManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496A77132C00C88700316B05 /* DemandsTokensManager.swift */; };
+		499FDB542F4DB974001E2C7D /* BannerCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499FDB532F4DB974001E2C7D /* BannerCacheStorage.swift */; };
 		49BB8E3E2C369F1C00A51877 /* AuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */; };
 		49BB8E402C36A22E00A51877 /* DefaultAuctionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */; };
 		49E43B242C048EA100C2EC6B /* ConfigParametersStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E43B232C048EA100C2EC6B /* ConfigParametersStorage.swift */; };
@@ -403,6 +404,7 @@
 		493FE9492BFF4BEC0000023E /* PlacementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementModel.swift; sourceTree = "<group>"; };
 		494C02512C2443E5003D881D /* AuctionOperationRoundTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionOperationRoundTimeout.swift; sourceTree = "<group>"; };
 		496A77132C00C88700316B05 /* DemandsTokensManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemandsTokensManager.swift; sourceTree = "<group>"; };
+		499FDB532F4DB974001E2C7D /* BannerCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCacheStorage.swift; sourceTree = "<group>"; };
 		49BB8E3D2C369F1C00A51877 /* AuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionInfo.swift; sourceTree = "<group>"; };
 		49BB8E3F2C36A22E00A51877 /* DefaultAuctionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAuctionInfo.swift; sourceTree = "<group>"; };
 		49E43B232C048EA100C2EC6B /* ConfigParametersStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigParametersStorage.swift; sourceTree = "<group>"; };
@@ -546,6 +548,7 @@
 				49FBCD002F360E4200271DAE /* ZHENYA_POOL_README.md */,
 				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
 				49FBCCFE2F360DE800271DAE /* ZhenyaManagerPool.swift */,
+				499FDB532F4DB974001E2C7D /* BannerCacheStorage.swift */,
 			);
 			path = Fullscreen;
 			sourceTree = "<group>";
@@ -1336,6 +1339,7 @@
 				420EFD802A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift in Sources */,
 				426CD9B02AA62AF1000A2226 /* BannerProvider.swift in Sources */,
 				4221019A2859E35C006596DA /* Adapter.swift in Sources */,
+				499FDB542F4DB974001E2C7D /* BannerCacheStorage.swift in Sources */,
 				42969A8D29A90AF300878C9E /* DefaultAdUnitProvider.swift in Sources */,
 				423FBAA529F13A9300B20A5D /* AsynchronousOperation.swift in Sources */,
 				42244DA628C8E1E800E9C416 /* AuctionEvent.swift in Sources */,
