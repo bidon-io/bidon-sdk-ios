@@ -180,7 +180,9 @@ final class BidCacheStore {
 
         let keys = Array(entries.keys)
         for key in keys {
-            guard let list = entries[key] else { continue }
+            guard let list = entries[key] else {
+                continue
+            }
             let filtered = list.filter { !$0.isExpired }
             entries[key] = filtered.isEmpty ? nil : filtered
         }

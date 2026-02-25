@@ -35,7 +35,7 @@ final class DInterstitialAdManager: InterstitialBaseManager {
         }
         return proxy
     }()
- 
+
     override func performAuction(
         _ auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken]
@@ -93,18 +93,12 @@ final class DInterstitialAdManager: InterstitialBaseManager {
         prepareReady(demandID: winner.adUnit.demandId, controller: controller)
     }
     
-    private func prepareReadyStateFromCache(entry: CachedBid) -> Bool {
-        let controller: InterstitialImpressionController? = performSyncOnMain {
-            entry.buildImpressionController()
-        }
-        guard let controller else {
-            return false
-        }
+    private func prepareReadyStateFromCache(entry: CachedBid) {
+        let controller: InterstitialImpressionController = entry.buildImpressionController()!
+        
         entry.observeRevenue(adRevenueObserver)
         impressionProxy.setCachedEntryId(entry.meta.entryID)
         prepareReady(demandID: entry.payload.demandID, controller: controller)
-        
-        return true
     }
     
     private func prepareReady(demandID: String, controller: InterstitialImpressionController) {
@@ -129,25 +123,24 @@ final class DInterstitialAdManager: InterstitialBaseManager {
 
     private func handleAuctionFailure(_ error: SdkError, configuration: AuctionConfiguration) {
         Logger.dAuction("Completed with error \(error.description)")
-        guard fallbackFill(minPrice: configuration.pricefloor) == false else {
-            return
+    
+        if let fallbackBid = fallbackBid(minPrice: configuration.pricefloor) {
+            handleCachedBid(fallbackBid)
+        } else {
+            handleCacheFallbackFailed(with: error)
         }
-        state = .idle
-        notifyDidFailToLoad(error)
     }
 
     private func handleWinner(_ winner: BidType, runnerUps: [BidType], configuration: AuctionConfiguration) {
-        Logger.dPolicy("Winner: demandId=\(winner.adUnit.demandId), price=\(fmt(winner.price))")
-        cacheRunnerUps(runnerUps: runnerUps, configuration: configuration)
+        Logger.dPolicy("Winner: demandId=\(winner.adUnit.demandId), price=\(winner.price.debugString)")
         
-        DispatchQueue.main.async { [weak self] in
-            guard let self else {
-                return
-            }
+        DispatchQueue.main.async { [self, auctionInfo] in
             let ad = AdContainer(bid: winner)
             prepareReadyState(for: winner)
-            notifyDidLoad(ad)
+            
+            delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
         }
+        cacheRunnerUps(runnerUps: runnerUps, configuration: configuration)
     }
 
     private func buildAuction(
@@ -189,12 +182,10 @@ private extension DInterstitialAdManager {
                     price: bid.price
                 ),
                 makeAd: {
-                    Logger.dDebug("Main thread: \(Thread.isMainThread)")
                     return AdContainer(bid: bid)
                 },
                 makeImpressionController: {
-                    Logger.dDebug("Main thread: \(Thread.isMainThread)")
-                    return InterstitialImpressionController(bid: bid) as AnyObject
+                    return InterstitialImpressionController(bid: bid)
                 },
                 observeRevenue: { observer in observer.observe(bid) }
             )
@@ -210,7 +201,7 @@ private extension DInterstitialAdManager {
     }
 
     @discardableResult
-    func fallbackFill(minPrice: Price) -> Bool {
+    func fallbackBid(minPrice: Price) -> CachedBid? {
         Logger.dPolicy("Fallback attempted")
         cache.maintenance()
 
@@ -219,83 +210,51 @@ private extension DInterstitialAdManager {
             cachedSnapshot: cached,
             minPrice: minPrice
         )
-     
-        for candidate in available {
-            guard let entry = cache.reserve(entryID: candidate.meta.entryID) else {
-                continue
+        let cachedBid = available.first(
+            where: { candidate in
+                cache.reserve(entryID: candidate.meta.entryID) != nil
             }
-            guard tryToFill(with: entry) else {
-                logFallbackFailure(entry)
-                continue
-            }
-            return true
-        }
-
-        Logger.dPolicy("Fallback fail: no valid entries")
-        cacheStats.recordMiss()
-        return false
-    }
-
-    @discardableResult
-    private func tryToFill(with cacheBid: CachedBid) -> Bool {
-        let prepared = prepareReadyStateFromCache(entry: cacheBid)
-        guard prepared else {
-            return false
-        }
-        let ad = cacheBid.makeAd()
-        logFallbackSuccess(cacheBid)
-        notifyDidLoad(ad)
-        
-        return true
-    }
-    
-    private func logFallbackFailure(_ cacheBid: CachedBid) {
-        Logger.dPolicy(
-            "Fallback fail: controller build fail, demandId=\(cacheBid.payload.demandID)"
         )
-        cache.release(entryID: cacheBid.meta.entryID)
-        cacheStats.recordInvalid()
+        return cachedBid
     }
     
-    private func logFallbackSuccess(_ cacheBid: CachedBid) {
+    private func handleCachedBid(_ bid: CachedBid) {
+        countFallbackSuccess(bid: bid)
+
+        DispatchQueue.main.async { [self] in
+            let ad = bid.makeAd()
+            prepareReadyStateFromCache(entry: bid)
+
+            delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+        }
+    }
+    
+    private func handleCacheFallbackFailed(with error: SdkError) {
+        countFallbackFailure()
+
+        DispatchQueue.main.async { [self] in
+            state = .idle
+            delegate?.adManager(self, didFailToLoad: error, auctionInfo: auctionInfo)
+        }
+    }
+    
+    private func countFallbackSuccess(bid: CachedBid) {
         Logger.dPolicy(
-            "Fallback success: demandId=\(cacheBid.payload.demandID), price=\(fmt(cacheBid.payload.price)), TTL=\(Int(cacheBid.remainingTTL))s"
+            "Fallback success: demandId=\(bid.payload.demandID), price=\(bid.payload.price.debugString), TTL=\(Int(bid.remainingTTL))s"
         )
         cacheStats.recordHit()
         cacheStats.recordSavedFill()
     }
-}
-
-private extension DInterstitialAdManager {
-    func notifyDidLoad(_ ad: Ad) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
-        }
-    }
-
-    func notifyDidFailToLoad(_ error: SdkError) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
-        }
-    }
-
-    func performAsyncOnMain(_ block: @escaping () -> Void) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.async { block() }
-        }
-    }
     
-    func performSyncOnMain<T>(_ block: @escaping () throws -> T) rethrows -> T {
-        if Thread.isMainThread {
-            try block()
-        } else {
-            try DispatchQueue.main.sync { try block() }
-        }
-    }
-
-    func fmt(_ price: Price) -> String {
-        String(format: "%.2f", price)
+    private func countFallbackFailure() {
+        Logger.dPolicy("Fallback fail: no valid entries")
+        cacheStats.recordMiss()
     }
 }
+
+extension Price {
+    var debugString: String {
+        String(format: "%.2f", self)
+    }
+}
+

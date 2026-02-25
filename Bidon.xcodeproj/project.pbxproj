@@ -465,6 +465,7 @@
 			isa = PBXGroup;
 			children = (
 				0110CD432F34B9ED00EF8AD6 /* DAuctionController.swift */,
+				0110CD472F34BB0100EF8AD6 /* Operations */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -508,11 +509,10 @@
 		013712E42F4CAD2C0054F769 /* Fullscreen */ = {
 			isa = PBXGroup;
 			children = (
+				0108A0D92F4757EC00E4A043 /* InterstitialCachePolicy.swift */,
 				013712F62F4DD7210054F769 /* CacheKey+Interstitial.swift */,
 				013712EE2F4CB2F80054F769 /* DimaSandbox+Fullscreen.swift */,
-				0110CD472F34BB0100EF8AD6 /* Operations */,
 				0110CD462F34BA0B00EF8AD6 /* Manager */,
-				0108A0D92F4757EC00E4A043 /* InterstitialCachePolicy.swift */,
 			);
 			path = Fullscreen;
 			sourceTree = "<group>";
