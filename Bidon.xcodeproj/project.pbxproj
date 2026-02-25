@@ -26,6 +26,7 @@
 		013712F72F4DD7210054F769 /* CacheKey+Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712F62F4DD7210054F769 /* CacheKey+Interstitial.swift */; };
 		013712F92F4DD7400054F769 /* CacheKey+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712F82F4DD7400054F769 /* CacheKey+Banner.swift */; };
 		013712FC2F4DD81F0054F769 /* DBannerAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013712FB2F4DD81F0054F769 /* DBannerAdManager.swift */; };
+		013713022F4F72B30054F769 /* Price+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013713012F4F72B30054F769 /* Price+Extensions.swift */; };
 		01A55A512F36173D0029231B /* Logger+AdCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A55A502F36173D0029231B /* Logger+AdCaching.swift */; };
 		420067A728BD0FBB003B734D /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A628BD0FBB003B734D /* AppManager.swift */; };
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
@@ -237,6 +238,7 @@
 		013712F62F4DD7210054F769 /* CacheKey+Interstitial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CacheKey+Interstitial.swift"; sourceTree = "<group>"; };
 		013712F82F4DD7400054F769 /* CacheKey+Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CacheKey+Banner.swift"; sourceTree = "<group>"; };
 		013712FB2F4DD81F0054F769 /* DBannerAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBannerAdManager.swift; sourceTree = "<group>"; };
+		013713012F4F72B30054F769 /* Price+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Price+Extensions.swift"; sourceTree = "<group>"; };
 		01A55A502F36173D0029231B /* Logger+AdCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+AdCaching.swift"; sourceTree = "<group>"; };
 		420067A628BD0FBB003B734D /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
@@ -444,6 +446,7 @@
 		0108A0D22F47152300E4A043 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				013713012F4F72B30054F769 /* Price+Extensions.swift */,
 				0108A0D32F47152600E4A043 /* Collection+Extensions.swift */,
 			);
 			path = Extensions;
@@ -1359,6 +1362,7 @@
 				499FDB542F4DB974001E2C7D /* BannerCacheStorage.swift in Sources */,
 				42969A8D29A90AF300878C9E /* DefaultAdUnitProvider.swift in Sources */,
 				423FBAA529F13A9300B20A5D /* AsynchronousOperation.swift in Sources */,
+				013713022F4F72B30054F769 /* Price+Extensions.swift in Sources */,
 				42244DA628C8E1E800E9C416 /* AuctionEvent.swift in Sources */,
 				4243093428A2BC4C002360B0 /* SessionModel.swift in Sources */,
 				42DDB70829D2EF8C00DBA4C5 /* DemandAd.swift in Sources */,

@@ -251,10 +251,3 @@ private extension DInterstitialAdManager {
         cacheStats.recordMiss()
     }
 }
-
-extension Price {
-    var debugString: String {
-        String(format: "%.2f", self)
-    }
-}
-

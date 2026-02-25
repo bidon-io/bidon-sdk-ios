@@ -52,7 +52,6 @@ final class AuctionBidsOperationFinish<
         Logger.dAuction("[BidsFinishOp] cancel() called — returning .cancelled (bids not collected)")
 
         observer.log(CancelAuctionEvent())
-        findWinner()
 
         let result = Result<[BidType], SdkError>.failure(.cancelled)
         let completion = self.completion
@@ -71,8 +70,8 @@ final class AuctionBidsOperationFinish<
             .compactMap { $0 as? BidType }
 
         let winner = allBids.first
-        let prices = allBids.map { String(format: "%.2f", $0.price) }.joined(separator: ", ")
-        Logger.dAuction("[BidsFinishOp] collectAllBids: \(allBids.count) bids [\(prices)], winner=\(winner.map { String(format: "%.2f", $0.price) } ?? "nil")")
+        let prices = allBids.map { $0.price.debugString }.joined(separator: ", ")
+        Logger.dAuction("[BidsFinishOp] collectAllBids: \(allBids.count) bids [\(prices)], winner=\(winner?.price.debugString ?? "nil")")
 
         observer.log(FinishAuctionEvent(winner: winner))
 
@@ -82,40 +81,5 @@ final class AuctionBidsOperationFinish<
         }
 
         return .success(allBids)
-    }
-    
-    @discardableResult
-    private func findWinner() -> Result<BidType, SdkError> {
-        let directResults = deps(AuctionOperationRequestDirectDemand<AdTypeContextType>.self)
-            .compactMap({ $0.bid })
-            .sorted { comparator.compare($0, $1) }
-
-        let bidResults = deps(AuctionOperationRequestBiddingDemand<AdTypeContextType>.self)
-            .compactMap({ $0.bid })
-            .sorted { comparator.compare($0, $1) }
-
-        let directWinner = directResults.first
-        let bidWinner = bidResults.first
-
-        var result: Result<BidType, SdkError>
-        switch (directWinner, bidWinner) {
-        case (.none, .none):
-            result = .failure(.noFill)
-            observer.log(FinishAuctionEvent(winner: nil))
-        case (.none, .some(let winner)):
-            result = .success(winner as! BidType)
-            observer.log(FinishAuctionEvent(winner: winner))
-
-        case (.some(let winner), .none):
-
-            result = .success(winner as! BidType)
-            observer.log(FinishAuctionEvent(winner: winner))
-        case (.some(let directWrappedWinner), .some(let bidWrappedWinner)):
-            let winner = max(directWrappedWinner, bidWrappedWinner)
-
-            result = .success(winner as! BidType)
-            observer.log(FinishAuctionEvent(winner: winner))
-        }
-        return result
     }
 }

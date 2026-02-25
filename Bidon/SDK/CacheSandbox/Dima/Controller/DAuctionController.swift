@@ -185,7 +185,8 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
                 self.scheduleNextOperation()
                 return
             }
-            let bidPrice = (operation.bid as (any Bid)?).map { String(format: "%.2f", $0.price) } ?? "nil"
+            
+            let bidPrice = operation.bid?.price.debugString ?? "nil"
             Logger.dAuction("[DAuction] finishDemand[\(demandId)]: bid=\(bidPrice) → scheduleNext")
             self.scheduleNextOperation()
         }

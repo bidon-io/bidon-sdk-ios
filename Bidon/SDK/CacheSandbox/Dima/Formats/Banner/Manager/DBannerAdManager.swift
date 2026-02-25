@@ -18,12 +18,13 @@ final class DBannerAdManager: BannerAdManager {
         tokens: [BiddingDemandToken],
         viewContext: AdViewContext
     ) {
+        if isCanceled {
+            Logger.dAuction("Cancelled")
+            return
+        }
         Logger.dAuction(
             "performAuction called with \(auctionInfo.adUnits.count) adUnits, \(tokens.count) tokens, pricefloor: \(auctionInfo.pricefloor)"
         )
-        if isCanceled {
-            return
-        }
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
         let observer = BaseAuctionObserver(configuration: configuration, adType: .banner)
@@ -91,16 +92,10 @@ final class DBannerAdManager: BannerAdManager {
         state = .ready(impression: impression)
     }
 
-    private func prepareReadyStateFromCache(entry: CachedBid) -> Bool {
-        let impression: AdViewImpression? = performSyncOnMain {
-            entry.buildImpressionController()
-        }
-        guard let impression else {
-            return false
-        }
+    private func prepareReadyStateFromCache(entry: CachedBid) {
+        let impression: AdViewImpression = entry.buildImpressionController()!
         entry.observeRevenue(adRevenueObserver)
         state = .ready(impression: impression)
-        return true
     }
 
     private func handleAuctionSuccess(bids: [BidType], configuration: AuctionConfiguration, viewContext: AdViewContext) {
@@ -118,25 +113,23 @@ final class DBannerAdManager: BannerAdManager {
 
     private func handleAuctionFailure(_ error: SdkError, configuration: AuctionConfiguration) {
         Logger.dAuction("Completed with error \(error.description)")
-        guard fallbackFill(minPrice: configuration.pricefloor) == false else {
-            return
+
+        if let fallbackBid = fallbackBid(minPrice: configuration.pricefloor) {
+            handleCachedBid(fallbackBid)
+        } else {
+            handleCacheFallbackFailed(with: error)
         }
-        state = .idle
-        notifyDidFailToLoad(error)
     }
 
     private func handleWinner(_ winner: BidType, runnerUps: [BidType], configuration: AuctionConfiguration, viewContext: AdViewContext) {
-        Logger.dPolicy("Winner: demandId=\(winner.adUnit.demandId), price=\(fmt(winner.price))")
-        cacheRunnerUps(runnerUps: runnerUps, configuration: configuration, viewContext: viewContext)
+        Logger.dPolicy("Winner: demandId=\(winner.adUnit.demandId), price=\(winner.price.debugString)")
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self else {
-                return
-            }
+        DispatchQueue.main.async { [self, auctionInfo] in
             let ad = AdContainer(bid: winner)
             prepareReadyState(for: winner, viewContext: viewContext)
-            notifyDidLoad(ad)
+            delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
         }
+        cacheRunnerUps(runnerUps: runnerUps, configuration: configuration, viewContext: viewContext)
     }
 }
 
@@ -180,8 +173,7 @@ private extension DBannerAdManager {
         cache.replace(key: cacheKey, entries: entriesToCache)
     }
 
-    @discardableResult
-    func fallbackFill(minPrice: Price) -> Bool {
+    func fallbackBid(minPrice: Price) -> CachedBid? {
         Logger.dPolicy("Fallback attempted")
         cache.maintenance()
 
@@ -190,82 +182,41 @@ private extension DBannerAdManager {
             cachedSnapshot: cached,
             minPrice: minPrice
         )
-
-        for candidate in available {
-            guard let entry = cache.reserve(entryID: candidate.meta.entryID) else {
-                continue
+        let cachedBid = available.first(
+            where: { candidate in
+                cache.reserve(entryID: candidate.meta.entryID) != nil
             }
-            guard tryToFill(with: entry) else {
-                logFallbackFailure(entry)
-                continue
-            }
-            return true
-        }
-
-        Logger.dPolicy("Fallback fail: no valid entries")
-        cacheStats.recordMiss()
-        return false
-    }
-
-    @discardableResult
-    private func tryToFill(with cacheBid: CachedBid) -> Bool {
-        let prepared = prepareReadyStateFromCache(entry: cacheBid)
-        guard prepared else {
-            return false
-        }
-        let ad = cacheBid.makeAd()
-        logFallbackSuccess(cacheBid)
-        notifyDidLoad(ad)
-        return true
-    }
-
-    private func logFallbackFailure(_ cacheBid: CachedBid) {
-        Logger.dPolicy(
-            "Fallback fail: controller build fail, demandId=\(cacheBid.payload.demandID)"
         )
-        cache.release(entryID: cacheBid.meta.entryID)
-        cacheStats.recordInvalid()
+        return cachedBid
     }
 
-    private func logFallbackSuccess(_ cacheBid: CachedBid) {
+    private func handleCachedBid(_ bid: CachedBid) {
+        countFallbackSuccess(bid: bid)
+        DispatchQueue.main.async { [self] in
+            let ad = bid.makeAd()
+            prepareReadyStateFromCache(entry: bid)
+            delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+        }
+    }
+
+    private func handleCacheFallbackFailed(with error: SdkError) {
+        countFallbackFailure()
+        DispatchQueue.main.async { [self] in
+            state = .idle
+            delegate?.adManager(self, didFailToLoad: error, auctionInfo: auctionInfo)
+        }
+    }
+
+    private func countFallbackSuccess(bid: CachedBid) {
         Logger.dPolicy(
-            "Fallback success: demandId=\(cacheBid.payload.demandID), price=\(fmt(cacheBid.payload.price)), TTL=\(Int(cacheBid.remainingTTL))s"
+            "Fallback success: demandId=\(bid.payload.demandID), price=\(bid.payload.price.debugString), TTL=\(Int(bid.remainingTTL))s"
         )
         cacheStats.recordHit()
         cacheStats.recordSavedFill()
     }
-}
 
-private extension DBannerAdManager {
-    func notifyDidLoad(_ ad: Ad) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
-        }
-    }
-
-    func notifyDidFailToLoad(_ error: SdkError) {
-        performAsyncOnMain {
-            self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
-        }
-    }
-
-    func performAsyncOnMain(_ block: @escaping () -> Void) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.async { block() }
-        }
-    }
-
-    func performSyncOnMain<T>(_ block: @escaping () throws -> T) rethrows -> T {
-        if Thread.isMainThread {
-            try block()
-        } else {
-            try DispatchQueue.main.sync { try block() }
-        }
-    }
-
-    func fmt(_ price: Price) -> String {
-        String(format: "%.2f", price)
+    private func countFallbackFailure() {
+        Logger.dPolicy("Fallback fail: no valid entries")
+        cacheStats.recordMiss()
     }
 }
