@@ -9,14 +9,13 @@ import Foundation
 
 extension DimaSandbox {
     enum Banner {
-        static let cachePolicy: any DCachePolicy = BannerCachePolicy()
+        static let cachePolicy = BannerCachePolicy(config: .default)
         
         static func buildManager(
             placement: String,
             adRevenueObserver: AdRevenueObserver
         ) -> BannerAdManager {
-#warning("Replace with banner cache implementation")
-            return BannerAdManager(placement: placement, adRevenueObserver: adRevenueObserver)
+            return DBannerAdManager(placement: placement, adRevenueObserver: adRevenueObserver)
         }
     }
 }
