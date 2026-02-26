@@ -86,7 +86,7 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
             handleEmptyAdUnits(completion: allBidsCompletion)
             return
         }
-        Logger.dAuction("[DAuction] load start: \(auctionConfiguration.adUnits.count) adUnits, timeout=\(auctionConfiguration.timeoutInSeconds)s, pricefloor=\(pricefloor)")
+        Logger.dAuction(context.adType, "load start: \(auctionConfiguration.adUnits.count) adUnits, timeout=\(auctionConfiguration.timeoutInSeconds)s, pricefloor=\(pricefloor)")
         let timeout = auctionConfiguration.timeoutInSeconds
         setupAuctionTimeout(timeoutInSeconds: timeout)
 
@@ -98,7 +98,6 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
     }
 
     func cancel() {
-        Logger.dAuction("[DAuction] cancel() called externally")
         auctionObserver.log(CancelAuctionEvent())
         finishAuction()
     }
@@ -114,7 +113,6 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
         operationLock.lock()
         _pendingOperations.append(contentsOf: ops)
         operationLock.unlock()
-        Logger.dAuction("[DAuction] enqueued \(_pendingOperations.count) demand operations")
     }
 
     private func createDemandRequestOperation(_ adUnit: AdUnitModel) -> any AuctionOperationRequestDemand {
@@ -134,7 +132,6 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
 
     private func scheduleNextOperation() {
         guard let nextOperation = dequeueNextOperation() else {
-            Logger.dAuction("[DAuction] scheduleNextOperation: no more pending ops → finishAuction")
             self.finishAuction()
             return
         }
@@ -144,6 +141,7 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
 
     private func dequeueNextOperation() -> (any AuctionOperationRequestDemand)? {
         operationLock.lock()
+        Logger.dAuction(context.adType, "pending before dequeue = \(_pendingOperations.count)")
         defer { operationLock.unlock() }
 
         guard !_pendingOperations.isEmpty else {
@@ -153,17 +151,13 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
     }
 
     private func addOperation(_ operation: any AuctionOperationRequestDemand) {
-        guard let adUnit = adUnit(from: operation) else {
-            Logger.dAuction("[DAuction] addOperation: skipped — can't resolve adUnit")
+        guard adUnit(from: operation) != nil else {
             return
         }
-        Logger.dAuction("[DAuction] addOperation: demandId=\(adUnit.demandId), pricefloor=\(adUnit.pricefloor)")
         performDemandRequest(operation)
     }
 
     private func performDemandRequest(_ operation: any AuctionOperationRequestDemand) {
-        let demandId = adUnit(from: operation)?.demandId ?? "unknown"
-        Logger.dAuction("[DAuction] performDemandRequest: demandId=\(demandId)")
         executingOperation = operation
         finishAuctionOperation?.addDependency(operation)
 
@@ -175,19 +169,19 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
 
     private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
         let demandId = adUnit(from: operation)?.demandId ?? "unknown"
-        let finishDemandOperation = BlockOperation { [weak self] in
+        let finishDemandOperation = BlockOperation { [weak self, adType = context.adType] in
             guard let self else {
-                Logger.dAuction("[DAuction] finishDemand[\(demandId)]: self is nil, skipping")
+                Logger.dAuction(adType, "finishDemand[\(demandId)]: self is nil, skipping")
                 return
             }
             guard !operation.isCancelled else {
-                Logger.dAuction("[DAuction] finishDemand[\(demandId)]: operation cancelled → scheduleNext")
+                Logger.dAuction(adType, "finishDemand[\(demandId)]: operation cancelled → scheduleNext")
                 self.scheduleNextOperation()
                 return
             }
             
             let bidPrice = operation.bid?.price.debugString ?? "nil"
-            Logger.dAuction("[DAuction] finishDemand[\(demandId)]: bid=\(bidPrice) → scheduleNext")
+            Logger.dAuction(adType, "finishDemand[\(demandId)]: bid=\(bidPrice) → scheduleNext")
             self.scheduleNextOperation()
         }
         return finishDemandOperation
@@ -208,7 +202,7 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
         let pendingOps = pendingOperations
         let pendingIds = pendingOps.compactMap { adUnit(from: $0)?.demandId }.joined(separator: ", ")
         let executingId = executingOperation.flatMap { adUnit(from: $0)?.demandId } ?? "nil"
-        Logger.dAuction("[DAuction] TIMEOUT: executing=\(executingId), pending=[\(pendingIds)]")
+        Logger.dAuction(context.adType, "TIMEOUT: executing=\(executingId), pending=[\(pendingIds)]")
         pendingOps
             .compactMap { adUnit(from: $0) }
             .forEach { auctionObserver.log(AuctionTimeoutEvent(adUnit: $0)) }
@@ -227,11 +221,11 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
         defer { finishLock.unlock() }
 
         guard !isFinishing else {
-            Logger.dAuction("[DAuction] finishAuction: already finishing, skip")
+            Logger.dAuction(context.adType, "finishAuction: already finishing, skip")
             return
         }
         isFinishing = true
-        Logger.dAuction("[DAuction] finishAuction: start")
+        Logger.dAuction(context.adType, "finishAuction: start")
         invalidateTimer()
 
         operationLock.lock()
@@ -240,7 +234,7 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
         operationLock.unlock()
 
         if droppedCount > 0 {
-            Logger.dAuction("[DAuction] finishAuction: dropped \(droppedCount) pending ops")
+            Logger.dAuction(context.adType, "finishAuction: dropped \(droppedCount) pending ops")
         }
 
         queue.cancelAllOperations()
@@ -251,15 +245,14 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
             !finishAuctionOperation.isFinished,
             !finishAuctionOperation.isCancelled
         else {
-            Logger.dAuction("[DAuction] finishAuction: Can't add finishOp — already executing/finished/cancelled")
+            Logger.dAuction(context.adType, "finishAuction: Can't add finishOp — already executing/finished/cancelled")
             return
         }
-        Logger.dAuction("[DAuction] finishAuction: adding finishAuctionOperation to queue")
+        Logger.dAuction(context.adType, "finishAuction: adding finishAuctionOperation to queue")
         queue.addOperation(finishAuctionOperation)
     }
 
     private func handleEmptyAdUnits(completion: @escaping AllBidsCompletion) {
-        Logger.dAuction("[DAuction] handleEmptyAdUnits: no adUnits → noFill")
         auctionObserver.log(
             FinishAuctionEvent(winner: nil)
         )
@@ -287,5 +280,11 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
 
             build?(builder)
         }
+    }
+}
+
+extension Logger {
+    static func dAuction(_ adType: AdType, _ message: String) {
+        dAuction("[\(adType.stringValue.capitalized)] \(message)")
     }
 }

@@ -24,38 +24,68 @@ final class AuctionBidsOperationFinish<
     }
 
     let observer: AnyAuctionObserver
-    let completion: (Result<[BidType], SdkError>) -> ()
     let comparator: AuctionBidComparator
     let auctionConfiguration: AuctionConfiguration
+
+    private let completion: (Result<[BidType], SdkError>) -> ()
+    private let completionLock = NSLock()
+
+    private var didComplete = false
+    private var adType: AdType
 
     init(builder: Builder) {
         self.observer = builder.observer
         self.auctionConfiguration = builder.auctionConfiguration
         self.comparator = builder.comparator
         self.completion = builder.completion
+        self.adType = builder.context.adType
 
         super.init()
     }
 
     override func main() {
-        super.main()
-        Logger.dAuction("[BidsFinishOp] main() — collecting bids from \(dependencies.count) deps")
-
+        guard isCancelled == false else {
+            return
+        }
+        completionLock.lock()
+        let alreadyCompleted = didComplete
+        completionLock.unlock()
+        
+        guard !alreadyCompleted else {
+            Logger.dAuction(adType, "[BidsFinishOp] main() — already completed")
+            return
+        }
+        Logger.dAuction(adType, "[BidsFinishOp] main() — collecting bids from \(dependencies.count) deps, ad type: \(adType.stringValue)")
         let result = collectAllBids()
-        let completion = self.completion
-
-        completion(result)
+        let winner = (try? result.get())?.first
+        
+        if callCompletion(result), let winner {
+            observer.log(FinishAuctionEvent(winner: winner))
+        }
     }
 
     override func cancel() {
         super.cancel()
-        Logger.dAuction("[BidsFinishOp] cancel() called — returning .cancelled (bids not collected)")
 
-        observer.log(CancelAuctionEvent())
+        if callCompletion(.failure(.cancelled)) {
+            Logger.dAuction(adType, "[BidsFinishOp] cancel() called — returning .cancelled (bids not collected)")
+            observer.log(CancelAuctionEvent())
+        }
+    }
 
-        let result = Result<[BidType], SdkError>.failure(.cancelled)
-        let completion = self.completion
+    @discardableResult
+    private func callCompletion(_ result: Result<[BidType], SdkError>) -> Bool {
+        completionLock.lock()
+
+        guard !didComplete else {
+            completionLock.unlock()
+            return false
+        }
+        didComplete = true
+        completionLock.unlock()
         completion(result)
+        
+        return true
     }
 
     private func collectAllBids() -> Result<[BidType], SdkError> {
@@ -71,12 +101,10 @@ final class AuctionBidsOperationFinish<
 
         let winner = allBids.first
         let prices = allBids.map { $0.price.debugString }.joined(separator: ", ")
-        Logger.dAuction("[BidsFinishOp] collectAllBids: \(allBids.count) bids [\(prices)], winner=\(winner?.price.debugString ?? "nil")")
-
-        observer.log(FinishAuctionEvent(winner: winner))
+        Logger.dAuction(adType, "[BidsFinishOp] collectAllBids: \(allBids.count) bids [\(prices)], winner=\(winner?.price.debugString ?? "nil")")
 
         guard !allBids.isEmpty else {
-            Logger.dAuction("[BidsFinishOp] collectAllBids: → .noFill")
+            Logger.dAuction(adType, "[BidsFinishOp] collectAllBids: → .noFill")
             return .failure(.noFill)
         }
 

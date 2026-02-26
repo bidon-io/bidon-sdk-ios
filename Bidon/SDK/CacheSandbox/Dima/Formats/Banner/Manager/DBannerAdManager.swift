@@ -192,6 +192,7 @@ private extension DBannerAdManager {
 
     private func handleCachedBid(_ bid: CachedBid) {
         countFallbackSuccess(bid: bid)
+        cache.confirm(entryID: bid.meta.entryID)
         DispatchQueue.main.async { [self] in
             let ad = bid.makeAd()
             prepareReadyStateFromCache(entry: bid)
