@@ -179,7 +179,9 @@ private extension DInterstitialAdManager {
                     adType: .interstitial,
                     demandID: bid.adUnit.demandId,
                     auctionID: configuration.auctionId,
-                    price: bid.price
+                    price: bid.price,
+                    bid: DummyBid(bid),
+                    adUnit: DummyAdUnit(bid.adUnit)
                 ),
                 makeAd: {
                     return AdContainer(bid: bid)
@@ -220,11 +222,11 @@ private extension DInterstitialAdManager {
     
     private func handleCachedBid(_ bid: CachedBid) {
         countFallbackSuccess(bid: bid)
+        attachDisplayedAdUnitToAuctionInfo(bid)
 
         DispatchQueue.main.async { [self] in
             let ad = bid.makeAd()
             prepareReadyStateFromCache(entry: bid)
-
             delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
         }
     }
@@ -249,5 +251,15 @@ private extension DInterstitialAdManager {
     private func countFallbackFailure() {
         Logger.dPolicy("Fallback fail: no valid entries")
         cacheStats.recordMiss()
+    }
+    
+    private func attachDisplayedAdUnitToAuctionInfo(_ cachedBid: CachedBid) {
+        let demandReportModel = AuctionDemandReportModel.winner(cachedBid)
+        if auctionInfo.adUnits == nil {
+            auctionInfo.adUnits = []
+        }
+        auctionInfo.adUnits?.append(
+            DefaultAdUnitInfo(demandReportModel)
+        )
     }
 }

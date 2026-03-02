@@ -13,6 +13,8 @@ extension CachedBid {
         let demandID: String
         let auctionID: String
         let price: Price
+        let bid: DummyBid
+        let adUnit: DummyAdUnit
     }
 
     struct Meta {
