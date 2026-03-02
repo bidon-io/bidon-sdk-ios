@@ -227,10 +227,12 @@ internal extension BannerView {
 
 private extension BidonSdk {
     var bannerCacheStrategy: Int {
-        environmentRepository
+        let strategy = environmentRepository
             .environment(AppManager.self)
             .config?
             .banner
-            .strategy ?? 0
+            .strategy
+        Logger.dDebug("Strategy banner \(strategy)")
+        return strategy ?? 0
     }
 }
