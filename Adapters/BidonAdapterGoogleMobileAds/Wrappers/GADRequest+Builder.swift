@@ -61,7 +61,9 @@ extension GoogleMobileAds.Request {
 
         self.init()
 
-        self.adString = builder.adContent
+        // TODO: SDK 13.0.0 removed adString property. Bidding support needs refactoring to use
+        // loadWithAdResponseString: class method on ad format classes instead.
+        // See: https://developers.google.com/ad-manager/mobile-ads-sdk/ios/api/reference/Classes/GADInterstitialAd
         self.requestAgent = builder.requestAgent
 
         self.register(builder.extras)
