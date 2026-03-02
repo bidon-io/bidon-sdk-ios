@@ -27,6 +27,7 @@ where
     }
 
     override func loadAd(pricefloor: Price, auctionKey: String?) {
+        auctionInfo = DefaultAuctionInfo()
         Logger.debug("""
         [ZhenyaAdManager] loadAd called
         - pricefloor: \(pricefloor)
@@ -42,7 +43,23 @@ where
             )
             controller.delegate = self
             self.state = .ready(controller: controller)
-
+            
+            let demandReportModel = AuctionDemandReportModel(
+                demandId: ad.bid.adUnit.demandId,
+                status: .win,
+                bid: DummyBid(ad.bid),
+                adUnit: DummyAdUnit(ad.bid.adUnit),
+                startTimestamp: 0,
+                finishTimestamp: 0,
+                tokenStartTimestamp: 0,
+                tokenFinishTimestamp: 0
+            )
+            
+            if self.auctionInfo.adUnits == nil {
+                self.auctionInfo.adUnits = []
+            }
+            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+            
             Logger.debug("[ZhenyaAdManager] Using cached ad, delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")")
             self.delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
             return
@@ -139,6 +156,21 @@ where
                 - delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")
                 - self: \(self)
                 """)
+                
+                let demandReportModel = AuctionDemandReportModel(
+                    demandId: ad.bid.adUnit.demandId,
+                    status: .win,
+                    bid: DummyBid(ad.bid),
+                    adUnit: DummyAdUnit(ad.bid.adUnit),
+                    startTimestamp: 0,
+                    finishTimestamp: 0,
+                    tokenStartTimestamp: 0,
+                    tokenFinishTimestamp: 0
+                )
+                if self.auctionInfo.adUnits == nil {
+                    self.auctionInfo.adUnits = []
+                }
+                self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
 
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { 
@@ -157,12 +189,6 @@ where
             guard let self else { return }
 
             self.sendAuctionReport(observer.report)
-
-            var allDemands = observer.report.round.demands
-            if let biddingDemands = observer.report.round.bidding?.demands {
-                allDemands += biddingDemands
-            }
-            self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
 
             switch result {
             case .success:
