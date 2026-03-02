@@ -83,7 +83,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    let auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
+    var auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
     var auctionStartTimestamp: TimeInterval?
 

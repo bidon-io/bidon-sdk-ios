@@ -41,6 +41,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
     }
     
     override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
+        auctionInfo = DefaultAuctionInfo()
         Logger.debug("""
         [ZhenyaAdManager Banner] loadAd called
         - pricefloor: \(pricefloor)
@@ -57,6 +58,22 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             )
             
             self.state = .ready(impression: controller)
+            
+            let demandReportModel = AuctionDemandReportModel(
+                demandId: ad.bid.adUnit.demandId,
+                status: .win,
+                bid: DummyBid(ad.bid),
+                adUnit: DummyAdUnit(ad.bid.adUnit),
+                startTimestamp: 0,
+                finishTimestamp: 0,
+                tokenStartTimestamp: 0,
+                tokenFinishTimestamp: 0
+            )
+            
+            if self.auctionInfo.adUnits == nil {
+                self.auctionInfo.adUnits = []
+            }
+            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
 
             Logger.debug("[ZhenyaAdManager] Using cached ad, delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")")
             self.delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
@@ -132,6 +149,21 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                     format: context.format
                 )
                 self.state = .ready(impression: controller)
+                
+                let demandReportModel = AuctionDemandReportModel(
+                    demandId: ad.bid.adUnit.demandId,
+                    status: .win,
+                    bid: DummyBid(ad.bid),
+                    adUnit: DummyAdUnit(ad.bid.adUnit),
+                    startTimestamp: 0,
+                    finishTimestamp: 0,
+                    tokenStartTimestamp: 0,
+                    tokenFinishTimestamp: 0
+                )
+                if self.auctionInfo.adUnits == nil {
+                    self.auctionInfo.adUnits = []
+                }
+                self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
                 
                 DispatchQueue.main.async { [weak self] in
                     guard let self else {
