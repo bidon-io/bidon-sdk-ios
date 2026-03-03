@@ -42,9 +42,6 @@ Pods/
 # Dotenv
 /.env*
 
-# Gem
-/Gemfile.lock
-
 # Secrets
 /Sandbox/**/Constants.swift
 /Sandbox/**/Info.plist
