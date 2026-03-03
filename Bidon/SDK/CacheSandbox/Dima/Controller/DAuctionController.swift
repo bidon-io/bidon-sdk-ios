@@ -168,8 +168,11 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
     }
 
     private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
+        let adType = context.adType
         let demandId = adUnit(from: operation)?.demandId ?? "unknown"
-        let finishDemandOperation = BlockOperation { [weak self, adType = context.adType] in
+        let bidPrice = operation.bid?.price.debugString ?? "nil"
+
+        let finishDemandOperation = BlockOperation { [weak self] in
             guard let self else {
                 Logger.dAuction(adType, "finishDemand[\(demandId)]: self is nil, skipping")
                 return
@@ -180,7 +183,6 @@ final class DAuctionController<AdTypeContextType: AdTypeContext>: AuctionControl
                 return
             }
             
-            let bidPrice = operation.bid?.price.debugString ?? "nil"
             Logger.dAuction(adType, "finishDemand[\(demandId)]: bid=\(bidPrice) → scheduleNext")
             self.scheduleNextOperation()
         }
