@@ -170,6 +170,17 @@ def copy_resources(path, name)
   FileUtils.cp_r($root_dir + "/Bidon/" + name, path)
 end
 
+
+def make_spm_xcframework_zip(xcframework_path:, out_zip_path:)
+  FileUtils.rm_f(out_zip_path)
+  # В zip должен попасть <Name>.xcframework/.. в корне архива
+  sh(%Q(ditto -c -k --sequesterRsrc --keepParent "#{xcframework_path}" "#{out_zip_path}"))
+end
+
+def spm_checksum_for(zip_path)
+  sh(%Q(swift package compute-checksum "#{zip_path}"), log: true).to_s.strip
+end
+
 # ---------- Helpers: One-shot aggregate builds ----------
 
 def common_xcargs(deployment_target: "12.0", build_library_for_distribution: true)
@@ -727,60 +738,101 @@ end
 
 
   desc "Build only Bidon Core (xcframework, zip, podspec, optional S3 upload)"
-  lane :core do |options|
-    raise "No SDK version specified".red if options[:version].nil?
+  desc "Build only Bidon Core (xcframework, Pods zip, SPM zip+checksum, podspec, optional S3 upload)"
+lane :core do |options|
+  UI.user_error!("No SDK version specified") if options[:version].to_s.empty?
 
-    upload = options[:upload] || false
-    base_version = options[:version]
-    prerelease = base_version.include?("-") ? base_version.split("-", 2)[1] : nil
-    core_ver = base_version
+  upload       = !!options[:upload]
+  force_upload = !!options[:force_upload]
 
-    # Build Core Bidon
-    build_universal("Bidon")
-    xcframework("Bidon", "Bidon", "Bidon", core_ver)
+  core_ver = options[:version].to_s
 
-    # Copy PrivacyInfo.xcprivacy into both slices of the produced XCFramework
-    copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
-      "PrivacyInfo.xcprivacy"
+  # ---- Build Core Bidon ----
+  build_universal("Bidon")
+  xcframework("Bidon", "Bidon", "Bidon", core_ver)
+
+  # PrivacyInfo.xcprivacy в оба среза
+  copy_resources(
+    "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64/Bidon.framework",
+    "PrivacyInfo.xcprivacy"
+  )
+  copy_resources(
+    "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
+    "PrivacyInfo.xcprivacy"
+  )
+
+  # ---- Pods-style zip (как сейчас) ----
+  pods_zip_path = "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
+  zip(
+    path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
+    output_path: pods_zip_path
+  )
+
+  # ---- SPM-style zip (xcframework в корне архива) ----
+  spm_dir = "#{$build_dir}/Bidon/Bidon-#{core_ver}/spm"
+  FileUtils.mkdir_p(spm_dir)
+
+  xcframework_path = "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework"
+  spm_zip_path     = "#{spm_dir}/Bidon.xcframework.zip"
+
+  make_spm_xcframework_zip(xcframework_path: xcframework_path, out_zip_path: spm_zip_path)
+
+  spm_checksum = spm_checksum_for(spm_zip_path)
+  checksum_path = "#{spm_dir}/Bidon.checksum.txt"
+  File.write(checksum_path, spm_checksum + "\n")
+
+  # ---- Optional upload to S3 ----
+  if upload
+    bucket = ENV["S3_BUCKET"].to_s
+    region = ENV["S3_REGION"].to_s
+    region = "us-west-1" if region.empty?
+    UI.user_error!("Missing S3_BUCKET") if bucket.empty?
+
+    # Pods location (legacy / current)
+    pods_key = "Bidon/#{core_ver}/Bidon.zip"
+    s3_upload_if_needed(
+      file_path: pods_zip_path,
+      bucket: bucket,
+      key: pods_key,
+      region: region,
+      force_upload: force_upload
     )
-    copy_resources(
-      "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.xcframework/ios-arm64_x86_64-simulator/Bidon.framework",
-      "PrivacyInfo.xcprivacy"
+
+    # SPM location
+    spm_prefix = "SPM/Bidon/#{core_ver}"
+
+    s3_upload_if_needed(
+      file_path: spm_zip_path,
+      bucket: bucket,
+      key: "#{spm_prefix}/#{File.basename(spm_zip_path)}",
+      region: region,
+      force_upload: force_upload
     )
 
-    # Zip core
-    zip(
-      path: "#{$build_dir}/Bidon/Bidon-#{core_ver}",
-      output_path: "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
-    )
-
-    # Optional upload to S3
-    if upload
-      bucket = ENV["S3_BUCKET"]
-      region = ENV["S3_REGION"].to_s.empty? ? "us-west-1" : ENV["S3_REGION"].to_s
-      UI.user_error!("Missing S3_BUCKET") if bucket.to_s.empty?
-
-      file_path = "#{$build_dir}/Bidon/Bidon-#{core_ver}/Bidon.zip"
-      key = "Bidon/#{core_ver}/Bidon.zip"
-
-      UI.message("Uploading core to s3://#{bucket}/#{key} (public-read)")
-      s3_upload_public(file_path: file_path, bucket: bucket, key: key, region: region)
-    end
-
-    # Generate podspec for core
-    podspec(
-      name: "Bidon",
-      version: core_ver,
-      sdk_version: core_ver,
-      podfile: $root_dir + "/Podfile",
-      s3_region: ENV["S3_REGION"],
-      s3_bucket: ENV["S3_BUCKET"],
-      path: $podspecs_dir,
-      vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
-      is_adapter: false
+    s3_upload_if_needed(
+      file_path: checksum_path,
+      bucket: bucket,
+      key: "#{spm_prefix}/Bidon.checksum.txt",
+      region: region,
+      force_upload: force_upload
     )
   end
+
+  # ---- Generate podspec for core (как было) ----
+  podspec(
+    name: "Bidon",
+    version: core_ver,
+    sdk_version: core_ver,
+    podfile: $root_dir + "/Podfile",
+    s3_region: ENV["S3_REGION"],
+    s3_bucket: ENV["S3_BUCKET"],
+    path: $podspecs_dir,
+    vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
+    is_adapter: false
+  )
+
+  UI.success("✅ core finished: Bidon #{core_ver} (SPM checksum: #{spm_checksum})")
+end
 
   desc "Build a specific Bidon adapter"
   lane :adapter do |options|
