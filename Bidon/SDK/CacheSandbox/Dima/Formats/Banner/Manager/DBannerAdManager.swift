@@ -150,7 +150,9 @@ private extension DBannerAdManager {
                     adType: .banner,
                     demandID: bid.adUnit.demandId,
                     auctionID: configuration.auctionId,
-                    price: bid.price
+                    price: bid.price,
+                    bid: DummyBid(bid),
+                    adUnit: DummyAdUnit(bid.adUnit)
                 ),
                 makeAd: {
                     Logger.dDebug("Main thread: \(Thread.isMainThread)")
@@ -193,6 +195,8 @@ private extension DBannerAdManager {
     private func handleCachedBid(_ bid: CachedBid) {
         countFallbackSuccess(bid: bid)
         cache.confirm(entryID: bid.meta.entryID)
+        attachDisplayedAdUnitToAuctionInfo(bid)
+
         DispatchQueue.main.async { [self] in
             let ad = bid.makeAd()
             prepareReadyStateFromCache(entry: bid)
@@ -219,5 +223,15 @@ private extension DBannerAdManager {
     private func countFallbackFailure() {
         Logger.dPolicy("Fallback fail: no valid entries")
         cacheStats.recordMiss()
+    }
+
+    private func attachDisplayedAdUnitToAuctionInfo(_ cachedBid: CachedBid) {
+        let demandReportModel = AuctionDemandReportModel.winner(cachedBid)
+        if auctionInfo.adUnits == nil {
+            auctionInfo.adUnits = []
+        }
+        auctionInfo.adUnits?.append(
+            DefaultAdUnitInfo(demandReportModel)
+        )
     }
 }

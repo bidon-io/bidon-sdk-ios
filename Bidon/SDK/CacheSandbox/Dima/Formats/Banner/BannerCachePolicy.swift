@@ -132,7 +132,7 @@ private extension BannerCachePolicy {
 
 extension BannerCachePolicy.Config {
     static let `default` = Self(
-        maxRunnerUps: 2,              // max count of cached
+        maxRunnerUps: 3,              // max count of cached
         runnerUpTTL: 60 * 8,          // 8 minutes
         runnerUpMinHealthy: 60,
         minTTLForShow: 5,             // 5 seconds from load to show

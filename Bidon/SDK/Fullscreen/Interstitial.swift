@@ -92,14 +92,14 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     }
     
     private func createLocalManager() -> Manager {
-        guard let config = BidonSdk.shared.environmentRepository.environment(AppManager.self).config else {
+        guard let strategy = BidonSdk.shared.interCacheStrategy else {
             return Manager(
                 context: InterstitialAdTypeContext(),
                 delegate: self
             )
         }
         
-        switch config.interstitial.strategy {
+        switch strategy {
         case 2:
             return DimaSandbox.Interstitial.buildManager(
                 delegate: self
@@ -214,5 +214,18 @@ private extension BidonSdk {
             .config?
             .interstitial
             .strategy ?? 0
+    }
+}
+
+private extension BidonSdk {
+    var interCacheStrategy: Int? {
+        let strategy = environmentRepository
+            .environment(AppManager.self)
+            .config?
+            .interstitial
+            .strategy
+        Logger.dDebug("Strategy interstitial \(strategy)")
+        
+        return strategy
     }
 }
