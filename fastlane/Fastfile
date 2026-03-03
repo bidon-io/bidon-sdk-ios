@@ -734,8 +734,6 @@ end
 
 
   desc "Build only Bidon Core (xcframework, zip, podspec, optional S3 upload)"
-  desc "Build only Bidon Core (xcframework, Pods zip, SPM zip+checksum, podspec, optional S3 upload)"
-desc "Build only Bidon Core (xcframework, zip, podspec, optional S3 upload + SPM zip upload)"
 lane :core do |options|
   raise "No SDK version specified".red if options[:version].nil?
 
@@ -834,22 +832,6 @@ lane :core do |options|
     vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
     is_adapter: false
   )
-end
-
-  # ---- Generate podspec for core (как было) ----
-  podspec(
-    name: "Bidon",
-    version: core_ver,
-    sdk_version: core_ver,
-    podfile: $root_dir + "/Podfile",
-    s3_region: ENV["S3_REGION"],
-    s3_bucket: ENV["S3_BUCKET"],
-    path: $podspecs_dir,
-    vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
-    is_adapter: false
-  )
-
-  UI.success("✅ core finished: Bidon #{core_ver} (SPM checksum: #{spm_checksum})")
 end
 
   desc "Build a specific Bidon adapter"
