@@ -4,7 +4,8 @@
       "WebFetch(domain:publisher.taurusx.com)",
       "Bash(xcodebuild:*)",
       "mcp__acp__Bash",
-      "mcp__acp__Edit"
+      "mcp__acp__Edit",
+      "Bash(grep -l \"Package.swift\\\\|swift-package\\\\|SPM\" /Users/evgeniagrigorovic/Desktop/Project/bidon-sdk-ios/.github/workflows/*.yml)"
     ],
     "deny": [],
     "ask": []

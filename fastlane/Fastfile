@@ -832,6 +832,41 @@ lane :core do |options|
     vendored_frameworks: "Bidon-#{core_ver}/Bidon.xcframework",
     is_adapter: false
   )
+
+  # Generate Package.swift for SPM
+  if upload
+    bucket = ENV["S3_BUCKET"]
+    region = ENV["S3_REGION"].to_s.empty? ? "us-west-1" : ENV["S3_REGION"].to_s
+
+    spm_url = "https://s3-#{region}.amazonaws.com/#{bucket}/SPM/Bidon/#{core_ver}/Bidon.xcframework.zip"
+    spm_checksum = spm_checksum_for(spm_zip_path)
+
+    package_swift = <<~SWIFT
+      // swift-tools-version:5.7
+      import PackageDescription
+
+      let package = Package(
+          name: "Bidon",
+          platforms: [.iOS(.v12)],
+          products: [
+              .library(name: "Bidon", targets: ["Bidon"])
+          ],
+          targets: [
+              .binaryTarget(
+                  name: "Bidon",
+                  url: "#{spm_url}",
+                  checksum: "#{spm_checksum}"
+              )
+          ]
+      )
+    SWIFT
+
+    package_swift_path = "#{$build_dir}/Package.swift"
+    File.write(package_swift_path, package_swift)
+    UI.success("Generated Package.swift at #{package_swift_path}")
+    UI.message("  URL: #{spm_url}")
+    UI.message("  Checksum: #{spm_checksum}")
+  end
 end
 
   desc "Build a specific Bidon adapter"

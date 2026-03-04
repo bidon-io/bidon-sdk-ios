@@ -142,6 +142,33 @@ jobs:
           fi
           pod repo push bidon "$SPEC" --allow-warnings --skip-tests --skip-import-validation --sources="bidon"
 
+      - name: Push Package.swift to bidon-sdk-swift-package
+        if: success() && inputs.upload
+        run: |
+          set -euo pipefail
+          PACKAGE_SWIFT="build/Package.swift"
+          if [ ! -f "$PACKAGE_SWIFT" ]; then
+            echo "Package.swift not found: $PACKAGE_SWIFT"
+            exit 1
+          fi
+
+          TMPDIR=$(mktemp -d)
+          git clone git@github.com:bidon-io/bidon-sdk-swift-package.git "$TMPDIR/swift-package"
+          cp "$PACKAGE_SWIFT" "$TMPDIR/swift-package/Package.swift"
+          cd "$TMPDIR/swift-package"
+
+          if git diff --quiet Package.swift; then
+            echo "Package.swift is unchanged, skipping push"
+          else
+            git add Package.swift
+            git commit -m "Update Package.swift for ${{ inputs.sdk_version }}"
+            git tag "${{ inputs.sdk_version }}" || true
+            git push origin main
+            git push origin "${{ inputs.sdk_version }}" || true
+          fi
+
+          rm -rf "$TMPDIR"
+
       - name: Collect podspec URL
         id: podspec_link
         if: success()
