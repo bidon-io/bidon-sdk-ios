@@ -157,10 +157,10 @@ jobs:
           cp "$PACKAGE_SWIFT" "$TMPDIR/swift-package/Package.swift"
           cd "$TMPDIR/swift-package"
 
-          if git diff --quiet Package.swift; then
+          git add Package.swift
+          if git diff --cached --quiet; then
             echo "Package.swift is unchanged, skipping push"
           else
-            git add Package.swift
             git commit -m "Update Package.swift for ${{ inputs.sdk_version }}"
             git tag "${{ inputs.sdk_version }}" || true
             git push origin main
