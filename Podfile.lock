@@ -76,7 +76,7 @@ PODS:
     - BidMachine/Static (= 3.5.1)
   - BidMachine/Static (3.5.1):
     - StackModules/Static (~> 3.4.2)
-  - BigoADS (5.0.6)
+  - BigoADS (5.1.0)
   - ChartboostSDK (9.11.0)
   - DivKit (32.35.0):
     - DivKit_LayoutKit (= 32.35.0)
@@ -100,7 +100,7 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.4.4)
+  - Fyber_Marketplace_SDK (8.4.5)
   - Google-Mobile-Ads-SDK (12.14.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
@@ -142,7 +142,7 @@ PODS:
   - MintegralAdSDK/RewardVideoAd (8.0.7):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.10.0)
-  - MolocoSDKiOS (4.3.0)
+  - MolocoSDKiOS (4.4.0)
   - myTargetSDK (5.40.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
@@ -174,7 +174,7 @@ PODS:
     - VGSLUI (= 7.17.0)
   - VGSLUI (7.17.0):
     - VGSLFundamentals (= 7.17.0)
-  - VungleAds (7.7.0)
+  - VungleAds (7.7.1)
   - YandexMobileAds (7.18.4):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
@@ -188,23 +188,23 @@ DEPENDENCIES:
   - AppLovinSDK (= 13.5.1)
   - AppsFlyerFramework (= 6.17.8)
   - BidMachine (= 3.5.1)
-  - BigoADS (= 5.0.6)
+  - BigoADS (= 5.1.0)
   - ChartboostSDK (= 9.11.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (= 8.4.4)
+  - Fyber_Marketplace_SDK (= 8.4.5)
   - Google-Mobile-Ads-SDK (= 12.14.0)
   - InMobiSDK (= 11.1.1)
   - IronSourceSDK/Ads (= 9.3.0.0)
   - MintegralAdSDK (= 8.0.7)
   - MobileFuseSDK (= 1.10.0)
-  - MolocoSDKiOS (= 4.3.0)
+  - MolocoSDKiOS (= 4.4.0)
   - myTargetSDK (= 5.40.0)
   - StartAppSDK (= 4.13.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.14.0)
   - UnityAds (= 4.16.6)
-  - VungleAds (= 7.7.0)
+  - VungleAds (= 7.7.1)
   - YandexMobileAds (= 7.18.4)
   - zMaticoo (= 1.5.6)
 
@@ -293,7 +293,7 @@ SPEC CHECKSUMS:
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
   BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
-  BigoADS: 2aea8022bb285ebc1794ab2312858b5062a3a113
+  BigoADS: a7721b65e51f506141d5f1a6dff1cab213b04c76
   ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
   DivKit: 3dbffa1f9b303ba9f95ea4fc2b48375440768da2
   DivKit_LayoutKit: c5025c06af360dc2b1a539b17567bfb628bd3755
@@ -305,14 +305,14 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: 37270b423a1684c3d5335db03f0c9798a31d8dd9
+  Fyber_Marketplace_SDK: c63707d806951c0ab6c60632ffb233a954d11185
   Google-Mobile-Ads-SDK: 4534fd2dfcd3f705c5485a6633c5188d03d4eed2
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: 4642fb34a961980ab94a1ac460c6e16e113498e6
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
   MintegralAdSDK: 9fde3aa7b739121e4e76ae83bcc612a4af27d7e5
   MobileFuseSDK: a3554e2b82d2649972fe2b8e56facdd583fe4226
-  MolocoSDKiOS: c2800326280d78aa3a7914f4e474024272891b85
+  MolocoSDKiOS: 80a4fe1005812e4e4573b4bc9513c0ea1182016d
   myTargetSDK: 144b7573607e39828229768db156338db53ed880
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
   OMSDK_Appodeal: 24a4e82085d9d8273129a53354e13dcf0a32bce9
@@ -325,7 +325,7 @@ SPEC CHECKSUMS:
   VGSLFundamentals: 5bd45cb6e0b594902aa9f8927402b4d787460bc7
   VGSLNetworking: 4301c663201314d27357078ec8df9dccc631ec62
   VGSLUI: 6cf73663cc3e9fcc808c095f065eb84555a5cd52
-  VungleAds: 1d60d6d08d4adcaa84a401a7e65c35de5cd16ae9
+  VungleAds: c1f0dd0d8531b200b9f6a3f78e292ded75540eae
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
