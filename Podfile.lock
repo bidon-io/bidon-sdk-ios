@@ -174,7 +174,7 @@ PODS:
     - VGSLUI (= 7.17.0)
   - VGSLUI (7.17.0):
     - VGSLFundamentals (= 7.17.0)
-  - VungleAds (7.7.0)
+  - VungleAds (7.7.1)
   - YandexMobileAds (7.18.4):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
@@ -204,7 +204,7 @@ DEPENDENCIES:
   - SwiftLint
   - TaurusxAdsSDK (= 1.14.0)
   - UnityAds (= 4.16.6)
-  - VungleAds (= 7.7.0)
+  - VungleAds (= 7.7.1)
   - YandexMobileAds (= 7.18.4)
   - zMaticoo (= 1.5.4.6)
 
@@ -325,7 +325,7 @@ SPEC CHECKSUMS:
   VGSLFundamentals: 5bd45cb6e0b594902aa9f8927402b4d787460bc7
   VGSLNetworking: 4301c663201314d27357078ec8df9dccc631ec62
   VGSLUI: 6cf73663cc3e9fcc808c095f065eb84555a5cd52
-  VungleAds: 1d60d6d08d4adcaa84a401a7e65c35de5cd16ae9
+  VungleAds: c1f0dd0d8531b200b9f6a3f78e292ded75540eae
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: cb99d267ed924309aab95628d757eef61daa9a61
 
