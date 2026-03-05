@@ -73,10 +73,10 @@ jobs:
             });
             const labels = (pr.labels || []).map(l => l.name);
 
-            const BUILD_LABEL = 'claude:build-fixed';
-            const DEPR_LABEL = 'claude:deprecations-fixed';
-            const TESTS_LABEL = 'claude:tests-fixed';
-            const CHANGELOG_LABEL = 'claude:changelog-updated';
+            const BUILD_LABEL = 'bot:build-attempted';
+            const DEPR_LABEL = 'bot:deprecated-attempted';
+            const TESTS_LABEL = 'bot:tests-attempted';
+            const CHANGELOG_LABEL = 'bot:changelog-updated';
 
             let run = true;
             if (phase === 'build' && labels.includes(BUILD_LABEL)) run = false;
@@ -122,7 +122,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_API_KEY_SDK }}
           github_token: ${{ steps.app-token.outputs.token }}
-          allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot],bidon-pods-updater2,bidon-pods-updater2[bot]"
+          allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot],bidon-pods-updater2,bidon-pods-updater2[bot],bidon-dependabot,bidon-dependabot[bot]"
           trigger_phrase: "@claude"
           show_full_output: true
           claude_args: |
@@ -142,10 +142,10 @@ jobs:
             const phase = `${{ steps.gate.outputs.phase }}`;
 
             const labelMap = {
-              build:        { name: 'claude:build-fixed',        color: 'e11d48', description: 'Claude attempted to fix build errors' },
-              tests:        { name: 'claude:tests-fixed',        color: '5319e7', description: 'Claude attempted to fix adapter tests errors' },
-              deprecations: { name: 'claude:deprecations-fixed', color: '0e8a16', description: 'Claude attempted to fix deprecated warnings' },
-              changelog:    { name: 'claude:changelog-updated',  color: '0366d6', description: 'Claude updated CHANGELOG files' },
+              build:        { name: 'bot:build-attempted',       color: 'd73a4a', description: 'Claude attempted to fix build errors' },
+              tests:        { name: 'bot:tests-attempted',       color: '5319e7', description: 'Claude attempted to fix test failures' },
+              deprecations: { name: 'bot:deprecated-attempted',  color: '0e8a16', description: 'Claude attempted to fix deprecated warnings' },
+              changelog:    { name: 'bot:changelog-updated',     color: '0366d6', description: 'CHANGELOG automatically updated' },
             };
             const label = labelMap[phase];
             if (!label) {
