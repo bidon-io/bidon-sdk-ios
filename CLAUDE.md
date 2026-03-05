@@ -9,31 +9,31 @@ Bidon is an open-source ad mediation SDK for iOS that provides publishers with t
 - **Current SDK version:** defined in `Bidon/Shared/Constants.swift` (`Constants.sdkVersion`)
 - **Workspace:** `BidOn.xcworkspace` (note the capitalization — capital O)
 - **Package manager:** CocoaPods (no SPM support currently)
-- **Jira project prefix:** `APDM-`
+- **Jira project prefix:** `BDN-`
 
 ## Git Conventions — STRICT
 
 ### Branches
 
-- **ALWAYS** name branches: `feature/APDM-{task_number}-short-description` or `bugfix/APDM-{task_number}-short-description`
+- **ALWAYS** name branches: `feature/BDN-{task_number}-short-description` or `bugfix/BDN-{task_number}-short-description`
 - **NEVER** use `claude/` prefix or any other branch naming pattern
 - If branch push fails, report the actual error — do NOT silently change the branch name
 
 Examples:
-- `feature/APDM-1844-podspec-core-range`
-- `bugfix/APDM-1787-banner-layout-fix`
+- `feature/BDN-1102-zmaticoo-rtb-adapter`
+- `bugfix/BDN-1787-banner-layout-fix`
 
 ### Commits
 
 - **One commit per task**
-- Commit message format: `APDM-{task_number}: Short description of the change`
+- Commit message format: `BDN-{task_number}: Short description of the change`
 - Do NOT add `Co-Authored-By` trailers
 
-Example: `APDM-1844: Add core range for adapters in podspecs`
+Example: `BDN-1127: Setup core range for adapters in podspec`
 
 ### Pull Requests
 
-- **PR title:** `Feature/APDM-{task_number}: Short description` or `Bugfix/APDM-{task_number}: Short description`
+- **PR title:** `Feature/BDN-{task_number}: Short description` or `Bugfix/BDN-{task_number}: Short description`
 - **Target branch:** `develop`
 - **CHANGELOG.md must be updated in every PR** (CI will fail otherwise — see `check_changelog.yml`)
 - PR body MUST include a Jira task link and a clear summary of changes
@@ -44,19 +44,19 @@ Example: `APDM-1844: Add core range for adapters in podspecs`
 <what was done and why, 1-3 sentences>
 
 ## Jira
-[APDM-{number}](https://appodeal.atlassian.net/browse/APDM-{number})
+[BDN-{number}](https://appodeal.atlassian.net/browse/BDN-{number})
 ```
 
 **Example PR:**
-- Title: `Feature/APDM-1679: Add Support for Price Floors in LevelPlay`
+- Title: `Feature/BDN-1102: Add zMaticoo RTB adapter`
 - Body:
 ```
 ## Summary
-Add price floor configuration support to the LevelPlay mediation adapter.
-This allows publishers to set minimum CPM thresholds for LevelPlay demand.
+Implement real-time bidding adapter for zMaticoo network with interstitial,
+rewarded, and banner ad support.
 
 ## Jira
-[APDM-1679](https://appodeal.atlassian.net/browse/APDM-1679)
+[BDN-1102](https://appodeal.atlassian.net/browse/BDN-1102)
 ```
 
 ### CHANGELOG.md Format
@@ -65,7 +65,7 @@ Entries go under the top version heading (e.g., `# Develop` or `# Release x.x.x`
 
 **Entry format:**
 ```
-- APDM-{number} Short description
+- BDN-{number} Short description
 ```
 
 **Categories** (use as sub-headings `##` when grouping, in this order):
@@ -79,12 +79,12 @@ Entries go under the top version heading (e.g., `# Develop` or `# Release x.x.x`
 # Develop
 
 ## New features
-- APDM-1679 Add Support for Price Floors in LevelPlay
-- APDM-1546 Networks update
+- BDN-1102 zMaticoo RTB adapter
+- BDN-1078 Added mediator and ad_unit_ids params support for AppLovin adapter
 
 ## Fixes
-- APDM-1787 Banners layout fix
-- APDM-1663 APDAsyncOperation crash
+- BDN-1127 Setup core range for adapters in podspec
+- BDN-1123 Visibility tracker
 ```
 
 When adding to CHANGELOG.md, append your entry to the appropriate existing category under the top heading, or create the category if it doesn't exist yet. Do NOT create a new version heading.
@@ -97,7 +97,7 @@ Follow this sequence for every task:
 ```bash
 git checkout develop
 git pull origin develop
-git checkout -b feature/APDM-{number}-short-description
+git checkout -b feature/BDN-{number}-short-description
 ```
 
 ### 2. Implement changes
@@ -138,14 +138,96 @@ xcodebuild build \
 ### 6. Commit and push
 ```bash
 git add <files>
-git commit -m "APDM-{number}: Short description of the change"
-git push -u origin feature/APDM-{number}-short-description
+git commit -m "BDN-{number}: Short description of the change"
+git push -u origin feature/BDN-{number}-short-description
 ```
 
 ### 7. Create PR
-- Title: `Feature/APDM-{number}: Short description`
+- Title: `Feature/BDN-{number}: Short description`
 - Target: `develop`
 - Include Jira link and summary in body
+
+## Testing
+
+### Existing Tests (XCTest)
+
+Legacy tests in `Tests/` use XCTest. These remain as-is — do not convert existing tests.
+
+### New Tests — Use Swift Testing
+
+All **new tests** must use Apple's [Swift Testing](https://developer.apple.com/documentation/testing) framework (available in Xcode 16+). Do NOT write new tests with XCTest.
+
+**Key rules:**
+- Import `Testing`, not `XCTest`
+- Use `@Suite struct`, not `class ... : XCTestCase`
+- Use `@Test func`, not `func test...()`
+- Use `#expect()` / `#require()`, not `XCTAssert*`
+- Use `init()` for setup, not `setUp()`
+- Never mix: don't call `XCTAssert` from a `@Test`, don't use `#expect` from `XCTestCase`
+
+**Quick reference — XCTest to Swift Testing:**
+
+| XCTest (legacy) | Swift Testing (new tests) |
+|---|---|
+| `import XCTest` | `import Testing` |
+| `class FooTests: XCTestCase` | `@Suite struct FooTests` |
+| `func testSomething()` | `@Test func something()` |
+| `override func setUp()` | `init()` |
+| `XCTAssertEqual(a, b)` | `#expect(a == b)` |
+| `XCTAssertTrue(condition)` | `#expect(condition)` |
+| `XCTAssertFalse(condition)` | `#expect(!condition)` |
+| `XCTAssertNil(value)` | `#expect(value == nil)` |
+| `XCTAssertNotNil(value)` | `#expect(value != nil)` |
+| `try XCTUnwrap(optional)` | `try #require(optional)` |
+| `XCTAssertThrowsError(expr)` | `#expect(throws: SomeError.self) { expr }` |
+| `XCTestExpectation` + `wait` | `await confirmation { ... }` |
+
+**Example — adapter test (new style):**
+```swift
+import Testing
+@testable import BidonAdapterAppLovin
+
+@Suite
+struct AppLovinAdapterTests {
+    let adapter = AppLovinDemandSourceAdapter()
+
+    @Test func metadata() {
+        #expect(adapter.demandId == "applovin")
+        #expect(adapter.name == "AppLovin")
+        #expect(!adapter.sdkVersion.isEmpty)
+    }
+
+    @Test func factoriesReturnProviders() throws {
+        let interstitial = try #require(try adapter.directInterstitialDemandProvider())
+        #expect(interstitial != nil)
+    }
+}
+```
+
+**Example — parameterized test:**
+```swift
+@Test(arguments: [AdType.banner, AdType.interstitial, AdType.rewarded])
+func adTypeHasStringValue(adType: AdType) {
+    #expect(!adType.stringValue.isEmpty)
+}
+```
+
+**Example — async test with confirmation:**
+```swift
+@Test func auctionCompletes() async {
+    await confirmation { confirm in
+        controller.load { result in
+            #expect(result.isSuccess)
+            confirm()
+        }
+    }
+}
+```
+
+**Traits and tags:**
+- Use `@Test(.disabled("reason"))` instead of skipping/commenting out tests
+- Use `@Test(.timeLimit(.minutes(1)))` for long-running tests
+- Use `@Suite(.serialized)` when tests must not run in parallel
 
 ## Repository Structure
 
