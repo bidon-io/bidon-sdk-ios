@@ -59,29 +59,57 @@ final class BannerAdController: NSObject, ObservableObject, AdViewDelegate {
     // MARK: - AdViewDelegate
 
     func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Banner] [Callback] Did load ad")
         logs.append("✅ Banner Loaded")
         status = "Ad Loaded"
         isAdReady = true
     }
 
     func adObject(_ adObject: AdObject, didFailToLoadAd error: any Error, auctionInfo: AuctionInfo) {
+        Logger.debug("[Banner] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
     }
 
+    func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
+        Logger.debug("[Banner] [Callback] Did fail to present with error: \(error.localizedDescription)")
+        logs.append("❌ Failed to present: \(error.localizedDescription)")
+    }
+
+    func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
+        Logger.debug("[Banner] [Callback] Did expire ad")
+        logs.append("⏰ Ad expired")
+    }
+
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
+        Logger.debug("[Banner] [Callback] Did record impression")
         logs.append("👁 Impression")
     }
 
     func adObject(_ adObject: AdObject, didRecordClick ad: Ad) {
+        Logger.debug("[Banner] [Callback] Did record click")
         logs.append("👆 Click")
     }
 
-    func adView(_ adView: any UIView & Bidon.AdView, willPresentScreen ad: any Bidon.Ad) { }
+    func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
+        Logger.debug("[Banner] [Callback] Did pay revenue: \(revenue.revenue)")
+        logs.append("💰 Revenue: \(revenue.revenue)")
+    }
 
-    func adView(_ adView: any UIView & Bidon.AdView, didDismissScreen ad: any Bidon.Ad) { }
+    func adView(_ adView: any UIView & Bidon.AdView, willPresentScreen ad: any Bidon.Ad) {
+        Logger.debug("[Banner] [Callback] Will present screen")
+        logs.append("📲 Will present screen")
+    }
 
-    func adView(_ adView: any UIView & Bidon.AdView, willLeaveApplication ad: any Bidon.Ad) { }
+    func adView(_ adView: any UIView & Bidon.AdView, didDismissScreen ad: any Bidon.Ad) {
+        Logger.debug("[Banner] [Callback] Did dismiss screen")
+        logs.append("👋 Screen dismissed")
+    }
+
+    func adView(_ adView: any UIView & Bidon.AdView, willLeaveApplication ad: any Bidon.Ad) {
+        Logger.debug("[Banner] [Callback] Will leave application")
+        logs.append("🚪 Will leave application")
+    }
 }
 
 struct BannerAdDemoView: View {

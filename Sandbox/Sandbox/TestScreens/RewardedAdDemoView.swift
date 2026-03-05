@@ -55,29 +55,61 @@ final class RewardedAdController: NSObject, ObservableObject, FullscreenAdDelega
     // MARK: - FullscreenAdDelegate
 
     func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Rewarded] [Callback] Did load ad")
         logs.append("✅ Ad Loaded")
         status = "Ad Loaded"
         isAdReady = true
     }
 
     func adObject(_ adObject: AdObject, didFailToLoadAd error: any Error, auctionInfo: AuctionInfo) {
+        Logger.debug("[Rewarded] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
     }
 
+    func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
+        Logger.debug("[Rewarded] [Callback] Did fail to present with error: \(error.localizedDescription)")
+        logs.append("❌ Failed to present: \(error.localizedDescription)")
+    }
+
+    func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Did expire ad")
+        logs.append("⏰ Ad expired")
+    }
+
+    func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Did record impression")
+        logs.append("👁 Impression recorded")
+    }
+
+    func adObject(_ adObject: AdObject, didRecordClick ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Did record click")
+        logs.append("👆 Click recorded")
+    }
+
+    func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Did pay revenue: \(revenue.revenue)")
+        logs.append("💰 Revenue: \(revenue.revenue)")
+    }
+
     func fullscreenAd(_ adObject: FullscreenAdObject, willPresentAd ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Will present ad")
         logs.append("📲 Will present ad")
         status = "Showing"
     }
 
     func fullscreenAd(_ adObject: FullscreenAdObject, didDismissAd ad: Ad) {
+        Logger.debug("[Rewarded] [Callback] Did dismiss ad")
         logs.append("👋 Ad dismissed")
         status = "Dismissed"
         isAdReady = false
     }
 
+    // MARK: - RewardedAdDelegate
+
     func rewardedAd(_ rewardedAd: any Bidon.RewardedAdObject, didRewardUser reward: any Bidon.Reward, ad: any Bidon.Ad) {
-        logs.append("👋 Reward granted")
+        Logger.debug("[Rewarded] [Callback] Did reward user with reward: \(reward.label), amount: \(reward.amount)")
+        logs.append("🎁 Reward granted: \(reward.amount) \(reward.label)")
         status = "Reward"
         isAdReady = false
     }
