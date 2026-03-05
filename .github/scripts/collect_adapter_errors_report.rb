@@ -167,22 +167,6 @@ else
     end
 
   md << "Build/Test errors found (#{count}) for: #{adapter_label}\n\n"
-  md << "@claude Please fix the build/test errors reported below.\n\n"
-  md << "Constraints:\n"
-  if adapters_list.any?
-    if adapters_list.length == 1
-      md << "- Only modify code under: `Adapters/#{adapters_list[0]}/`\n"
-    else
-      md << "- Only modify code under:\n"
-      adapters_list.each { |a| md << "  - `Adapters/#{a}/`\n" }
-    end
-  else
-    md << "- Only modify code under: `Adapters/`\n"
-  end
-  md << "- Do not change `Podfile` / `Podfile.lock`.\n"
-  md << "- Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`).\n"
-  md << "- Commit the fix directly to this PR branch.\n\n"
-  md << "Build/Test errors:\n\n"
   md << "```text\n"
   # Match deprecated report style: diagnostics lines only (no code/caret context).
   filtered
