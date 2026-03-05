@@ -50,6 +50,19 @@ final class MobileFuseBiddingAdViewDemandProvider: MobileFuseBiddingBaseDemandPr
         guard let ad = ad as? MFBannerAd else { return }
         adViewDelegate?.providerDidDismissModalView(self, adView: ad)
     }
+
+    // MARK: - Override base class methods for banner-specific behavior
+
+    override func onAdRendered(_ ad: MFAd!) {
+        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // Only log impression for banners
+        guard let ad = ad as? MFBannerAd else { return }
+        revenueDelegate?.provider(self, didLogImpression: ad)
+    }
+
+    override func onAdClosed(_ ad: MFAd!) {
+        // No-op: Banner ads don't use providerDidHide - that's for fullscreen ads only
+    }
 }
 
 

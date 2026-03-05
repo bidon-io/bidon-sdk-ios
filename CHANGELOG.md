@@ -1,6 +1,7 @@
 # Develop
 
 - BDN-1139 Viewability improvements
+- BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
 - Updated secrets
 - Sandbox flag fix
 

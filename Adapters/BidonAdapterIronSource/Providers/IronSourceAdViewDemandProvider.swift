@@ -87,10 +87,13 @@ extension IronSourceAdViewDemandProvider: ISDemandOnlyBannerDelegate {
         delegate?.providerDidClick(self)
     }
 
-    func bannerWillLeaveApplication(_ instanceId: String!) {}
-    func bannerDidShow(_ instanceId: String!) {
-        delegate?.providerWillPresent(self)
+    func bannerWillLeaveApplication(_ instanceId: String!) {
+        guard let bannerView = api.bannerView(for: instanceId) else { return }
+        adViewDelegate?.providerWillLeaveApplication(self, adView: bannerView)
+    }
 
+    func bannerDidShow(_ instanceId: String!) {
+        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
         let ad = IronSourceBannerDemandAd(id: instanceId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

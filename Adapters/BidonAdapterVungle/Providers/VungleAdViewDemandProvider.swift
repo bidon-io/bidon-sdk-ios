@@ -68,8 +68,7 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
 
     func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
         guard demandAd.adObject === banner else { return }
-
-        delegate?.providerDidHide(self)
+        // No-op: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 
     func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
