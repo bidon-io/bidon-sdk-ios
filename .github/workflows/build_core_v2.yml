@@ -142,6 +142,16 @@ jobs:
           fi
           pod repo push bidon "$SPEC" --allow-warnings --skip-tests --skip-import-validation --sources="bidon"
 
+      - name: Generate GitHub App token for swift-package
+        if: success() && inputs.upload
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: bidon-io
+          repositories: bidon-sdk-swift-package
+
       - name: Push Package.swift to bidon-sdk-swift-package
         if: success() && inputs.upload
         run: |
@@ -153,7 +163,7 @@ jobs:
           fi
 
           TMPDIR=$(mktemp -d)
-          git clone git@github.com:bidon-io/bidon-sdk-swift-package.git "$TMPDIR/swift-package"
+          git clone https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/bidon-io/bidon-sdk-swift-package.git "$TMPDIR/swift-package"
           cp "$PACKAGE_SWIFT" "$TMPDIR/swift-package/Package.swift"
           cd "$TMPDIR/swift-package"
 
