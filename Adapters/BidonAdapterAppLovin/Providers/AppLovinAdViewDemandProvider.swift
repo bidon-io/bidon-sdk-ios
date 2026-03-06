@@ -114,7 +114,7 @@ extension AppLovinAdViewDemandProvider: ALAdDisplayDelegate {
     }
 
     func ad(_ ad: ALAd, wasHiddenIn view: UIView) {
-        // No-op: Banner ads don't use providerDidHide - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 
     func ad(_ ad: ALAd, wasClickedIn view: UIView) {

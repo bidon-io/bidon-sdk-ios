@@ -110,7 +110,7 @@ extension MyTargetAdViewDemandProvider: MTRGAdViewDelegate {
     }
 
     func onAdShow(with adView: MTRGAdView) {
-        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
         let ad = MyTargetBannerDemandAd(banner: adView)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

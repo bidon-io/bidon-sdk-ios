@@ -93,7 +93,7 @@ extension IronSourceAdViewDemandProvider: ISDemandOnlyBannerDelegate {
     }
 
     func bannerDidShow(_ instanceId: String!) {
-        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
         let ad = IronSourceBannerDemandAd(id: instanceId)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

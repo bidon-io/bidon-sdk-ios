@@ -19,7 +19,10 @@ final class VungleAdViewDemandProvider: VungleBaseDemandProvider<VungleBannerVie
     private weak var banner: VungleBannerView?
 
     private var hasAdLoaded = false
-
+    
+    private var isCurrentBanner: Bool {
+        demandAd.adObject === banner
+    }
 
     init(context: AdViewContext) {
         self.rootViewController = context.rootViewController
@@ -50,7 +53,7 @@ extension VungleAdViewDemandProvider: AdViewDemandProvider {
 
 extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
     func bannerAdDidLoad(_ bannerView: VungleAdsSDK.VungleBannerView) {
-        guard demandAd.adObject === banner else { return }
+        guard isCurrentBanner else { return }
 
         response?(.success(demandAd))
         response = nil
@@ -59,7 +62,7 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
     }
 
     func bannerAdDidFail(_ bannerView: VungleAdsSDK.VungleBannerView, withError: NSError) {
-        guard demandAd.adObject === banner else { return }
+        guard isCurrentBanner else { return }
 
         response?(.failure(MediationError(error: withError)))
         response = nil
@@ -67,18 +70,17 @@ extension VungleAdViewDemandProvider: VungleBannerViewDelegate {
     }
 
     func bannerAdDidClose(_ bannerView: VungleAdsSDK.VungleBannerView) {
-        guard demandAd.adObject === banner else { return }
-        // No-op: Banner ads don't use providerDidHide - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 
     func bannerAdDidTrackImpression(_ bannerView: VungleAdsSDK.VungleBannerView) {
-        guard demandAd.adObject === banner else { return }
+        guard isCurrentBanner else { return }
 
         revenueDelegate?.provider(self, didLogImpression: demandAd)
     }
 
     func bannerAdDidClick(_ bannerView: VungleAdsSDK.VungleBannerView) {
-        guard demandAd.adObject === banner else { return }
+        guard isCurrentBanner else { return }
 
         delegate?.providerDidClick(self)
     }

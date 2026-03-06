@@ -75,7 +75,7 @@ extension MetaAudienceNetworkBiddingAdViewDemandProvider: FBAdViewDelegate {
 
     func adViewWillLogImpression(_ adView: FBAdView) {
         revenueDelegate?.provider(self, didLogImpression: adView)
-        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
     }
 
     func adViewDidClick(_ adView: FBAdView) {

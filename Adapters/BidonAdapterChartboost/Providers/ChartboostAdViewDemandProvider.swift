@@ -56,11 +56,11 @@ final class ChartboostAdViewDemandProvider: ChartboostBaseDemandProvider<Chartbo
     // MARK: - Override base class methods for banner-specific behavior
 
     override func willShowAd(_ event: CHBShowEvent) {
-        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
     }
 
     override func didDismissAd(_ event: CHBDismissEvent) {
-        // No-op: Banner ads don't use providerDidHide - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 }
 

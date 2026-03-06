@@ -95,7 +95,7 @@ extension STABannerViewBase: Bidon.AdViewContainer {
 
 extension StartIoBiddingAdViewDemandProvider: STABannerDelegateProtocol {
     func didDisplayBannerAd(_ banner: STABannerViewBase) {
-        // No-op: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
         let wrappedAd = StartIoAdViewDemandAd(adView: banner)
         revenueDelegate?.provider(self, didLogImpression: wrappedAd)
     }
