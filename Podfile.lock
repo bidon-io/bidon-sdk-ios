@@ -78,16 +78,16 @@ PODS:
     - StackModules/Static (~> 3.4.2)
   - BigoADS (5.1.0)
   - ChartboostSDK (9.11.0)
-  - DivKit (32.35.0):
-    - DivKit_LayoutKit (= 32.35.0)
-    - DivKit_Serialization (= 32.35.0)
+  - DivKit (32.36.0):
+    - DivKit_LayoutKit (= 32.36.0)
+    - DivKit_Serialization (= 32.36.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKit (32.35.0):
-    - DivKit_LayoutKitInterface (= 32.35.0)
+  - DivKit_LayoutKit (32.36.0):
+    - DivKit_LayoutKitInterface (= 32.36.0)
     - VGSL (~> 7.12)
-  - DivKit_LayoutKitInterface (32.35.0):
+  - DivKit_LayoutKitInterface (32.36.0):
     - VGSL (~> 7.12)
-  - DivKit_Serialization (32.35.0):
+  - DivKit_Serialization (32.36.0):
     - VGSL (~> 7.12)
   - DivKitBinaryCompatibilityFacade (5.2.1):
     - DivKit (~> 32.14)
@@ -101,7 +101,7 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.4.5)
-  - Google-Mobile-Ads-SDK (12.14.0):
+  - Google-Mobile-Ads-SDK (13.1.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.1.1)
@@ -159,7 +159,7 @@ PODS:
     - StackModules/ProductPresentation-Static
     - StackModules/Rendering-Static
   - StartAppSDK (4.13.0)
-  - SwiftLint (0.62.2)
+  - SwiftLint (0.63.2)
   - TaurusxAdsSDK (1.14.0):
     - TaurusxAdsSDK/TaurusxAds (= 1.14.0)
   - TaurusxAdsSDK/TaurusxAds (1.14.0)
@@ -193,7 +193,7 @@ DEPENDENCIES:
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.5)
-  - Google-Mobile-Ads-SDK (= 12.14.0)
+  - Google-Mobile-Ads-SDK (= 13.1.0)
   - InMobiSDK (= 11.1.1)
   - IronSourceSDK/Ads (= 9.3.0.0)
   - MintegralAdSDK (= 8.0.7)
@@ -295,10 +295,10 @@ SPEC CHECKSUMS:
   BidMachine: 72ab9109a450e688aa83cb54800b484a9e42ae64
   BigoADS: a7721b65e51f506141d5f1a6dff1cab213b04c76
   ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
-  DivKit: 3dbffa1f9b303ba9f95ea4fc2b48375440768da2
-  DivKit_LayoutKit: c5025c06af360dc2b1a539b17567bfb628bd3755
-  DivKit_LayoutKitInterface: f31972d07134bdd373823ed31c0097eff5b9837f
-  DivKit_Serialization: c15fa9eb3878dda9710a30a19a395e61a9d2e118
+  DivKit: 4c370a5c7d668361f7de5f7badb02ef7c8a66e6c
+  DivKit_LayoutKit: aa1707764a8c9acf6e61625bb8324ff8284fe584
+  DivKit_LayoutKitInterface: 8647959243ac5e65eca6c78004d4a0a10940d86e
+  DivKit_Serialization: 2a96f66a624dec40973c90a01e91e9dc45c669df
   DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 85d18a65c9e35bc426bd4664cf3ae2a1172d7b60
@@ -306,7 +306,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: c63707d806951c0ab6c60632ffb233a954d11185
-  Google-Mobile-Ads-SDK: 4534fd2dfcd3f705c5485a6633c5188d03d4eed2
+  Google-Mobile-Ads-SDK: 8429bef6ee1a4e322b0a5571b64217ed8317a3d5
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: 4642fb34a961980ab94a1ac460c6e16e113498e6
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
@@ -318,7 +318,7 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: 24a4e82085d9d8273129a53354e13dcf0a32bce9
   StackModules: ca80fdd51655605b6c12aefee055dd18340b225f
   StartAppSDK: 890149cde4355beec9ec4c0f5f4d499c44f42b79
-  SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
+  SwiftLint: 4fa4a9b437ccc4fc72f6c0bc98556e8e9e05bccf
   TaurusxAdsSDK: 6689ea53cd6a5e71845ac869714fcc23a4f456ea
   UnityAds: 37544c41dd6916fa9074bf68cf07fce793460b84
   VGSL: 6696dd84229c7d3ce8ad9b940e89bbd199e2b12d
@@ -329,6 +329,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 3898b67380764e95ab11907bb16dfba38c858594
+PODFILE CHECKSUM: b3def4da202940ce24426b2c8987448fa6d8267f
 
 COCOAPODS: 1.16.2
