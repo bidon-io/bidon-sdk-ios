@@ -1,5 +1,6 @@
 # Develop
 
+- BDN-1139 Viewability improvements
 - Updated secrets
 - Sandbox flag fix
 
