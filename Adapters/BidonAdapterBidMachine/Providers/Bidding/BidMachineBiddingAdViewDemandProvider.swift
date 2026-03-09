@@ -61,6 +61,30 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
 
         super.init()
     }
+
+    // MARK: - Override base class methods for banner-specific behavior
+
+    override func didPresentAd(_ ad: BidMachineAdProtocol) {
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
+    }
+
+    override func didDismissAd(_ ad: BidMachineAdProtocol) {
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
+    }
+
+    override func willPresentScreen(_ ad: BidMachineAdProtocol) {
+        guard let ad = ad as? BidMachineBanner else {
+            return
+        }
+        adViewDelegate?.providerWillPresentModalView(self, adView: ad)
+    }
+
+    override func didDismissScreen(_ ad: BidMachineAdProtocol) {
+        guard let ad = ad as? BidMachineBanner else {
+            return
+        }
+        adViewDelegate?.providerDidDismissModalView(self, adView: ad)
+    }
 }
 
 

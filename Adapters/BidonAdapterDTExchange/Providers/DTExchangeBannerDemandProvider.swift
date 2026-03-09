@@ -59,7 +59,8 @@ extension DTExchangeBannerDemandProvider: IAUnitDelegate {
     }
 
     func iaUnitControllerWillPresentFullscreen(_ unitController: IAUnitController?) {
-        delegate?.providerWillPresent(self)
+        guard let adView = controller.adView else { return }
+        adViewDelegate?.providerWillPresentModalView(self, adView: adView)
     }
 
     func iaAdDidReceiveClick(_ unitController: IAUnitController?) {
@@ -67,7 +68,8 @@ extension DTExchangeBannerDemandProvider: IAUnitDelegate {
     }
 
     func iaUnitControllerDidDismissFullscreen(_ unitController: IAUnitController?) {
-        delegate?.providerDidHide(self)
+        guard let adView = controller.adView else { return }
+        adViewDelegate?.providerDidDismissModalView(self, adView: adView)
     }
 }
 
