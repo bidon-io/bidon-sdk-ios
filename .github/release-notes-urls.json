@@ -1,0 +1,13 @@
+{
+  "AppLovinSDK": "https://github.com/AppLovin/AppLovin-MAX-SDK-iOS/releases",
+  "Google-Mobile-Ads-SDK": "https://developers.google.com/admob/ios/rel-notes",
+  "BidMachine": "https://github.com/bidmachine/BidMachine-iOS-SDK/blob/master/CHANGELOG.md",
+  "UnityAds": "https://github.com/Unity-Technologies/unity-ads-ios/releases",
+  "MintegralAdSDK": "https://github.com/nicklama/mintegral-ads-pod/blob/main/CHANGELOG.md",
+  "VungleAds": "https://support.vungle.com/hc/en-us/articles/360002922871",
+  "InMobiSDK": "https://github.com/nicklama/inmobi-ios-sdk-pod/blob/master/CHANGES.md",
+  "ChartboostSDK": "https://docs.chartboost.com/en/sdk/ios/release-notes/",
+  "IronSourceSDK": "https://developers.is.com/ironsource-mobile/ios/ios-sdk-change-log/",
+  "FBAudienceNetwork": "https://developers.facebook.com/docs/audience-network/setting-up/platform-setup/ios/changelog",
+  "Fyber_Marketplace_SDK": "https://developer.digitalturbine.com/hc/en-us/articles/360010077918"
+}
