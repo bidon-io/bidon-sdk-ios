@@ -87,12 +87,11 @@ loadAd() → peek $3.50 → отдаём мгновенно
 
 | Свойство | Значение |
 |---|---|
-| Тип данных | `CachedBid` (lazy builders, TTL, consentHash) |
+| Тип данных | `CachedBid` (lazy builders, TTL) |
 | Вставка | Runner-ups после успешного аукциона |
 | Извлечение | `reserve()` → `confirm()`/`release()` |
 | Reservation timeout | 40 сек |
 | TTL | 8 мин (banner), 10 мин (interstitial) |
-| Consent | consentHash фильтрация |
 | Price threshold | policy: min healthy TTL, price sort |
 
 ```
@@ -102,7 +101,7 @@ show() succeed → confirm(Bid B) → permanent remove
 show() fail    → release(Bid B) → return to pool
 ```
 
-#### Reservation — зачем нужна и как работает
+#### git ption — зачем нужна и как работает
 
 Без резервации возможен **двойной показ**: выбрали bid для показа → до вызова `show()` пришёл ещё один `loadAd()` → тот же bid выбирается снова → одно объявление показывается дважды.
 
