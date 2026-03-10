@@ -192,7 +192,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             case .failure(let error):
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer {
+                    if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
                         // Update auctionInfo: set WIN status for the cached ad
                         if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
                            let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {

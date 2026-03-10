@@ -55,6 +55,7 @@ class BannerAdManager: NSObject {
 
     var isCanceled = false
     var auctionStartTimestamp: TimeInterval?
+    var pricefloor: Price
 
     init(
         placement: String,
@@ -89,6 +90,7 @@ class BannerAdManager: NSObject {
                 return
             }
 
+            self.pricefloor = pricefloor
             self.fetchAuctionInfo(
                 pricefloor: pricefloor,
                 viewContext: viewContext,

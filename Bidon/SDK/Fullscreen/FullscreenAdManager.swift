@@ -86,6 +86,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     var auctionInfo: Bidon.AuctionInfo = DefaultAuctionInfo()
     lazy var extras: [String: AnyHashable] = BidonSdk.extras ?? [:]
     var auctionStartTimestamp: TimeInterval?
+    var pricefloor: Price
 
     var demandsTokensManager: DemandsTokensManager<AdTypeContextType>?
 
@@ -113,6 +114,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 return
             }
 
+            self.pricefloor = pricefloor
             self.fetchAuctionInfo(pricefloor, auctionKey: auctionKey)
         }
     }
