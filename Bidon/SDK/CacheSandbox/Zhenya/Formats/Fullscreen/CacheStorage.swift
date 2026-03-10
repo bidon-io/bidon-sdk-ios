@@ -26,7 +26,7 @@ enum InsertResult {
 final class CacheStorage {
 
     private let capacity: Int
-    private let iterationThreshold: Double
+    private let iterationThreshold: Int
     private let lock = NSLock()
 
     private var stickyHeadActive: Bool = false
@@ -43,7 +43,7 @@ final class CacheStorage {
         iterationMaxPrice = nil
     }
 
-    init(capacity: Int, iterationThreshold: Double) {
+    init(capacity: Int, iterationThreshold: Int) {
         precondition(capacity > 0)
         self.capacity = capacity
         self.iterationThreshold = iterationThreshold
@@ -96,13 +96,10 @@ final class CacheStorage {
             }
         }
 
-        // 3) Capacity == 1 + sticky head
+        // 3) Capacity == 1 + sticky head → always reject non-sticky
         if capacity == 1, !items.isEmpty, stickyHeadActive, !sticky {
-            guard let currentPrice = items.first?.price, element.price > currentPrice else {
-                Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — sticky protected (price <= \(items.first?.price ?? 0))")
-                return .rejected(.stickyHeadProtected)
-            }
-            stickyHeadActive = false
+            Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — sticky protected")
+            return .rejected(.stickyHeadProtected)
         }
 
         // 4) Cache full
@@ -182,7 +179,7 @@ final class CacheStorage {
 
     private func formatMinAllowed() -> String {
         guard let max = iterationMaxPrice else { return "n/a" }
-        return "\(max * iterationThreshold / 100)"
+        return "\(max * Double(iterationThreshold) / 100)"
     }
 
     // MARK: - Iteration threshold
@@ -193,7 +190,7 @@ final class CacheStorage {
                 iterationMaxPrice = price
                 return false
             }
-            let minAllowed: Double = currentMax * iterationThreshold / 100
+            let minAllowed: Double = currentMax * Double(iterationThreshold) / 100
             return price < minAllowed
         } else {
             iterationMaxPrice = price

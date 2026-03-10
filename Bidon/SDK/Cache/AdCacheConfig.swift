@@ -34,7 +34,7 @@ public final class AdTypeCacheConfig: NSObject {
     public var fallbackСacheSize: Int
     public var noFillDelayMs: Int
     public var strategy: Int
-    public var threshold: Double
+    public var threshold: Int
     
     private let minCacheSize = 1
     private let maxCacheSize = 10
@@ -42,7 +42,7 @@ public final class AdTypeCacheConfig: NSObject {
     private let minNoFillDelay = 2000
     private let maxNoFillDelay = 64000
     
-    public init(adunitСacheSize: Int = 1, fallbackСacheSize: Int = 1, noFillDelayMs: Int = 2000, strategy: Int = 0, threshold: Double = 0.7) {
+    public init(adunitСacheSize: Int = 1, fallbackСacheSize: Int = 1, noFillDelayMs: Int = 2000, strategy: Int = 0, threshold: Int = 70) {
         self.strategy = strategy
         self.fallbackСacheSize = fallbackСacheSize
         self.threshold = threshold

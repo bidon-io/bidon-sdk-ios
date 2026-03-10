@@ -192,11 +192,8 @@ insert(element, sticky)
   │
   ├─ 3. Особый случай: capacity == 1 и sticky head активен и вставка не sticky
   │     │
-  │     ├─ новый дороже sticky?
-  │     │     → снять sticky, продолжить вставку
-  │     │
-  │     └─ новый дешевле или равен sticky?
-  │           → REJECTED (stickyHeadProtected)
+  │     └─ REJECTED (stickyHeadProtected) — независимо от цены
+  │           sticky head в рамках итерации не вытесняется
   │
   ├─ 4. Кеш полон?
   │     │
