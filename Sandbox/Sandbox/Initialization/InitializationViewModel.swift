@@ -101,8 +101,8 @@ final class InitializationViewModel: ObservableObject, AdResponder {
 
     @MainActor
     func initialize() async {
-        let emptyConfig = AdTypeCacheConfig(adunitСacheSize: 5, noFillDelayMs: 0, strategy: 1)
-        let interstitialConfig = AdTypeCacheConfig(adunitСacheSize: 10, noFillDelayMs: 0, strategy: 1)
+        let emptyConfig = AdTypeCacheConfig(adunitСacheSize: 5, fallbackСacheSize: 5, noFillDelayMs: 0, strategy: 1, threshold: 80)
+        let interstitialConfig = AdTypeCacheConfig(adunitСacheSize: 5, fallbackСacheSize: 5, noFillDelayMs: 0, strategy: 1, threshold: 80)
         BidonSdk.setAdCacheConfig(AdCacheConfig(
             banner: emptyConfig,
             interstitial: interstitialConfig,

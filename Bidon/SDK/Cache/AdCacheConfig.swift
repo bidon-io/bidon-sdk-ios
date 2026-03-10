@@ -31,8 +31,10 @@ public final class AdCacheConfig: NSObject {
 @objc(BDNAdTypeConfig)
 public final class AdTypeCacheConfig: NSObject {
     public var adunitСacheSize: Int
+    public var fallbackСacheSize: Int
     public var noFillDelayMs: Int
     public var strategy: Int
+    public var threshold: Double
     
     private let minCacheSize = 1
     private let maxCacheSize = 10
@@ -40,8 +42,10 @@ public final class AdTypeCacheConfig: NSObject {
     private let minNoFillDelay = 2000
     private let maxNoFillDelay = 64000
     
-    public init(adunitСacheSize: Int = 1, noFillDelayMs: Int = 2000, strategy: Int = 0) {
+    public init(adunitСacheSize: Int = 1, fallbackСacheSize: Int = 1, noFillDelayMs: Int = 2000, strategy: Int = 0, threshold: Double = 0.7) {
         self.strategy = strategy
+        self.fallbackСacheSize = fallbackСacheSize
+        self.threshold = threshold
         self.adunitСacheSize = max(minCacheSize, min(adunitСacheSize, maxCacheSize))
         self.noFillDelayMs = max(minNoFillDelay, min(noFillDelayMs, maxNoFillDelay))
     }

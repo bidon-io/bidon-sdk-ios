@@ -68,14 +68,7 @@ final class ZhenyaManagerPool {
                 let oldDelegate = entry.manager.delegate
                 entry.manager.delegate = delegate
                 
-                Logger.debug("""
-                [ZhenyaManagerPool] Reusing existing manager for key: \(key)
-                - old delegate: \(oldDelegate != nil ? "exists (retained)" : "nil (released)")
-                - new delegate: \(delegate != nil ? "exists" : "nil")
-                - old interstitial: \(entry.interstitial != nil ? "exists" : "nil")
-                - new interstitial: \(interstitial)
-                - delegate updated: ✅
-                """)
+                Logger.debug("[ZhenyaCache] Reuse manager for key: \(key)")
                 
                 managers[key] = ManagerEntry(
                     interstitial: interstitial,
@@ -85,11 +78,7 @@ final class ZhenyaManagerPool {
                 result = entry.manager
             } else {
                 // Создаем новый менеджер
-                Logger.debug("""
-                [ZhenyaManagerPool] Creating NEW manager for key: \(key)
-                - delegate: \(delegate != nil ? "exists" : "nil")
-                - interstitial: \(interstitial)
-                """)
+                Logger.debug("[ZhenyaCache] New manager for key: \(key)")
                 
                 let manager = ZhenyaAdManager<
                     InterstitialAdTypeContext,
@@ -153,12 +142,7 @@ final class ZhenyaManagerPool {
                 let shouldKeep = isActive || (isRecent && hasInterstitial)
                 
                 if !shouldKeep {
-                    Logger.debug("""
-                    [ZhenyaManagerPool] Cleaning up manager for key: \(key)
-                    - isActive: \(isActive)
-                    - isRecent: \(isRecent)
-                    - hasInterstitial: \(hasInterstitial)
-                    """)
+                    Logger.debug("[ZhenyaCache] Cleanup manager for key: \(key)")
                 }
                 
                 // Оставляем менеджер если он активен ИЛИ (недавно создан И имеет interstitial)

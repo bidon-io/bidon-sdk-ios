@@ -36,22 +36,25 @@ final class ZhenyaBannerAdManager: BannerAdManager {
     var auction: ZhenyaAuctionControllerType?
     
     override func prepareForReuse() {
-        Cacher.bannerStorage.popFirst()
-        super.prepareForReuse()
+        defer {
+            super.prepareForReuse()
+        }
+        if Cacher.Main.bannerStorage.peek() != nil {
+            Cacher.Main.bannerStorage.popFirst()
+            return
+        }
+        if Cacher.Fallback.bannerStorage.peek() != nil {
+            Cacher.Fallback.bannerStorage.popFirst()
+            return
+        }
     }
     
     override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
         auctionInfo = DefaultAuctionInfo()
-        Logger.debug("""
-        [ZhenyaAdManager Banner] loadAd called
-        - pricefloor: \(pricefloor)
-        - auctionKey: \(auctionKey ?? "nil")
-        - delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")
-        - cache has item: \(Cacher.bannerStorage.peek() != nil)
-        """)
+        Logger.debug("[ZhenyaCache] [Banner] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.bannerStorage.peek() != nil)")
         
         // If cache has a bid container that already meets the floor — use it.
-        if let ad = Cacher.bannerStorage.peek()?.ad as? BidContainer, ad.price >= pricefloor {
+        if let ad = Cacher.Main.bannerStorage.peek() as? BidContainer, ad.price >= pricefloor {
             let controller = AdViewImpression(
                 bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
                 format: BannerAdTypeContext(viewContext: viewContext).format
@@ -75,7 +78,6 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             }
             self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
 
-            Logger.debug("[ZhenyaAdManager] Using cached ad, delegate: \(self.delegate != nil ? "exists" : "NIL ⚠️")")
             self.delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
             return
         }
@@ -93,10 +95,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
         }
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
         
-        Logger.debug("""
-        [ZhenyaAdManager Banner] performAuction called
-        - delegate at START: \(self.delegate != nil ? "exists" : "NIL ⚠️")
-        """)
+        Logger.debug("[ZhenyaCache] [Banner] performAuction")
         
         isFirstLoad = true
 
@@ -126,20 +125,18 @@ final class ZhenyaBannerAdManager: BannerAdManager {
 
         state = .auction(controller: auction)
         
-        Cacher.bannerStorage.beginIteration()
+        Cacher.Main.bannerStorage.beginIteration()
         
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
 
             let ad = BidContainer(bid: bid)
-            let item = BannerCacheItem(
-                ad: ad,
-                manager: self
-            )
 
-            let inserted = Cacher.bannerStorage.insert(item, sticky: self.isFirstLoad)
-            if inserted {
+            let result = Cacher.Main.bannerStorage.insert(ad, sticky: self.isFirstLoad)
+            if result.isInserted {
                 self.adRevenueObserver.observe(bid)
+            } else {
+                Cacher.Fallback.bannerStorage.insert(ad)
             }
 
             if self.isFirstLoad {
@@ -167,7 +164,6 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                 
                 DispatchQueue.main.async { [weak self] in
                     guard let self else {
-                        Logger.error("[ZhenyaAdManager Banner] self is nil in DispatchQueue.main.async!")
                         return
                     }
                     
@@ -190,15 +186,48 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             self.auctionInfo.adUnits = allDemands.compactMap({ DefaultAdUnitInfo($0) })
 
             switch result {
-            case .success(let bid):
-                self.state = .idle
+            case .success:
+                break
+
             case .failure(let error):
-                self.state = .idle
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                    if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer {
+                        // Update auctionInfo: set WIN status for the cached ad
+                        if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
+                           let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
+                            adUnitInfo.status = DemandMediationStatus.win.stringValue
+                        } else {
+                            let demandReportModel = AuctionDemandReportModel(
+                                demandId: ad.bid.adUnit.demandId,
+                                status: .win,
+                                bid: DummyBid(ad.bid),
+                                adUnit: DummyAdUnit(ad.bid.adUnit),
+                                startTimestamp: 0,
+                                finishTimestamp: 0,
+                                tokenStartTimestamp: 0,
+                                tokenFinishTimestamp: 0
+                            )
+                            if self.auctionInfo.adUnits == nil {
+                                self.auctionInfo.adUnits = []
+                            }
+                            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+                        }
+                        let controller = AdViewImpression(
+                            bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
+                            format: context.format
+                        )
+                        self.state = .ready(impression: controller)
+
+                        self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                    } else {
+                        self.state = .idle
+                        self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
+                    }
                 }
             }
+
+            self.auction = nil
         }
         
         self.auction = auction

@@ -4,7 +4,8 @@
       "WebFetch(domain:publisher.taurusx.com)",
       "Bash(xcodebuild:*)",
       "mcp__acp__Bash",
-      "mcp__acp__Edit"
+      "mcp__acp__Edit",
+      "Bash(grep -oP '\\\\[[\\\\w\\\\s]+\\\\]' Bidon/SDK/CacheSandbox/Zhenya/**/*.swift | sort -u)"
     ],
     "deny": [],
     "ask": []
