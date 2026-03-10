@@ -13,6 +13,13 @@ enum DemandMediationStatus: Codable {
     case win
     case lose
     case error(MediationError)
+    
+    var isWin: Bool {
+        switch self {
+        case .win: return true
+        default: return false
+        }
+    }
 
     var isUnknown: Bool {
         switch self {
