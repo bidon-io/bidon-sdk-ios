@@ -215,26 +215,44 @@ jobs:
           name: build-logs
           path: build/ci-logs
 
-      - name: Setup SSH for podspec repo
+      - name: Push adapter podspec via PR
         if: ${{ inputs.push_specs }}
+        env:
+          GH_TOKEN: ${{ secrets.PAT_RUNNER }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          set -euo pipefail
 
-      - name: Register CocoaPods repo
-        if: ${{ inputs.push_specs }}
-        run: |
-          pod repo remove bidon || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
+          SPEC_FILE="build/Podspecs/${{ inputs.adapter_name }}.podspec.json"
+          ADAPTER="${{ inputs.adapter_name }}"
+          VERSION="${{ inputs.sdk_version }}"
+          BRANCH_NAME="bot/push-${ADAPTER}-${VERSION}"
+          SPECS_DIR="$RUNNER_TEMP/CocoaPods-Specs"
 
-      - name: Push adapter podspec to podspec repo
-        if: ${{ inputs.push_specs }}
-        run: |
-          spec=build/Podspecs/${{ inputs.adapter_name }}.podspec.json
-          echo "Pushing $spec..."
-          pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+          # 1. Clone specs repo via HTTPS
+          gh repo clone bidon-io/CocoaPods-Specs "$SPECS_DIR"
+          cd "$SPECS_DIR"
+
+          git config user.email "bot@bidon.org"
+          git config user.name "bidon-bot"
+
+          # 2. Copy podspec into the expected directory structure
+          DEST_DIR="${ADAPTER}/${VERSION}"
+          mkdir -p "$DEST_DIR"
+          cp "$GITHUB_WORKSPACE/$SPEC_FILE" "$DEST_DIR/${ADAPTER}.podspec.json"
+
+          # 3. Create branch, commit, push
+          git checkout -b "$BRANCH_NAME"
+          git add .
+          git commit -m "Add ${ADAPTER} ${VERSION}"
+          git push origin "$BRANCH_NAME" -f
+
+          # 4. Create PR (or update existing)
+          gh pr create \
+            --repo bidon-io/CocoaPods-Specs \
+            --title "Add ${ADAPTER} ${VERSION}" \
+            --body "Automated podspec push from build_adapter_v2 workflow. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --base main \
+            --head "$BRANCH_NAME" || echo "PR already exists, branch updated."
 
       - name: Notify Slack on success
         if: success()
