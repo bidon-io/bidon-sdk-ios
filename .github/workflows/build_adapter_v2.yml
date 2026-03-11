@@ -228,12 +228,13 @@ jobs:
           BRANCH_NAME="bot/push-${ADAPTER}-${VERSION}"
           SPECS_DIR="$RUNNER_TEMP/CocoaPods-Specs"
 
-          # 1. Clone specs repo via HTTPS
+          # 1. Clone specs repo via HTTPS with token auth
           gh repo clone bidon-io/CocoaPods-Specs "$SPECS_DIR"
           cd "$SPECS_DIR"
 
           git config user.email "bot@bidon.org"
           git config user.name "bidon-bot"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/bidon-io/CocoaPods-Specs.git"
 
           # 2. Copy podspec into the expected directory structure
           DEST_DIR="${ADAPTER}/${VERSION}"
