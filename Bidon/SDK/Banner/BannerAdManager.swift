@@ -179,11 +179,15 @@ class BannerAdManager: NSObject {
                     viewContext: viewContext
                 )
             case .failure(let error):
-                Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
-                self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+                self.handlePerformAuctionRequestFailed(error: error, viewContext: viewContext)
             }
         }
+    }
+    
+    func handlePerformAuctionRequestFailed(error: Error, viewContext: AdViewContext) {
+        Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
+        self.state = .idle
+        self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
     }
 
     func performAuction(

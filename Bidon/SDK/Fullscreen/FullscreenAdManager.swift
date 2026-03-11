@@ -49,7 +49,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
     }
 
     @Injected(\.networkManager)
-    private var networkManager: NetworkManager
+    var networkManager: NetworkManager
 
     @Injected(\.sdk)
     var sdk: Sdk
@@ -172,7 +172,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
         }
     }
 
-    private func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
+    func performAuctionRequest(tokens: [BiddingDemandToken], pricefloor: Price, auctionKey: String?) {
         let request = self.context.auctionRequest { builder in
             builder.withBiddingTokens(tokens)
             builder.withPricefloor(pricefloor)
@@ -202,13 +202,17 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
                 self.sdk.updateSegmentIfNeeded(response.segment)
                 self.performAuction(response, tokens: tokens)
             case (.preparing, .failure(let error)):
-                self.state = .idle
-                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+                self.handlePerformAuctionRequestFailed(error: error)
             default:
                 break
             }
         }
+    }
+    
+    func handlePerformAuctionRequestFailed(error: Error) {
+        self.state = .idle
+        Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
+        self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
     }
 
     func performAuction(_ auctionInfo: AuctionInfo, tokens: [BiddingDemandToken]) {

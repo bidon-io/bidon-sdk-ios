@@ -88,6 +88,9 @@ final class FallbackCacheStorage {
     func peek() -> Ad? {
         lock.lock()
         defer { lock.unlock() }
+        if let first = items.first {
+            Logger.debug("[ZhenyaCache] [Main] Peek: \(format(first))")
+        }
         return items.first
     }
 

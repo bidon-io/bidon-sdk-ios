@@ -82,6 +82,45 @@ where
             state = .idle
         }
     }
+        
+    override func handlePerformAuctionRequestFailed(error: any Error) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if let ad = Cacher.Fallback.interstitialStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
+                // Update auctionInfo: set WIN status for the cached ad
+                if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
+                   let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
+                    adUnitInfo.status = DemandMediationStatus.win.stringValue
+                } else {
+                    let demandReportModel = AuctionDemandReportModel(
+                        demandId: ad.bid.adUnit.demandId,
+                        status: .win,
+                        bid: DummyBid(ad.bid),
+                        adUnit: DummyAdUnit(ad.bid.adUnit),
+                        startTimestamp: 0,
+                        finishTimestamp: 0,
+                        tokenStartTimestamp: 0,
+                        tokenFinishTimestamp: 0
+                    )
+                    if self.auctionInfo.adUnits == nil {
+                        self.auctionInfo.adUnits = []
+                    }
+                    self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+                }
+                let controller = ImpressionControllerType(bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>)
+                controller.delegate = self
+                self.state = .ready(controller: controller)
+                
+                self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+            } else {
+                self.sendErrorToSuperclass(error: error)
+            }
+        }
+    }
+        
+    func sendErrorToSuperclass(error: Error) {
+        super.handlePerformAuctionRequestFailed(error: error)
+    }
 
     override func performAuction(
         _ auctionInfo: BaseFullscreenAdManager<AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>.AuctionInfo,

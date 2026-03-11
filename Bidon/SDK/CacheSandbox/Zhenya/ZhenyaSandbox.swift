@@ -85,6 +85,47 @@ final class ZhenyaBannerAdManager: BannerAdManager {
         super.loadAd(pricefloor: pricefloor, viewContext: viewContext, auctionKey: auctionKey)
     }
     
+    override func handlePerformAuctionRequestFailed(error: any Error, viewContext: AdViewContext) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
+                // Update auctionInfo: set WIN status for the cached ad
+                if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
+                   let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
+                    adUnitInfo.status = DemandMediationStatus.win.stringValue
+                } else {
+                    let demandReportModel = AuctionDemandReportModel(
+                        demandId: ad.bid.adUnit.demandId,
+                        status: .win,
+                        bid: DummyBid(ad.bid),
+                        adUnit: DummyAdUnit(ad.bid.adUnit),
+                        startTimestamp: 0,
+                        finishTimestamp: 0,
+                        tokenStartTimestamp: 0,
+                        tokenFinishTimestamp: 0
+                    )
+                    if self.auctionInfo.adUnits == nil {
+                        self.auctionInfo.adUnits = []
+                    }
+                    self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+                }
+                let controller = AdViewImpression(
+                    bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
+                    format: viewContext.format
+                )
+                self.state = .ready(impression: controller)
+                
+                self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+            } else {
+                self.sendErrorToSuperclass(error: error, viewContext: viewContext)
+            }
+        }
+    }
+        
+    func sendErrorToSuperclass(error: Error, viewContext: AdViewContext) {
+        super.handlePerformAuctionRequestFailed(error: error, viewContext: viewContext)
+    }
+    
     override func performAuction(
         auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken],
