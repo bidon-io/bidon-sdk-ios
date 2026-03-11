@@ -64,7 +64,7 @@ extension Viewability {
             timer: Timer,
             impression: @escaping () -> ()
         ) {
-            guard let view = view else {
+            guard let view else {
                 timer.invalidate()
                 return
             }

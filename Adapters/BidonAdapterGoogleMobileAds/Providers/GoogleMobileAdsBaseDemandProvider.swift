@@ -37,6 +37,10 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
     open func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         fatalError("Base demand provider can't load any ad")
     }
+    
+    open func loadAd(payload: String) {
+        fatalError("Base demand provider can't load any ad")
+    }
 
     final func handleDidLoad(adObject: AdObject) {
         self.response?(.success(adObject))
@@ -64,6 +68,15 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
         ad: AdObject,
         event: DemandProviderEvent
     ) {}
+    
+    func handleAdLoad(ad: AdObject?, error: Error?) {
+        guard let ad else {
+            self.handleDidFailToLoad(.noFill(error?.localizedDescription))
+            return
+        }
+        self.setupAdRevenueHandler(adObject: ad)
+        self.handleDidLoad(adObject: ad)
+    }
 }
 
 
@@ -91,14 +104,7 @@ extension GoogleMobileAdsBaseDemandProvider: BiddingDemandProvider {
         adUnitExtras: GoogleMobileAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let request = GoogleMobileAds.Request { builder in
-            builder.withQueryType(parameters.queryInfoType)
-            builder.withRequestAgent(parameters.requestAgent)
-            builder.withGDPRConsent(context.regulations.gdpr)
-            builder.withUSPrivacyString(context.regulations.usPrivacyString)
-            builder.withBiddingPayload(payload.payload)
-        }
-
-        loadAd(request, adUnitId: adUnitExtras.adUnitId)
+        self.response = response
+        loadAd(payload: payload.payload)
     }
 }

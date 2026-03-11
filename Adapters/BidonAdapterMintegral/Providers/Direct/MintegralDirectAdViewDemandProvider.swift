@@ -89,6 +89,6 @@ extension MintegralDirectAdViewDemandProvider: MTGBannerAdViewDelegate {
     }
 
     func adViewClosed(_ adView: MTGBannerAdView!) {
-        delegate?.providerDidHide(self)
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 }
