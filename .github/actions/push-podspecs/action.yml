@@ -1,0 +1,80 @@
+name: Push Podspecs via PR
+description: Pushes podspec files to bidon-io/CocoaPods-Specs via a pull request
+
+inputs:
+  specs:
+    description: 'Space-separated list of podspec file paths to push'
+    required: true
+  branch_suffix:
+    description: 'Unique suffix for the bot branch name (e.g. BidonAdapterAppLovin-0.14.0)'
+    required: true
+  token:
+    description: 'GitHub PAT with access to CocoaPods-Specs repo'
+    required: true
+  run_url:
+    description: 'URL of the workflow run for PR body'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Push podspecs via PR
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+      run: |
+        set -euo pipefail
+
+        BRANCH_NAME="bot/push-${{ inputs.branch_suffix }}"
+        SPECS_DIR="$RUNNER_TEMP/CocoaPods-Specs"
+
+        # 1. Clone specs repo
+        gh repo clone bidon-io/CocoaPods-Specs "$SPECS_DIR"
+        cd "$SPECS_DIR"
+
+        git config user.email "bot@bidon.org"
+        git config user.name "bidon-bot"
+        git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/bidon-io/CocoaPods-Specs.git"
+
+        # 2. Copy each podspec into the expected directory structure
+        SPECS="${{ inputs.specs }}"
+        PUSHED=""
+        for spec in $SPECS; do
+          if [ ! -f "$spec" ]; then
+            echo "::warning::Podspec not found: $spec, skipping"
+            continue
+          fi
+          POD_NAME=$(jq -r '.name' "$spec")
+          POD_VERSION=$(jq -r '.version' "$spec")
+          DEST_DIR="${POD_NAME}/${POD_VERSION}"
+          mkdir -p "$DEST_DIR"
+          cp "$spec" "$DEST_DIR/${POD_NAME}.podspec.json"
+          PUSHED="${PUSHED}\n- ${POD_NAME} ${POD_VERSION}"
+          echo "Staged: ${POD_NAME} ${POD_VERSION}"
+        done
+
+        if [ -z "$PUSHED" ]; then
+          echo "::error::No podspecs were staged"
+          exit 1
+        fi
+
+        # 3. Create branch, commit, push
+        git checkout -b "$BRANCH_NAME"
+        git add .
+        git commit -m "Add podspecs: ${{ inputs.branch_suffix }}"
+        git push origin "$BRANCH_NAME" -f
+
+        # 4. Create PR
+        RUN_URL="${{ inputs.run_url }}"
+        BODY="Automated podspec push."
+        if [ -n "$RUN_URL" ]; then
+          BODY="Automated podspec push. Run: ${RUN_URL}"
+        fi
+
+        gh pr create \
+          --repo bidon-io/CocoaPods-Specs \
+          --title "Add podspecs: ${{ inputs.branch_suffix }}" \
+          --body "$BODY" \
+          --base main \
+          --head "$BRANCH_NAME" || echo "PR already exists, branch updated."
