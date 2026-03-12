@@ -41,6 +41,10 @@ runs:
         SPECS="${{ inputs.specs }}"
         PUSHED=""
         for spec in $SPECS; do
+          # Resolve relative paths against the workspace
+          if [[ "$spec" != /* ]]; then
+            spec="${GITHUB_WORKSPACE}/$spec"
+          fi
           if [ ! -f "$spec" ]; then
             echo "::warning::Podspec not found: $spec, skipping"
             continue
