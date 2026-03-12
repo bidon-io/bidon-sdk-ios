@@ -215,26 +215,14 @@ jobs:
           name: build-logs
           path: build/ci-logs
 
-      - name: Setup SSH for podspec repo
+      - name: Push adapter podspec via PR
         if: ${{ inputs.push_specs }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Register CocoaPods repo
-        if: ${{ inputs.push_specs }}
-        run: |
-          pod repo remove bidon || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
-
-      - name: Push adapter podspec to podspec repo
-        if: ${{ inputs.push_specs }}
-        run: |
-          spec=build/Podspecs/${{ inputs.adapter_name }}.podspec.json
-          echo "Pushing $spec..."
-          pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
+        uses: ./.github/actions/push-podspecs
+        with:
+          specs: build/Podspecs/${{ inputs.adapter_name }}.podspec.json
+          branch_suffix: ${{ inputs.adapter_name }}-${{ inputs.sdk_version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify Slack on success
         if: success()
