@@ -217,43 +217,12 @@ jobs:
 
       - name: Push adapter podspec via PR
         if: ${{ inputs.push_specs }}
-        env:
-          GH_TOKEN: ${{ secrets.PAT_RUNNER }}
-        run: |
-          set -euo pipefail
-
-          SPEC_FILE="build/Podspecs/${{ inputs.adapter_name }}.podspec.json"
-          ADAPTER="${{ inputs.adapter_name }}"
-          VERSION="${{ inputs.sdk_version }}"
-          BRANCH_NAME="bot/push-${ADAPTER}-${VERSION}"
-          SPECS_DIR="$RUNNER_TEMP/CocoaPods-Specs"
-
-          # 1. Clone specs repo via HTTPS with token auth
-          gh repo clone bidon-io/CocoaPods-Specs "$SPECS_DIR"
-          cd "$SPECS_DIR"
-
-          git config user.email "bot@bidon.org"
-          git config user.name "bidon-bot"
-          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/bidon-io/CocoaPods-Specs.git"
-
-          # 2. Copy podspec into the expected directory structure
-          DEST_DIR="${ADAPTER}/${VERSION}"
-          mkdir -p "$DEST_DIR"
-          cp "$GITHUB_WORKSPACE/$SPEC_FILE" "$DEST_DIR/${ADAPTER}.podspec.json"
-
-          # 3. Create branch, commit, push
-          git checkout -b "$BRANCH_NAME"
-          git add .
-          git commit -m "Add ${ADAPTER} ${VERSION}"
-          git push origin "$BRANCH_NAME" -f
-
-          # 4. Create PR (or update existing)
-          gh pr create \
-            --repo bidon-io/CocoaPods-Specs \
-            --title "Add ${ADAPTER} ${VERSION}" \
-            --body "Automated podspec push from build_adapter_v2 workflow. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-            --base main \
-            --head "$BRANCH_NAME" || echo "PR already exists, branch updated."
+        uses: ./.github/actions/push-podspecs
+        with:
+          specs: build/Podspecs/${{ inputs.adapter_name }}.podspec.json
+          branch_suffix: ${{ inputs.adapter_name }}-${{ inputs.sdk_version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify Slack on success
         if: success()

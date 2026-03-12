@@ -88,35 +88,22 @@ jobs:
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
-      - name: Setup SSH for podspec repo
+      - name: Collect all podspecs
         if: ${{ inputs.push_specs }}
+        id: collect_specs
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          set -euo pipefail
+          SPECS=$(ls build/Podspecs/*.podspec.json 2>/dev/null | tr '\n' ' ')
+          echo "specs=$SPECS" >> "$GITHUB_OUTPUT"
 
-      - name: Register CocoaPods repo
+      - name: Push all podspecs via PR
         if: ${{ inputs.push_specs }}
-        run: |
-          pod repo remove bidon || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
-
-      - name: Push main Bidon podspec first
-        if: ${{ inputs.push_specs }}
-        run: |
-          echo "Pushing Bidon.podspec.json first..."
-          pod repo push bidon build/Podspecs/Bidon.podspec.json --allow-warnings --skip-tests --skip-import-validation
-
-      - name: Push adapter podspecs
-        if: ${{ inputs.push_specs }}
-        run: |
-          for spec in build/Podspecs/*.podspec.json; do
-            if [[ "$spec" != *"Bidon.podspec.json" ]]; then
-              echo "Pushing $spec..."
-              pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation
-            fi
-          done
+        uses: ./.github/actions/push-podspecs
+        with:
+          specs: ${{ steps.collect_specs.outputs.specs }}
+          branch_suffix: full-sdk-${{ inputs.sdk_version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Notify Slack on success
         if: success()
