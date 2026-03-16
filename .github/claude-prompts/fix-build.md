@@ -1,20 +1,30 @@
-# Task: Fix build errors
+## Task: Fix build errors
 
-## Adapters to fix:
+### Adapters to fix:
 {{ADAPTERS}}
 
-## Build errors by adapter:
+### Build errors by adapter:
 {{ISSUES}}
 
-## Release Notes URLs:
+### Release Notes URLs:
 {{RELEASE_NOTES}}
 
-## Instructions:
+### Instructions:
 1. Read the build errors above carefully
 2. For each adapter, fetch its Release Notes URL to find API changes and migration guide
 3. Fix build errors in each adapter's `Adapters/<AdapterName>/` directory
-4. Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`)
-5. Commit and push changes for ALL adapters in ONE commit:
+4. Build each adapter to verify fix:
+   ```bash
+   xcodebuild build \
+     -workspace BidOn.xcworkspace \
+     -scheme BidonAdapter<AdapterName> \
+     -destination 'generic/platform=iOS Simulator'
+   ```
+5. Run SwiftLint to format code:
+   ```bash
+   ./lint
+   ```
+6. Commit and push changes for ALL adapters in ONE commit:
    ```bash
    rm -f build_output.log
    git add Adapters/*/
@@ -22,7 +32,7 @@
    git push
    ```
 
-## IMPORTANT:
+### IMPORTANT:
 - Fix ALL listed adapters in this task
 - Only modify code under `Adapters/` directories
 - Do NOT change `Podfile`, `Podfile.lock`, or core SDK code

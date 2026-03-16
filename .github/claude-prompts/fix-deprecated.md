@@ -1,19 +1,22 @@
-# Task: Fix deprecated code
+## Task: Fix deprecated code
 
-## Adapters to fix:
+### Adapters to fix:
 {{ADAPTERS}}
 
-## Deprecated warnings by adapter:
+### Deprecated warnings by adapter:
 {{ISSUES}}
 
-## Release Notes URLs:
+### Release Notes URLs:
 {{RELEASE_NOTES}}
 
-## Instructions:
+### Instructions:
 1. Read the deprecated warnings above carefully
 2. For each adapter, fetch its Release Notes URL to find migration guide
 3. Fix deprecated code in each adapter's `Adapters/<AdapterName>/` directory
-4. Ensure SwiftLint passes (e.g. replace unused closure parameters with `_`)
+4. Run SwiftLint to format code:
+   ```bash
+   ./lint
+   ```
 5. Commit and push changes for ALL adapters in ONE commit:
    ```bash
    rm -f deprecated_warnings.txt build_output.log
@@ -22,7 +25,7 @@
    git push
    ```
 
-## IMPORTANT:
+### IMPORTANT:
 - Fix ALL listed adapters in this task
 - Only modify code under `Adapters/` directories
 - Do NOT change `Podfile`, `Podfile.lock`, or core SDK code

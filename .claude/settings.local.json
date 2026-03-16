@@ -32,7 +32,9 @@
       "Bash(curl -sL 'https://raw.githubusercontent.com/bidon-io/bidon-sdk-android/develop/.github/claude-prompts/update-changelog.md')",
       "Bash(curl -sL 'https://raw.githubusercontent.com/bidon-io/bidon-sdk-android/develop/CLAUDE.md')",
       "Bash(gh api repos/bidon-io/bidon-sdk-android/contents/.github/claude-prompts --jq '.[].name')",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(gh api:*)",
+      "Bash(which gh:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,18 +1,18 @@
-# Task: Update changelog for adapter dependency updates
+## Task: Update changelog for adapter dependency updates
 
-## Adapters to update:
+### Adapters to update:
 {{ADAPTERS}}
 
-## Version changes:
+### Version changes:
 {{VERSION_CHANGES}}
 
-## Release Notes URLs:
+### Release Notes URLs:
 {{RELEASE_NOTES}}
 
-## AI fixes applied (if any):
+### AI fixes applied (if any):
 {{AI_FIXES}}
 
-## Instructions:
+### Instructions:
 
 1. **Fetch and summarize release notes:**
    - For each adapter, fetch its Release Notes URL using WebFetch
@@ -56,7 +56,7 @@
    git push
    ```
 
-## IMPORTANT:
+### IMPORTANT:
 - Process ALL listed adapters
 - Do NOT create new version headers -- append to the existing one
 - Do NOT add "Generated with Claude Code" footer to commits
