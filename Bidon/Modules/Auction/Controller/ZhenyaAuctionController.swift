@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionController {
+class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionController {
     typealias DemandProviderType = AdTypeContextType.DemandProviderType
     typealias BidType = BidModel<DemandProviderType>
     typealias SingleCompletion = ((BidType) -> Void)
@@ -216,7 +216,7 @@ final class ZhenyaAuctionController<AdTypeContextType: AdTypeContext>: AuctionCo
 
     //MARK: - Finish Auction.
     
-    private func finishAuction() {
+    func finishAuction() {
         finishLock.lock()
         defer { finishLock.unlock() }
         

@@ -29,6 +29,17 @@
 		013713022F4F72B30054F769 /* Price+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013713012F4F72B30054F769 /* Price+Extensions.swift */; };
 		0170BCE62F55E61C005887CA /* AuctionDemandReportModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170BCE52F55E61C005887CA /* AuctionDemandReportModel+Extensions.swift */; };
 		01A55A512F36173D0029231B /* Logger+AdCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A55A502F36173D0029231B /* Logger+AdCaching.swift */; };
+		01EE63082F601E3100FBE043 /* VSlotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE63022F601E3100FBE043 /* VSlotManager.swift */; };
+		01EE63092F601E3100FBE043 /* Logger+Vladimir.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE63042F601E3100FBE043 /* Logger+Vladimir.swift */; };
+		01EE630A2F601E3100FBE043 /* VInterstitialAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE62FC2F601E3100FBE043 /* VInterstitialAdManager.swift */; };
+		01EE630B2F601E3100FBE043 /* VladimirSandbox+Fullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE62FE2F601E3100FBE043 /* VladimirSandbox+Fullscreen.swift */; };
+		01EE630C2F601E3100FBE043 /* VladimirSandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE63062F601E3100FBE043 /* VladimirSandbox.swift */; };
+		01EE630F2F60211C00FBE043 /* AuctionRetryStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE630E2F60211C00FBE043 /* AuctionRetryStrategy.swift */; };
+		01EE63122F60615A00FBE043 /* VAuctionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE63112F60615A00FBE043 /* VAuctionController.swift */; };
+		01EE63BE2F6077F200FBE043 /* VAuctionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE63BC2F6077F200FBE043 /* VAuctionEngine.swift */; };
+		01F854442F62FE0D0093E6B6 /* VRTBTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F854432F62FE0D0093E6B6 /* VRTBTokenStore.swift */; };
+		01F854492F6488AB0093E6B6 /* VladimirSandbox+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F854472F6488AB0093E6B6 /* VladimirSandbox+Banner.swift */; };
+		01F8544A2F6488AB0093E6B6 /* VBannerAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F854452F6488AB0093E6B6 /* VBannerAdManager.swift */; };
 		420067A728BD0FBB003B734D /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A628BD0FBB003B734D /* AppManager.swift */; };
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
 		420EFD802A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */; };
@@ -242,6 +253,17 @@
 		013713012F4F72B30054F769 /* Price+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Price+Extensions.swift"; sourceTree = "<group>"; };
 		0170BCE52F55E61C005887CA /* AuctionDemandReportModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionDemandReportModel+Extensions.swift"; sourceTree = "<group>"; };
 		01A55A502F36173D0029231B /* Logger+AdCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+AdCaching.swift"; sourceTree = "<group>"; };
+		01EE62FC2F601E3100FBE043 /* VInterstitialAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VInterstitialAdManager.swift; sourceTree = "<group>"; };
+		01EE62FE2F601E3100FBE043 /* VladimirSandbox+Fullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VladimirSandbox+Fullscreen.swift"; sourceTree = "<group>"; };
+		01EE63022F601E3100FBE043 /* VSlotManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSlotManager.swift; sourceTree = "<group>"; };
+		01EE63042F601E3100FBE043 /* Logger+Vladimir.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Vladimir.swift"; sourceTree = "<group>"; };
+		01EE63062F601E3100FBE043 /* VladimirSandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VladimirSandbox.swift; sourceTree = "<group>"; };
+		01EE630E2F60211C00FBE043 /* AuctionRetryStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionRetryStrategy.swift; sourceTree = "<group>"; };
+		01EE63112F60615A00FBE043 /* VAuctionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VAuctionController.swift; sourceTree = "<group>"; };
+		01EE63BC2F6077F200FBE043 /* VAuctionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VAuctionEngine.swift; sourceTree = "<group>"; };
+		01F854432F62FE0D0093E6B6 /* VRTBTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VRTBTokenStore.swift; sourceTree = "<group>"; };
+		01F854452F6488AB0093E6B6 /* VBannerAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VBannerAdManager.swift; sourceTree = "<group>"; };
+		01F854472F6488AB0093E6B6 /* VladimirSandbox+Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VladimirSandbox+Banner.swift"; sourceTree = "<group>"; };
 		420067A628BD0FBB003B734D /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAuctionRequestBuilder.swift; sourceTree = "<group>"; };
@@ -508,6 +530,7 @@
 			children = (
 				013712E72F4CB2740054F769 /* Zhenya */,
 				013712E62F4CB26F0054F769 /* Dima */,
+				01EE63072F601E3100FBE043 /* Vladimir */,
 			);
 			path = CacheSandbox;
 			sourceTree = "<group>";
@@ -591,6 +614,96 @@
 				013712FB2F4DD81F0054F769 /* DBannerAdManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		01EE62FD2F601E3100FBE043 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				01EE62FC2F601E3100FBE043 /* VInterstitialAdManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		01EE62FF2F601E3100FBE043 /* Fullscreen */ = {
+			isa = PBXGroup;
+			children = (
+				01EE62FD2F601E3100FBE043 /* Manager */,
+				01EE62FE2F601E3100FBE043 /* VladimirSandbox+Fullscreen.swift */,
+			);
+			path = Fullscreen;
+			sourceTree = "<group>";
+		};
+		01EE63002F601E3100FBE043 /* Formats */ = {
+			isa = PBXGroup;
+			children = (
+				01EE62FF2F601E3100FBE043 /* Fullscreen */,
+				01F854482F6488AB0093E6B6 /* Banner */,
+			);
+			path = Formats;
+			sourceTree = "<group>";
+		};
+		01EE63032F601E3100FBE043 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				01EE63022F601E3100FBE043 /* VSlotManager.swift */,
+				01F854432F62FE0D0093E6B6 /* VRTBTokenStore.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		01EE63052F601E3100FBE043 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				01EE63042F601E3100FBE043 /* Logger+Vladimir.swift */,
+				01EE630E2F60211C00FBE043 /* AuctionRetryStrategy.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		01EE63072F601E3100FBE043 /* Vladimir */ = {
+			isa = PBXGroup;
+			children = (
+				01EE63102F60614C00FBE043 /* Controller */,
+				01EE63002F601E3100FBE043 /* Formats */,
+				01EE63032F601E3100FBE043 /* Storage */,
+				01EE63052F601E3100FBE043 /* Tools */,
+				01EE63062F601E3100FBE043 /* VladimirSandbox.swift */,
+				01EE63BD2F6077F200FBE043 /* Engine */,
+			);
+			path = Vladimir;
+			sourceTree = "<group>";
+		};
+		01EE63102F60614C00FBE043 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				01EE63112F60615A00FBE043 /* VAuctionController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		01EE63BD2F6077F200FBE043 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				01EE63BC2F6077F200FBE043 /* VAuctionEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		01F854462F6488AB0093E6B6 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				01F854452F6488AB0093E6B6 /* VBannerAdManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		01F854482F6488AB0093E6B6 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				01F854462F6488AB0093E6B6 /* Manager */,
+				01F854472F6488AB0093E6B6 /* VladimirSandbox+Banner.swift */,
+			);
+			path = Banner;
 			sourceTree = "<group>";
 		};
 		421D48E4288841C6007DE2E4 /* Logging */ = {
@@ -1401,6 +1514,8 @@
 				42A0156429F2E8CC00547B37 /* Operation+Extensions.swift in Sources */,
 				426DD79B28A4F47800A1ADF5 /* BaseRequestBuilder.swift in Sources */,
 				426DD7AA28A550F700A1ADF5 /* AdViewConcurrentAuctionControllerBuilder.swift in Sources */,
+				01EE630F2F60211C00FBE043 /* AuctionRetryStrategy.swift in Sources */,
+				01EE63BE2F6077F200FBE043 /* VAuctionEngine.swift in Sources */,
 				42D377312AF826D9003DCCA2 /* DummyAdUnit.swift in Sources */,
 				4238BBA728CA0EA9002DC473 /* AuctionReportModel.swift in Sources */,
 				0108A0DA2F4757EC00E4A043 /* InterstitialCachePolicy.swift in Sources */,
@@ -1416,8 +1531,14 @@
 				0110CD3C2F34A85100EF8AD6 /* BidCacheStore.swift in Sources */,
 				427DB5C129BF2A8500057D08 /* UnknownAdapter.swift in Sources */,
 				49FBCCF12F349D9600271DAE /* AdCacheConfig.swift in Sources */,
+				01EE63082F601E3100FBE043 /* VSlotManager.swift in Sources */,
+				01EE63092F601E3100FBE043 /* Logger+Vladimir.swift in Sources */,
+				01EE630A2F601E3100FBE043 /* VInterstitialAdManager.swift in Sources */,
+				01EE630B2F601E3100FBE043 /* VladimirSandbox+Fullscreen.swift in Sources */,
+				01EE630C2F601E3100FBE043 /* VladimirSandbox.swift in Sources */,
 				429E645F29F928EC00149EEA /* Viewability.swift in Sources */,
 				421D48EA28884D1F007DE2E4 /* LogFormatter.swift in Sources */,
+				01EE63122F60615A00FBE043 /* VAuctionController.swift in Sources */,
 				42D377352AF910BF003DCCA2 /* ServerBidModel.swift in Sources */,
 				424D296428BE630500F6F2D6 /* MainThreadComputable.swift in Sources */,
 				429EE2C9286CA2B0009439C6 /* DemandProvider.swift in Sources */,
@@ -1444,6 +1565,8 @@
 				42481FAA2AF5099300FF3065 /* AnyBid.swift in Sources */,
 				42D047DE289D5A0D0096A8C6 /* Device.swift in Sources */,
 				426DD7A128A4F75900A1ADF5 /* Injected.swift in Sources */,
+				01F854492F6488AB0093E6B6 /* VladimirSandbox+Banner.swift in Sources */,
+				01F8544A2F6488AB0093E6B6 /* VBannerAdManager.swift in Sources */,
 				42389DF02872F57D006024BA /* Ad.swift in Sources */,
 				42DDB70A29D3295D00DBA4C5 /* FullscreenImpression.swift in Sources */,
 				42389E172874665A006024BA /* UIApplication+Extensions.swift in Sources */,
@@ -1501,6 +1624,7 @@
 				49FBCCFD2F34AC6100271DAE /* ZhenyaAuctionController.swift in Sources */,
 				428DDD1629DC2B7300147ABA /* ExtrasProvider.swift in Sources */,
 				42BA81AC28758AC6001F1744 /* ConcurrentAuctionControllerBuilder.swift in Sources */,
+				01F854442F62FE0D0093E6B6 /* VRTBTokenStore.swift in Sources */,
 				421D48E62888423B007DE2E4 /* Logger.swift in Sources */,
 				4298902029D5822800C5FB7B /* AdRevenueObserver.swift in Sources */,
 				496A77142C00C88700316B05 /* DemandsTokensManager.swift in Sources */,

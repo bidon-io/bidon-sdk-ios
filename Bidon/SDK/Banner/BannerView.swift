@@ -91,7 +91,7 @@ public final class BannerView: UIView, AdView {
                 adRevenueObserver: adRevenueObserver
             )
         case 2:
-            return DimaSandbox.Banner.buildManager(
+            return VladimirSandbox.Banner.buildManager(
                 placement: .default,
                 adRevenueObserver: adRevenueObserver
             )
@@ -231,8 +231,8 @@ private extension BidonSdk {
             .environment(AppManager.self)
             .config?
             .banner
-            .strategy
+            .strategy ?? 0
         Logger.dDebug("Strategy banner \(strategy)")
-        return strategy ?? 0
+        return strategy
     }
 }
