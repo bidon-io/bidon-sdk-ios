@@ -89,8 +89,7 @@ extension MolocoBiddingAdViewDemandProvider: MolocoBannerDelegate {
     }
 
     func didShow(ad: any MolocoSDK.MolocoAd) {
-        delegate?.providerWillPresent(self)
-
+        // NO-OP: Banner ads don't use providerWillPresent - that's for fullscreen ads only
         if let adView = ad as? MolocoSDK.MolocoBannerAdView {
             let wrappedAd = MolocoAdViewDemandAd(unitId: unitId, adView: adView)
             revenueDelegate?.provider(self, didLogImpression: wrappedAd)
@@ -106,7 +105,7 @@ extension MolocoBiddingAdViewDemandProvider: MolocoBannerDelegate {
     }
 
     func didHide(ad: any MolocoSDK.MolocoAd) {
-        delegate?.providerDidHide(self)
+        // NO-OP: Banner ads don't use providerDidHide - that's for fullscreen ads only
     }
 
     func didClick(on ad: any MolocoSDK.MolocoAd) {

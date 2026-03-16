@@ -42,22 +42,38 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
             response(.success(token))
         }
     }
+    
+    override func loadAd(payload: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            
+            let banner = self.prepareBanner()
+            banner.load(with: payload)
+
+            self.banner = banner
+        }
+    }
 
     override func loadAd(_ request: GoogleMobileAds.Request, adUnitId: String) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            let banner = GoogleMobileAds.BannerView(adSize: adSize)
 
-            banner.delegate = self
+            let banner = self.prepareBanner()
             banner.adUnitID = adUnitId
-            banner.rootViewController = rootViewController
-
-            setupAdRevenueHandler(adObject: banner)
-
             banner.load(request)
 
             self.banner = banner
         }
+    }
+    
+    private func prepareBanner() -> GoogleMobileAds.BannerView {
+        let banner = GoogleMobileAds.BannerView(adSize: adSize)
+
+        banner.delegate = self
+        banner.rootViewController = rootViewController
+
+        setupAdRevenueHandler(adObject: banner)
+        return banner
     }
 }
 
@@ -100,7 +116,7 @@ extension AdViewContext {
         case .mrec: return AdSizeMediumRectangle
         case .banner: return AdSizeBanner
         case .leaderboard: return AdSizeLeaderboard
-        default: return currentOrientationAnchoredAdaptiveBanner(width: width)
+        default: return largeAnchoredAdaptiveBanner(width: width)
         }
     }
 

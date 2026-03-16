@@ -10,19 +10,25 @@ import UIKit
 
 
 struct Viewability {
-    var view: UIView
-    var minVisiblePercentage: CGFloat = 0.8
+    private typealias Check = () -> Bool
+    
+    let view: UIView
+    let minVisiblePercentage: CGFloat = 0.8
 
     func isVisible() -> Bool {
-        return ![
-            !view.isHidden,
-            !hasHiddenSuperview(),
-            isIntersectsParentWindow(),
-            isIntersectsSuperview(),
-            isExistsInTopViewControllerHierarchy(),
-            !isHiddenByAnotherView(),
-            !isHiddenByAnotherWindow()
-        ].contains(false)
+        let checks: [Check] = [
+            { !view.isHidden },
+            { !hasHiddenSuperview() },
+            { isIntersectsParentWindow() },
+            { isIntersectsSuperview() },
+            { isExistsInTopViewControllerHierarchy() },
+            { !isHiddenByAnotherView() },
+            { !isHiddenByAnotherWindow() }
+        ]
+        let viewabilityFailed = checks.lazy.contains(
+            where: { $0() == false }
+        )
+        return !viewabilityFailed
     }
 }
 

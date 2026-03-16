@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import Combine
-import AppsFlyerLib
 import Bidon
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -25,23 +24,10 @@ final class AdServiceProvider: ObservableObject {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) {
-        setupAppsFlyer()
         setupMeta(
             application: application,
             launchOptions: launchOptions
         )
-    }
-
-    private func setupAppsFlyer() {
-        AppsFlyerLib.shared().appsFlyerDevKey = Constants.AppsFlyer.devKey
-        AppsFlyerLib.shared().appleAppID = Constants.AppsFlyer.appId
-
-        unowned let unownedSelf = self
-        NotificationCenter
-            .default
-            .publisher(for: UIApplication.didBecomeActiveNotification)
-            .sink(receiveValue: unownedSelf.receiveApplicationDidBecomeActive)
-            .store(in: &cancellables)
     }
 
     private func setupMeta(
@@ -54,38 +40,6 @@ final class AdServiceProvider: ObservableObject {
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
-        )
-    }
-
-    private func receiveApplicationDidBecomeActive(notification: Notification) {
-        AppsFlyerLib.shared().start()
-    }
-}
-
-extension AppsFlyerLib {
-    func log(
-        adRevenue: AdRevenue,
-        ad: Bidon.Ad,
-        adType: Bidon.AdType,
-        placement: String = ""
-    ) {
-
-        let adRevenueData = AFAdRevenueData(
-            monetizationNetwork: ad.networkName,
-            mediationNetwork: .custom,
-            currencyIso4217Code: adRevenue.currency,
-            eventRevenue: adRevenue.revenue as NSNumber
-        )
-
-        var additionalParameters: [String: Any] = [:]
-        additionalParameters[kAppsFlyerAdRevenueAdType] = adType.rawValue
-//        Should we remove this line?
-//        additionalParameters[kAppsFlyerAdRevenueAdUnit] = ad.adUnitId
-        additionalParameters[kAppsFlyerAdRevenuePlacement] = placement
-
-        logAdRevenue(
-            adRevenueData,
-            additionalParameters: additionalParameters
         )
     }
 }
