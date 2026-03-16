@@ -18,6 +18,7 @@ permissions:
   actions: read
 
 jobs:
+  # Check PR state and determine what needs to be done
   check-state:
     if: github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
@@ -162,7 +163,8 @@ jobs:
     if: |
       needs.check-state.outputs.should_run == 'true' &&
       needs.check-state.outputs.build_failed == 'true' &&
-      needs.check-state.outputs.build_attempted != 'true'
+      needs.check-state.outputs.build_attempted != 'true' &&
+      needs.check-state.outputs.adapters_json != '[]'
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token
@@ -209,12 +211,11 @@ jobs:
           mkdir -p artifacts
           unzip -o build-output.zip -d artifacts || true
 
-          ERRORS=""
           if [ -f "artifacts/build_output.log" ]; then
-            ERRORS=$(ruby .github/scripts/collect_adapter_errors_report.rb \
+            ruby .github/scripts/collect_adapter_errors_report.rb \
               --log artifacts/build_output.log \
               --out /tmp/build_errors.md \
-              --adapters "$(echo "$ADAPTERS_JSON" | jq -r 'join(",")')" 2>&1 && cat /tmp/build_errors.md || true)
+              --adapters "$(echo "$ADAPTERS_JSON" | jq -r 'join(",")')" || true
           fi
 
           if [ -f /tmp/build_errors.md ] && [ -s /tmp/build_errors.md ]; then
@@ -223,53 +224,44 @@ jobs:
             echo "has_issues=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Render prompt and post comment
+      - name: Render prompt
+        if: steps.collect.outputs.has_issues == 'true'
+        env:
+          ADAPTERS_JSON: ${{ needs.check-state.outputs.adapters_json }}
+          POD: ${{ needs.check-state.outputs.pod }}
+        run: |
+          ADAPTER_LIST=$(echo "$ADAPTERS_JSON" | jq -r '.[] | "- `Adapters/" + . + "/`"')
+          [ -z "$ADAPTER_LIST" ] && ADAPTER_LIST="- \`Adapters/\`"
+
+          ERRORS=$(cat /tmp/build_errors.md 2>/dev/null || echo "Build errors detected but report could not be read.")
+
+          RELEASE_NOTES="N/A"
+          if [ -f .github/release-notes-urls.json ]; then
+            ROOT_POD=$(echo "$POD" | cut -d'/' -f1)
+            URL=$(jq -r --arg pod "$ROOT_POD" '.[$pod] // empty' .github/release-notes-urls.json 2>/dev/null || true)
+            [ -n "$URL" ] && RELEASE_NOTES="- **${ROOT_POD}**: ${URL}"
+          fi
+
+          PROMPT=$(cat .github/claude-prompts/fix-build.md)
+          PROMPT="${PROMPT//\{\{ADAPTERS\}\}/$ADAPTER_LIST}"
+          PROMPT="${PROMPT//\{\{ISSUES\}\}/$ERRORS}"
+          PROMPT="${PROMPT//\{\{RELEASE_NOTES\}\}/$RELEASE_NOTES}"
+
+          echo "$PROMPT" > /tmp/prompt.txt
+
+      - name: Post @claude comment
         if: steps.collect.outputs.has_issues == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const fs = require('fs');
-            const adapters = JSON.parse('${{ needs.check-state.outputs.adapters_json }}');
-            const pod = '${{ needs.check-state.outputs.pod }}';
-            const adapterList = adapters.length > 0
-              ? adapters.map(a => `- \`Adapters/${a}/\``).join('\n')
-              : '- `Adapters/`';
-
-            // Build release notes section
-            let releaseNotes = 'N/A';
-            try {
-              const urls = JSON.parse(fs.readFileSync('.github/release-notes-urls.json', 'utf8'));
-              const rootPod = pod.split('/')[0];
-              const url = urls[rootPod] || urls[pod];
-              if (url) releaseNotes = `- **${rootPod}**: ${url}`;
-            } catch (e) {}
-
-            let errorData = '';
-            try {
-              errorData = fs.readFileSync('/tmp/build_errors.md', 'utf8');
-            } catch (e) {
-              errorData = 'Build errors detected but report could not be read.';
-            }
-
-            let prompt = '';
-            try {
-              const template = fs.readFileSync('.github/claude-prompts/fix-build.md', 'utf8');
-              prompt = template
-                .replace('{{ADAPTERS}}', adapterList)
-                .replace('{{ISSUES}}', errorData)
-                .replace('{{RELEASE_NOTES}}', releaseNotes)
-                .trim();
-            } catch (e) {
-              prompt = `Please fix the build errors reported below.\n\n${errorData}`;
-            }
-
-            const body = `Build errors found\n\n@claude ${prompt}`;
+            const prompt = fs.readFileSync('/tmp/prompt.txt', 'utf8');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ needs.check-state.outputs.pr_number }},
-              body: body.slice(0, 60000)
+              body: `@claude\n\n${prompt}`.slice(0, 60000)
             });
 
       - name: Add attempted label
@@ -293,7 +285,8 @@ jobs:
       needs.check-state.outputs.should_run == 'true' &&
       needs.check-state.outputs.build_failed != 'true' &&
       needs.check-state.outputs.deprecated_failed == 'true' &&
-      needs.check-state.outputs.deprecated_attempted != 'true'
+      needs.check-state.outputs.deprecated_attempted != 'true' &&
+      needs.check-state.outputs.adapters_json != '[]'
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token
@@ -343,53 +336,45 @@ jobs:
             echo "has_issues=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Render prompt and post comment
+      - name: Render prompt
+        if: steps.collect.outputs.has_issues == 'true'
+        env:
+          ADAPTERS_JSON: ${{ needs.check-state.outputs.adapters_json }}
+          POD: ${{ needs.check-state.outputs.pod }}
+        run: |
+          ADAPTER_LIST=$(echo "$ADAPTERS_JSON" | jq -r '.[] | "- `Adapters/" + . + "/`"')
+          [ -z "$ADAPTER_LIST" ] && ADAPTER_LIST="- \`Adapters/\`"
+
+          WARNINGS=$(cat artifacts/deprecated_warnings.txt 2>/dev/null || echo "(could not read deprecated warnings)")
+          ISSUES=$(printf '```text\n%s\n```' "$WARNINGS")
+
+          RELEASE_NOTES="N/A"
+          if [ -f .github/release-notes-urls.json ]; then
+            ROOT_POD=$(echo "$POD" | cut -d'/' -f1)
+            URL=$(jq -r --arg pod "$ROOT_POD" '.[$pod] // empty' .github/release-notes-urls.json 2>/dev/null || true)
+            [ -n "$URL" ] && RELEASE_NOTES="- **${ROOT_POD}**: ${URL}"
+          fi
+
+          PROMPT=$(cat .github/claude-prompts/fix-deprecated.md)
+          PROMPT="${PROMPT//\{\{ADAPTERS\}\}/$ADAPTER_LIST}"
+          PROMPT="${PROMPT//\{\{ISSUES\}\}/$ISSUES}"
+          PROMPT="${PROMPT//\{\{RELEASE_NOTES\}\}/$RELEASE_NOTES}"
+
+          echo "$PROMPT" > /tmp/prompt.txt
+
+      - name: Post @claude comment
         if: steps.collect.outputs.has_issues == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const fs = require('fs');
-            const adapters = JSON.parse('${{ needs.check-state.outputs.adapters_json }}');
-            const pod = '${{ needs.check-state.outputs.pod }}';
-            const adapterList = adapters.length > 0
-              ? adapters.map(a => `- \`Adapters/${a}/\``).join('\n')
-              : '- `Adapters/`';
-
-            // Build release notes section
-            let releaseNotes = 'N/A';
-            try {
-              const urls = JSON.parse(fs.readFileSync('.github/release-notes-urls.json', 'utf8'));
-              const rootPod = pod.split('/')[0];
-              const url = urls[rootPod] || urls[pod];
-              if (url) releaseNotes = `- **${rootPod}**: ${url}`;
-            } catch (e) {}
-
-            let warnings = '';
-            try {
-              warnings = fs.readFileSync('artifacts/deprecated_warnings.txt', 'utf8').trim();
-            } catch (e) {
-              warnings = '(could not read deprecated warnings)';
-            }
-
-            let prompt = '';
-            try {
-              const template = fs.readFileSync('.github/claude-prompts/fix-deprecated.md', 'utf8');
-              prompt = template
-                .replace('{{ADAPTERS}}', adapterList)
-                .replace('{{ISSUES}}', '```text\n' + warnings + '\n```')
-                .replace('{{RELEASE_NOTES}}', releaseNotes)
-                .trim();
-            } catch (e) {
-              prompt = `Please fix the deprecated API usage reported below.\n\n\`\`\`text\n${warnings}\n\`\`\``;
-            }
-
-            const body = `Deprecated warnings found\n\n@claude ${prompt}`;
+            const prompt = fs.readFileSync('/tmp/prompt.txt', 'utf8');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ needs.check-state.outputs.pr_number }},
-              body: body.slice(0, 60000)
+              body: `@claude\n\n${prompt}`.slice(0, 60000)
             });
 
       - name: Add attempted label
@@ -414,7 +399,8 @@ jobs:
       needs.check-state.outputs.build_failed != 'true' &&
       needs.check-state.outputs.deprecated_failed != 'true' &&
       needs.check-state.outputs.tests_failed == 'true' &&
-      needs.check-state.outputs.tests_attempted != 'true'
+      needs.check-state.outputs.tests_attempted != 'true' &&
+      needs.check-state.outputs.adapters_json != '[]'
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token
@@ -441,17 +427,15 @@ jobs:
               repo: context.repo.repo,
               run_id: runId
             });
-            for (const name of ['test-failures']) {
-              const artifact = data.artifacts.find(a => a.name === name);
-              if (artifact) {
-                const download = await github.rest.actions.downloadArtifact({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  artifact_id: artifact.id,
-                  archive_format: 'zip'
-                });
-                fs.writeFileSync(`${name}.zip`, Buffer.from(download.data));
-              }
+            const artifact = data.artifacts.find(a => a.name === 'test-failures');
+            if (artifact) {
+              const download = await github.rest.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id,
+                archive_format: 'zip'
+              });
+              fs.writeFileSync('test-failures.zip', Buffer.from(download.data));
             }
 
       - name: Extract and collect failures
@@ -479,53 +463,44 @@ jobs:
             echo "has_issues=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Render prompt and post comment
+      - name: Render prompt
+        if: steps.collect.outputs.has_issues == 'true'
+        env:
+          ADAPTERS_JSON: ${{ needs.check-state.outputs.adapters_json }}
+          POD: ${{ needs.check-state.outputs.pod }}
+        run: |
+          ADAPTER_LIST=$(echo "$ADAPTERS_JSON" | jq -r '.[] | "- `Adapters/" + . + "/`"')
+          [ -z "$ADAPTER_LIST" ] && ADAPTER_LIST="- \`Adapters/\`"
+
+          ERRORS=$(cat /tmp/test_errors.md 2>/dev/null || echo "Test failures detected but report could not be read.")
+
+          RELEASE_NOTES="N/A"
+          if [ -f .github/release-notes-urls.json ]; then
+            ROOT_POD=$(echo "$POD" | cut -d'/' -f1)
+            URL=$(jq -r --arg pod "$ROOT_POD" '.[$pod] // empty' .github/release-notes-urls.json 2>/dev/null || true)
+            [ -n "$URL" ] && RELEASE_NOTES="- **${ROOT_POD}**: ${URL}"
+          fi
+
+          PROMPT=$(cat .github/claude-prompts/fix-tests.md)
+          PROMPT="${PROMPT//\{\{ADAPTERS\}\}/$ADAPTER_LIST}"
+          PROMPT="${PROMPT//\{\{ISSUES\}\}/$ERRORS}"
+          PROMPT="${PROMPT//\{\{RELEASE_NOTES\}\}/$RELEASE_NOTES}"
+
+          echo "$PROMPT" > /tmp/prompt.txt
+
+      - name: Post @claude comment
         if: steps.collect.outputs.has_issues == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const fs = require('fs');
-            const adapters = JSON.parse('${{ needs.check-state.outputs.adapters_json }}');
-            const pod = '${{ needs.check-state.outputs.pod }}';
-            const adapterList = adapters.length > 0
-              ? adapters.map(a => `- \`Adapters/${a}/\``).join('\n')
-              : '- `Adapters/`';
-
-            // Build release notes section
-            let releaseNotes = 'N/A';
-            try {
-              const urls = JSON.parse(fs.readFileSync('.github/release-notes-urls.json', 'utf8'));
-              const rootPod = pod.split('/')[0];
-              const url = urls[rootPod] || urls[pod];
-              if (url) releaseNotes = `- **${rootPod}**: ${url}`;
-            } catch (e) {}
-
-            let errorData = '';
-            try {
-              errorData = fs.readFileSync('/tmp/test_errors.md', 'utf8');
-            } catch (e) {
-              errorData = 'Test failures detected but report could not be read.';
-            }
-
-            let prompt = '';
-            try {
-              const template = fs.readFileSync('.github/claude-prompts/fix-tests.md', 'utf8');
-              prompt = template
-                .replace('{{ADAPTERS}}', adapterList)
-                .replace('{{ISSUES}}', errorData)
-                .replace('{{RELEASE_NOTES}}', releaseNotes)
-                .trim();
-            } catch (e) {
-              prompt = `Please fix the test failures reported below.\n\n${errorData}`;
-            }
-
-            const body = `Test failures found\n\n@claude ${prompt}`;
+            const prompt = fs.readFileSync('/tmp/prompt.txt', 'utf8');
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ needs.check-state.outputs.pr_number }},
-              body: body.slice(0, 60000)
+              body: `@claude\n\n${prompt}`.slice(0, 60000)
             });
 
       - name: Add attempted label
@@ -567,43 +542,28 @@ jobs:
           ref: ${{ needs.check-state.outputs.pr_branch }}
           fetch-depth: 0
 
-      - name: Determine AI fixes and render prompt
-        id: prompt
+      - name: Get version changes
+        id: versions
         env:
-          BUILD_ATTEMPTED: ${{ needs.check-state.outputs.build_attempted }}
-          DEPRECATED_ATTEMPTED: ${{ needs.check-state.outputs.deprecated_attempted }}
-          TESTS_ATTEMPTED: ${{ needs.check-state.outputs.tests_attempted }}
           ADAPTERS_JSON: ${{ needs.check-state.outputs.adapters_json }}
           POD: ${{ needs.check-state.outputs.pod }}
           FROM_VERSION: ${{ needs.check-state.outputs.from_version }}
           TO_VERSION: ${{ needs.check-state.outputs.to_version }}
         run: |
-          AI_FIXES=""
-          [ "$BUILD_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- build errors fixed\n"
-          [ "$DEPRECATED_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- deprecated API usage fixed\n"
-          [ "$TESTS_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- test failures fixed\n"
-          [ -z "$AI_FIXES" ] && AI_FIXES="None"
-
           ADAPTERS=$(echo "$ADAPTERS_JSON" | jq -r 'join(", ")' 2>/dev/null || echo "unknown")
           VERSION_CHANGES="- **${POD}**: ${FROM_VERSION:-unknown} -> ${TO_VERSION:-unknown}"
-          BASE_BRANCH="${PODS_BASE_BRANCH:-dev}"
 
           # Build release notes section
-          ROOT_POD=$(echo "$POD" | cut -d'/' -f1)
           RELEASE_NOTES="N/A"
           if [ -f .github/release-notes-urls.json ]; then
+            ROOT_POD=$(echo "$POD" | cut -d'/' -f1)
             URL=$(jq -r --arg pod "$ROOT_POD" '.[$pod] // empty' .github/release-notes-urls.json 2>/dev/null || true)
             [ -n "$URL" ] && RELEASE_NOTES="- **${ROOT_POD}**: ${URL}"
           fi
 
-          PROMPT=$(cat .github/claude-prompts/update-changelog.md)
-          PROMPT="${PROMPT//\{\{ADAPTERS\}\}/$ADAPTERS}"
-          PROMPT="${PROMPT//\{\{VERSION_CHANGES\}\}/$VERSION_CHANGES}"
-          PROMPT="${PROMPT//\{\{AI_FIXES\}\}/$(echo -e "$AI_FIXES")}"
-          PROMPT="${PROMPT//\{\{BASE_BRANCH\}\}/$BASE_BRANCH}"
-          PROMPT="${PROMPT//\{\{RELEASE_NOTES\}\}/$RELEASE_NOTES}"
-
-          echo "$PROMPT" > /tmp/prompt.txt
+          echo "$ADAPTERS" > /tmp/adapters_list.txt
+          echo "$VERSION_CHANGES" > /tmp/version_changes.txt
+          echo "$RELEASE_NOTES" > /tmp/release_notes.txt
 
           if [ -n "$ADAPTERS" ] && [ "$ADAPTERS" != "unknown" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
@@ -611,8 +571,42 @@ jobs:
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Determine AI fixes
+        id: ai-fixes
+        env:
+          BUILD_ATTEMPTED: ${{ needs.check-state.outputs.build_attempted }}
+          DEPRECATED_ATTEMPTED: ${{ needs.check-state.outputs.deprecated_attempted }}
+          TESTS_ATTEMPTED: ${{ needs.check-state.outputs.tests_attempted }}
+        run: |
+          AI_FIXES=""
+          [ "$DEPRECATED_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- deprecated-fix: yes\n"
+          [ "$BUILD_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- build-fix: yes\n"
+          [ "$TESTS_ATTEMPTED" == "true" ] && AI_FIXES="${AI_FIXES}- tests-fix: yes\n"
+          [ -z "$AI_FIXES" ] && AI_FIXES="None"
+
+          echo -e "$AI_FIXES" > /tmp/ai_fixes.txt
+
+      - name: Render prompt
+        if: steps.versions.outputs.has_changes == 'true'
+        run: |
+          PROMPT=$(cat .github/claude-prompts/update-changelog.md)
+
+          ADAPTERS=$(cat /tmp/adapters_list.txt)
+          VERSION_CHANGES=$(cat /tmp/version_changes.txt)
+          RELEASE_NOTES=$(cat /tmp/release_notes.txt)
+          AI_FIXES=$(cat /tmp/ai_fixes.txt)
+          BASE_BRANCH="${PODS_BASE_BRANCH:-develop}"
+
+          PROMPT="${PROMPT//\{\{ADAPTERS\}\}/$ADAPTERS}"
+          PROMPT="${PROMPT//\{\{VERSION_CHANGES\}\}/$VERSION_CHANGES}"
+          PROMPT="${PROMPT//\{\{RELEASE_NOTES\}\}/$RELEASE_NOTES}"
+          PROMPT="${PROMPT//\{\{AI_FIXES\}\}/$AI_FIXES}"
+          PROMPT="${PROMPT//\{\{BASE_BRANCH\}\}/$BASE_BRANCH}"
+
+          echo "$PROMPT" > /tmp/prompt.txt
+
       - name: Post @claude comment
-        if: steps.prompt.outputs.has_changes == 'true'
+        if: steps.versions.outputs.has_changes == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
@@ -623,11 +617,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: ${{ needs.check-state.outputs.pr_number }},
-              body: `Update CHANGELOG\n\n@claude ${prompt}`
+              body: `@claude\n\n${prompt}`
             });
 
       - name: Add changelog label
-        if: steps.prompt.outputs.has_changes == 'true'
+        if: steps.versions.outputs.has_changes == 'true'
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
@@ -665,3 +659,8 @@ jobs:
           echo "| bot:build-attempted | ${{ needs.check-state.outputs.build_attempted }} |" >> $GITHUB_STEP_SUMMARY
           echo "| bot:deprecated-attempted | ${{ needs.check-state.outputs.deprecated_attempted }} |" >> $GITHUB_STEP_SUMMARY
           echo "| bot:tests-attempted | ${{ needs.check-state.outputs.tests_attempted }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Adapters" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo '${{ needs.check-state.outputs.adapters_json }}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
