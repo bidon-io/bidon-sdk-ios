@@ -18,7 +18,7 @@ internal final class AppLovinInterstitialDemandProvider: NSObject {
     var bridge: AppLovinAdServiceBridge
 
     private lazy var interstitial: ALInterstitialAd = {
-        let interstitial = ALInterstitialAd(sdk: sdk)
+        let interstitial = ALInterstitialAd()
         interstitial.adDisplayDelegate = self
         return interstitial
     }()
