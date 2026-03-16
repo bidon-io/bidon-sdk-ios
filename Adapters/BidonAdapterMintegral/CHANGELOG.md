@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.0.8.0
+* Updated to MintegralAdSDK 8.0.8
+
 ## 8.0.7.0
 * Updated to MintegralAdSDK 8.0.7
 
