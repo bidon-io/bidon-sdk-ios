@@ -125,42 +125,14 @@ jobs:
           token: ${{ secrets.PAT_RUNNER }}
           run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      - name: Generate GitHub App token for swift-package
+      - name: Push Package.swift via PR
         if: success() && inputs.upload
-        id: app-token
-        uses: actions/create-github-app-token@v1
+        uses: ./.github/actions/push-spm-package
         with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: bidon-io
-          repositories: bidon-sdk-swift-package
-
-      - name: Push Package.swift to bidon-sdk-swift-package
-        if: success() && inputs.upload
-        run: |
-          set -euo pipefail
-          PACKAGE_SWIFT="build/Package.swift"
-          if [ ! -f "$PACKAGE_SWIFT" ]; then
-            echo "Package.swift not found: $PACKAGE_SWIFT"
-            exit 1
-          fi
-
-          TMPDIR=$(mktemp -d)
-          git clone https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/bidon-io/bidon-sdk-swift-package.git "$TMPDIR/swift-package"
-          cp "$PACKAGE_SWIFT" "$TMPDIR/swift-package/Package.swift"
-          cd "$TMPDIR/swift-package"
-
-          git add Package.swift
-          if git diff --cached --quiet; then
-            echo "Package.swift is unchanged, skipping push"
-          else
-            git commit -m "Update Package.swift for ${{ inputs.sdk_version }}"
-            git tag "${{ inputs.sdk_version }}" || true
-            git push origin main
-            git push origin "${{ inputs.sdk_version }}" || true
-          fi
-
-          rm -rf "$TMPDIR"
+          package_swift: build/Package.swift
+          sdk_version: ${{ inputs.sdk_version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Collect podspec URL
         id: podspec_link
