@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.1.0.0
+* Updated to Google-Mobile-Ads-SDK 13.1.0
+
 ## 13.0.0.0
 * Updated to Google-Mobile-Ads-SDK 13.0.0
 
