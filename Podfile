@@ -25,10 +25,6 @@ def admob
   pod 'Google-Mobile-Ads-SDK', '13.1.0'
 end
 
-def appsflyer
-  pod 'AppsFlyerFramework', '6.17.8'
-end
-
 def bigo_ads
   pod 'BigoADS', '5.1.0'
 end
@@ -256,7 +252,6 @@ target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
   swiftlint
   applovin
-  appsflyer
   bidmachine
   admob
   applovin
