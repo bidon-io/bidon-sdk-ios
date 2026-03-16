@@ -26,7 +26,7 @@ def admob
 end
 
 def appsflyer
-  pod 'AppsFlyerFramework', '6.17.8'
+  pod 'AppsFlyerFramework', '6.17.9'
 end
 
 def bigo_ads
