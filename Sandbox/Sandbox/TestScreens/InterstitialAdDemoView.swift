@@ -66,6 +66,7 @@ final class InterstitialAdController: NSObject, ObservableObject, FullscreenAdDe
         Logger.debug("[Interstitial] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
@@ -76,6 +77,8 @@ final class InterstitialAdController: NSObject, ObservableObject, FullscreenAdDe
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
         Logger.debug("[Interstitial] [Callback] Did expire ad")
         logs.append("⏰ Ad expired")
+        status = "Ad Expired"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {

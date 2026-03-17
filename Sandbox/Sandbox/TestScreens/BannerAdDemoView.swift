@@ -69,6 +69,7 @@ final class BannerAdController: NSObject, ObservableObject, AdViewDelegate {
         Logger.debug("[Banner] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
@@ -79,16 +80,18 @@ final class BannerAdController: NSObject, ObservableObject, AdViewDelegate {
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
         Logger.debug("[Banner] [Callback] Did expire ad")
         logs.append("⏰ Ad expired")
+        status = "Ad Expired"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
         Logger.debug("[Banner] [Callback] Did record impression")
-        logs.append("👁 Impression")
+        logs.append("👁 Impression recorded")
     }
 
     func adObject(_ adObject: AdObject, didRecordClick ad: Ad) {
         Logger.debug("[Banner] [Callback] Did record click")
-        logs.append("👆 Click")
+        logs.append("👆 Click recorded")
     }
 
     func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {

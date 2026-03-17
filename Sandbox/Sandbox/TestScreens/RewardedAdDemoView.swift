@@ -65,6 +65,7 @@ final class RewardedAdController: NSObject, ObservableObject, FullscreenAdDelega
         Logger.debug("[Rewarded] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
@@ -75,6 +76,8 @@ final class RewardedAdController: NSObject, ObservableObject, FullscreenAdDelega
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
         Logger.debug("[Rewarded] [Callback] Did expire ad")
         logs.append("⏰ Ad expired")
+        status = "Ad Expired"
+        isAdReady = false
     }
 
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
