@@ -38,6 +38,10 @@ final class VBannerAdManager: BannerAdManager {
     }
 
     override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
+        guard case .idle = state else {
+            Logger.vManagerBanner("loadAd: state not idle, skip")
+            return
+        }
         auctionInfo = DefaultAuctionInfo()
         slots.runMaintenance()
         lastPricefloor = pricefloor

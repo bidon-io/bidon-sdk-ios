@@ -43,6 +43,10 @@ final class VInterstitialAdManager: InterstitialBaseManager {
     }
     
     override func loadAd(pricefloor: Price, auctionKey: String?) {
+        guard case .idle = state else {
+            Logger.vManagerInter("loadAd: state not idle, skip")
+            return
+        }
         auctionInfo = DefaultAuctionInfo()
         slots.runMaintenance()
         lastPricefloor = pricefloor
