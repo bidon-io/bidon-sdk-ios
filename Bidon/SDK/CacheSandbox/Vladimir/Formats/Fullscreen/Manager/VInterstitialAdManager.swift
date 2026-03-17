@@ -22,11 +22,10 @@ final class VInterstitialAdManager: InterstitialBaseManager {
         case loading
     }
     
-    private let retry = AuctionRetryStrategy()
+    private let retry = AuctionRetryStrategy(adType: .interstitial)
     private let tokenStore = VladimirSandbox.rtbTokenStore
 
     private var loadingState: LoadingState = .idle
-    private var isFirstLoad = !VladimirSandbox.firstLoadCompleted
     private var lastPricefloor: Price = .zero
     private var lastAuctionKey: String?
     
@@ -40,7 +39,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
         slots.onVacancy = { [weak self]
             in self?.onSlotVacancy()
         }
-        Logger.vManager("init: slots=\(slots.description)")
+        Logger.vManagerInter("init: slots=\(slots.description)")
     }
     
     override func loadAd(pricefloor: Price, auctionKey: String?) {
@@ -50,7 +49,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
         lastAuctionKey = auctionKey
 
         if let slot1 = slots.slot1, slot1.payload.price >= pricefloor, let popped = slots.pop() {
-            Logger.vManager("loadAd: immediate hit \(popped.payload.demandID)@\(popped.payload.price.debugString)")
+            Logger.vManagerInter("loadAd: immediate hit \(popped.payload.demandID)@\(popped.payload.price.debugString)")
             deliverCachedBid(popped)
             refillSlotsIfNeeded()
             return
@@ -58,16 +57,16 @@ final class VInterstitialAdManager: InterstitialBaseManager {
         
         if slots.isFull, let primaryPrice = slots.primaryPrice, primaryPrice < pricefloor {
             slots.evictBackup()
-            Logger.vManager("loadAd: smart eviction (slot1 below floor)")
+            Logger.vManagerInter("loadAd: smart eviction (slot1 below floor)")
         }
         
         guard !slots.isFull else {
-            Logger.vManager("loadAd: slots full, skip load")
+            Logger.vManagerInter("loadAd: slots full, skip load")
             return
         }
         
         guard loadingState == .idle else {
-            Logger.vManager("loadAd: already loading, skip")
+            Logger.vManagerInter("loadAd: already loading, skip")
             return
         }
         
@@ -78,7 +77,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
     private func startLoad(pricefloor: Price, auctionKey: String?, isBackground: Bool) {
         loadingState = .loading
         
-        Logger.vManager("startLoad: pricefloor=\(pricefloor.debugString), isBackground=\(isBackground)")
+        Logger.vManagerInter("startLoad: pricefloor=\(pricefloor.debugString), isBackground=\(isBackground)")
         
         var callbackFired = false
         let auctionEngine = makeEngine()
@@ -102,9 +101,10 @@ final class VInterstitialAdManager: InterstitialBaseManager {
             }
             let entry = makeCachedBid(bid, configuration: configuration)
             let primaryFilled = slots.insert(entry)
-            
-            Logger.vManager("onBidLoaded: \(bid.adUnit.demandId)@\(bid.price.debugString), primaryFilled=\(primaryFilled), isBackground=\(isBackground), slots=\(slots.description)")
-            
+            retry.reset()
+
+            Logger.vManagerInter("onBidLoaded: \(bid.adUnit.demandId)@\(bid.price.debugString), primaryFilled=\(primaryFilled), isBackground=\(isBackground), slots=\(slots.description)")
+
             if !isBackground && primaryFilled && !callbackFired {
                 guard let popped = slots.pop() else {
                     return
@@ -112,7 +112,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
                 callbackFired = true
                 deliverCachedBid(popped)
             } else if !primaryFilled {
-                Logger.vManager("onBidLoaded: slot2 filled silently")
+                Logger.vManagerInter("onBidLoaded: slot2 filled silently")
             }
             if slots.isFull {
                 auctionEngine.stop()
@@ -167,7 +167,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
     }
 
     private func handleNoFill(_ error: SdkError) {
-        Logger.vManager("handleNoFill: \(error.description)")
+        Logger.vManagerInter("handleNoFill: \(error.description)")
         DispatchQueue.main.async { [self] in
             state = .idle
             delegate?.adManager(self, didFailToLoad: error, auctionInfo: auctionInfo)
@@ -176,20 +176,15 @@ final class VInterstitialAdManager: InterstitialBaseManager {
     
     private func finalizeLoad(callbackFired: Bool) {
         loadingState = .idle
-        
-        if isFirstLoad {
-            isFirstLoad = false
-            VladimirSandbox.firstLoadCompleted = true
-        }
-        
+
         if slots.slotCount < 2 {
-            Logger.vManager("finalizeLoad: slotCount=\(slots.slotCount) < 2 → scheduleAutoRestart")
+            Logger.vManagerInter("finalizeLoad: slotCount=\(slots.slotCount) < 2 → scheduleAutoRestart")
             scheduleAutoRestart()
         } else {
-            Logger.vManager("finalizeLoad: slots full → reset retry")
+            Logger.vManagerInter("finalizeLoad: slots full → reset retry")
             retry.reset()
         }
-        Logger.vManager("finalizeLoad done: slots=\(slots.description), callbackFired=\(callbackFired)")
+        Logger.vManagerInter("finalizeLoad done: slots=\(slots.description), callbackFired=\(callbackFired)")
     }
 
     private func deliverCachedBid(_ entry: CachedBid) {
@@ -220,7 +215,7 @@ final class VInterstitialAdManager: InterstitialBaseManager {
         guard loadingState == .idle, !retry.isPending else {
             return
         }
-        Logger.vManager("onSlotVacancy → scheduleAutoRestart")
+        Logger.vManagerInter("onSlotVacancy → scheduleAutoRestart")
         scheduleAutoRestart()
     }
     
@@ -278,7 +273,7 @@ private extension VInterstitialAdManager {
 
         let wins = allDemands.filter { $0.status.isWin }.map { "\($0.demandId)@\(String(format: "%.2f", $0.bid?.price ?? 0))" }
         let losses = allDemands.filter { !$0.status.isWin }.map { "\($0.demandId):\($0.status.stringValue)" }
-        Logger.vManager("report: \(allDemands.count) demands, wins=\(wins), losses=\(losses)")
+        Logger.vManagerInter("report: \(allDemands.count) demands, wins=\(wins), losses=\(losses)")
     }
 
     func makeCachedBid(_ bid: BidType, configuration: AuctionConfiguration) -> CachedBid {

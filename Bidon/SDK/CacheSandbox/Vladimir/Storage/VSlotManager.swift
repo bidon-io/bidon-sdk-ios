@@ -7,7 +7,7 @@ import Foundation
 
 final class VSlotManager {
     var onVacancy: (() -> Void)?
-    
+
     private let store: BidCacheStore
     private let key: CacheKey
 
@@ -19,15 +19,16 @@ final class VSlotManager {
     func peek() -> CachedBid? {
         slot1
     }
-    
+
     @discardableResult
     func pop() -> CachedBid? {
         guard let slot1 else {
             return nil
         }
-        let reserved = store.reserve(entryID: slot1.meta.entryID)
-        Logger.vSlot("pop: \(slot1.payload.demandID)@\(slot1.payload.price.debugString) → \(description)")
-        return reserved
+        let entry = store.reserve(entryID: slot1.meta.entryID)
+        store.confirm(entryID: slot1.meta.entryID)
+        Logger.vSlot(key.adType, "pop: \(slot1.payload.demandID)@\(slot1.payload.price.debugString) → \(description)")
+        return entry
     }
 
     @discardableResult
@@ -39,17 +40,17 @@ final class VSlotManager {
             guard entry.payload.price > slot2.payload.price else {
                 // New entry is worse than slot2 — discard
                 // TODO: call notifyLoss on entry
-                Logger.vSlot("insert → discarded (below slot2 price): \(entry.payload.demandID)@\(entry.payload.price.debugString)")
+                Logger.vSlot(key.adType, "insert → discarded (below slot2 price): \(entry.payload.demandID)@\(entry.payload.price.debugString)")
                 return false
             }
             // New entry beats slot2 — replace: keep slot1 + new entry
             let slot1 = current.first!
             store.replace(key: key, entries: [slot1, entry])
             // TODO: call notifyLoss on evicted slot2
-            Logger.vSlot("insert → replaced slot2: \(entry.payload.demandID)@\(entry.payload.price.debugString), slots=\(description)")
+            Logger.vSlot(key.adType, "insert → replaced slot2: \(entry.payload.demandID)@\(entry.payload.price.debugString), slots=\(description)")
         } else {
             store.put(key: key, entries: [entry])
-            Logger.vSlot("insert → \(primaryWasEmpty ? "slot1" : "slot2"): \(entry.payload.demandID)@\(entry.payload.price.debugString), slots=\(description)")
+            Logger.vSlot(key.adType, "insert → \(primaryWasEmpty ? "slot1" : "slot2"): \(entry.payload.demandID)@\(entry.payload.price.debugString), slots=\(description)")
         }
 
         return primaryWasEmpty
@@ -63,7 +64,7 @@ final class VSlotManager {
             store.replace(key: key, entries: [slot1])
         }
         // TODO: call notifyLoss on evicted slot2
-        Logger.vSlot("evictBackup: \(slot2.payload.demandID)@\(slot2.payload.price.debugString)")
+        Logger.vSlot(key.adType, "evictBackup: \(slot2.payload.demandID)@\(slot2.payload.price.debugString)")
     }
 
     func snapshotAll() -> [CachedBid] {
@@ -80,7 +81,7 @@ final class VSlotManager {
         let entries = extractAll()
         entries.forEach { entry in
             // TODO: call notifyLoss on entry
-            Logger.vSlot("clear: destroying \(entry.payload.demandID)")
+            Logger.vSlot(key.adType, "clear: destroying \(entry.payload.demandID)")
         }
     }
 
@@ -92,7 +93,7 @@ final class VSlotManager {
         guard after < before else {
             return
         }
-        Logger.vSlot("maintenance: \(before) → \(after) slots, vacancy")
+        Logger.vSlot(key.adType, "maintenance: \(before) → \(after) slots, vacancy")
         onVacancy?()
     }
 }
@@ -101,7 +102,7 @@ extension VSlotManager {
     var slot1: CachedBid? {
         snapshotAll().first
     }
-    
+
     var slot2: CachedBid? {
         snapshotAll().dropFirst().first
     }
@@ -109,7 +110,7 @@ extension VSlotManager {
     var primaryPrice: Price? {
         slot1?.payload.price
     }
-    
+
     var cachedDemandIds: Set<String> {
         Set(snapshotAll().map(\.payload.demandID))
     }

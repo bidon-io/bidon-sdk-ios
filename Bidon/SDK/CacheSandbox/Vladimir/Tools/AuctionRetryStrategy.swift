@@ -20,11 +20,16 @@ final class AuctionRetryStrategy {
     }
 
     private let config: Config
+    private let adType: AdType
     
     private var attempt: Int = 0
     private var timer: Timer?
 
-    init(config: Config = .default) {
+    init(
+        adType: AdType,
+        config: Config = .default
+    ) {
+        self.adType = adType
         self.config = config
     }
 
@@ -41,7 +46,7 @@ final class AuctionRetryStrategy {
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
 
-        Logger.vManager("RetryStrategy: attempt=\(attempt), delay=\(delay)s")
+        Logger.vManager(adType, "RetryStrategy: attempt=\(attempt), delay=\(delay)s")
     }
 
     func cancel() {

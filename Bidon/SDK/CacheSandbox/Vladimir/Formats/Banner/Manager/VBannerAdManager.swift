@@ -16,7 +16,7 @@ final class VBannerAdManager: BannerAdManager {
         case loading
     }
 
-    private let retry = AuctionRetryStrategy()
+    private let retry = AuctionRetryStrategy(adType: .banner)
 
     private var loadingState: LoadingState = .idle
     private var lastPricefloor: Price = .zero
@@ -34,7 +34,7 @@ final class VBannerAdManager: BannerAdManager {
         slots.onVacancy = { [weak self] in
             self?.onSlotVacancy()
         }
-        Logger.vManager("VBannerAdManager[\(placement)] init: slots=\(slots.description)")
+        Logger.vManagerBanner("init: slots=\(slots.description)")
     }
 
     override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
@@ -45,7 +45,7 @@ final class VBannerAdManager: BannerAdManager {
         lastViewContext = viewContext
 
         if let slot1 = slots.slot1, slot1.payload.price >= pricefloor, let popped = slots.pop() {
-            Logger.vManager("VBannerAdManager: loadAd immediate hit \(popped.payload.demandID)@\(popped.payload.price.debugString)")
+            Logger.vManagerBanner("loadAd: immediate hit \(popped.payload.demandID)@\(popped.payload.price.debugString)")
             deliverCachedBid(popped, viewContext: viewContext)
             refillSlotsIfNeeded()
             return
@@ -53,16 +53,16 @@ final class VBannerAdManager: BannerAdManager {
 
         if slots.isFull, let primaryPrice = slots.primaryPrice, primaryPrice < pricefloor {
             slots.evictBackup()
-            Logger.vManager("VBannerAdManager: loadAd smart eviction (slot1 below floor)")
+            Logger.vManagerBanner("loadAd: smart eviction (slot1 below floor)")
         }
 
         guard !slots.isFull else {
-            Logger.vManager("VBannerAdManager: loadAd slots full, skip load")
+            Logger.vManagerBanner("loadAd: slots full, skip load")
             return
         }
 
         guard loadingState == .idle else {
-            Logger.vManager("VBannerAdManager: loadAd already loading, skip")
+            Logger.vManagerBanner("loadAd: already loading, skip")
             return
         }
 
@@ -73,7 +73,7 @@ final class VBannerAdManager: BannerAdManager {
     private func startLoad(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?, isBackground: Bool) {
         loadingState = .loading
 
-        Logger.vManager("VBannerAdManager: startLoad pricefloor=\(pricefloor.debugString), isBackground=\(isBackground)")
+        Logger.vManagerBanner("startLoad: pricefloor=\(pricefloor.debugString), isBackground=\(isBackground)")
 
         var callbackFired = false
         let auctionEngine = makeEngine(viewContext: viewContext)
@@ -97,8 +97,9 @@ final class VBannerAdManager: BannerAdManager {
             }
             let entry = makeCachedBid(bid, configuration: configuration, viewContext: viewContext)
             let primaryFilled = slots.insert(entry)
+            retry.reset()
 
-            Logger.vManager("VBannerAdManager: onBidLoaded \(bid.adUnit.demandId)@\(bid.price.debugString), primaryFilled=\(primaryFilled), isBackground=\(isBackground), slots=\(slots.description)")
+            Logger.vManagerBanner("onBidLoaded: \(bid.adUnit.demandId)@\(bid.price.debugString), primaryFilled=\(primaryFilled), isBackground=\(isBackground), slots=\(slots.description)")
 
             if !isBackground && primaryFilled && !callbackFired {
                 guard let popped = slots.pop() else {
@@ -107,7 +108,7 @@ final class VBannerAdManager: BannerAdManager {
                 callbackFired = true
                 deliverCachedBid(popped, viewContext: viewContext)
             } else if !primaryFilled {
-                Logger.vManager("VBannerAdManager: onBidLoaded slot2 filled silently")
+                Logger.vManagerBanner("onBidLoaded: slot2 filled silently")
             }
             if slots.isFull {
                 auctionEngine.stop()
@@ -162,7 +163,7 @@ final class VBannerAdManager: BannerAdManager {
     }
 
     private func handleNoFill(_ error: SdkError) {
-        Logger.vManager("VBannerAdManager: handleNoFill \(error.description)")
+        Logger.vManagerBanner("handleNoFill: \(error.description)")
         DispatchQueue.main.async { [self] in
             state = .idle
             delegate?.adManager(self, didFailToLoad: error, auctionInfo: auctionInfo)
@@ -173,13 +174,13 @@ final class VBannerAdManager: BannerAdManager {
         loadingState = .idle
 
         if slots.slotCount < 2 {
-            Logger.vManager("VBannerAdManager: finalizeLoad slotCount=\(slots.slotCount) < 2 → scheduleAutoRestart")
+            Logger.vManagerBanner("finalizeLoad: slotCount=\(slots.slotCount) < 2 → scheduleAutoRestart")
             scheduleAutoRestart()
         } else {
-            Logger.vManager("VBannerAdManager: finalizeLoad slots full → reset retry")
+            Logger.vManagerBanner("finalizeLoad: slots full → reset retry")
             retry.reset()
         }
-        Logger.vManager("VBannerAdManager: finalizeLoad done slots=\(slots.description), callbackFired=\(callbackFired)")
+        Logger.vManagerBanner("finalizeLoad done: slots=\(slots.description), callbackFired=\(callbackFired)")
     }
 
     private func deliverCachedBid(_ entry: CachedBid, viewContext: AdViewContext) {
@@ -208,7 +209,7 @@ final class VBannerAdManager: BannerAdManager {
         guard loadingState == .idle, !retry.isPending else {
             return
         }
-        Logger.vManager("VBannerAdManager: onSlotVacancy → scheduleAutoRestart")
+        Logger.vManagerBanner("onSlotVacancy → scheduleAutoRestart")
         scheduleAutoRestart()
     }
 
@@ -222,7 +223,7 @@ final class VBannerAdManager: BannerAdManager {
     }
 
     private func cancelAutoRestart() {
-        Logger.vManager("VBannerAdManager: cancelAutoRestart")
+        Logger.vManagerBanner("cancelAutoRestart")
         retry.cancel()
     }
 }
@@ -269,7 +270,7 @@ private extension VBannerAdManager {
 
         let wins = allDemands.filter { $0.status.isWin }.map { "\($0.demandId)@\(String(format: "%.2f", $0.bid?.price ?? 0))" }
         let losses = allDemands.filter { !$0.status.isWin }.map { "\($0.demandId):\($0.status.stringValue)" }
-        Logger.vManager("VBannerAdManager: report \(allDemands.count) demands, wins=\(wins), losses=\(losses)")
+        Logger.vManagerBanner("report: \(allDemands.count) demands, wins=\(wins), losses=\(losses)")
     }
 
     func makeCachedBid(_ bid: BidType, configuration: AuctionConfiguration, viewContext: AdViewContext) -> CachedBid {

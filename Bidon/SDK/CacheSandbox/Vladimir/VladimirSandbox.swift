@@ -9,8 +9,6 @@ enum VladimirSandbox {
     static let cache = BidCacheStore(configuration: .twoSlot)
     static let cacheStats = CacheStatsTracker()
     static let rtbTokenStore = VRTBTokenStore()
-
-    static var firstLoadCompleted: Bool = false
 }
 
 private extension BidCacheStore.Configuration {

@@ -14,7 +14,7 @@ extension VladimirSandbox {
         static func buildManager(delegate: FullscreenAdManagerDelegate) -> VInterstitialAdManager {
             if let existing = _manager {
                 existing.delegate = delegate
-                Logger.vManager("buildManager: reusing existing manager, updated delegate")
+                Logger.vManagerInter("buildManager: reusing existing manager, updated delegate")
                 return existing
             }
 
@@ -23,7 +23,7 @@ extension VladimirSandbox {
                 delegate: delegate
             )
             _manager = manager
-            Logger.vManager("buildManager: created new manager")
+            Logger.vManagerInter("buildManager: created new manager")
             return manager
         }
     }

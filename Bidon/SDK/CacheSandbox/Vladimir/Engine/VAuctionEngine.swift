@@ -55,7 +55,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
         startTimestamp: TimeInterval?
     ) {
         guard let configParameters = ConfigParametersStorage.adaptersInitializationParameters else {
-            Logger.vManager("VAuctionEngine.runFull: no config parameters")
+            Logger.vManager(context.adType, "VAuctionEngine.runFull: no config parameters")
             onComplete?(nil)
             return
         }
@@ -76,7 +76,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
         let manager = DemandsTokensManager<AdTypeContextType>(builder: builder)
         demandsManager = manager
 
-        Logger.vManager("VAuctionEngine.runFull: collecting tokens, excluded=\(excludedDemandIds), reusing=\(existingTokens.map(\.demandId))")
+        Logger.vManager(context.adType, "VAuctionEngine.runFull: collecting tokens, excluded=\(excludedDemandIds), reusing=\(existingTokens.map(\.demandId))")
 
         manager.load(initializationParameters: configParameters) { [weak self] result in
             guard let self else {
@@ -97,7 +97,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
                 )
 
             case let .failure(error):
-                Logger.vManager("VAuctionEngine.runFull: token collection failed: \(error)")
+                Logger.vManager(context.adType, "VAuctionEngine.runFull: token collection failed: \(error)")
                 self.onComplete?(nil)
             }
         }
@@ -124,7 +124,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
             builder.withExt(extras)
             builder.withAuctionKey(auctionKey)
         }
-        Logger.vManager("VAuctionEngine: sending auction request")
+        Logger.vManager(context.adType, "VAuctionEngine: sending auction request")
 
         networkManager.perform(request: request) { [weak self] result in
             guard let self else { return }
@@ -139,7 +139,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
                 )
 
             case let .failure(error):
-                Logger.vManager("VAuctionEngine: request failed: \(error)")
+                Logger.vManager(context.adType, "VAuctionEngine: request failed: \(error)")
                 self.onComplete?(nil)
             }
         }
@@ -165,10 +165,10 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
             guard !excludedDemandIds.contains(bid.adUnit.demandId) else {
-                Logger.vManager("VAuctionEngine: skip excluded \(bid.adUnit.demandId)")
+                Logger.vManager(context.adType, "VAuctionEngine: skip excluded \(bid.adUnit.demandId)")
                 return
             }
-            Logger.vManager("VAuctionEngine: bid \(bid.adUnit.demandId)@\(bid.price.debugString)")
+            Logger.vManager(context.adType, "VAuctionEngine: bid \(bid.adUnit.demandId)@\(bid.price.debugString)")
             self.onBidLoaded?(bid, configuration)
         }
 
@@ -176,7 +176,7 @@ final class VAuctionEngine<AdTypeContextType: AdTypeContext> {
             guard let self else {
                 return
             }
-            Logger.vManager("VAuctionEngine: waterfall complete")
+            Logger.vManager(context.adType, "VAuctionEngine: waterfall complete")
             self.auction = nil
             self.onComplete?(observer.report)
         }
