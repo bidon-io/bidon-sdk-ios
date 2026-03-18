@@ -121,6 +121,8 @@ struct AdvancedBannerSettings: View {
                     Button(action: bannerProviderReference.provider.hide) {
                         Text("Hide")
                     }
+
+                    NavigationLink("Events", destination: AdEventsList(events: bannerProviderReference.events))
                 }
             }
             .listStyle(.automatic)
