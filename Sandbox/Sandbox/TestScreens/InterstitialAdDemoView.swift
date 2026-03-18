@@ -56,22 +56,54 @@ final class InterstitialAdController: NSObject, ObservableObject, FullscreenAdDe
     // MARK: - FullscreenAdDelegate
 
     func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("[Interstitial] [Callback] Did load ad")
         logs.append("✅ Ad Loaded")
         status = "Ad Loaded"
         isAdReady = true
     }
 
     func adObject(_ adObject: AdObject, didFailToLoadAd error: any Error, auctionInfo: AuctionInfo) {
+        Logger.debug("[Interstitial] [Callback] Did fail to load with error: \(error.localizedDescription)")
         logs.append("❌ Failed to load: \(error.localizedDescription)")
         status = "Failed"
+        isAdReady = false
+    }
+
+    func adObject(_ adObject: AdObject, didFailToPresentAd error: any Error) {
+        Logger.debug("[Interstitial] [Callback] Did fail to present with error: \(error.localizedDescription)")
+        logs.append("❌ Failed to present: \(error.localizedDescription)")
+    }
+
+    func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Did expire ad")
+        logs.append("⏰ Ad expired")
+        status = "Ad Expired"
+        isAdReady = false
+    }
+
+    func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Did record impression")
+        logs.append("👁 Impression recorded")
+    }
+
+    func adObject(_ adObject: AdObject, didRecordClick ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Did record click")
+        logs.append("👆 Click recorded")
+    }
+
+    func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Did pay revenue: \(revenue.revenue)")
+        logs.append("💰 Revenue: \(revenue.revenue)")
     }
 
     func fullscreenAd(_ adObject: FullscreenAdObject, willPresentAd ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Will present ad")
         logs.append("📲 Will present ad")
         status = "Showing"
     }
 
     func fullscreenAd(_ adObject: FullscreenAdObject, didDismissAd ad: Ad) {
+        Logger.debug("[Interstitial] [Callback] Did dismiss ad")
         logs.append("👋 Ad dismissed")
         status = "Dismissed"
         isAdReady = false
