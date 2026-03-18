@@ -80,6 +80,7 @@ class BaseFullscreenAdWrapper: BaseAdWrapper, FullscreenAdWrapper {
 
 extension BaseFullscreenAdWrapper: Bidon.RewardedAdDelegate {
     func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, willPresentAd ad: Bidon.Ad) {
+        Logger.debug("\(adType.title) [Callback] Will present ad")
         send(
             event: "Bidon will present ad",
             detail: ad.text,
@@ -89,6 +90,7 @@ extension BaseFullscreenAdWrapper: Bidon.RewardedAdDelegate {
     }
 
     func fullscreenAd(_ fullscreenAd: Bidon.FullscreenAdObject, didDismissAd ad: Bidon.Ad) {
+        Logger.debug("\(adType.title) [Callback] Did dismiss ad")
         send(
             event: "Bidon did dismiss ad",
             detail: ad.text,
@@ -98,6 +100,7 @@ extension BaseFullscreenAdWrapper: Bidon.RewardedAdDelegate {
     }
 
     func rewardedAd(_ rewardedAd: RewardedAdObject, didRewardUser reward: Reward, ad: Ad) {
+        Logger.debug("\(adType.title) [Callback] Did reward user: \(reward.amount) \(reward.label)")
         send(
             event: "Bidon did reward user",
             detail: "Reward is \(reward.amount) \(reward.label)",
