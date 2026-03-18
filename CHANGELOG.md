@@ -3,6 +3,7 @@
 - BDN-1139 Viewability improvements
 - BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
 - BDN-1150 Migrated workflows to new podspec push flow
+- BDN-1155 Added SPM support for Bidon Core
 
 # Release 0.14.0
 
