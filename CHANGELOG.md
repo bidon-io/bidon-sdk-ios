@@ -4,6 +4,7 @@
 - BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
 - BDN-1150 Migrated workflows to new podspec push flow
 - BDN-1155 Added SPM support for Bidon Core
+- BDN-1147 Add callback logging to Sandbox demo screens for ad lifecycle events
 
 # Release 0.14.0
 
