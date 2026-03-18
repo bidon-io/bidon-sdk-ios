@@ -20,6 +20,7 @@ class BaseAdWrapper: NSObject, AdWrapper {
 
 extension BaseAdWrapper: Bidon.AdObjectDelegate {
     func adObject(_ adObject: Bidon.AdObject, didLoadAd ad: Bidon.Ad, auctionInfo: AuctionInfo) {
+        Logger.debug("\(adType.title) [Callback] Did load ad")
         send(
             event: "Bidon did load ad",
             detail: ad.text,
@@ -29,11 +30,11 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         adSubject.send(ad)
 
         Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
-
         Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
     }
 
     func adObject(_ adObject: Bidon.AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
+        Logger.debug("\(adType.title) [Callback] Did fail to load ad with error: \(error.localizedDescription)")
         send(
             event: "Bidon did fail to load ad",
             detail: error.localizedDescription,
@@ -46,6 +47,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
     }
 
     func adObject(_ adObject: Bidon.AdObject, didFailToPresentAd error: Error) {
+        Logger.debug("\(adType.title) [Callback] Did fail to present ad with error: \(error.localizedDescription)")
         send(
             event: "Bidon did fail to present ad",
             detail: error.localizedDescription,
@@ -55,6 +57,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
     }
 
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
+        Logger.debug("\(adType.title) [Callback] Did expire ad")
         send(
             event: "Bidon expire ad",
             detail: ad.text,
@@ -68,6 +71,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         _ adObject: AdObject,
         didRecordImpression ad: Ad
     ) {
+        Logger.debug("\(adType.title) [Callback] Did record impression")
         send(
             event: "Bidon did record impression",
             detail: ad.text,
@@ -83,6 +87,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         _ adObject: AdObject,
         didRecordClick ad: Ad
     ) {
+        Logger.debug("\(adType.title) [Callback] Did record click")
         send(
             event: "Bidon did record click",
             detail: ad.text,
@@ -96,6 +101,7 @@ extension BaseAdWrapper: Bidon.AdObjectDelegate {
         didPay revenue: AdRevenue,
         ad: Ad
     ) {
+        Logger.debug("\(adType.title) [Callback] Did pay revenue: \(revenue.revenue.pretty)")
         send(
             event: "Bidon did pay revenue \(revenue.revenue.pretty)",
             detail: ad.text,
