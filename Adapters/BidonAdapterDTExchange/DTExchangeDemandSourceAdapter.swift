@@ -89,8 +89,8 @@ extension IACoppaAppliesType {
     init(_ status: Bidon.COPPAAppliesStatus) {
         switch status {
         case .unknown: self = .unknown
-        case .yes: self = IACoppaAppliesTypeTrue
-        case .no: self = IACoppaAppliesTypeFalse
+        case .yes: self = .true
+        case .no: self = .false
         }
     }
 }
