@@ -34,7 +34,8 @@ $targets = [
   "ISBidonCustomAdapter",
   "BidonAdapterMoloco",
   "BidonAdapterStartIo",
-  "BidonAdapterTaurusX"
+  "BidonAdapterTaurusX",
+  "BidonAdapterZmaticoo"
 ].uniq
 
 # Primary pod per adapter (to derive adapter version from Podfile.lock)
@@ -60,7 +61,8 @@ $adapter_primary_pod = {
   "AppLovinMediationBidonAdapter" => "AppLovinSDK",
   "ISBidonCustomAdapter" => "IronSourceSDK/Ads",
   "BidonAdapterStartIo" => "StartAppSDK",
-  "BidonAdapterTaurusX" => "TaurusxAdsSDK"
+  "BidonAdapterTaurusX" => "TaurusxAdsSDK",
+  "BidonAdapterZmaticoo" => "zMaticoo"
 }
 
 # ---------- Helpers ----------
@@ -69,13 +71,15 @@ def build_universal(scheme)
   min_versions = {
     "BidonAdapterIronSource" => "13.0",
     "ISBidonCustomAdapter"   => "13.0",
-    "BidonAdapterMyTarget"   => "12.4",
+    "BidonAdapterMyTarget"   => "14.0",
     "BidonAdapterYandex"     => "13.0",
     "BidonAdapterDTExchange" => "13.0",
     "BidonAdapterUnityAds"   => "13.0",
     "BidonAdapterMoloco"     => "13.0",
     "BidonAdapterStartIo"    => "13.0",
-    "BidonAdapterTaurusX"    => "13.0"
+    "BidonAdapterTaurusX"    => "13.0",
+    "BidonAdapterZmaticoo"   => "13.0",
+    "BidonAdapterMetaAudienceNetwork"   => "13.0"
   }
   deployment_target = min_versions.fetch(scheme, "13.0")
   is_yandex = (scheme == "BidonAdapterYandex")
