@@ -17,7 +17,12 @@ on:
         required: false
         type: boolean
         default: false
-        
+      build_spm:
+        description: 'Build and push SPM Package.swift?'
+        required: false
+        type: boolean
+        default: false
+
 permissions:
   id-token: write
   contents: read
@@ -122,6 +127,15 @@ jobs:
         with:
           specs: build/Podspecs/Bidon.podspec.json
           branch_suffix: Bidon-${{ inputs.sdk_version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Push Package.swift via PR
+        if: success() && inputs.build_spm
+        uses: ./.github/actions/push-spm-package
+        with:
+          package_swift: build/Package.swift
+          sdk_version: ${{ inputs.sdk_version }}
           token: ${{ secrets.PAT_RUNNER }}
           run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 

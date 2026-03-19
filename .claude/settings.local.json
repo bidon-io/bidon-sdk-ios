@@ -5,6 +5,7 @@
       "Bash(xcodebuild:*)",
       "mcp__acp__Bash",
       "mcp__acp__Edit",
+      "Bash(grep -l \"Package.swift\\\\|swift-package\\\\|SPM\" /Users/evgeniagrigorovic/Desktop/Project/bidon-sdk-ios/.github/workflows/*.yml)",
       "Bash(gh api repos/bidon-io/bidon-sdk-android/contents/.github/scripts --jq '.[].name' 2>/dev/null | sort)",
       "Bash(gh api repos/bidon-io/bidon-sdk-android/contents/.github/workflows --jq '.[].name' 2>&1)",
       "WebFetch(domain:api.github.com)",

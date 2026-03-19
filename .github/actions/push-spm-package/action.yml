@@ -1,0 +1,79 @@
+name: Push Package.swift via PR
+description: Pushes Package.swift to bidon-io/bidon-sdk-swift-package via a pull request
+
+inputs:
+  package_swift:
+    description: 'Path to the generated Package.swift file'
+    required: true
+  sdk_version:
+    description: 'SDK version (used for branch name, commit message, and tag)'
+    required: true
+  token:
+    description: 'GitHub PAT with access to bidon-sdk-swift-package repo'
+    required: true
+  run_url:
+    description: 'URL of the workflow run for PR body'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Push Package.swift via PR
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+      run: |
+        set -euo pipefail
+
+        PACKAGE_SWIFT="${{ inputs.package_swift }}"
+        SDK_VERSION="${{ inputs.sdk_version }}"
+        BRANCH_NAME="bot/spm-${SDK_VERSION}"
+        SPECS_DIR="$RUNNER_TEMP/bidon-sdk-swift-package"
+
+        # Resolve relative paths against the workspace
+        if [[ "$PACKAGE_SWIFT" != /* ]]; then
+          PACKAGE_SWIFT="${GITHUB_WORKSPACE}/$PACKAGE_SWIFT"
+        fi
+
+        if [ ! -f "$PACKAGE_SWIFT" ]; then
+          echo "::error::Package.swift not found: $PACKAGE_SWIFT"
+          exit 1
+        fi
+
+        # 1. Clone swift-package repo
+        gh repo clone bidon-io/bidon-sdk-swift-package "$SPECS_DIR"
+        cd "$SPECS_DIR"
+
+        git config user.email "bot@bidon.org"
+        git config user.name "bidon-bot"
+        git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/bidon-io/bidon-sdk-swift-package.git"
+
+        # 2. Copy Package.swift
+        cp "$PACKAGE_SWIFT" Package.swift
+
+        # 3. Check if anything changed
+        git add Package.swift
+        if git diff --cached --quiet; then
+          echo "Package.swift is unchanged, skipping"
+          exit 0
+        fi
+
+        # 4. Create branch, commit, push
+        git checkout -b "$BRANCH_NAME"
+        git commit -m "Update Package.swift for ${SDK_VERSION}"
+        git push origin "$BRANCH_NAME" -f
+
+        # 5. Create PR
+        RUN_URL="${{ inputs.run_url }}"
+        BODY="Update Package.swift for Bidon SDK ${SDK_VERSION}."
+        if [ -n "$RUN_URL" ]; then
+          BODY="Update Package.swift for Bidon SDK ${SDK_VERSION}. Run: ${RUN_URL}"
+        fi
+
+        gh pr create \
+          --repo bidon-io/bidon-sdk-swift-package \
+          --title "Update Package.swift for ${SDK_VERSION}" \
+          --body "$BODY" \
+          --base main \
+          --head "$BRANCH_NAME" || echo "PR already exists, branch updated."
