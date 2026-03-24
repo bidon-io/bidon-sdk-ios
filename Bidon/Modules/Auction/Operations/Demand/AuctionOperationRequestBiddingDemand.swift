@@ -20,6 +20,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
     let context: AdTypeContextType
     let demand: String
     let adUnit: AdUnitModel
+    let rule: (() -> Bool)?
 
     var bid: BidModel<AdTypeContextType.DemandProviderType>?
 
@@ -32,6 +33,7 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
         self.context = builder.context
         self.demand = builder.demand
         self.adUnit = builder.adUnit
+        self.rule = builder.rule
 
         super.init()
     }
@@ -47,6 +49,15 @@ final class AuctionOperationRequestBiddingDemand<AdTypeContextType: AdTypeContex
             finish()
             return
         }
+        
+        guard let shouldStart = rule?(), shouldStart else {
+            let event = BiddingDemandBelowPricefloorAucitonEvent(adUnit: adUnit)
+            observer.log(event)
+            
+            finish()
+            return
+        }
+        
         setupTimeout()
 
         let event = BiddingDemandWillLoadAuctionEvent(
