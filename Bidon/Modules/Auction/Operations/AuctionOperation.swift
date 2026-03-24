@@ -54,7 +54,7 @@ protocol AuctionOperationBuilder {
     func withAdapters(_ adapters: [AnyDemandSourceAdapter<AdTypeContextType.DemandProviderType>]) -> Self
     
     @discardableResult
-    func withStartRule(_ rule: @escaping (() -> Bool)) -> Self
+    func withExecutionCondition(_ rule: @escaping (() -> Bool)) -> Self
 }
 
 
@@ -114,7 +114,7 @@ class BaseAuctionOperationBuilder<AdTypeContextType: AdTypeContext>: AuctionOper
     }
     
     @discardableResult
-    func withStartRule(_ rule: @escaping (() -> Bool)) -> Self {
+    func withExecutionCondition(_ rule: @escaping (() -> Bool)) -> Self {
         self.rule = rule
         return self
     }

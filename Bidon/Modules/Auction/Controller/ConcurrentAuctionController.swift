@@ -244,10 +244,9 @@ final class ConcurrentAuctionController<AdTypeContextType: AdTypeContext>: Aucti
             builder.withComparator(comparator)
             builder.withObserver(auctionObserver)
             builder.withAdRevenueObserver(adRevenueObserver)
-            builder.withStartRule { [weak self] in
+            builder.withExecutionCondition { [weak self] in
                 guard let self else { return false }
                 guard let adUnit else { return true }
-                print("[ewgojwgj] \(adUnit.pricefloor) - \(self.maxPrice)")
                 return adUnit.pricefloor >= self.maxPrice
             }
 

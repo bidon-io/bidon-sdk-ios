@@ -24,7 +24,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
     @Published var pricefloor: Double = 0.0
-    @Published var auctionKey: String = "1O16NDEKK0000"
+    @Published var auctionKey: String = ""
     @Published var ad: Bidon.Ad?
 
     private var cancellables = Set<AnyCancellable>()
