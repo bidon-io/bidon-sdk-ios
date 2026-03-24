@@ -14,19 +14,15 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.5.1'
+  pod 'AppLovinSDK', '13.6.1'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.5.1'
+  pod 'BidMachine', '3.6.0'
 end
 
 def admob
   pod 'Google-Mobile-Ads-SDK', '13.1.0'
-end
-
-def appsflyer
-  pod 'AppsFlyerFramework', '6.17.8'
 end
 
 def bigo_ads
@@ -42,11 +38,11 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.6'
+  pod 'UnityAds', '4.17.0'
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.4.0'
+  pod 'MolocoSDKiOS', '4.4.1'
 end
 
 def meta_sdk
@@ -54,7 +50,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.7'
+  pod 'MintegralAdSDK', '8.0.8'
 end
 
 def mobilefuse
@@ -256,7 +252,6 @@ target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
   swiftlint
   applovin
-  appsflyer
   bidmachine
   admob
   applovin

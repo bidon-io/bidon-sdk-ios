@@ -46,12 +46,27 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
 
     @Published var isShown: Bool = false
     @Published var isLoaded: Bool = false
+    @Published var events: [AdEventModel] = []
 
     private(set) lazy var provider: BannerProvider = {
         let provider = BannerProvider(auctionKey: nil)
         provider.delegate = self
         return provider
     }()
+
+    private func send(event title: String, detail: String, bage: String, color: Color) {
+        let event = AdEventModel(
+            date: Date(),
+            adType: .banner,
+            title: title,
+            subtitle: detail,
+            bage: bage,
+            color: color
+        )
+        withAnimation { [unowned self] in
+            self.events.append(event)
+        }
+    }
 
     func updatePosition() {
         switch positioningStyle {
@@ -67,56 +82,57 @@ final class BannerProviderReference: NSObject, AdObjectDelegate, ObservableObjec
     }
 
     func adObject(_ adObject: AdObject, didLoadAd ad: Ad, auctionInfo: AuctionInfo) {
-        print("[Banner Provider Reference] Did load ad \(ad)")
-
+        Logger.debug("[Banner] [Callback] Did load ad")
         Logger.debug("[Public API] [AUCTION] [LOAD]: \(auctionInfo.description ?? "")")
-
         Logger.debug("[Public API] [AD] [LOAD]: \(ad.description() ?? "")")
-
+        send(event: "Bidon did load ad", detail: ad.text, bage: "star.fill", color: .accentColor)
         withAnimation { [unowned self] in
             self.isLoaded = true
         }
     }
 
     func adObject(_ adObject: AdObject, didFailToLoadAd error: Error, auctionInfo: AuctionInfo) {
-        print("[Banner Provider Reference] Did fail to load ad with error: \(error)")
-
+        Logger.debug("[Banner] [Callback] Did fail to load ad with error: \(error.localizedDescription)")
         Logger.debug("[Public API] [AUCTION] [LOAD] [ERROR]: \(auctionInfo.description ?? ""), error: \(error)")
-
+        send(event: "Bidon did fail to load ad", detail: error.localizedDescription, bage: "star.fill", color: .red)
         withAnimation { [unowned self] in
             self.isLoaded = false
         }
     }
 
     func adObject(_ adObject: AdObject, didFailToPresentAd error: Error) {
-        print("[Banner Provider Reference] Did fail to present ad with error: \(error)")
-
+        Logger.debug("[Banner] [Callback] Did fail to present ad with error: \(error.localizedDescription)")
+        send(event: "Bidon did fail to present ad", detail: error.localizedDescription, bage: "star.fill", color: .red)
         withAnimation { [unowned self] in
             self.isShown = false
         }
     }
 
     func adObject(_ adObject: AdObject, didRecordImpression ad: Ad) {
-        print("[Banner Provider Reference] Did record impression for ad \(ad)")
-
+        Logger.debug("[Banner] [Callback] Did record impression")
         Logger.debug("[Public API] [AD] [SHOW]: \(ad.description() ?? "")")
-
+        send(event: "Bidon did record impression", detail: ad.text, bage: "flag.fill", color: .accentColor)
         withAnimation { [unowned self] in
             self.isShown = true
         }
     }
 
     func adObject(_ adObject: AdObject, didExpireAd ad: Ad) {
-        print("[Banner Provider Reference] Did expire ad \(ad)")
+        Logger.debug("[Banner] [Callback] Did expire ad")
+        send(event: "Bidon expire ad", detail: ad.text, bage: "star.fill", color: .secondary)
+        withAnimation { [unowned self] in
+            self.isLoaded = false
+        }
     }
 
     func adObject(_ adObject: AdObject, didRecordClick ad: Ad) {
-        print("[Banner Provider Reference] Did record click for ad \(ad)")
+        Logger.debug("[Banner] [Callback] Did record click")
+        send(event: "Bidon did record click", detail: ad.text, bage: "flag.fill", color: .accentColor)
     }
 
     func adObject(_ adObject: AdObject, didPay revenue: AdRevenue, ad: Ad) {
+        Logger.debug("[Banner] [Callback] Did pay revenue: \(revenue.revenue.pretty)")
         Logger.debug("[Public API] [AD] [REVENUE]: \(ad.description(with: revenue) ?? "")")
-
-        print("[Banner Provider Reference] Did pay revenue \(revenue) for ad \(ad)")
+        send(event: "Bidon did pay revenue \(revenue.revenue.pretty)", detail: ad.text, bage: "cart.fill", color: .primary)
     }
 }
