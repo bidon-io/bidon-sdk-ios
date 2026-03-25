@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.4.1'
+  pod 'MolocoSDKiOS', '4.5.0'
 end
 
 def meta_sdk
@@ -86,7 +86,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.14.0'
+  pod 'TaurusxAdsSDK', '1.15.0'
 end
 
 def zmaticoo

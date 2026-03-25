@@ -20,6 +20,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
     let auctionConfiguration: AuctionConfiguration
     let context: AdTypeContextType
     let adUnit: AdUnitModel
+    let rule: (() -> Bool)?
 
     private(set) var bid: BidType?
 
@@ -32,6 +33,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
         self.context = builder.context
         self.auctionConfiguration = builder.auctionConfiguration
         self.adUnit = builder.adUnit
+        self.rule = builder.rule
 
         super.init()
     }
@@ -46,6 +48,14 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
             logLoadingError(error: .unknownAdapter)
             finish()
 
+            return
+        }
+        
+        guard let shouldStart = rule?(), shouldStart else {
+            let event = DirectDemandBelowPricefloorAucitonEvent(adUnit: adUnit, error: .belowPricefloor)
+            observer.log(event)
+            
+            finish()
             return
         }
         setupTimeout()
