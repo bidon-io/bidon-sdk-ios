@@ -99,6 +99,7 @@ struct RawBannerView: UIViewRepresentable, AdBannerWrapperView {
 
 extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
     func adView(_ adView: UIView & Bidon.AdView, willPresentScreen ad: Bidon.Ad) {
+        Logger.debug("\(adType.title) [Callback] Will present screen")
         send(
             event: "Bidon will present screen",
             detail: ad.text,
@@ -108,8 +109,9 @@ extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
     }
 
     func adView(_ adView: UIView & Bidon.AdView, didDismissScreen ad: Bidon.Ad) {
+        Logger.debug("\(adType.title) [Callback] Did dismiss screen")
         send(
-            event: "Bidon will dismiss screen",
+            event: "Bidon did dismiss screen",
             detail: ad.text,
             bage: "star.fill",
             color: .accentColor
@@ -117,6 +119,7 @@ extension RawBannerView.Coordinator: Bidon.AdViewDelegate {
     }
 
     func adView(_ adView: UIView & Bidon.AdView, willLeaveApplication ad: Bidon.Ad) {
+        Logger.debug("\(adType.title) [Callback] Will leave application")
         send(
             event: "Bidon will leave application",
             detail: ad.text,

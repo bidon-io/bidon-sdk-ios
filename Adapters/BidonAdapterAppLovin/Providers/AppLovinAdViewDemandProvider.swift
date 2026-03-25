@@ -17,14 +17,8 @@ internal final class AppLovinAdViewDemandProvider: NSObject {
     private let size: CGSize
 
     private lazy var adView: ALAdView = {
-        let frame = CGRect(origin: .zero, size: size)
-
-        let adView = ALAdView(
-            frame: frame,
-            size: adSize,
-            sdk: sdk
-        )
-
+        let adView = ALAdView(size: adSize)
+        adView.frame = CGRect(origin: .zero, size: size)
         adView.adEventDelegate = self
         adView.adDisplayDelegate = self
 
