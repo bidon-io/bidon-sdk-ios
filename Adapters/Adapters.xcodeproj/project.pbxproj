@@ -21,6 +21,8 @@
 		420F03542A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03532A67FC0E00A4664F /* BigoAdsRewardedDemandProvider.swift */; };
 		420F03562A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03552A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift */; };
 		420F035F2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = 420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDB000032A6818B000A4664F /* BDNMetaExceptionCatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB000012A6818B000A4664F /* BDNMetaExceptionCatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDB000042A6818B000A4664F /* BDNMetaExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BDB000022A6818B000A4664F /* BDNMetaExceptionCatcher.m */; };
 		420F03642A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */; };
 		420F03662A6819B000A4664F /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 420F03652A6819B000A4664F /* Bidon.framework */; };
 		420F036D2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420F036C2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift */; };
@@ -360,6 +362,9 @@
 		420F03552A67FE3300A4664F /* BigoAdsAdViewDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigoAdsAdViewDemandProvider.swift; sourceTree = "<group>"; };
 		420F035C2A6818AF00A4664F /* BidonAdapterMetaAudienceNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BidonAdapterMetaAudienceNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidonAdapterMetaAudienceNetwork.h; sourceTree = "<group>"; };
+		BDB000012A6818B000A4664F /* BDNMetaExceptionCatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BDNMetaExceptionCatcher.h; sourceTree = "<group>"; };
+		BDB000022A6818B000A4664F /* BDNMetaExceptionCatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BDNMetaExceptionCatcher.m; sourceTree = "<group>"; };
+
 		420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkDemandSourceAdapter.swift; sourceTree = "<group>"; };
 		420F03652A6819B000A4664F /* Bidon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bidon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		420F036C2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAudienceNetworkBiddingBaseDemandProvider.swift; sourceTree = "<group>"; };
@@ -997,10 +1002,20 @@
 			children = (
 				42D377942AFAB03C003DCCA2 /* Models */,
 				420F036B2A68235E00A4664F /* Providers */,
+				BDB000052A6818B000A4664F /* Tools */,
 				420F035E2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h */,
 				420F03632A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift */,
 			);
 			path = BidonAdapterMetaAudienceNetwork;
+			sourceTree = "<group>";
+		};
+		BDB000052A6818B000A4664F /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				BDB000012A6818B000A4664F /* BDNMetaExceptionCatcher.h */,
+				BDB000022A6818B000A4664F /* BDNMetaExceptionCatcher.m */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		420F036B2A68235E00A4664F /* Providers */ = {
@@ -2139,6 +2154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				420F035F2A6818B000A4664F /* BidonAdapterMetaAudienceNetwork.h in Headers */,
+				BDB000032A6818B000A4664F /* BDNMetaExceptionCatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3628,6 +3644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB000042A6818B000A4664F /* BDNMetaExceptionCatcher.m in Sources */,
 				420F036D2A68237700A4664F /* MetaAudienceNetworkBiddingBaseDemandProvider.swift in Sources */,
 				42D3779A2AFAB084003DCCA2 /* MetaAudienceNetworkBiddingToken.swift in Sources */,
 				420F03642A68194900A4664F /* MetaAudienceNetworkDemandSourceAdapter.swift in Sources */,
