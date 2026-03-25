@@ -35,7 +35,14 @@ final class MetaAudienceNetworkBiddingRewardedDemandProvider: MetaAudienceNetwor
         self.rewardedAd = rewarded
         self.response = response
 
-        rewarded.load(withBidPayload: payload.payload)
+        var error: NSError?
+        let success = BDNRunCatchingObjCException(&error) {
+            rewarded.load(withBidPayload: payload.payload)
+        }
+        if !success {
+            self.response?(.failure(.noFill(error?.localizedDescription)))
+            self.response = nil
+        }
     }
 }
 
