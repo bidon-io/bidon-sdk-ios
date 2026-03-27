@@ -35,7 +35,15 @@
       "Bash(gh api repos/bidon-io/bidon-sdk-android/contents/.github/claude-prompts --jq '.[].name')",
       "WebFetch(domain:github.com)",
       "Bash(gh api:*)",
-      "Bash(which gh:*)"
+      "Bash(which gh:*)",
+      "Bash(cd:*)",
+      "Bash(chmod:*)",
+      "Bash(rm pods-updater.yml ci-adapter-quality.yml automation-post-pods-update.yml claude-code.yml)",
+      "Bash(mv pods-updater-v2.yml pods-updater.yml)",
+      "Bash(mv ci-adapter-quality-v2.yml ci-adapter-quality.yml)",
+      "Bash(mv automation-post-pods-update-v2.yml automation-post-pods-update.yml)",
+      "Bash(mv claude-code-v2.yml claude-code.yml)",
+      "Bash(grep -E '^\\(pods-updater|ci-adapter-quality|automation-post-pods-update|claude-code\\)\\\\.yml$')"
     ],
     "deny": [],
     "ask": []

@@ -1,4 +1,4 @@
-name: Pods Updater (self-hosted)
+name: Pods Updater
 
 on:
   schedule:
@@ -11,50 +11,12 @@ permissions:
 
 jobs:
   update:
-    runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: develop
-          
-      - name: Debug which http_get_json is running
-        run: |
-          sed -n '50,80p' .github/scripts/pods_updater.rb
-
-
-      - name: gitconfig
-        run: |
-          git config --global user.name "bidon-runner"
-          git config --global user.email "runner@bidon.org"
-          git config --global credential.helper ""
-
-      - name: CocoaPods repo update (self-hosted)
-        run: |
-          set -o pipefail
-          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
-          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
-          echo "Using POD_BIN=$POD_BIN"
-          "$POD_BIN" --version || true
-          "$POD_BIN" repo update 2>&1 | tee "$RUNNER_TEMP/pod_repo_update.log"
-
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
-          private-key: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
-
-      - name: Run updater
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          PODS_UPDATER_TOKEN: ${{ steps.app-token.outputs.token }}
-          PODS_BASE_BRANCH: develop
-          PODS_REVIEWERS: "bidon-io/bidon-ios"
-        run: |
-          export GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
-          export POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
-          echo "Using POD_BIN=$POD_BIN"
-          /opt/homebrew/opt/ruby@3.2/bin/ruby .github/scripts/pods_updater.rb
+    uses: bidon-io/dependamachine/.github/workflows/ios-pods-updater.yml@main
+    with:
+      config_path: .github/pods-updater-config.json
+      base_branch: develop
+      reviewers: "bidon-io/bidon-ios"
+      runner_labels: '["self-hosted", "macOS", "ARM64", "xcode-16", "bidon"]'
+    secrets:
+      APP_ID: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
+      APP_PRIVATE_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
