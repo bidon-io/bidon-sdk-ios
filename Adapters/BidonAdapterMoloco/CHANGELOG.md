@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.5.1.0
+* Updated to MolocoSDKiOS 4.5.1
+
 ## 4.5.0.0
 * Updated to MolocoSDKiOS 4.5.0
 
