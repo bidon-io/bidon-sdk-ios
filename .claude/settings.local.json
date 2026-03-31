@@ -5,7 +5,13 @@
       "Bash(xcodebuild:*)",
       "mcp__acp__Bash",
       "mcp__acp__Edit",
-      "Bash(grep -oP '\\\\[[\\\\w\\\\s]+\\\\]' Bidon/SDK/CacheSandbox/Zhenya/**/*.swift | sort -u)"
+      "Bash(grep -oP '\\\\[[\\\\w\\\\s]+\\\\]' Bidon/SDK/CacheSandbox/Zhenya/**/*.swift | sort -u)",
+      "Bash(find /Users/evgeniagrigorovic/Desktop/Project/bidon-sdk-ios -type f -name *cache* -o -name *Cache*)",
+      "Bash(python3:*)",
+      "Bash(xargs rm:*)",
+      "Bash(plutil -lint Bidon.xcodeproj/project.pbxproj)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

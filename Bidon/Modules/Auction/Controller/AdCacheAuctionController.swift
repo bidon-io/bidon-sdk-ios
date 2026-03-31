@@ -52,6 +52,7 @@ final class AdCacheAuctionController<AdTypeContextType: AdTypeContext>: AuctionC
     var finishAuctionOperation: AuctionOperationFinish<AdTypeContextType, BidType>?
     var completion: Completion?
     var singleLoadCompletion: SingleCompletion?
+    var shouldCancelBeforeNextAdUnit: ((Price) -> Bool)?
 
     private let finishLock = NSLock()
     private var isFinishing = false
@@ -135,7 +136,15 @@ final class AdCacheAuctionController<AdTypeContextType: AdTypeContext>: AuctionC
             self.finishAuction()
             return
         }
-        
+
+        if let shouldCancel = shouldCancelBeforeNextAdUnit,
+           let nextPricefloor = adUnitPricefloor(from: nextOperation),
+           shouldCancel(nextPricefloor) {
+            Logger.debug("[AdCache] Auction early stop before ad unit with pricefloor: \(nextPricefloor)")
+            self.finishAuction()
+            return
+        }
+
         self.addOperation(nextOperation)
     }
     
@@ -269,6 +278,10 @@ final class AdCacheAuctionController<AdTypeContextType: AdTypeContext>: AuctionC
             return operation.adUnit
         }
         return nil
+    }
+
+    private func adUnitPricefloor(from operation: any AuctionOperationRequestDemand) -> Price? {
+        return adUnit(from: operation)?.pricefloor
     }
 
     private func operation<T: AuctionOperation>(build: ((T.BuilderType) -> ())? = nil) -> T

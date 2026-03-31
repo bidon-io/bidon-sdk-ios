@@ -153,8 +153,19 @@ where
         }
 
         state = .auction(controller: auction)
-        
+
         Cacher.Main.interstitialStorage.beginIteration()
+
+        let mainStorage = Cacher.Main.interstitialStorage
+        let fallbackStorage = Cacher.Fallback.interstitialStorage
+        auction.shouldCancelBeforeNextAdUnit = { nextPricefloor in
+            if mainStorage.isFull && fallbackStorage.isFull { return true }
+            if let maxPrice = mainStorage.maxPrice {
+                let threshold = Double(mainStorage.iterationThreshold) / 100.0
+                if threshold * maxPrice > nextPricefloor { return true }
+            }
+            return false
+        }
 
         // single-load callback: insert into cache + report refill outcome
         auction.singleLoadCompletion = { [weak self] bid in

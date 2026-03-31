@@ -161,6 +161,17 @@ final class AdCacheBannerAdManager: BannerAdManager {
 
         Cacher.Main.bannerStorage.beginIteration()
 
+        let mainStorage = Cacher.Main.bannerStorage
+        let fallbackStorage = Cacher.Fallback.bannerStorage
+        auction.shouldCancelBeforeNextAdUnit = { nextPricefloor in
+            if mainStorage.isFull && fallbackStorage.isFull { return true }
+            if let maxPrice = mainStorage.maxPrice {
+                let threshold = Double(mainStorage.iterationThreshold) / 100.0
+                if threshold * maxPrice > nextPricefloor { return true }
+            }
+            return false
+        }
+
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
 

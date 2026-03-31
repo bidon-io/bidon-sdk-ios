@@ -227,7 +227,7 @@ private extension BidonSdk {
             .config?
             .banner
             .strategy
-        Logger.dDebug("Strategy banner \(strategy)")
+        Logger.debug("Strategy banner \(String(describing: strategy))")
         return strategy ?? 0
     }
 }

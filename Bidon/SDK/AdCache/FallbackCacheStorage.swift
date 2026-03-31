@@ -89,9 +89,15 @@ final class FallbackCacheStorage {
         lock.lock()
         defer { lock.unlock() }
         if let first = items.first {
-            Logger.debug("[AdCache] [Main] Peek: \(format(first))")
+            Logger.debug("[AdCache] [Fallback] Peek: \(format(first))")
         }
         return items.first
+    }
+
+    var isFull: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return items.count >= capacity
     }
 
     // MARK: - Private

@@ -25,8 +25,8 @@ enum InsertResult {
 
 final class CacheStorage {
 
-    private let capacity: Int
-    private let iterationThreshold: Int
+    let capacity: Int
+    let iterationThreshold: Int
     private let lock = NSLock()
 
     private var stickyHeadActive: Bool = false
@@ -156,6 +156,18 @@ final class CacheStorage {
         lock.lock()
         defer { lock.unlock() }
         return items.first
+    }
+
+    var isFull: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return items.count >= capacity
+    }
+
+    var maxPrice: Price? {
+        lock.lock()
+        defer { lock.unlock() }
+        return items.map(\.price).max()
     }
 
     // MARK: - Logging
