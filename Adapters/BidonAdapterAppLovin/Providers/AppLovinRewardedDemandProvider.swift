@@ -116,16 +116,17 @@ extension AppLovinRewardedDemandProvider: DirectDemandProvider {
         response: @escaping DemandProviderResponse
     ) {
         let interstitial = ALIncentivizedInterstitialAd(
-            zoneIdentifier: adUnitExtras.zoneId,
-            sdk: sdk
+            zoneIdentifier: adUnitExtras.zoneId
         )
 
-        let delegate = AdLoadDelegate(response: response)
-
         interstitial.adDisplayDelegate = bridge
-        interstitial.preloadAndNotify(delegate)
-
         self.interstitial = interstitial
+
+        let delegate = AdLoadDelegate(response: response)
+        sdk.adService.loadNextAd(
+            ALAdSize.interstitial,
+            andNotify: delegate
+        )
     }
 
     // MARK: Noop

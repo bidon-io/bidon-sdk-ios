@@ -13,7 +13,6 @@ import GoogleMobileAds
 extension GoogleMobileAds.Request {
     final class Builder {
         private var parameters: [String: AnyHashable] = [:]
-        private(set) var adContent: String?
         private(set) var requestAgent: String?
 
         var extras: GoogleMobileAds.Extras {
@@ -37,12 +36,6 @@ extension GoogleMobileAds.Request {
         }
 
         @discardableResult
-        func withBiddingPayload(_ biddingPayload: String?) -> Self {
-            self.adContent = biddingPayload
-            return self
-        }
-
-        @discardableResult
         func withRequestAgent(_ requestAgent: String?) -> Self {
             self.requestAgent = requestAgent
             return self
@@ -61,7 +54,6 @@ extension GoogleMobileAds.Request {
 
         self.init()
 
-        self.adString = builder.adContent
         self.requestAgent = builder.requestAgent
 
         self.register(builder.extras)

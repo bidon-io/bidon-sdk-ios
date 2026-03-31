@@ -15,11 +15,12 @@ module Fastlane
       IOS_MIN_VERSIONS = {
           "BidonAdapterIronSource" => "13.0",
           "ISBidonCustomAdapter"   => "13.0",
-          "BidonAdapterMyTarget"   => "12.4",
+          "BidonAdapterMyTarget"   => "14.0",
           "BidonAdapterYandex"     => "13.0",
           "BidonAdapterDTExchange" => "13.0",
           "BidonAdapterUnityAds"   => "13.0",
-          "BidonAdapterMoloco"     => "13.0"
+          "BidonAdapterMoloco"     => "13.0",
+          "BidonAdapterMetaAudienceNetwork"     => "13.0"
       }
 
       def self.run(params)

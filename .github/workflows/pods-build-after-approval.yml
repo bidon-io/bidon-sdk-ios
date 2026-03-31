@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
   pull-requests: write
   actions: read
 
@@ -158,44 +158,37 @@ jobs:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_REGION: ${{ secrets.S3_REGION }}
 
-      - name: Setup SSH for podspec repo
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.POD_REPO_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Register CocoaPods repo
-        run: |
-          pod repo remove bidon || true
-          pod repo remove bidon-io-cocoapods_specs || true
-          pod repo add bidon git@github.com:bidon-io/CocoaPods-Specs.git
-
-      - name: Push adapter podspec to podspec repo
+      - name: Collect adapter podspecs
         if: steps.meta.outputs.adapters != ''
+        id: collect_specs
         run: |
           set -euo pipefail
-          SDK_VERSION="${{ steps.sdk.outputs.version }}"
-          if [[ "$SDK_VERSION" == *"-"* ]]; then
-            SOURCES="bidon"
-          else
-            SOURCES="trunk"
-          fi
-          echo "Using CocoaPods sources: $SOURCES for SDK_VERSION=$SDK_VERSION"
+          SPECS=""
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
           for AD in "${ADAPTERS[@]}"; do
             if [ -z "$AD" ]; then
               continue
             fi
             spec="build/Podspecs/${AD}.podspec.json"
-            echo "Pushing $spec..."
-            pod repo push bidon "$spec" --allow-warnings --skip-tests --skip-import-validation --sources="$SOURCES"
+            if [ -f "$spec" ]; then
+              SPECS="$SPECS $spec"
+            fi
           done
+          echo "specs=$SPECS" >> "$GITHUB_OUTPUT"
+
+      - name: Push adapter podspecs via PR
+        if: steps.meta.outputs.adapters != ''
+        uses: ./.github/actions/push-podspecs
+        with:
+          specs: ${{ steps.collect_specs.outputs.specs }}
+          branch_suffix: pods-update-${{ steps.sdk.outputs.version }}
+          token: ${{ secrets.PAT_RUNNER }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Push adapter podspec to trunk
         if: steps.meta.outputs.adapters != ''
         env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN_V2 }}
         run: |
           set -euo pipefail
           IFS=',' read -ra ADAPTERS <<< "${{ steps.meta.outputs.adapters }}"
@@ -272,3 +265,16 @@ jobs:
           token: ${{ github.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: squash
+
+      - name: (Optional) Ensure auto-merge via gh as well
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          gh pr merge \
+            -R "bidon-io/bidon-sdk-ios" \
+            --squash \
+            --auto \
+            "$PR_NUMBER"

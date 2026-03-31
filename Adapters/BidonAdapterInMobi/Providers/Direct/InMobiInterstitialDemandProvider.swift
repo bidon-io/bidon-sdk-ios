@@ -46,12 +46,7 @@ final class InMobiInterstitialDemandProvider: NSObject, DirectDemandProvider {
         ad: DemandAdType,
         event: DemandProviderEvent
     ) {
-        switch event {
-        case .lose:
-            ad.ad.cancel()
-        default:
-            break
-        }
+        // No action needed - InMobi SDK handles cleanup internally
     }
 }
 

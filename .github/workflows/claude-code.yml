@@ -1,0 +1,15 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  claude:
+    uses: bidon-io/dependamachine/.github/workflows/ios-claude-code.yml@main
+    with:
+      allowed_bots: "bidon-pods-updater,bidon-pods-updater[bot],bidon-pods-updater2,bidon-pods-updater2[bot],bidon-dependabot,bidon-dependabot[bot]"
+    secrets:
+      APP_ID: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
+      APP_PRIVATE_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
+      CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY_SDK }}

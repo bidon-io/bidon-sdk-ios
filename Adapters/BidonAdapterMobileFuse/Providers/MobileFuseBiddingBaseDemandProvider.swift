@@ -43,7 +43,6 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
 
         if let preferences = MobileFusePrivacyPreferences() {
             context.regulations.usPrivacyString.map(preferences.setUsPrivacyConsentString)
-            context.regulations.gdprConsentString.map(preferences.setIabConsentString)
 
             switch context.regulations.coppa {
             case .yes: preferences.setSubjectToCoppa(true)
@@ -90,19 +89,19 @@ class MobileFuseBiddingBaseDemandProvider<DemandAdType: MFAd>: NSObject, Bidding
         response = nil
     }
 
-    final func onAdRendered(_ ad: MFAd!) {
+    func onAdRendered(_ ad: MFAd!) {
         guard let ad = ad as? DemandAdType else { return }
 
         delegate?.providerWillPresent(self)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
 
-    final func onAdClicked(_ ad: MFAd!) {
+    func onAdClicked(_ ad: MFAd!) {
         guard let _ = ad as? DemandAdType else { return }
         delegate?.providerDidClick(self)
     }
 
-    final func onAdClosed(_ ad: MFAd!) {
+    func onAdClosed(_ ad: MFAd!) {
         guard let _ = ad as? DemandAdType else { return }
         delegate?.providerDidHide(self)
     }

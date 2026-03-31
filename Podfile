@@ -10,43 +10,39 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.3.3'
+  pod 'AmazonPublisherServicesSDK', '5.5.0'
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.5.1'
+  pod 'AppLovinSDK', '13.6.1'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.5.1'
+  pod 'BidMachine', '3.6.0'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '12.14.0'
-end
-
-def appsflyer
-  pod 'AppsFlyerFramework', '6.17.8'
+  pod 'Google-Mobile-Ads-SDK', '13.1.0'
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.0.6'
+  pod 'BigoADS', '5.1.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.3'
+  pod 'Fyber_Marketplace_SDK', '8.4.5'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.20.1'
+  pod 'FBAudienceNetwork', '6.21.1'
 end
 
 def unity_ads
-  pod 'UnityAds', '4.16.5'
+  pod 'UnityAds', '4.17.0'
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.2.0'
+  pod 'MolocoSDKiOS', '4.5.0'
 end
 
 def meta_sdk
@@ -54,23 +50,23 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.5'
+  pod 'MintegralAdSDK', '8.0.8'
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.9.3'
+  pod 'MobileFuseSDK', '1.10.0'
 end
 
 def vungle
-  pod 'VungleAds', '7.6.3'
+  pod 'VungleAds', '7.7.1'
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.1.0'
+  pod 'InMobiSDK', '11.1.1'
 end
 
 def my_target
-  pod "myTargetSDK", '5.38.0'
+  pod "myTargetSDK", '5.40.0'
 end
 
 def chartboost
@@ -78,19 +74,23 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", '9.2.0.0'
+  pod "IronSourceSDK/Ads", '9.3.0.0'
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.1'
+  pod 'YandexMobileAds', '7.18.4'
 end
 
 def startio
-  pod 'StartAppSDK', '4.12.0'
+  pod 'StartAppSDK', '4.13.0'
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.13.0'
+  pod 'TaurusxAdsSDK', '1.15.0'
+end
+
+def zmaticoo
+  pod 'zMaticoo', '1.5.6'
 end
 
 def swiftlint
@@ -200,6 +200,11 @@ target 'BidonAdapterTaurusX' do
   taurus
 end
 
+target 'BidonAdapterZmaticoo' do
+  project 'Adapters/Adapters.xcodeproj'
+  zmaticoo
+end
+
 target 'AppLovinMediationBidonAdapter' do
   project 'ThirdPartyMediationAdapters/ThirdPartyMediationAdapters.xcodeproj'
   applovin
@@ -238,6 +243,7 @@ target 'AdaptersTests' do
   yandex
   taurus
   startio
+  zmaticoo
 end
 
 # Demo
@@ -246,7 +252,6 @@ target 'Sandbox' do
   project 'Sandbox/Sandbox.xcodeproj'
   swiftlint
   applovin
-  appsflyer
   bidmachine
   admob
   applovin
@@ -267,6 +272,7 @@ target 'Sandbox' do
   ironsource
   yandex
   taurus
+  zmaticoo
 end
 
 post_install do |installer|

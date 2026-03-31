@@ -1,0 +1,18 @@
+name: CI Adapter Quality
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: ['Adapters/**', 'Podfile', 'Podfile.lock']
+  workflow_dispatch:
+
+jobs:
+  quality:
+    uses: bidon-io/dependamachine/.github/workflows/ios-ci-adapter-quality.yml@main
+    with:
+      workspace: BidOn.xcworkspace
+      test_scheme: AdaptersTests
+      adapter_prefix: BidonAdapter
+      adapters_dir: Adapters
+      runner_labels: '["self-hosted", "macOS", "ARM64", "xcode-16", "bidon"]'
+      adapter_regex: "Adapters/(BidonAdapter[A-Za-z0-9_]+)"

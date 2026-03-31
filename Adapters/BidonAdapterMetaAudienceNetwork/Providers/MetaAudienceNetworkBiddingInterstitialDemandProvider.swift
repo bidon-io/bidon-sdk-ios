@@ -33,7 +33,14 @@ final class MetaAudienceNetworkBiddingInterstitialDemandProvider: MetaAudienceNe
         self.interstitial = interstitial
         self.response = response
 
-        interstitial.load(withBidPayload: payload.payload)
+        var error: NSError?
+        let success = BDNRunCatchingObjCException(&error) {
+            interstitial.load(withBidPayload: payload.payload)
+        }
+        if !success {
+            self.response?(.failure(.noFill(error?.localizedDescription)))
+            self.response = nil
+        }
     }
 }
 

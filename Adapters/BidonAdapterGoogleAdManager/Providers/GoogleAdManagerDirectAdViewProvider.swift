@@ -98,7 +98,7 @@ extension AdViewContext {
         case .mrec: return AdSizeMediumRectangle
         case .banner: return AdSizeBanner
         case .leaderboard: return AdSizeLeaderboard
-        default: return currentOrientationAnchoredAdaptiveBanner(width: width)
+        default: return largeAnchoredAdaptiveBanner(width: width)
         }
     }
 

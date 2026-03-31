@@ -1,0 +1,26 @@
+name: Automation post pods update
+
+on:
+  workflow_run:
+    workflows: ["CI Adapter Quality"]
+    types: [completed]
+    branches:
+      - 'chore/pod-*'
+
+jobs:
+  automation:
+    uses: bidon-io/dependamachine/.github/workflows/ios-automation-post-pods-update.yml@main
+    with:
+      ci_workflow_name: "CI Adapter Quality"
+      workspace: BidOn.xcworkspace
+      test_scheme: AdaptersTests
+      adapter_prefix: BidonAdapter
+      adapter_scheme_prefix: BidonAdapter
+      adapters_dir: Adapters
+      tests_dir: Tests/AdaptersTests
+      base_branch: develop
+      review_team: bidon-ios
+      adapter_regex: "Adapters/(BidonAdapter[A-Za-z0-9_]+)"
+    secrets:
+      APP_ID: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
+      APP_PRIVATE_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}

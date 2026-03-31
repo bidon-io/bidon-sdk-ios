@@ -41,7 +41,7 @@ class MolocoBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidding
         adUnitExtras: MolocoAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        fatalError("MintegralBiddingBaseDemandProvider is unable to prepare bid")
+        fatalError("MolocoBiddingBaseDemandProvider is unable to prepare bid")
     }
 
     final func notify(

@@ -30,6 +30,7 @@ import BidonAdapterMoloco
 import BidonAdapterStartIo
 import BidonAdapterTaurusX
 import BidonAdapterYandex
+import BidonAdapterZmaticoo
 
 final class InitializationViewModel: ObservableObject, AdResponder {
     enum InitializationState {
@@ -153,7 +154,8 @@ fileprivate extension Array where Element == Bidon.Adapter {
             StartIoDemandSourceAdapter(),
             MolocoDemandSourceAdapter(),
             TaurusXDemandSourceAdapter(),
-            YandexDemandSourceAdapter()
+            YandexDemandSourceAdapter(),
+            ZmaticooDemandSourceAdapter()
         ].sorted { $0.demandId < $1.demandId }
     }
 }

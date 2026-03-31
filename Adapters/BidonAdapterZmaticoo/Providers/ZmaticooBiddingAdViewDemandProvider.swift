@@ -1,0 +1,95 @@
+//
+//  ZmaticooBiddingAdViewDemandProvider.swift
+//  BidonAdapterZmaticoo
+//
+//  Created by Bidon Team on 08/01/2026.
+//
+
+import Bidon
+import Foundation
+import MaticooSDK
+import UIKit
+
+final class ZmaticooAdViewDemandAd: DemandAd {
+    public let id: String
+
+    init(placementId: String) {
+        self.id = placementId
+    }
+}
+
+final class ZmaticooBiddingAdViewDemandProvider: ZmaticooBiddingBaseDemandProvider<ZmaticooAdViewDemandAd> {
+    weak var adViewDelegate: DemandProviderAdViewDelegate?
+    weak var rootViewController: UIViewController?
+
+    private var response: Bidon.DemandProviderResponse?
+    private var placementId: String = ""
+    private var banner: MATBannerAd?
+    private var bannerFormat: BannerFormat
+
+    override var adFormat: ZmaticooAdFormat {
+        bannerFormat == .mrec ? .mrec : .banner
+    }
+
+    init(context: AdViewContext) {
+        self.rootViewController = context.rootViewController
+        self.bannerFormat = context.format
+        super.init()
+    }
+
+    override func load(
+        payload: ZmaticooBiddingPayload,
+        adUnitExtras: ZmaticooAdUnitExtras,
+        response: @escaping DemandProviderResponse
+    ) {
+        self.response = response
+        self.placementId = adUnitExtras.placementId
+
+        let ad = MATBannerAd(placementID: adUnitExtras.placementId)
+        ad.delegate = self
+        ad.load(payload.payload)
+        self.banner = ad
+    }
+}
+
+extension ZmaticooBiddingAdViewDemandProvider: AdViewDemandProvider {
+    func container(for ad: ZmaticooAdViewDemandAd) -> Bidon.AdViewContainer? {
+        return banner
+    }
+
+    func didTrackImpression(for ad: ZmaticooAdViewDemandAd) {}
+}
+
+extension ZmaticooBiddingAdViewDemandProvider: MATBannerAdDelegate {
+    func bannerAdDidLoad(_ bannerAd: MATBannerAd) {
+        let ad = ZmaticooAdViewDemandAd(placementId: placementId)
+        response?(.success(ad))
+        response = nil
+    }
+    
+    func bannerAd(_ bannerAd: MATBannerAd, didFailWithError error: any Error) {
+        response?(.failure(.noFill(error.localizedDescription)))
+        response = nil
+    }
+    
+    func bannerAdDidImpression(_ bannerAd: MATBannerAd) {
+        let ad = ZmaticooAdViewDemandAd(placementId: placementId)
+        revenueDelegate?.provider(self, didLogImpression: ad)
+    }
+    
+    func bannerAd(_ bannerAd: MATBannerAd, showFailWithError error: any Error) {
+        // NO-OP
+    }
+    
+    func bannerAdDidClick(_ bannerAd: MATBannerAd) {
+        // NO-OP
+    }
+    
+    func bannerAdDismissed(_ bannerAd: MATBannerAd) {
+        // NO-OP
+    }
+}
+
+extension MATBannerAd: Bidon.AdViewContainer {
+    public var isAdaptive: Bool { false }
+}
