@@ -1,15 +1,15 @@
 //
-//  ZhenyaManagerPool.swift
+//  AdCacheManagerPool.swift
 //  Bidon
 //
 
 import Foundation
 import UIKit
 
-/// Синглтон для управления ZhenyaAdManager независимо от жизненного цикла Interstitial
+/// Синглтон для управления AdCacheAdManager независимо от жизненного цикла Interstitial
 /// 
-/// Этот класс решает проблему преждевременной деаллокации менеджеров рекламы для стратегии 1 (Zhenya).
-/// Когда Interstitial объект освобождается из памяти, ZhenyaAdManager продолжает работу
+/// Этот класс решает проблему преждевременной деаллокации менеджеров рекламы для стратегии 1 (AdCache).
+/// Когда Interstitial объект освобождается из памяти, AdCacheAdManager продолжает работу
 /// (загрузка, аукцион, показ) до полного завершения всех операций.
 ///
 /// Особенности:
@@ -17,15 +17,15 @@ import UIKit
 ///   он получит доступ к существующему менеджеру
 /// - Автоматическая очистка - менеджеры в состоянии .idle удаляются через 5 минут
 /// - Потокобезопасность - все операции синхронизированы через concurrent queue с барьерами
-final class ZhenyaManagerPool {
-    static let shared = ZhenyaManagerPool()
+final class AdCacheManagerPool {
+    static let shared = AdCacheManagerPool()
     
     private var managers: [String: ManagerEntry] = [:]
-    private let queue = DispatchQueue(label: "com.bidon.zhenyapool", attributes: .concurrent)
+    private let queue = DispatchQueue(label: "com.bidon.adcache.pool", attributes: .concurrent)
     
     private struct ManagerEntry {
         weak var interstitial: Interstitial?
-        let manager: ZhenyaAdManager<
+        let manager: AdCacheAdManager<
             InterstitialAdTypeContext,
             InterstitialConcurrentAuctionControllerBuilder,
             InterstitialImpressionController,
@@ -46,7 +46,7 @@ final class ZhenyaManagerPool {
         for auctionKey: String?,
         interstitial: Interstitial,
         delegate: FullscreenAdManagerDelegate?
-    ) -> ZhenyaAdManager<
+    ) -> AdCacheAdManager<
         InterstitialAdTypeContext,
         InterstitialConcurrentAuctionControllerBuilder,
         InterstitialImpressionController,
@@ -54,7 +54,7 @@ final class ZhenyaManagerPool {
     > {
         let key = auctionKey ?? "default"
         
-        var result: ZhenyaAdManager<
+        var result: AdCacheAdManager<
             InterstitialAdTypeContext,
             InterstitialConcurrentAuctionControllerBuilder,
             InterstitialImpressionController,
@@ -68,7 +68,7 @@ final class ZhenyaManagerPool {
                 let oldDelegate = entry.manager.delegate
                 entry.manager.delegate = delegate
                 
-                Logger.debug("[ZhenyaCache] Reuse manager for key: \(key)")
+                Logger.debug("[AdCache] Reuse manager for key: \(key)")
                 
                 managers[key] = ManagerEntry(
                     interstitial: interstitial,
@@ -78,9 +78,9 @@ final class ZhenyaManagerPool {
                 result = entry.manager
             } else {
                 // Создаем новый менеджер
-                Logger.debug("[ZhenyaCache] New manager for key: \(key)")
+                Logger.debug("[AdCache] New manager for key: \(key)")
                 
-                let manager = ZhenyaAdManager<
+                let manager = AdCacheAdManager<
                     InterstitialAdTypeContext,
                     InterstitialConcurrentAuctionControllerBuilder,
                     InterstitialImpressionController,
@@ -105,7 +105,7 @@ final class ZhenyaManagerPool {
     }
     
     /// Получить существующий менеджер без создания нового
-    func getManager(for auctionKey: String?) -> ZhenyaAdManager<
+    func getManager(for auctionKey: String?) -> AdCacheAdManager<
         InterstitialAdTypeContext,
         InterstitialConcurrentAuctionControllerBuilder,
         InterstitialImpressionController,
@@ -142,7 +142,7 @@ final class ZhenyaManagerPool {
                 let shouldKeep = isActive || (isRecent && hasInterstitial)
                 
                 if !shouldKeep {
-                    Logger.debug("[ZhenyaCache] Cleanup manager for key: \(key)")
+                    Logger.debug("[AdCache] Cleanup manager for key: \(key)")
                 }
                 
                 // Оставляем менеджер если он активен ИЛИ (недавно создан И имеет interstitial)

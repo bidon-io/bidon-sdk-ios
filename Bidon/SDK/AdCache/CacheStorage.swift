@@ -39,7 +39,7 @@ final class CacheStorage {
     func beginIteration() {
         lock.lock()
         defer { lock.unlock() }
-        Logger.debug("[ZhenyaCache] [Main] Begin iteration | cache: \(items.count)/\(capacity)")
+        Logger.debug("[AdCache] [Main] Begin iteration | cache: \(items.count)/\(capacity)")
         iterationMaxPrice = nil
     }
 
@@ -62,7 +62,7 @@ final class CacheStorage {
 
         // 1) Iteration threshold (только для capacity > 1)
         if capacity > 1, shouldRejectByIterationThreshold(element.price) {
-            Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — threshold (min: \(formatMinAllowed()))")
+            Logger.debug("[AdCache] [Main] ❌ \(format(element)) — threshold (min: \(formatMinAllowed()))")
             return .rejected(.iterationThreshold)
         }
 
@@ -72,7 +72,7 @@ final class CacheStorage {
         if let idx = indexByKey[key] {
             if items[idx].price == element.price {
                 if stickyHeadActive, idx == 0, !sticky {
-                    Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — sticky protected")
+                    Logger.debug("[AdCache] [Main] ❌ \(format(element)) — sticky protected")
                     return .rejected(.stickyHeadProtected)
                 }
 
@@ -83,7 +83,7 @@ final class CacheStorage {
                 sortAccordingToMode()
                 rebuildIndex()
                 trimIfNeeded()
-                Logger.debug("[ZhenyaCache] [Main] ✅ Updated \(format(element))")
+                Logger.debug("[AdCache] [Main] ✅ Updated \(format(element))")
                 return .success
             } else {
                 // Same id, different price → remove old, insert as new
@@ -98,13 +98,13 @@ final class CacheStorage {
 
         // 3) Capacity == 1 + sticky head → always reject non-sticky
         if capacity == 1, !items.isEmpty, stickyHeadActive, !sticky {
-            Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — sticky protected")
+            Logger.debug("[AdCache] [Main] ❌ \(format(element)) — sticky protected")
             return .rejected(.stickyHeadProtected)
         }
 
         // 4) Cache full
         if items.count == capacity, let cheapest = cheapestAllowedToEvictPrice(), element.price <= cheapest {
-            Logger.debug("[ZhenyaCache] [Main] ❌ \(format(element)) — full (cheapest: \(cheapest))")
+            Logger.debug("[AdCache] [Main] ❌ \(format(element)) — full (cheapest: \(cheapest))")
             return .rejected(.cacheFull)
         }
 
@@ -125,7 +125,7 @@ final class CacheStorage {
         trimIfNeeded()
 
         let stickyLabel = sticky ? " (sticky)" : ""
-        Logger.debug("[ZhenyaCache] [Main] ✅ \(format(element))\(stickyLabel)")
+        Logger.debug("[AdCache] [Main] ✅ \(format(element))\(stickyLabel)")
         return .success
     }
 
@@ -148,7 +148,7 @@ final class CacheStorage {
         }
 
         rebuildIndex()
-        Logger.debug("[ZhenyaCache] [Main] Pop: \(format(first))")
+        Logger.debug("[AdCache] [Main] Pop: \(format(first))")
         return first
     }
 
@@ -162,14 +162,14 @@ final class CacheStorage {
 
     private func logCacheState() {
         if items.isEmpty {
-            Logger.debug("[ZhenyaCache] [Main] Cache: empty")
+            Logger.debug("[AdCache] [Main] Cache: empty")
             return
         }
         let entries = items.enumerated().map { (i, item) in
             let s = (stickyHeadActive && i == 0) ? "*" : ""
             return "\(item.price)\(s)"
         }
-        Logger.debug("[ZhenyaCache] [Main] Cache (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
+        Logger.debug("[AdCache] [Main] Cache (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
     }
 
     private func format(_ element: Ad) -> String {

@@ -2,7 +2,7 @@
 
 ## Проблема
 
-| Strategy 1 (Zhenya) | Strategy 2 (Dima) |
+| Strategy 1 (AdCache) | Strategy 2 (Dima) |
 |---|---|
 | Быстрый callback — первый bid отдаётся немедленно | Fallback — используется если аукцион провалился |
 | Нет TTL/reservation → нет защиты от двойного показа | Нет instant-serve → всегда ждёт полный аукцион |
@@ -20,7 +20,7 @@
 └──────────────────────────────┬──────────────────────────────────┘
                                │
                     ┌──────────▼──────────┐
-                    │   L1 Cache peek()   │  ← CacheStorage (Zhenya)
+                    │   L1 Cache peek()   │  ← CacheStorage (AdCache)
                     │   sticky + price    │    sorted by price DESC
                     └──────────┬──────────┘
                                │
@@ -28,7 +28,7 @@
               │ HIT                             │ MISS
               ▼                                 ▼
     Serve immediately                    Run Auction
-    (no auction needed)          (ZhenyaAuctionController)
+    (no auction needed)          (AdCacheAuctionController)
                                          │
                           ┌──────────────┴───────────────┐
                           │ singleLoadCompletion (per bid)│
@@ -60,7 +60,7 @@
 
 ## Уровни кэша
 
-### L1 — Fast Cache (Zhenya's CacheStorage)
+### L1 — Fast Cache (AdCache CacheStorage)
 
 **Назначение:** instant-serve, первичный путь
 
@@ -137,10 +137,10 @@ reserve(entryID)
 ```
 MergedInterstitialAdManager / MergedBannerAdManager
 │
-├── l1Cache: CacheStorage          ← from Zhenya
+├── l1Cache: CacheStorage          ← from AdCache
 ├── l2Cache: BidCacheStore         ← from Dima
 ├── cachePolicy: DCachePolicy      ← from Dima
-└── auctionController: ZhenyaAuctionController  ← with singleLoadCompletion
+└── auctionController: AdCacheAuctionController  ← with singleLoadCompletion
 ```
 
 ### loadAd() — полный алгоритм
@@ -196,18 +196,18 @@ show()
          │ uses                    │ uses
          ▼                         ▼
 ┌─────────────────┐    ┌──────────────────────────────┐
-│  Zhenya (reuse) │    │  Dima (reuse)                │
+│  AdCache (reuse) │    │  Dima (reuse)                │
 │  CacheStorage   │    │  BidCacheStore               │
 │  BannerCache    │    │  CachedBid                   │
 │  Storage        │    │  DCachePolicy                │
-│  Zhenya         │    │  BannerCachePolicy           │
+│  AdCache         │    │  BannerCachePolicy           │
 │  AuctionCtrl    │    │  InterstitialCachePolicy     │
 │  ManagerPool    │    │  CacheImpressionProxy        │
 └─────────────────┘    │  CacheStatsTracker           │
                        └──────────────────────────────┘
 ```
 
-**Удаляется после миграции:** отдельные `ZhenyaSandbox/` и `DimaSandbox/` ad managers (оба sandbox остаются как библиотека компонентов до конца миграции).
+**Удаляется после миграции:** отдельные `AdCacheSandbox/` и `DimaSandbox/` ad managers (оба sandbox остаются как библиотека компонентов до конца миграции).
 
 ---
 
@@ -220,7 +220,7 @@ show()
 - `show()` с L1 pop
 - Без L2 (пока)
 
-**Критерий готовности:** работает как Zhenya (L1 only), проходит существующие тесты.
+**Критерий готовности:** работает как AdCache (L1 only), проходит существующие тесты.
 
 ---
 
@@ -241,10 +241,10 @@ Banner specifics: `prepareForReuse()` делает `l1Cache.pop()` + L2 испо
 
 ---
 
-### Шаг 4 — Manager Pool _(порт ZhenyaManagerPool)_
+### Шаг 4 — Manager Pool _(порт AdCacheManagerPool)_
 
 Чтобы L1 кэш выживал при пересоздании рекламного объекта (например, при смене экрана):
-- Порт `ZhenyaManagerPool` для `MergedInterstitialAdManager`
+- Порт `AdCacheManagerPool` для `MergedInterstitialAdManager`
 - Ключ: `auctionKey` (placement)
 - Автоочистка: 5 мин idle + нет живого рекламного объекта
 
@@ -254,7 +254,7 @@ Banner specifics: `prepareForReuse()` делает `l1Cache.pop()` + L2 испо
 
 ```swift
 // AdCacheConfig.swift
-// strategy: 0=default, 1=Zhenya, 2=Dima, 3=Merged
+// strategy: 0=default, 1=AdCache, 2=Dima, 3=Merged
 ```
 
 Точки подключения: `BannerView.swift`, `Interstitial.swift` — добавить `case 3`.
@@ -264,7 +264,7 @@ Banner specifics: `prepareForReuse()` делает `l1Cache.pop()` + L2 испо
 ### Шаг 6 — QA + Cleanup
 
 - A/B тест strategy 3 против 1 и 2
-- После подтверждения: удалить `ZhenyaSandbox/` и `DimaSandbox/` managers (оставить только shared компоненты)
+- После подтверждения: удалить `AdCacheSandbox/` и `DimaSandbox/` managers (оставить только shared компоненты)
 - Переименовать `MergedSandbox/` → финальное имя
 
 ---
@@ -281,6 +281,6 @@ Banner specifics: `prepareForReuse()` делает `l1Cache.pop()` + L2 испо
 | 6 — Cleanup | удаление | 2 | низкий |
 
 Шаги 1–3 — независимы от существующего кода, новые файлы.
-Самая рискованная часть — шаг 4 (Manager Pool), но это порт готового кода из Zhenya.
+Самая рискованная часть — шаг 4 (Manager Pool), но это порт готового кода из AdCache.
 
 **Общий объём:** ~400–500 строк нового кода + удаление ~600 строк после cleanup.

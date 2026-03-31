@@ -1,40 +1,33 @@
 //
-//  ZhenyaSandbox.swift
+//  AdCacheBannerAdManager.swift
 //  Bidon
-//
-//  Created by Dzmitry on 23/02/2026.
 //
 
 import Foundation
 
-enum ZhenyaSandbox {
-    private static var bannerManagers: [String: BannerAdManager] = [:]
-    
-    static func buildBannerManager(
+final class AdCacheBannerAdManager: BannerAdManager {
+    typealias AdCacheAuctionControllerType = AdCacheAuctionController<BannerAdTypeContext>
+
+    private static var managers: [String: AdCacheBannerAdManager] = [:]
+
+    static func getOrCreate(
         placement: String,
         adRevenueObserver: AdRevenueObserver
-    ) -> BannerAdManager {
-        
-        if let manager = bannerManagers[placement] {
+    ) -> AdCacheBannerAdManager {
+        if let manager = managers[placement] {
             return manager
         }
-        
-        let manager = ZhenyaBannerAdManager(
+        let manager = AdCacheBannerAdManager(
             placement: placement,
             adRevenueObserver: adRevenueObserver
         )
-        
-        bannerManagers[placement] = manager
+        managers[placement] = manager
         return manager
     }
-}
-
-final class ZhenyaBannerAdManager: BannerAdManager {
-    typealias ZhenyaAuctionControllerType = ZhenyaAuctionController<BannerAdTypeContext>
 
     var isFirstLoad: Bool = true
-    var auction: ZhenyaAuctionControllerType?
-    
+    var auction: AdCacheAuctionControllerType?
+
     override func prepareForReuse() {
         defer {
             super.prepareForReuse()
@@ -48,20 +41,20 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             return
         }
     }
-    
+
     override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
         auctionInfo = DefaultAuctionInfo()
-        Logger.debug("[ZhenyaCache] [Banner] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.bannerStorage.peek() != nil)")
-        
+        Logger.debug("[AdCache] [Banner] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.bannerStorage.peek() != nil)")
+
         // If cache has a bid container that already meets the floor — use it.
         if let ad = Cacher.Main.bannerStorage.peek() as? BidContainer, ad.price >= pricefloor {
             let controller = AdViewImpression(
                 bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
                 format: BannerAdTypeContext(viewContext: viewContext).format
             )
-            
+
             self.state = .ready(impression: controller)
-            
+
             let demandReportModel = AuctionDemandReportModel(
                 demandId: ad.bid.adUnit.demandId,
                 status: .win,
@@ -72,7 +65,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                 tokenStartTimestamp: 0,
                 tokenFinishTimestamp: 0
             )
-            
+
             if self.auctionInfo.adUnits == nil {
                 self.auctionInfo.adUnits = []
             }
@@ -84,7 +77,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
 
         super.loadAd(pricefloor: pricefloor, viewContext: viewContext, auctionKey: auctionKey)
     }
-    
+
     override func handlePerformAuctionRequestFailed(error: any Error, viewContext: AdViewContext) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -114,18 +107,18 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                     format: viewContext.format
                 )
                 self.state = .ready(impression: controller)
-                
+
                 self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
             } else {
                 self.sendErrorToSuperclass(error: error, viewContext: viewContext)
             }
         }
     }
-        
+
     func sendErrorToSuperclass(error: Error, viewContext: AdViewContext) {
         super.handlePerformAuctionRequestFailed(error: error, viewContext: viewContext)
     }
-    
+
     override func performAuction(
         auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken],
@@ -135,9 +128,9 @@ final class ZhenyaBannerAdManager: BannerAdManager {
             return
         }
         Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
-        
-        Logger.debug("[ZhenyaCache] [Banner] performAuction")
-        
+
+        Logger.debug("[AdCache] [Banner] performAuction")
+
         isFirstLoad = true
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
@@ -153,7 +146,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
         let context = BannerAdTypeContext(viewContext: viewContext)
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
 
-        let auction = ZhenyaAuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
+        let auction = AdCacheAuctionControllerType { (builder: AdViewConcurrentAuctionControllerBuilder) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withAdUnitProvider(provider)
             builder.withPricefloor(auctionInfo.pricefloor)
@@ -165,9 +158,9 @@ final class ZhenyaBannerAdManager: BannerAdManager {
         }
 
         state = .auction(controller: auction)
-        
+
         Cacher.Main.bannerStorage.beginIteration()
-        
+
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
 
@@ -187,7 +180,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                     format: context.format
                 )
                 self.state = .ready(impression: controller)
-                
+
                 let demandReportModel = AuctionDemandReportModel(
                     demandId: ad.bid.adUnit.demandId,
                     status: .win,
@@ -202,16 +195,16 @@ final class ZhenyaBannerAdManager: BannerAdManager {
                     self.auctionInfo.adUnits = []
                 }
                 self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-                
+
                 DispatchQueue.main.async { [weak self] in
                     guard let self else {
                         return
                     }
-                    
+
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                 }
             }
-            
+
             self.isFirstLoad = false
         }
 
@@ -270,7 +263,7 @@ final class ZhenyaBannerAdManager: BannerAdManager {
 
             self.auction = nil
         }
-        
+
         self.auction = auction
     }
 }

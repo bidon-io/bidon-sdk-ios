@@ -36,7 +36,7 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
     typealias BidType = BidModel<AdTypeContextType.DemandProviderType>
     typealias AuctionControllerType = ConcurrentAuctionController<AdTypeContextType>
-    typealias ZhenyaAuctionControllerType = ZhenyaAuctionController<AdTypeContextType>
+    typealias AdCacheAuctionControllerType = AdCacheAuctionController<AdTypeContextType>
 
     typealias AuctionInfo = AuctionRequest.ResponseBody
 

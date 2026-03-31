@@ -1,12 +1,12 @@
 //
-//  Zhenya.swift
+//  AdCacheFullscreenAdManager.swift
 //  Bidon
 //
 
 import Foundation
 import UIKit
 
-final class ZhenyaAdManager<
+final class AdCacheAdManager<
     AdTypeContextType,
     AuctionControllerBuilderType,
     ImpressionControllerType,
@@ -20,7 +20,7 @@ where
     AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
     var isFirstLoad: Bool = true
-    var auction: ZhenyaAuctionControllerType?
+    var auction: AdCacheAuctionControllerType?
 
     override var isReady: Bool {
         return Cacher.Main.interstitialStorage.peek() != nil || Cacher.Fallback.interstitialStorage.peek() != nil
@@ -28,7 +28,7 @@ where
 
     override func loadAd(pricefloor: Price, auctionKey: String?) {
         auctionInfo = DefaultAuctionInfo()
-        Logger.debug("[ZhenyaCache] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.interstitialStorage.peek() != nil)")
+        Logger.debug("[AdCache] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.interstitialStorage.peek() != nil)")
         
         // If cache has a bid container that already meets the floor — use it.
         if let ad = Cacher.Main.interstitialStorage.peek() as? BidContainer, ad.price >= pricefloor {
@@ -142,7 +142,7 @@ where
 
         let provider = DefaultAdUnitProvider(adUnits: auctionInfo.adUnits)
 
-        let auction = ZhenyaAuctionControllerType { (builder: AuctionControllerBuilderType) in
+        let auction = AdCacheAuctionControllerType { (builder: AuctionControllerBuilderType) in
             builder.withAdaptersRepository(sdk.adaptersRepository)
             builder.withAdUnitProvider(provider)
             builder.withAuctionObserver(observer)

@@ -32,85 +32,20 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @Injected(\.sdk)
     private var sdk: Sdk
     
-    private let strategy: Int = BidonSdk.shared.interstitialCacheStrategy
-
-    // Для стратегии 1 используем пул, для остальных - локальный менеджер
-    private var localManager: Manager?
-    private var cachedPoolManager: Manager?
-    
-    private var currentManager: Manager {
-        if strategy == 1 {
-            // Для Zhenya стратегии используем пул
-            // Кешируем менеджер, чтобы каждый раз не получать из пула заново
-            if let cached = cachedPoolManager {
-                // Обновляем delegate на случай если он стал nil
-                let wasNil = cached.delegate == nil
-                cached.delegate = self
-                
-                Logger.debug("""
-                [Interstitial] Using cached pool manager
-                - delegate was nil: \(wasNil)
-                - delegate now: \(cached.delegate != nil ? "exists" : "nil")
-                - self: \(self)
-                """)
-                
-                return cached
-            }
-            
-            Logger.debug("""
-            [Interstitial] Getting manager from pool (first time)
-            - auctionKey: \(auctionKey ?? "nil")
-            - self: \(self)
-            - self is retained: \(CFGetRetainCount(self as CFTypeRef))
-            """)
-            
-            let manager = ZhenyaManagerPool.shared.getOrCreateManager(
-                for: auctionKey,
-                interstitial: self,
-                delegate: self
-            ) as Manager
-            
-            cachedPoolManager = manager
-            
-            Logger.debug("""
-            [Interstitial] Manager received from pool
-            - manager.delegate: \(manager.delegate != nil ? "exists" : "nil")
-            - manager.delegate === self: \(manager.delegate === self)
-            """)
-            
-            return manager
-        } else {
-            // Для других стратегий используем локальный менеджер
-            if let manager = localManager {
-                return manager
-            }
-            
-            let manager = createLocalManager()
-            localManager = manager
-            return manager
-        }
-    }
-    
-    private func createLocalManager() -> Manager {
-        guard let strategy = BidonSdk.shared.interCacheStrategy else {
+    private lazy var currentManager: Manager = {
+        let strategy = BidonSdk.shared.interstitialCacheStrategy
+        guard strategy == 1 else {
             return Manager(
                 context: InterstitialAdTypeContext(),
                 delegate: self
             )
         }
-        
-        switch strategy {
-        case 2:
-            return DimaSandbox.Interstitial.buildManager(
-                delegate: self
-            )
-        default:
-            return Manager(
-                context: InterstitialAdTypeContext(),
-                delegate: self
-            )
-        }
-    }
+        return AdCacheManagerPool.shared.getOrCreateManager(
+            for: auctionKey,
+            interstitial: self,
+            delegate: self
+        ) as Manager
+    }()
 
     @objc public init(
         auctionKey: String? = nil
@@ -134,14 +69,7 @@ public final class Interstitial: NSObject, FullscreenAdObject {
     @objc public func loadAd(
         with pricefloor: Price = .zero
     ) {
-        let manager = currentManager
-        Logger.debug("""
-        [Interstitial] loadAd called
-        - self: \(self)
-        - manager.delegate: \(manager.delegate != nil ? "exists" : "nil")
-        - manager.delegate === self: \(manager.delegate === self)
-        """)
-        manager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
+        currentManager.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
 
     @objc public func showAd(from rootViewController: UIViewController) {
@@ -217,15 +145,3 @@ private extension BidonSdk {
     }
 }
 
-private extension BidonSdk {
-    var interCacheStrategy: Int? {
-        let strategy = environmentRepository
-            .environment(AppManager.self)
-            .config?
-            .interstitial
-            .strategy
-        Logger.dDebug("Strategy interstitial \(strategy)")
-        
-        return strategy
-    }
-}

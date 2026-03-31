@@ -86,12 +86,7 @@ public final class BannerView: UIView, AdView {
     private func createAdManager() -> BannerAdManager {
         switch BidonSdk.shared.bannerCacheStrategy {
         case 1:
-            return ZhenyaSandbox.buildBannerManager(
-                placement: .default,
-                adRevenueObserver: adRevenueObserver
-            )
-        case 2:
-            return DimaSandbox.Banner.buildManager(
+            return AdCacheBannerAdManager.getOrCreate(
                 placement: .default,
                 adRevenueObserver: adRevenueObserver
             )

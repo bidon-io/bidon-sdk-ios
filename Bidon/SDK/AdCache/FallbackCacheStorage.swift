@@ -39,7 +39,7 @@ final class FallbackCacheStorage {
                 items[idx] = element
                 items.sort { $0.price > $1.price }
                 rebuildIndex()
-                Logger.debug("[ZhenyaCache] [Fallback] ✅ Updated \(format(element))")
+                Logger.debug("[AdCache] [Fallback] ✅ Updated \(format(element))")
                 return .success
             } else {
                 // Same id, different price → remove old, insert as new
@@ -53,7 +53,7 @@ final class FallbackCacheStorage {
         if items.count >= capacity {
             let cheapest = items.last!
             guard element.price > cheapest.price else {
-                Logger.debug("[ZhenyaCache] [Fallback] ❌ \(format(element)) — full (cheapest: \(cheapest.price))")
+                Logger.debug("[AdCache] [Fallback] ❌ \(format(element)) — full (cheapest: \(cheapest.price))")
                 return .rejected(.cacheFull)
             }
             indexByKey[cheapest.id] = nil
@@ -64,7 +64,7 @@ final class FallbackCacheStorage {
         items.append(element)
         items.sort { $0.price > $1.price }
         rebuildIndex()
-        Logger.debug("[ZhenyaCache] [Fallback] ✅ \(format(element))")
+        Logger.debug("[AdCache] [Fallback] ✅ \(format(element))")
         return .success
     }
 
@@ -81,7 +81,7 @@ final class FallbackCacheStorage {
         let first = items.removeFirst()
         indexByKey[first.id] = nil
         rebuildIndex()
-        Logger.debug("[ZhenyaCache] [Fallback] Pop: \(format(first))")
+        Logger.debug("[AdCache] [Fallback] Pop: \(format(first))")
         return first
     }
 
@@ -89,7 +89,7 @@ final class FallbackCacheStorage {
         lock.lock()
         defer { lock.unlock() }
         if let first = items.first {
-            Logger.debug("[ZhenyaCache] [Main] Peek: \(format(first))")
+            Logger.debug("[AdCache] [Main] Peek: \(format(first))")
         }
         return items.first
     }
@@ -107,11 +107,11 @@ final class FallbackCacheStorage {
 
     private func logCacheState() {
         if items.isEmpty {
-            Logger.debug("[ZhenyaCache] [Fallback] Cache: empty")
+            Logger.debug("[AdCache] [Fallback] Cache: empty")
             return
         }
         let entries = items.map { "\($0.price)" }
-        Logger.debug("[ZhenyaCache] [Fallback] Cache (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
+        Logger.debug("[AdCache] [Fallback] Cache (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
     }
 
     private func format(_ element: Ad) -> String {
