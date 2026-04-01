@@ -19,61 +19,53 @@ where
     ImpressionControllerType.BidType == BidModel<AdTypeContextType.DemandProviderType>,
     AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
-    var isFirstLoad: Bool = true
+    var isFirstFill: Bool = true
     var auction: AdCacheAuctionControllerType?
+    var cacheKey: String = "default"
+
+    lazy var storage = Cacher.storage(for: context.adType, auctionKey: cacheKey)
 
     override var isReady: Bool {
-        return Cacher.Main.interstitialStorage.peek() != nil || Cacher.Fallback.interstitialStorage.peek() != nil
+        return storage.peekMain() != nil || storage.peekFallback() != nil
     }
 
+    // MARK: - loadAd (spec §7)
+
     override func loadAd(pricefloor: Price, auctionKey: String?) {
-        auctionInfo = DefaultAuctionInfo()
-        Logger.debug("[AdCache] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.interstitialStorage.peek() != nil)")
-        
-        // If cache has a bid container that already meets the floor — use it.
-        if let ad = Cacher.Main.interstitialStorage.peek() as? BidContainer, ad.price >= pricefloor {
+        // 1. Main has ad → instant serve (no pricefloor check per spec §5)
+        if let ad = storage.peekMain() as? BidContainer {
+            Logger.debug("[AdCache][\(cacheKey)] loadAd | served from cache")
             let controller = ImpressionControllerType(
                 bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>
             )
             controller.delegate = self
             self.state = .ready(controller: controller)
-            
-            let demandReportModel = AuctionDemandReportModel(
-                demandId: ad.bid.adUnit.demandId,
-                status: .win,
-                bid: DummyBid(ad.bid),
-                adUnit: DummyAdUnit(ad.bid.adUnit),
-                startTimestamp: 0,
-                finishTimestamp: 0,
-                tokenStartTimestamp: 0,
-                tokenFinishTimestamp: 0
-            )
-            
-            if self.auctionInfo.adUnits == nil {
-                self.auctionInfo.adUnits = []
-            }
-            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-            
+            auctionInfo = DefaultAuctionInfo()
+            (auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
             self.delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
             return
         }
 
+        // 2. Main empty → auction
+        Logger.debug("[AdCache][\(cacheKey)] loadAd | floor: \(pricefloor) | main empty → auction")
+        auctionInfo = DefaultAuctionInfo()
         super.loadAd(pricefloor: pricefloor, auctionKey: auctionKey)
     }
 
+    // MARK: - show (spec §8)
+
     override func show(from rootViewController: UIViewController) {
+        auction?.cancel()
+        auction = nil
+
         switch state {
         case .ready:
-            // main cache first, fallback cache second
-            guard let ad = (Cacher.Main.interstitialStorage.popFirst()
-                         ?? Cacher.Fallback.interstitialStorage.popFirst()) as? BidContainer
-            else { return }
+            guard let ad = storage.popFirst() as? BidContainer else { return }
 
             let imprController = ImpressionControllerType(
                 bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>
             )
             imprController.delegate = self
-
             state = .impression(controller: imprController)
             imprController.show(from: rootViewController)
 
@@ -82,53 +74,39 @@ where
             state = .idle
         }
     }
-        
+
+    // MARK: - Fallback on request failure (spec §7 step 3)
+
     override func handlePerformAuctionRequestFailed(error: any Error) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            if let ad = Cacher.Fallback.interstitialStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
-                // Update auctionInfo: set WIN status for the cached ad
-                if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
-                   let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
-                    adUnitInfo.status = DemandMediationStatus.win.stringValue
-                } else {
-                    let demandReportModel = AuctionDemandReportModel(
-                        demandId: ad.bid.adUnit.demandId,
-                        status: .win,
-                        bid: DummyBid(ad.bid),
-                        adUnit: DummyAdUnit(ad.bid.adUnit),
-                        startTimestamp: 0,
-                        finishTimestamp: 0,
-                        tokenStartTimestamp: 0,
-                        tokenFinishTimestamp: 0
-                    )
-                    if self.auctionInfo.adUnits == nil {
-                        self.auctionInfo.adUnits = []
-                    }
-                    self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-                }
-                let controller = ImpressionControllerType(bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>)
+            if let ad = self.storage.peekFallback() as? BidContainer {
+                Logger.debug("[AdCache][\(self.cacheKey)] Request failed → served from fallback")
+                self.auctionInfo = DefaultAuctionInfo()
+                (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
+                let controller = ImpressionControllerType(
+                    bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>
+                )
                 controller.delegate = self
                 self.state = .ready(controller: controller)
-                
                 self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
             } else {
                 self.sendErrorToSuperclass(error: error)
             }
         }
     }
-        
+
     func sendErrorToSuperclass(error: Error) {
         super.handlePerformAuctionRequestFailed(error: error)
     }
+
+    // MARK: - performAuction (spec §7 step 4)
 
     override func performAuction(
         _ auctionInfo: BaseFullscreenAdManager<AdTypeContextType, AuctionControllerBuilderType, ImpressionControllerType, AdaptersFetcherType>.AuctionInfo,
         tokens: [BiddingDemandToken]
     ) {
-        isFirstLoad = true
-
-        Logger.verbose("Fullscreen ad manager will start auction: \(auctionInfo)")
+        isFirstFill = true
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
 
@@ -154,102 +132,69 @@ where
 
         state = .auction(controller: auction)
 
-        Cacher.Main.interstitialStorage.beginIteration()
-
-        let mainStorage = Cacher.Main.interstitialStorage
-        let fallbackStorage = Cacher.Fallback.interstitialStorage
-        auction.shouldCancelBeforeNextAdUnit = { nextPricefloor in
-            if mainStorage.isFull && fallbackStorage.isFull { return true }
-            if let maxPrice = mainStorage.maxPrice {
-                let threshold = Double(mainStorage.iterationThreshold) / 100.0
-                if threshold * maxPrice > nextPricefloor { return true }
-            }
-            return false
+        // Pre-filter (spec §11)
+        auction.shouldCancelBeforeNextAdUnit = { [weak self] ecpm in
+            self?.storage.shouldStop(ecpm: ecpm) ?? true
         }
 
-        // single-load callback: insert into cache + report refill outcome
+        // Route each filled bid (spec §7 pseudocode)
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
 
             let ad = BidContainer(bid: bid)
+            let result = self.storage.route(ad, sticky: self.isFirstFill)
 
-            let result = Cacher.Main.interstitialStorage.insert(ad, sticky: self.isFirstLoad)
-            if result.isInserted {
-                self.adRevenueObserver.observe(bid)
-            } else {
-                Cacher.Fallback.interstitialStorage.insert(ad)
+            if result != .rejected {
+                if self.isFirstFill {
+                    observer.log(WinBidAuctionEvent(bid: bid))
+                } else {
+                    observer.log(CachedBidAuctionEvent(bid: bid))
+                }
             }
 
-            if self.isFirstLoad {
+            if result == .insertedMain {
+                self.adRevenueObserver.observe(bid)
+            }
+
+            if self.isFirstFill && result != .rejected {
                 let controller = ImpressionControllerType(bid: bid)
                 controller.delegate = self
                 self.state = .ready(controller: controller)
-                
-                let demandReportModel = AuctionDemandReportModel(
-                    demandId: ad.bid.adUnit.demandId,
-                    status: .win,
-                    bid: DummyBid(ad.bid),
-                    adUnit: DummyAdUnit(ad.bid.adUnit),
-                    startTimestamp: 0,
-                    finishTimestamp: 0,
-                    tokenStartTimestamp: 0,
-                    tokenFinishTimestamp: 0
-                )
-                if self.auctionInfo.adUnits == nil {
-                    self.auctionInfo.adUnits = []
-                }
-                self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+
+                (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
 
                 DispatchQueue.main.async { [weak self] in
-                    guard let self else { 
-                        return 
-                    }
-                    
+                    guard let self else { return }
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                 }
             }
 
-            self.isFirstLoad = false
+            self.isFirstFill = false
         }
 
+        // Auction completion
         auction.load { [unowned observer, weak self] result in
             guard let self else { return }
 
             switch result {
             case .success:
-                // If your auction can end "success" without any bids delivered via `singleLoadCompletion`,
-                // you should call `.noFill` here. Otherwise, keep as-is.
-                break
+                Logger.debug("[AdCache][\(self.cacheKey)] Auction finished | success")
 
             case .failure(let error):
-                // fetch from fallback cache
+                Logger.debug("[AdCache][\(self.cacheKey)] Auction finished | failure: \(error.localizedDescription)")
+                // No-fill → try Fallback (spec §7 step 4)
+                // Skip if show() already happened (state is .impression)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    if let ad = Cacher.Fallback.interstitialStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
-                        // Update auctionInfo: set WIN status for the cached ad
-                        if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
-                           let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
-                            adUnitInfo.status = DemandMediationStatus.win.stringValue
-                        } else {
-                            let demandReportModel = AuctionDemandReportModel(
-                                demandId: ad.bid.adUnit.demandId,
-                                status: .win,
-                                bid: DummyBid(ad.bid),
-                                adUnit: DummyAdUnit(ad.bid.adUnit),
-                                startTimestamp: 0,
-                                finishTimestamp: 0,
-                                tokenStartTimestamp: 0,
-                                tokenFinishTimestamp: 0
-                            )
-                            if self.auctionInfo.adUnits == nil {
-                                self.auctionInfo.adUnits = []
-                            }
-                            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-                        }
-                        let controller = ImpressionControllerType(bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>)
+                    guard case .auction = self.state else { return }
+                    if let ad = self.storage.peekFallback() as? BidContainer {
+                        Logger.debug("[AdCache][\(self.cacheKey)] No-fill → served from fallback")
+                        (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
+                        let controller = ImpressionControllerType(
+                            bid: ad.bid as! BidModel<AdTypeContextType.DemandProviderType>
+                        )
                         controller.delegate = self
                         self.state = .ready(controller: controller)
-                        
                         self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                     } else {
                         self.state = .idle
@@ -257,9 +202,8 @@ where
                     }
                 }
             }
-            
-            self.sendAuctionReport(observer.report)
 
+            self.sendAuctionReport(observer.report)
             self.auction = nil
         }
 

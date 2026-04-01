@@ -68,8 +68,6 @@ final class AdCacheManagerPool {
                 let oldDelegate = entry.manager.delegate
                 entry.manager.delegate = delegate
                 
-                Logger.debug("[AdCache] Reuse manager for key: \(key)")
-                
                 managers[key] = ManagerEntry(
                     interstitial: interstitial,
                     manager: entry.manager,
@@ -78,7 +76,7 @@ final class AdCacheManagerPool {
                 result = entry.manager
             } else {
                 // Создаем новый менеджер
-                Logger.debug("[AdCache] New manager for key: \(key)")
+                Logger.debug("[AdCache][\(key)] New manager")
                 
                 let manager = AdCacheAdManager<
                     InterstitialAdTypeContext,
@@ -89,6 +87,7 @@ final class AdCacheManagerPool {
                     context: InterstitialAdTypeContext(),
                     delegate: delegate
                 )
+                manager.cacheKey = key
                 
                 let entry = ManagerEntry(
                     interstitial: interstitial,
@@ -142,7 +141,7 @@ final class AdCacheManagerPool {
                 let shouldKeep = isActive || (isRecent && hasInterstitial)
                 
                 if !shouldKeep {
-                    Logger.debug("[AdCache] Cleanup manager for key: \(key)")
+                    Logger.debug("[AdCache][\(key)] Cleanup manager")
                 }
                 
                 // Оставляем менеджер если он активен ИЛИ (недавно создан И имеет interstitial)

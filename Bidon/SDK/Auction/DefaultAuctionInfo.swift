@@ -41,6 +41,32 @@ final class DefaultAuctionInfo: AuctionInfo {
     }
 }
 
+extension DefaultAuctionInfo {
+    func appendWinReport(for ad: BidContainer) {
+        let report = AuctionDemandReportModel(
+            demandId: ad.bid.adUnit.demandId,
+            status: .win,
+            bid: DummyBid(ad.bid),
+            adUnit: DummyAdUnit(ad.bid.adUnit),
+            startTimestamp: 0,
+            finishTimestamp: 0,
+            tokenStartTimestamp: 0,
+            tokenFinishTimestamp: 0
+        )
+        if adUnits == nil { adUnits = [] }
+        adUnits?.append(DefaultAdUnitInfo(report))
+    }
+
+    func markOrAppendWin(for ad: BidContainer) {
+        if let index = adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
+           let adUnitInfo = adUnits?[index] as? DefaultAdUnitInfo {
+            adUnitInfo.status = DemandMediationStatus.win.stringValue
+        } else {
+            appendWinReport(for: ad)
+        }
+    }
+}
+
 final class DefaultAdUnitInfo: AdUnitInfo {
     var demandId: String
     var label: String?

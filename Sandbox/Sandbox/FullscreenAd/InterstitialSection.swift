@@ -10,10 +10,22 @@ import SwiftUI
 
 
 struct InterstitialSection: View {
-    @StateObject var vm = FullscreenAdSectionViewModel(adType: .interstitial)
+    var title: String = "Interstitial"
+    var defaultAuctionKey: String = "1O16NDEKK0000"
+
+    @StateObject var vm: FullscreenAdSectionViewModel
+
+    init(title: String = "Interstitial", defaultAuctionKey: String = "1O16NDEKK0000") {
+        self.title = title
+        self.defaultAuctionKey = defaultAuctionKey
+        _vm = StateObject(wrappedValue: FullscreenAdSectionViewModel(
+            adType: .interstitial,
+            defaultAuctionKey: defaultAuctionKey
+        ))
+    }
 
     var body: some View {
-        Section(header: Text("Interstitial")) {
+        Section(header: Text(title)) {
             Stepper(
                 "Pricefloor: \(vm.pricefloor.pretty)",
                 value: $vm.pricefloor,

@@ -57,15 +57,15 @@ protocol AdService: AnyObject {
 
     func initialize() async
 
-    func adEventPublisher(adType: AdType) -> AnyPublisher<AdEventModel, Never>
+    func adEventPublisher(adType: AdType, auctionKey: String?) -> AnyPublisher<AdEventModel, Never>
 
-    func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never>
+    func adPublisher(adType: AdType, auctionKey: String?) -> AnyPublisher<Bidon.Ad?, Never>
 
     func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws
 
-    func canShow(adType: AdType) -> Bool
+    func canShow(adType: AdType, auctionKey: String?) -> Bool
 
-    func show(adType: AdType) async throws
+    func show(adType: AdType, auctionKey: String?) async throws
 
     func notify(loss ad: Ad, adType: AdType)
 

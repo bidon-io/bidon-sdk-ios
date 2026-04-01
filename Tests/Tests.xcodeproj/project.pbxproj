@@ -34,6 +34,8 @@
 		491FD48C2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift in Resources */ = {isa = PBXBuildFile; fileRef = 491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */; };
 		491FD48E2E8D3164005B69D9 /* BidonAdapterTaurusX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 491FD48D2E8D3164005B69D9 /* BidonAdapterTaurusX.framework */; };
 		491FD4912E8D325B005B69D9 /* BidonAdapterTaurusXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491FD48B2E8D2CD2005B69D9 /* BidonAdapterTaurusXTests.swift */; };
+		599FB3E9153A3F4B2056D679 /* AdCacheStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E4592A9BC304D2BFBBD88 /* AdCacheStorageTests.swift */; };
+		7C74C5723DF6D6A735DAD050 /* AdCacheIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094D879509B05AB2470ABC73 /* AdCacheIntegrationTests.swift */; };
 		ABD8233C19805060AE264A0D /* Pods_Tests_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */; };
 		B9009E0E2E7ABDAA005C6187 /* Bidon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E0D2E7ABDAA005C6187 /* Bidon.framework */; };
 		B9009E122E7ABE1D005C6187 /* BidonAdapterAmazon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9009E112E7ABE1D005C6187 /* BidonAdapterAmazon.framework */; };
@@ -93,6 +95,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		094D879509B05AB2470ABC73 /* AdCacheIntegrationTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdCacheIntegrationTests.swift; sourceTree = "<group>"; };
 		1AC7749F19AF8EB9A33F5AC4 /* Pods_Tests_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		421992132A726C3F0045CD5B /* BidRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BidRequest+Extensions.swift"; sourceTree = "<group>"; };
 		42218E412A545A0800CF0865 /* ConcurrentAuctionControllerTestCase+MixedDemand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConcurrentAuctionControllerTestCase+MixedDemand.swift"; sourceTree = "<group>"; };
@@ -180,6 +183,7 @@
 		B9009E6A2E7AC04A005C6187 /* BidonAdapterYandexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterYandexTests.swift; sourceTree = "<group>"; };
 		B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterStartIoTests.swift; sourceTree = "<group>"; };
 		B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BidonAdapterStartIo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D45E4592A9BC304D2BFBBD88 /* AdCacheStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AdCacheStorageTests.swift; sourceTree = "<group>"; };
 		E90EEE21636B0A0899134A07 /* Pods_Tests_ObjectiveC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests_ObjectiveC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D546EB346E2D4C1FD281A0 /* Pods-Tests-ObjectiveC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-ObjectiveC.release.xcconfig"; path = "Target Support Files/Pods-Tests-ObjectiveC/Pods-Tests-ObjectiveC.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,6 +230,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03B75BE12814D38D58277B44 /* AdCache */ = {
+			isa = PBXGroup;
+			children = (
+				D45E4592A9BC304D2BFBBD88 /* AdCacheStorageTests.swift */,
+				094D879509B05AB2470ABC73 /* AdCacheIntegrationTests.swift */,
+			);
+			name = AdCache;
+			path = AdCache;
+			sourceTree = "<group>";
+		};
 		421992122A726C2B0045CD5B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +332,7 @@
 				421992122A726C2B0045CD5B /* Extensions */,
 				42ABAF912A49ED7000B1DF65 /* Auction */,
 				4256722E2A446E6A007AEE23 /* Mocks */,
+				03B75BE12814D38D58277B44 /* AdCache */,
 			);
 			path = "Tests-Swift";
 			sourceTree = "<group>";
@@ -776,6 +791,8 @@
 				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
 				42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */,
 				42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */,
+				599FB3E9153A3F4B2056D679 /* AdCacheStorageTests.swift in Sources */,
+				7C74C5723DF6D6A735DAD050 /* AdCacheIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

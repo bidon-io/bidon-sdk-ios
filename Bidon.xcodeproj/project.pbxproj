@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ADCACHE0B2F6A000000000001 /* AdCacheBannerAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCACHE0F2F6A000000000001 /* AdCacheBannerAdManager.swift */; };
+		ADCACHE0B2F6A000000000002 /* AdCacheStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADCACHE002F6A000000000002 /* AdCacheStorage.swift */; };
 		420067A728BD0FBB003B734D /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420067A628BD0FBB003B734D /* AppManager.swift */; };
 		420EFD7E2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */; };
 		420EFD802A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */; };
@@ -198,6 +199,7 @@
 
 /* Begin PBXFileReference section */
 		ADCACHE0F2F6A000000000001 /* AdCacheBannerAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCacheBannerAdManager.swift; sourceTree = "<group>"; };
+		ADCACHE002F6A000000000002 /* AdCacheStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCacheStorage.swift; sourceTree = "<group>"; };
 		420067A628BD0FBB003B734D /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		420EFD7D2A29E41400328FD4 /* InterstitialAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAuctionRequestBuilder.swift; sourceTree = "<group>"; };
 		420EFD7F2A29E43100328FD4 /* RewardedAuctionRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAuctionRequestBuilder.swift; sourceTree = "<group>"; };
@@ -418,6 +420,7 @@
 		013712E72F4CB2740054F769 /* AdCache */ = {
 			isa = PBXGroup;
 			children = (
+				ADCACHE002F6A000000000002 /* AdCacheStorage.swift */,
 				49FBCCF82F34A67600271DAE /* Cacher.swift */,
 				49FBCCFA2F34A7E800271DAE /* CacheStorage.swift */,
 				49981DA12F5F15DA0037DB91 /* FallbackCacheStorage.swift */,
@@ -1314,6 +1317,7 @@
 				428C45CA2A274CD2009E90EF /* BiddingDemandProvider.swift in Sources */,
 				429EE2C2286CA23F009439C6 /* Repository.swift in Sources */,
 				ADCACHE0B2F6A000000000001 /* AdCacheBannerAdManager.swift in Sources */,
+				ADCACHE0B2F6A000000000002 /* AdCacheStorage.swift in Sources */,
 				4243093C28A3AC18002360B0 /* DemandIdCodingKey.swift in Sources */,
 				429EE2C7286CA283009439C6 /* DemandSourceAdapter.swift in Sources */,
 				428FFC7228BF84060090B126 /* EncodableAuctionReportModel.swift in Sources */,

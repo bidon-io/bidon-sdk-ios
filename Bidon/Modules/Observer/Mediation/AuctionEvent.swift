@@ -203,3 +203,19 @@ struct DirectDemandBelowPricefloorAucitonEvent: AuctionEvent {
         return "bidding demand \(adUnit) will not be loaded because its pricefloor (\(adUnit.pricefloor)) is lower that the filled one"
     }
 }
+
+struct CachedBidAuctionEvent: AuctionEvent {
+    var bid: AnyBid
+
+    var description: String {
+        return "bid \(bid) cached"
+    }
+}
+
+struct WinBidAuctionEvent: AuctionEvent {
+    var bid: AnyBid
+
+    var description: String {
+        return "bid \(bid) win"
+    }
+}

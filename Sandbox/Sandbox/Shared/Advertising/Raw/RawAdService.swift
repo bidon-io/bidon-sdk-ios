@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Foundation
 import Combine
 import Bidon
 
@@ -25,8 +24,16 @@ final class RawAdService: NSObject, AdService {
 
     var parameters: AdServiceParameters = RawAdServiceParameters()
 
-    private lazy var interstitial = RawInterstitialAdWrapper()
+    private var interstitials: [String: RawInterstitialAdWrapper] = [:]
     private lazy var rewardedAd = RawRewardedAdWrapper()
+
+    private func interstitial(for auctionKey: String?) -> RawInterstitialAdWrapper {
+        let key = auctionKey ?? "default"
+        if let existing = interstitials[key] { return existing }
+        let wrapper = RawInterstitialAdWrapper()
+        interstitials[key] = wrapper
+        return wrapper
+    }
 
     override init() {
         super.init()
@@ -42,10 +49,10 @@ final class RawAdService: NSObject, AdService {
         }
     }
 
-    func adEventPublisher(adType: AdType) -> AnyPublisher<AdEventModel, Never> {
+    func adEventPublisher(adType: AdType, auctionKey: String?) -> AnyPublisher<AdEventModel, Never> {
         switch adType {
         case .interstitial:
-            return interstitial.adEventSubject.eraseToAnyPublisher()
+            return interstitial(for: auctionKey).adEventSubject.eraseToAnyPublisher()
         case .rewardedAd:
             return rewardedAd.adEventSubject.eraseToAnyPublisher()
         default:
@@ -53,10 +60,10 @@ final class RawAdService: NSObject, AdService {
         }
     }
 
-    func adPublisher(adType: AdType) -> AnyPublisher<Bidon.Ad?, Never> {
+    func adPublisher(adType: AdType, auctionKey: String?) -> AnyPublisher<Bidon.Ad?, Never> {
         switch adType {
         case .interstitial:
-            return interstitial.adSubject.eraseToAnyPublisher()
+            return interstitial(for: auctionKey).adSubject.eraseToAnyPublisher()
         case .rewardedAd:
             return rewardedAd.adSubject.eraseToAnyPublisher()
         default:
@@ -67,7 +74,7 @@ final class RawAdService: NSObject, AdService {
     func load(pricefloor: Double, adType: AdType, auctionKey: String?) async throws {
         switch adType {
         case .interstitial:
-            try await interstitial.load(pricefloor: pricefloor, auctionKey: auctionKey)
+            try await interstitial(for: auctionKey).load(pricefloor: pricefloor, auctionKey: auctionKey)
         case .rewardedAd:
             try await rewardedAd.load(pricefloor: pricefloor, auctionKey: auctionKey)
         default:
@@ -75,10 +82,10 @@ final class RawAdService: NSObject, AdService {
         }
     }
 
-    func canShow(adType: AdType) -> Bool {
+    func canShow(adType: AdType, auctionKey: String?) -> Bool {
         switch adType {
         case .interstitial:
-            return interstitial.isReady
+            return interstitial(for: auctionKey).isReady
         case .rewardedAd:
             return rewardedAd.isReady
         default:
@@ -86,10 +93,10 @@ final class RawAdService: NSObject, AdService {
         }
     }
 
-    func show(adType: AdType) async throws {
+    func show(adType: AdType, auctionKey: String?) async throws {
         switch adType {
         case .interstitial:
-            try await interstitial.show()
+            try await interstitial(for: auctionKey).show()
         case .rewardedAd:
             try await rewardedAd.show()
         default:
@@ -103,7 +110,7 @@ final class RawAdService: NSObject, AdService {
     ) {
         switch adType {
         case .interstitial:
-            interstitial.notify(loss: ad)
+            interstitials.values.forEach { $0.notify(loss: ad) }
         case .rewardedAd:
             rewardedAd.notify(loss: ad)
         default:
@@ -117,7 +124,7 @@ final class RawAdService: NSObject, AdService {
     ) {
         switch adType {
         case .interstitial:
-            interstitial.notify(win: ad)
+            interstitials.values.forEach { $0.notify(win: ad) }
         case .rewardedAd:
             rewardedAd.notify(win: ad)
         default:

@@ -22,7 +22,14 @@ struct HomeView: View {
 
                 VStack(spacing: 0) {
                     List {
-                        InterstitialSection()
+                        InterstitialSection(
+                            title: "Interstitial #1",
+                            defaultAuctionKey: "1O16NDEKK0000"
+                        )
+                        InterstitialSection(
+                            title: "Interstitial #2",
+                            defaultAuctionKey: ""
+                        )
                         RewardedAdSection()
                         BannerAdSection()
                             .environmentObject(vm.banner)

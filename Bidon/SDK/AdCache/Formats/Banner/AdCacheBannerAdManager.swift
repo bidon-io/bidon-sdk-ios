@@ -12,102 +12,75 @@ final class AdCacheBannerAdManager: BannerAdManager {
 
     static func getOrCreate(
         placement: String,
+        auctionKey: String?,
         adRevenueObserver: AdRevenueObserver
     ) -> AdCacheBannerAdManager {
-        if let manager = managers[placement] {
+        let key = auctionKey ?? "default"
+        if let manager = managers[key] {
             return manager
         }
         let manager = AdCacheBannerAdManager(
             placement: placement,
             adRevenueObserver: adRevenueObserver
         )
-        managers[placement] = manager
+        manager.cacheKey = key
+        managers[key] = manager
         return manager
     }
 
-    var isFirstLoad: Bool = true
+    var isFirstFill: Bool = true
     var auction: AdCacheAuctionControllerType?
+    var cacheKey: String = "default"
+
+    lazy var storage = Cacher.storage(for: .banner, auctionKey: cacheKey)
+
+    // MARK: - prepareForReuse (Banner show cycle)
 
     override func prepareForReuse() {
-        defer {
-            super.prepareForReuse()
-        }
-        if Cacher.Main.bannerStorage.peek() != nil {
-            Cacher.Main.bannerStorage.popFirst()
-            return
-        }
-        if Cacher.Fallback.bannerStorage.peek() != nil {
-            Cacher.Fallback.bannerStorage.popFirst()
-            return
-        }
+        auction?.cancel()
+        auction = nil
+        defer { super.prepareForReuse() }
+        storage.popFirst()
     }
 
-    override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
-        auctionInfo = DefaultAuctionInfo()
-        Logger.debug("[AdCache] [Banner] loadAd | floor: \(pricefloor) | key: \(auctionKey ?? "default") | cached: \(Cacher.Main.bannerStorage.peek() != nil)")
+    // MARK: - loadAd (spec §7)
 
-        // If cache has a bid container that already meets the floor — use it.
-        if let ad = Cacher.Main.bannerStorage.peek() as? BidContainer, ad.price >= pricefloor {
+    override func loadAd(pricefloor: Price, viewContext: AdViewContext, auctionKey: String?) {
+        // 1. Main has ad → instant serve (no pricefloor check per spec §5)
+        if let ad = storage.peekMain() as? BidContainer {
+            Logger.debug("[AdCache][\(cacheKey)] [Banner] loadAd | served from cache")
+            auctionInfo = DefaultAuctionInfo()
+            (auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
+
             let controller = AdViewImpression(
                 bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
                 format: BannerAdTypeContext(viewContext: viewContext).format
             )
-
             self.state = .ready(impression: controller)
-
-            let demandReportModel = AuctionDemandReportModel(
-                demandId: ad.bid.adUnit.demandId,
-                status: .win,
-                bid: DummyBid(ad.bid),
-                adUnit: DummyAdUnit(ad.bid.adUnit),
-                startTimestamp: 0,
-                finishTimestamp: 0,
-                tokenStartTimestamp: 0,
-                tokenFinishTimestamp: 0
-            )
-
-            if self.auctionInfo.adUnits == nil {
-                self.auctionInfo.adUnits = []
-            }
-            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-
             self.delegate?.adManager(self, didLoad: ad, auctionInfo: auctionInfo)
             return
         }
 
+        // 2. Main empty → auction
+        Logger.debug("[AdCache][\(cacheKey)] [Banner] loadAd | floor: \(pricefloor) | main empty → auction")
+        auctionInfo = DefaultAuctionInfo()
         super.loadAd(pricefloor: pricefloor, viewContext: viewContext, auctionKey: auctionKey)
     }
+
+    // MARK: - Fallback on request failure (spec §7 step 3)
 
     override func handlePerformAuctionRequestFailed(error: any Error, viewContext: AdViewContext) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
-                // Update auctionInfo: set WIN status for the cached ad
-                if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
-                   let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
-                    adUnitInfo.status = DemandMediationStatus.win.stringValue
-                } else {
-                    let demandReportModel = AuctionDemandReportModel(
-                        demandId: ad.bid.adUnit.demandId,
-                        status: .win,
-                        bid: DummyBid(ad.bid),
-                        adUnit: DummyAdUnit(ad.bid.adUnit),
-                        startTimestamp: 0,
-                        finishTimestamp: 0,
-                        tokenStartTimestamp: 0,
-                        tokenFinishTimestamp: 0
-                    )
-                    if self.auctionInfo.adUnits == nil {
-                        self.auctionInfo.adUnits = []
-                    }
-                    self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-                }
+            if let ad = self.storage.peekFallback() as? BidContainer {
+                Logger.debug("[AdCache][\(self.cacheKey)] [Banner] Request failed → served from fallback")
+                self.auctionInfo = DefaultAuctionInfo()
+                (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
                 let controller = AdViewImpression(
                     bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
                     format: viewContext.format
                 )
                 self.state = .ready(impression: controller)
-
                 self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
             } else {
                 self.sendErrorToSuperclass(error: error, viewContext: viewContext)
@@ -119,19 +92,16 @@ final class AdCacheBannerAdManager: BannerAdManager {
         super.handlePerformAuctionRequestFailed(error: error, viewContext: viewContext)
     }
 
+    // MARK: - performAuction (spec §7 step 4)
+
     override func performAuction(
         auctionInfo: AuctionInfo,
         tokens: [BiddingDemandToken],
         viewContext: AdViewContext
     ) {
-        if isCanceled {
-            return
-        }
-        Logger.verbose("Banner ad manager will start auction: \(auctionInfo)")
+        if isCanceled { return }
 
-        Logger.debug("[AdCache] [Banner] performAuction")
-
-        isFirstLoad = true
+        isFirstFill = true
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
 
@@ -159,68 +129,52 @@ final class AdCacheBannerAdManager: BannerAdManager {
 
         state = .auction(controller: auction)
 
-        Cacher.Main.bannerStorage.beginIteration()
-
-        let mainStorage = Cacher.Main.bannerStorage
-        let fallbackStorage = Cacher.Fallback.bannerStorage
-        auction.shouldCancelBeforeNextAdUnit = { nextPricefloor in
-            if mainStorage.isFull && fallbackStorage.isFull { return true }
-            if let maxPrice = mainStorage.maxPrice {
-                let threshold = Double(mainStorage.iterationThreshold) / 100.0
-                if threshold * maxPrice > nextPricefloor { return true }
-            }
-            return false
+        // Pre-filter (spec §11)
+        auction.shouldCancelBeforeNextAdUnit = { [weak self] ecpm in
+            self?.storage.shouldStop(ecpm: ecpm) ?? true
         }
 
+        // Route each filled bid (spec §7 pseudocode)
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
 
             let ad = BidContainer(bid: bid)
+            let result = self.storage.route(ad, sticky: self.isFirstFill)
 
-            let result = Cacher.Main.bannerStorage.insert(ad, sticky: self.isFirstLoad)
-            if result.isInserted {
-                self.adRevenueObserver.observe(bid)
-            } else {
-                Cacher.Fallback.bannerStorage.insert(ad)
+            if result != .rejected {
+                if self.isFirstFill {
+                    observer.log(WinBidAuctionEvent(bid: bid))
+                } else {
+                    observer.log(CachedBidAuctionEvent(bid: bid))
+                }
             }
 
-            if self.isFirstLoad {
-                adRevenueObserver.observe(bid)
+            if result == .insertedMain {
+                self.adRevenueObserver.observe(bid)
+            }
+
+            if self.isFirstFill && result != .rejected {
+                self.adRevenueObserver.observe(bid)
                 let controller = AdViewImpression(
                     bid: bid.unwrapped(),
                     format: context.format
                 )
                 self.state = .ready(impression: controller)
 
-                let demandReportModel = AuctionDemandReportModel(
-                    demandId: ad.bid.adUnit.demandId,
-                    status: .win,
-                    bid: DummyBid(ad.bid),
-                    adUnit: DummyAdUnit(ad.bid.adUnit),
-                    startTimestamp: 0,
-                    finishTimestamp: 0,
-                    tokenStartTimestamp: 0,
-                    tokenFinishTimestamp: 0
-                )
-                if self.auctionInfo.adUnits == nil {
-                    self.auctionInfo.adUnits = []
-                }
-                self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
+                (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
 
                 DispatchQueue.main.async { [weak self] in
-                    guard let self else {
-                        return
-                    }
-
+                    guard let self else { return }
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                 }
             }
 
-            self.isFirstLoad = false
+            self.isFirstFill = false
         }
 
+        // Auction completion (spec §10: adUnits перезаписываются)
         auction.load { [unowned observer, weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
 
             self.sendAuctionReport(observer.report, viewContext: viewContext)
 
@@ -232,38 +186,20 @@ final class AdCacheBannerAdManager: BannerAdManager {
 
             switch result {
             case .success:
-                break
+                Logger.debug("[AdCache][\(self.cacheKey)] [Banner] Auction finished | success")
 
             case .failure(let error):
+                Logger.debug("[AdCache][\(self.cacheKey)] [Banner] Auction finished | failure: \(error.localizedDescription)")
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
-                    if let ad = Cacher.Fallback.bannerStorage.peek() as? BidContainer, ad.price >= self.pricefloor {
-                        // Update auctionInfo: set WIN status for the cached ad
-                        if let index = self.auctionInfo.adUnits?.firstIndex(where: { $0.demandId == ad.bid.adUnit.demandId && $0.uid == ad.bid.adUnit.uid }),
-                           let adUnitInfo = self.auctionInfo.adUnits?[index] as? DefaultAdUnitInfo {
-                            adUnitInfo.status = DemandMediationStatus.win.stringValue
-                        } else {
-                            let demandReportModel = AuctionDemandReportModel(
-                                demandId: ad.bid.adUnit.demandId,
-                                status: .win,
-                                bid: DummyBid(ad.bid),
-                                adUnit: DummyAdUnit(ad.bid.adUnit),
-                                startTimestamp: 0,
-                                finishTimestamp: 0,
-                                tokenStartTimestamp: 0,
-                                tokenFinishTimestamp: 0
-                            )
-                            if self.auctionInfo.adUnits == nil {
-                                self.auctionInfo.adUnits = []
-                            }
-                            self.auctionInfo.adUnits?.append(DefaultAdUnitInfo(demandReportModel))
-                        }
+                    if let ad = self.storage.peekFallback() as? BidContainer {
+                        Logger.debug("[AdCache][\(self.cacheKey)] [Banner] No-fill → served from fallback")
+                        (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
                         let controller = AdViewImpression(
                             bid: (ad.bid as! BidModel<DemandProviderWrapper<any AdViewDemandProvider>>).unwrapped(),
                             format: context.format
                         )
                         self.state = .ready(impression: controller)
-
                         self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                     } else {
                         self.state = .idle

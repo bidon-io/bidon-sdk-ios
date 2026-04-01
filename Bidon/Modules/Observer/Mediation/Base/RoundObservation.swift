@@ -56,6 +56,10 @@ struct RoundObservation {
         self.bidding = bidding
     }
 
+    mutating func setAuctionWinner(_ bid: AnyBid) {
+        self.auctionWinner = entries.first { $0.adUnit?.uid == bid.adUnit.uid }
+    }
+
     mutating func didFinishAuctionRound(_ winner: AnyBid?) {
         roundWinner = entries.first { $0.adUnit?.uid == winner?.adUnit.uid }
     }

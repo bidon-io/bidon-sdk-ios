@@ -99,6 +99,17 @@ final class BaseAuctionObserver: AuctionObserver {
             $round.mutate { observation in
                 observation.bidding.didFailPricefloor(_event.adUnit)
             }
+        case let _event as WinBidAuctionEvent:
+            $round.mutate { observation in
+                observation.demand.didWinBid(_event.bid)
+                observation.bidding.didWinBid(_event.bid)
+                observation.setAuctionWinner(_event.bid)
+            }
+        case let _event as CachedBidAuctionEvent:
+            $round.mutate { observation in
+                observation.demand.didCacheBid(_event.bid)
+                observation.bidding.didCacheBid(_event.bid)
+            }
         case let _event as AuctionTimeoutEvent:
             $round.mutate { observation in
                 observation.bidding.didFailAdUnit(_event.adUnit, error: .fillTimeoutReached)
@@ -112,12 +123,12 @@ final class BaseAuctionObserver: AuctionObserver {
 
 extension BaseAuctionObserver: AuctionReportProvider {
     private var result: AuctionResultReportModel {
-        if isCancelled {
+        if isCancelled, round.auctionWinner == nil {
             return AuctionResultReportModel(
                 status: .cancelled,
                 startTimestamp: startTimestamp.uint,
                 finishTimestamp: finishTimestamp.uint,
-                winner: round.auctionWinner?.bid
+                winner: nil
             )
         }
         if round.auctionWinner != nil {

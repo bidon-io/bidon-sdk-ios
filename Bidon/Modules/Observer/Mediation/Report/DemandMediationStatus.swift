@@ -12,6 +12,7 @@ enum DemandMediationStatus: Codable {
     case unknown
     case win
     case lose
+    case cache
     case error(MediationError)
 
     var isUnknown: Bool {
@@ -40,6 +41,7 @@ enum DemandMediationStatus: Codable {
         case .unknown:          return "UNKNOWN"
         case .win:              return "WIN"
         case .lose:             return "LOSE"
+        case .cache:            return "CACHE"
         case .error(let error): return error.rawValue.camelCaseToSnakeCase().uppercased()
         }
     }
@@ -55,6 +57,7 @@ enum DemandMediationStatus: Codable {
         case "UNKNOWN": self = .unknown
         case "WIN": self = .win
         case "LOSE": self = .lose
+        case "CACHE": self = .cache
         default:
             guard let error = MediationError(rawValue: value.snakeCaseToCamelCase()) else {
                 let ctx = DecodingError.Context(

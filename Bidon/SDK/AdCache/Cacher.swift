@@ -2,49 +2,55 @@
 //  Cacher.swift
 //  Bidon
 //
-//  Created by Евгения Григорович on 05/02/2026.
-//
 
 import Foundation
 
-final class Cacher {
-
-    // MARK: - Main
-
-    enum Main {
-        private static var config: AdCacheConfig? {
-            BidonSdk.shared.environmentRepository.environment(AppManager.self).config
-        }
-
-        static let bannerStorage = CacheStorage(
-            capacity: config?.banner.adunitСacheSize ?? 10,
-            iterationThreshold: config?.banner.threshold ?? 80
-        )
-        static let interstitialStorage = CacheStorage(
-            capacity: config?.interstitial.adunitСacheSize ?? 10,
-            iterationThreshold: config?.interstitial.threshold ?? 80
-        )
-        static let rewardedStorage = CacheStorage(
-            capacity: config?.rewardedVideo.adunitСacheSize ?? 10,
-            iterationThreshold: config?.rewardedVideo.threshold ?? 80
-        )
+enum Cacher {
+    private struct Key: Hashable {
+        let adType: AdType
+        let auctionKey: String
     }
 
-    // MARK: - Fallback
+    private static var storages: [Key: AdCacheStorage] = [:]
+    private static let lock = NSLock()
 
-    enum Fallback {
-        private static var config: AdCacheConfig? {
-            BidonSdk.shared.environmentRepository.environment(AppManager.self).config
+    static func storage(for adType: AdType, auctionKey: String) -> AdCacheStorage {
+        let key = Key(adType: adType, auctionKey: auctionKey)
+        lock.lock()
+        defer { lock.unlock() }
+        if let existing = storages[key] { return existing }
+        let cfg = adTypeConfig(for: adType)
+        let defaults = defaultConfig(for: adType)
+        let main = CacheStorage(
+            capacity: cfg?.adunitСacheSize ?? defaults.adunitСacheSize,
+            threshold: cfg?.threshold ?? defaults.threshold,
+            tag: auctionKey
+        )
+        let fallback = FallbackCacheStorage(
+            capacity: cfg?.fallbackСacheSize ?? defaults.fallbackСacheSize,
+            tag: auctionKey
+        )
+        let storage = AdCacheStorage(main: main, fallback: fallback)
+        storages[key] = storage
+        return storage
+    }
+
+    private static var config: AdCacheConfig? {
+        BidonSdk.shared.environmentRepository.environment(AppManager.self).config
+    }
+
+    private static func adTypeConfig(for adType: AdType) -> AdTypeCacheConfig? {
+        switch adType {
+        case .banner: return config?.banner
+        case .interstitial: return config?.interstitial
+        case .rewarded: return config?.rewardedVideo
         }
+    }
 
-        static let bannerStorage = FallbackCacheStorage(
-            capacity: config?.banner.fallbackСacheSize ?? 10
-        )
-        static let interstitialStorage = FallbackCacheStorage(
-            capacity: config?.interstitial.fallbackСacheSize ?? 10
-        )
-        static let rewardedStorage = FallbackCacheStorage(
-            capacity: config?.rewardedVideo.fallbackСacheSize ?? 10
-        )
+    private static func defaultConfig(for adType: AdType) -> AdTypeCacheConfig {
+        switch adType {
+        case .banner: return .defaultBanner
+        case .interstitial, .rewarded: return .defaultFullscreen
+        }
     }
 }

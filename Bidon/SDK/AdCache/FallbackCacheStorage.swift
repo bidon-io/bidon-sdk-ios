@@ -2,8 +2,6 @@
 //  FallbackCacheStorage.swift
 //  Bidon
 //
-//  Created by Евгения Григорович on 09/03/2026.
-//
 
 import Foundation
 
@@ -11,86 +9,66 @@ final class FallbackCacheStorage {
 
     private let capacity: Int
     private let lock = NSLock()
+    let tag: String
 
     private var items: [Ad] = []
-    private var indexByKey: [String: Int] = [:]
 
-    init(capacity: Int) {
-        precondition(capacity > 0)
-        self.capacity = capacity
-        self.items.reserveCapacity(capacity)
+    private var logPrefix: String { "[AdCache][\(tag)] [Fallback]" }
+
+    init(capacity: Int, tag: String = "") {
+        self.capacity = max(capacity, 0)
+        self.tag = tag
     }
 
     // MARK: - Public API
 
+    /// Insert bid. If full — evicts cheapest if new bid is strictly more expensive.
+    /// Returns true if inserted.
     @discardableResult
-    func insert(_ element: Ad) -> InsertResult {
+    func insert(_ element: Ad) -> Bool {
         lock.lock()
-        defer {
-            logCacheState()
-            lock.unlock()
+        defer { lock.unlock() }
+
+        // Duplicate (same demandId + same price) → replace
+        if let idx = items.firstIndex(where: { $0.adUnit.demandId == element.adUnit.demandId && $0.price == element.price }) {
+            items.remove(at: idx)
         }
 
-        let key = element.id
-
-        // Double check: same id + same price → update in place
-        if let idx = indexByKey[key] {
-            if items[idx].price == element.price {
-                items[idx] = element
-                items.sort { $0.price > $1.price }
-                rebuildIndex()
-                Logger.debug("[AdCache] [Fallback] ✅ Updated \(format(element))")
-                return .success
-            } else {
-                // Same id, different price → remove old, insert as new
-                items.remove(at: idx)
-                indexByKey[key] = nil
-                rebuildIndex()
-            }
+        if items.count < capacity {
+            items.append(element)
+            items.sort { $0.price > $1.price }
+            Logger.debug("\(logPrefix) ✅ \(format(element))")
+            logState()
+            return true
         }
 
-        // Cache full
-        if items.count >= capacity {
-            let cheapest = items.last!
-            guard element.price > cheapest.price else {
-                Logger.debug("[AdCache] [Fallback] ❌ \(format(element)) — full (cheapest: \(cheapest.price))")
-                return .rejected(.cacheFull)
-            }
-            indexByKey[cheapest.id] = nil
+        // Full — evict cheapest if new is strictly more expensive
+        if let cheapest = items.last, element.price > cheapest.price {
+            Logger.debug("\(logPrefix) ♻️ \(format(element)) evicts \(format(cheapest))")
             items.removeLast()
+            items.append(element)
+            items.sort { $0.price > $1.price }
+            logState()
+            return true
         }
 
-        // Insert
-        items.append(element)
-        items.sort { $0.price > $1.price }
-        rebuildIndex()
-        Logger.debug("[AdCache] [Fallback] ✅ \(format(element))")
-        return .success
+        Logger.debug("\(logPrefix) ❌ \(format(element)) — full (cheapest: \(items.last?.price ?? 0))")
+        return false
     }
 
     @discardableResult
     func popFirst() -> Ad? {
         lock.lock()
-        defer {
-            logCacheState()
-            lock.unlock()
-        }
-
+        defer { lock.unlock() }
         guard !items.isEmpty else { return nil }
-
         let first = items.removeFirst()
-        indexByKey[first.id] = nil
-        rebuildIndex()
-        Logger.debug("[AdCache] [Fallback] Pop: \(format(first))")
+        logState()
         return first
     }
 
     func peek() -> Ad? {
         lock.lock()
         defer { lock.unlock() }
-        if let first = items.first {
-            Logger.debug("[AdCache] [Fallback] Peek: \(format(first))")
-        }
         return items.first
     }
 
@@ -100,24 +78,32 @@ final class FallbackCacheStorage {
         return items.count >= capacity
     }
 
-    // MARK: - Private
-
-    private func rebuildIndex() {
-        indexByKey.removeAll(keepingCapacity: true)
-        for (i, e) in items.enumerated() {
-            indexByKey[e.id] = i
-        }
+    var isDisabled: Bool {
+        return capacity == 0
     }
 
-    // MARK: - Logging
+    var cheapestPrice: Price? {
+        lock.lock()
+        defer { lock.unlock() }
+        return items.last?.price
+    }
 
-    private func logCacheState() {
+    var isEmpty: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return items.isEmpty
+    }
+
+    // MARK: - Private
+
+    /// Call inside lock after mutation.
+    private func logState() {
         if items.isEmpty {
-            Logger.debug("[AdCache] [Fallback] Cache: empty")
+            Logger.debug("\(logPrefix) State: empty")
             return
         }
-        let entries = items.map { "\($0.price)" }
-        Logger.debug("[AdCache] [Fallback] Cache (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
+        let entries = items.map { "\($0.networkName)/\($0.price)" }
+        Logger.debug("\(logPrefix) State (\(items.count)/\(capacity)): [\(entries.joined(separator: ", "))]")
     }
 
     private func format(_ element: Ad) -> String {

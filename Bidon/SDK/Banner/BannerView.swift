@@ -88,6 +88,7 @@ public final class BannerView: UIView, AdView {
         case 1:
             return AdCacheBannerAdManager.getOrCreate(
                 placement: .default,
+                auctionKey: auctionKey,
                 adRevenueObserver: adRevenueObserver
             )
         default:

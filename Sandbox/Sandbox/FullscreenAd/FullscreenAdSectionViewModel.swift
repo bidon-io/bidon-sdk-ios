@@ -24,21 +24,22 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
     @Published var state: State = .idle
     @Published var events: [AdEventModel] = []
     @Published var pricefloor: Double = 0.0
-    @Published var auctionKey: String = "1O16NDEKK0000"
+    @Published var auctionKey: String
     @Published var ad: Bidon.Ad?
 
     private var cancellables = Set<AnyCancellable>()
     private let adType: AdType
 
-    init(adType: AdType) {
+    init(adType: AdType, defaultAuctionKey: String = "1O16NDEKK0000") {
         self.adType = adType
+        self.auctionKey = defaultAuctionKey
 
         subscribe()
     }
 
     func notify(loss ad: Ad) {
         adService.notify(loss: ad, adType: adType)
-        guard !adService.canShow(adType: adType) else { return }
+        guard !adService.canShow(adType: adType, auctionKey: auctionKey) else { return }
         update(.idle)
     }
 
@@ -65,7 +66,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
     func show() async {
         update(.presenting)
         do {
-            try await adService.show(adType: adType)
+            try await adService.show(adType: adType, auctionKey: auctionKey)
             update(.idle)
         } catch {
             update(.presentationError)
@@ -83,7 +84,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
 
     private func subscribe() {
         adService
-            .adEventPublisher(adType: adType)
+            .adEventPublisher(adType: adType, auctionKey: auctionKey)
             .receive(on: RunLoop.main)
             .sink { event in
                 withAnimation { [unowned self] in
@@ -92,7 +93,7 @@ final class FullscreenAdSectionViewModel: ObservableObject, AdResponder {
             }
             .store(in: &cancellables)
         adService
-            .adPublisher(adType: adType)
+            .adPublisher(adType: adType, auctionKey: auctionKey)
             .receive(on: RunLoop.main)
             .sink { ad in
                 withAnimation { [unowned self] in
