@@ -50,7 +50,18 @@
       "Bash(mv ci-adapter-quality-v2.yml ci-adapter-quality.yml)",
       "Bash(mv automation-post-pods-update-v2.yml automation-post-pods-update.yml)",
       "Bash(mv claude-code-v2.yml claude-code.yml)",
-      "Bash(grep -E '^\\(pods-updater|ci-adapter-quality|automation-post-pods-update|claude-code\\)\\\\.yml$')"
+      "Bash(grep -E '^\\(pods-updater|ci-adapter-quality|automation-post-pods-update|claude-code\\)\\\\.yml$')",
+      "Bash(find /Users/evgeniagrigorovic/Desktop/Project/bidon-sdk-ios -type d -name *[Ss]andbox* -o -type d -name *[Dd]emo* -o -type d -name *[Ss]ample* -o -type d -name *[Ee]xample* -o -type d -name *[Aa]pp*)",
+      "Bash(sed -i '' 's/Logger.debug\\(\"\"\\\\[AdCache\\\\] Reuse manager for key: \\\\\\\\\\(key\\)\"\"\\)/Logger.debug\\(\"\"[AdCache][\\\\\\\\\\(key\\)] Reuse manager\"\"\\)/g' Bidon/SDK/AdCache/Formats/Fullscreen/AdCacheManagerPool.swift)",
+      "Bash(sed -i '' 's/Logger.debug\\(\"\"\\\\[AdCache\\\\] New manager for key: \\\\\\\\\\(key\\)\"\"\\)/Logger.debug\\(\"\"[AdCache][\\\\\\\\\\(key\\)] New manager\"\"\\)/g' Bidon/SDK/AdCache/Formats/Fullscreen/AdCacheManagerPool.swift)",
+      "Bash(sed -i '' 's/Logger.debug\\(\"\"\\\\[AdCache\\\\] Cleanup manager for key: \\\\\\\\\\(key\\)\"\"\\)/Logger.debug\\(\"\"[AdCache][\\\\\\\\\\(key\\)] Cleanup manager\"\"\\)/g' Bidon/SDK/AdCache/Formats/Fullscreen/AdCacheManagerPool.swift)",
+      "Bash(grep:*)",
+      "Bash(brew install:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(xcrun xcresulttool:*)",
+      "Bash(plutil:*)",
+      "Bash(git checkout:*)",
+      "Bash(ruby:*)"
     ],
     "deny": [],
     "ask": []

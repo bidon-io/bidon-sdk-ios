@@ -14,6 +14,13 @@ enum DemandMediationStatus: Codable {
     case lose
     case cache
     case error(MediationError)
+    
+    var isWin: Bool {
+        switch self {
+        case .win: return true
+        default: return false
+        }
+    }
 
     var isUnknown: Bool {
         switch self {
