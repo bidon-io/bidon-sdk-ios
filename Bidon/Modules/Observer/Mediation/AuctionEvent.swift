@@ -212,6 +212,14 @@ struct CachedBidAuctionEvent: AuctionEvent {
     }
 }
 
+struct LoseBidAuctionEvent: AuctionEvent {
+    var bid: AnyBid
+
+    var description: String {
+        return "bid \(bid) lose"
+    }
+}
+
 struct WinBidAuctionEvent: AuctionEvent {
     var bid: AnyBid
 

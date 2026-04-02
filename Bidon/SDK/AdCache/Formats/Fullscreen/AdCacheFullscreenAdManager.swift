@@ -137,6 +137,11 @@ where
             self?.storage.shouldStop(ecpm: ecpm) ?? true
         }
 
+        // Track first-fill winner info for loss notifications (matches Android WinnerInfo)
+        var winnerDemandId: String?
+        var winnerAd: DemandAd?
+        var winnerPrice: Price = 0
+
         // Route each filled bid (spec §7 pseudocode)
         auction.singleLoadCompletion = { [weak self] bid in
             guard let self else { return }
@@ -144,28 +149,62 @@ where
             let ad = BidContainer(bid: bid)
             let result = self.storage.route(ad, sticky: self.isFirstFill)
 
-            if result != .rejected {
+            if result.isInserted {
                 if self.isFirstFill {
                     observer.log(WinBidAuctionEvent(bid: bid))
                 } else {
                     observer.log(CachedBidAuctionEvent(bid: bid))
                 }
+            } else {
+                // Bug 3: Mark rejected bid status as LOSE
+                observer.log(LoseBidAuctionEvent(bid: bid))
             }
 
-            if result == .insertedMain {
+            if result.isInsertedMain {
                 self.adRevenueObserver.observe(bid)
             }
 
-            if self.isFirstFill && result != .rejected {
+            if self.isFirstFill && result.isInserted {
                 let controller = ImpressionControllerType(bid: bid)
                 controller.delegate = self
                 self.state = .ready(controller: controller)
 
                 (self.auctionInfo as? DefaultAuctionInfo)?.appendWinReport(for: ad)
 
+                // Track winner info for subsequent loss notifications
+                winnerDemandId = bid.adUnit.demandId
+                winnerAd = bid.ad
+                winnerPrice = bid.price
+
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
+                }
+            }
+
+            // Bug 1: Handle evicted item from fallback cache
+            if let evicted = result.evicted,
+               let evictedContainer = evicted as? BidContainer,
+               let evictedBid = evictedContainer.bid as? BidModel<AdTypeContextType.DemandProviderType> {
+                // Notify loss: displacer is the current bid
+                if evictedBid.adUnit.bidType == .direct {
+                    evictedBid.provider.notify(
+                        opaque: evictedBid.ad,
+                        event: .lose(bid.adUnit.demandId, bid.ad, bid.price)
+                    )
+                    Logger.debug("[AdCache][\(self.cacheKey)] [Win/Loss] notifyLoss (evicted): \(evictedBid.adUnit.demandId)")
+                }
+                observer.log(LoseBidAuctionEvent(bid: evictedBid))
+            }
+
+            // Bug 2: Handle rejected bid — full loss cleanup
+            if !result.isInserted {
+                if bid.adUnit.bidType == .direct, let wDemandId = winnerDemandId, let wAd = winnerAd {
+                    bid.provider.notify(
+                        opaque: bid.ad,
+                        event: .lose(wDemandId, wAd, winnerPrice)
+                    )
+                    Logger.debug("[AdCache][\(self.cacheKey)] [Win/Loss] notifyLoss (rejected): \(bid.adUnit.demandId)")
                 }
             }
 

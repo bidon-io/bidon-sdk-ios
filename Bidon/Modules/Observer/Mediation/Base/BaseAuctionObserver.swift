@@ -110,6 +110,11 @@ final class BaseAuctionObserver: AuctionObserver {
                 observation.demand.didCacheBid(_event.bid)
                 observation.bidding.didCacheBid(_event.bid)
             }
+        case let _event as LoseBidAuctionEvent:
+            $round.mutate { observation in
+                observation.demand.didLoseBid(_event.bid)
+                observation.bidding.didLoseBid(_event.bid)
+            }
         case let _event as AuctionTimeoutEvent:
             $round.mutate { observation in
                 observation.bidding.didFailAdUnit(_event.adUnit, error: .fillTimeoutReached)

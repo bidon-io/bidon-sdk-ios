@@ -141,8 +141,8 @@ final class FallbackCacheStorageTests: XCTestCase {
 
     func testBasicInsert() {
         let fb = FallbackCacheStorage(capacity: 2)
-        XCTAssertTrue(fb.insert(ad("A", 7)))
-        XCTAssertTrue(fb.insert(ad("B", 5)))
+        XCTAssertTrue(fb.insert(ad("A", 7)).isInserted)
+        XCTAssertTrue(fb.insert(ad("B", 5)).isInserted)
         XCTAssertEqual(fb.peek()?.price, 7) // sorted desc
     }
 
@@ -153,7 +153,14 @@ final class FallbackCacheStorageTests: XCTestCase {
         XCTAssertTrue(fb.isFull)
 
         // $5 > cheapest $2 → evicts
-        XCTAssertTrue(fb.insert(ad("C", 5)))
+        let result = fb.insert(ad("C", 5))
+        XCTAssertTrue(result.isInserted)
+        // Verify evicted item is returned
+        if case .success(let evicted) = result {
+            XCTAssertEqual(evicted?.price, 2)
+        } else {
+            XCTFail("Expected success")
+        }
         XCTAssertEqual(fb.cheapestPrice, 3) // $2 evicted, now $3 is cheapest
     }
 
@@ -162,15 +169,15 @@ final class FallbackCacheStorageTests: XCTestCase {
         fb.insert(ad("A", 5))
         fb.insert(ad("B", 3))
 
-        XCTAssertFalse(fb.insert(ad("C", 3)))  // equal → rejected
-        XCTAssertFalse(fb.insert(ad("D", 2)))  // cheaper → rejected
+        XCTAssertFalse(fb.insert(ad("C", 3)).isInserted)  // equal → rejected
+        XCTAssertFalse(fb.insert(ad("D", 2)).isInserted)  // cheaper → rejected
     }
 
     func testDisabled_Capacity0() {
         let fb = FallbackCacheStorage(capacity: 0)
         XCTAssertTrue(fb.isDisabled)
         XCTAssertTrue(fb.isFull)
-        XCTAssertFalse(fb.insert(ad("A", 10)))
+        XCTAssertFalse(fb.insert(ad("A", 10)).isInserted)
     }
 
     func testDuplicateDemandIdAndPrice_Replaces() {
@@ -178,7 +185,7 @@ final class FallbackCacheStorageTests: XCTestCase {
         fb.insert(ad("A", 5))
         fb.insert(ad("B", 3))
         // Same demandId "B" AND same price → replaces
-        XCTAssertTrue(fb.insert(ad("B", 3)))
+        XCTAssertTrue(fb.insert(ad("B", 3)).isInserted)
         XCTAssertEqual(fb.cheapestPrice, 3)
     }
 
@@ -188,6 +195,32 @@ final class FallbackCacheStorageTests: XCTestCase {
         fb.insert(ad("A", 3))
         // Same demandId but different price → both kept
         XCTAssertFalse(fb.isFull) // 2/3
+    }
+
+    func testEviction_ReturnsEvictedItem() {
+        let fb = FallbackCacheStorage(capacity: 1)
+        fb.insert(ad("A", 3))
+
+        // $5 > $3 → evicts A
+        let result = fb.insert(ad("B", 5))
+        if case .success(let evicted) = result {
+            XCTAssertNotNil(evicted)
+            XCTAssertEqual(evicted?.price, 3)
+            XCTAssertEqual(evicted?.networkName, "A")
+        } else {
+            XCTFail("Expected success with evicted item")
+        }
+    }
+
+    func testInsert_NoEviction_ReturnsNilEvicted() {
+        let fb = FallbackCacheStorage(capacity: 2)
+
+        let result = fb.insert(ad("A", 5))
+        if case .success(let evicted) = result {
+            XCTAssertNil(evicted) // no eviction needed
+        } else {
+            XCTFail("Expected success")
+        }
     }
 }
 
@@ -220,9 +253,9 @@ final class AdCacheStorageTests: XCTestCase {
         XCTAssertTrue(s.main.isFull)
 
         // $7 → Main full → Fallback
-        XCTAssertEqual(s.route(ad("net4", 7), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net4", 7), sticky: false), .insertedFallback(evicted: nil))
         // $5 → Main full → Fallback
-        XCTAssertEqual(s.route(ad("net5", 5), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net5", 5), sticky: false), .insertedFallback(evicted: nil))
         XCTAssertTrue(s.fallback.isFull)
 
         // $3 → Main full, Fb full ($3 <= cheapest $5) → shouldStop
@@ -243,9 +276,9 @@ final class AdCacheStorageTests: XCTestCase {
         XCTAssertTrue(s.main.isFull) // capacity=1
 
         // $4, $3, $2 → Main full (sticky) → Fallback
-        XCTAssertEqual(s.route(ad("net2", 4), sticky: false), .insertedFallback)
-        XCTAssertEqual(s.route(ad("net3", 3), sticky: false), .insertedFallback)
-        XCTAssertEqual(s.route(ad("net4", 2), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net2", 4), sticky: false), .insertedFallback(evicted: nil))
+        XCTAssertEqual(s.route(ad("net3", 3), sticky: false), .insertedFallback(evicted: nil))
+        XCTAssertEqual(s.route(ad("net4", 2), sticky: false), .insertedFallback(evicted: nil))
         XCTAssertTrue(s.fallback.isFull)
     }
 
@@ -276,9 +309,9 @@ final class AdCacheStorageTests: XCTestCase {
         // mainBar = 10 * 0.8 = 8
 
         // $7 < $8 → rejected by Main → Fallback
-        XCTAssertEqual(s.route(ad("net2", 7), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net2", 7), sticky: false), .insertedFallback(evicted: nil))
         // $5 → Fallback
-        XCTAssertEqual(s.route(ad("net3", 5), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net3", 5), sticky: false), .insertedFallback(evicted: nil))
         XCTAssertTrue(s.fallback.isFull)
 
         // $3 → Main reject (threshold), Fb full ($3 <= $5) → STOP
@@ -330,11 +363,11 @@ final class AdCacheStorageTests: XCTestCase {
         // Auction 2: $10 → Main, $5 → Fb evicts $1, $4 → Fb evicts $2
         s.route(ad("net4", 10), sticky: true)
         // mainBar = 10*0.8 = 8. $5 < $8 → Main reject → Fallback
-        XCTAssertEqual(s.route(ad("net5", 5), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net5", 5), sticky: false), .insertedFallback(evicted: nil))
         // Fb was [$2,$1], $5 > $1 → evicts $1. Fb: [$5,$2]
         XCTAssertEqual(s.fallback.cheapestPrice, 2)
 
-        XCTAssertEqual(s.route(ad("net6", 4), sticky: false), .insertedFallback)
+        XCTAssertEqual(s.route(ad("net6", 4), sticky: false), .insertedFallback(evicted: nil))
         // $4 > $2 → evicts $2. Fb: [$5,$4]
         XCTAssertEqual(s.fallback.cheapestPrice, 4)
         XCTAssertEqual(s.fallback.peek()?.price, 5)
@@ -538,7 +571,7 @@ final class AdCacheFlowTests: XCTestCase {
             let bid = ad(name, price)
             let result = s.route(bid, sticky: isFirstFill)
 
-            if result != .rejected {
+            if result.isInserted {
                 if isFirstFill {
                     didLoadAd = bid // WIN → didLoad
                 } else {

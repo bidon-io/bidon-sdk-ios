@@ -109,6 +109,16 @@ struct DemandObservation {
         }
     }
 
+    mutating func didLoseBid(_ bid: AnyBid) {
+        entries = entries.map { entry in
+            var entry = entry
+            if entry.adUnit?.uid == bid.adUnit.uid {
+                entry.status = .lose
+            }
+            return entry
+        }
+    }
+
     mutating func didFailDemand(
         _ demandId: String,
         error: MediationError

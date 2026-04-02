@@ -20,8 +20,33 @@ final class AdCacheStorage {
 
     enum RouteResult: Equatable {
         case insertedMain
-        case insertedFallback
+        case insertedFallback(evicted: Ad?)
         case rejected
+
+        var isInserted: Bool {
+            if case .rejected = self { return false }
+            return true
+        }
+
+        var isInsertedMain: Bool {
+            if case .insertedMain = self { return true }
+            return false
+        }
+
+        var evicted: Ad? {
+            if case .insertedFallback(let evicted) = self { return evicted }
+            return nil
+        }
+
+        // Equatable: compare case only (ignore evicted value)
+        static func == (lhs: RouteResult, rhs: RouteResult) -> Bool {
+            switch (lhs, rhs) {
+            case (.insertedMain, .insertedMain): return true
+            case (.insertedFallback, .insertedFallback): return true
+            case (.rejected, .rejected): return true
+            default: return false
+            }
+        }
     }
 
     /// Route a filled bid: try Main, then Fallback. Returns where it landed.
@@ -38,11 +63,13 @@ final class AdCacheStorage {
             return .rejected
         }
 
-        if fallback.insert(ad) {
-            return .insertedFallback
+        let fbResult = fallback.insert(ad)
+        switch fbResult {
+        case .success(let evicted):
+            return .insertedFallback(evicted: evicted)
+        case .rejected:
+            return .rejected
         }
-
-        return .rejected
     }
 
     // MARK: - Pre-filter (should we even query this ad unit?)

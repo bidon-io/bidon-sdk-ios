@@ -7,6 +7,16 @@ import Foundation
 
 final class FallbackCacheStorage {
 
+    enum InsertResult {
+        case success(evicted: Ad?)
+        case rejected
+
+        var isInserted: Bool {
+            if case .success = self { return true }
+            return false
+        }
+    }
+
     private let capacity: Int
     private let lock = NSLock()
     let tag: String
@@ -23,9 +33,9 @@ final class FallbackCacheStorage {
     // MARK: - Public API
 
     /// Insert bid. If full — evicts cheapest if new bid is strictly more expensive.
-    /// Returns true if inserted.
+    /// Returns `.success(evicted:)` with the evicted item (if any), or `.rejected`.
     @discardableResult
-    func insert(_ element: Ad) -> Bool {
+    func insert(_ element: Ad) -> InsertResult {
         lock.lock()
         defer { lock.unlock() }
 
@@ -39,7 +49,7 @@ final class FallbackCacheStorage {
             items.sort { $0.price > $1.price }
             Logger.debug("\(logPrefix) ✅ \(format(element))")
             logState()
-            return true
+            return .success(evicted: nil)
         }
 
         // Full — evict cheapest if new is strictly more expensive
@@ -49,11 +59,11 @@ final class FallbackCacheStorage {
             items.append(element)
             items.sort { $0.price > $1.price }
             logState()
-            return true
+            return .success(evicted: cheapest)
         }
 
         Logger.debug("\(logPrefix) ❌ \(format(element)) — full (cheapest: \(items.last?.price ?? 0))")
-        return false
+        return .rejected
     }
 
     @discardableResult
