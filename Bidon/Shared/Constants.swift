@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Constants {
-    static let sdkVersion: String = "0.14.11"
+    static let sdkVersion: String = "0.14.16"
 
     static let sdkVersionLastRelease: String = "0.12.0"
     static let maxSdkReleaseVersion: String = "1.0.0"

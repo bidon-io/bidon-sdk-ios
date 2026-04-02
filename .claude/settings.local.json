@@ -61,7 +61,8 @@
       "Bash(xcrun xcresulttool:*)",
       "Bash(plutil:*)",
       "Bash(git checkout:*)",
-      "Bash(ruby:*)"
+      "Bash(ruby:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
