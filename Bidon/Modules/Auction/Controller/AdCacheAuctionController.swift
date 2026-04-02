@@ -141,12 +141,16 @@ final class AdCacheAuctionController<AdTypeContextType: AdTypeContext>: AuctionC
     }
 
     private func createFinishDemandOperation(_ operation: any AuctionOperationRequestDemand) -> BlockOperation {
+        // Type-erase the associated-type bid access before the closure to work around
+        // a Swift compiler crash during generic specialization in Release builds.
+        let fetchBid: () -> (any Bid)? = { operation.bid }
+
         let finishDemandOperation = BlockOperation { [weak self] in
             guard let self else { return }
             guard !operation.isCancelled else { return }
 
-            if let bid = operation.bid {
-                singleLoadCompletion?(bid as! BidType)
+            if let bid = fetchBid(), let typedBid = bid as? BidType {
+                singleLoadCompletion?(typedBid)
             }
         }
         return finishDemandOperation
