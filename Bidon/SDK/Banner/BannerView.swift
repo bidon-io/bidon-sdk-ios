@@ -164,10 +164,14 @@ public final class BannerView: UIView, AdView {
 
         Logger.verbose("Banner \(self) will refresh ad view")
 
+        // Reset state synchronously so the next loadAd() is not
+        // silently dropped by the `guard state.isIdle` check
+        // while the async block is still pending.
+        self.adManager.prepareForReuse()
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
-            self.adManager.prepareForReuse()
             self.viewManager.present(
                 impression: impression,
                 view: adView,

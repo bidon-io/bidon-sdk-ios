@@ -62,6 +62,13 @@ final class AdCacheBannerAdManager: BannerAdManager {
         }
 
         // 2. Main empty → auction
+        // Force-reset stale state that may linger when prepareForReuse
+        // has not yet executed (shared singleton manager).
+        if case .idle = state {} else {
+            Logger.debug("[AdCache][\(cacheKey)] [Banner] loadAd | state not idle, resetting before auction")
+            prepareForReuse()
+        }
+
         Logger.debug("[AdCache][\(cacheKey)] [Banner] loadAd | floor: \(pricefloor) | main empty → auction")
         auctionInfo = DefaultAuctionInfo()
         super.loadAd(pricefloor: pricefloor, viewContext: viewContext, auctionKey: auctionKey)
@@ -102,6 +109,7 @@ final class AdCacheBannerAdManager: BannerAdManager {
         if isCanceled { return }
 
         isFirstFill = true
+        var firstFillDelivered = false
 
         let configuration = AuctionConfiguration(auction: auctionInfo, tokens: tokens)
 
@@ -162,6 +170,7 @@ final class AdCacheBannerAdManager: BannerAdManager {
             }
 
             if self.isFirstFill && result.isInserted {
+                firstFillDelivered = true
                 self.adRevenueObserver.observe(bid)
                 let controller = AdViewImpression(
                     bid: bid.unwrapped(),
@@ -229,6 +238,10 @@ final class AdCacheBannerAdManager: BannerAdManager {
 
             case .failure(let error):
                 Logger.debug("[AdCache][\(self.cacheKey)] [Banner] Auction finished | failure: \(error.localizedDescription)")
+                // If the first fill was already delivered via singleLoadCompletion,
+                // do NOT report failure — the delegate already received didLoad.
+                guard !firstFillDelivered else { break }
+
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     if let ad = self.storage.peekFallback() as? BidContainer {
