@@ -22,9 +22,9 @@ struct RoundObservation {
         return auctionWinner != nil
     }
 
-    private lazy var entries: [DemandObservation.Entry] = {
+    private mutating func allEntries() -> [DemandObservation.Entry] {
         return demand.entries + bidding.entries
-    }()
+    }
 
     init(
         pricefloor: Price,
@@ -40,7 +40,7 @@ struct RoundObservation {
 
     mutating func didFinishAuction(_ winner: AnyBid?) {
         self.auctionWinner = winner.flatMap { winner in
-            entries.first { $0.adUnit?.uid == winner.adUnit.uid }
+            allEntries().first { $0.adUnit?.uid == winner.adUnit.uid }
         }
 
         var demand = demand
@@ -57,11 +57,11 @@ struct RoundObservation {
     }
 
     mutating func setAuctionWinner(_ bid: AnyBid) {
-        self.auctionWinner = entries.first { $0.adUnit?.uid == bid.adUnit.uid }
+        self.auctionWinner = allEntries().first { $0.adUnit?.uid == bid.adUnit.uid }
     }
 
     mutating func didFinishAuctionRound(_ winner: AnyBid?) {
-        roundWinner = entries.first { $0.adUnit?.uid == winner?.adUnit.uid }
+        roundWinner = allEntries().first { $0.adUnit?.uid == winner?.adUnit.uid }
     }
 
     mutating func cancel() {
