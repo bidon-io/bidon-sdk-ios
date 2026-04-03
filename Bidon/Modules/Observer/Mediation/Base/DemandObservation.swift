@@ -171,13 +171,16 @@ struct DemandObservation {
         if entries.contains(where: { $0.adUnit?.uid == adUnit.uid }) {
             entries = entries.map { entry in
                 var entry = entry
-                if adUnit.bidType == .bidding {
-                    entry.status = .lose
-                } else {
-                    entry.status = .error(.belowPricefloor)
+                if entry.adUnit?.uid == adUnit.uid {
+                    // RTB (bidding) bids must always report LOSE, never BELOW_PRICEFLOOR
+                    if entry.adUnit?.bidType == .bidding {
+                        entry.status = .lose
+                    } else {
+                        entry.status = .error(.belowPricefloor)
+                    }
+                    entry.tokenStartTimestamp = tokenStartTs(for: adUnit)
+                    entry.tokenFinishTimestamp = tokenFinishTs(for: adUnit)
                 }
-                entry.tokenStartTimestamp = tokenStartTs(for: adUnit)
-                entry.tokenFinishTimestamp = tokenFinishTs(for: adUnit)
                 return entry
             }
         } else {
