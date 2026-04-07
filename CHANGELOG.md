@@ -1,4 +1,4 @@
-# Develop
+# Release 0.15.0
 
 - BDN-1139 Viewability improvements
 - BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
