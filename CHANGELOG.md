@@ -1,5 +1,6 @@
 # Release 0.15.0
 
+- CI: load pod-to-adapter mapping from API, fix Claude Code secret name, remove stale local script
 - BDN-1139 Viewability improvements
 - BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
 - BDN-1150 Migrated workflows to new podspec push flow
