@@ -12,4 +12,4 @@ jobs:
     secrets:
       APP_ID: ${{ secrets.PODS_UPDATER_APP_ID_V2 }}
       APP_PRIVATE_KEY: ${{ secrets.PODS_UPDATER_APP_PRIVATE_KEY_V2 }}
-      CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY_SDK }}
+      ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY_SDK }}

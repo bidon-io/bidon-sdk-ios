@@ -12,26 +12,11 @@
   "adapter_changelog": true,
   "pr_labels": ["dependencies", "cocoapods"],
   "adapter_regex": "Adapters/(BidonAdapter[A-Za-z0-9_]+)",
+  "mapping_api_url": "https://neo-mw-backend.appodeal.com/v4/status/all",
+  "dependency_field_ios": "bidon_dependency_ios",
   "pod_to_adapter": {
-    "AmazonPublisherServicesSDK": ["BidonAdapterAmazon"],
-    "AppLovinSDK": ["BidonAdapterAppLovin", "AppLovinMediationBidonAdapter"],
-    "BidMachine": ["BidonAdapterBidMachine"],
     "Google-Mobile-Ads-SDK": ["BidonAdapterGoogleMobileAds", "BidonAdapterGoogleAdManager"],
-    "BigoADS": ["BidonAdapterBigoAds"],
-    "Fyber_Marketplace_SDK": ["BidonAdapterDTExchange"],
-    "FBAudienceNetwork": ["BidonAdapterMetaAudienceNetwork"],
-    "UnityAds": ["BidonAdapterUnityAds"],
-    "MintegralAdSDK": ["BidonAdapterMintegral"],
-    "MolocoSDKiOS": ["BidonAdapterMoloco"],
-    "VungleAds": ["BidonAdapterVungle"],
-    "MobileFuseSDK": ["BidonAdapterMobileFuse"],
-    "InMobiSDK": ["BidonAdapterInMobi"],
-    "myTargetSDK": ["BidonAdapterMyTarget"],
-    "ChartboostSDK": ["BidonAdapterChartboost"],
-    "IronSourceSDK": ["BidonAdapterIronSource", "ISBidonCustomAdapter"],
-    "YandexMobileAds": ["BidonAdapterYandex"],
-    "TaurusxAdsSDK": ["BidonAdapterTaurusX"],
-    "StartAppSDK": ["BidonAdapterStartIo"],
-    "zMaticoo": ["BidonAdapterZmaticoo"]
+    "AppLovinSDK": ["AppLovinMediationBidonAdapter"],
+    "IronSourceSDK": ["ISBidonCustomAdapter"]
   }
 }
