@@ -2,6 +2,7 @@
 
 ## Fixes
 - APDM-2195 Fix SIGABRT in AdaptersInitializator when adapter init main-queue dispatch races the timeout watchdog
+- APDM-2195 Fix banner crash from BannerAdManager.state data race between auction completion and notifyLoss by serializing state access through an NSLock
 
 # Release 0.15.0
 
