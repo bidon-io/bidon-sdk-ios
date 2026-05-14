@@ -1,3 +1,8 @@
+# Develop
+
+## Fixes
+- APDM-2195 Fix SIGABRT in AdaptersInitializator when adapter init main-queue dispatch races the timeout watchdog
+
 # Release 0.15.0
 
 - CI: load pod-to-adapter mapping from API, fix Claude Code secret name, remove stale local script
