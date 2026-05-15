@@ -1,5 +1,6 @@
 # Release 0.15.0
 
+- APDM-2420 BidMachine adapter: configurable `mediation_mode` via `BidMachineDemandSourceAdapter(mediationMode:)` initializer (defaults to "bidon")
 - CI: load pod-to-adapter mapping from API, fix Claude Code secret name, remove stale local script
 - BDN-1139 Viewability improvements
 - BDN-1140 Fix demand adapter delegates - banner adapters no longer call fullscreen delegate callbacks
