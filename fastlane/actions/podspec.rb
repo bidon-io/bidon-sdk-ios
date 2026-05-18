@@ -101,13 +101,50 @@ module Fastlane
             spec.resource_bundles = { "BidonPrivacyInfo" => "#{spec.name}-#{CGI.escape(params[:version])}/Bidon.xcframework/ios-arm64/**/*.xcprivacy" }
           end
 
-          spec.vendored_frameworks = [params[:vendored_frameworks]]
+          # BidonAdapterBidMachine specifically must be installable in both Static
+          # (default — current production behavior) and Dynamic flavors. The latter is
+          # needed for hosts that link the SDK into more than one Mach-O image (e.g.
+          # Unity-iOS export), where per-image `static let shared` would otherwise split
+          # BidMachineSdk into two singletons → empty networks_info → noFill.
+          #
+          # The bundled xcframework is identical for both subspecs (the adapter stays a
+          # static archive; only its declared BidMachine subspec differs). At consumer
+          # link time, the adapter's unresolved BidMachine refs are satisfied either by
+          # BidMachine/Static (statically linked) or BidMachine/Dynamic (dylib loaded by
+          # dyld) — both work; only Dynamic fixes the dual-Mach-O case.
+          if params[:name] == "BidonAdapterBidMachine"
+            bidmachine_dep = dependencies.find { |d| d.name == "BidMachine" }
+            bidmachine_versions = bidmachine_dep ? bidmachine_dep.versions : []
+            non_bidmachine_deps = dependencies.reject { |d| d.name == "BidMachine" }
 
-          dependencies.each do |dep|
-            if dep.versions.nil? || dep.versions.empty?
-              spec.dependency dep.name
-            else
-              spec.dependency dep.name, *dep.versions
+            spec.default_subspecs = "Static"
+
+            %w[Static Dynamic].each do |flavor|
+              spec.subspec flavor do |ss|
+                ss.vendored_frameworks = [params[:vendored_frameworks]]
+                non_bidmachine_deps.each do |dep|
+                  if dep.versions.nil? || dep.versions.empty?
+                    ss.dependency dep.name
+                  else
+                    ss.dependency dep.name, *dep.versions
+                  end
+                end
+                if bidmachine_versions.empty?
+                  ss.dependency "BidMachine/#{flavor}"
+                else
+                  ss.dependency "BidMachine/#{flavor}", *bidmachine_versions
+                end
+              end
+            end
+          else
+            spec.vendored_frameworks = [params[:vendored_frameworks]]
+
+            dependencies.each do |dep|
+              if dep.versions.nil? || dep.versions.empty?
+                spec.dependency dep.name
+              else
+                spec.dependency dep.name, *dep.versions
+              end
             end
           end
 
