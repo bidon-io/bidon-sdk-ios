@@ -25,6 +25,9 @@ jobs:
   trunk-adapter-v2:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
 
+    env:
+      BUNDLE: /opt/homebrew/opt/ruby@3.2/bin/bundle
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,19 +43,21 @@ jobs:
         run: |
           xcodebuild -version
 
+      - name: Bundler install
+        run: |
+          set -o pipefail
+          "$BUNDLE" config set --local path 'vendor/bundle'
+          "$BUNDLE" install --jobs 4 --retry 3
+
       - name: CocoaPods install (self-hosted)
         run: |
           set -o pipefail
-          GEM_HOME=$(/opt/homebrew/opt/ruby@3.2/bin/gem env home)
-          POD_BIN=$(command -v pod || echo "$GEM_HOME/bin/pod")
-          echo "Using POD_BIN=$POD_BIN"
-          "$POD_BIN" --version || true
-          "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
+          "$BUNDLE" exec pod install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
       - name: Generate podspecs via Fastlane
         run: |
           set -o pipefail
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs \
+          "$BUNDLE" exec fastlane generate_specs \
             version:${{ inputs.sdk_version }} \
             adapters_version:${{ inputs.adapter_version }}
 
@@ -66,7 +71,7 @@ jobs:
             echo "❌ Podspec not found at $spec_path"
             exit 1
           fi
-          CMD="pod trunk push \"$spec_path\" --allow-warnings"
+          CMD="\"$BUNDLE\" exec pod trunk push \"$spec_path\" --allow-warnings"
           if [ "${{ inputs.validate }}" = "false" ]; then
             CMD="$CMD --skip-tests --skip-import-validation"
           fi
