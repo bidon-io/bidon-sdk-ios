@@ -103,40 +103,40 @@ PODS:
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.1.1)
   - IronSourceSDK/Ads (9.3.0.0)
-  - MintegralAdSDK (8.0.8):
-    - MintegralAdSDK/BannerAd (= 8.0.8)
-    - MintegralAdSDK/BidBannerAd (= 8.0.8)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 8.0.8)
-    - MintegralAdSDK/BidNativeAd (= 8.0.8)
-    - MintegralAdSDK/BidNewInterstitialAd (= 8.0.8)
-    - MintegralAdSDK/BidRewardVideoAd (= 8.0.8)
-    - MintegralAdSDK/InterstitialVideoAd (= 8.0.8)
-    - MintegralAdSDK/NativeAd (= 8.0.8)
-    - MintegralAdSDK/NewInterstitialAd (= 8.0.8)
-    - MintegralAdSDK/RewardVideoAd (= 8.0.8)
-  - MintegralAdSDK/BannerAd (8.0.8):
+  - MintegralAdSDK (8.1.1):
+    - MintegralAdSDK/BannerAd (= 8.1.1)
+    - MintegralAdSDK/BidBannerAd (= 8.1.1)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 8.1.1)
+    - MintegralAdSDK/BidNativeAd (= 8.1.1)
+    - MintegralAdSDK/BidNewInterstitialAd (= 8.1.1)
+    - MintegralAdSDK/BidRewardVideoAd (= 8.1.1)
+    - MintegralAdSDK/InterstitialVideoAd (= 8.1.1)
+    - MintegralAdSDK/NativeAd (= 8.1.1)
+    - MintegralAdSDK/NewInterstitialAd (= 8.1.1)
+    - MintegralAdSDK/RewardVideoAd (= 8.1.1)
+  - MintegralAdSDK/BannerAd (8.1.1):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (8.0.8):
+  - MintegralAdSDK/BidBannerAd (8.1.1):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (8.0.8):
+  - MintegralAdSDK/BidInterstitialVideoAd (8.1.1):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (8.0.8):
+  - MintegralAdSDK/BidNativeAd (8.1.1):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (8.0.8):
+  - MintegralAdSDK/BidNewInterstitialAd (8.1.1):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (8.0.8):
+  - MintegralAdSDK/BidRewardVideoAd (8.1.1):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (8.0.8):
+  - MintegralAdSDK/InterstitialVideoAd (8.1.1):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (8.0.8)
-  - MintegralAdSDK/NewInterstitialAd (8.0.8):
+  - MintegralAdSDK/NativeAd (8.1.1)
+  - MintegralAdSDK/NewInterstitialAd (8.1.1):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (8.0.8):
+  - MintegralAdSDK/RewardVideoAd (8.1.1):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.10.0)
   - MolocoSDKiOS (4.6.0)
@@ -181,7 +181,7 @@ DEPENDENCIES:
   - Google-Mobile-Ads-SDK (= 13.1.0)
   - InMobiSDK (= 11.1.1)
   - IronSourceSDK/Ads (= 9.3.0.0)
-  - MintegralAdSDK (= 8.0.8)
+  - MintegralAdSDK (= 8.1.1)
   - MobileFuseSDK (= 1.10.0)
   - MolocoSDKiOS (= 4.6.0)
   - myTargetSDK (= 5.40.0)
@@ -292,7 +292,7 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: 4642fb34a961980ab94a1ac460c6e16e113498e6
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
-  MintegralAdSDK: f02fdbab6494030b4fe4b01d8bbf654263834a20
+  MintegralAdSDK: 4325769f93ef336237799b5fb455335985fbc8b7
   MobileFuseSDK: a3554e2b82d2649972fe2b8e56facdd583fe4226
   MolocoSDKiOS: 3d1eb7f270e08e6d4f2760f352deb559ff1c2001
   myTargetSDK: 144b7573607e39828229768db156338db53ed880
@@ -310,6 +310,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 276d610b13ff9985f434955c24a6d48e1bc9f359
+PODFILE CHECKSUM: 9892ded2612a39bd735492fffc30513426e5dc94
 
 COCOAPODS: 1.16.2
