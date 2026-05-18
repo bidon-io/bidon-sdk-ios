@@ -7,7 +7,51 @@ on:
   workflow_dispatch:
 
 jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: diff
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.event.after }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          set -euo pipefail
+          if [[ "${ACTION:-}" != "synchronize" ]]; then
+            echo "Not a synchronize event — running quality."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ -z "${BEFORE:-}" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+            echo "No before SHA — running quality."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            echo "Before SHA $BEFORE not in local clone — running quality."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED=$(git diff --name-only "$BEFORE" "$AFTER" || true)
+          echo "Files changed in latest push:"
+          echo "$CHANGED"
+          REMAINING=$(echo "$CHANGED" | grep -v '^Podfile\.lock$' || true)
+          if [[ -z "$REMAINING" ]]; then
+            echo "Latest push only modified Podfile.lock — skipping quality."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Non-Podfile.lock changes detected — running quality."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   quality:
+    needs: filter
+    if: ${{ needs.filter.outputs.run == 'true' }}
     uses: bidon-io/dependamachine/.github/workflows/ios-ci-adapter-quality.yml@main
     with:
       workspace: BidOn.xcworkspace
