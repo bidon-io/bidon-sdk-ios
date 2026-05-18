@@ -1,6 +1,9 @@
 <<<<<<< HEAD
 # Changelog
 
+## 8.0.0.0
+* Updated to YandexMobileAds 8.0.0
+
 ## 7.18.4.0
 * Updated to YandexMobileAds 7.18.4
 
