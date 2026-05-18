@@ -17,12 +17,19 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
 
+    let mediationMode: String
+
     var adFormat: AdFormat {
         fatalError("Base demand provider doesn't provide ad format")
     }
 
     internal var response: DemandProviderResponse?
     internal var ad: AdObject?
+
+    init(mediationMode: String) {
+        self.mediationMode = mediationMode
+        super.init()
+    }
 
     func didLoadAd(_ ad: BidMachineAdProtocol) {
         defer { response = nil }

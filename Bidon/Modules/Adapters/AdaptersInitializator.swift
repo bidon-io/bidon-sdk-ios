@@ -49,13 +49,17 @@ struct AdaptersInitializator {
                     self.finish()
                 }
 
-                RunLoop.main.add(timer, forMode: .common)
                 self.timer = timer
+                RunLoop.main.add(timer, forMode: .common)
             }
 
             timestamp = Date.timestamp(.wall, units: .seconds)
 
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let self, self.isExecuting else {
+                    Logger.warning("Skipping adapter init on main: operation already finished (likely timed out before main queue drained)")
+                    return
+                }
                 self.adapter.initialize(from: config.decoder) { [weak self] result in
                     defer { self?.finish() }
                     guard let self = self, self.isExecuting else { return }
