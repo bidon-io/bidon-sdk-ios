@@ -20,7 +20,7 @@ final class BidMachineBiddingInterstitialDemandProvider: BidMachineBiddingDemand
         response: @escaping DemandProviderResponse
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
-        parameters["mediation_mode"] = "bidon"
+        parameters["mediation_mode"] = mediationMode
 
         let placement = try? BidMachineSdk.shared.placement(.interstitial) {
             $0.withCustomParameters(parameters)
