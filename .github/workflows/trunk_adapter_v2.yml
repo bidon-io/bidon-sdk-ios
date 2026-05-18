@@ -8,9 +8,10 @@ on:
         required: true
         type: string
       adapter_version:
-        description: 'Adapter version (e.g. 3.0.1.0)'
-        required: true
+        description: 'Adapter version (leave empty to derive from Podfile.lock; e.g. 3.6.1.1)'
+        required: false
         type: string
+        default: ''
       sdk_version:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
@@ -106,9 +107,15 @@ jobs:
           export CI=1 FASTLANE_SKIP_UPDATE_CHECK=1
           export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
           unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs \
-            version:${{ inputs.sdk_version }} \
-            adapters_version:${{ inputs.adapter_version }} 2>&1 | tee "$RUNNER_TEMP/fastlane_generate_specs.log"
+          ARGS=(version:${{ inputs.sdk_version }})
+          ADAPTER_VERSION='${{ inputs.adapter_version }}'
+          if [ -n "$ADAPTER_VERSION" ]; then
+            echo "Pinning adapter version explicitly: $ADAPTER_VERSION"
+            ARGS+=("adapters_version:$ADAPTER_VERSION" "use_network_versions:false")
+          else
+            echo "Deriving adapter version from Podfile.lock"
+          fi
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs "${ARGS[@]}" 2>&1 | tee "$RUNNER_TEMP/fastlane_generate_specs.log"
         env:
           S3_BUCKET:            ${{ secrets.S3_BUCKET }}
           S3_REGION:            ${{ secrets.S3_REGION }}
@@ -157,7 +164,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Podspec Pushed to Trunk (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Podspec Pushed to Trunk (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version || 'from Podfile.lock' }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -168,7 +175,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Adapter Podspec Push Failed (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Adapter Podspec Push Failed (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version || 'from Podfile.lock' }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
