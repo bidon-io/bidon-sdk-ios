@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 protocol BannerAdManagerDelegate: AnyObject {
     func adManager(_ adManager: BannerAdManager, didFailToLoad error: SdkError, auctionInfo: AuctionInfo)
     func adManager(_ adManager: BannerAdManager, didLoad ad: Ad, auctionInfo: AuctionInfo)
@@ -33,17 +32,16 @@ final class BannerAdManager: NSObject {
     @Injected(\.sdk)
     private var sdk: Sdk
 
-    private var state: State = .idle
+    private let stateController = StateController()
 
     let adRevenueObserver: AdRevenueObserver
-
     let placement: String
 
     weak var delegate: BannerAdManagerDelegate?
 
     var impression: AdViewImpression? {
-        switch state {
-        case .ready(let imp): return imp
+        switch stateController.state {
+        case let .ready(imp): return imp
         default: return nil
         }
     }
@@ -66,7 +64,7 @@ final class BannerAdManager: NSObject {
     }
 
     func prepareForReuse() {
-        state = .idle
+        stateController.setState(.idle)
     }
 
     func loadAd(
@@ -83,7 +81,7 @@ final class BannerAdManager: NSObject {
                 return
             }
 
-            guard self.state.isIdle else {
+            guard self.stateController.state.isIdle else {
                 Logger.warning("Banner ad manager is not idle. Loading attempt is prohibited.")
                 return
             }
@@ -102,13 +100,13 @@ final class BannerAdManager: NSObject {
         auctionKey: String?
     ) {
         auctionInfo.auctionPricefloor = NSNumber(value: pricefloor)
-        state = .preparing
+        stateController.setState(.preparing)
         auctionStartTimestamp = Date.timestamp(.wall, units: .milliseconds)
 
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         guard let initializationParameters = ConfigParametersStorage.adaptersInitializationParameters else {
-            self.state = .idle
+            stateController.setState(.idle)
             Logger.warning("No adapters were found")
             self.delegate?.adManager(self, didFailToLoad: SdkError.message("No adapters were found"), auctionInfo: auctionInfo)
             return
@@ -133,9 +131,9 @@ final class BannerAdManager: NSObject {
             case .success(let tokens):
                 self.performAuctionRequest(tokens: tokens, pricefloor: pricefloor, auctionKey: auctionKey, viewContext: viewContext)
             case .failure(let error):
-                self.state = .idle
-                Logger.warning("Fullscreen ad manager did fail to load ad with error: \(error)")
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+                self.stateController.setState(.idle)
+                Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: self.auctionInfo)
             }
         }
     }
@@ -177,8 +175,8 @@ final class BannerAdManager: NSObject {
                 )
             case .failure(let error):
                 Logger.warning("Banner ad manager did fail to load ad with error: \(error)")
-                self.state = .idle
-                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: auctionInfo)
+                self.stateController.setState(.idle)
+                self.delegate?.adManager(self, didFailToLoad: SdkError(error), auctionInfo: self.auctionInfo)
             }
         }
     }
@@ -217,7 +215,7 @@ final class BannerAdManager: NSObject {
             builder.withAuctionConfiguration(configuration)
         }
 
-        state = .auction(controller: auction)
+        self.stateController.setState(.auction(controller: auction))
 
         auction.load { [unowned observer, weak self] result in
             guard let self = self else { return }
@@ -237,7 +235,7 @@ final class BannerAdManager: NSObject {
                     bid: bid.unwrapped(),
                     format: context.format
                 )
-                self.state = .ready(impression: impression)
+                self.stateController.setState(.ready(impression: impression))
 
                 let ad = AdContainer(bid: bid)
                 DispatchQueue.main.async { [weak self] in
@@ -245,7 +243,7 @@ final class BannerAdManager: NSObject {
                     self.delegate?.adManager(self, didLoad: ad, auctionInfo: self.auctionInfo)
                 }
             case .failure(let error):
-                self.state = .idle
+                self.stateController.setState(.idle)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     self.delegate?.adManager(self, didFailToLoad: error, auctionInfo: self.auctionInfo)
@@ -270,7 +268,7 @@ final class BannerAdManager: NSObject {
     }
 
     func notifyWin(viewContext: AdViewContext) {
-        switch state {
+        switch stateController.state {
         case .ready(var impression):
             // win notification just sends
             // a corresponding request
@@ -279,7 +277,7 @@ final class BannerAdManager: NSObject {
             guard impression.isTrackingAllowed(.win) else { return }
             defer {
                 impression.markTrackedIfNeeded(.win)
-                state = .ready(impression: impression)
+                stateController.setState(.ready(impression: impression))
             }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
@@ -311,10 +309,10 @@ final class BannerAdManager: NSObject {
         eCPM: Price,
         viewContext: AdViewContext
     ) {
-        switch state {
+        switch stateController.state {
         case .preparing:
             isCanceled = true
-            state = .idle
+            stateController.setState(.idle)
             delegate?.adManager(self, didFailToLoad: .cancelled, auctionInfo: auctionInfo)
         case .auction(let controller):
             controller.cancel()
@@ -324,7 +322,7 @@ final class BannerAdManager: NSObject {
             // isExternalNotificationsEnabled applies only
             // for request logic
             guard impression.isTrackingAllowed(.loss) else { return }
-            defer { state = .idle }
+            defer { stateController.setState(.idle) }
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
@@ -358,5 +356,24 @@ private extension BannerAdManager.State {
         case .idle: return true
         default: return false
         }
+    }
+}
+
+fileprivate final class StateController {
+    typealias State = BannerAdManager.State
+    
+    private var _state: State = .idle
+    private let stateLock = NSLock()
+    
+    var state: State {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return _state
+    }
+
+    func setState(_ newState: State) {
+        stateLock.lock()
+        _state = newState
+        stateLock.unlock()
     }
 }

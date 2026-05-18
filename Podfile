@@ -14,7 +14,7 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.6.1'
+  pod 'AppLovinSDK', '13.6.2'
 end
 
 def bidmachine 
@@ -26,11 +26,11 @@ def admob
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.1.0'
+  pod 'BigoADS', '5.1.2'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.5'
+  pod 'Fyber_Marketplace_SDK', '8.4.6'
 end
 
 def meta_ads
