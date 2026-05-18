@@ -74,7 +74,7 @@ PODS:
   - BidMachine/Static (3.6.1):
     - OMSDK_Appodeal/Static (= 1.6.0.3)
   - BigoADS (5.1.0)
-  - ChartboostSDK (9.11.0)
+  - ChartboostSDK (9.12.0)
   - DivKit (32.36.0):
     - DivKit_LayoutKit (= 32.36.0)
     - DivKit_Serialization (= 32.36.0)
@@ -174,7 +174,7 @@ DEPENDENCIES:
   - AppLovinSDK (= 13.6.2)
   - BidMachine (= 3.6.1)
   - BigoADS (= 5.1.0)
-  - ChartboostSDK (= 9.11.0)
+  - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.5)
@@ -276,7 +276,7 @@ SPEC CHECKSUMS:
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   BidMachine: 0f077ae2ea05d8d5d61cdf0997f345c45ceaed72
   BigoADS: a7721b65e51f506141d5f1a6dff1cab213b04c76
-  ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
+  ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   DivKit: 4c370a5c7d668361f7de5f7badb02ef7c8a66e6c
   DivKit_LayoutKit: aa1707764a8c9acf6e61625bb8324ff8284fe584
   DivKit_LayoutKitInterface: 8647959243ac5e65eca6c78004d4a0a10940d86e
@@ -310,6 +310,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 44eea1e3166119b40340519f4b17afc23c247f50
+PODFILE CHECKSUM: 6dad6678da2756739e66227a643c55e9ecc32c16
 
 COCOAPODS: 1.16.2
