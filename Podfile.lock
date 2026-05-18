@@ -102,6 +102,7 @@ PODS:
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.1.1)
+  - IronSourceAdQualitySDK (9.5.1)
   - IronSourceSDK/Ads (9.3.0.0)
   - MintegralAdSDK (8.0.8):
     - MintegralAdSDK/BannerAd (= 8.0.8)
@@ -149,7 +150,8 @@ PODS:
   - TaurusxAdsSDK (1.15.0):
     - TaurusxAdsSDK/TaurusxAds (= 1.15.0)
   - TaurusxAdsSDK/TaurusxAds (1.15.0)
-  - UnityAds (4.17.0)
+  - UnityAds (4.18.0):
+    - IronSourceAdQualitySDK (< 10.0.0)
   - VGSL (7.17.0):
     - VGSLFundamentals (= 7.17.0)
     - VGSLNetworking (= 7.17.0)
@@ -188,7 +190,7 @@ DEPENDENCIES:
   - StartAppSDK (= 4.13.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.15.0)
-  - UnityAds (= 4.17.0)
+  - UnityAds (= 4.18.0)
   - VungleAds (= 7.7.1)
   - YandexMobileAds (= 7.18.4)
   - zMaticoo (= 1.5.6)
@@ -233,6 +235,7 @@ SPEC REPOS:
     - Google-Mobile-Ads-SDK
     - GoogleUserMessagingPlatform
     - InMobiSDK
+    - IronSourceAdQualitySDK
     - IronSourceSDK
     - MintegralAdSDK
     - MobileFuseSDK
@@ -291,6 +294,7 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 8429bef6ee1a4e322b0a5571b64217ed8317a3d5
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: 4642fb34a961980ab94a1ac460c6e16e113498e6
+  IronSourceAdQualitySDK: d3f89c7eb4afc6b6c45fc3d83d64789a9977148f
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
   MintegralAdSDK: f02fdbab6494030b4fe4b01d8bbf654263834a20
   MobileFuseSDK: a3554e2b82d2649972fe2b8e56facdd583fe4226
@@ -301,7 +305,7 @@ SPEC CHECKSUMS:
   StartAppSDK: 890149cde4355beec9ec4c0f5f4d499c44f42b79
   SwiftLint: 4fa4a9b437ccc4fc72f6c0bc98556e8e9e05bccf
   TaurusxAdsSDK: b01ce967cae0ed1305df613b91bab2a33b306e64
-  UnityAds: adbe0d522fd14b8298c5e159164fc43396165843
+  UnityAds: 841571b44ea0c0adff40fabf2112f3c4a96a5db6
   VGSL: 6696dd84229c7d3ce8ad9b940e89bbd199e2b12d
   VGSLFundamentals: 5bd45cb6e0b594902aa9f8927402b4d787460bc7
   VGSLNetworking: 4301c663201314d27357078ec8df9dccc631ec62
@@ -310,6 +314,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 44eea1e3166119b40340519f4b17afc23c247f50
+PODFILE CHECKSUM: 932f6a6011143a7f53e451cfdb4b1b5e19c44824
 
 COCOAPODS: 1.16.2
