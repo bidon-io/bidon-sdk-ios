@@ -49,7 +49,9 @@ internal class AsynchronousOperation: Operation {
     }
 
     final func finish() {
-        state = .finished
+        if state != .finished {
+            state = .finished
+        }
     }
 
     /// Thread-safe computed state value

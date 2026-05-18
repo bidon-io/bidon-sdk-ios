@@ -23,7 +23,7 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
         response: @escaping DemandProviderResponse
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
-        parameters["mediation_mode"] = "bidon"
+        parameters["mediation_mode"] = mediationMode
 
         let placement = try? BidMachineSdk.shared.placement(format.bmBannerFormat) {
             $0.withCustomParameters(parameters)
@@ -56,10 +56,10 @@ final class BidMachineBiddingAdViewDemandProvider: BidMachineBiddingDemandProvid
         }
     }
 
-    init(context: AdViewContext) {
+    init(context: AdViewContext, mediationMode: String) {
         self.format = context.format
 
-        super.init()
+        super.init(mediationMode: mediationMode)
     }
 
     // MARK: - Override base class methods for banner-specific behavior

@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.6.2.0
+* Updated to AppLovinSDK 13.6.2
+
 ## 13.6.1.0
 * Updated to AppLovinSDK 13.6.1
 * Migrated from deprecated `ALAdView(frame:size:sdk:)` to `ALAdView(size:)`
