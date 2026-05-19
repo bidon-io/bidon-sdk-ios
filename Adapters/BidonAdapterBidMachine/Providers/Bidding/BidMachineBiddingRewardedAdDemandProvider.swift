@@ -21,7 +21,7 @@ final class BidMachineBiddingRewardedAdDemandProvider: BidMachineBiddingDemandPr
         response: @escaping DemandProviderResponse
     ) {
         var parameters = adUnitExtras.customParameters ?? [String: String]()
-        parameters["mediation_mode"] = "bidon"
+        parameters["mediation_mode"] = mediationMode
 
         let placement = try? BidMachineSdk.shared.placement(.rewarded) {
             $0.withCustomParameters(parameters)
