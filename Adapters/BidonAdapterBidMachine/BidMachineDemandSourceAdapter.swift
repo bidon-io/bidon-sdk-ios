@@ -26,31 +26,42 @@ BiddingAdViewDemandSourceAdapter
 
     public let demandId: String = BidMachineDemandSourceAdapter.identifier
     public let name: String = "BidMachine"
-    public let adapterVersion: String = "0"
+    public let adapterVersion: String = "1"
     public let sdkVersion: String = BidMachineSdk.sdkVersion
 
+    internal let mediationMode: String
+
+    @objc public override convenience init() {
+        self.init(mediationMode: "bidon")
+    }
+
+    @objc public init(mediationMode: String) {
+        self.mediationMode = mediationMode
+        super.init()
+    }
+
     public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
-        return BidMachineDirectInterstitialDemandProvider()
+        return BidMachineDirectInterstitialDemandProvider(mediationMode: mediationMode)
     }
 
     public func directRewardedAdDemandProvider() throws -> AnyDirectRewardedAdDemandProvider {
-        return BidMachineDirectRewardedAdDemandProvider()
+        return BidMachineDirectRewardedAdDemandProvider(mediationMode: mediationMode)
     }
 
     public func directAdViewDemandProvider(context: AdViewContext) throws -> AnyDirectAdViewDemandProvider {
-        return BidMachineDirectAdViewDemandProvider(context: context)
+        return BidMachineDirectAdViewDemandProvider(context: context, mediationMode: mediationMode)
     }
 
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
-        return BidMachineBiddingInterstitialDemandProvider()
+        return BidMachineBiddingInterstitialDemandProvider(mediationMode: mediationMode)
     }
 
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
-        return BidMachineBiddingRewardedAdDemandProvider()
+        return BidMachineBiddingRewardedAdDemandProvider(mediationMode: mediationMode)
     }
 
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
-        return BidMachineBiddingAdViewDemandProvider(context: context)
+        return BidMachineBiddingAdViewDemandProvider(context: context, mediationMode: mediationMode)
     }
 }
 
