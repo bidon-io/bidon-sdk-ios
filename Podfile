@@ -14,7 +14,7 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.6.1'
+  pod 'AppLovinSDK', '13.6.2'
 end
 
 def bidmachine 
@@ -26,11 +26,11 @@ def admob
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.1.0'
+  pod 'BigoADS', '5.1.2'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.5'
+  pod 'Fyber_Marketplace_SDK', '8.4.6'
 end
 
 def meta_ads
@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.5.0'
+  pod 'MolocoSDKiOS', '4.6.0'
 end
 
 def meta_sdk
@@ -50,11 +50,11 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.0.8'
+  pod 'MintegralAdSDK', '8.1.1'
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.10.0'
+  pod 'MobileFuseSDK', '1.11.0'
 end
 
 def vungle
