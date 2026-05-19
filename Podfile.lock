@@ -101,7 +101,7 @@ PODS:
   - Google-Mobile-Ads-SDK (13.1.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
-  - InMobiSDK (11.1.1)
+  - InMobiSDK (11.2.0)
   - IronSourceSDK/Ads (9.3.0.0)
   - MintegralAdSDK (8.1.1):
     - MintegralAdSDK/BannerAd (= 8.1.1)
@@ -179,7 +179,7 @@ DEPENDENCIES:
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.6)
   - Google-Mobile-Ads-SDK (= 13.1.0)
-  - InMobiSDK (= 11.1.1)
+  - InMobiSDK (= 11.2.0)
   - IronSourceSDK/Ads (= 9.3.0.0)
   - MintegralAdSDK (= 8.1.1)
   - MobileFuseSDK (= 1.11.0)
@@ -290,7 +290,7 @@ SPEC CHECKSUMS:
   Fyber_Marketplace_SDK: cedfa90cc2da9e549de1b8134965abb63bb8cf67
   Google-Mobile-Ads-SDK: 8429bef6ee1a4e322b0a5571b64217ed8317a3d5
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
-  InMobiSDK: 4642fb34a961980ab94a1ac460c6e16e113498e6
+  InMobiSDK: 07312ef7eff433d72e8a0f06ef7b50685b3e2ca5
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
   MintegralAdSDK: f02fdbab6494030b4fe4b01d8bbf654263834a20
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
@@ -310,6 +310,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: acbd89f159f0378481f5fd5f38d00b0131aec1fe
+PODFILE CHECKSUM: d9eb04b6a0aef3db6af3f534bedf23a32c2eba25
 
 COCOAPODS: 1.16.2
