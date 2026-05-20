@@ -58,7 +58,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.7.1'
+  pod 'VungleAds', '7.7.3'
 end
 
 def inmobi
