@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.42.1.0
+* Updated to myTargetSDK 5.42.1
+
 ## 5.40.0.0
 * Updated to myTargetSDK 5.40.0
 

@@ -26,11 +26,11 @@ def admob
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.1.0'
+  pod 'BigoADS', '5.1.2'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.5'
+  pod 'Fyber_Marketplace_SDK', '8.4.7'
 end
 
 def meta_ads
@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.5.0'
+  pod 'MolocoSDKiOS', '4.6.1'
 end
 
 def meta_sdk
@@ -54,7 +54,7 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.10.0'
+  pod 'MobileFuseSDK', '1.11.0'
 end
 
 def vungle
@@ -62,11 +62,11 @@ def vungle
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.1.1'
+  pod 'InMobiSDK', '11.2.0'
 end
 
 def my_target
-  pod "myTargetSDK", '5.40.0'
+  pod "myTargetSDK", '5.42.1'
 end
 
 def chartboost
@@ -82,11 +82,11 @@ def yandex
 end
 
 def startio
-  pod 'StartAppSDK', '4.13.0'
+  pod 'StartAppSDK', '4.13.1'
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.15.0'
+  pod 'TaurusxAdsSDK', '1.16.0'
 end
 
 def zmaticoo
