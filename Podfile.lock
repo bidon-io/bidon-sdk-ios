@@ -140,7 +140,7 @@ PODS:
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.11.0)
   - MolocoSDKiOS (4.6.1)
-  - myTargetSDK (5.42.1):
+  - myTargetSDK (5.43.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
   - OMSDK_Appodeal/Static (1.6.0.3)
@@ -184,7 +184,7 @@ DEPENDENCIES:
   - MintegralAdSDK (= 8.1.3)
   - MobileFuseSDK (= 1.11.0)
   - MolocoSDKiOS (= 4.6.1)
-  - myTargetSDK (= 5.42.1)
+  - myTargetSDK (= 5.43.0)
   - StartAppSDK (= 4.13.1)
   - SwiftLint
   - TaurusxAdsSDK (= 1.16.0)
@@ -294,8 +294,8 @@ SPEC CHECKSUMS:
   IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
   MintegralAdSDK: f02fdbab6494030b4fe4b01d8bbf654263834a20
   MobileFuseSDK: a3554e2b82d2649972fe2b8e56facdd583fe4226
-  MolocoSDKiOS: e68458b4a01e1580662ab849669b7190bfe93fa9
-  myTargetSDK: 144b7573607e39828229768db156338db53ed880
+  MolocoSDKiOS: 6df1553306a50937307cf800c8f5cd9d1b5db41d
+  myTargetSDK: c4b8bfdd7c574fb83a67e722dc7d946bf116bf9a
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
   OMSDK_Appodeal: 907fdbc78ac0c6dfccb14b69a81302899dc536c9
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
@@ -310,6 +310,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 7c6dcb44a6ac1753e7caad49baf7a72c5c49fb8a
+PODFILE CHECKSUM: c802ce68cb78ad95af5b96dbcb3bdd1dd7dba962
 
 COCOAPODS: 1.16.2
