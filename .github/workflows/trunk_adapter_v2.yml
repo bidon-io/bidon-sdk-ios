@@ -8,9 +8,10 @@ on:
         required: true
         type: string
       adapter_version:
-        description: 'Adapter version (e.g. 3.0.1.0)'
-        required: true
+        description: 'Adapter version (leave empty to derive from Podfile.lock; e.g. 3.6.1.1)'
+        required: false
         type: string
+        default: ''
       sdk_version:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
@@ -21,6 +22,10 @@ on:
         type: boolean
         default: false
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   trunk-adapter-v2:
     runs-on: [self-hosted, macOS, ARM64, xcode-16, bidon]
@@ -30,6 +35,31 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Ensure AWS CLI (self-hosted)
+        run: |
+          set -e
+          if [ -x /opt/homebrew/bin/brew ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+          fi
+
+          if ! command -v aws >/dev/null 2>&1; then
+            echo "aws not found; installing via Homebrew..."
+            brew update
+            brew install awscli
+          fi
+
+          aws --version
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v5.1.1
+        with:
+          role-to-assume: ${{ secrets.AWS_APPODEAL_OIDC_ROLE_ARN }}
+          role-session-name: gha-${{ github.run_id }}
+          aws-region: ${{ secrets.S3_REGION }}
+
+      - name: AWS whoami
+        run: aws sts get-caller-identity
 
       - name: gitconfig
         run: |
@@ -49,29 +79,84 @@ jobs:
           "$POD_BIN" --version || true
           "$POD_BIN" install 2>&1 | tee "$RUNNER_TEMP/pod_install.log"
 
+      - name: Cache Ruby gems (Bundler)
+        uses: actions/cache@v4
+        with:
+          path: ~/.bundle/bidon-sdk-ios
+          key: ${{ runner.os }}-ruby-3.2-bundle-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-ruby-3.2-bundle-
+
+      - name: Install Ruby gems for fastlane (Ruby 3.2)
+        run: |
+          set -o pipefail
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set path ~/.bundle/bidon-sdk-ios
+          /opt/homebrew/opt/ruby@3.2/bin/bundle config set clean 'true'
+          /opt/homebrew/opt/ruby@3.2/bin/bundle check || /opt/homebrew/opt/ruby@3.2/bin/bundle install --jobs 4 --retry 3 2>&1 | tee "$RUNNER_TEMP/bundle_install.log"
+
+      - name: Ensure Ruby 3.2 PATH
+        run: |
+          set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          ruby --version
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec pod --version
+
       - name: Generate podspecs via Fastlane
         run: |
           set -o pipefail
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs \
-            version:${{ inputs.sdk_version }} \
-            adapters_version:${{ inputs.adapter_version }}
+          export CI=1 FASTLANE_SKIP_UPDATE_CHECK=1
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
+          ARGS=(version:${{ inputs.sdk_version }})
+          ADAPTER_VERSION='${{ inputs.adapter_version }}'
+          if [ -n "$ADAPTER_VERSION" ]; then
+            echo "Pinning adapter version explicitly: $ADAPTER_VERSION"
+            ARGS+=("adapters_version:$ADAPTER_VERSION" "use_network_versions:false")
+          else
+            echo "Deriving adapter version from Podfile.lock"
+          fi
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane generate_specs "${ARGS[@]}" 2>&1 | tee "$RUNNER_TEMP/fastlane_generate_specs.log"
+        env:
+          S3_BUCKET:            ${{ secrets.S3_BUCKET }}
+          S3_REGION:            ${{ secrets.S3_REGION }}
+          S3_ACCESS_KEY:        ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
       - name: Push selected adapter podspec to trunk
         env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN_V2 }}
         run: |
           set -euo pipefail
+          export PATH="/opt/homebrew/opt/ruby@3.2/bin:$HOME/.bundle/bidon-sdk-ios/bin:$PATH"
+          unset GEM_HOME GEM_PATH RUBYLIB RUBYOPT || true
           spec_path="build/Podspecs/${{ inputs.adapter_name }}.podspec.json"
           if [ ! -f "$spec_path" ]; then
             echo "❌ Podspec not found at $spec_path"
             exit 1
           fi
-          CMD="pod trunk push \"$spec_path\" --allow-warnings"
+          POD_ARGS=(--allow-warnings)
           if [ "${{ inputs.validate }}" = "false" ]; then
-            CMD="$CMD --skip-tests --skip-import-validation"
+            POD_ARGS+=(--skip-tests --skip-import-validation)
           fi
-          echo "Running: $CMD"
-          eval "$CMD"
+          echo "Running: bundle exec pod trunk push $spec_path ${POD_ARGS[*]}"
+          /opt/homebrew/opt/ruby@3.2/bin/bundle exec pod trunk push "$spec_path" "${POD_ARGS[@]}"
+
+      - name: Dump logs tail (on failure)
+        if: failure()
+        run: |
+          set -e
+          echo "\nFastlane (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 300 "$RUNNER_TEMP/fastlane_generate_specs.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nCocoaPods install (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/pod_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "\nBundle install (tail)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 200 "$RUNNER_TEMP/bundle_install.log" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify Slack on success
         if: success()
@@ -79,7 +164,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Adapter Podspec Pushed to Trunk (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "✅ *Adapter Podspec Pushed to Trunk (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version || 'from Podfile.lock' }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -90,11 +175,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Adapter Podspec Push Failed (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+              "text": "❌ *Adapter Podspec Push Failed (v2)!*\n• Adapter: `${{ inputs.adapter_name }}`\n• Version: `${{ inputs.adapter_version || 'from Podfile.lock' }}`\n• SDK: `${{ inputs.sdk_version }}`\n• Validate: `${{ inputs.validate }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      
-
-
