@@ -47,7 +47,7 @@ public final class GoogleAdManagerDemandSourceAdapter: NSObject, DemandSourceAda
     }
 
     private func configure(_ request: GoogleMobileAds.RequestConfiguration) {
-        request.tagForChildDirectedTreatment = NSNumber(value: context.regulations.coppa == .yes)
+        request.ageRestrictedTreatment = context.regulations.coppa == .yes ? .child : .unspecified
     }
 }
 
