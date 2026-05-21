@@ -69,24 +69,24 @@ PODS:
     - AppMetricaLog (= 5.14.0)
   - AppMetricaSynchronization (5.14.0):
     - AppMetricaLogSwift (= 5.14.0)
-  - BidMachine (3.6.1):
-    - BidMachine/Static (= 3.6.1)
-  - BidMachine/Static (3.6.1):
-    - OMSDK_Appodeal/Static (= 1.6.0.3)
+  - BidMachine (3.7.0):
+    - BidMachine/Static (= 3.7.0)
+  - BidMachine/Static (3.7.0):
+    - OMSDK_Appodeal/Static (= 1.6.3)
   - BigoADS (5.1.2)
   - ChartboostSDK (9.11.0)
-  - DivKit (32.36.0):
-    - DivKit_LayoutKit (= 32.36.0)
-    - DivKit_Serialization (= 32.36.0)
-    - VGSL (~> 7.12)
-  - DivKit_LayoutKit (32.36.0):
-    - DivKit_LayoutKitInterface (= 32.36.0)
-    - VGSL (~> 7.12)
-  - DivKit_LayoutKitInterface (32.36.0):
-    - VGSL (~> 7.12)
-  - DivKit_Serialization (32.36.0):
-    - VGSL (~> 7.12)
-  - DivKitBinaryCompatibilityFacade (5.2.1):
+  - DivKit (32.50.0):
+    - DivKit_LayoutKit (= 32.50.0)
+    - DivKit_Serialization (= 32.50.0)
+    - VGSL (~> 7.21)
+  - DivKit_LayoutKit (32.50.0):
+    - DivKit_LayoutKitInterface (= 32.50.0)
+    - VGSL (~> 7.21)
+  - DivKit_LayoutKitInterface (32.50.0):
+    - VGSL (~> 7.21)
+  - DivKit_Serialization (32.50.0):
+    - VGSL (~> 7.21)
+  - DivKitBinaryCompatibilityFacade (5.2.2):
     - DivKit (~> 32.14)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -143,23 +143,23 @@ PODS:
   - myTargetSDK (5.43.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
-  - OMSDK_Appodeal/Static (1.6.0.3)
+  - OMSDK_Appodeal/Static (1.6.3)
   - StartAppSDK (4.13.1)
   - SwiftLint (0.63.2)
   - TaurusxAdsSDK (1.16.0):
     - TaurusxAdsSDK/TaurusxAds (= 1.16.0)
   - TaurusxAdsSDK/TaurusxAds (1.16.0)
   - UnityAds (4.17.0)
-  - VGSL (7.17.0):
-    - VGSLFundamentals (= 7.17.0)
-    - VGSLNetworking (= 7.17.0)
-    - VGSLUI (= 7.17.0)
-  - VGSLFundamentals (7.17.0)
-  - VGSLNetworking (7.17.0):
-    - VGSLFundamentals (= 7.17.0)
-    - VGSLUI (= 7.17.0)
-  - VGSLUI (7.17.0):
-    - VGSLFundamentals (= 7.17.0)
+  - VGSL (7.21.0):
+    - VGSLFundamentals (= 7.21.0)
+    - VGSLNetworking (= 7.21.0)
+    - VGSLUI (= 7.21.0)
+  - VGSLFundamentals (7.21.0)
+  - VGSLNetworking (7.21.0):
+    - VGSLFundamentals (= 7.21.0)
+    - VGSLUI (= 7.21.0)
+  - VGSLUI (7.21.0):
+    - VGSLFundamentals (= 7.21.0)
   - VungleAds (7.7.3)
   - YandexMobileAds (7.18.4):
     - AppMetricaAdSupport (~> 5.14.0)
@@ -172,7 +172,7 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.5.0)
   - AppLovinSDK (= 13.6.2)
-  - BidMachine (= 3.6.1)
+  - BidMachine (= 3.7.0)
   - BigoADS (= 5.1.2)
   - ChartboostSDK (= 9.11.0)
   - FBAudienceNetwork (= 6.21.1)
@@ -274,42 +274,42 @@ SPEC CHECKSUMS:
   AppMetricaProtobufUtils: 3696c3b28c3a6a5fd95b8e44953c662ad5648f7b
   AppMetricaStorageUtils: bb31d877359a6d1ad8ae5a6d89951edddf01af75
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
-  BidMachine: 0f077ae2ea05d8d5d61cdf0997f345c45ceaed72
+  BidMachine: 22f85513d1c0403daaed38ec8f368b6a0865aa32
   BigoADS: 0a9b26515a5f9f82b4d0ea67a2e5d02e07cac4b0
   ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
-  DivKit: 4c370a5c7d668361f7de5f7badb02ef7c8a66e6c
-  DivKit_LayoutKit: aa1707764a8c9acf6e61625bb8324ff8284fe584
-  DivKit_LayoutKitInterface: 8647959243ac5e65eca6c78004d4a0a10940d86e
-  DivKit_Serialization: 2a96f66a624dec40973c90a01e91e9dc45c669df
-  DivKitBinaryCompatibilityFacade: 38b84cea43f82129388706b4c25f71519d42a18d
+  DivKit: 4258bb196d7af495e188f25fad45403333bad118
+  DivKit_LayoutKit: bfdae219dd0868d26e7558b2f8e6070fdc02f95f
+  DivKit_LayoutKitInterface: 623bd8b2aeaf09a07a4134c8c41bef7a38cb73cc
+  DivKit_Serialization: acd41f7f720c71b666e2b3e5ae17b7c550dc016e
+  DivKitBinaryCompatibilityFacade: 77c240b799c62d65c826aeb9c8f0081e1ffe7b56
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 85d18a65c9e35bc426bd4664cf3ae2a1172d7b60
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: c63707d806951c0ab6c60632ffb233a954d11185
+  Fyber_Marketplace_SDK: 1a880b530921ddf07a74982e163ab56eaf90e932
   Google-Mobile-Ads-SDK: 7692126a35ed859f20635af281c50a2162be8bea
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
-  IronSourceSDK: 5febe9a2c8c4eb4ac743dd0da492d2a6b69b5b7f
-  MintegralAdSDK: f02fdbab6494030b4fe4b01d8bbf654263834a20
-  MobileFuseSDK: a3554e2b82d2649972fe2b8e56facdd583fe4226
-  MolocoSDKiOS: 6df1553306a50937307cf800c8f5cd9d1b5db41d
+  IronSourceSDK: d12f8939bf36dd4e28bb4f6134bcde9a53af15db
+  MintegralAdSDK: 0858525ba50c372960c98cd0151921d69907d08d
+  MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
+  MolocoSDKiOS: e68458b4a01e1580662ab849669b7190bfe93fa9
   myTargetSDK: c4b8bfdd7c574fb83a67e722dc7d946bf116bf9a
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
-  OMSDK_Appodeal: 907fdbc78ac0c6dfccb14b69a81302899dc536c9
+  OMSDK_Appodeal: e76e5c30dfd3081621a8cd393c45219edc84f1f2
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 4fa4a9b437ccc4fc72f6c0bc98556e8e9e05bccf
   TaurusxAdsSDK: 12d4628283674c65494df15fe6c3c45842c80a82
   UnityAds: adbe0d522fd14b8298c5e159164fc43396165843
-  VGSL: 6696dd84229c7d3ce8ad9b940e89bbd199e2b12d
-  VGSLFundamentals: 5bd45cb6e0b594902aa9f8927402b4d787460bc7
-  VGSLNetworking: 4301c663201314d27357078ec8df9dccc631ec62
-  VGSLUI: 6cf73663cc3e9fcc808c095f065eb84555a5cd52
+  VGSL: 0573c2b82b05aadcba4836398ce3778d271bfd13
+  VGSLFundamentals: 3a081684c1a5df5800bf88aca8a9bdff2c10cfd9
+  VGSLNetworking: 0ea8a335bc4f4eba3f6123ffe441cf1c08f267f2
+  VGSLUI: 249a16cccdb75f1a5a1733894d013bca76e27c5e
   VungleAds: 58cb2d034ab1f455b9c2fb7ec8bdbcd82cf0ca70
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
-PODFILE CHECKSUM: 8f80d0a277b5ea3a6cfa49b64ec73be673838956
+PODFILE CHECKSUM: ddf47e9ef2acb9b56b17f1b1fadc01b54cc5b77e
 
 COCOAPODS: 1.16.2
