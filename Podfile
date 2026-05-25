@@ -22,7 +22,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '13.3.0'
+  pod 'Google-Mobile-Ads-SDK', '13.4.0'
 end
 
 def bigo_ads
