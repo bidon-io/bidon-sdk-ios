@@ -1,5 +1,6 @@
 # Develop
 
+- CI: add Trunk Add Owner workflow to add a new CocoaPods trunk owner to Bidon core and all adapter pods
 - CI: skip CI Adapter Quality re-run when latest push only modifies Podfile.lock (merge-conflict fixes on `chore/pod-*` PRs)
 
 ## Fixes
