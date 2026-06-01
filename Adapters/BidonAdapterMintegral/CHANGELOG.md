@@ -2,6 +2,8 @@
 
 ## 8.1.4.0
 * Updated to MintegralAdSDK 8.1.4
+* Migrated from deprecated `MTGSDK.setAppID(_:apiKey:)` to `MTGSDK.initialize(withAppID:apiKey:completionHandler:)` with async completion handler
+* Fixed `initializeWithAppID:apiKey:completionHandler:` closure signature to accept `(Bool, (any Error)?)` arguments
 
 ## 8.1.3.0
 * Updated to MintegralAdSDK 8.1.3
