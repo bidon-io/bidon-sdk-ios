@@ -25,15 +25,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1.4'
-          bundler-cache: true
-
-      - name: Install dependencies
-        run: bundle install
-
       - name: Build pod list
         id: pods
         run: |
@@ -43,19 +34,16 @@ jobs:
           else
             # Derive the published pod set from the Fastfile ($targets + Yandex)
             # so this workflow stays in sync when adapters are added/removed.
-            PODS=$(ruby -e '
-              content = File.read("fastlane/Fastfile")
-              targets = content[/\$targets\s*=\s*\[(.*?)\]/m, 1].scan(/"([^"]+)"/).flatten
-              targets << "BidonAdapterYandex"
-              puts targets.uniq.join(" ")
-            ')
+            PODS=$(awk '/\$targets *= *\[/{f=1} f{print} /^\]/{if(f) exit}' fastlane/Fastfile \
+              | grep -oE '"[^"]+"' | tr -d '"' | tr '\n' ' ')
+            PODS="$PODS BidonAdapterYandex"
           fi
           echo "Pods to update: $PODS"
           echo "list=$PODS" >> "$GITHUB_OUTPUT"
 
       - name: Add owner to trunk pods (continue on failure)
         env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN_V2 }}
         run: |
           EMAIL="${{ inputs.owner_email }}"
           FAILED=()

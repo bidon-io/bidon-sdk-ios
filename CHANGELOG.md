@@ -1,6 +1,7 @@
 # Develop
 
 - CI: add Trunk Add Owner workflow to add a new CocoaPods trunk owner to Bidon core and all adapter pods
+- CI: fix Trunk Add Owner workflow failing on bundle install (drop unused bundler step, use global pod + grep for pod list)
 - CI: skip CI Adapter Quality re-run when latest push only modifies Podfile.lock (merge-conflict fixes on `chore/pod-*` PRs)
 
 ## Fixes
