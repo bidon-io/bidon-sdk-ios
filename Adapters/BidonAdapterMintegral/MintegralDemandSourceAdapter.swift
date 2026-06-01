@@ -61,11 +61,12 @@ extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: MintegralParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        defer { isInitialized = true }
-        MTGSDK.sharedInstance().setAppID(
-            parameters.appId,
+        MTGSDK.sharedInstance().initialize(
+            withAppID: parameters.appId,
             apiKey: parameters.appKey
-        )
-        completion(nil)
+        ) { [weak self] _ in
+            self?.isInitialized = true
+            completion(nil)
+        }
     }
 }
