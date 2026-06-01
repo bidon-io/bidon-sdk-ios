@@ -1,0 +1,104 @@
+name: Trunk Add Owner
+
+# Adds a new CocoaPods trunk owner to the Bidon core pod and all adapter pods,
+# using COCOAPODS_TRUNK_TOKEN from secrets (the token must belong to an existing
+# owner of those pods). The new owner's email must already be registered on
+# CocoaPods trunk (`pod trunk register`) before it can be added.
+
+on:
+  workflow_dispatch:
+    inputs:
+      owner_email:
+        description: 'Email of the new owner to add (must be registered on CocoaPods trunk)'
+        required: true
+        type: string
+      pods:
+        description: 'Optional: comma/space-separated pod names. Leave empty to target Bidon + all adapters.'
+        required: false
+        type: string
+
+jobs:
+  add_owner:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.4'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Build pod list
+        id: pods
+        run: |
+          if [[ -n "${{ inputs.pods }}" ]]; then
+            PODS="${{ inputs.pods }}"
+            PODS="${PODS//,/ }"
+          else
+            # Derive the published pod set from the Fastfile ($targets + Yandex)
+            # so this workflow stays in sync when adapters are added/removed.
+            PODS=$(ruby -e '
+              content = File.read("fastlane/Fastfile")
+              targets = content[/\$targets\s*=\s*\[(.*?)\]/m, 1].scan(/"([^"]+)"/).flatten
+              targets << "BidonAdapterYandex"
+              puts targets.uniq.join(" ")
+            ')
+          fi
+          echo "Pods to update: $PODS"
+          echo "list=$PODS" >> "$GITHUB_OUTPUT"
+
+      - name: Add owner to trunk pods (continue on failure)
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: |
+          EMAIL="${{ inputs.owner_email }}"
+          FAILED=()
+
+          for pod in ${{ steps.pods.outputs.list }}; do
+            echo "🟡 Adding $EMAIL as owner of $pod..."
+            if pod trunk add-owner "$pod" "$EMAIL"; then
+              echo "✅ Added owner to $pod"
+            else
+              echo "❌ Failed to add owner to $pod"
+              FAILED+=("$pod")
+            fi
+          done
+
+          if [ ${#FAILED[@]} -ne 0 ]; then
+            echo "FAILED_PODS<<EOF" >> "$GITHUB_ENV"
+            printf "%s\n" "${FAILED[@]}" >> "$GITHUB_ENV"
+            echo "EOF" >> "$GITHUB_ENV"
+            echo "At least one pod failed"
+            exit 1
+          else
+            echo "FAILED_PODS=" >> "$GITHUB_ENV"
+            echo "Owner added to all pods successfully"
+          fi
+
+      - name: Notify Slack on success
+        if: success()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "✅ <!here> *Trunk owner added!*\n• Owner: `${{ inputs.owner_email }}`\n• Pods: `${{ steps.pods.outputs.list }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "❌ <!here> *Failed to add trunk owner!*\n• Owner: `${{ inputs.owner_email }}`\n• Workflow: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>\n${{ env.FAILED_PODS != '' && format('• ❗ Failed pods:\n```{0}```', env.FAILED_PODS) || '' }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
