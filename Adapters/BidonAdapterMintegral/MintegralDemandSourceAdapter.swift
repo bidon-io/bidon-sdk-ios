@@ -64,7 +64,7 @@ extension MintegralDemandSourceAdapter: ParameterizedInitializableAdapter {
         MTGSDK.sharedInstance().initialize(
             withAppID: parameters.appId,
             apiKey: parameters.appKey
-        ) { [weak self] _ in
+        ) { [weak self] _, _ in
             self?.isInitialized = true
             completion(nil)
         }
