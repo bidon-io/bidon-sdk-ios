@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.7.1.1
+* Updated to BidMachine 3.7.1
+
 ## 3.7.0.1
 * Updated to BidMachine 3.7.0
 
