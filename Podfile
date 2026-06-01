@@ -90,7 +90,7 @@ def taurus
 end
 
 def zmaticoo
-  pod 'zMaticoo', '1.5.6'
+  pod 'zMaticoo', '2.2.0'
 end
 
 def swiftlint
