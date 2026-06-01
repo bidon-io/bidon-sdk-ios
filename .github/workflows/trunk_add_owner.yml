@@ -43,7 +43,7 @@ jobs:
 
       - name: Add owner to trunk pods (continue on failure)
         env:
-          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN_V2 }}
         run: |
           EMAIL="${{ inputs.owner_email }}"
           FAILED=()
