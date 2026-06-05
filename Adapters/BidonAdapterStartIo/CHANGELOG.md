@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.13.1.0
+* Updated to StartAppSDK 4.13.1
+
 ## 4.13.0.0
 * Updated to StartAppSDK 4.13.0
 
