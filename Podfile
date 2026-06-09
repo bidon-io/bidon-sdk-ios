@@ -26,7 +26,7 @@ def admob
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.1.2'
+  pod 'BigoADS', '5.2.1'
 end
 
 def dtexchange
