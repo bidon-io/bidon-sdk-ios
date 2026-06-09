@@ -1,6 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (5.5.0)
-  - AppLovinSDK (13.6.2)
+  - AppLovinSDK (13.6.3)
   - AppMetricaAdSupport (5.14.0):
     - AppMetricaCore (= 5.14.0)
     - AppMetricaCoreExtension (= 5.14.0)
@@ -73,8 +73,8 @@ PODS:
     - BidMachine/Static (= 3.7.1)
   - BidMachine/Static (3.7.1):
     - OMSDK_Appodeal/Static (= 1.6.3)
-  - BigoADS (5.1.2)
-  - ChartboostSDK (9.11.0)
+  - BigoADS (5.2.1)
+  - ChartboostSDK (9.12.0)
   - DivKit (32.50.0):
     - DivKit_LayoutKit (= 32.50.0)
     - DivKit_Serialization (= 32.50.0)
@@ -98,7 +98,7 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.4.7)
-  - Google-Mobile-Ads-SDK (13.3.0):
+  - Google-Mobile-Ads-SDK (13.4.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
@@ -146,9 +146,9 @@ PODS:
   - OMSDK_Appodeal/Static (1.6.3)
   - StartAppSDK (4.13.1)
   - SwiftLint (0.63.2)
-  - TaurusxAdsSDK (1.16.0):
-    - TaurusxAdsSDK/TaurusxAds (= 1.16.0)
-  - TaurusxAdsSDK/TaurusxAds (1.16.0)
+  - TaurusxAdsSDK (1.17.1):
+    - TaurusxAdsSDK/TaurusxAds (= 1.17.1)
+  - TaurusxAdsSDK/TaurusxAds (1.17.1)
   - UnityAds (4.17.0)
   - VGSL (7.21.0):
     - VGSLFundamentals (= 7.21.0)
@@ -160,7 +160,7 @@ PODS:
     - VGSLUI (= 7.21.0)
   - VGSLUI (7.21.0):
     - VGSLFundamentals (= 7.21.0)
-  - VungleAds (7.7.3)
+  - VungleAds (7.7.4)
   - YandexMobileAds (7.18.4):
     - AppMetricaAdSupport (~> 5.14.0)
     - AppMetricaCore (~> 5.14.0)
@@ -171,14 +171,14 @@ PODS:
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.5.0)
-  - AppLovinSDK (= 13.6.2)
+  - AppLovinSDK (= 13.6.3)
   - BidMachine (= 3.7.1)
-  - BigoADS (= 5.1.2)
-  - ChartboostSDK (= 9.11.0)
+  - BigoADS (= 5.2.1)
+  - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.7)
-  - Google-Mobile-Ads-SDK (= 13.3.0)
+  - Google-Mobile-Ads-SDK (= 13.4.0)
   - InMobiSDK (= 11.3.0)
   - IronSourceSDK/Ads (= 9.4.1.0)
   - MintegralAdSDK (= 8.1.4)
@@ -187,9 +187,9 @@ DEPENDENCIES:
   - myTargetSDK (= 5.43.0)
   - StartAppSDK (= 4.13.1)
   - SwiftLint
-  - TaurusxAdsSDK (= 1.16.0)
+  - TaurusxAdsSDK (= 1.17.1)
   - UnityAds (= 4.17.0)
-  - VungleAds (= 7.7.3)
+  - VungleAds (= 7.7.4)
   - YandexMobileAds (= 7.18.4)
   - zMaticoo (= 1.5.6)
 
@@ -254,7 +254,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: b0569f0689a21957ec929062c3493b337f279e15
-  AppLovinSDK: 91a47db42b6c0e2b83224006aa46b0b88c62c16f
+  AppLovinSDK: f3da9503e8193d8c4badc1a9965d73a0779812fa
   AppMetricaAdSupport: 702bdcf46b81a7fed457de56f6b0554d0480b5a3
   AppMetricaCore: d1c73033e83316264d5797d003f0c8f7957b7f31
   AppMetricaCoreExtension: 02a8409b471de413ac5ccf9249b12223816737c1
@@ -275,7 +275,7 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: bb31d877359a6d1ad8ae5a6d89951edddf01af75
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   BidMachine: b3eca96870e834eb74a2e9dec44f99d9b5d3b7c1
-  BigoADS: 0a9b26515a5f9f82b4d0ea67a2e5d02e07cac4b0
+  BigoADS: b5c96a23ba4262fcafb71801f77785fc50efecf8
   ChartboostSDK: 4c0411cb5b6cb3705fafb40936fec3aea2c789f2
   DivKit: 4258bb196d7af495e188f25fad45403333bad118
   DivKit_LayoutKit: bfdae219dd0868d26e7558b2f8e6070fdc02f95f
@@ -288,7 +288,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: 1a880b530921ddf07a74982e163ab56eaf90e932
-  Google-Mobile-Ads-SDK: 7692126a35ed859f20635af281c50a2162be8bea
+  Google-Mobile-Ads-SDK: 5aa7af5189af2c75d1c32868062cf3692f1376f9
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceSDK: d12f8939bf36dd4e28bb4f6134bcde9a53af15db
@@ -300,13 +300,13 @@ SPEC CHECKSUMS:
   OMSDK_Appodeal: e76e5c30dfd3081621a8cd393c45219edc84f1f2
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 4fa4a9b437ccc4fc72f6c0bc98556e8e9e05bccf
-  TaurusxAdsSDK: 12d4628283674c65494df15fe6c3c45842c80a82
+  TaurusxAdsSDK: c5f151a5417d0e1ef907daa81723c1ef670dbf5d
   UnityAds: adbe0d522fd14b8298c5e159164fc43396165843
   VGSL: 0573c2b82b05aadcba4836398ce3778d271bfd13
   VGSLFundamentals: 3a081684c1a5df5800bf88aca8a9bdff2c10cfd9
   VGSLNetworking: 0ea8a335bc4f4eba3f6123ffe441cf1c08f267f2
   VGSLUI: 249a16cccdb75f1a5a1733894d013bca76e27c5e
-  VungleAds: 58cb2d034ab1f455b9c2fb7ec8bdbcd82cf0ca70
+  VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
   zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
 
