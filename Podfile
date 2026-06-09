@@ -70,7 +70,7 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.11.0'
+  pod 'ChartboostSDK', '9.12.0'
 end
 
 def ironsource
@@ -86,7 +86,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.16.0'
+  pod 'TaurusxAdsSDK', '1.17.1'
 end
 
 def zmaticoo
