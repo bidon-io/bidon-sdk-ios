@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.1.4.0
+* Updated to MintegralAdSDK 8.1.4
+* Replaced deprecated `setAppID(_:apiKey:)` with `initialize(withAppID:apiKey:completionHandler:)` to propagate initialization success/failure via completion handler
+
 ## 8.1.3.0
 * Updated to MintegralAdSDK 8.1.3
 
