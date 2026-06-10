@@ -14,7 +14,7 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.6.2'
+  pod 'AppLovinSDK', '13.6.3'
 end
 
 def bidmachine 
@@ -22,11 +22,11 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '13.3.0'
+  pod 'Google-Mobile-Ads-SDK', '13.4.0'
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.1.2'
+  pod 'BigoADS', '5.2.1'
 end
 
 def dtexchange
@@ -50,7 +50,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.1.3'
+  pod 'MintegralAdSDK', '8.1.4'
 end
 
 def mobilefuse
@@ -58,7 +58,7 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.7.3'
+  pod 'VungleAds', '7.7.4'
 end
 
 def inmobi
@@ -70,7 +70,7 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.11.0'
+  pod 'ChartboostSDK', '9.12.0'
 end
 
 def ironsource
@@ -86,7 +86,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.16.0'
+  pod 'TaurusxAdsSDK', '1.17.1'
 end
 
 def zmaticoo
