@@ -5,7 +5,7 @@
 //  Created by Евгения Григорович on 21/10/2025.
 //
 
-import Foundation
+import UIKit
 import Bidon
 import YandexMobileAds
 
@@ -13,7 +13,7 @@ final class YandexBiddingInterstitialDemandProvider: NSObject, BiddingDemandProv
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: Bidon.DemandProviderRevenueDelegate?
     
-    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "Bidon")
+    private let bidderTokenLoader = BidderTokenLoader()
     private var response: DemandProviderResponse?
 
     private var interstitialLoader: InterstitialAdLoader?
@@ -28,12 +28,13 @@ final class YandexBiddingInterstitialDemandProvider: NSObject, BiddingDemandProv
     }
     
     func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration.interstitial()
-        requestConfiguration.parameters = [
-            "adapter_version": MobileAds.sdkVersion(),
-            "adapter_network_sdk_version": BidonSdk.sdkVersion
-        ]
-        bidderTokenLoader.loadBidderToken(requestConfiguration: requestConfiguration) { bidderToken in
+        let request = BidderTokenRequest.interstitial(
+            parameters: [
+                "adapter_version": YandexAds.sdkVersion.stringValue,
+                "adapter_network_sdk_version": BidonSdk.sdkVersion
+            ]
+        )
+        bidderTokenLoader.loadBidderToken(request: request) { bidderToken in
             if let bidderToken {
                 response(.success(bidderToken))
             } else {
@@ -41,15 +42,26 @@ final class YandexBiddingInterstitialDemandProvider: NSObject, BiddingDemandProv
             }
         }
     }
-    
+
     func load(payload: YandexBiddingPayload, adUnitExtras: YandexAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
-        
-        let request = MutableAdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
-        request.biddingData = payload.signaldata
-        interstitialLoader = InterstitialAdLoader()
-        interstitialLoader?.delegate = self
-        interstitialLoader?.loadAd(with: request)
+
+        let request = AdRequest(adUnitID: adUnitExtras.adUnitId, biddingData: payload.signaldata)
+        let loader = InterstitialAdLoader()
+        interstitialLoader = loader
+        loader.loadAd(with: request) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let interstitialAd):
+                interstitialAd.delegate = self
+                self.interstitialAd = interstitialAd
+                self.response?(.success(YandexInterstitialDemandAd(interstitial: interstitialAd)))
+                self.response = nil
+            case .failure(let error):
+                self.response?(.failure(.noFill(error.localizedDescription)))
+                self.response = nil
+            }
+        }
     }
     
     func notify(ad: YandexInterstitialDemandAd, event: DemandProviderEvent) {}
@@ -60,25 +72,10 @@ extension YandexBiddingInterstitialDemandProvider: InterstitialDemandProvider {
         ad: YandexInterstitialDemandAd,
         from viewController: UIViewController
     ) {
-        interstitialAd?.show(from: viewController)
+        MainActor.assumeIsolated {
+            interstitialAd?.show(from: viewController)
+        }
     }
-}
-
-extension YandexBiddingInterstitialDemandProvider: InterstitialAdLoaderDelegate {
-    func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didLoad interstitialAd: YandexMobileAds.InterstitialAd) {
-        interstitialAd.delegate = self
-        self.interstitialAd = interstitialAd
-
-        response?(.success(YandexInterstitialDemandAd(interstitial: interstitialAd)))
-        response = nil
-    }
-
-    func interstitialAdLoader(_ adLoader: YandexMobileAds.InterstitialAdLoader, didFailToLoadWithError error: YandexMobileAds.AdRequestError) {
-        response?(.failure(.noFill(error.description)))
-        response = nil
-    }
-
-
 }
 
 extension YandexBiddingInterstitialDemandProvider: InterstitialAdDelegate {
@@ -89,8 +86,7 @@ extension YandexBiddingInterstitialDemandProvider: InterstitialAdDelegate {
 
     func interstitialAd(
         _ interstitialAd: InterstitialAd,
-        didFailToShowWithError
-        error: any Error
+        didFailToShow error: any Error
     ) {
         delegate?.provider(
             self,
@@ -113,7 +109,7 @@ extension YandexBiddingInterstitialDemandProvider: InterstitialAdDelegate {
 
     func interstitialAd(
         _ interstitialAd: InterstitialAd,
-        didTrackImpressionWith impressionData: ImpressionData?
+        didTrackImpression impressionData: (any ImpressionData)?
     ) {
         let ad = YandexInterstitialDemandAd(interstitial: interstitialAd)
         revenueDelegate?.provider(self, didLogImpression: ad)

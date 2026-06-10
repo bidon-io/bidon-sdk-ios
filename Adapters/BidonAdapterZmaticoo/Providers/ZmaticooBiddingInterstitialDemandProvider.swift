@@ -36,7 +36,7 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
 
         let ad = MATInterstitialAd(placementID: adUnitExtras.placementId)
         ad.delegate = self
-        ad.loadAd(payload.payload)
+        ad.load(payload.payload)
         self.interstitial = ad
     }
 }
@@ -48,6 +48,7 @@ extension ZmaticooBiddingInterstitialDemandProvider: InterstitialDemandProvider 
 }
 
 extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
+    
     func interstitialAdDidLoad(_ interstitialAd: MATInterstitialAd) {
         let ad = ZmaticooInterstitialDemandAd(placementId: placementId)
         response?(.success(ad))
@@ -80,6 +81,10 @@ extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     }
     
     func interstitialAdWillClose(_ interstitialAd: MATInterstitialAd) {
+        // NO-OP
+    }
+    
+    func interstitialAdEndCardShow(_ interstitialAd: MATInterstitialAd) {
         // NO-OP
     }
 }

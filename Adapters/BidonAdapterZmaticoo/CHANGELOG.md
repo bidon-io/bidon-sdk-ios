@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.0.0
+* Updated to zMaticoo 2.2.0
+
 ## 1.5.6.0
 * Updated to zMaticoo 1.5.6
 

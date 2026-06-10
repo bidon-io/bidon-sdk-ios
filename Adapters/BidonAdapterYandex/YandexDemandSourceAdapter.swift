@@ -17,12 +17,9 @@ BiddingAdViewDemandSourceAdapter
     public let demandId: String = YandexDemandSourceAdapter.identifier
     public let name: String = "Yandex"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = String(
-        format: "%d.%d.%d",
-        YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH
-    )
-    
-    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "MEDIATION_NETWORK_NAME")
+    public let sdkVersion: String = YandexAds.sdkVersion.stringValue
+
+    private let bidderTokenLoader = BidderTokenLoader()
 
 
     private(set) public var isInitialized: Bool = false
@@ -62,13 +59,20 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         if context.regulations.gdprApplies {
-            MobileAds.setUserConsent(context.regulations.hasGdprConsent)
+            YandexAds.setUserConsent(context.regulations.hasGdprConsent)
         }
         if context.regulations.coppaApplies {
-            MobileAds.setAgeRestrictedUser(true)
+            YandexAds.setAgeRestricted(true)
         }
 
-        MobileAds.initializeSDK()
+        YandexAds.setAdapterIdentity(
+            AdapterIdentity(
+                adapterNetworkName: name,
+                adapterVersion: adapterVersion,
+                adapterNetworkVersion: BidonSdk.sdkVersion
+            )
+        )
+        YandexAds.initializeSDK(completionHandler: nil)
         isInitialized = true
         completion(nil)
     }
