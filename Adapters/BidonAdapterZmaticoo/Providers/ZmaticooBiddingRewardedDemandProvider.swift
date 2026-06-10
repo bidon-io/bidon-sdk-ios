@@ -37,7 +37,7 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
 
         let ad = MATRewardedVideoAd(placementID: adUnitExtras.placementId)
         ad.delegate = self
-        ad.loadAd(payload.payload)
+        ad.load(payload.payload)
         self.rewarded = ad
     }
 }
@@ -49,6 +49,7 @@ extension ZmaticooBiddingRewardedDemandProvider: RewardedAdDemandProvider {
 }
 
 extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
+    
     func rewardedVideoAdDidLoad(_ rewardedVideoAd: MATRewardedVideoAd) {
         let ad = ZmaticooRewardedDemandAd(placementId: placementId)
         response?(.success(ad))
@@ -80,7 +81,7 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
         delegate?.providerDidHide(self)
     }
     
-    func rewardedVideoAdReward(_ rewardedVideoAd: MATRewardedVideoAd) {
+    func rewardedVideoAdReward(_ rewardedVideoAd: MATRewardedVideoAd, rewardInfo: MATRewardInfo) {
         rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
     }
     
@@ -93,6 +94,14 @@ extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     }
     
     func rewardedVideoAdWillClose(_ rewardedVideoAd: MATRewardedVideoAd) {
+        // NO-OP
+    }
+    
+    func rewardedVideoAdDidSkip(_ rewardedVideoAd: MATRewardedVideoAd) {
+        // NO-OP
+    }
+    
+    func rewardedVideoAdEndCardShow(_ rewardedVideoAd: MATRewardedVideoAd) {
         // NO-OP
     }
 }

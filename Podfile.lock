@@ -169,7 +169,7 @@ PODS:
     - AppMetricaIDSync (~> 5.14.0)
     - AppMetricaLibraryAdapter (~> 5.14.0)
     - DivKitBinaryCompatibilityFacade (~> 5.2.1)
-  - zMaticoo (1.5.6)
+  - zMaticoo (2.2.0)
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.2)
@@ -193,7 +193,7 @@ DEPENDENCIES:
   - UnityAds (= 4.18.1)
   - VungleAds (= 7.7.4)
   - YandexMobileAds (= 7.18.4)
-  - zMaticoo (= 1.5.6)
+  - zMaticoo (= 2.2.0)
 
 SPEC REPOS:
   trunk:
@@ -312,8 +312,8 @@ SPEC CHECKSUMS:
   VGSLUI: 249a16cccdb75f1a5a1733894d013bca76e27c5e
   VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
   YandexMobileAds: 09962403db0e809df440cf0641c43592fbdcef60
-  zMaticoo: d33bd88817532aeb4aef580011d43a0a418767b5
+  zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 99787b6616e1eb9fb3f9ee93e6a9e0a83f725d25
+PODFILE CHECKSUM: 12683573cc7feb7b2f37fb1e2017c4d56200537f
 
 COCOAPODS: 1.16.2
