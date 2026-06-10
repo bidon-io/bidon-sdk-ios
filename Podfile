@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.5.0'
+  pod 'AmazonPublisherServicesSDK', '5.6.2'
 end
 
 def applovin
@@ -38,7 +38,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.17.0'
+  pod 'UnityAds', '4.18.1'
 end
 
 def moloco
