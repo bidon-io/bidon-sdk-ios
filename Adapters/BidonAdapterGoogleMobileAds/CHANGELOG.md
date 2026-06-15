@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.5.0.0
+* Updated to Google-Mobile-Ads-SDK 13.5.0
+
 ## 13.4.0.0
 * Updated to Google-Mobile-Ads-SDK 13.4.0
 * Fixed missing beta header files in umbrella header that caused Xcode compiler warnings (regression from 13.3.0)
