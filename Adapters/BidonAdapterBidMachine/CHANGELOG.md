@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.7.1.2
+* Restored Static/Dynamic subspecs (default Static); Dynamic links BidMachine/Dynamic for hosts that need dynamic linkage of the BidMachine stack
+
 ## 3.7.1.1
 * Updated to BidMachine 3.7.1
 
