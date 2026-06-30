@@ -41,11 +41,7 @@ public extension UIApplication {
         }
 
         public var isLandscape: Bool {
-            if #available(iOS 13, *) {
-                return window?.windowScene?.interfaceOrientation.isLandscape ?? false
-            } else {
-                return application.statusBarOrientation.isLandscape
-            }
+            return window?.windowScene?.interfaceOrientation.isLandscape ?? false
         }
     }
 }

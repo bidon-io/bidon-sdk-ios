@@ -1,32 +1,30 @@
-import XCTest
+import Testing
 import Bidon
 import AppLovinSDK
 @testable import BidonAdapterAppLovin
 
 
-final class BidonAdapterAppLovinTests: XCTestCase {
-    func testMetadata() {
+struct BidonAdapterAppLovinTests {
+    @Test func metadata() {
         let adapter = AppLovinDemandSourceAdapter()
 
-        XCTAssertEqual(adapter.demandId, "applovin")
-        XCTAssertEqual(adapter.name, "AppLovin")
-        XCTAssertEqual(adapter.sdkVersion, ALSdk.version())
-        XCTAssertFalse(adapter.adapterVersion.isEmpty)
+        #expect(adapter.demandId == "applovin")
+        #expect(adapter.name == "AppLovin")
+        #expect(adapter.sdkVersion == ALSdk.version())
+        #expect(!adapter.adapterVersion.isEmpty)
     }
 
-    func testFactoriesReturnProviders() throws {
+    @Test func factoriesReturnProviders() {
         let adapter = AppLovinDemandSourceAdapter()
 
-        XCTAssertNotNil(try adapter.directInterstitialDemandProvider())
-        XCTAssertNotNil(try adapter.directRewardedAdDemandProvider())
-        XCTAssertNotNil(try adapter.directAdViewDemandProvider(context: AdViewContext(.banner)))
+        #expect(throws: Never.self) { try adapter.directInterstitialDemandProvider() }
+        #expect(throws: Never.self) { try adapter.directRewardedAdDemandProvider() }
+        #expect(throws: Never.self) { try adapter.directAdViewDemandProvider(context: AdViewContext(.banner)) }
     }
 
-    func testConformsParameterizedInitializableAdapter() {
+    @Test func conformsParameterizedInitializableAdapter() {
         let adapter = AppLovinDemandSourceAdapter()
         _ = adapter.isInitialized
-        XCTAssertTrue(true)
+        #expect(true)
     }
 }
-
-
