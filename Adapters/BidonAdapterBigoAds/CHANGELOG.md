@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.3.0.0
+* Updated to BigoADS 5.3.0
+
 ## 5.2.1.0
 * Updated to BigoADS 5.2.1
 
