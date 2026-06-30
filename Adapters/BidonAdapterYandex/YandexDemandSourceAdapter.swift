@@ -21,9 +21,6 @@ BiddingAdViewDemandSourceAdapter
         format: "%d.%d.%d",
         YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH
     )
-    
-    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "MEDIATION_NETWORK_NAME")
-
 
     private(set) public var isInitialized: Bool = false
 
@@ -41,15 +38,15 @@ BiddingAdViewDemandSourceAdapter
     public func directAdViewDemandProvider(context: Bidon.AdViewContext) throws -> Bidon.AnyDirectAdViewDemandProvider {
         return YandexDirectAdViewDemandProvider(context: context)
     }
-    
+
     public func biddingInterstitialDemandProvider() throws -> AnyBiddingInterstitialDemandProvider {
         return YandexBiddingInterstitialDemandProvider()
     }
-    
+
     public func biddingRewardedAdDemandProvider() throws -> AnyBiddingRewardedAdDemandProvider {
         return YandexBiddingRewardedDemandProvider()
     }
-    
+
     public func biddingAdViewDemandProvider(context: AdViewContext) throws -> AnyBiddingAdViewDemandProvider {
         return YandexBiddingAdViewDemandProvider(context: context)
     }
@@ -62,13 +59,13 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         if context.regulations.gdprApplies {
-            MobileAds.setUserConsent(context.regulations.hasGdprConsent)
+            YandexAds.setUserConsent(context.regulations.hasGdprConsent)
         }
         if context.regulations.coppaApplies {
-            MobileAds.setAgeRestrictedUser(true)
+            YandexAds.setAgeRestricted(true)
         }
 
-        MobileAds.initializeSDK()
+        YandexAds.initializeSDK()
         isInitialized = true
         completion(nil)
     }
