@@ -73,7 +73,7 @@ PODS:
     - BidMachine/Static (= 3.7.1)
   - BidMachine/Static (3.7.1):
     - OMSDK_Appodeal/Static (= 1.6.3)
-  - BigoADS (5.2.1)
+  - BigoADS (5.3.0)
   - ChartboostSDK (9.12.0)
   - DivKit (32.53.0):
     - DivKit_LayoutKit (= 32.53.0)
@@ -97,8 +97,8 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.4.7)
-  - Google-Mobile-Ads-SDK (13.5.0):
+  - Fyber_Marketplace_SDK (8.4.8)
+  - Google-Mobile-Ads-SDK (13.6.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
@@ -175,12 +175,12 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.2)
   - AppLovinSDK (= 13.6.3)
   - BidMachine (= 3.7.1)
-  - BigoADS (= 5.2.1)
+  - BigoADS (= 5.3.0)
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (= 8.4.7)
-  - Google-Mobile-Ads-SDK (= 13.5.0)
+  - Fyber_Marketplace_SDK (= 8.4.8)
+  - Google-Mobile-Ads-SDK (= 13.6.0)
   - InMobiSDK (= 11.3.0)
   - IronSourceSDK/Ads (= 9.4.1.0)
   - MintegralAdSDK (= 8.1.4)
@@ -278,7 +278,7 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: bb31d877359a6d1ad8ae5a6d89951edddf01af75
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   BidMachine: b3eca96870e834eb74a2e9dec44f99d9b5d3b7c1
-  BigoADS: b5c96a23ba4262fcafb71801f77785fc50efecf8
+  BigoADS: 1ae2d67ffd4d2eb72c6921bdfcdd9c1f943dbecf
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   DivKit: 89d0d968ea918b54b85fb4c5444bbeb448e924e6
   DivKit_LayoutKit: 0048899047b506d1f3505ff7f9bd91a90aaa70eb
@@ -290,7 +290,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: 1a880b530921ddf07a74982e163ab56eaf90e932
+  Fyber_Marketplace_SDK: ebf29e2fd31f1045cbf28244f558076335ddfd25
   Google-Mobile-Ads-SDK: 2171620c6497804b57dc88b95644cc82e7dfb5b0
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
