@@ -25,9 +25,10 @@ public enum BannerFormat: Int, Codable, CustomStringConvertible {
         case .mrec:
             return CGSize(width: 300, height: 250)
         case .adaptive:
+            let width = UIApplication.shared.bd.window?.bounds.width ?? UIScreen.main.bounds.width
             return UIDevice.bd.isPhone ?
-            CGSize(width: UIScreen.main.bounds.width, height: 50) :
-            CGSize(width: UIScreen.main.bounds.width, height: 90)
+            CGSize(width: width, height: 50) :
+            CGSize(width: width, height: 90)
         }
     }
 

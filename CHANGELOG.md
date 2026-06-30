@@ -6,6 +6,7 @@
 - CI: skip CI Adapter Quality re-run when latest push only modifies Podfile.lock (merge-conflict fixes on `chore/pod-*` PRs)
 
 ## Fixes
+- Xcode 27 / iOS 27 compatibility: resolve adaptive banner width and landscape detection through the active `UIWindowScene` instead of `UIScreen.main` / deprecated `statusBarOrientation`; raise the `Bidon` and `Tests` iOS deployment targets to 15.0 (Xcode 27 rejects the previous 11.0/13.0 floors)
 - BidMachine adapter: restore Static/Dynamic podspec subspecs (default Static) so hosts can opt into dynamic linkage of the BidMachine stack; fixes `BidonAdapterBidMachine/Dynamic` failing to resolve for BidMachinePlus dynamic installs
 - APDM-2195 Fix SIGABRT in AdaptersInitializator when adapter init main-queue dispatch races the timeout watchdog
 - APDM-2195 Fix banner crash from BannerAdManager.state data race between auction completion and notifyLoss by serializing state access through an NSLock

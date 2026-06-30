@@ -1,4 +1,4 @@
-platform :ios, '14.0'
+platform :ios, '15.0'
 workspace 'Bidon.xcworkspace'
 
 source 'https://cdn.cocoapods.org/'
@@ -286,7 +286,7 @@ post_install do |installer|
         config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
       end
       
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
       
       xcconfig_path = config.base_configuration_reference.real_path
       xcconfig = File.read(xcconfig_path)
@@ -297,6 +297,6 @@ post_install do |installer|
   
   installer.pods_project.build_configurations.each do |config|
     config.build_settings['SWIFT_VERSION'] = '5.0'
-    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+    config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
   end
 end
