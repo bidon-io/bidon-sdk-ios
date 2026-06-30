@@ -78,7 +78,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '7.18.4'
+  pod 'YandexMobileAds', '8.1.0'
 end
 
 def startio
