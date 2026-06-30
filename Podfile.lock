@@ -73,7 +73,7 @@ PODS:
     - BidMachine/Static (= 3.7.1)
   - BidMachine/Static (3.7.1):
     - OMSDK_Appodeal/Static (= 1.6.3)
-  - BigoADS (5.2.1)
+  - BigoADS (5.3.0)
   - ChartboostSDK (9.12.0)
   - DivKit (32.53.0):
     - DivKit_LayoutKit (= 32.53.0)
@@ -97,50 +97,50 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.4.7)
-  - Google-Mobile-Ads-SDK (13.5.0):
+  - Fyber_Marketplace_SDK (8.4.8)
+  - Google-Mobile-Ads-SDK (13.6.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
   - IronSourceAdQualitySDK (9.6.0)
   - IronSourceSDK/Ads (9.4.1.0)
-  - MintegralAdSDK (8.1.4):
-    - MintegralAdSDK/BannerAd (= 8.1.4)
-    - MintegralAdSDK/BidBannerAd (= 8.1.4)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 8.1.4)
-    - MintegralAdSDK/BidNativeAd (= 8.1.4)
-    - MintegralAdSDK/BidNewInterstitialAd (= 8.1.4)
-    - MintegralAdSDK/BidRewardVideoAd (= 8.1.4)
-    - MintegralAdSDK/InterstitialVideoAd (= 8.1.4)
-    - MintegralAdSDK/NativeAd (= 8.1.4)
-    - MintegralAdSDK/NewInterstitialAd (= 8.1.4)
-    - MintegralAdSDK/RewardVideoAd (= 8.1.4)
-  - MintegralAdSDK/BannerAd (8.1.4):
+  - MintegralAdSDK (8.1.5):
+    - MintegralAdSDK/BannerAd (= 8.1.5)
+    - MintegralAdSDK/BidBannerAd (= 8.1.5)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 8.1.5)
+    - MintegralAdSDK/BidNativeAd (= 8.1.5)
+    - MintegralAdSDK/BidNewInterstitialAd (= 8.1.5)
+    - MintegralAdSDK/BidRewardVideoAd (= 8.1.5)
+    - MintegralAdSDK/InterstitialVideoAd (= 8.1.5)
+    - MintegralAdSDK/NativeAd (= 8.1.5)
+    - MintegralAdSDK/NewInterstitialAd (= 8.1.5)
+    - MintegralAdSDK/RewardVideoAd (= 8.1.5)
+  - MintegralAdSDK/BannerAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (8.1.4):
+  - MintegralAdSDK/BidBannerAd (8.1.5):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (8.1.4):
+  - MintegralAdSDK/BidInterstitialVideoAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (8.1.4):
+  - MintegralAdSDK/BidNativeAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (8.1.4):
+  - MintegralAdSDK/BidNewInterstitialAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (8.1.4):
+  - MintegralAdSDK/BidRewardVideoAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (8.1.4):
+  - MintegralAdSDK/InterstitialVideoAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (8.1.4)
-  - MintegralAdSDK/NewInterstitialAd (8.1.4):
+  - MintegralAdSDK/NativeAd (8.1.5)
+  - MintegralAdSDK/NewInterstitialAd (8.1.5):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (8.1.4):
+  - MintegralAdSDK/RewardVideoAd (8.1.5):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.11.0)
-  - MolocoSDKiOS (4.6.1)
+  - MolocoSDKiOS (4.8.0)
   - myTargetSDK (5.45.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
@@ -175,17 +175,17 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.2)
   - AppLovinSDK (= 13.6.3)
   - BidMachine (= 3.7.1)
-  - BigoADS (= 5.2.1)
+  - BigoADS (= 5.3.0)
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (= 8.4.7)
-  - Google-Mobile-Ads-SDK (= 13.5.0)
+  - Fyber_Marketplace_SDK (= 8.4.8)
+  - Google-Mobile-Ads-SDK (= 13.6.0)
   - InMobiSDK (= 11.3.0)
   - IronSourceSDK/Ads (= 9.4.1.0)
-  - MintegralAdSDK (= 8.1.4)
+  - MintegralAdSDK (= 8.1.5)
   - MobileFuseSDK (= 1.11.0)
-  - MolocoSDKiOS (= 4.6.1)
+  - MolocoSDKiOS (= 4.8.0)
   - myTargetSDK (= 5.45.0)
   - StartAppSDK (= 4.13.1)
   - SwiftLint
@@ -278,7 +278,7 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: bb31d877359a6d1ad8ae5a6d89951edddf01af75
   AppMetricaSynchronization: 76f438564c57b4688d640b7befc5600e21bff875
   BidMachine: b3eca96870e834eb74a2e9dec44f99d9b5d3b7c1
-  BigoADS: b5c96a23ba4262fcafb71801f77785fc50efecf8
+  BigoADS: 1ae2d67ffd4d2eb72c6921bdfcdd9c1f943dbecf
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   DivKit: 89d0d968ea918b54b85fb4c5444bbeb448e924e6
   DivKit_LayoutKit: 0048899047b506d1f3505ff7f9bd91a90aaa70eb
@@ -290,13 +290,13 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: 1a880b530921ddf07a74982e163ab56eaf90e932
+  Fyber_Marketplace_SDK: ebf29e2fd31f1045cbf28244f558076335ddfd25
   Google-Mobile-Ads-SDK: 2171620c6497804b57dc88b95644cc82e7dfb5b0
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceAdQualitySDK: 3723b551e1c0b2d0f026deee385d9ef4b2d41cc8
   IronSourceSDK: d12f8939bf36dd4e28bb4f6134bcde9a53af15db
-  MintegralAdSDK: 40805038b748bbc23d1f2640b9a77e1e457662fa
+  MintegralAdSDK: 9e98161b5c5afdc7f5effe4f3969dd1cf0430ed1
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
   MolocoSDKiOS: e68458b4a01e1580662ab849669b7190bfe93fa9
   myTargetSDK: 665ee85494cacb7e65a725038ad2e25c78120ffb
