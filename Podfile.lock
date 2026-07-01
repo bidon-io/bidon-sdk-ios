@@ -73,7 +73,7 @@ PODS:
     - BidMachine/Static (= 3.7.1)
   - BidMachine/Static (3.7.1):
     - OMSDK_Appodeal/Static (= 1.6.3)
-  - BigoADS (5.2.1)
+  - BigoADS (5.3.0)
   - ChartboostSDK (9.12.0)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -84,59 +84,59 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.4.7)
-  - Google-Mobile-Ads-SDK (13.5.0):
+  - Fyber_Marketplace_SDK (8.4.8)
+  - Google-Mobile-Ads-SDK (13.6.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
   - IronSourceAdQualitySDK (9.6.0)
-  - IronSourceSDK/Ads (9.4.1.0)
-  - MintegralAdSDK (8.1.4):
-    - MintegralAdSDK/BannerAd (= 8.1.4)
-    - MintegralAdSDK/BidBannerAd (= 8.1.4)
-    - MintegralAdSDK/BidInterstitialVideoAd (= 8.1.4)
-    - MintegralAdSDK/BidNativeAd (= 8.1.4)
-    - MintegralAdSDK/BidNewInterstitialAd (= 8.1.4)
-    - MintegralAdSDK/BidRewardVideoAd (= 8.1.4)
-    - MintegralAdSDK/InterstitialVideoAd (= 8.1.4)
-    - MintegralAdSDK/NativeAd (= 8.1.4)
-    - MintegralAdSDK/NewInterstitialAd (= 8.1.4)
-    - MintegralAdSDK/RewardVideoAd (= 8.1.4)
-  - MintegralAdSDK/BannerAd (8.1.4):
+  - IronSourceSDK/Ads (9.4.2.0)
+  - MintegralAdSDK (8.1.5):
+    - MintegralAdSDK/BannerAd (= 8.1.5)
+    - MintegralAdSDK/BidBannerAd (= 8.1.5)
+    - MintegralAdSDK/BidInterstitialVideoAd (= 8.1.5)
+    - MintegralAdSDK/BidNativeAd (= 8.1.5)
+    - MintegralAdSDK/BidNewInterstitialAd (= 8.1.5)
+    - MintegralAdSDK/BidRewardVideoAd (= 8.1.5)
+    - MintegralAdSDK/InterstitialVideoAd (= 8.1.5)
+    - MintegralAdSDK/NativeAd (= 8.1.5)
+    - MintegralAdSDK/NewInterstitialAd (= 8.1.5)
+    - MintegralAdSDK/RewardVideoAd (= 8.1.5)
+  - MintegralAdSDK/BannerAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidBannerAd (8.1.4):
+  - MintegralAdSDK/BidBannerAd (8.1.5):
     - MintegralAdSDK/BannerAd
     - MintegralAdSDK/BidNativeAd
-  - MintegralAdSDK/BidInterstitialVideoAd (8.1.4):
+  - MintegralAdSDK/BidInterstitialVideoAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/InterstitialVideoAd
-  - MintegralAdSDK/BidNativeAd (8.1.4):
+  - MintegralAdSDK/BidNativeAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/BidNewInterstitialAd (8.1.4):
+  - MintegralAdSDK/BidNewInterstitialAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/NewInterstitialAd
-  - MintegralAdSDK/BidRewardVideoAd (8.1.4):
+  - MintegralAdSDK/BidRewardVideoAd (8.1.5):
     - MintegralAdSDK/BidNativeAd
     - MintegralAdSDK/RewardVideoAd
-  - MintegralAdSDK/InterstitialVideoAd (8.1.4):
+  - MintegralAdSDK/InterstitialVideoAd (8.1.5):
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/NativeAd (8.1.4)
-  - MintegralAdSDK/NewInterstitialAd (8.1.4):
+  - MintegralAdSDK/NativeAd (8.1.5)
+  - MintegralAdSDK/NewInterstitialAd (8.1.5):
     - MintegralAdSDK/InterstitialVideoAd
     - MintegralAdSDK/NativeAd
-  - MintegralAdSDK/RewardVideoAd (8.1.4):
+  - MintegralAdSDK/RewardVideoAd (8.1.5):
     - MintegralAdSDK/NativeAd
   - MobileFuseSDK (1.11.0)
-  - MolocoSDKiOS (4.6.1)
-  - myTargetSDK (5.43.0):
+  - MolocoSDKiOS (4.8.0)
+  - myTargetSDK (5.45.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
   - OMSDK_Appodeal/Static (1.6.3)
   - StartAppSDK (4.13.1)
   - SwiftLint (0.63.3)
-  - TaurusxAdsSDK (1.17.1):
-    - TaurusxAdsSDK/TaurusxAds (= 1.17.1)
-  - TaurusxAdsSDK/TaurusxAds (1.17.1)
+  - TaurusxAdsSDK (1.18.1):
+    - TaurusxAdsSDK/TaurusxAds (= 1.18.1)
+  - TaurusxAdsSDK/TaurusxAds (1.18.1)
   - UnityAds (4.18.1):
     - IronSourceAdQualitySDK (< 10.0.0)
   - VungleAds (7.7.4)
@@ -151,21 +151,21 @@ DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.2)
   - AppLovinSDK (= 13.6.3)
   - BidMachine (= 3.7.1)
-  - BigoADS (= 5.2.1)
+  - BigoADS (= 5.3.0)
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (= 8.4.7)
-  - Google-Mobile-Ads-SDK (= 13.5.0)
+  - Fyber_Marketplace_SDK (= 8.4.8)
+  - Google-Mobile-Ads-SDK (= 13.6.0)
   - InMobiSDK (= 11.3.0)
-  - IronSourceSDK/Ads (= 9.4.1.0)
-  - MintegralAdSDK (= 8.1.4)
+  - IronSourceSDK/Ads (= 9.4.2.0)
+  - MintegralAdSDK (= 8.1.5)
   - MobileFuseSDK (= 1.11.0)
-  - MolocoSDKiOS (= 4.6.1)
-  - myTargetSDK (= 5.43.0)
+  - MolocoSDKiOS (= 4.8.0)
+  - myTargetSDK (= 5.45.0)
   - StartAppSDK (= 4.13.1)
   - SwiftLint
-  - TaurusxAdsSDK (= 1.17.1)
+  - TaurusxAdsSDK (= 1.18.1)
   - UnityAds (= 4.18.1)
   - VungleAds (= 7.7.4)
   - YandexMobileAds (= 8.1.0)
@@ -245,28 +245,28 @@ SPEC CHECKSUMS:
   AppMetricaStorageUtils: 658dc0cd262a94c0a4ce450af11a50aef0809a82
   AppMetricaSynchronization: d629fdefd72af0bb7768ae4d32fb107c42662811
   BidMachine: b3eca96870e834eb74a2e9dec44f99d9b5d3b7c1
-  BigoADS: b5c96a23ba4262fcafb71801f77785fc50efecf8
+  BigoADS: 1ae2d67ffd4d2eb72c6921bdfcdd9c1f943dbecf
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
   FBAudienceNetwork: 85d18a65c9e35bc426bd4664cf3ae2a1172d7b60
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: 1a880b530921ddf07a74982e163ab56eaf90e932
+  Fyber_Marketplace_SDK: ebf29e2fd31f1045cbf28244f558076335ddfd25
   Google-Mobile-Ads-SDK: 2171620c6497804b57dc88b95644cc82e7dfb5b0
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceAdQualitySDK: 3723b551e1c0b2d0f026deee385d9ef4b2d41cc8
-  IronSourceSDK: d12f8939bf36dd4e28bb4f6134bcde9a53af15db
+  IronSourceSDK: cd08c3446eac951575b799dceff63febcf16a978
   MintegralAdSDK: 40805038b748bbc23d1f2640b9a77e1e457662fa
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
   MolocoSDKiOS: e68458b4a01e1580662ab849669b7190bfe93fa9
-  myTargetSDK: c4b8bfdd7c574fb83a67e722dc7d946bf116bf9a
+  myTargetSDK: 665ee85494cacb7e65a725038ad2e25c78120ffb
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
   OMSDK_Appodeal: e76e5c30dfd3081621a8cd393c45219edc84f1f2
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 387b65567654da8f832d67fe3c53fd2ff2be8539
-  TaurusxAdsSDK: c5f151a5417d0e1ef907daa81723c1ef670dbf5d
+  TaurusxAdsSDK: 29e5c35767ed5e2fea98af096055a46851bbc4c0
   UnityAds: 07379b63b1044dcad98b3092319166fd6f2cfda4
   VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
