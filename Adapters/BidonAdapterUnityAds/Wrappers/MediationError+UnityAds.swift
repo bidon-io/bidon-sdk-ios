@@ -12,6 +12,6 @@ import Bidon
 
 extension MediationError {
     init(_ error: any UnityAdsError) {
-        self = .message(error.message)
+        self = .unspecifiedException(error.message)
     }
 }

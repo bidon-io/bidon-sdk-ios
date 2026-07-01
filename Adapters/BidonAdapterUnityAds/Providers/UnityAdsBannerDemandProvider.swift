@@ -52,7 +52,7 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
                     self.adContainer = container
                     self.response?(.success(container))
                 } else {
-                    self.response?(.failure(.message(error?.message ?? "Unknown error")))
+                    self.response?(.failure(.unspecifiedException(error?.message ?? "Unknown error")))
                 }
                 self.response = nil
             }

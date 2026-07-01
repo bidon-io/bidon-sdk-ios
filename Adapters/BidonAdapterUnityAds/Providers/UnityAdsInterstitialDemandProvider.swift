@@ -39,7 +39,7 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
                 self.placements[placementId] = placement
                 response(.success(placement))
             } else {
-                response(.failure(.message(error?.message ?? "Unknown error")))
+                response(.failure(.unspecifiedException(error?.message ?? "Unknown error")))
             }
             self.response = nil
         }
