@@ -22,15 +22,15 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '13.5.0'
+  pod 'Google-Mobile-Ads-SDK', '13.6.0'
 end
 
 def bigo_ads
-  pod 'BigoADS', '5.2.1'
+  pod 'BigoADS', '5.3.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.7'
+  pod 'Fyber_Marketplace_SDK', '8.4.8'
 end
 
 def meta_ads
@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.6.1'
+  pod 'MolocoSDKiOS', '4.8.0'
 end
 
 def meta_sdk
@@ -50,7 +50,7 @@ def meta_sdk
 end
 
 def mintegral
-  pod 'MintegralAdSDK', '8.1.4'
+  pod 'MintegralAdSDK', '8.1.5'
 end
 
 def mobilefuse
@@ -66,7 +66,7 @@ def inmobi
 end
 
 def my_target
-  pod "myTargetSDK", '5.43.0'
+  pod "myTargetSDK", '5.45.0'
 end
 
 def chartboost
