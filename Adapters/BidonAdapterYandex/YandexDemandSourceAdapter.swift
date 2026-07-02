@@ -17,10 +17,7 @@ BiddingAdViewDemandSourceAdapter
     public let demandId: String = YandexDemandSourceAdapter.identifier
     public let name: String = "Yandex"
     public let adapterVersion: String = "0"
-    public let sdkVersion: String = String(
-        format: "%d.%d.%d",
-        YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH
-    )
+    public let sdkVersion: String = YandexAds.sdkVersion.stringValue
 
     private(set) public var isInitialized: Bool = false
 
@@ -65,7 +62,14 @@ extension YandexDemandSourceAdapter: ParameterizedInitializableAdapter {
             YandexAds.setAgeRestricted(true)
         }
 
-        YandexAds.initializeSDK()
+        YandexAds.setAdapterIdentity(
+            AdapterIdentity(
+                adapterNetworkName: name,
+                adapterVersion: adapterVersion,
+                adapterNetworkVersion: BidonSdk.sdkVersion
+            )
+        )
+        YandexAds.initializeSDK(completionHandler: nil)
         isInitialized = true
         completion(nil)
     }
