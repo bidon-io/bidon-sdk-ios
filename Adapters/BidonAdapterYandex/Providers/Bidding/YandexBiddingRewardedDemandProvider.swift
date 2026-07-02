@@ -31,7 +31,7 @@ final class YandexBiddingRewardedDemandProvider: NSObject, BiddingDemandProvider
 
     func collectBiddingToken(biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
         let requestConfiguration = BidderTokenRequest.rewarded()
-        bidderTokenLoader.loadBidderToken(requestConfiguration: requestConfiguration) { bidderToken in
+        bidderTokenLoader.loadBidderToken(request: requestConfiguration) { bidderToken in
             if let bidderToken {
                 response(.success(bidderToken))
             } else {

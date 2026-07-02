@@ -37,7 +37,7 @@ final class YandexBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider {
 
     func collectBiddingToken(biddingTokenExtras: BiddingTokenExtras, response: @escaping (Result<String, MediationError>) -> ()) {
         let requestConfiguration = BidderTokenRequest.banner(size: adSize, targeting: nil, parameters: nil)
-        bidderTokenLoader.loadBidderToken(requestConfiguration: requestConfiguration) { bidderToken in
+        bidderTokenLoader.loadBidderToken(request: requestConfiguration) { bidderToken in
             if let bidderToken {
                 response(.success(bidderToken))
             } else {
