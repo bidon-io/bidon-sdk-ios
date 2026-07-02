@@ -13,7 +13,9 @@ final class YandexRewardedDemandAd: DemandAd {
     public var id: String
 
     init(rewarded: YandexMobileAds.RewardedAd) {
-        self.id = rewarded.adInfo?.adUnitId ?? String(rewarded.hash)
+        self.id = MainActor.assumeIsolated {
+            rewarded.adInfo?.adUnitID ?? String(rewarded.hash)
+        }
     }
 }
 
@@ -32,25 +34,21 @@ final class YandexDirectRewardedDemandProvider: YandexDirectBaseDemandProvider<Y
     ) {
         self.response = response
 
-        let request = AdRequestConfiguration(adUnitID: adUnitExtras.adUnitId)
+        let request = AdRequest(adUnitID: adUnitExtras.adUnitId)
         rewardedLoader = RewardedAdLoader()
-        rewardedLoader?.delegate = self
-        rewardedLoader?.loadAd(with: request)
-    }
-}
-
-extension YandexDirectRewardedDemandProvider: RewardedAdLoaderDelegate {
-    func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didLoad rewardedAd: YandexMobileAds.RewardedAd) {
-        rewardedAd.delegate = self
-        self.rewardedAd = rewardedAd
-
-        response?(.success(YandexRewardedDemandAd(rewarded: rewardedAd)))
-        response = nil
-    }
-
-    func rewardedAdLoader(_ adLoader: YandexMobileAds.RewardedAdLoader, didFailToLoadWithError error: YandexMobileAds.AdRequestError) {
-        response?(.failure(.noFill(error.description)))
-        response = nil
+        rewardedLoader?.loadAd(with: request) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let rewardedAd):
+                rewardedAd.delegate = self
+                self.rewardedAd = rewardedAd
+                self.response?(.success(YandexRewardedDemandAd(rewarded: rewardedAd)))
+                self.response = nil
+            case .failure(let error):
+                self.response?(.failure(.noFill(error.localizedDescription)))
+                self.response = nil
+            }
+        }
     }
 }
 
@@ -59,13 +57,15 @@ extension YandexDirectRewardedDemandProvider: RewardedAdDemandProvider {
         ad: YandexRewardedDemandAd,
         from viewController: UIViewController
     ) {
-        rewardedAd?.show(from: viewController)
+        DispatchQueue.main.async { [weak self] in
+            self?.rewardedAd?.show(from: viewController)
+        }
     }
 }
 
 extension YandexDirectRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate {
 
-    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didFailToShowWithError error: any Error) {
+    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didFailToShow error: any Error) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         delegate?.provider(
             self,
@@ -90,7 +90,7 @@ extension YandexDirectRewardedDemandProvider: YandexMobileAds.RewardedAdDelegate
         rewardDelegate?.provider(self, didReceiveReward: RewardWrapper(label: reward.type, amount: reward.amount, wrapped: reward))
     }
 
-    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didTrackImpressionWith impressionData: (any ImpressionData)?) {
+    func rewardedAd(_ rewardedAd: YandexMobileAds.RewardedAd, didTrackImpression impressionData: (any ImpressionData)?) {
         let ad = YandexRewardedDemandAd(rewarded: rewardedAd)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }

@@ -12,36 +12,32 @@ import YandexMobileAds
 final class YandexBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider {
     weak var delegate: DemandProviderDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
-    
+
     private var response: DemandProviderResponse?
     weak var adViewDelegate: DemandProviderAdViewDelegate?
-    private let bidderTokenLoader = BidderTokenLoader(mediationNetworkName: "Bidon")
+    private let bidderTokenLoader = BidderTokenLoader()
 
     let context: AdViewContext
 
-    private var yandexAdView: YandexMobileAds.AdView?
+    private var yandexAdView: YandexMobileAds.BannerAdView?
     private var isLoaded: Bool = false
 
     private var adSize: BannerAdSize {
-        return BannerAdSize.inlineSize(withWidth: context.format.preferredSize.width, maxHeight: context.format.preferredSize.height)
+        return BannerAdSize.inline(width: context.format.preferredSize.width, maxHeight: context.format.preferredSize.height)
     }
 
     init(context: AdViewContext) {
         self.context = context
         super.init()
     }
-    
+
     func collectBiddingToken(auctionKey: String?, biddingTokenExtras: YandexBiddingToken, response: @escaping (Result<String, MediationError>) -> ()) {
         collectBiddingToken(biddingTokenExtras: biddingTokenExtras, response: response)
     }
-    
+
     func collectBiddingToken(biddingTokenExtras: BiddingTokenExtras, response: @escaping (Result<String, MediationError>) -> ()) {
-        let requestConfiguration = BidderTokenRequestConfiguration.banner(size: adSize)
-        requestConfiguration.parameters = [
-            "adapter_version": MobileAds.sdkVersion(),
-            "adapter_network_sdk_version": BidonSdk.sdkVersion
-        ]
-        bidderTokenLoader.loadBidderToken(requestConfiguration: requestConfiguration) { bidderToken in
+        let requestConfiguration = BidderTokenRequest.banner(size: adSize, targeting: nil, parameters: nil)
+        bidderTokenLoader.loadBidderToken(request: requestConfiguration) { bidderToken in
             if let bidderToken {
                 response(.success(bidderToken))
             } else {
@@ -49,22 +45,18 @@ final class YandexBiddingAdViewDemandProvider: NSObject, BiddingDemandProvider {
             }
         }
     }
-    
+
     func load(payload: YandexBiddingPayload, adUnitExtras: YandexAdUnitExtras, response: @escaping DemandProviderResponse) {
         self.response = response
-        let request = MutableAdRequest()
-        request.biddingData = payload.signaldata
+        let request = AdRequest(adUnitID: adUnitExtras.adUnitId, biddingData: payload.signaldata)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.yandexAdView = AdView(
-                adUnitID: adUnitExtras.adUnitId,
-                adSize: adSize
-            )
+            self.yandexAdView = BannerAdView(adSize: self.adSize)
             self.yandexAdView?.delegate = self
             self.yandexAdView?.loadAd(with: request)
         }
     }
-    
+
     func notify(ad: YandexBannerDemandAd, event: DemandProviderEvent) {}
 }
 
@@ -77,23 +69,23 @@ extension YandexBiddingAdViewDemandProvider: AdViewDemandProvider {
     func didTrackImpression(for ad: YandexBannerDemandAd) { }
 }
 
-extension YandexBiddingAdViewDemandProvider: YandexMobileAds.AdViewDelegate {
-    func adViewDidLoad(_ adView: YandexMobileAds.AdView) {
+extension YandexBiddingAdViewDemandProvider: YandexMobileAds.BannerAdViewDelegate {
+    func bannerAdViewDidLoad(_ adView: YandexMobileAds.BannerAdView) {
         let ad = YandexBannerDemandAd(adView: adView)
         response?(.success(ad))
         response = nil
     }
 
-    func adViewDidFailLoading(_ adView: YandexMobileAds.AdView, error: any Error) {
+    func bannerAdViewDidFailLoading(_ adView: YandexMobileAds.BannerAdView, error: any Error) {
         response?(.failure(.noFill(error.localizedDescription)))
         response = nil
     }
 
-    func adViewDidClick(_ adView: YandexMobileAds.AdView) {
+    func bannerAdViewDidClick(_ adView: YandexMobileAds.BannerAdView) {
         delegate?.providerDidClick(self)
     }
 
-    func adView(_ adView: YandexMobileAds.AdView, didTrackImpression impressionData: (any ImpressionData)?) {
+    func bannerAdView(_ adView: YandexMobileAds.BannerAdView, didTrackImpression impressionData: (any ImpressionData)?) {
         let ad = YandexBannerDemandAd(adView: adView)
         revenueDelegate?.provider(self, didLogImpression: ad)
     }
