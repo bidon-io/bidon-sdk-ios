@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import Bidon
 import UnityAds
 
@@ -30,6 +31,20 @@ final class UADSPlacement: NSObject, UnityAdsDemandAd {
     }
 }
 
-extension UADSBannerView: UnityAdsDemandAd {
-    public var id: String { placementId }
+
+final class UADSBannerAdContainer: UIView, UnityAdsDemandAd, AdViewContainer {
+    var id: String { placementId }
+    var isAdaptive: Bool { false }
+
+    let placementId: String
+
+    init(placementId: String, adView: UIView) {
+        self.placementId = placementId
+        super.init(frame: CGRect(origin: .zero, size: adView.frame.size))
+        adView.frame = bounds
+        adView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        addSubview(adView)
+    }
+
+    required init?(coder: NSCoder) { nil }
 }

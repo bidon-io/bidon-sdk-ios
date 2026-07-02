@@ -26,9 +26,7 @@ DirectAdViewDemandSourceAdapter
     public let adapterVersion: String = "0"
     public let sdkVersion: String = UnityAds.getVersion()
 
-    private var completion: ((SdkError?) -> Void)?
-
-    public func directInterstitialDemandProvider () throws -> AnyDirectInterstitialDemandProvider {
+    public func directInterstitialDemandProvider() throws -> AnyDirectInterstitialDemandProvider {
         return UnityAdsInterstitialDemandProvider()
     }
 
@@ -51,25 +49,16 @@ extension UnityAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
         parameters: UnityAdsParameters,
         completion: @escaping (SdkError?) -> Void
     ) {
-        self.completion = completion
+        let config = UADSInitializationConfigurationBuilder(gameId: parameters.gameId)
+            .with(testMode: context.isTestMode)
+            .build()
 
-        UnityAds.initialize(
-            parameters.gameId,
-            testMode: context.isTestMode,
-            initializationDelegate: self
-        )
-    }
-}
-
-
-extension UnityAdsDemandSourceAdapter: UnityAdsInitializationDelegate {
-    public func initializationComplete() {
-        completion?(nil)
-        completion = nil
-    }
-
-    public func initializationFailed(_ error: UnityAdsInitializationError, withMessage message: String) {
-        completion?(.message(message))
-        completion = nil
+        UnityAds.initialize(config) { error in
+            if let error = error {
+                completion(.message(error.message))
+            } else {
+                completion(nil)
+            }
+        }
     }
 }

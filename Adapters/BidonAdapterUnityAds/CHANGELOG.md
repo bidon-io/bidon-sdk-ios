@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.19.0.0
+* Updated to UnityAds 4.19.0
+
 ## 4.18.1.0
 * Updated to UnityAds 4.18.1
 
