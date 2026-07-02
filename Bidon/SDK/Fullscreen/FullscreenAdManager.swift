@@ -265,18 +265,24 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
-            controller.notifyWin()
+            // Route win notification by demand type (aligned with Android):
+            // CPM/direct demand -> notify the adapter only;
+            // RTB demand -> send the Bidon server request only
+            // (RTB winners are notified externally by the server).
+            if controller.impression.bidType == .direct {
+                controller.notifyWin()
+            } else {
+                let request = context.notificationRequest { builder in
+                    builder.withRoute(.win)
+                    builder.withEnvironmentRepository(sdk.environmentRepository)
+                    builder.withTestMode(sdk.isTestMode)
+                    builder.withExt(extras)
+                    builder.withImpression(controller.impression)
+                }
 
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.win)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(controller.impression)
-            }
-
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent win with result: \(result)")
+                networkManager.perform(request: request) { result in
+                    Logger.debug("Sent win with result: \(result)")
+                }
             }
 
         default:
@@ -307,19 +313,24 @@ AdaptersFetcherType: AdaptersFetcher<AdTypeContextType> {
 
             guard controller.impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
-            controller.notifyLose(winner: demandId, eCPM: eCPM)
+            // Route loss notification by demand type (aligned with Android):
+            // CPM/direct demand -> notify the adapter only;
+            // RTB demand -> send the Bidon server request only.
+            if controller.impression.bidType == .direct {
+                controller.notifyLose(winner: demandId, eCPM: eCPM)
+            } else {
+                let request = context.notificationRequest { builder in
+                    builder.withRoute(.loss)
+                    builder.withEnvironmentRepository(sdk.environmentRepository)
+                    builder.withTestMode(sdk.isTestMode)
+                    builder.withExt(extras)
+                    builder.withImpression(controller.impression)
+                    builder.withExternalWinner(demandId: demandId, price: eCPM)
+                }
 
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.loss)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(controller.impression)
-                builder.withExternalWinner(demandId: demandId, price: eCPM)
-            }
-
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent loss with result: \(result)")
+                networkManager.perform(request: request) { result in
+                    Logger.debug("Sent loss with result: \(result)")
+                }
             }
         default:
             break

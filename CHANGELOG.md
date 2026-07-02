@@ -6,6 +6,7 @@
 - CI: skip CI Adapter Quality re-run when latest push only modifies Podfile.lock (merge-conflict fixes on `chore/pod-*` PRs)
 
 ## Fixes
+- BDN-1195 Align iOS Win/Loss notification routing with Android: public `notifyWin`/`notifyLoss` now route exclusively by demand type — CPM/direct notifies the adapter only, RTB sends the Bidon server request only (no more additive server+adapter for CPM). Applied to banner and fullscreen.
 - Xcode 27 / iOS 27 compatibility: resolve adaptive banner width and landscape detection through the active `UIWindowScene` instead of `UIScreen.main` / deprecated `statusBarOrientation`; raise the `Bidon` and `Tests` iOS deployment targets to 15.0 (Xcode 27 rejects the previous 11.0/13.0 floors)
 - BidMachine adapter: restore Static/Dynamic podspec subspecs (default Static) so hosts can opt into dynamic linkage of the BidMachine stack; fixes `BidonAdapterBidMachine/Dynamic` failing to resolve for BidMachinePlus dynamic installs
 - APDM-2195 Fix SIGABRT in AdaptersInitializator when adapter init main-queue dispatch races the timeout watchdog
