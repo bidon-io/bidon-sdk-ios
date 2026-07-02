@@ -13,7 +13,9 @@ final class YandexRewardedDemandAd: DemandAd {
     public var id: String
 
     init(rewarded: YandexMobileAds.RewardedAd) {
-        self.id = rewarded.adInfo?.adUnitID ?? String(rewarded.hash)
+        self.id = MainActor.assumeIsolated {
+            rewarded.adInfo?.adUnitID ?? String(rewarded.hash)
+        }
     }
 }
 

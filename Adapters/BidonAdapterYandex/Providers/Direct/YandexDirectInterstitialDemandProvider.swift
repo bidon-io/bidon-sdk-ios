@@ -13,7 +13,9 @@ final class YandexInterstitialDemandAd: DemandAd {
     public var id: String
 
     init(interstitial: InterstitialAd) {
-        self.id = interstitial.adInfo?.adUnitID ?? String(interstitial.hash)
+        self.id = MainActor.assumeIsolated {
+            interstitial.adInfo?.adUnitID ?? String(interstitial.hash)
+        }
     }
 }
 
