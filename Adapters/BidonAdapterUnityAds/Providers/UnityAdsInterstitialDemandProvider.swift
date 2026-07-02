@@ -54,7 +54,7 @@ extension UnityAdsInterstitialDemandProvider: InterstitialDemandProvider {
         guard let interstitialAd = loadedAds[ad.placementId] else { return }
 
         let showConfig = UADSShowConfigurationBuilder()
-            .withViewController(viewController)
+            .with(viewController: viewController)
             .build()
 
         interstitialAd.show(showConfig, delegate: self)

@@ -50,7 +50,7 @@ extension UnityAdsDemandSourceAdapter: ParameterizedInitializableAdapter {
         completion: @escaping (SdkError?) -> Void
     ) {
         let config = UADSInitializationConfigurationBuilder(gameId: parameters.gameId)
-            .withTestMode(context.isTestMode)
+            .with(testMode: context.isTestMode)
             .build()
 
         UnityAds.initialize(config) { error in
