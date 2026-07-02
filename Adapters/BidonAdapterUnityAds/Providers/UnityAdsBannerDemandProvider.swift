@@ -18,7 +18,8 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
 
     private let size: CGSize
 
-    private var banner: UADSBannerView?
+    private var bannerAd: UADSBannerAd?
+    private var adContainer: UADSBannerAdContainer?
     private var response: DemandProviderResponse?
 
     init(context: AdViewContext) {
@@ -31,69 +32,58 @@ final class UnityAdsBannerDemandProvider: NSObject, DirectDemandProvider {
         adUnitExtras: UnityAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        DispatchQueue.main.async { [weak self] in
+        self.response = response
+
+        let config = UADSBannerLoadConfigurationBuilder(
+            placementId: adUnitExtras.placementId,
+            bannerSize: size,
+            delegate: self
+        ).build()
+
+        UADSBannerAd.load(config) { [weak self] ad, error in
             guard let self else { return }
-
-            let banner = UADSBannerView(
-                placementId: adUnitExtras.placementId,
-                size: size
-            )
-
-            banner.delegate = self
-
-            self.response = response
-            self.banner = banner
-
-            banner.load()
+            DispatchQueue.main.async {
+                if let ad = ad {
+                    let container = UADSBannerAdContainer(
+                        placementId: adUnitExtras.placementId,
+                        adView: ad.view
+                    )
+                    self.bannerAd = ad
+                    self.adContainer = container
+                    self.response?(.success(container))
+                } else {
+                    self.response?(.failure(.unspecifiedException(error?.message ?? "Unknown error")))
+                }
+                self.response = nil
+            }
         }
     }
 
-    func notify(ad: UADSBannerView, event: Bidon.DemandProviderEvent) {}
+    func notify(ad: UADSBannerAdContainer, event: Bidon.DemandProviderEvent) {}
 }
 
 
 extension UnityAdsBannerDemandProvider: AdViewDemandProvider {
-    func container(for ad: UADSBannerView) -> AdViewContainer? {
+    func container(for ad: UADSBannerAdContainer) -> AdViewContainer? {
         return ad
     }
 
-    func didTrackImpression(for ad: UADSBannerView) {}
+    func didTrackImpression(for ad: UADSBannerAdContainer) {}
 }
 
 
-extension UnityAdsBannerDemandProvider: UADSBannerViewDelegate {
-    func bannerViewDidLoad(_ bannerView: UADSBannerView!) {
-        guard let banner = banner, self.banner === banner else { return }
-
-        response?(.success(banner))
-        response = nil
+extension UnityAdsBannerDemandProvider: UADSBannerAdDelegate {
+    func bannerImpression(_ banner: UADSBannerAd) {
+        guard let container = adContainer else { return }
+        revenueDelegate?.provider(self, didLogImpression: container)
     }
 
-    func bannerViewDidShow(_ bannerView: UADSBannerView!) {
-        revenueDelegate?.provider(self, didLogImpression: bannerView)
-    }
-
-    func bannerViewDidError(_ bannerView: UADSBannerView!, error: UADSBannerError!) {
-        guard self.banner === bannerView else { return }
-
-        response?(.failure(MediationError(error)))
-        response = nil
-    }
-
-    func bannerViewDidClick(_ bannerView: UADSBannerView!) {
-        guard self.banner === bannerView else { return }
-
+    func bannerDidClick(_ banner: UADSBannerAd) {
         delegate?.providerDidClick(self)
     }
 
-    func bannerViewDidLeaveApplication(_ bannerView: UADSBannerView!) {
-        guard let banner = banner, self.banner === bannerView else { return }
-
-        adViewDelegate?.providerWillLeaveApplication(self, adView: banner)
+    func bannerDidFailShow(_ banner: UADSBannerAd, error: any UnityAdsError) {
+        guard let container = adContainer else { return }
+        delegate?.provider(self, didFailToDisplayAd: container, error: .message(error.message))
     }
-}
-
-
-extension UADSBannerView: AdViewContainer {
-    public var isAdaptive: Bool { false }
 }

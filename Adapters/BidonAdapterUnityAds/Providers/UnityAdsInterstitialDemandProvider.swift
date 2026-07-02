@@ -16,7 +16,8 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
     weak var rewardDelegate: DemandProviderRewardDelegate?
     weak var revenueDelegate: DemandProviderRevenueDelegate?
 
-    private var placements = Set<UADSPlacement>()
+    private var loadedAds = [String: UADSInterstitialAd]()
+    private var placements = [String: UADSPlacement]()
     private var response: DemandProviderResponse?
 
     func load(
@@ -24,15 +25,24 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
         adUnitExtras: UnityAdsAdUnitExtras,
         response: @escaping DemandProviderResponse
     ) {
-        let placement = UADSPlacement(adUnitExtras.placementId)
+        let placementId = adUnitExtras.placementId
+        let placement = UADSPlacement(placementId)
 
-        self.placements.insert(placement)
         self.response = response
 
-        UnityAds.load(
-            placement.placementId,
-            loadDelegate: self
-        )
+        let config = UADSLoadConfigurationBuilder(placementId: placementId).build()
+
+        UADSInterstitialAd.load(config) { [weak self] ad, error in
+            guard let self else { return }
+            if let ad = ad {
+                self.loadedAds[placementId] = ad
+                self.placements[placementId] = placement
+                response(.success(placement))
+            } else {
+                response(.failure(.unspecifiedException(error?.message ?? "Unknown error")))
+            }
+            self.response = nil
+        }
     }
 
     func notify(ad: UADSPlacement, event: DemandProviderEvent) {}
@@ -41,13 +51,13 @@ final class UnityAdsInterstitialDemandProvider: NSObject, DirectDemandProvider {
 
 extension UnityAdsInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: UADSPlacement, from viewController: UIViewController) {
-        guard placements.contains(ad) else { return }
+        guard let interstitialAd = loadedAds[ad.placementId] else { return }
 
-        UnityAds.show(
-            viewController,
-            placementId: ad.placementId,
-            showDelegate: self
-        )
+        let showConfig = UADSShowConfigurationBuilder()
+            .with(viewController: viewController)
+            .build()
+
+        interstitialAd.show(showConfig, delegate: self)
     }
 }
 
@@ -55,71 +65,35 @@ extension UnityAdsInterstitialDemandProvider: InterstitialDemandProvider {
 extension UnityAdsInterstitialDemandProvider: RewardedAdDemandProvider {}
 
 
-extension UnityAdsInterstitialDemandProvider: UnityAdsLoadDelegate {
-    func unityAdsAdLoaded(_ placementId: String) {
-        guard let placement = placements.first(where: { $0.placementId == placementId }) else { return }
-
-        response?(.success(placement))
-        response = nil
-    }
-
-    func unityAdsAdFailed(
-        toLoad placementId: String,
-        withError error: UnityAdsLoadError,
-        withMessage message: String
-    ) {
-        guard let placement = placements.first(where: { $0.placementId == placementId }) else { return }
-
-        placements.remove(placement)
-        response?(.failure(MediationError(error)))
-        response = nil
-    }
-}
-
-
-extension UnityAdsInterstitialDemandProvider: UnityAdsShowDelegate {
-    func unityAdsShowComplete(
-        _ placementId: String,
-        withFinish state: UnityAdsShowCompletionState
-    ) {
-        guard let placement = placements.first(where: { $0.placementId == placementId }) else { return }
-        placements.remove(placement)
-
-        defer { delegate?.providerDidHide(self) }
-
-        switch state {
-        case .showCompletionStateCompleted:
-            rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
-        default:
-            break
-        }
-    }
-
-    func unityAdsShowFailed(
-        _ placementId: String,
-        withError error: UnityAdsShowError,
-        withMessage message: String
-    ) {
-        guard let placement = placements.first(where: { $0.placementId == placementId }) else { return }
-
-        placements.remove(placement)
-        delegate?.provider(
-            self,
-            didFailToDisplayAd: placement,
-            error: .message(message)
-        )
-    }
-
-    func unityAdsShowStart(_ placementId: String) {
-        guard let placement = placements.first(where: { $0.placementId == placementId }) else { return }
-
+extension UnityAdsInterstitialDemandProvider: UADSInterstitialShowDelegate {
+    func showDidStart(_ unityAd: UADSInterstitialAd) {
+        guard let pid = loadedAds.first(where: { $0.value === unityAd })?.key,
+              let placement = placements[pid] else { return }
         delegate?.providerWillPresent(self)
         revenueDelegate?.provider(self, didLogImpression: placement)
     }
 
-    func unityAdsShowClick(_ placementId: String) {
-        guard placements.contains(where: { $0.placementId == placementId }) else { return }
+    func showDidComplete(_ unityAd: UADSInterstitialAd, with finishState: UADSShowFinishState) {
+        guard let pid = loadedAds.first(where: { $0.value === unityAd })?.key else { return }
+        loadedAds.removeValue(forKey: pid)
+        placements.removeValue(forKey: pid)
 
+        defer { delegate?.providerDidHide(self) }
+
+        if finishState == .completed {
+            rewardDelegate?.provider(self, didReceiveReward: EmptyReward())
+        }
+    }
+
+    func showDidFail(_ unityAd: UADSInterstitialAd, error: any UnityAdsError) {
+        guard let pid = loadedAds.first(where: { $0.value === unityAd })?.key,
+              let placement = placements[pid] else { return }
+        loadedAds.removeValue(forKey: pid)
+        placements.removeValue(forKey: pid)
+        delegate?.provider(self, didFailToDisplayAd: placement, error: .message(error.message))
+    }
+
+    func showDidClick(_ unityAd: UADSInterstitialAd) {
         delegate?.providerDidClick(self)
     }
 }
