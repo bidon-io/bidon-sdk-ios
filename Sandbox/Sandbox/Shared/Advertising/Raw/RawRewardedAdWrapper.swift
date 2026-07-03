@@ -48,7 +48,7 @@ final class RawRewardedAdWrapper: BaseFullscreenAdWrapper {
 
     override func notify(loss ad: Ad) {
         bidonRewardedAd?.notifyLoss(
-            external: "some_unknown_ad_network",
+            external: ad.networkName,
             price: ad.price + 0.01
         )
     }
