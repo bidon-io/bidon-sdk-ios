@@ -282,22 +282,26 @@ final class BannerAdManager: NSObject {
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
+            // Route win notification by demand type (aligned with Android):
+            // CPM/direct demand -> notify the adapter only;
+            // RTB demand -> send the Bidon server request only
+            // (RTB winners are notified externally by the server).
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .win)
-            }
+            } else {
+                let context = BannerAdTypeContext(viewContext: viewContext)
 
-            let context = BannerAdTypeContext(viewContext: viewContext)
+                let request = context.notificationRequest { builder in
+                    builder.withRoute(.win)
+                    builder.withEnvironmentRepository(sdk.environmentRepository)
+                    builder.withTestMode(sdk.isTestMode)
+                    builder.withExt(extras)
+                    builder.withImpression(impression)
+                }
 
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.win)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(impression)
-            }
-
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent win with result: \(result)")
+                networkManager.perform(request: request) { result in
+                    Logger.debug("Sent win with result: \(result)")
+                }
             }
         default:
             break
@@ -326,22 +330,25 @@ final class BannerAdManager: NSObject {
 
             guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
+            // Route loss notification by demand type (aligned with Android):
+            // CPM/direct demand -> notify the adapter only;
+            // RTB demand -> send the Bidon server request only.
             if impression.bid.adUnit.bidType == .direct {
                 impression.bid.provider.notify(opaque: impression.bid.ad, event: .lose(demandId, impression.ad, eCPM))
-            }
+            } else {
+                let context = BannerAdTypeContext(viewContext: viewContext)
+                let request = context.notificationRequest { builder in
+                    builder.withRoute(.loss)
+                    builder.withEnvironmentRepository(sdk.environmentRepository)
+                    builder.withTestMode(sdk.isTestMode)
+                    builder.withExt(extras)
+                    builder.withImpression(impression)
+                    builder.withExternalWinner(demandId: demandId, price: eCPM)
+                }
 
-            let context = BannerAdTypeContext(viewContext: viewContext)
-            let request = context.notificationRequest { builder in
-                builder.withRoute(.loss)
-                builder.withEnvironmentRepository(sdk.environmentRepository)
-                builder.withTestMode(sdk.isTestMode)
-                builder.withExt(extras)
-                builder.withImpression(impression)
-                builder.withExternalWinner(demandId: demandId, price: eCPM)
-            }
-
-            networkManager.perform(request: request) { result in
-                Logger.debug("Sent loss with result: \(result)")
+                networkManager.perform(request: request) { result in
+                    Logger.debug("Sent loss with result: \(result)")
+                }
             }
         default:
             break

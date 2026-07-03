@@ -136,6 +136,10 @@ final internal class BannerViewManager: NSObject {
         }
         guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
 
+        // CPM/direct demand is notified via the adapter in BannerAdManager;
+        // only RTB demand sends the Bidon server request here (aligned with Android).
+        guard impression.bid.adUnit.bidType != .direct else { return }
+
         let context = BannerAdTypeContext(viewContext: viewContext)
 
         let request = context.notificationRequest { builder in
@@ -165,6 +169,10 @@ final internal class BannerViewManager: NSObject {
         defer { hide() }
 
         guard impression.auctionConfiguration.isExternalNotificationsEnabled else { return }
+
+        // CPM/direct demand is notified via the adapter in BannerAdManager;
+        // only RTB demand sends the Bidon server request here (aligned with Android).
+        guard impression.bid.adUnit.bidType != .direct else { return }
 
         let context = BannerAdTypeContext(viewContext: viewContext)
         let request = context.notificationRequest { builder in

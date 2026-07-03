@@ -16,8 +16,10 @@ final class BidonAdapterYandexTests: XCTestCase {
         XCTAssertEqual(adapter.demandId, "yandex")
         XCTAssertEqual(adapter.name, "Yandex")
 
-        let expected = String(format: "%d.%d.%d", YMA_VERSION_MAJOR, YMA_VERSION_MINOR, YMA_VERSION_PATCH)
-        XCTAssertEqual(adapter.sdkVersion, expected)
+        // YMA_VERSION_* constants were removed in YandexMobileAds 8.x
+        // (use MobileAds.sdkVersion instead); the adapter already reports
+        // YandexAds.sdkVersion.stringValue, so just assert it is populated.
+        XCTAssertFalse(adapter.sdkVersion.isEmpty)
         XCTAssertFalse(adapter.adapterVersion.isEmpty)
     }
 

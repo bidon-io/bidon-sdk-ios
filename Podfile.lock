@@ -139,6 +139,8 @@ PODS:
   - TaurusxAdsSDK/TaurusxAds (1.18.1)
   - UnityAds (4.19.0):
     - IronSourceAdQualitySDK (< 10.0.0)
+    - UnityCoherenceLib (= 0.1.0)
+  - UnityCoherenceLib (0.1.0)
   - VungleAds (7.7.4)
   - YandexMobileAds (8.1.0):
     - AppMetricaAdSupport (~> 6.3.0)
@@ -218,6 +220,7 @@ SPEC REPOS:
     - SwiftLint
     - TaurusxAdsSDK
     - UnityAds
+    - UnityCoherenceLib
     - VungleAds
     - YandexMobileAds
     - zMaticoo
@@ -267,11 +270,12 @@ SPEC CHECKSUMS:
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 387b65567654da8f832d67fe3c53fd2ff2be8539
   TaurusxAdsSDK: 29e5c35767ed5e2fea98af096055a46851bbc4c0
-  UnityAds: 07379b63b1044dcad98b3092319166fd6f2cfda4
+  UnityAds: 40804188247edc15e4e173450a749dbb2fbc61c5
+  UnityCoherenceLib: d9be08c5b9c2880cb220c7ecd643f97ebda422b7
   VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: a6df477b8b837dc9d7c3808d746708aa70d81b71
+PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
 
 COCOAPODS: 1.16.2
