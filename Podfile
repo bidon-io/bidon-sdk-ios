@@ -70,7 +70,7 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.12.0'
+  pod 'ChartboostSDK', '9.13.0'
 end
 
 def ironsource
