@@ -1,4 +1,4 @@
-# Develop
+# Release 0.16.0
 
 - CI: fix Trunk Adapters v2 failing on bundle exec (add Bundler gem install + project bundle path, mirroring Trunk Core v2)
 - CI: add Trunk Add Owner workflow to add a new CocoaPods trunk owner to Bidon core and all adapter pods
