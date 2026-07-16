@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.0.0
+* Updated to ChartboostSDK 9.13.0
+
 ## 9.12.0.0
 * Updated to ChartboostSDK 9.12.0
 
