@@ -54,7 +54,7 @@ def mintegral
 end
 
 def mobilefuse
-  pod 'MobileFuseSDK', '1.11.0'
+  pod 'MobileFuseSDK', '1.11.1'
 end
 
 def vungle
