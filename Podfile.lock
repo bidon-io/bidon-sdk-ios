@@ -132,7 +132,7 @@ PODS:
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
   - OMSDK_Appodeal/Static (1.6.3)
-  - StartAppSDK (4.13.1)
+  - StartAppSDK (4.14.0)
   - SwiftLint (0.63.3)
   - TaurusxAdsSDK (1.18.1):
     - TaurusxAdsSDK/TaurusxAds (= 1.18.1)
@@ -165,7 +165,7 @@ DEPENDENCIES:
   - MobileFuseSDK (= 1.11.0)
   - MolocoSDKiOS (= 4.8.0)
   - myTargetSDK (= 5.45.0)
-  - StartAppSDK (= 4.13.1)
+  - StartAppSDK (= 4.14.0)
   - SwiftLint
   - TaurusxAdsSDK (= 1.18.1)
   - UnityAds (= 4.19.0)
@@ -267,7 +267,7 @@ SPEC CHECKSUMS:
   myTargetSDK: 665ee85494cacb7e65a725038ad2e25c78120ffb
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
   OMSDK_Appodeal: e76e5c30dfd3081621a8cd393c45219edc84f1f2
-  StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
+  StartAppSDK: 3b89bb3dbcce1b20edf37fab7b61fe500273f5a1
   SwiftLint: 387b65567654da8f832d67fe3c53fd2ff2be8539
   TaurusxAdsSDK: 29e5c35767ed5e2fea98af096055a46851bbc4c0
   UnityAds: 40804188247edc15e4e173450a749dbb2fbc61c5
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
+PODFILE CHECKSUM: 25bf86afab55b558ca2b0ca9171fb7fde5c2b0f7
 
 COCOAPODS: 1.16.2
