@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.7.5.0
+* Updated to VungleAds 7.7.5
+
 ## 7.7.4.0
 * Updated to VungleAds 7.7.4
 
