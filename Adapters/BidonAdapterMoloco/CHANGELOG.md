@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.0.0
+* Updated to MolocoSDKiOS 4.9.0
+
 ## 4.8.0.0
 * Updated to MolocoSDKiOS 4.8.0
 
