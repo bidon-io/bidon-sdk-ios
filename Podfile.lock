@@ -77,7 +77,7 @@ PODS:
   - ChartboostSDK (9.12.0)
   - FBAEMKit (17.1.0):
     - FBSDKCoreKit_Basics (= 17.1.0)
-  - FBAudienceNetwork (6.21.1)
+  - FBAudienceNetwork (6.22.0)
   - FBSDKCoreKit (17.1.0):
     - FBAEMKit (= 17.1.0)
     - FBSDKCoreKit_Basics (= 17.1.0)
@@ -155,7 +155,7 @@ DEPENDENCIES:
   - BidMachine (= 3.7.1)
   - BigoADS (= 5.3.0)
   - ChartboostSDK (= 9.12.0)
-  - FBAudienceNetwork (= 6.21.1)
+  - FBAudienceNetwork (= 6.22.0)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.8)
   - Google-Mobile-Ads-SDK (= 13.6.0)
@@ -251,7 +251,7 @@ SPEC CHECKSUMS:
   BigoADS: 1ae2d67ffd4d2eb72c6921bdfcdd9c1f943dbecf
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
-  FBAudienceNetwork: 85d18a65c9e35bc426bd4664cf3ae2a1172d7b60
+  FBAudienceNetwork: b05c65487114aa3bf3a68e865c60937a9fb03b69
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
+PODFILE CHECKSUM: cbe38736f95c661914ded86dda976fe55485e524
 
 COCOAPODS: 1.16.2
