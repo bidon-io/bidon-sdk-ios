@@ -84,7 +84,7 @@ PODS:
   - FBSDKCoreKit_Basics (17.1.0)
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
-  - Fyber_Marketplace_SDK (8.4.8)
+  - Fyber_Marketplace_SDK (8.4.9)
   - Google-Mobile-Ads-SDK (13.6.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
@@ -157,7 +157,7 @@ DEPENDENCIES:
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
-  - Fyber_Marketplace_SDK (= 8.4.8)
+  - Fyber_Marketplace_SDK (= 8.4.9)
   - Google-Mobile-Ads-SDK (= 13.6.0)
   - InMobiSDK (= 11.3.0)
   - IronSourceSDK/Ads (= 9.4.2.0)
@@ -255,7 +255,7 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
-  Fyber_Marketplace_SDK: ebf29e2fd31f1045cbf28244f558076335ddfd25
+  Fyber_Marketplace_SDK: 773fa6234775a9f100e817a1f6af99630b98234b
   Google-Mobile-Ads-SDK: 6e501ace4af8d63e967bd45497c8b2b05821163d
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
+PODFILE CHECKSUM: 8a8aeb5b902d2cb381f9b32d12e5bd598f0abacd
 
 COCOAPODS: 1.16.2
