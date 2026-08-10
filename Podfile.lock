@@ -1,6 +1,6 @@
 PODS:
   - AmazonPublisherServicesSDK (5.6.2)
-  - AppLovinSDK (13.6.3)
+  - AppLovinSDK (13.6.4)
   - AppMetricaAdSupport (6.3.0):
     - AppMetricaCore (= 6.3.0)
     - AppMetricaCoreExtension (= 6.3.0)
@@ -151,7 +151,7 @@ PODS:
 
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.2)
-  - AppLovinSDK (= 13.6.3)
+  - AppLovinSDK (= 13.6.4)
   - BidMachine (= 3.7.1)
   - BigoADS (= 5.3.0)
   - ChartboostSDK (= 9.12.0)
@@ -227,7 +227,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 558de42a3e7e483674662bf2ff8997d6a7090aeb
-  AppLovinSDK: f3da9503e8193d8c4badc1a9965d73a0779812fa
+  AppLovinSDK: 730be87bac90c5b0f7d507c3a2530213f7685370
   AppMetricaAdSupport: d9d6516e5e21032f058b7aef3f17aefe9c7cc116
   AppMetricaCore: 12186e7fca8c7e293bd45f66f0e18d64435f1ab7
   AppMetricaCoreExtension: 71f4f4b7e993e963241a764790e07b0813926f18
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
+PODFILE CHECKSUM: 001c1c6aba73b3d22aabb6090acc93885a0a98e8
 
 COCOAPODS: 1.16.2
