@@ -3,6 +3,7 @@ workspace 'Bidon.xcworkspace'
 
 source 'https://cdn.cocoapods.org/'
 source "https://github.com/bidon-io/CocoaPods-Specs.git"
+source 'https://github.com/bidmachine/CocoaPods-Specs.git'
 
 install! 'cocoapods', :warn_for_multiple_pod_sources => false
 use_frameworks! 
@@ -18,7 +19,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.7.1'
+  pod 'BidMachine', '3.8.0-beta.1'
 end
 
 def admob
