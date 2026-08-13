@@ -15,8 +15,21 @@ struct AdUnitModel: AdUnit {
     let label: String
     let pricefloor: Price
     let extras: Decoder
-    let extrasDictionary: [String: BidonDecodable]?
+    var extrasDictionary: [String: BidonDecodable]?
     let timeout: TimeInterval
+}
+
+extension AdUnitModel {
+    func enriched(with ad: DemandAd) -> AdUnitModel {
+        guard
+            let additional = (ad as? DemandAdExtrasProvider)?.additionalAdUnitExtras,
+            !additional.isEmpty
+        else { return self }
+
+        var adUnit = self
+        adUnit.extrasDictionary = (extrasDictionary ?? [:]).merging(additional) { $1 }
+        return adUnit
+    }
 }
 
 extension AdUnit {

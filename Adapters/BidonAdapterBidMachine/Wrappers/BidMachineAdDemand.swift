@@ -34,6 +34,16 @@ final class BidMachineAdDemand<Ad: BidMachineAdProtocol>: NSObject, DemandAd {
 }
 
 
+extension BidMachineAdDemand: DemandAdExtrasProvider {
+    var additionalAdUnitExtras: [String: BidonDecodable]? {
+        let customParams = ad.auctionInfo.customParams
+        guard !customParams.isEmpty else { return nil }
+
+        return customParams.mapValues { BidonDecodable(value: $0) }
+    }
+}
+
+
 extension BidMachineAdProtocol {
     var revenue: AdRevenueModel {
         AdRevenueModel(
