@@ -42,7 +42,7 @@ def unity_ads
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.8.0'
+  pod 'MolocoSDKiOS', '4.9.1'
 end
 
 def meta_sdk
