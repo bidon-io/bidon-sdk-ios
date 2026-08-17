@@ -89,7 +89,7 @@ PODS:
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
-  - IronSourceAdQualitySDK (9.7.0)
+  - IronSourceAdQualitySDK (9.9.0)
   - IronSourceSDK/Ads (9.4.2.0)
   - MintegralAdSDK (8.1.5):
     - MintegralAdSDK/BannerAd (= 8.1.5)
@@ -137,7 +137,7 @@ PODS:
   - TaurusxAdsSDK (1.18.1):
     - TaurusxAdsSDK/TaurusxAds (= 1.18.1)
   - TaurusxAdsSDK/TaurusxAds (1.18.1)
-  - UnityAds (4.19.0):
+  - UnityAds (4.20.0):
     - IronSourceAdQualitySDK (< 10.0.0)
     - UnityCoherenceLib (= 0.1.0)
   - UnityCoherenceLib (0.1.0)
@@ -168,7 +168,7 @@ DEPENDENCIES:
   - StartAppSDK (= 4.13.1)
   - SwiftLint
   - TaurusxAdsSDK (= 1.18.1)
-  - UnityAds (= 4.19.0)
+  - UnityAds (= 4.20.0)
   - VungleAds (= 7.7.4)
   - YandexMobileAds (= 8.1.0)
   - zMaticoo (= 2.2.0)
@@ -259,7 +259,7 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 6e501ace4af8d63e967bd45497c8b2b05821163d
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
-  IronSourceAdQualitySDK: 13c03987c99b8556e686acf6b618e84777a66121
+  IronSourceAdQualitySDK: 8797f78661d72fc2bef00e8c1055047132dc7249
   IronSourceSDK: cd08c3446eac951575b799dceff63febcf16a978
   MintegralAdSDK: 9e98161b5c5afdc7f5effe4f3969dd1cf0430ed1
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
@@ -270,12 +270,12 @@ SPEC CHECKSUMS:
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 387b65567654da8f832d67fe3c53fd2ff2be8539
   TaurusxAdsSDK: 29e5c35767ed5e2fea98af096055a46851bbc4c0
-  UnityAds: 40804188247edc15e4e173450a749dbb2fbc61c5
+  UnityAds: aac7752619961224969a1bfea8b5077d2b93005f
   UnityCoherenceLib: d9be08c5b9c2880cb220c7ecd643f97ebda422b7
   VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1db060c89f980c12dbddcc9f6983b2a4c8e4cb12
+PODFILE CHECKSUM: 56dc047b9a4404c175846b3e653cbe9fa92c364f
 
 COCOAPODS: 1.16.2
