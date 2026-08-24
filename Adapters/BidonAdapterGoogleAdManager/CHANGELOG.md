@@ -2,6 +2,9 @@
 
 ## 13.8.0.0
 * Updated to Google-Mobile-Ads-SDK 13.8.0
+* SDK 13.7.0: Updated `CGSizeFromGADAdSize` to default to portrait orientation when computing fluid ad widths on background threads
+* SDK 13.8.0: Refactored full-screen ad rendering to prevent unintended dismissals during device orientation changes on iPad
+* SDK 13.8.0: `GADResponseInfo.loadedAdNetworkResponseInfo.adNetworkClassName` now returns the custom event class name instead of `GADMAdapterCustomEvents`
 
 ## 13.6.0.0
 * Updated to Google-Mobile-Ads-SDK 13.6.0
