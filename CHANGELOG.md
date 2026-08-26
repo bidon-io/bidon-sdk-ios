@@ -1,5 +1,5 @@
 # # Release 0.17.0
-- Relay BidMachine bid response custom params (ML floor predictions) into the ad unit ext, so they reach the Appodeal server via impression-level data credentials (`Ad.adUnit.extras`) and `AuctionInfo`
+- Relay BidMachine bid response custom params into the ad unit ext`
 
 # Release 0.16.0
 
