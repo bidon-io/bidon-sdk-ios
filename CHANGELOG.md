@@ -1,12 +1,12 @@
+# # Release 0.17.0
+- Relay BidMachine bid response custom params into the ad unit ext`
+
 # Release 0.16.0
 
 - CI: fix Trunk Adapters v2 failing on bundle exec (add Bundler gem install + project bundle path, mirroring Trunk Core v2)
 - CI: add Trunk Add Owner workflow to add a new CocoaPods trunk owner to Bidon core and all adapter pods
 - CI: fix Trunk Add Owner workflow failing on bundle install (drop unused bundler step, use global pod + grep for pod list)
 - CI: skip CI Adapter Quality re-run when latest push only modifies Podfile.lock (merge-conflict fixes on `chore/pod-*` PRs)
-
-## New features
-- SDK-748 Relay BidMachine bid response custom params (ML floor predictions) into the ad unit ext, so they reach the Appodeal server via impression-level data credentials (`Ad.adUnit.extras`) and `AuctionInfo`
 
 ## Fixes
 - BDN-1195 Align iOS Win/Loss notification routing with Android: public `notifyWin`/`notifyLoss` now route exclusively by demand type — CPM/direct notifies the adapter only, RTB sends the Bidon server request only (no more additive server+adapter for CPM). Applied to banner and fullscreen.
