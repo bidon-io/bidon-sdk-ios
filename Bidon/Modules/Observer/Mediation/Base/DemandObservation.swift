@@ -70,6 +70,7 @@ struct DemandObservation {
                     entry.finishTimestamp = Date.timestamp(.wall, units: .milliseconds)
                     entry.price = bid.price
                     entry.bid = DummyBid(bid)
+                    entry.adUnit = DummyAdUnit(bid.adUnit)
                     entry.tokenStartTimestamp = tokenStartTs(for: bid.adUnit)
                     entry.tokenFinishTimestamp = tokenFinishTs(for: bid.adUnit)
                 }

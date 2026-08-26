@@ -94,7 +94,7 @@ final class AuctionOperationRequestDirectDemand<AdTypeContextType: AdTypeContext
                         id: UUID().uuidString,
                         impressionId: UUID().uuidString,
                         adType: self.context.adType,
-                        adUnit: adUnit,
+                        adUnit: adUnit.enriched(with: ad),
                         price: ad.price ?? adUnit.pricefloor,
                         ad: ad,
                         provider: adapter.provider,

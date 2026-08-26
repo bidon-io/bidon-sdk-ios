@@ -23,3 +23,8 @@ public protocol DemandAd {
     @objc optional
     var currency: Currency { get }
 }
+
+
+public protocol DemandAdExtrasProvider {
+    var additionalAdUnitExtras: [String: BidonDecodable]? { get }
+}
