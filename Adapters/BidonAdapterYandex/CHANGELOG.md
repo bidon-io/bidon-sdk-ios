@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.4.0.0
+* Updated to YandexMobileAds 8.4.0
+
 ## 8.1.0.0
 * Updated to YandexMobileAds 8.1.0
 * Migrated to the YandexMobileAds 8.0.0 API (MobileAds → YandexAds, AdView → BannerAdView, completion-based ad loaders, BidderTokenRequest, AdRequest)

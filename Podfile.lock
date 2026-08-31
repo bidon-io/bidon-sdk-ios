@@ -1,74 +1,85 @@
 PODS:
   - AmazonPublisherServicesSDK (5.6.2)
   - AppLovinSDK (13.6.3)
-  - AppMetricaAdSupport (6.3.0):
-    - AppMetricaCore (= 6.3.0)
-    - AppMetricaCoreExtension (= 6.3.0)
-  - AppMetricaCore (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaEncodingUtils (= 6.3.0)
-    - AppMetricaFMDB (= 6.3.0)
-    - AppMetricaHostState (= 6.3.0)
-    - AppMetricaIdentifiers (= 6.3.0)
-    - AppMetricaKeychain (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-    - AppMetricaNetwork (= 6.3.0)
-    - AppMetricaPlatform (= 6.3.0)
-    - AppMetricaProtobuf (= 6.3.0)
-    - AppMetricaProtobufUtils (= 6.3.0)
-    - AppMetricaStorageUtils (= 6.3.0)
-  - AppMetricaCoreExtension (6.3.0):
-    - AppMetricaCore (= 6.3.0)
-    - AppMetricaStorageUtils (= 6.3.0)
-  - AppMetricaCoreUtils (6.3.0):
-    - AppMetricaLog (= 6.3.0)
-  - AppMetricaEncodingUtils (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-    - AppMetricaPlatform (= 6.3.0)
-  - AppMetricaFMDB (6.3.0)
-  - AppMetricaHostState (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-  - AppMetricaIdentifiers (6.3.0):
-    - AppMetricaKeychain (= 6.3.0)
-    - AppMetricaLogSwift (= 6.3.0)
-    - AppMetricaPlatform (= 6.3.0)
-    - AppMetricaStorageUtils (= 6.3.0)
-    - AppMetricaSynchronization (= 6.3.0)
-  - AppMetricaIDSync (6.3.0):
-    - AppMetricaCore (= 6.3.0)
-    - AppMetricaCoreExtension (= 6.3.0)
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-    - AppMetricaNetwork (= 6.3.0)
-    - AppMetricaPlatform (= 6.3.0)
-    - AppMetricaStorageUtils (= 6.3.0)
-  - AppMetricaKeychain (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-    - AppMetricaStorageUtils (= 6.3.0)
-  - AppMetricaLibraryAdapter (6.3.0):
-    - AppMetricaCore (= 6.3.0)
-    - AppMetricaCoreExtension (= 6.3.0)
-  - AppMetricaLog (6.3.0)
-  - AppMetricaLogSwift (6.3.0):
-    - AppMetricaLog (= 6.3.0)
-  - AppMetricaNetwork (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-    - AppMetricaPlatform (= 6.3.0)
-  - AppMetricaPlatform (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-  - AppMetricaProtobuf (6.3.0)
-  - AppMetricaProtobufUtils (6.3.0):
-    - AppMetricaProtobuf (= 6.3.0)
-  - AppMetricaStorageUtils (6.3.0):
-    - AppMetricaCoreUtils (= 6.3.0)
-    - AppMetricaLog (= 6.3.0)
-  - AppMetricaSynchronization (6.3.0):
-    - AppMetricaLogSwift (= 6.3.0)
+  - AppMetricaAdSupport (6.6.0):
+    - AppMetricaCore (= 6.6.0)
+    - AppMetricaCoreExtension (= 6.6.0)
+  - AppMetricaCore (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaEncodingUtils (= 6.6.0)
+    - AppMetricaFMDB (= 6.6.0)
+    - AppMetricaHostState (= 6.6.0)
+    - AppMetricaIdentifiers (= 6.6.0)
+    - AppMetricaKeychain (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaNetwork (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+    - AppMetricaProtobuf (= 6.6.0)
+    - AppMetricaProtobufUtils (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+  - AppMetricaCoreExtension (6.6.0):
+    - AppMetricaCore (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+  - AppMetricaCoreUtils (6.6.0):
+    - AppMetricaLog (= 6.6.0)
+  - AppMetricaCrashes (6.6.0):
+    - AppMetricaCore (= 6.6.0)
+    - AppMetricaCoreExtension (= 6.6.0)
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaEncodingUtils (= 6.6.0)
+    - AppMetricaHostState (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+    - AppMetricaProtobufUtils (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+    - KSCrash/Recording (< 2.6.0, >= 2.5.1)
+  - AppMetricaEncodingUtils (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+  - AppMetricaFMDB (6.6.0)
+  - AppMetricaHostState (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+  - AppMetricaIdentifiers (6.6.0):
+    - AppMetricaKeychain (= 6.6.0)
+    - AppMetricaLogSwift (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+    - AppMetricaSynchronization (= 6.6.0)
+  - AppMetricaIDSync (6.6.0):
+    - AppMetricaCore (= 6.6.0)
+    - AppMetricaCoreExtension (= 6.6.0)
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaNetwork (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+  - AppMetricaKeychain (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaStorageUtils (= 6.6.0)
+  - AppMetricaLibraryAdapter (6.6.0):
+    - AppMetricaCore (= 6.6.0)
+    - AppMetricaCoreExtension (= 6.6.0)
+  - AppMetricaLog (6.6.0)
+  - AppMetricaLogSwift (6.6.0):
+    - AppMetricaLog (= 6.6.0)
+  - AppMetricaNetwork (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+    - AppMetricaPlatform (= 6.6.0)
+  - AppMetricaPlatform (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+  - AppMetricaProtobuf (6.6.0)
+  - AppMetricaProtobufUtils (6.6.0):
+    - AppMetricaProtobuf (= 6.6.0)
+  - AppMetricaStorageUtils (6.6.0):
+    - AppMetricaCoreUtils (= 6.6.0)
+    - AppMetricaLog (= 6.6.0)
+  - AppMetricaSynchronization (6.6.0):
+    - AppMetricaLogSwift (= 6.6.0)
   - BidMachine (3.8.0):
     - BidMachine/Static (= 3.8.0)
   - BidMachine/Static (3.8.0):
@@ -91,6 +102,11 @@ PODS:
   - InMobiSDK (11.3.0)
   - IronSourceAdQualitySDK (9.7.0)
   - IronSourceSDK/Ads (9.4.2.0)
+  - KSCrash/Core (2.5.1)
+  - KSCrash/Recording (2.5.1):
+    - KSCrash/RecordingCore
+  - KSCrash/RecordingCore (2.5.1):
+    - KSCrash/Core
   - MintegralAdSDK (8.1.5):
     - MintegralAdSDK/BannerAd (= 8.1.5)
     - MintegralAdSDK/BidBannerAd (= 8.1.5)
@@ -142,11 +158,12 @@ PODS:
     - UnityCoherenceLib (= 0.1.0)
   - UnityCoherenceLib (0.1.0)
   - VungleAds (7.7.4)
-  - YandexMobileAds (8.1.0):
-    - AppMetricaAdSupport (~> 6.3.0)
-    - AppMetricaCore (~> 6.3.0)
-    - AppMetricaIDSync (~> 6.3.0)
-    - AppMetricaLibraryAdapter (~> 6.3.0)
+  - YandexMobileAds (8.4.0):
+    - AppMetricaAdSupport (>= 6.6.0, ~> 6.6)
+    - AppMetricaCore (>= 6.6.0, ~> 6.6)
+    - AppMetricaCrashes (>= 6.6.0, ~> 6.6)
+    - AppMetricaIDSync (>= 6.6.0, ~> 6.6)
+    - AppMetricaLibraryAdapter (>= 6.6.0, ~> 6.6)
   - zMaticoo (2.2.0)
 
 DEPENDENCIES:
@@ -170,7 +187,7 @@ DEPENDENCIES:
   - TaurusxAdsSDK (= 1.18.1)
   - UnityAds (= 4.19.0)
   - VungleAds (= 7.7.4)
-  - YandexMobileAds (= 8.1.0)
+  - YandexMobileAds (= 8.4.0)
   - zMaticoo (= 2.2.0)
 
 SPEC REPOS:
@@ -181,6 +198,7 @@ SPEC REPOS:
     - AppMetricaCore
     - AppMetricaCoreExtension
     - AppMetricaCoreUtils
+    - AppMetricaCrashes
     - AppMetricaEncodingUtils
     - AppMetricaFMDB
     - AppMetricaHostState
@@ -210,6 +228,7 @@ SPEC REPOS:
     - InMobiSDK
     - IronSourceAdQualitySDK
     - IronSourceSDK
+    - KSCrash
     - MintegralAdSDK
     - MobileFuseSDK
     - MolocoSDKiOS
@@ -228,25 +247,26 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AmazonPublisherServicesSDK: 558de42a3e7e483674662bf2ff8997d6a7090aeb
   AppLovinSDK: f3da9503e8193d8c4badc1a9965d73a0779812fa
-  AppMetricaAdSupport: d9d6516e5e21032f058b7aef3f17aefe9c7cc116
-  AppMetricaCore: 12186e7fca8c7e293bd45f66f0e18d64435f1ab7
-  AppMetricaCoreExtension: 71f4f4b7e993e963241a764790e07b0813926f18
-  AppMetricaCoreUtils: 88b1288644a44ddc2572483bcd64c2e62f6f76ba
-  AppMetricaEncodingUtils: a895862856ee06b9b22fdc02771157e4004b3819
-  AppMetricaFMDB: cc66f2b0c0e8d3d451313b0ac7174b111820f6ec
-  AppMetricaHostState: c6bbff91eb4e35a16da4cf721a729029db455d9b
-  AppMetricaIdentifiers: 7dd47f89a04955b8913c96a6be367c4dc739b3db
-  AppMetricaIDSync: 6799f35fd10a5616f4d214d896829136dc2b4533
-  AppMetricaKeychain: 743d4d2e1dadcce2e33c892b82409e5882e87da1
-  AppMetricaLibraryAdapter: b476a378a83c89e2b4e7b874f4a3874266989ee9
-  AppMetricaLog: a939df984c6564ac0007b6634ea6c24dc54df3a9
-  AppMetricaLogSwift: fa337df59c92edcd51bed406c4298ab1ce9ddd4b
-  AppMetricaNetwork: 1d7cb179c7dce7dbac5f54fb28cc378410b89e61
-  AppMetricaPlatform: 0732c0de92c8db13b25592c49e9bc82df1cc27eb
-  AppMetricaProtobuf: 4d554ca95b28d1d11c661ad4b6b8c6e5c647624a
-  AppMetricaProtobufUtils: f3bfe7f36e3d0b00552398e0c06bd2af515800dd
-  AppMetricaStorageUtils: 658dc0cd262a94c0a4ce450af11a50aef0809a82
-  AppMetricaSynchronization: d629fdefd72af0bb7768ae4d32fb107c42662811
+  AppMetricaAdSupport: d7b09222d59c2b43555e9fe55ff290467e13f1cf
+  AppMetricaCore: ee40e9eae7c7e8a060f4b05c973210c3ec837e07
+  AppMetricaCoreExtension: 197bfaa429c87b4ff3e8f9be873876f3b92179a1
+  AppMetricaCoreUtils: a3c50fa386b163f1ce5bcdec830db89d9f436302
+  AppMetricaCrashes: 71b39289ef6779ecebee7e40b0abc01829f60238
+  AppMetricaEncodingUtils: 5b3826ab7b542fc3a89599d5fb6828b9999adb58
+  AppMetricaFMDB: 51552a8ddf618f94e180d000d0d1cbb71a436572
+  AppMetricaHostState: 5b4893ac02f8cf91d9ccf35651f973436494945c
+  AppMetricaIdentifiers: 172675383cd2ea5a1cee8dcf7d8fbde3a692d0c6
+  AppMetricaIDSync: 21e093b8b9b48a0c4487503326905dcd20a76603
+  AppMetricaKeychain: eda7cd31463ef2e866d759b84b5f8e15d98fb94a
+  AppMetricaLibraryAdapter: 0e3a1617f4542869eae2b46ab72cc9d0f657427c
+  AppMetricaLog: 0966451d6a00b1bd137b7f45c6db5422989cedbe
+  AppMetricaLogSwift: a10f76cfce1f874313c067481d7259061e045b52
+  AppMetricaNetwork: 531abb5e03e689a6d4dfb2fca119b47e5465aa9a
+  AppMetricaPlatform: a26ccc81cea64ba7467c9fe6d28d6047c05784b1
+  AppMetricaProtobuf: eaeb5c658c3bae23ff96a885232ee2ebe6217ce8
+  AppMetricaProtobufUtils: f6560ef1796495666cbeb3a5adafaa1febce7ba7
+  AppMetricaStorageUtils: 1fff51169752ab3c1874da4007484eb008ae5e3d
+  AppMetricaSynchronization: 788685a4273a36dcf9566085c0b1af6d436f861c
   BidMachine: 739bf73346bfd2b430f816fb02187a1320a01df7
   BigoADS: 1ae2d67ffd4d2eb72c6921bdfcdd9c1f943dbecf
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
@@ -261,6 +281,7 @@ SPEC CHECKSUMS:
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceAdQualitySDK: 13c03987c99b8556e686acf6b618e84777a66121
   IronSourceSDK: cd08c3446eac951575b799dceff63febcf16a978
+  KSCrash: 8c4464fd5da7de520f2ce4a00fdf63f169a80f18
   MintegralAdSDK: 9e98161b5c5afdc7f5effe4f3969dd1cf0430ed1
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
   MolocoSDKiOS: 329ac6a702974f2fb9c6ffd4a71de879fc345ac9
@@ -273,9 +294,9 @@ SPEC CHECKSUMS:
   UnityAds: 40804188247edc15e4e173450a749dbb2fbc61c5
   UnityCoherenceLib: d9be08c5b9c2880cb220c7ecd643f97ebda422b7
   VungleAds: 77bad219e9e4b34bf43ab2518bf2fac72b86100b
-  YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
+  YandexMobileAds: 50b07d238b6af72badfaae85e4670dab013484c8
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 687422421127617b7ebc09e83e5b74d20c79f539
+PODFILE CHECKSUM: d69b187fb03aa97a0299c0c944996a22aff28426
 
 COCOAPODS: 1.16.2
