@@ -86,7 +86,7 @@ def startio
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.18.1'
+  pod 'TaurusxAdsSDK', '1.19.0'
 end
 
 def zmaticoo
