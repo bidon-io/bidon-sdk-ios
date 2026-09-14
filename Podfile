@@ -38,7 +38,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.19.0'
+  pod 'UnityAds', '4.20.0'
 end
 
 def moloco
