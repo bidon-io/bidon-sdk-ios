@@ -2,6 +2,8 @@
 
 ## 13.6.4.0
 * Updated to AppLovinSDK 13.6.4
+* Added support for user information parameters
+* Removed VK Ad Network (MyTarget) adapter detection
 
 ## 13.6.3.0
 * Updated to AppLovinSDK 13.6.3
