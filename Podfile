@@ -38,7 +38,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.19.0'
+  pod 'UnityAds', '4.20.0'
 end
 
 def moloco
@@ -74,7 +74,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", '9.4.2.0'
+  pod "IronSourceSDK/Ads", '9.6.0.0'
 end
 
 def yandex
