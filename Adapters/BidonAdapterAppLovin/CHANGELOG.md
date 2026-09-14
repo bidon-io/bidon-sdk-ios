@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.6.4.0
+* Updated to AppLovinSDK 13.6.4
+
 ## 13.6.3.0
 * Updated to AppLovinSDK 13.6.3
 
