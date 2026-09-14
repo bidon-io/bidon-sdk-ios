@@ -17,7 +17,7 @@ module Fastlane
           "ISBidonCustomAdapter"   => "13.0",
           "BidonAdapterMyTarget"   => "14.0",
           "BidonAdapterYandex"     => "13.0",
-          "BidonAdapterDTExchange" => "13.0",
+          "BidonAdapterDTExchange" => "15.0",
           "BidonAdapterUnityAds"   => "13.0",
           "BidonAdapterMoloco"     => "13.0",
           "BidonAdapterMetaAudienceNetwork"     => "13.0"
