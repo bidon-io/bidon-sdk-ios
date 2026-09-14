@@ -2,6 +2,11 @@
 
 ## 13.9.0.0
 * Updated to Google-Mobile-Ads-SDK 13.9.0
+* Added support for swipeable interstitial ads signal collection and rendering APIs (`GADSwipeableInterstitialSignalRequest`, `+loadWithAdResponseString:completionHandler:`)
+* `GADResponseInfo.loadedAdNetworkResponseInfo.adNetworkClassName` now returns the custom event class name instead of `GADMAdapterCustomEvents`
+* Refactored full-screen ad validation logic to prevent unintended dismissals during device orientation changes on iPad
+* Added `GADDisableAdInspector` plist key to disable ad inspector functionality
+* `CGSizeFromGADAdSize` now defaults to portrait orientation when computing fluid ad widths on a background thread
 
 ## 13.6.0.0
 * Updated to Google-Mobile-Ads-SDK 13.6.0
