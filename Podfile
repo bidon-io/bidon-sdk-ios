@@ -14,7 +14,7 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.6.3'
+  pod 'AppLovinSDK', '13.6.4'
 end
 
 def bidmachine 
@@ -22,7 +22,7 @@ def bidmachine
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '13.6.0'
+  pod 'Google-Mobile-Ads-SDK', '13.9.0'
 end
 
 def bigo_ads
@@ -38,7 +38,7 @@ def meta_ads
 end
 
 def unity_ads
-  pod 'UnityAds', '4.19.0'
+  pod 'UnityAds', '4.20.0'
 end
 
 def moloco
@@ -74,7 +74,7 @@ def chartboost
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", '9.4.2.0'
+  pod "IronSourceSDK/Ads", '9.6.0.0'
 end
 
 def yandex
