@@ -2,6 +2,8 @@
 
 ## 4.20.0.0
 * Updated to UnityAds 4.20.0
+* Improved ad load reliability and overall performance
+* Fixed a crash when presenting the App Store product sheet while it was already open from a previous ad cycle
 
 ## 4.19.0.0
 * Updated to UnityAds 4.19.0
