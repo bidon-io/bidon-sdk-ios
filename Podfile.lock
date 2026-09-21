@@ -85,7 +85,7 @@ PODS:
   - FBSDKLoginKit (17.1.0):
     - FBSDKCoreKit (= 17.1.0)
   - Fyber_Marketplace_SDK (8.4.8)
-  - Google-Mobile-Ads-SDK (13.9.0):
+  - Google-Mobile-Ads-SDK (13.10.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (3.1.0)
   - InMobiSDK (11.3.0)
@@ -158,7 +158,7 @@ DEPENDENCIES:
   - FBAudienceNetwork (= 6.21.1)
   - FBSDKLoginKit (~> 17.1.0)
   - Fyber_Marketplace_SDK (= 8.4.8)
-  - Google-Mobile-Ads-SDK (= 13.9.0)
+  - Google-Mobile-Ads-SDK (= 13.10.0)
   - InMobiSDK (= 11.3.0)
   - IronSourceSDK/Ads (= 9.6.0.0)
   - MintegralAdSDK (= 8.1.7)
@@ -256,11 +256,11 @@ SPEC CHECKSUMS:
   FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
   FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Fyber_Marketplace_SDK: ebf29e2fd31f1045cbf28244f558076335ddfd25
-  Google-Mobile-Ads-SDK: cec761d0da669c462bcc19cd16c747498b9f39f7
+  Google-Mobile-Ads-SDK: 8e764c4990ef82c2727fd32e0c4143817b443603
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceAdQualitySDK: 13c03987c99b8556e686acf6b618e84777a66121
-  IronSourceSDK: cd08c3446eac951575b799dceff63febcf16a978
+  IronSourceSDK: fd05921e1ed23cc69e6eb21477e6b86230c98e2e
   MintegralAdSDK: 611e5c22c00dcb8305481ea3319e7d42ff3a37b7
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
   MolocoSDKiOS: fe42c39ddc1082290d1a901e5d5ceea98cbfb3a1
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 0b3452db23270d2d9cff20817893192c8d6ce477
+PODFILE CHECKSUM: 79a3a84c3389dfdfaec0c6ba604add824c47b03e
 
 COCOAPODS: 1.16.2
