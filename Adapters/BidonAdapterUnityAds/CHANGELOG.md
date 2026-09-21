@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.20.1.0
+* Updated to UnityAds 4.20.1
+
 ## 4.20.0.0
 * Updated to UnityAds 4.20.0
 * Improved ad load reliability and overall performance
