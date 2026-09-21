@@ -2,6 +2,7 @@
 
 ## 4.20.1.0
 * Updated to UnityAds 4.20.1
+* SDK size optimization
 
 ## 4.20.0.0
 * Updated to UnityAds 4.20.0
