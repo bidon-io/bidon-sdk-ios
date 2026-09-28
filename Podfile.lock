@@ -1,5 +1,5 @@
 PODS:
-  - AmazonPublisherServicesSDK (5.6.2)
+  - AmazonPublisherServicesSDK (5.6.6)
   - AppLovinSDK (13.6.4)
   - AppMetricaAdSupport (6.3.0):
     - AppMetricaCore (= 6.3.0)
@@ -150,7 +150,7 @@ PODS:
   - zMaticoo (2.2.0)
 
 DEPENDENCIES:
-  - AmazonPublisherServicesSDK (= 5.6.2)
+  - AmazonPublisherServicesSDK (= 5.6.6)
   - AppLovinSDK (= 13.6.4)
   - BidMachine (= 3.8.0)
   - BigoADS (= 6.0.0)
@@ -226,7 +226,7 @@ SPEC REPOS:
     - zMaticoo
 
 SPEC CHECKSUMS:
-  AmazonPublisherServicesSDK: 558de42a3e7e483674662bf2ff8997d6a7090aeb
+  AmazonPublisherServicesSDK: 3116edcdb6297591dada7d7d2d7f69e770d6702d
   AppLovinSDK: 730be87bac90c5b0f7d507c3a2530213f7685370
   AppMetricaAdSupport: d9d6516e5e21032f058b7aef3f17aefe9c7cc116
   AppMetricaCore: 12186e7fca8c7e293bd45f66f0e18d64435f1ab7
@@ -260,7 +260,7 @@ SPEC CHECKSUMS:
   GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
   InMobiSDK: a25c208dcc6fc6d9b228f34a4643712f37923208
   IronSourceAdQualitySDK: 13c03987c99b8556e686acf6b618e84777a66121
-  IronSourceSDK: cd08c3446eac951575b799dceff63febcf16a978
+  IronSourceSDK: fd05921e1ed23cc69e6eb21477e6b86230c98e2e
   MintegralAdSDK: 611e5c22c00dcb8305481ea3319e7d42ff3a37b7
   MobileFuseSDK: 08da0fcba90e7c208e2817f6964ff4f15bd6f285
   MolocoSDKiOS: fe42c39ddc1082290d1a901e5d5ceea98cbfb3a1
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 0b3452db23270d2d9cff20817893192c8d6ce477
+PODFILE CHECKSUM: 1cb51dbf9bb2e645b82f57ba9e515ea464bceaf7
 
 COCOAPODS: 1.16.2
