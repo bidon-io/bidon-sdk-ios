@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.1.0.0
+* Updated to BigoADS 6.1.0
+
 ## 6.0.0.0
 * Updated to BigoADS 6.0.0
 
