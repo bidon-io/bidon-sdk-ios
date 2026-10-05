@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.11.0.0
+* Updated to Google-Mobile-Ads-SDK 13.11.0
+
 ## 13.9.0.0
 * Updated to Google-Mobile-Ads-SDK 13.9.0
 * Added support for swipeable interstitial ads signal collection and rendering APIs (`GADSwipeableInterstitialSignalRequest`, `+loadWithAdResponseString:completionHandler:`)
