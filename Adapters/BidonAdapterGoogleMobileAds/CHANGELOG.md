@@ -2,6 +2,14 @@
 
 ## 13.11.0.0
 * Updated to Google-Mobile-Ads-SDK 13.11.0
+* `GADPortraitAnchoredAdaptiveBannerAdSizeWithWidth` and related adaptive banner sizing APIs now require invocation on the main queue (iPhone Duo support)
+* Full-screen ads on iPhone Duo use the active screen's dimensions when loading
+* Fixed crash occurring when loading banner ads inside SwiftUI `UIViewRepresentable`
+* Fixed rare crash from unsafe semaphore usage during video ad dismissal
+* Added Picture-in-Picture Beta APIs via `#import <GoogleMobileAds/GoogleMobileAds_Beta.h>`
+* Added official iOS 27 support
+* Fixed crash triggered by invoking `GADVideoController` APIs on mediated native ads
+* Open Measurement SDK updated to version 1.6.10
 
 ## 13.9.0.0
 * Updated to Google-Mobile-Ads-SDK 13.9.0
