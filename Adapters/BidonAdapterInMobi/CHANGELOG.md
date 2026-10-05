@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.5.0.0
+* Updated to InMobiSDK 11.5.0
+
 ## 11.3.0.0
 * Updated to InMobiSDK 11.3.0
 
