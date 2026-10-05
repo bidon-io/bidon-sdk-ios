@@ -2,6 +2,8 @@
 
 ## 4.21.0.0
 * Updated to UnityAds 4.21.0
+* Improved SDK initialization, ad loading, and bidding token performance
+* Fixed bugs and added stability improvements
 
 ## 4.20.0.0
 * Updated to UnityAds 4.20.0
