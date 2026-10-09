@@ -31,6 +31,14 @@ class BidMachineBaseDemandProvider<AdObject: BidMachineAdProtocol>: NSObject, De
         super.init()
     }
 
+    func customParameters(from adUnitExtras: BidMachineAdUnitExtras) -> [String: String] {
+        var parameters = adUnitExtras.customParameters ?? [:]
+        if parameters["mediation_mode"] == nil {
+            parameters["mediation_mode"] = mediationMode
+        }
+        return parameters
+    }
+
     func didLoadAd(_ ad: BidMachineAdProtocol) {
         defer { response = nil }
 
