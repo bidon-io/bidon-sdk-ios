@@ -1,7 +1,7 @@
 # Changelog
 
-## Unreleased
-* Preserve server ad unit `custom_parameters.mediation_mode` for all ad formats and demand types; use the adapter mediation mode only when the key is absent.
+## 3.8.0.3
+* SDK-1338: Preserve server ad unit `custom_parameters.mediation_mode` for all ad formats and demand types; use the adapter mediation mode only when the key is absent.
 
 ## 3.8.0.0
 * Updated to BidMachine 3.8.0
