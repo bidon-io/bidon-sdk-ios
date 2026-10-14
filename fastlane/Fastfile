@@ -359,6 +359,17 @@ def adapter_version_for(target, lock_versions, revision, prerelease)
   prerelease.to_s.empty? ? v : "#{v}-#{prerelease}"
 end
 
+# Adapter-only override; leave the core version and legacy empty-postfix behavior intact.
+def adapter_prerelease_for(sdk_version, postfix)
+  value = postfix.to_s.strip
+  return sdk_version.include?("-") ? sdk_version.split("-", 2)[1] : nil if value.empty?
+
+  unless value.match?(/\A[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*\z/)
+    UI.user_error!("Invalid adapter postfix '#{value}'; use e.g. bmplus.1 without a leading hyphen")
+  end
+  value
+end
+
 def core_version_with_pre(version, prerelease)
   # Deprecated: prerelease is now part of version (e.g., 0.12.0-alpha.1)
   version
@@ -881,7 +892,7 @@ end
     adapter_name = options[:name]
     sdk_base_version = options[:sdk_version]
     use_network_versions = options.key?(:use_network_versions) ? !!options[:use_network_versions] : true
-    prerelease = sdk_base_version.include?("-") ? sdk_base_version.split("-", 2)[1] : nil
+    prerelease = adapter_prerelease_for(sdk_base_version, options[:postfix])
     rev_spec = parse_adapters_revision_option(options[:adapters_revision])
     core_ver = sdk_base_version
     adapter_version = if options[:version]

@@ -11,6 +11,11 @@ on:
         description: 'SDK version (e.g. 1.1.0 or 1.1.0-alpha.1)'
         required: true
         type: string
+      postfix:
+        description: 'Optional adapter version postfix without leading hyphen (e.g. bmplus.1); empty keeps existing versioning'
+        required: false
+        type: string
+        default: ''
       upload:
         description: 'Upload to AWS?'
         required: true
@@ -120,9 +125,11 @@ jobs:
           /opt/homebrew/opt/ruby@3.2/bin/bundle exec fastlane adapter \
             name:${{ inputs.adapter_name }} \
             sdk_version:${{ inputs.sdk_version }} \
+            postfix:"$ADAPTER_VERSION_POSTFIX" \
             upload:${{ inputs.upload }} \
             force_upload:${{ inputs.force_upload }} 2>&1 | tee "$RUNNER_TEMP/fastlane_adapter.log"
         env:
+          ADAPTER_VERSION_POSTFIX: ${{ inputs.postfix }}
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}

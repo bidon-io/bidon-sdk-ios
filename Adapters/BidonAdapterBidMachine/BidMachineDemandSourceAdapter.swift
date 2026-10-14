@@ -26,7 +26,7 @@ BiddingAdViewDemandSourceAdapter
 
     public let demandId: String = BidMachineDemandSourceAdapter.identifier
     public let name: String = "BidMachine"
-    public let adapterVersion: String = "4-bmplus.1"
+    public let adapterVersion: String = "4"
     public let sdkVersion: String = BidMachineSdk.sdkVersion
 
     internal let mediationMode: String

@@ -69,6 +69,17 @@ For release after approval: publish a versioned candidate and correct spec, upda
 - Word Search tracked files remain unchanged. Existing automatic signing settings were preserved; signing itself was disabled only for the verification command.
 - Existing dependency/debug-symbol and build-phase warnings remain. No archive, signing validation, runtime ad test, or binary/podspec publication was performed during verification.
 
-The standard `Build Adapter` workflow is not a verified build path for this candidate: its Fastlane lane rebuilds the repository core SDK instead of consuming published Bidon 0.15.0. Use the local scripts above, or adapt and verify the workflow before releasing. Passing sdk_version=0.15.0 alone does not change the core source being compiled.
+## Build Adapter v2 version inputs
 
-The standard Fastlane source revision parser accepts numeric adapter revisions only. This local candidate reports `4-bmplus.1` and is built with the scripts above; do not invoke the standard release lane unchanged. A future release needs explicit revision 4 / prerelease bmplus.1 and the same published-core build inputs and exact Bidon constraint, or an equivalent reviewed pipeline change.
+The workflow now supports an optional `postfix`, applied only to the computed adapter version. For this branch:
+
+- adapter_name: `BidonAdapterBidMachine`
+- sdk_version: `0.15.0`
+- postfix: `bmplus.1` (without a leading hyphen)
+- resulting adapter version: `3.8.0.4-bmplus.1`
+
+The source revision is numeric `4`. Empty postfix preserves previous behavior, including inheriting a prerelease suffix from sdk_version. An explicit postfix overrides that inherited suffix without changing the core version. Explicit Fastlane `version:` still takes precedence over automatic adapter version composition.
+
+This changes numbering only. Build Adapter v2 still compiles the repository core (0.16.0 sources at the branch base); sdk_version does not select a different core checkout. That alone does not prove incompatibility: the previous .2 adapter was also built against 0.16.0 sources and does not reference the API missing in 0.15.0. The v2-produced candidate must nevertheless be checked with published Bidon 0.15.0 before publication; the successful native link above used the separate local builder. Check the generated podspec too: the local candidate pins Bidon exactly to 0.15.0, while the standard generation path has not been changed here.
+
+The locally verified binary predates the source metadata change from `4-bmplus.1` to `4`. Its SDK-1338 behavior is unchanged, but it is not a build of this latest workflow/source revision. Workflow dispatch, upload, and spec publication remain manual steps.
