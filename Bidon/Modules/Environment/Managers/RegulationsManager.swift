@@ -51,6 +51,43 @@ final class RegulationsManager: ExtendedRegulations, Environment {
 
     var coppaApplies: Bool { coppa == .yes }
 
+    /// Whether the device location may leave the device. Bidon has no CMP of its own, so it
+    /// follows the IAB TCF keys the publisher's CMP stores (SDK-1082).
+    var isPreciseGeolocationAllowed: Bool {
+        Self.isPreciseGeolocationAllowed(coppa: coppa, gdpr: gdpr, tcfV2: tcfV2)
+    }
+
+    /// Precise geolocation is IAB TCF v2.2 Special Feature 1: a separate, consent-only opt-in
+    /// stored at position 0 of `IABTCF_SpecialFeaturesOptIns`. The OS location permission is
+    /// not a GDPR legal basis on its own, and no purpose consent authorises it.
+    ///
+    /// Not allowed under COPPA, nor when GDPR applies without the Special Feature 1 opt-in; an
+    /// absent or malformed vector counts as no opt-in. GDPR scope is the CMP's
+    /// `IABTCF_gdprApplies` when stored, the publisher's `gdpr` flag otherwise — the CMP's
+    /// answer wins because integrations have passed consent through that flag.
+    static func isPreciseGeolocationAllowed(
+        coppa: COPPAAppliesStatus,
+        gdpr: GDPRAppliesStatus,
+        tcfV2: [String: Any]
+    ) -> Bool {
+        if coppa == .yes {
+            return false
+        }
+
+        let gdprApplies: Bool
+        switch tcfV2["IABTCF_gdprApplies"] {
+        case let value as Int: gdprApplies = value == 1
+        case let value as String: gdprApplies = Int(value) == 1
+        default: gdprApplies = gdpr == .applies
+        }
+        guard gdprApplies else {
+            return true
+        }
+
+        let optIns = tcfV2["IABTCF_SpecialFeaturesOptIns"] as? String
+        return optIns?.first == "1"
+    }
+
 
     @Atomic
     private var _coppa: COPPAAppliesStatus?
