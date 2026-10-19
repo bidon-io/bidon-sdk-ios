@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.5.1.0
+* Updated to Fyber_Marketplace_SDK 8.5.1
+
 ## 8.4.8.0
 * Updated to Fyber_Marketplace_SDK 8.4.8
 
