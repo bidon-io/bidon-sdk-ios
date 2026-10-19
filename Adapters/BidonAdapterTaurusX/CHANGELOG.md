@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.20.0.0
+* Updated to TaurusxAdsSDK 1.20.0
+
 ## 1.18.1.0
 * Updated to TaurusxAdsSDK 1.18.1
 
