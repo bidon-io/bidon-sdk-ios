@@ -58,7 +58,11 @@ extension DTExchangeDemandSourceAdapter: ParameterizedInitializableAdapter {
         IASDKCore.sharedInstance().initWithAppID(
             parameters.appId,
             completionBlock: { [weak self] isSuccess, error in
-                defer { IASDKCore.sharedInstance().globalAdDelegate = self?.impressionObserver }
+                defer {
+                    if let self {
+                        IASDKCore.sharedInstance().addGlobalAdDelegate(self.impressionObserver)
+                    }
+                }
 
                 if isSuccess {
                     completion(nil)
