@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.7.0.0.0
+* Updated to IronSourceSDK/Ads 9.7.0.0
+
 ## 9.6.0.0.0
 * Updated to IronSourceSDK/Ads 9.6.0.0
 
