@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.1.8.0
+* Updated to MintegralAdSDK 8.1.8
+* Replaced deprecated synchronous `MTGBiddingSDK.buyerUID()` with async `MTGBiddingSDK.buyerUID(with:completionHandler:)`
+
 ## 8.1.7.0
 * Updated to MintegralAdSDK 8.1.7
 
