@@ -18,11 +18,14 @@ class MintegralBiddingBaseDemandProvider<DemandAdType: DemandAd>: NSObject, Bidd
         biddingTokenExtras: MintegralBiddingTokenExtras,
         response: @escaping (Result<String, MediationError>) -> ()
     ) {
-        guard let token = MTGBiddingSDK.buyerUID() else {
-            response(.failure(.unspecifiedException("Mintegral has not provided bidding token")))
-            return
+        MTGBiddingSDK.buyerUID(withDictionary: nil) { token, error in
+            if let token = token, !token.isEmpty {
+                response(.success(token))
+            } else {
+                let message = error?.localizedDescription ?? "Mintegral has not provided bidding token"
+                response(.failure(.unspecifiedException(message)))
+            }
         }
-        response(.success(token))
     }
 
     func load(
