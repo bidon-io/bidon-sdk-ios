@@ -69,9 +69,9 @@ PODS:
     - AppMetricaLog (= 6.3.0)
   - AppMetricaSynchronization (6.3.0):
     - AppMetricaLogSwift (= 6.3.0)
-  - BidMachine (3.8.0):
-    - BidMachine/Static (= 3.8.0)
-  - BidMachine/Static (3.8.0):
+  - BidMachine (3.8.2):
+    - BidMachine/Static (= 3.8.2)
+  - BidMachine/Static (3.8.2):
     - OMSDK_Appodeal/Static (= 1.6.3.1)
   - BigoADS (6.0.0)
   - ChartboostSDK (9.12.0)
@@ -152,7 +152,7 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.6)
   - AppLovinSDK (= 13.6.4)
-  - BidMachine (= 3.8.0)
+  - BidMachine (= 3.8.2)
   - BigoADS (= 6.0.0)
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
@@ -247,7 +247,7 @@ SPEC CHECKSUMS:
   AppMetricaProtobufUtils: f3bfe7f36e3d0b00552398e0c06bd2af515800dd
   AppMetricaStorageUtils: 658dc0cd262a94c0a4ce450af11a50aef0809a82
   AppMetricaSynchronization: d629fdefd72af0bb7768ae4d32fb107c42662811
-  BidMachine: 739bf73346bfd2b430f816fb02187a1320a01df7
+  BidMachine: 635d477279887bf672eb4ea10bb9a4fe5bc3039b
   BigoADS: 507d43ef8c1c02397b7045544c91eb3ba240d5fa
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1cb51dbf9bb2e645b82f57ba9e515ea464bceaf7
+PODFILE CHECKSUM: f7b522d32bb20d50a72da9ef4c82a22a40b5360e
 
 COCOAPODS: 1.16.2
