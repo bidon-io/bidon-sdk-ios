@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.6.6'
+  pod 'AmazonPublisherServicesSDK', '5.7.0'
 end
 
 def applovin

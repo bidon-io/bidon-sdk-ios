@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.0.0
+* Updated to AmazonPublisherServicesSDK 5.7.0
+
 ## 5.6.6.0
 * Updated to AmazonPublisherServicesSDK 5.6.6
 
