@@ -69,10 +69,10 @@ PODS:
     - AppMetricaLog (= 6.3.0)
   - AppMetricaSynchronization (6.3.0):
     - AppMetricaLogSwift (= 6.3.0)
-  - BidMachine (3.8.0):
-    - BidMachine/Static (= 3.8.0)
-  - BidMachine/Static (3.8.0):
-    - OMSDK_Appodeal/Static (= 1.6.3.1)
+  - BidMachine (4.0.0):
+    - BidMachine/Static (= 4.0.0)
+  - BidMachine/Static (4.0.0):
+    - OMSDK_Bidmachine/Static (= 1.6.11)
   - BigoADS (6.0.0)
   - ChartboostSDK (9.12.0)
   - FBAEMKit (17.1.0):
@@ -131,7 +131,7 @@ PODS:
   - myTargetSDK (5.45.0):
     - myTrackerSDK (~> 3.4.2)
   - myTrackerSDK (3.4.2)
-  - OMSDK_Appodeal/Static (1.6.3.1)
+  - OMSDK_Bidmachine/Static (1.6.11)
   - StartAppSDK (4.13.1)
   - SwiftLint (0.63.3)
   - TaurusxAdsSDK (1.18.1):
@@ -152,7 +152,7 @@ PODS:
 DEPENDENCIES:
   - AmazonPublisherServicesSDK (= 5.6.6)
   - AppLovinSDK (= 13.6.4)
-  - BidMachine (= 3.8.0)
+  - BidMachine (= 4.0.0)
   - BigoADS (= 6.0.0)
   - ChartboostSDK (= 9.12.0)
   - FBAudienceNetwork (= 6.21.1)
@@ -215,7 +215,7 @@ SPEC REPOS:
     - MolocoSDKiOS
     - myTargetSDK
     - myTrackerSDK
-    - OMSDK_Appodeal
+    - OMSDK_Bidmachine
     - StartAppSDK
     - SwiftLint
     - TaurusxAdsSDK
@@ -247,7 +247,7 @@ SPEC CHECKSUMS:
   AppMetricaProtobufUtils: f3bfe7f36e3d0b00552398e0c06bd2af515800dd
   AppMetricaStorageUtils: 658dc0cd262a94c0a4ce450af11a50aef0809a82
   AppMetricaSynchronization: d629fdefd72af0bb7768ae4d32fb107c42662811
-  BidMachine: 739bf73346bfd2b430f816fb02187a1320a01df7
+  BidMachine: de24b743d1a1c85f3b2ca064643634b2a07b0c60
   BigoADS: 507d43ef8c1c02397b7045544c91eb3ba240d5fa
   ChartboostSDK: 1a74d11450b2f5de529edc397ca434f11701232a
   FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
@@ -266,7 +266,7 @@ SPEC CHECKSUMS:
   MolocoSDKiOS: fe42c39ddc1082290d1a901e5d5ceea98cbfb3a1
   myTargetSDK: 665ee85494cacb7e65a725038ad2e25c78120ffb
   myTrackerSDK: 1067f589db77b5374bf39d1e306667a455fa767e
-  OMSDK_Appodeal: a8140ec3e79872f39a3e52d3f279122fa9dfb245
+  OMSDK_Bidmachine: ac6b17699be2c1889d435ae281f7b05b5f321b4d
   StartAppSDK: 03e509880837ea1d795091ff4a59542a04b4af79
   SwiftLint: 387b65567654da8f832d67fe3c53fd2ff2be8539
   TaurusxAdsSDK: 29e5c35767ed5e2fea98af096055a46851bbc4c0
@@ -276,6 +276,6 @@ SPEC CHECKSUMS:
   YandexMobileAds: 47d9d0ce6705e79e3801138e8c1d9898e4c79a51
   zMaticoo: 6cac7aa686c926c8e0bc3af331c1d9586fec5461
 
-PODFILE CHECKSUM: 1cb51dbf9bb2e645b82f57ba9e515ea464bceaf7
+PODFILE CHECKSUM: b21c58e0d4367505959168c49523f99a6df2b2bc
 
 COCOAPODS: 1.16.2
