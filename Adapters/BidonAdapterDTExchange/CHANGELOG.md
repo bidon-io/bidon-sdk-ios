@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.5.2.0
+* Updated to Fyber_Marketplace_SDK 8.5.2
+* Register the impression observer with `addGlobalAdDelegate:` instead of the deprecated `globalAdDelegate`
+
 ## 8.4.8.0
 * Updated to Fyber_Marketplace_SDK 8.4.8
 

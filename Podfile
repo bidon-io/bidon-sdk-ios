@@ -18,7 +18,7 @@ def applovin
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.8.0'
+  pod 'BidMachine', '3.8.2'
 end
 
 def admob
@@ -30,15 +30,15 @@ def bigo_ads
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.8'
+  pod 'Fyber_Marketplace_SDK', '8.5.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.21.1'
+  pod 'FBAudienceNetwork', '6.22.1'
 end
 
 def unity_ads
-  pod 'UnityAds', '4.20.0'
+  pod 'UnityAds', '4.21.0'
 end
 
 def moloco
@@ -78,7 +78,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '8.1.0'
+  pod 'YandexMobileAds', '8.7.0'
 end
 
 def startio
