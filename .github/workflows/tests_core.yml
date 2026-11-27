@@ -9,7 +9,7 @@ on:
 jobs:
   tests_swift:
     if: "!startsWith(github.event.pull_request.head.ref, 'chore/pod-')"
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Checkout repository
@@ -18,7 +18,7 @@ jobs:
       - name: Select Xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.2'
+          xcode-version: '16.4'
 
       - name: Cache DerivedData (Swift)
         uses: actions/cache@v4
@@ -44,7 +44,7 @@ jobs:
           xcodebuild test \
             -workspace BidOn.xcworkspace \
             -scheme Tests-Swift \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
             -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
             -resultBundlePath Result/Tests-Swift.xcresult \
             | xcbeautify
