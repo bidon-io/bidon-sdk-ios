@@ -10,7 +10,7 @@ use_frameworks!
 # Defenitions
 
 def amazon
-  pod 'AmazonPublisherServicesSDK', '5.6.2'
+  pod 'AmazonPublisherServicesSDK', '5.6.6'
 end
 
 def applovin
@@ -30,11 +30,11 @@ def bigo_ads
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.8'
+  pod 'Fyber_Marketplace_SDK', '8.5.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.21.1'
+  pod 'FBAudienceNetwork', '6.22.1'
 end
 
 def unity_ads
@@ -78,7 +78,7 @@ def ironsource
 end
 
 def yandex
-  pod 'YandexMobileAds', '8.1.0'
+  pod 'YandexMobileAds', '8.7.0'
 end
 
 def startio
