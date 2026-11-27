@@ -28,7 +28,6 @@ final class GoogleAdManagerDirectRewardedAdDemandProvider: GoogleAdManagerBaseDe
 
             rewardedAd.fullScreenContentDelegate = self
 
-            self.setupAdRevenueHandler(adObject: rewardedAd)
             self.handleDidLoad(adObject: rewardedAd)
         }
     }
@@ -59,6 +58,11 @@ extension GoogleAdManagerDirectRewardedAdDemandProvider: FullScreenContentDelega
             didFailToDisplayAd: ad,
             error: .generic(error: error)
         )
+    }
+
+    func ad(_ ad: FullScreenPresentingAd, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        guard let ad = ad as? GoogleMobileAds.RewardedAd else { return }
+        handlePaidEvent(value, ad: ad)
     }
 
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {

@@ -14,35 +14,35 @@ def amazon
 end
 
 def applovin
-  pod 'AppLovinSDK', '13.6.4'
+  pod 'AppLovinSDK', '13.7.0'
 end
 
 def bidmachine 
-  pod 'BidMachine', '3.8.0'
+  pod 'BidMachine', '3.8.2'
 end
 
 def admob
-  pod 'Google-Mobile-Ads-SDK', '13.9.0'
+  pod 'Google-Mobile-Ads-SDK', '13.12.0'
 end
 
 def bigo_ads
-  pod 'BigoADS', '6.0.0'
+  pod 'BigoADS', '6.1.0'
 end
 
 def dtexchange
-  pod 'Fyber_Marketplace_SDK', '8.4.8'
+  pod 'Fyber_Marketplace_SDK', '8.5.2'
 end
 
 def meta_ads
-  pod 'FBAudienceNetwork', '6.21.1'
+  pod 'FBAudienceNetwork', '6.22.1'
 end
 
 def unity_ads
-  pod 'UnityAds', '4.20.0'
+  pod 'UnityAds', '4.21.0'
 end
 
 def moloco
-  pod 'MolocoSDKiOS', '4.10.0'
+  pod 'MolocoSDKiOS', '4.12.0'
 end
 
 def meta_sdk
@@ -58,11 +58,11 @@ def mobilefuse
 end
 
 def vungle
-  pod 'VungleAds', '7.7.7'
+  pod 'VungleAds', '7.8.0'
 end
 
 def inmobi
-  pod 'InMobiSDK', '11.3.0'
+  pod 'InMobiSDK', '11.5.0'
 end
 
 def my_target
@@ -70,23 +70,23 @@ def my_target
 end
 
 def chartboost
-  pod 'ChartboostSDK', '9.12.0'
+  pod 'ChartboostSDK', '9.14.2'
 end
 
 def ironsource
-  pod "IronSourceSDK/Ads", '9.6.0.0'
+  pod "IronSourceSDK/Ads", '9.8.0.0'
 end
 
 def yandex
-  pod 'YandexMobileAds', '8.1.0'
+  pod 'YandexMobileAds', '8.7.0'
 end
 
 def startio
-  pod 'StartAppSDK', '4.13.1'
+  pod 'StartAppSDK', '4.15.0'
 end
 
 def taurus
-  pod 'TaurusxAdsSDK', '1.18.1'
+  pod 'TaurusxAdsSDK', '1.21.1'
 end
 
 def zmaticoo

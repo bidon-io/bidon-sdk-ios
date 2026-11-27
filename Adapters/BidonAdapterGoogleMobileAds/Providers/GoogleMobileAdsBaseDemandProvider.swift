@@ -52,16 +52,12 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
         self.response = nil
     }
 
-    final func setupAdRevenueHandler(adObject: AdObject) {
-        adObject.paidEventHandler = { [weak self, weak adObject] value in
-            guard let self = self, let adObject = adObject else { return }
-
-            self.revenueDelegate?.provider(
-                self,
-                didPayRevenue: value.revenue,
-                ad: adObject
-            )
-        }
+    final func handlePaidEvent(_ value: GoogleMobileAds.AdValue, ad: AdObject) {
+        revenueDelegate?.provider(
+            self,
+            didPayRevenue: value.revenue,
+            ad: ad
+        )
     }
 
     func notify(
@@ -74,7 +70,6 @@ class GoogleMobileAdsBaseDemandProvider<AdObject: GoogleMobileAdsDemandAd>: NSOb
             self.handleDidFailToLoad(.noFill(error?.localizedDescription))
             return
         }
-        self.setupAdRevenueHandler(adObject: ad)
         self.handleDidLoad(adObject: ad)
     }
 }
