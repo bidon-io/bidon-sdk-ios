@@ -44,7 +44,6 @@ final class GoogleAdManagerDirectAdViewProvider: GoogleAdManagerBaseDemandProvid
             banner.isAutoloadEnabled = false
             banner.rootViewController = self.rootViewController
 
-            self.setupAdRevenueHandler(adObject: banner)
 
             banner.translatesAutoresizingMaskIntoConstraints = false
 
@@ -84,6 +83,10 @@ extension GoogleAdManagerDirectAdViewProvider: BannerViewDelegate {
 
     func bannerViewDidDismissScreen(_ bannerView: GoogleMobileAds.BannerView) {
         adViewDelegate?.providerDidDismissModalView(self, adView: container)
+    }
+
+    func bannerView(_ bannerView: GoogleMobileAds.BannerView, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        handlePaidEvent(value, ad: bannerView)
     }
 
     func bannerViewDidRecordClick(_ bannerView: GoogleMobileAds.BannerView) {

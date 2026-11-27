@@ -82,6 +82,11 @@ extension GoogleMobileAdsRewardedAdDemandProvider: FullScreenContentDelegate {
         )
     }
 
+    func ad(_ ad: FullScreenPresentingAd, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        guard let ad = ad as? GoogleMobileAds.RewardedAd else { return }
+        handlePaidEvent(value, ad: ad)
+    }
+
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
