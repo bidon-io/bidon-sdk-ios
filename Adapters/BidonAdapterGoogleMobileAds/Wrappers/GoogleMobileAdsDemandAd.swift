@@ -12,8 +12,6 @@ import Bidon
 
 protocol GoogleMobileAdsDemandAd: DemandAd {
     static var adFormat: GoogleMobileAds.AdFormat { get }
-
-    var paidEventHandler: GADPaidEventHandler? { get set }
 }
 
 

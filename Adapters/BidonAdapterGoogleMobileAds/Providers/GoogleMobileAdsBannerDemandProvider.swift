@@ -72,7 +72,6 @@ final class GoogleMobileAdsBannerDemandProvider: GoogleMobileAdsBaseDemandProvid
         banner.delegate = self
         banner.rootViewController = rootViewController
 
-        setupAdRevenueHandler(adObject: banner)
         return banner
     }
 }
@@ -102,6 +101,10 @@ extension GoogleMobileAdsBannerDemandProvider: BannerViewDelegate {
 
     func bannerViewDidDismissScreen(_ bannerView: GoogleMobileAds.BannerView) {
         adViewDelegate?.providerDidDismissModalView(self, adView: bannerView)
+    }
+
+    func bannerView(_ bannerView: GoogleMobileAds.BannerView, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        handlePaidEvent(value, ad: bannerView)
     }
 
     func bannerViewDidRecordClick(_ bannerView: GoogleMobileAds.BannerView) {

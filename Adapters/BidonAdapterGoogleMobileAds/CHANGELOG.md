@@ -2,6 +2,7 @@
 
 ## 13.12.0.0
 * Updated to Google-Mobile-Ads-SDK 13.12.0
+* Track ad revenue through the ad delegates' `didRecordPaidEventWithAdValue:` instead of the deprecated `paidEventHandler`
 
 ## 13.9.0.0
 * Updated to Google-Mobile-Ads-SDK 13.9.0
