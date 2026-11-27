@@ -74,6 +74,11 @@ extension GoogleMobileAdsInterstitialDemandProvider: FullScreenContentDelegate {
         )
     }
 
+    func ad(_ ad: FullScreenPresentingAd, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        guard let ad = ad as? InterstitialAd else { return }
+        handlePaidEvent(value, ad: ad)
+    }
+
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {
         delegate?.providerDidClick(self)
     }
