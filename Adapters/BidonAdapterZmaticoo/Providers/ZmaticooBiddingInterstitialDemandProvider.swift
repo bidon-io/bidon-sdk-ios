@@ -23,6 +23,7 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
     private var response: Bidon.DemandProviderResponse?
     private var placementId: String = ""
     private var interstitial: MATInterstitialAd?
+    private var maticooIds: MATMaticooIds?
 
     override var adFormat: ZmaticooAdFormat { .interstitial }
 
@@ -43,13 +44,14 @@ final class ZmaticooBiddingInterstitialDemandProvider: ZmaticooBiddingBaseDemand
 
 extension ZmaticooBiddingInterstitialDemandProvider: InterstitialDemandProvider {
     func show(ad: ZmaticooInterstitialDemandAd, from viewController: UIViewController) {
-        interstitial?.show(from: viewController)
+        interstitial?.show(from: viewController, maticooIds: maticooIds)
     }
 }
 
 extension ZmaticooBiddingInterstitialDemandProvider: MATInterstitialAdDelegate {
     
-    func interstitialAdDidLoad(_ interstitialAd: MATInterstitialAd) {
+    func interstitialAdDidLoad(_ interstitialAd: MATInterstitialAd, maticooIds: MATMaticooIds) {
+        self.maticooIds = maticooIds
         let ad = ZmaticooInterstitialDemandAd(placementId: placementId)
         response?(.success(ad))
         response = nil

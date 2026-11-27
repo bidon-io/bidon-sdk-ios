@@ -24,6 +24,7 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
     private var response: Bidon.DemandProviderResponse?
     private var placementId: String = ""
     private var rewarded: MATRewardedVideoAd?
+    private var maticooIds: MATMaticooIds?
 
     override var adFormat: ZmaticooAdFormat { .rewarded }
 
@@ -44,13 +45,14 @@ final class ZmaticooBiddingRewardedDemandProvider: ZmaticooBiddingBaseDemandProv
 
 extension ZmaticooBiddingRewardedDemandProvider: RewardedAdDemandProvider {
     func show(ad: ZmaticooRewardedDemandAd, from viewController: UIViewController) {
-        rewarded?.show(from: viewController)
+        rewarded?.show(from: viewController, maticooIds: maticooIds)
     }
 }
 
 extension ZmaticooBiddingRewardedDemandProvider: MATRewardedVideoAdDelegate {
     
-    func rewardedVideoAdDidLoad(_ rewardedVideoAd: MATRewardedVideoAd) {
+    func rewardedVideoAdDidLoad(_ rewardedVideoAd: MATRewardedVideoAd, maticooIds: MATMaticooIds) {
+        self.maticooIds = maticooIds
         let ad = ZmaticooRewardedDemandAd(placementId: placementId)
         response?(.success(ad))
         response = nil
