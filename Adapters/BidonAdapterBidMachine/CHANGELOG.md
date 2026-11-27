@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.8.2.3
+## 3.8.2.0
 * Updated to BidMachine 3.8.2
 
 ## 3.8.0.3
