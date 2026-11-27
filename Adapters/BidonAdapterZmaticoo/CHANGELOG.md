@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.3.0
+* Updated to zMaticoo 2.3.3
+* Keep the `MATMaticooIds` from the new load callbacks and show interstitial and rewarded ads with them, as zMaticoo 2.3 requires
+
 ## 2.2.0.0
 * Updated to zMaticoo 2.2.0
 
