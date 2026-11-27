@@ -138,8 +138,8 @@ jobs:
           if [ "${{ inputs.validate }}" = "false" ]; then
             POD_ARGS+=(--skip-tests --skip-import-validation)
           fi
-          echo "Running: bundle exec pod trunk push $spec_path ${POD_ARGS[*]}"
-          /opt/homebrew/opt/ruby@3.2/bin/bundle exec pod trunk push "$spec_path" "${POD_ARGS[@]}"
+          POD_CMD="/opt/homebrew/opt/ruby@3.2/bin/bundle exec pod" \
+            bash .github/scripts/trunk_push.sh "$spec_path" "${POD_ARGS[@]}"
 
       - name: Dump logs tail (on failure)
         if: failure()
