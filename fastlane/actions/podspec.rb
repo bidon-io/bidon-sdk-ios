@@ -16,11 +16,11 @@ module Fastlane
           "BidonAdapterIronSource" => "13.0",
           "ISBidonCustomAdapter"   => "13.0",
           "BidonAdapterMyTarget"   => "14.0",
-          "BidonAdapterYandex"     => "13.0",
-          "BidonAdapterDTExchange" => "13.0",
+          "BidonAdapterYandex"     => "15.0",
+          "BidonAdapterDTExchange" => "15.0",
           "BidonAdapterUnityAds"   => "13.0",
           "BidonAdapterMoloco"     => "13.0",
-          "BidonAdapterMetaAudienceNetwork"     => "13.0"
+          "BidonAdapterMetaAudienceNetwork"     => "15.0"
       }
 
       def self.run(params)

@@ -1,5 +1,8 @@
 # Changelog
 
+## 13.7.0.0
+* Updated to AppLovinSDK 13.7.0
+
 ## 13.6.4.0
 * Updated to AppLovinSDK 13.6.4
 * Added support for user information parameters

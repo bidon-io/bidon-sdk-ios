@@ -74,6 +74,7 @@
 		B9009E7D2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */; };
 		BDAA00022E7AC04A005C6187 /* BidMachineMediationModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAA00012E7AC04A005C6187 /* BidMachineMediationModeTests.swift */; };
 		BDAA00042E7AC04A005C6187 /* AdUnitExtrasEnrichmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAA00032E7AC04A005C6187 /* AdUnitExtrasEnrichmentTests.swift */; };
+		BD3AED8E4F713E3C70983D62 /* PreciseGeolocationGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCDD364A3E883B7950E4C86 /* PreciseGeolocationGateTests.swift */; };
 		BDAA00062E7AC04A005C6187 /* BidMachineAdDemandExtrasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAA00052E7AC04A005C6187 /* BidMachineAdDemandExtrasTests.swift */; };
 		B9AA00012EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AA00002EA73E4B00D7C111 /* BidonAdapterStartIoTests.swift */; };
 		B9FD55122EA6318E00046D0D /* BidonAdapterStartIo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FD55112EA6318E00046D0D /* BidonAdapterStartIo.framework */; };
@@ -168,6 +169,7 @@
 		B9009E4C2E7AC04A005C6187 /* BidonAdapterBidMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterBidMachineTests.swift; sourceTree = "<group>"; };
 		BDAA00012E7AC04A005C6187 /* BidMachineMediationModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineMediationModeTests.swift; sourceTree = "<group>"; };
 		BDAA00032E7AC04A005C6187 /* AdUnitExtrasEnrichmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdUnitExtrasEnrichmentTests.swift; sourceTree = "<group>"; };
+		BDCDD364A3E883B7950E4C86 /* PreciseGeolocationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreciseGeolocationGateTests.swift; sourceTree = "<group>"; };
 		BDAA00052E7AC04A005C6187 /* BidMachineAdDemandExtrasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidMachineAdDemandExtrasTests.swift; sourceTree = "<group>"; };
 		B9009E4E2E7AC04A005C6187 /* BidonAdapterBigoAdsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterBigoAdsTests.swift; sourceTree = "<group>"; };
 		B9009E502E7AC04A005C6187 /* BidonAdapterChartboostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidonAdapterChartboostTests.swift; sourceTree = "<group>"; };
@@ -323,6 +325,7 @@
 			children = (
 				421992122A726C2B0045CD5B /* Extensions */,
 				42ABAF912A49ED7000B1DF65 /* Auction */,
+				BD2359203D576B96D9C4B01F /* Regulations */,
 				4256722E2A446E6A007AEE23 /* Mocks */,
 			);
 			path = "Tests-Swift";
@@ -340,6 +343,14 @@
 				42540ABC2A448B4D00C7F7B6 /* AuctionRoundMock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		BD2359203D576B96D9C4B01F /* Regulations */ = {
+			isa = PBXGroup;
+			children = (
+				BDCDD364A3E883B7950E4C86 /* PreciseGeolocationGateTests.swift */,
+			);
+			path = Regulations;
 			sourceTree = "<group>";
 		};
 		42ABAF912A49ED7000B1DF65 /* Auction */ = {
@@ -784,6 +795,7 @@
 				42540AC52A44926800C7F7B6 /* AdapterMock.swift in Sources */,
 				4256722A2A444EB6007AEE23 /* ConcurrentAuctionControllerTestCase.swift in Sources */,
 				BDAA00042E7AC04A005C6187 /* AdUnitExtrasEnrichmentTests.swift in Sources */,
+				BD3AED8E4F713E3C70983D62 /* PreciseGeolocationGateTests.swift in Sources */,
 				42540AAC2A446FE000C7F7B6 /* AdTypeContextMock.swift in Sources */,
 				42540ABD2A448B4D00C7F7B6 /* AuctionRoundMock.swift in Sources */,
 			);

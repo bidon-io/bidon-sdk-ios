@@ -201,9 +201,7 @@ jobs:
               echo "❌ Podspec not found at $spec"
               exit 1
             fi
-            CMD="pod trunk push \"$spec\" --allow-warnings --skip-tests --skip-import-validation"
-            echo "Running: $CMD"
-            eval "$CMD"
+            bash .github/scripts/trunk_push.sh "$spec" --allow-warnings --skip-tests --skip-import-validation
           done
 
       - name: Collect podspec URLs
