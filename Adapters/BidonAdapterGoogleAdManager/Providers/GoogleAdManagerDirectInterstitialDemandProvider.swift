@@ -26,7 +26,6 @@ final class GoogleAdManagerDirectInterstitialDemandProvider: GoogleAdManagerBase
 
             interstitial.fullScreenContentDelegate = self
 
-            self.setupAdRevenueHandler(adObject: interstitial)
             self.handleDidLoad(adObject: interstitial)
         }
     }
@@ -52,6 +51,11 @@ extension GoogleAdManagerDirectInterstitialDemandProvider: GoogleMobileAds.FullS
             didFailToDisplayAd: ad,
             error: .generic(error: error)
         )
+    }
+
+    func ad(_ ad: FullScreenPresentingAd, didRecordPaidEventWith value: GoogleMobileAds.AdValue) {
+        guard let ad = ad as? GoogleMobileAds.InterstitialAd else { return }
+        handlePaidEvent(value, ad: ad)
     }
 
     func adDidRecordClick(_ ad: FullScreenPresentingAd) {

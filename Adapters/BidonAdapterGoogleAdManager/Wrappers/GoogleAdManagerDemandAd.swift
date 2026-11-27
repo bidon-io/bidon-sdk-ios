@@ -12,8 +12,6 @@ import GoogleMobileAds
 
 protocol GoogleAdManagerDemandAd: DemandAd {
     static var adFormat: GoogleMobileAds.AdFormat { get }
-
-    var paidEventHandler: GADPaidEventHandler? { get set }
 }
 
 

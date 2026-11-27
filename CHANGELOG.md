@@ -1,3 +1,8 @@
+# Develop
+
+## Fixes
+- SDK-1082 Stop sending the device location without consent. The `geo` block (coordinates, accuracy, city, zip) went out in every config, auction and stats request whenever the app held the OS location permission, regardless of the user's privacy choices — a publisher's user who refused everything in the CMP still had their home address sent. Bidon has no CMP of its own, so it now follows the IAB TCF keys the publisher's CMP stores: the block is withheld under COPPA, and when GDPR applies (`IABTCF_gdprApplies`, or the publisher's `gdpr` flag without a CMP answer) without the Special Feature 1 opt-in for precise geolocation. The whole block goes, since city and zip are reverse-geocoded from the same fix
+
 # # Release 0.17.0
 - Relay BidMachine bid response custom params into the ad unit ext`
 

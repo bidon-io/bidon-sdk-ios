@@ -20,9 +20,12 @@ class BaseRequestBuilder {
         return DeviceModel(manager, geo: geo)
     }
 
+    // The whole block is withheld, not just the coordinates: city and zip are reverse-geocoded
+    // from the same fix, and the server derives the country from the IP anyway (SDK-1082).
     private var geo: GeoModel? {
         let manager = environmentRepository.environment(GeoManager.self)
-        guard manager.isAvailable else { return nil }
+        let regulations = environmentRepository.environment(RegulationsManager.self)
+        guard manager.isAvailable, regulations.isPreciseGeolocationAllowed else { return nil }
 
         return GeoModel(manager)
     }
